@@ -99,6 +99,7 @@ unlimited dataset capacity or scientific qualification of every method.
 
 ## Continue from here
 
+- [Complete documentation map](docs/README.md): product vision, architecture, UX, methods, roadmap and remaining work
 - [John's handoff](docs/HANDOFF-JOHN.md), [current status](STATUS.md) and [master architecture](docs/MASTER-ARCHITECTURE.md)
 - [Installation and readiness](docs/operations/LOCAL-INSTALLATION.md), [dependencies](DEPENDENCIES.md) and [backup/restore](docs/operations/BACKUP-AND-RESTORE.md)
 - [Researcher QA](docs/qa/RESEARCHER-QA.md) and [selected check runner](docs/qa/RUNNING-CHECKS.md)

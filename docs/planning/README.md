@@ -1,5 +1,10 @@
 # Open research platform: strategic design package
 
+**Historical dossier description.** This page describes the separate September 5
+planning package, including media and HTML files not distributed in this source
+repository. Use the [archive index](INDEX.md), [current documentation map](../README.md)
+and [current status](../../STATUS.md) for the GitHub checkpoint and what is built.
+
 Version 0.2 · 5 September 2026
 
 Extract the ZIP and open **START-HERE.html**. Keep the folders together. The dossier, sequence figures and screenshot gallery work locally; external source links require internet access. Markdown files are editable sources and HTML files are reading copies.

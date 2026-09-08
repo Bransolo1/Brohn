@@ -1,5 +1,11 @@
 # Delivery guide — reviewed 2026-09-08
 
+**Development is paused for the public source handoff.**
+[John's handoff](HANDOFF-JOHN.md), [current status](../STATUS.md) and
+[remaining work](KNOWN-GAPS.md) describe the connected application and exact
+unfinished checkpoint. This document preserves the delivery sequence; its
+historical foundation and preparation entries are not a current feature inventory.
+
 The [master architecture](MASTER-ARCHITECTURE.md) is authoritative. Its
 [17-package build manifest](preparation/build-manifest.json) owns the current
 execution dependencies and all 50 capabilities across 28 families. The six waves
@@ -9,7 +15,8 @@ and the [Astra brief](preparation/ASTRA-BUILD-BRIEF.md) prepare the next authori
 
 The archived IMPLEMENTATION-BACKLOG.csv retains 238 candidate tickets and their
 original dependencies. It is a planning snapshot, not a completion tracker.
-Current delivery status lives in STATUS.md and docs/sprints/*.md.
+Current delivery status lives in [STATUS](../STATUS.md) and the
+[full-platform sprint record](sprints/02-full-platform.md).
 
 The operational spine is [the complete study lifecycle](product/STUDY-LIFECYCLE.md),
 with [template/clone/portable design exchange](product/DESIGN-PORTABILITY.md).
@@ -19,6 +26,10 @@ participant delivery in BWP05, curation/history in BWP06/13 and global UX in BWP
 BWP17 completes qualified hosting, portability and verified recovery. Prepare
 the shell early against shared contracts; verify the connected journeys as their
 dependencies finish. Hosted recruitment cannot open before its delivery gate.
+
+## Historical foundation sequence
+
+The following increments preceded the connected platform described in STATUS.
 
 1. Delivered foundation: repository/specifications; draft study, session/clock/event
    and response contracts; portable R/JavaScript encoding and local storage.
@@ -57,7 +68,9 @@ complete commercial product fits into the first twelve provisional sprints.
 Control-design requirements are tracked in methods/CONTROL-DESIGN.md; a generic
 control label or order preview does not satisfy the later method-specific gates.
 
-The September 8 [method reuse register](methods/reuse/README.md) prepares Waves 3–4:
+## Historical preparation record
+
+The September 8 [method reuse register](methods/reuse/README.md) prepared Waves 3–4:
 standard analysis specifications, isolated established engines, five executable
 references and 81 passing assertions. Reuse these numerical implementations and
 published methods; prioritize the shared job/quality/manifest seam and complete
@@ -65,8 +78,9 @@ input-to-report fixtures. No additional product wave is claimed complete by tool
 
 Later September 8 preparation adds 101 reference assertions in the expanded
 toolkit. The [unified experience](product/UNIFIED-EXPERIENCE.md),
-[18 acceptance journeys](product/journey-acceptance.json),
+[34 planned acceptance journeys](product/journey-acceptance.json),
 [brand system](brand/BRAND-SYSTEM.md) and
 [introduction/launch plan](product/INTRODUCTION-AND-LAUNCH.md) guide integration
-throughout delivery. Their assets and plans are complete; product integration and
-human outcome measurements remain acceptance work.
+throughout delivery. Connected implementation has since progressed as recorded in
+STATUS; remaining integration and human outcome measurements retain their own
+acceptance gates.

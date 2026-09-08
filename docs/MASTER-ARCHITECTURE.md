@@ -13,7 +13,8 @@ The [unified experience](product/UNIFIED-EXPERIENCE.md) connects all 50 capabili
 
 ## 1. Full product surface
 
-Implementation is active under the user's full-build authorization. Progress and
+Implementation is paused at the user's request after the full-build checkpoint.
+Resume scoped development only on a new instruction. Progress and
 remaining gates are tracked in [the build log](sprints/02-full-platform.md) and
 [researcher QA](qa/RESEARCHER-QA.md); package status is not a scientific claim.
 Review uses two complementary layers: independent expected arithmetic and an

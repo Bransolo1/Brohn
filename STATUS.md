@@ -197,6 +197,12 @@ recovery and whole researcher journeys remain active. See
 [the build log](docs/sprints/02-full-platform.md). Synthetic checks are not
 qualified hardware support, human usability testing or scientific validation.
 
+## Historical planning milestones
+
+The following planning and prototype records predate the connected checkpoint
+above. Their then-outstanding implementation and publication statements are
+preserved as history; use [remaining work](docs/KNOWN-GAPS.md) for current gaps.
+
 **Lifecycle audit and design portability added on 2026-09-08.** The scientific
 plan previously under-specified historical libraries and participant delivery.
 [The lifecycle contract](docs/product/STUDY-LIFECYCLE.md) now defines storage,
@@ -308,7 +314,9 @@ the active sprint for scoped verification commands. Isolated R is
 ../../work/native-r; the connected library is ../../work/r-library-brohn. The
 fresh restored library is ../../work/r-library-brohn-restore. The old prototype is
 available with -Legacy; tests/all.R checks that historical code, not every new
-platform module. No GitHub publication has been performed.
+platform module. The public source destination is
+[Bransolo1/Brohn](https://github.com/Bransolo1/Brohn); installation dependencies
+and research workspaces are not included in the checkout.
 
 For implementation, read the master architecture, relevant build package and
 acceptance journey, then the necessary R/tests modules, docs/CONTRACTS.md and
@@ -333,21 +341,22 @@ matching revision opens automatically and recomputes from embedded CSV. Edits
 clear current output; previous reports remain on disk. No historical-analysis
 browser or report-to-study import interface yet. Unreadable reports are reported.
 
-## Continue the authorized full build
+## Resume after a new development instruction
 
 Follow the [Astra brief](docs/preparation/ASTRA-BUILD-BRIEF.md) and dependency-ordered
 build manifest. Preserve the connected implementation and evidence above; do not
 restart the old foundational build or treat installed engines as new features.
 
-1. Complete the implicit import storage/worker and actual researcher journey,
-   plus session-history/task-export browser acceptance. The section journey is
-   complete within its documented synthetic software scope.
-2. Build on corrected RT support and source-bound task imports for the explicit
-   cohort contract. New SC-IAT/GNAT/priming/AMP
-   profiles retain separate procedure and engine requirements.
-3. Continue the remaining full capability and lifecycle packages: answer-revision
-   navigation, richer AOIs, supported capture/model extensions, research
-   operations and qualified deployment. Do not collapse the scope to a demo.
+1. Start with [John's handoff](docs/HANDOFF-JOHN.md). Qualify the unregistered
+   complete-answer index/storage boundary, then connect its worker and researcher
+   interface. The storage draft has no integration acceptance yet.
+2. Preserve the accepted source-bound implicit imports, descriptive cohorts,
+   session/task review and questionnaire answer-revision journeys. Additional
+   SC-IAT/GNAT/priming/AMP profiles have separate procedure and engine requirements.
+3. Continue the remaining capability and lifecycle packages in
+   [known gaps](docs/KNOWN-GAPS.md) and the build manifest: broader method/AOI
+   support, qualified capture/models, research operations, accessible human
+   workflows, portable installation and remote deployment.
 4. Preserve short publication transactions across remaining manager/legacy
    paths; extend cross-volume intake deliberately and bound remaining full-run
    collection/report selectors before larger studies.

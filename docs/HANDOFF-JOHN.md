@@ -12,6 +12,9 @@ to add your GitHub account separately.
 
 ## Get oriented
 
+The [documentation map](README.md) links the product vision, all master plans,
+method references, UX specifications and remaining-work trackers.
+
 1. Read [README](../README.md) and [STATUS](../STATUS.md) for the current product.
 2. Follow [Local installation](operations/LOCAL-INSTALLATION.md). The exercised
    profile is Windows AMD64, R 4.6.1, the exact 46-package R lock, a Python
@@ -106,6 +109,12 @@ many historical browser harnesses still use developer paths, reference
 libraries, generated fixtures or a prepared QA workspace. Inspect each chosen
 script; a fresh clone plus the core R restore does not make every suite portable.
 See [Running checks](qa/RUNNING-CHECKS.md) for that boundary.
+
+Packaging verification on 8 September used a separate clean source clone:
+the connected loader and all 109 core checks passed with the preinstalled R
+library, an explicitly configured Python interpreter and a publication guard
+rebuilt from that clone. This verifies source-checkout setup with prepared
+dependencies; it is not a full clean-machine installation or full-suite pass.
 
 Keep the loaded source files fixed while scientific jobs run: each published
 report records its actual implementation hashes. Update STATUS, the relevant
