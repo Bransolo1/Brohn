@@ -1,0 +1,538 @@
+{
+  "schema": "brohn-platform-binary-cache/0.1",
+  "generated": "2026-09-08T00:34:31.707Z",
+  "cache_directory": "../../work/tooling/research-web-tools/r-binaries",
+  "artifact_count": 66,
+  "total_bytes": 76663833,
+  "note": "SHA-256 fingerprints of downloaded CRAN Windows R 4.6 binaries; pinned bytes for local restore, not a signature or upstream authenticity attestation.",
+  "packages": [
+    {
+      "package": "backports",
+      "version": "1.5.1",
+      "file": "backports_1.5.1.zip",
+      "bytes": 126201,
+      "sha256": "41335f8d1934697fcaf2633ab6dae9c8c38fae4c5fa85e469f2a7e30f3c6cd1b",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/backports_1.5.1.zip"
+    },
+    {
+      "package": "base64url",
+      "version": "1.4",
+      "file": "base64url_1.4.zip",
+      "bytes": 34550,
+      "sha256": "638a0c6a0dc3cff2df8c5802f3f845edbadca21707e6f22220ce30c479d7d8a0",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/base64url_1.4.zip"
+    },
+    {
+      "package": "bayestestR",
+      "version": "0.18.1",
+      "file": "bayestestR_0.18.1.zip",
+      "bytes": 1344467,
+      "sha256": "e9f03d048a6986b70542a6895f0094e69f77f3232e70108fcfeae8d14690ee1d",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bayestestR_0.18.1.zip"
+    },
+    {
+      "package": "bit",
+      "version": "4.6.0",
+      "file": "bit_4.6.0.zip",
+      "bytes": 636793,
+      "sha256": "e883d1a73b8e6de342086183ca940d4160a24b1568ab683bf5acea8fbb6f516a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bit_4.6.0.zip"
+    },
+    {
+      "package": "bit64",
+      "version": "4.8.6",
+      "file": "bit64_4.8.6.zip",
+      "bytes": 579849,
+      "sha256": "98e845f8b32588d6f279ede7866686a404b4183db89e4b42f1e6fb963311719a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bit64_4.8.6.zip"
+    },
+    {
+      "package": "blob",
+      "version": "1.3.0",
+      "file": "blob_1.3.0.zip",
+      "bytes": 53529,
+      "sha256": "22c9f6e357901059f159376b274c9e0924a90202e57a8d610668cbb08ef05bee",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/blob_1.3.0.zip"
+    },
+    {
+      "package": "cachem",
+      "version": "1.1.0",
+      "file": "cachem_1.1.0.zip",
+      "bytes": 80327,
+      "sha256": "5b5566eed91b3bd2966b4b006d3c8e08637a85646f0a4930ff4169cf2335437b",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cachem_1.1.0.zip"
+    },
+    {
+      "package": "callr",
+      "version": "3.8.0",
+      "file": "callr_3.8.0.zip",
+      "bytes": 505661,
+      "sha256": "f6cb88c3c7b647a328df28f71e8edff1c44b0e49a939d639a6bd5e05b74bc498",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/callr_3.8.0.zip"
+    },
+    {
+      "package": "cli",
+      "version": "3.6.6",
+      "file": "cli_3.6.6.zip",
+      "bytes": 1409282,
+      "sha256": "16e1bdf9ad2fa9e7a0197b08e2a2d2746afd0340e0d219d0f95d653a09da392a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cli_3.6.6.zip"
+    },
+    {
+      "package": "collections",
+      "version": "0.3.12",
+      "file": "collections_0.3.12.zip",
+      "bytes": 74564,
+      "sha256": "b355b022fd06ae42775a50b15ac060c95f3c219b5f3f016c70d7fb24eb99471a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/collections_0.3.12.zip"
+    },
+    {
+      "package": "cpp11",
+      "version": "0.5.5",
+      "file": "cpp11_0.5.5.zip",
+      "bytes": 326885,
+      "sha256": "3e6d8354b97b860c3c34e635a15b3ebea9d0d2f94be0addd873183715931488c",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cpp11_0.5.5.zip"
+    },
+    {
+      "package": "crew",
+      "version": "1.3.2",
+      "file": "crew_1.3.2.zip",
+      "bytes": 1176421,
+      "sha256": "32fe6b05b5fe45ee7ab421897ef135e597be2b37bb4628ed6f44dc79e59e5ae6",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/crew_1.3.2.zip"
+    },
+    {
+      "package": "data.table",
+      "version": "1.18.6.1",
+      "file": "data.table_1.18.6.1.zip",
+      "bytes": 3212503,
+      "sha256": "068fe692db49b52ac83e54ea16dcecaaed65dbc2227228257be0628d0096701e",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/data.table_1.18.6.1.zip"
+    },
+    {
+      "package": "datawizard",
+      "version": "1.3.1",
+      "file": "datawizard_1.3.1.zip",
+      "bytes": 1187863,
+      "sha256": "07467f0cd1bf8a9d40a3de0e159b5447c9850b304598339b7240845e699af4f1",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/datawizard_1.3.1.zip"
+    },
+    {
+      "package": "DBI",
+      "version": "1.3.0",
+      "file": "DBI_1.3.0.zip",
+      "bytes": 967852,
+      "sha256": "2953cb03599f98a36749e52b47046b75209f4b4f993d8eb87aa36e66ec697883",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/DBI_1.3.0.zip"
+    },
+    {
+      "package": "effectsize",
+      "version": "1.0.3",
+      "file": "effectsize_1.0.3.zip",
+      "bytes": 871893,
+      "sha256": "e905ac8097a8707c354e9869cea1ffe99b5985266da8b39c504ecaccc0513cf2",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/effectsize_1.0.3.zip"
+    },
+    {
+      "package": "emmeans",
+      "version": "2.0.4",
+      "file": "emmeans_2.0.4.zip",
+      "bytes": 2534261,
+      "sha256": "4a093e501224db593ee1d3dc0ce9ef86cc89695fb79b0fa1547449dc651c4bf7",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/emmeans_2.0.4.zip"
+    },
+    {
+      "package": "estimability",
+      "version": "2.0.0",
+      "file": "estimability_2.0.0.zip",
+      "bytes": 335226,
+      "sha256": "a656fd5de342025bbe82f9437d771abc88fdb6ab9e943a9308760c3d3fb9ed82",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/estimability_2.0.0.zip"
+    },
+    {
+      "package": "evaluate",
+      "version": "1.0.5",
+      "file": "evaluate_1.0.5.zip",
+      "bytes": 106512,
+      "sha256": "56916b0ab6a5b21a0307ff15b9d55647c714d0abf76691de3062185654617b98",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/evaluate_1.0.5.zip"
+    },
+    {
+      "package": "fastmap",
+      "version": "1.2.0",
+      "file": "fastmap_1.2.0.zip",
+      "bytes": 143717,
+      "sha256": "86f29ef7cac51e52ffc50def15cfe3c5446ba428f8ebfaee0105f7d71a5aafd4",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/fastmap_1.2.0.zip"
+    },
+    {
+      "package": "glue",
+      "version": "1.8.1",
+      "file": "glue_1.8.1.zip",
+      "bytes": 192070,
+      "sha256": "0594091547f1c804019e24d943e911434b696a9a1f53aad92cb4d49258753d0f",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/glue_1.8.1.zip"
+    },
+    {
+      "package": "GPArotation",
+      "version": "2026.8-2",
+      "file": "GPArotation_2026.8-2.zip",
+      "bytes": 1862525,
+      "sha256": "20ecf3954185fc1faf1cd337a3fa31dc866fa6d63346b83e8aeddc7de6a59614",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/GPArotation_2026.8-2.zip"
+    },
+    {
+      "package": "highr",
+      "version": "0.12",
+      "file": "highr_0.12.zip",
+      "bytes": 44753,
+      "sha256": "1ac2fee027a69385393648d18ce87f31c5caf7e3bbd51d310c87c460c2ff20d7",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/highr_0.12.zip"
+    },
+    {
+      "package": "igraph",
+      "version": "2.3.3",
+      "file": "igraph_2.3.3.zip",
+      "bytes": 7769480,
+      "sha256": "aaa09910a5e24b23b2d7e5afcadae6eab990bd92fd4341044900cf1848d0389d",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/igraph_2.3.3.zip"
+    },
+    {
+      "package": "insight",
+      "version": "1.5.3",
+      "file": "insight_1.5.3.zip",
+      "bytes": 2615396,
+      "sha256": "6d1392462076f7215038a8680441dae1b57e76d866b090908975e98a58a5d872",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/insight_1.5.3.zip"
+    },
+    {
+      "package": "jsonlite",
+      "version": "2.0.0",
+      "file": "jsonlite_2.0.0.zip",
+      "bytes": 1111002,
+      "sha256": "12700d804d9404c4e61f3a459751c1de25b5aeea367b15ccd12daa9d0b1a4ab7",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/jsonlite_2.0.0.zip"
+    },
+    {
+      "package": "knitr",
+      "version": "1.51",
+      "file": "knitr_1.51.zip",
+      "bytes": 1112633,
+      "sha256": "42706d899f6e0cd538683548a66f889570e20a4ab0c2073e6ca23b691079309a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/knitr_1.51.zip"
+    },
+    {
+      "package": "later",
+      "version": "1.4.8",
+      "file": "later_1.4.8.zip",
+      "bytes": 483936,
+      "sha256": "11c9122582b170dbe957963404ee24776fd8058607f38c1d8b902b5d87267982",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/later_1.4.8.zip"
+    },
+    {
+      "package": "lifecycle",
+      "version": "1.0.5",
+      "file": "lifecycle_1.0.5.zip",
+      "bytes": 150692,
+      "sha256": "5931ecf002982c9a4a3062c0a083400854b97073addd944bffaccb94594f7cc0",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/lifecycle_1.0.5.zip"
+    },
+    {
+      "package": "lme4",
+      "version": "2.0-6",
+      "file": "lme4_2.0-6.zip",
+      "bytes": 5840022,
+      "sha256": "1a423937616364a8db51e34476cacbf662ca8ec7de77b049dfb6cf6e705ac937",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/lme4_2.0-6.zip"
+    },
+    {
+      "package": "magrittr",
+      "version": "2.0.5",
+      "file": "magrittr_2.0.5.zip",
+      "bytes": 231148,
+      "sha256": "3acbc8aada0951d88da16bac7fddf194555eae7e02454c8af6bda652d31c7e8e",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/magrittr_2.0.5.zip"
+    },
+    {
+      "package": "memoise",
+      "version": "2.0.1",
+      "file": "memoise_2.0.1.zip",
+      "bytes": 54209,
+      "sha256": "640d79e562547f78547d7da8e83195a1e05a7adbdec820e6e4640ffb27b79598",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/memoise_2.0.1.zip"
+    },
+    {
+      "package": "minqa",
+      "version": "1.2.8",
+      "file": "minqa_1.2.8.zip",
+      "bytes": 459306,
+      "sha256": "84a8282a92df724409aa6876ef5879c82d3263d326593a70b092853f22188c51",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/minqa_1.2.8.zip"
+    },
+    {
+      "package": "mirai",
+      "version": "2.7.2",
+      "file": "mirai_2.7.2.zip",
+      "bytes": 357190,
+      "sha256": "180c0ebb26a65991bd2abea3c5d8fc780ec1fb837f6caae58b30d447d0979d32",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mirai_2.7.2.zip"
+    },
+    {
+      "package": "mnormt",
+      "version": "2.1.2",
+      "file": "mnormt_2.1.2.zip",
+      "bytes": 184333,
+      "sha256": "15a63470692a313910e9209ca384714de5cb095f68b9da00d5ca0f53d0374fcf",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mnormt_2.1.2.zip"
+    },
+    {
+      "package": "mvtnorm",
+      "version": "1.4-2",
+      "file": "mvtnorm_1.4-2.zip",
+      "bytes": 1118080,
+      "sha256": "7ede47b1fbfbd92aabbf034d109ab25132b46769434623837550758ca619871e",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mvtnorm_1.4-2.zip"
+    },
+    {
+      "package": "nanonext",
+      "version": "1.10.2",
+      "file": "nanonext_1.10.2.zip",
+      "bytes": 768465,
+      "sha256": "b99fa329cc024ce8d1894ea19ae5c6d9731e419f8f909359b81d38c6ecb66f4d",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/nanonext_1.10.2.zip"
+    },
+    {
+      "package": "nloptr",
+      "version": "2.2.1",
+      "file": "nloptr_2.2.1.zip",
+      "bytes": 908052,
+      "sha256": "ba3976fa841108a981c1cf4031d6578a31057d0418d0777558cd44db002c522f",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/nloptr_2.2.1.zip"
+    },
+    {
+      "package": "numDeriv",
+      "version": "2016.8-1.1",
+      "file": "numDeriv_2016.8-1.1.zip",
+      "bytes": 117712,
+      "sha256": "071535e7b67020e8f0e6763691dc59159a06b7f19d44c793677dd48e0c3eff25",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/numDeriv_2016.8-1.1.zip"
+    },
+    {
+      "package": "otel",
+      "version": "0.2.0",
+      "file": "otel_0.2.0.zip",
+      "bytes": 287822,
+      "sha256": "53d60d45f89fe1c02205be8183aba9c56b24edf9714ab908c432061e3c817e00",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/otel_0.2.0.zip"
+    },
+    {
+      "package": "parameters",
+      "version": "0.29.3",
+      "file": "parameters_0.29.3.zip",
+      "bytes": 2195827,
+      "sha256": "c6fb34012c63d5e137fb4649369d0a7570f5b70a9a8727e8914aa5310526bfa2",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/parameters_0.29.3.zip"
+    },
+    {
+      "package": "performance",
+      "version": "0.18.1",
+      "file": "performance_0.18.1.zip",
+      "bytes": 2976161,
+      "sha256": "9a3c16f34bc1765d2b61538977669b9e8dd11c0b1e0a77100ff1aff14dbf2db5",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/performance_0.18.1.zip"
+    },
+    {
+      "package": "pillar",
+      "version": "1.11.1",
+      "file": "pillar_1.11.1.zip",
+      "bytes": 675598,
+      "sha256": "4fd58fc6902fdad1546fca28dda384054b4d76f9d15df6d514744201256bfd93",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/pillar_1.11.1.zip"
+    },
+    {
+      "package": "pkgconfig",
+      "version": "2.0.3",
+      "file": "pkgconfig_2.0.3.zip",
+      "bytes": 23308,
+      "sha256": "3120552be1d7062fde8a01f0e3691b382b352903d31d3d3a7addc77c37aca9bf",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/pkgconfig_2.0.3.zip"
+    },
+    {
+      "package": "prettyunits",
+      "version": "1.2.0",
+      "file": "prettyunits_1.2.0.zip",
+      "bytes": 159214,
+      "sha256": "5a3661b12bd10fc7fb84324141ed76cda0cfbe09eb058a657407e7f963c8a8fc",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/prettyunits_1.2.0.zip"
+    },
+    {
+      "package": "processx",
+      "version": "3.9.0",
+      "file": "processx_3.9.0.zip",
+      "bytes": 791962,
+      "sha256": "417f4cbc28fe89260581b05367a7684ccc5e8606d834930dd0dd0b42c64e1a57",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/processx_3.9.0.zip"
+    },
+    {
+      "package": "promises",
+      "version": "1.5.0",
+      "file": "promises_1.5.0.zip",
+      "bytes": 1704395,
+      "sha256": "faeedc3e196489a9c91380c81d8ded3be104848b89632c2f0a2721ce7e01e278",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/promises_1.5.0.zip"
+    },
+    {
+      "package": "ps",
+      "version": "1.9.3",
+      "file": "ps_1.9.3.zip",
+      "bytes": 684500,
+      "sha256": "35585e4175827b590e39d7483446c4dfd3dea06a839f67bc78083cba1d4980ff",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/ps_1.9.3.zip"
+    },
+    {
+      "package": "psych",
+      "version": "2.6.5",
+      "file": "psych_2.6.5.zip",
+      "bytes": 3673196,
+      "sha256": "d7a41b3b9e0eeef02a192de748151bde53d7b9f8702c313750524f338708a29b",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/psych_2.6.5.zip"
+    },
+    {
+      "package": "R6",
+      "version": "2.6.1",
+      "file": "R6_2.6.1.zip",
+      "bytes": 90054,
+      "sha256": "71e54f67950c118f7d3a02c0640fd5d1ce0d372a7b71cf7bdef57628464b7cd0",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/R6_2.6.1.zip"
+    },
+    {
+      "package": "rbibutils",
+      "version": "2.4.1",
+      "file": "rbibutils_2.4.1.zip",
+      "bytes": 1040989,
+      "sha256": "2e3a7e99555ee5f4ed765b2b72394793b2b160629ff3aadbbe7ca07b8b53507a",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/rbibutils_2.4.1.zip"
+    },
+    {
+      "package": "Rcpp",
+      "version": "1.1.2",
+      "file": "Rcpp_1.1.2.zip",
+      "bytes": 2969535,
+      "sha256": "6ad0ecae04aae99aabe1d58ba1024a65c83700d65a448250219b2c31cf979406",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/Rcpp_1.1.2.zip"
+    },
+    {
+      "package": "RcppEigen",
+      "version": "0.3.4.0.2",
+      "file": "RcppEigen_0.3.4.0.2.zip",
+      "bytes": 2608122,
+      "sha256": "b6259b0c39a007aeee5dd75597f2a8ef45ae6e53b07c2a242076efb167dbf5e1",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/RcppEigen_0.3.4.0.2.zip"
+    },
+    {
+      "package": "Rdpack",
+      "version": "2.6.6",
+      "file": "Rdpack_2.6.6.zip",
+      "bytes": 650125,
+      "sha256": "768d3af361104ae5de1ebe2f0b60bd0f1f827de43926fb58a49648504ef3bcb6",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/Rdpack_2.6.6.zip"
+    },
+    {
+      "package": "reformulas",
+      "version": "0.4.4",
+      "file": "reformulas_0.4.4.zip",
+      "bytes": 161438,
+      "sha256": "97df08a86ee347016d2ca00668128c186a22a3846ceaec5186fa7815fd7ad64d",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/reformulas_0.4.4.zip"
+    },
+    {
+      "package": "rlang",
+      "version": "1.3.0",
+      "file": "rlang_1.3.0.zip",
+      "bytes": 1649587,
+      "sha256": "bbb30f856e56202f4d1b011de571e9c83b671d57ed41c3e2d98d1d9b950179f2",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/rlang_1.3.0.zip"
+    },
+    {
+      "package": "RSQLite",
+      "version": "3.53.3",
+      "file": "RSQLite_3.53.3.zip",
+      "bytes": 6390163,
+      "sha256": "2ab2bdf21e8424720162236f51a33f7d852c8be4bef2e2b71a3291cde7447af6",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/RSQLite_3.53.3.zip"
+    },
+    {
+      "package": "secretbase",
+      "version": "1.3.0",
+      "file": "secretbase_1.3.0.zip",
+      "bytes": 86041,
+      "sha256": "c3370df16b2a3a76fb27f22d99576c76b825c8f8b85f3423cb802464a10c94e8",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/secretbase_1.3.0.zip"
+    },
+    {
+      "package": "targets",
+      "version": "1.12.0",
+      "file": "targets_1.12.0.zip",
+      "bytes": 2748018,
+      "sha256": "bb8ca17abff9f9dc806376f92078ebc2bad41b4477086a0b89901dd7520b734f",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/targets_1.12.0.zip"
+    },
+    {
+      "package": "tibble",
+      "version": "3.3.1",
+      "file": "tibble_3.3.1.zip",
+      "bytes": 669534,
+      "sha256": "7762d8166c1a2a9d0ee32be5772f3c17d125412c502c0a085f7a063eaa2be183",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/tibble_3.3.1.zip"
+    },
+    {
+      "package": "tidyselect",
+      "version": "1.2.1",
+      "file": "tidyselect_1.2.1.zip",
+      "bytes": 229998,
+      "sha256": "192cee5ffcef7cd1a946dfc780827462bb42701397a09c7c6efa6c73ce3d6d64",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/tidyselect_1.2.1.zip"
+    },
+    {
+      "package": "utf8",
+      "version": "1.2.6",
+      "file": "utf8_1.2.6.zip",
+      "bytes": 157996,
+      "sha256": "b49cf99a7c85962ef9e91cd10bb6b94b9841a92fc5e49cd220fac43d8b4e01ad",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/utf8_1.2.6.zip"
+    },
+    {
+      "package": "vctrs",
+      "version": "0.7.3",
+      "file": "vctrs_0.7.3.zip",
+      "bytes": 1921455,
+      "sha256": "e5d03d73df4b2d956d0570f622c30e6cc5c4fdd64245edd4e63a1d42e1512140",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/vctrs_0.7.3.zip"
+    },
+    {
+      "package": "withr",
+      "version": "3.0.3",
+      "file": "withr_3.0.3.zip",
+      "bytes": 235630,
+      "sha256": "fe628e71a6e16615544697901406024e330246f625316d0587e0a58a490c67f9",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/withr_3.0.3.zip"
+    },
+    {
+      "package": "xfun",
+      "version": "0.60",
+      "file": "xfun_0.60.zip",
+      "bytes": 667993,
+      "sha256": "ed6e9d27ff776c3261750a077ec1d09f1535c9f660829dd895509ad36078168e",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/xfun_0.60.zip"
+    },
+    {
+      "package": "yaml",
+      "version": "2.3.12",
+      "file": "yaml_2.3.12.zip",
+      "bytes": 125812,
+      "sha256": "1e95c6911a5db992f6757c80f156f7e4ac0a865de44e0b90d992ea057cf4ec71",
+      "url": "https://cloud.r-project.org/bin/windows/contrib/4.6/yaml_2.3.12.zip"
+    }
+  ]
+}

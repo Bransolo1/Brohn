@@ -1,0 +1,220 @@
+{
+  "schema_version": "brohn-method-reference/0.1.0",
+  "production_enabled": false,
+  "status": "reference_checks_passed",
+  "python": "3.12.10",
+  "packages": {
+    "mne": "1.12.1",
+    "neurokit2": "0.2.13",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "2.3.3"
+  },
+  "sources": [
+    {
+      "name": "bio_resting_8min_100hz.csv",
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/ff419d983568ef492eb8d229af643c0ef0100b32/data/bio_resting_8min_100hz.csv",
+      "sha256": "da76e3a9a2c3f978810a5c575f587089b3e13e96078c96ef893f28f7fcb58d22",
+      "rows": 50682,
+      "columns": [
+        "ECG",
+        "RSP",
+        "EDA",
+        "PhotoSensor"
+      ],
+      "sampling_rate_hz": 100,
+      "origin": "public_upstream_developer_example"
+    },
+    {
+      "name": "bio_eventrelated_100hz.csv",
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/ff419d983568ef492eb8d229af643c0ef0100b32/data/bio_eventrelated_100hz.csv",
+      "sha256": "8b048d02c3580e4e6c2daaa9d44a86e851a6c5a6a978b636cb7a890238ef0dcd",
+      "rows": 15000,
+      "columns": [
+        "ECG",
+        "EDA",
+        "Photosensor",
+        "RSP"
+      ],
+      "sampling_rate_hz": 100,
+      "origin": "public_upstream_developer_example"
+    }
+  ],
+  "checks": [
+    {
+      "name": "EEG Welch locates known frequencies",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected_hz": [
+        10.0,
+        5.0
+      ],
+      "observed_hz": [
+        10.0,
+        5.0
+      ]
+    },
+    {
+      "name": "EEG PSD preserves known sine variance in V^2",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected_v2": [
+        2.0000000000000003e-10,
+        5.000000000000001e-11
+      ],
+      "observed_v2": [
+        2.0000000000000008e-10,
+        5.000000000000002e-11
+      ],
+      "rtol": 1e-10
+    },
+    {
+      "name": "EEG epoch baseline removal",
+      "passed": true,
+      "evidence": "independent_analytic"
+    },
+    {
+      "name": "EEG evoked mean amplitude",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected_v": 4e-06,
+      "observed_mean_v": 4e-06
+    },
+    {
+      "name": "HRV_MeanNN",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected": 1000.0,
+      "observed": 1000.0,
+      "units": "ms"
+    },
+    {
+      "name": "HRV_SDNN",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected": 141.59846508095774,
+      "observed": 141.59846508095774,
+      "units": "ms"
+    },
+    {
+      "name": "HRV_RMSSD",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "expected": 200.0,
+      "observed": 200.0,
+      "units": "ms"
+    },
+    {
+      "name": "pNN50 with explicit total-NN-interval denominator",
+      "passed": true,
+      "evidence": "explicit_denominator_reference",
+      "nn50": 399,
+      "denominator": 400,
+      "expected": 99.75,
+      "observed": 99.75,
+      "alternative_difference_denominator": 100.0
+    },
+    {
+      "name": "EDA resting: length and finite decomposition",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA resting: peak indices are ordered and bounded",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA resting: signal markers agree with peak records",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA event_example: length and finite decomposition",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA event_example: peak indices are ordered and bounded",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA event_example: signal markers agree with peak records",
+      "passed": true,
+      "evidence": "upstream_example_execution"
+    },
+    {
+      "name": "EDA upstream resting example peak count",
+      "passed": true,
+      "evidence": "upstream_documented_regression",
+      "expected": 2,
+      "observed": 2
+    },
+    {
+      "name": "EDA upstream resting example mean amplitude",
+      "passed": true,
+      "evidence": "upstream_documented_regression",
+      "expected_rounded": 1.872206,
+      "observed": 1.8722061956455083,
+      "atol": 5e-06
+    },
+    {
+      "name": "ECG example processing returns aligned series",
+      "passed": true,
+      "evidence": "execution_smoke"
+    },
+    {
+      "name": "Respiration example processing returns aligned series",
+      "passed": true,
+      "evidence": "execution_smoke"
+    }
+  ],
+  "eda": {
+    "resting": {
+      "samples": 50682,
+      "scr_peaks": 2,
+      "tonic_mean_source_units": 7.434958226022254,
+      "phasic_mean_source_units": 0.0003499538126699839,
+      "scr_amplitude_mean_source_units": 1.8722061956455083,
+      "scr_amplitude_missing": 1
+    },
+    "event_example": {
+      "samples": 15000,
+      "scr_peaks": 9,
+      "tonic_mean_source_units": 14.376324872610168,
+      "phasic_mean_source_units": -0.0014400920858015013,
+      "scr_amplitude_mean_source_units": 1.6185423309703377,
+      "scr_amplitude_missing": 0
+    }
+  },
+  "other_example_outputs": {
+    "ecg_r_peaks": 478,
+    "ecg_mean_rate_bpm": 56.625737043072014,
+    "respiration_peaks": 80,
+    "respiration_mean_rate_bpm": 9.635507535408241
+  },
+  "warnings": [],
+  "implementation_observations": [
+    "Initial pNN50 check assumed adjacent-difference denominator (100%). Source inspection resolved the pinned NeuroKit convention: 399 / 400 NN intervals = 99.75%; both are retained above.",
+    "Resting EDA example has two detected peaks but only one finite amplitude; amplitude means must show their own valid denominator."
+  ],
+  "settings": {
+    "eda_clean": "neurokit",
+    "eda_phasic": "highpass",
+    "eda_cutoff_hz": 0.05,
+    "eda_peaks": "neurokit",
+    "eda_amplitude_min_relative": 0.1,
+    "empirical_sampling_rate_hz": 100,
+    "ecg_process_method": "neurokit",
+    "ecg_peaks_correct_artifacts": true,
+    "ecg_kwargs_scope": "cleaning_only_in_pinned_ecg_process",
+    "rsp_process_method": "khodadad2018"
+  },
+  "limitations": [
+    "Public developer examples do not supply independent event labels.",
+    "Source amplitude units are preserved; calibration units were not independently established.",
+    "No continuous-to-trial EDA attribution or real device timing was evaluated.",
+    "No production Brohn importer, job or participant runner is enabled by this benchmark."
+  ]
+}

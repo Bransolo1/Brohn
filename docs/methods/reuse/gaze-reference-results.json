@@ -1,0 +1,91 @@
+{
+  "schema": "gaze-reference-benchmark/0.1.0",
+  "recorded_date": "2026-09-08",
+  "status": "research_reference_only_unqualified",
+  "execution": {
+    "r_version": "4.6.1",
+    "platform": "x86_64-w64-mingw32"
+  },
+  "package": {
+    "name": "saccades",
+    "version": "0.2.1",
+    "upstream_commit": "bb55d203a09eb6b942058d08f4df697bdb440486",
+    "license": "GPL-2",
+    "dependency_zoom": "2.0.6",
+    "detector_and_helpers_sha256": "26f3ac2176e74f40b4bfd01759bd9bdb3365352884ab66beca453b19930b1c16"
+  },
+  "settings": {
+    "lambda": 6,
+    "smooth.coordinates": false,
+    "smooth.saccades": true
+  },
+  "fixture": {
+    "source": "https://github.com/tmalsburg/saccades/tree/bb55d203a09eb6b942058d08f4df697bdb440486/saccades",
+    "name": "samples",
+    "kind": "bundled_upstream_recording_not_independently_labelled_ground_truth",
+    "raw_data_in_repository": false,
+    "time_unit": "ms",
+    "coordinates": "screen_pixels",
+    "sample_object_sha256": "be8ee72d9d3113a29e450efadc25b1165124e9b774b427caaf56d111500fddd6",
+    "samples": 88511,
+    "trials": 10,
+    "within_trial_step_range_ms": [3, 5],
+    "recorded_duration_ms": 370382,
+    "track_loss_sentinel": "x==0 and y==0 is fixture-specific; do not generalize",
+    "track_loss_sample_count": 2063,
+    "track_loss_observed_interval_duration_ms": 8626
+  },
+  "direct_upstream": {
+    "event_count": 1854,
+    "event_label_counts": {
+      "fixation": 1531,
+      "blink": 190,
+      "too dispersed": 0,
+      "too short": 133
+    },
+    "zero_duration_events": 1,
+    "total_event_duration_ms": 311448,
+    "fixation_count": 1531,
+    "fixation_duration_ms": 302639,
+    "median_fixation_duration_ms": 96,
+    "elapsed_seconds": 0.52000000000000002
+  },
+  "isolated_trials": {
+    "event_count": 1793,
+    "event_label_counts": {
+      "fixation": 1477,
+      "blink": 186,
+      "too dispersed": 6,
+      "too short": 124
+    },
+    "zero_duration_events": 3,
+    "total_event_duration_ms": 312941,
+    "fixation_count": 1477,
+    "fixation_duration_ms": 303908,
+    "median_fixation_duration_ms": 101
+  },
+  "checks": {
+    "pinned_detector_and_helpers": true,
+    "documented_columns": true,
+    "finite_fixture_coordinates_and_times": true,
+    "nonmissing_trial_ids": true,
+    "strictly_increasing_time_within_trial": true,
+    "track_loss_sentinel_present": true,
+    "nonempty_events": true,
+    "duration_equals_end_minus_start": true,
+    "finite_nonnegative_event_duration": true,
+    "events_within_source_time_bounds": true,
+    "event_coordinates_within_source_bounds": true,
+    "events_do_not_overlap_within_trial": true,
+    "group_identity_preserved": true,
+    "timestamp_translation_preserves_durations": true,
+    "timestamp_translation_preserves_boundaries": true,
+    "missing_coordinate_rejected_without_bridging": true,
+    "duplicate_time_rejected": true,
+    "mixed_trials_rejected": true,
+    "reversed_time_rejected": true,
+    "track_loss_duration_bounded_by_observed_duration": true
+  },
+  "passed": true,
+  "limitations": ["Upstream blink/artifact labels are heuristic; no calibration or device qualification.", "Raw track-loss sentinels remain in this upstream reproduction; this is not a cleaned valid-gaze recipe.", "One-call and trial-isolated outputs may differ because upstream filtering and thresholds share samples.", "No stimulus mapping, AOI results, prepared-interval import, or physiological interpretation is asserted.", "Function hash records the installed detector; version number alone does not identify the upstream revision."]
+}

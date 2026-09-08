@@ -1,0 +1,129 @@
+{
+  "schema": "brohn-media-readiness/0.1.0",
+  "production_enabled": false,
+  "status": "passed_with_unavailable_capability",
+  "python": "3.12.10",
+  "packages": {
+    "mediapipe": "1.0.1",
+    "opencv-contrib-python": "5.0.0.93",
+    "onnxruntime": "1.29.0",
+    "praat-parselmouth": "0.4.7",
+    "librosa": "1.0.0",
+    "soundfile": "0.14.0",
+    "numpy": "2.5.3"
+  },
+  "checks": [
+    {
+      "name": "cached model hash: face_landmarker.task",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "cached model hash: pose_landmarker_lite.task",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "cached model hash: hand_landmarker.task",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "cached model hash: efficientdet_lite0.tflite",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "cached model hash: interactive_segmentation.task",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "cached model hash: silero_vad.onnx",
+      "passed": true,
+      "evidence": "artifact_integrity"
+    },
+    {
+      "name": "blank frame has no detected face",
+      "passed": true,
+      "evidence": "synthetic_negative_model_smoke"
+    },
+    {
+      "name": "blank frame has no detected body",
+      "passed": true,
+      "evidence": "synthetic_negative_model_smoke"
+    },
+    {
+      "name": "blank frame has no detected hands",
+      "passed": true,
+      "evidence": "synthetic_negative_model_smoke"
+    },
+    {
+      "name": "object detector returns bounded detection list",
+      "passed": true,
+      "evidence": "model_execution_smoke",
+      "detections": 0
+    },
+    {
+      "name": "GrabCut recovers known two-colour foreground",
+      "passed": true,
+      "evidence": "synthetic_geometry_not_natural_image_accuracy",
+      "iou": 1.0
+    },
+    {
+      "name": "AOI contour bounding box matches known geometry",
+      "passed": true,
+      "evidence": "independent_geometry"
+    },
+    {
+      "name": "optical flow recovers known image translation",
+      "passed": true,
+      "evidence": "independent_geometry",
+      "median_translation_px": [
+        4.000041961669922,
+        3.000011444091797
+      ],
+      "retained_points": 12
+    },
+    {
+      "name": "Praat pitch recovers known 220 Hz tone",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "observed_hz": 219.99961142694096
+    },
+    {
+      "name": "audio RMS agrees with sine amplitude",
+      "passed": true,
+      "evidence": "independent_analytic",
+      "observed": 0.1767766922712326,
+      "expected": 0.17677669529663687
+    },
+    {
+      "name": "Silero returns finite recurrent probabilities",
+      "passed": true,
+      "evidence": "model_execution_smoke"
+    },
+    {
+      "name": "Silero silence remains below 0.5 threshold",
+      "passed": true,
+      "evidence": "synthetic_negative_model_smoke",
+      "maximum_probability": 0.008910685777664185
+    }
+  ],
+  "passed": 17,
+  "unavailable_capabilities": [
+    {
+      "capability": "mediapipe-1.0.1-interactive-segmentation-windows",
+      "attempted": true,
+      "failure": "function 'MpInteractiveSegmenterCreate' not found",
+      "fallback": "OpenCV GrabCut; separately assessed compatible model version"
+    }
+  ],
+  "model_manifest_sha256": "5695d55275a2f7d030d8eddbe7fbdad12360ba586b8e8079b72c078b4c700275",
+  "limitations": [
+    "No camera, microphone, real person or external media was used.",
+    "Blank-frame and silence checks do not establish positive detection accuracy, affect validity or live timing.",
+    "Interactive segmentation was checked for executable output shape, not object-boundary accuracy.",
+    "Geometry, blendshapes, object classes and voice activity are not emotion, screen gaze, transcription or rPPG."
+  ]
+}

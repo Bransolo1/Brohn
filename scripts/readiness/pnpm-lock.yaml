@@ -1,0 +1,287 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@jspsych/plugin-audio-keyboard-response':
+        specifier: 2.2.0
+        version: 2.2.0(jspsych@8.3.0)
+      '@jspsych/plugin-browser-check':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-canvas-keyboard-response':
+        specifier: 2.2.0
+        version: 2.2.0(jspsych@8.3.0)
+      '@jspsych/plugin-fullscreen':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-html-button-response':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-html-keyboard-response':
+        specifier: 2.2.0
+        version: 2.2.0(jspsych@8.3.0)
+      '@jspsych/plugin-html-slider-response':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-iat-html':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-iat-image':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-image-keyboard-response':
+        specifier: 2.2.0
+        version: 2.2.0(jspsych@8.3.0)
+      '@jspsych/plugin-preload':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-reconstruction':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-serial-reaction-time':
+        specifier: 2.1.0
+        version: 2.1.0(jspsych@8.3.0)
+      '@jspsych/plugin-survey':
+        specifier: 4.0.0
+        version: 4.0.0(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(jspsych@8.3.0)
+      '@jspsych/plugin-video-keyboard-response':
+        specifier: 2.2.0
+        version: 2.2.0(jspsych@8.3.0)
+      jspsych:
+        specifier: 8.3.0
+        version: 8.3.0
+      survey-core:
+        specifier: 2.5.41
+        version: 2.5.41
+      survey-js-ui:
+        specifier: 2.5.41
+        version: 2.5.41(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(survey-core@2.5.41)
+
+packages:
+
+  '@jspsych/plugin-audio-keyboard-response@2.2.0':
+    resolution: {integrity: sha512-sbANnn/BJ7IDSjktRlB9iR90yvFXackgBvgWw8Or/y71UD2UD8T7vKgFrtc62ufxPj1F8jA4irjAFth0pQIlwA==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-browser-check@2.1.0':
+    resolution: {integrity: sha512-jjqtiz/4u5keORwCE1BnG/GNLAx4SbT9KuFCtZcGqY5LHCC+aSWm7ivjezoQvzLD5UHrl6SGJ8uYa7Y+ZYYUWQ==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-canvas-keyboard-response@2.2.0':
+    resolution: {integrity: sha512-iAit+j2qQZhWo2OdzQ2wSop/5B2xxCr5kEE7bFUrVbBrszc9cXdtXTZrXgfKNXGzjZfPPUr+uc/Gm9cCyu+6jg==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-fullscreen@2.1.0':
+    resolution: {integrity: sha512-mPS3393R66Hm144LumXB2I8zHvXbUmF6e1+gZzdYm4nE5o5k0rLZZmuPRtEQl5+JFyEmk+tyH/CwL+KNGOD8cw==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-html-button-response@2.1.0':
+    resolution: {integrity: sha512-AhJPePA8s/ount+QYtqfgMtEkz7g+j+bnhQ9XqxfsnK2f5MdnlakYtpjxW9YgFx9y0Gs7yb7OZk1+omcKlzaEQ==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-html-keyboard-response@2.2.0':
+    resolution: {integrity: sha512-xuNbZH4QNuERMIg2+tHZ0KDpn/TZFXjmUa23zSl2iEmNGp1DNMhOZGlzR4lyavcFeq5qudpr3ZS4AlrlMS0Gdg==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-html-slider-response@2.1.0':
+    resolution: {integrity: sha512-3EoNsz8LGF0JoyBG/UOsPZbvU31XzwE9G52Vhd7fOupFlSj/sspyEOjBlyveHUZRB5sWDRdN/JHDexSNr+KpiA==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-iat-html@2.1.0':
+    resolution: {integrity: sha512-IeIubW/AXM/kRIrtgQbELT+9cO40uUUaWCedzqoUElbRQZheoidU91HnlOJatFrF7l0G4v7gp1wi3TVhixO38w==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-iat-image@2.1.0':
+    resolution: {integrity: sha512-u0H/FfZt/b6msh4a3zX3JtgfumDRr3FnUrTkuqGXRdOjbjPcwL+7kaXpmhlDb+GV/m+yAyX1LIsf1oO/gR4yhw==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-image-keyboard-response@2.2.0':
+    resolution: {integrity: sha512-vEzJB8p8yyvHW8iPY0l6r+vA6p7TAyMKUBPSYXfPRFjb7noePmdSuPCSvPR3DRtuWlYOWn2CjDo6LU6VyTKdpg==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-preload@2.1.0':
+    resolution: {integrity: sha512-tQUViQQNK5RXc+sYjNyV1NKl8gt9Wl+sZ55kpW1eEn9I84WCSBtjPDthr7WxGMZeK+E/ybYucWMVcIwlncaHAg==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-reconstruction@2.1.0':
+    resolution: {integrity: sha512-3JiFAViqpS0cpWiwZonV3MCmHbfil78DWugX02pcYnUWqtx0DsfmeUOmYEjD8JWKIXazS5Qh1GEpIqxdtb9BPw==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-serial-reaction-time@2.1.0':
+    resolution: {integrity: sha512-1xcrgj4ZvSEeV83PnRbN/dmYzucwPRpOqYgP7dDdpUgTi5KwmGl/OcoVuipWxSXv9z/IRMvQdKLTzftcY+DU+g==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@jspsych/plugin-survey@4.0.0':
+    resolution: {integrity: sha512-DUxDnCUpO3T3ySDDZw/sKm71q8RhZsuTJCQlCZrYGnkes+RQc6G1UDnqWqNWp6rWo9fY65nhQ+Tf2+yrVqg6xw==}
+    peerDependencies:
+      jspsych: '>=7.0.0'
+
+  '@jspsych/plugin-video-keyboard-response@2.2.0':
+    resolution: {integrity: sha512-1ckE3rjfUfqf4AVNFr6/v23NDvfyKuy2LKRTwi15VTR+zPbPcRnmYQ6VlHlL/2zdI3fBGPayst4Twb+LHYPCOg==}
+    peerDependencies:
+      jspsych: '>=7.1.0'
+
+  '@types/react-dom@19.2.7':
+    resolution: {integrity: sha512-I8bPpDLcHBv1qiIiXDCy71Rt8eQDKJP0sMSWJphDdAcdqiJ1sGpZamavoEIRZmYzjia9LuEb2HlYdDpmoENpvQ==}
+    peerDependencies:
+      '@types/react': ^19.2.0
+
+  '@types/react@19.2.18':
+    resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
+
+  auto-bind@4.0.0:
+    resolution: {integrity: sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==}
+    engines: {node: '>=8'}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  detect-browser@5.3.0:
+    resolution: {integrity: sha512-53rsFbGdwMwlF7qvCt0ypLM5V5/Mbl0szB7GPN8y9NCcbknYOeVVXdrXEq+90IwAfrrzt6Hd+u2E2ntakICU8w==}
+
+  jspsych@8.3.0:
+    resolution: {integrity: sha512-UrwSVG14v8oRX6WFQ1L6uuGT0G7KgRDSH48iKIVIQI+yMRGAlvg+tEUNFKe/1xZxgk3kZiZ5xP0AnpPqPj1zkg==}
+
+  random-words@1.3.0:
+    resolution: {integrity: sha512-brwCGe+DN9DqZrAQVNj1Tct1Lody6GrYL/7uei5wfjeQdacFyFd2h/51LNlOoBMzIKMS9xohuL4+wlF/z1g/xg==}
+
+  seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+
+  survey-core@2.5.41:
+    resolution: {integrity: sha512-iyTOaTYGfbHMigpKzuTfEjUGKv5EQMEIVqHTgRtxF44tleCLNEDGMpbXazXDrqsh3M03A1cK4tpl1RoWj8gXZA==}
+
+  survey-js-ui@2.5.41:
+    resolution: {integrity: sha512-iys7aK4HphIuP+8eLF3xI5eaMLjBjGSp02c2It4oVUgG5W/9CAlAUCrG+WuKaWhKvcIUZJdrXy16KKfUEYZrQQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      survey-core: 2.5.41
+
+  type-fest@2.19.0:
+    resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
+    engines: {node: '>=12.20'}
+
+snapshots:
+
+  '@jspsych/plugin-audio-keyboard-response@2.2.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-browser-check@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      detect-browser: 5.3.0
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-canvas-keyboard-response@2.2.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-fullscreen@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-html-button-response@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-html-keyboard-response@2.2.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-html-slider-response@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-iat-html@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-iat-image@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-image-keyboard-response@2.2.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-preload@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-reconstruction@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-serial-reaction-time@2.1.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@jspsych/plugin-survey@4.0.0(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+      survey-core: 2.5.41
+      survey-js-ui: 2.5.41(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(survey-core@2.5.41)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+
+  '@jspsych/plugin-video-keyboard-response@2.2.0(jspsych@8.3.0)':
+    dependencies:
+      jspsych: 8.3.0
+
+  '@types/react-dom@19.2.7(@types/react@19.2.18)':
+    dependencies:
+      '@types/react': 19.2.18
+
+  '@types/react@19.2.18':
+    dependencies:
+      csstype: 3.2.3
+
+  auto-bind@4.0.0: {}
+
+  csstype@3.2.3: {}
+
+  detect-browser@5.3.0: {}
+
+  jspsych@8.3.0:
+    dependencies:
+      auto-bind: 4.0.0
+      random-words: 1.3.0
+      seedrandom: 3.0.5
+      type-fest: 2.19.0
+
+  random-words@1.3.0:
+    dependencies:
+      seedrandom: 3.0.5
+
+  seedrandom@3.0.5: {}
+
+  survey-core@2.5.41: {}
+
+  survey-js-ui@2.5.41(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(survey-core@2.5.41):
+    dependencies:
+      '@types/react': 19.2.18
+      '@types/react-dom': 19.2.7(@types/react@19.2.18)
+      survey-core: 2.5.41
+
+  type-fest@2.19.0: {}

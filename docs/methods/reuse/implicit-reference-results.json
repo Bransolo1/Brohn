@@ -1,0 +1,475 @@
+{
+  "generated_utc": "2026-09-08 00:16:55 UTC",
+  "status": "reference_benchmark_only_not_production_or_psychometric_qualification",
+  "profile": "iat-gnb2003-d1-reference/0.1.0",
+  "R": "R version 4.6.1 (2026-06-24 ucrt)",
+  "packages": {
+    "primary_candidate": {
+      "name": "IATscores",
+      "version": "0.2.8",
+      "license": "GPL-2",
+      "API": "RobustScores(P1='none', P2='ignore', P3='dscore', P4='dist', autoremove=FALSE)",
+      "function_sha256": "405faa3bf1fe85b548292205f820b9524fc8a93b1b0361b00c039403138ed9ae"
+    },
+    "comparison": {
+      "name": "implicitMeasures",
+      "version": "1.0.0",
+      "license": "MIT + file LICENSE",
+      "compute_iat_sha256": "c9934e6a63e114a7331e034b055bbdc2f971b161363f9aa8159631c1d2e6fe3f"
+    }
+  },
+  "isolated_packages": [
+    {
+      "name": "Formula",
+      "version": "1.2-6",
+      "license": "GPL-2 | GPL-3"
+    },
+    {
+      "name": "GPArotation",
+      "version": "2026.8-2",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "Hmisc",
+      "version": "5.2-6",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "IATscores",
+      "version": "0.2.8",
+      "license": "GPL-2"
+    },
+    {
+      "name": "RColorBrewer",
+      "version": "1.1-3",
+      "license": "Apache License 2.0"
+    },
+    {
+      "name": "S7",
+      "version": "0.2.2",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "abind",
+      "version": "1.4-8",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "backports",
+      "version": "1.5.1",
+      "license": "GPL-2 | GPL-3"
+    },
+    {
+      "name": "checkmate",
+      "version": "2.3.4",
+      "license": "BSD_3_clause + file LICENSE"
+    },
+    {
+      "name": "colorspace",
+      "version": "2.1-3",
+      "license": "BSD_3_clause + file LICENSE"
+    },
+    {
+      "name": "corpcor",
+      "version": "1.6.10",
+      "license": "GPL (>= 3)"
+    },
+    {
+      "name": "cpp11",
+      "version": "0.5.5",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "data.table",
+      "version": "1.18.6.1",
+      "license": "MPL-2.0 | file LICENSE"
+    },
+    {
+      "name": "dplyr",
+      "version": "1.2.1",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "evaluate",
+      "version": "1.0.5",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "farver",
+      "version": "2.1.2",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "fdrtool",
+      "version": "1.2.18",
+      "license": "GPL (>= 3)"
+    },
+    {
+      "name": "generics",
+      "version": "0.1.4",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "ggplot2",
+      "version": "4.0.3",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "glasso",
+      "version": "1.11",
+      "license": "GPL-2"
+    },
+    {
+      "name": "gridExtra",
+      "version": "2.3.1",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "gtable",
+      "version": "0.3.6",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "gtools",
+      "version": "3.9.5",
+      "license": "GPL-2"
+    },
+    {
+      "name": "highr",
+      "version": "0.12",
+      "license": "GPL"
+    },
+    {
+      "name": "htmlTable",
+      "version": "2.5.0",
+      "license": "GPL (>= 3)"
+    },
+    {
+      "name": "htmlwidgets",
+      "version": "1.6.4",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "igraph",
+      "version": "2.3.3",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "implicitMeasures",
+      "version": "1.0.0",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "isoband",
+      "version": "0.3.0",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "jpeg",
+      "version": "0.1-11",
+      "license": "GPL-2 | GPL-3"
+    },
+    {
+      "name": "knitr",
+      "version": "1.51",
+      "license": "GPL"
+    },
+    {
+      "name": "labeling",
+      "version": "0.4.3",
+      "license": "MIT + file LICENSE | Unlimited"
+    },
+    {
+      "name": "lavaan",
+      "version": "0.7-2",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "mnormt",
+      "version": "2.1.2",
+      "license": "GPL-2 | GPL-3"
+    },
+    {
+      "name": "numDeriv",
+      "version": "2016.8-1.1",
+      "license": "GPL-2"
+    },
+    {
+      "name": "pbapply",
+      "version": "1.7-5",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "pbivnorm",
+      "version": "0.6.0",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "pillar",
+      "version": "1.11.1",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "pkgconfig",
+      "version": "2.0.3",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "plyr",
+      "version": "1.8.9",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "psych",
+      "version": "2.6.5",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "qgraph",
+      "version": "1.10.1",
+      "license": "GPL-2"
+    },
+    {
+      "name": "quadprog",
+      "version": "1.5-8",
+      "license": "GPL (>= 2)"
+    },
+    {
+      "name": "reshape2",
+      "version": "1.4.5",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "rmarkdown",
+      "version": "2.32",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "rstudioapi",
+      "version": "0.19.0",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "scales",
+      "version": "1.4.0",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "stringi",
+      "version": "1.8.9",
+      "license": "file LICENSE"
+    },
+    {
+      "name": "stringr",
+      "version": "1.6.0",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "tibble",
+      "version": "3.3.1",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "tidyselect",
+      "version": "1.2.1",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "tinytex",
+      "version": "0.60",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "utf8",
+      "version": "1.2.6",
+      "license": "Apache License (== 2.0) | file LICENSE"
+    },
+    {
+      "name": "vctrs",
+      "version": "0.7.3",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "viridisLite",
+      "version": "0.4.3",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "xfun",
+      "version": "0.60",
+      "license": "MIT + file LICENSE"
+    },
+    {
+      "name": "yaml",
+      "version": "2.3.12",
+      "license": "BSD_3_clause + file LICENSE"
+    }
+  ],
+  "upstream_regression": {
+    "source": "implicitMeasures::raw_data and implicitMeasures::iatdscores",
+    "real_trial_rows_exported": false,
+    "independent_reference": false,
+    "D1_only": true
+  },
+  "checks": {
+    "upstream_example_matched_count": {
+      "passed": true,
+      "observed": 162,
+      "expected": 162
+    },
+    "upstream_example_max_absolute_D1_error": {
+      "passed": true,
+      "observed": 0,
+      "expected": 0
+    },
+    "independent_positive_D1": {
+      "passed": true,
+      "observed": 1.5491933384829666,
+      "expected": 1.5491933384829666
+    },
+    "independent_mapping_reversal_D1": {
+      "passed": true,
+      "observed": -1.5491933384829666,
+      "expected": -1.5491933384829666
+    },
+    "independent_corrected_error_D1": {
+      "passed": true,
+      "observed": 0.77459666924148329,
+      "expected": 0.77459666924148329
+    },
+    "no_additional_D1_error_penalty": {
+      "passed": true,
+      "observed": 0.77459666924148329,
+      "expected": 0.77459666924148329
+    },
+    "upstream_single_participant_slow_trial_crash": {
+      "passed": true,
+      "observed": true,
+      "expected": true
+    },
+    "independent_slow_trial_removal": {
+      "passed": true,
+      "observed": 1.5491933384829666,
+      "expected": 1.5491933384829666
+    },
+    "exact_ten_percent_retained": {
+      "passed": true,
+      "observed": false,
+      "expected": false
+    },
+    "above_ten_percent_excluded": {
+      "passed": true,
+      "observed": true,
+      "expected": true
+    },
+    "independent_fast_fraction": {
+      "passed": true,
+      "observed": 0.125,
+      "expected": 0.125
+    },
+    "upstream_fast_exclusion_not_applied": {
+      "passed": true,
+      "observed": 1,
+      "expected": 1
+    },
+    "QC_adapter_removes_fast_participant": {
+      "passed": true,
+      "observed": 0,
+      "expected": 0
+    },
+    "denominator_after_slow_removal": {
+      "passed": true,
+      "observed": 0.10256410256410256,
+      "expected": 0.10256410256410256
+    },
+    "post_slow_denominator_changes_boundary": {
+      "passed": true,
+      "observed": true,
+      "expected": true
+    },
+    "upstream_D4_uses_postreplacement_SD": {
+      "passed": true,
+      "observed": 0.96357890574609684,
+      "expected": 0.96357890574609684
+    },
+    "D4_differs_from_Table4_order": {
+      "passed": true,
+      "observed": true,
+      "expected": true
+    },
+    "independent_package_all_reference_rows": {
+      "passed": true,
+      "observed": 162,
+      "expected": 162
+    },
+    "independent_package_reference_max_absolute_error": {
+      "passed": true,
+      "observed": 0,
+      "expected": 0
+    },
+    "IATscores_independent_positive": {
+      "passed": true,
+      "observed": 1.5491933384829666,
+      "expected": 1.5491933384829666
+    },
+    "IATscores_independent_reversed": {
+      "passed": true,
+      "observed": -1.5491933384829666,
+      "expected": -1.5491933384829666
+    },
+    "IATscores_independent_corrected_error": {
+      "passed": true,
+      "observed": 0.77459666924148329,
+      "expected": 0.77459666924148329
+    },
+    "IATscores_single_participant_slow_trial": {
+      "passed": true,
+      "observed": 1.5491933384829666,
+      "expected": 1.5491933384829666
+    },
+    "IATscores_requires_external_fast_screen": {
+      "passed": true,
+      "observed": 1,
+      "expected": 1
+    },
+    "IATscores_retains_exact_10000": {
+      "passed": true,
+      "observed": 0.29688226159149211,
+      "expected": 0.29688226159149211
+    },
+    "BIAT_eligible_denominator": {
+      "passed": true,
+      "observed": 63,
+      "expected": 63
+    },
+    "BIAT_original_fast_numerator": {
+      "passed": true,
+      "observed": 6,
+      "expected": 6
+    },
+    "BIAT_exact_fraction_before_recoding": {
+      "passed": true,
+      "observed": 0.095238095238095233,
+      "expected": 0.095238095238095233
+    },
+    "BIAT_fast_count_would_be_lost_after_recoding": {
+      "passed": true,
+      "observed": 0,
+      "expected": 0
+    }
+  },
+  "D4_comparison": {
+    "package_D4": 0.96357890574609684,
+    "table4_order": 0.93541354946715249,
+    "difference": 0.028165356278944342
+  },
+  "source_findings": {
+    "compute_iat": "https://github.com/cran/implicitMeasures/blob/1.0.0/R/compute_iat.R",
+    "fast_flag": "Lines 159-175 compute out_fast, but later code never filters it; 168-171 also overwrite all flags using successive participant denominators.",
+    "D4": "Lines 250-253 replace errors; lines 392-395 calculate variance of latency_cor afterwards.",
+    "single_participant": "arguments imply differing number of rows: 0, 1",
+    "IATScore": "Source-only review 0.2.0: postreplacement SD; SpeedProp == .10 matches neither return branch. Not installed or used.",
+    "IATscores": "Installed 0.2.8, D1 parameter profile independently tested; autoremove=TRUE adds <3-correct-latencies rule and is explicitly disabled. Fast-task screening is external QC."
+  },
+  "limits": ["No human trials or task variants borrowed", "No independent psychometric qualification", "IAT QC adapter is benchmark-only", "Synthetic replication bypasses a single-participant package diagnostics crash; never apply this workaround to live data", "BIAT fixture establishes denominator arithmetic, not a BIAT scorer"]
+}

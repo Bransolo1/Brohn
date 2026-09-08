@@ -1,0 +1,252 @@
+{
+  "schema": "brohn-platform-web-probes/0.1",
+  "generated": "2026-09-08T00:32:51.838Z",
+  "browser": "152.0.7977.82",
+  "origin": "synthetic/reference",
+  "application_integration": false,
+  "checks_passed": 29,
+  "checks": [
+    {
+      "id": "survey_visible_in_dom",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "unanswered_is_absent",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "branch_initially_hidden",
+      "passed": true,
+      "actual": false,
+      "expected": false,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "required_gate_blocks_completion",
+      "passed": true,
+      "actual": false,
+      "expected": false,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "branch_visible_after_yes",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "branch_required_when_visible",
+      "passed": true,
+      "actual": false,
+      "expected": false,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "zero_is_preserved",
+      "passed": true,
+      "actual": 0,
+      "expected": 0,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "false_is_preserved",
+      "passed": true,
+      "actual": false,
+      "expected": false,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "matrix_row_identity_preserved",
+      "passed": true,
+      "actual": {
+        "clear": 2,
+        "useful": 3
+      },
+      "expected": {
+        "clear": 2,
+        "useful": 3
+      },
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "hidden_prior_answer_cleared",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "hidden_required_does_not_block",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "completion_callback",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "definition_roundtrip_choice_ids",
+      "passed": true,
+      "actual": [
+        "yes",
+        "no"
+      ],
+      "expected": [
+        "yes",
+        "no"
+      ],
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "question_type_registry_available",
+      "passed": true,
+      "actual": [],
+      "expected": [],
+      "evidence": "synthetic library API probe"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-iat-html",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-iat-image",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-html-keyboard-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-image-keyboard-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-preload",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-html-button-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-survey",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-fullscreen",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-browser-check",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-audio-keyboard-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-video-keyboard-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-html-slider-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-canvas-keyboard-response",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-reconstruction",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    },
+    {
+      "id": "plugin_load:@jspsych/plugin-serial-reaction-time",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "browser bundle load and plugin metadata only; task execution not tested"
+    }
+  ],
+  "versions": {
+    "survey-core": "2.5.41",
+    "survey-js-ui": "2.5.41",
+    "jspsych": "8.3.0",
+    "@jspsych/plugin-iat-html": "2.1.0",
+    "@jspsych/plugin-iat-image": "2.1.0",
+    "@jspsych/plugin-html-keyboard-response": "2.2.0",
+    "@jspsych/plugin-image-keyboard-response": "2.2.0",
+    "@jspsych/plugin-preload": "2.1.0",
+    "@jspsych/plugin-html-button-response": "2.1.0",
+    "@jspsych/plugin-survey": "4.0.0",
+    "@jspsych/plugin-fullscreen": "2.1.0",
+    "@jspsych/plugin-browser-check": "2.1.0",
+    "@jspsych/plugin-audio-keyboard-response": "2.2.0",
+    "@jspsych/plugin-video-keyboard-response": "2.2.0",
+    "@jspsych/plugin-html-slider-response": "2.1.0",
+    "@jspsych/plugin-canvas-keyboard-response": "2.2.0",
+    "@jspsych/plugin-reconstruction": "2.1.0",
+    "@jspsych/plugin-serial-reaction-time": "2.1.0"
+  },
+  "limitations": [
+    "Form Library API and basic rendering only; not an implemented Brohn survey builder, accessibility audit or branching journal.",
+    "Absent values alone do not distinguish not-shown, skipped, declined, invalid or interrupted: Brohn must preserve response state and exposure events separately.",
+    "clearInvisibleValues=onHidden clears answer data, so revision-aware event history is required to preserve prior exposure/response audit.",
+    "Question type registration does not establish accessible rendering, scoring validity, safe file upload or timing performance.",
+    "Plugin loading does not qualify display timing, correction-inclusive RT, physical response devices or scientific task protocols."
+  ]
+}

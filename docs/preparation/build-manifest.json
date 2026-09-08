@@ -1,0 +1,672 @@
+{
+  "schema": "brohn-build-manifest/0.1.0-planning",
+  "prepared_at": "2026-09-08",
+  "product": "Brohn",
+  "checkpoint": {"status":"paused_by_owner","date":"2026-09-08","handoff":"docs/HANDOFF-JOHN.md","repository":"https://github.com/Bransolo1/Brohn","license":"MIT","note":"Work-package status retains incomplete scope. Unregistered questionnaire index/explorer drafts are not enabled features."},
+  "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
+  "capability_register": "docs/preparation/capability-register.json",
+  "scope_policy": "Every registered capability has exactly one owning work package. Tiers schedule integration; none are silently removed. Planned acceptance is not completion evidence.",
+  "historical_backlog": {
+    "path": "docs/planning/IMPLEMENTATION-BACKLOG.csv",
+    "tickets": 238,
+    "status": "preserved_research_archive_not_execution_tracker"
+  },
+  "lifecycle": [
+    "planned",
+    "implementing",
+    "implemented",
+    "verified",
+    "externally_blocked"
+  ],
+  "parallelization": "BWP08-BWP12 can run independently after shared BWP01-BWP06 contracts stabilize; BWP13 integrates every enabled pack before release.",
+  "external_inputs": [
+    "Named hardware and licensed SDK access for claimed live profiles",
+    "Selected entitled facial/AU provider or locally pinned model with reference outputs",
+    "Source-bound procedure/scorer profiles and materials for newly enabled tasks",
+    "Representative undergraduate task observations",
+    "GitHub destination and selected distribution licence before publication",
+    "Selected HTTPS hosting/storage destination and operator configuration before opening hosted participant recruitment; local lab operation is independently deliverable"
+  ],
+  "work_packages": [
+    {
+      "id": "BWP01",
+      "title": "Shared identity, schemas and migrations",
+      "wave": 1,
+      "depends_on": [],
+      "capability_ids": [],
+      "proposed_ownership": [
+        "R domain modules",
+        "shared browser contracts"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "Old drafts/reports reopen; unknown/stale references fail.",
+        "Large tick strings, units, repeated exposures, gaps and nulls survive cross-language fixtures.",
+        "Workspace/project/membership, dataset versions, templates, deployments, collection windows, enrollment/waves and design lineage have explicit identity and migration contracts.",
+        "Migration indexes every retained legacy report/protocol and preserves old readers; clone/import remaps design references without joining unrelated local records."
+      ]
+    },
+    {
+      "id": "BWP02",
+      "title": "Transactions, objects and durable jobs",
+      "wave": 1,
+      "depends_on": [
+        "BWP01"
+      ],
+      "capability_ids": [],
+      "proposed_ownership": [
+        "R storage/job services",
+        "SQLite schema",
+        "R/Python worker supervisor"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "R/platform-ingestion.R",
+        "R/platform-ingestion-views.R",
+        "docs/operations/ASYNC-INGESTION.md",
+        "docs/operations/NUMERIC-TRANSPORT.md",
+        "tests/platform-ingestion-integration.R",
+        "tests/platform-ingestion-views.R"
+      ],
+      "acceptance": [
+        "Duplicate allocation/job requests are idempotent; conflicts are explicit.",
+        "Crash/cancel/retry cannot publish partial artifacts; leases and attempts recover.",
+        "Raw objects, audit/outbox and database restore form a consistent snapshot.",
+        "Selected workspace catalog and immutable object storage support authorized dataset reuse, independent source provenance, version history and recoverable relocation.",
+        "Consent/eligibility precede transactional quota/assignment reservation; concurrent final-seat starts, expiry, duplicate/revoked tokens and access to another project are exercised.",
+        "Archive, purge and backup restore are distinct; restore applies restricted/deleted-object policy and does not automatically reactivate accepting endpoints."
+      ]
+    },
+    {
+      "id": "BWP03",
+      "title": "Study and method compiler",
+      "wave": 2,
+      "depends_on": [
+        "BWP01",
+        "BWP02"
+      ],
+      "capability_ids": [
+        "design.protocols"
+      ],
+      "proposed_ownership": [
+        "R protocol and method registry",
+        "safe expression compiler"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "Every enabled template compiles its controls, order, baseline, practice, checks, timings and analysis prerequisites.",
+        "Missing source-bound procedure/scorer or channel units prevent analytical activation.",
+        "Blank/template/clone/import design routes produce versioned drafts; design-only cloning keeps permitted stimuli/AOIs/questions/recipes, fresh IDs, recorded lineage and zero observed participant state.",
+        "Independent fixtures verify portable design graph, condition/baseline, timing, seed, AOI and scoring equivalence; live revisions stay pinned when library assets/templates change."
+      ]
+    },
+    {
+      "id": "BWP04",
+      "title": "Questionnaire builder and executor",
+      "wave": 2,
+      "depends_on": [
+        "BWP03"
+      ],
+      "capability_ids": [
+        "questionnaire.items",
+        "questionnaire.flow",
+        "questionnaire.scales"
+      ],
+      "proposed_ownership": [
+        "accessible browser authoring",
+        "versioned questionnaire schema with original browser execution",
+        "R question/scale domain"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "tests/platform-scales.R",
+        "docs/methods/QUESTIONNAIRE-SCALES.md",
+        "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+        "tests/platform-question-assignment.R",
+        "tests/platform-question-assignment-views.R",
+        "docs/qa/QUESTION-ASSIGNMENT-RESEARCHER-JOURNEY.md",
+        "R/platform-question-sections.R",
+        "docs/methods/QUESTIONNAIRE-SECTIONS.md",
+        "tests/platform-question-sections.R",
+        "tests/platform-question-sections-integration.R",
+        "R/platform-question-sections-views.R",
+        "tests/platform-question-sections-views.R",
+        "docs/qa/QUESTION-SECTIONS-RESEARCHER-JOURNEY.md",
+        "docs/qa/QUESTIONNAIRE-ANSWER-REVISION-CONTRACT.md",
+        "R/platform-question-revision.R",
+        "R/platform-question-revision-delivery.R",
+        "R/platform-question-revision-views.R",
+        "R/platform-run-evidence.R",
+        "R/platform-questionnaire-artifacts.R",
+        "R/platform-questionnaire-artifact-storage.R",
+        "R/platform-questionnaire-artifact-views.R",
+        "tests/platform-run-evidence.R",
+        "tests/platform-questionnaire-artifacts.R",
+        "tests/platform-questionnaire-artifact-storage.R",
+        "tests/platform-questionnaire-artifact-integrity-review.R",
+        "tests/platform-questionnaire-csv.R",
+        "tests/platform-tabular-utf8.R",
+        "tests/platform-questionnaire-artifact-worker.R",
+        "docs/operations/QUESTIONNAIRE-EVIDENCE-ARTIFACTS.md",
+        "docs/qa/QUESTIONNAIRE-EXPORT-INTEGRITY.md",
+        "www/participant/question-revision.js",
+        "tests/platform-question-revision.R",
+        "tests/platform-question-revision-integration.R",
+        "tests/platform-question-revision-views.R",
+        "docs/qa/QUESTIONNAIRE-REVISION-BROWSER.md",
+        "docs/qa/QUESTION-REVISION-RESEARCHER-JOURNEY.md"
+      ],
+      "acceptance": [
+        "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
+        "Scale keys and missing/prorating rules match independent examples.",
+        "Keyboard/list alternatives and exposure-linked reports work end to end.",
+        "Reusable question/scale blocks and portable imports preserve internal references, translations, consent text, display logic and scoring keys without transferring participant responses."
+      ]
+    },
+    {
+      "id": "BWP05",
+      "title": "Participant runner and recovery",
+      "wave": 2,
+      "depends_on": [
+        "BWP02",
+        "BWP03",
+        "BWP04"
+      ],
+      "capability_ids": [],
+      "proposed_ownership": [
+        "separate original JavaScript participant runner",
+        "IndexedDB journal",
+        "R event receiver"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "tests/participant-camera-races.mjs",
+        "docs/product/ASSIGNED-PROTOCOL-REVIEW.md",
+        "tests/platform-run-review.R"
+      ],
+      "acceptance": [
+        "Preload, focus loss, failed asset, reload, disconnect and duplicate event delivery have declared outcomes.",
+        "First/error/corrected responses and observed presentation IDs remain distinct.",
+        "Frozen assignment survives retry; preview does not consume live allocation.",
+        "Frozen participant appearance, luminance, geometry, motion and timing are isolated from researcher/OS theme preferences; accommodation changes require an explicit protocol profile.",
+        "Pilot and lab/hosted releases bind protocol, assets and runner; a fresh browser follows the actual participant link through scoped access, consent, eligibility, setup and collection.",
+        "Participant endpoints never expose researcher administration, contacts or other sessions; public versus invited access, waves, allowed resume, distinct endings and approved return destinations have fixtures.",
+        "Pause/close block new enrollment according to policy while active runs and pending receipts remain explicit; failed deployment cannot advertise a ready URL."
+      ]
+    },
+    {
+      "id": "BWP06",
+      "title": "Acquisition and normalization adapters",
+      "wave": 3,
+      "depends_on": [
+        "BWP01",
+        "BWP02",
+        "BWP05"
+      ],
+      "capability_ids": [
+        "centralization.recordings"
+      ],
+      "proposed_ownership": [
+        "isolated acquisition process",
+        "importer registry",
+        "clock/segment manifests"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "tests/platform-stream-curation.R",
+        "docs/methods/STREAM-CURATION.md",
+        "docs/qa/ACQUISITION-COMPLETION-INVESTIGATION.md"
+      ],
+      "acceptance": [
+        "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
+        "XDF/BIDS/SNIRF and named vendor paths preserve units/coordinates/timestamps.",
+        "Resource limits, sidecar restart and source-reset handling are tested before physical support claims.",
+        "A first-class Data library accepts multi-file imports with preview/dictionary/unit/clock/identity mapping, duplicate resolution and source provenance; curation creates a new immutable version."
+      ]
+    },
+    {
+      "id": "BWP07",
+      "title": "Complete gaze and AOI journey",
+      "wave": 3,
+      "depends_on": [
+        "BWP04",
+        "BWP05",
+        "BWP06"
+      ],
+      "capability_ids": [
+        "gaze.events",
+        "gaze.aoi",
+        "gaze.pupil_blink"
+      ],
+      "proposed_ownership": [
+        "R gaze pipeline",
+        "AOI geometry/review",
+        "vision proposal adapter"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "One documented raw importer yields checked fixations/AOI metrics and linked liking.",
+        "AOI proposals support correction/undo and parameter changes invalidate descendants.",
+        "TTFF censoring, denominators, pupil/blink baselines and independent reference cases reproduce."
+      ]
+    },
+    {
+      "id": "BWP08",
+      "title": "EEG and extended neural methods",
+      "wave": 4,
+      "depends_on": [
+        "BWP06"
+      ],
+      "capability_ids": [
+        "eeg.erp",
+        "eeg.spectrum",
+        "eeg.time_frequency",
+        "eeg.frequency_tagging",
+        "fnirs.hemodynamics",
+        "neural.advanced"
+      ],
+      "proposed_ownership": [
+        "MNE/MNE-NIRS/connectivity worker",
+        "R neural recipes"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "tests/platform-neural-views-plots.R",
+        "docs/methods/NEURAL-PLOTS.md"
+      ],
+      "acceptance": [
+        "EEG reference/filter/epoch/PSD/TFR recipes run import to report with retained-trial counts.",
+        "Native-file and artifact fixtures complement existing analytic checks.",
+        "Extension recipes have explicit stimulation, montage/optode, wavelength, GLM or connectivity prerequisites."
+      ]
+    },
+    {
+      "id": "BWP09",
+      "title": "Peripheral physiology methods",
+      "wave": 4,
+      "depends_on": [
+        "BWP06"
+      ],
+      "capability_ids": [
+        "eda.activity",
+        "ecg.hrv",
+        "ppg.prv",
+        "respiration.cycles",
+        "cardiorespiratory.coupling",
+        "emg.activation",
+        "emg.facial_startle",
+        "eog.ocular",
+        "temperature.peripheral"
+      ],
+      "proposed_ownership": [
+        "NeuroKit worker",
+        "R physiology recipes"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "R/platform-peripheral.R",
+        "R/platform-peripheral-synthesis.R",
+        "R/platform-peripheral-report.R",
+        "scripts/workers/peripheral.py",
+        "docs/methods/PERIPHERAL-FEATURES.md",
+        "docs/qa/PERIPHERAL-INDEPENDENT-REVIEW.md",
+        "tests/platform-peripheral-integration.R",
+        "tests/platform-peripheral-synthesis.R",
+        "docs/qa/PERIPHERAL-RESEARCHER-JOURNEY.md",
+        "tests/researcher-peripheral.mjs"
+      ],
+      "acceptance": [
+        "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
+        "EDA morphology/deconvolution, beat/breath/EMG events and condition summaries match named reference fixtures.",
+        "Nonresponse, missingness, correction and overlap rules remain separate; extension methods are not implied by library availability."
+      ]
+    },
+    {
+      "id": "BWP10",
+      "title": "Implicit and cognitive task packs",
+      "wave": 4,
+      "depends_on": [
+        "BWP03",
+        "BWP05"
+      ],
+      "capability_ids": [
+        "implicit.iat",
+        "implicit.biat",
+        "implicit.single_category",
+        "implicit.gnat",
+        "implicit.priming",
+        "implicit.amp",
+        "approach.aat",
+        "approach.vaast_manikin",
+        "implicit.agile_relational",
+        "attention.tasks",
+        "inhibition.interference",
+        "inhibition.stop_signal",
+        "learning.memory",
+        "choice.psychophysics",
+        "motor.trajectory"
+      ],
+      "proposed_ownership": [
+        "versioned task profiles with original browser execution and R scoring",
+        "R scores/QC",
+        "response device adapters"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "docs/methods/RT-SUPPORT-AND-TASK-EXPORTS.md",
+        "docs/qa/IMPLICIT-IMPORT-COHORT-CONTRACT.md",
+        "R/platform-task-import.R",
+        "R/platform-task-import-storage.R",
+        "R/platform-task-import-views.R",
+        "R/platform-task-evidence.R",
+        "tests/platform-task-import.R",
+        "tests/platform-task-import-views.R",
+        "tests/platform-task-evidence.R",
+        "tests/platform-methods-rt-support.R",
+        "tests/platform-task-score-exports.R",
+        "docs/methods/IMPLICIT-TRIAL-IMPORT.md",
+        "docs/qa/NATIVE-TASK-IMPORT-RESEARCHER-JOURNEY.md",
+        "R/platform-task-cohort.R",
+        "R/platform-task-cohort-storage.R",
+        "R/platform-task-cohort-views.R",
+        "tests/platform-task-cohort.R",
+        "tests/platform-task-cohort-storage.R",
+        "tests/platform-task-cohort-views.R",
+        "docs/methods/IMPLICIT-TASK-COHORT.md"
+      ],
+      "acceptance": [
+        "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
+        "Independent direction/error/exclusion cases and event replay match reports.",
+        "Correction-inclusive timing, deadlines, stimulus timing and physical movement semantics remain explicit; no generic D score for every task."
+      ]
+    },
+    {
+      "id": "BWP11",
+      "title": "Webcam, face, motion and assisted AOIs",
+      "wave": 4,
+      "depends_on": [
+        "BWP05",
+        "BWP06"
+      ],
+      "capability_ids": [
+        "webcam.facial",
+        "webcam.pose",
+        "webcam.gaze",
+        "webcam.physiology"
+      ],
+      "proposed_ownership": [
+        "camera capture adapter",
+        "MediaPipe/vision workers",
+        "optional model/provider adapters"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "scripts/workers/README-vision.md",
+        "tests/platform-vision.R",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "Frame timestamps, no-face/occlusion/multi-face states and model hashes survive import to report.",
+        "Calibrated webcam gaze has held-out spatial error; geometry is not treated as screen coordinates.",
+        "Native expression/AU outputs bind actual model/provider support; rPPG/respiration have simultaneous-reference benchmarks.",
+        "Vision proposals carry model/geometry provenance and human correction history."
+      ]
+    },
+    {
+      "id": "BWP12",
+      "title": "Voice and acoustic measures",
+      "wave": 4,
+      "depends_on": [
+        "BWP05",
+        "BWP06"
+      ],
+      "capability_ids": [
+        "audio.acoustics"
+      ],
+      "proposed_ownership": [
+        "audio capture/import",
+        "Praat/librosa/Silero worker"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "PCM/sample-rate/channel/gain and speech segmentation are preserved.",
+        "Known pitch/RMS cases plus representative voiced/unvoiced references reproduce.",
+        "Acoustics, transcript text and optional model-inferred affect remain separate outputs."
+      ]
+    },
+    {
+      "id": "BWP13",
+      "title": "Multimodal statistics and automated reports",
+      "wave": 4,
+      "depends_on": [
+        "BWP02",
+        "BWP04",
+        "BWP07"
+      ],
+      "capability_ids": [
+        "multimodal.analysis",
+        "reporting.automation"
+      ],
+      "proposed_ownership": [
+        "R inference/contrast recipes",
+        "result cards",
+        "Quarto exports"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
+        "Paired/hierarchical inference respects participants, stimuli, order, missingness and multiplicity.",
+        "Report snapshot reproduces from sealed inputs and configuration; all enabled packs supply at least one vertical report fixture.",
+        "Historical report snapshots remain browsable independently of the current draft; reanalysis fixes input/cohort versions and creates comparable new outputs without recollecting or copying observations.",
+        "Finalization resolves late/incomplete uploads under policy, freezes a cohort, and preserves prior reports when collection reopens in a new window."
+      ]
+    },
+    {
+      "id": "BWP14",
+      "title": "Explicit choice and advanced designs",
+      "wave": 6,
+      "depends_on": [
+        "BWP03",
+        "BWP04",
+        "BWP13"
+      ],
+      "capability_ids": [
+        "choice.conjoint_maxdiff"
+      ],
+      "proposed_ownership": [
+        "R choice design/model module",
+        "question task adapter"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/methods/MAXDIFF.md",
+        "tests/platform-maxdiff.R",
+        "tests/platform-maxdiff-views.R",
+        "tests/platform-maxdiff-platform.R",
+        "tests/participant-maxdiff.mjs",
+        "tests/platform-maxdiff-import.R",
+        "tests/platform-maxdiff-import-platform.R",
+        "docs/qa/MAXDIFF-RESEARCHER-JOURNEY.md",
+        "docs/qa/MAXDIFF-IMPORT-JOURNEY.md"
+      ],
+      "acceptance": [
+        "Choice-set design, attributes/levels, allocation and outside choices are preserved.",
+        "Source-bound utility/MaxDiff model and uncertainty agree with reference examples."
+      ]
+    },
+    {
+      "id": "BWP15",
+      "title": "Guided UX, review and research operations",
+      "wave": 4,
+      "depends_on": [
+        "BWP02",
+        "BWP04",
+        "BWP05",
+        "BWP07",
+        "BWP13"
+      ],
+      "capability_ids": [
+        "operations.research"
+      ],
+      "proposed_ownership": [
+        "Shiny workflow",
+        "quality/timeline review",
+        "project settings"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md"
+      ],
+      "acceptance": [
+        "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
+        "Keyboard/focus/reflow/screen-reader checks cover enabled flows; undergraduate task completion and comprehension are measured.",
+        "Study/participant history and retention/export operations preserve provenance.",
+        "All 50 capability entries use the 13 shared card families, one readiness summary and linked phase/timeline/result records; unavailable profiles have a concrete supported route or status.",
+        "The 34 planned whole-journey scenarios gain scoped implementation evidence, including partial streams, failed jobs, AOI correction, question referents and recovery; measured action/time/comprehension outcomes remain distinguishable from targets.",
+        "Brohn logo, 32 icons, local font and shared tokens are integrated into actual empty/populated/processing/failure/recovery states; application contrast, keyboard, focus, reflow, reduced motion and plot alternatives are verified independently of the static preview.",
+        "Home, Studies, Data library and Design library surround study planning, questionnaires/tasks, collection, review, results and history; search/filter/archive/history recover after restart with an actual next action.",
+        "Clone, save template, export design and import design are first-class accessible actions with destination/contents previews and actionable dependency fixes.",
+        "UX-J19-UX-J34 exercise historical research, curation, delivery, enrollment/waves/endings, closure, clone/reanalysis, portable designs, sharing and retention; planned targets are not achieved usability evidence."
+      ]
+    },
+    {
+      "id": "BWP16",
+      "title": "Named device and naturalistic extensions",
+      "wave": 5,
+      "depends_on": [
+        "BWP06",
+        "BWP07",
+        "BWP08",
+        "BWP09",
+        "BWP11"
+      ],
+      "capability_ids": [
+        "gaze.naturalistic",
+        "hemodynamics.advanced",
+        "movement.sensors"
+      ],
+      "proposed_ownership": [
+        "device/VR/wearable adapter packs",
+        "calibration and timing harness"
+      ],
+      "status": "planned",
+      "implementation_evidence": [],
+      "acceptance": [
+        "Exact device/OS/SDK profiles are recorded; physical onset/synchronization and failure recovery are measured.",
+        "World/scene/VR coordinates, device calibration and sensor-native measures have their own fixtures.",
+        "Unavailable physical inputs keep the corresponding support entry unavailable without blocking imported-data workflows."
+      ]
+    },
+    {
+      "id": "BWP17",
+      "title": "Packaging, backup and open-source release",
+      "wave": 6,
+      "depends_on": [
+        "BWP15"
+      ],
+      "capability_ids": [],
+      "proposed_ownership": [
+        "installer/environment checks",
+        "backup/restore",
+        "support matrix and project licence",
+        "introduction, sample onboarding and release assets"
+      ],
+      "status": "implementing",
+      "implementation_evidence": [
+        "docs/sprints/02-full-platform.md",
+        "docs/qa/RESEARCHER-QA.md",
+        "scripts/run-checks.R",
+        "scripts/qa-catalog.json",
+        "docs/qa/RUNNING-CHECKS.md"
+      ],
+      "acceptance": [
+        "Clean-machine setup and backup restore reproduce a declared supported configuration.",
+        "Repository destination/licence and dependency/model redistribution are resolved before publication.",
+        "Release includes actual enabled capability evidence and visible unsupported entries; optional device packs do not become implied support.",
+        "Introduction copy, an honestly labelled fictional sample, first-study guidance and demonstration assets follow the introduction/launch plan and the shared brand system.",
+        "Every demonstration and public claim identifies the release-enabled journey, imported/synthetic/live origin and named-device or model evidence; planned capabilities and unmeasured usability targets remain labelled.",
+        "Sample-to-own-study onboarding and report comprehension are evaluated against the planned journeys before stronger completion/speed claims; no outbound launch action is implied by preparing these assets.",
+        "Versioned .brohn-study.zip export/import roundtrips on a clean supported installation, includes permitted design assets and rejects unsafe/corrupt/incompatible archives atomically without execution or automatic collection.",
+        "The hosted profile includes HTTPS, researcher authentication, project isolation, bounded participant APIs, operational monitoring and consistent storage/restore evidence before remote recruitment opens.",
+        "Frozen report sharing has explicit audience/expiry/revocation; backup restores full authorized history and object integrity with secrets/withdrawal handling, while archive restoration never reopens recruitment."
+      ]
+    }
+  ],
+  "cross_cutting_specifications": {
+    "unified_experience": "docs/product/UNIFIED-EXPERIENCE.md",
+    "journey_acceptance": "docs/product/journey-acceptance.json",
+    "brand_system": "docs/brand/BRAND-SYSTEM.md",
+    "brand_assets": "www/brand/asset-manifest.json",
+    "introduction_and_launch": "docs/product/INTRODUCTION-AND-LAUNCH.md",
+    "astra_execution_brief": "docs/preparation/ASTRA-BUILD-BRIEF.md",
+    "status": "implementation_and_component_evidence_in_progress",
+    "study_lifecycle": "docs/product/STUDY-LIFECYCLE.md",
+    "design_portability": "docs/product/DESIGN-PORTABILITY.md"
+  },
+  "operational_scope": "UX-J19-UX-J34 and 15 lifecycle areas are required alongside the original scientific/accessibility journeys. Five study tabs alone do not satisfy platform completion.",
+  "delivery_gates": [
+    {
+      "id": "local_lab",
+      "status": "planned",
+      "required_packages": [
+        "BWP01",
+        "BWP02",
+        "BWP03",
+        "BWP04",
+        "BWP05",
+        "BWP06",
+        "BWP15"
+      ],
+      "acceptance": "Configured lab runner, enrollment/receipt/closure and retained-history journey works without a cloud account; no external reachability is inferred from loopback."
+    },
+    {
+      "id": "hosted_participants",
+      "status": "planned",
+      "required_packages": [
+        "BWP01",
+        "BWP02",
+        "BWP03",
+        "BWP04",
+        "BWP05",
+        "BWP15",
+        "BWP17"
+      ],
+      "acceptance": "Configured HTTPS host, authentication, access isolation, pinned runner, bounded uploads, monitoring and restore are exercised before opening external participant links."
+    }
+  ]
+}

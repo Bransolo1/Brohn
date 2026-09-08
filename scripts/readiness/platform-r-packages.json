@@ -1,0 +1,538 @@
+{
+  "schema": "brohn-platform-r-environment/0.1",
+  "r": "R version 4.6.1 (2026-06-24 ucrt)",
+  "created": "2026-09-08",
+  "binary_repository": "https://cloud.r-project.org/bin/windows/contrib/4.6/",
+  "requested": [
+    "DBI",
+    "RSQLite",
+    "processx",
+    "targets",
+    "crew",
+    "lme4",
+    "emmeans",
+    "psych",
+    "effectsize",
+    "jsonlite"
+  ],
+  "packages": [
+    {
+      "package": "DBI",
+      "version": "1.3.0",
+      "license": "LGPL (>= 2.1)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/DBI_1.3.0.zip"
+    },
+    {
+      "package": "GPArotation",
+      "version": "2026.8-2",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/GPArotation_2026.8-2.zip"
+    },
+    {
+      "package": "R6",
+      "version": "2.6.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/R6_2.6.1.zip"
+    },
+    {
+      "package": "RSQLite",
+      "version": "3.53.3",
+      "license": "LGPL (>= 2.1)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/RSQLite_3.53.3.zip"
+    },
+    {
+      "package": "Rcpp",
+      "version": "1.1.2",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/Rcpp_1.1.2.zip"
+    },
+    {
+      "package": "RcppEigen",
+      "version": "0.3.4.0.2",
+      "license": "GPL (>= 2) | file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/RcppEigen_0.3.4.0.2.zip"
+    },
+    {
+      "package": "Rdpack",
+      "version": "2.6.6",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/Rdpack_2.6.6.zip"
+    },
+    {
+      "package": "backports",
+      "version": "1.5.1",
+      "license": "GPL-2 | GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/backports_1.5.1.zip"
+    },
+    {
+      "package": "base64url",
+      "version": "1.4",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/base64url_1.4.zip"
+    },
+    {
+      "package": "bayestestR",
+      "version": "0.18.1",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bayestestR_0.18.1.zip"
+    },
+    {
+      "package": "bit",
+      "version": "4.6.0",
+      "license": "GPL-2 | GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bit_4.6.0.zip"
+    },
+    {
+      "package": "bit64",
+      "version": "4.8.6",
+      "license": "GPL-2 | GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/bit64_4.8.6.zip"
+    },
+    {
+      "package": "blob",
+      "version": "1.3.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/blob_1.3.0.zip"
+    },
+    {
+      "package": "cachem",
+      "version": "1.1.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cachem_1.1.0.zip"
+    },
+    {
+      "package": "callr",
+      "version": "3.8.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/callr_3.8.0.zip"
+    },
+    {
+      "package": "cli",
+      "version": "3.6.6",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cli_3.6.6.zip"
+    },
+    {
+      "package": "collections",
+      "version": "0.3.12",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/collections_0.3.12.zip"
+    },
+    {
+      "package": "cpp11",
+      "version": "0.5.5",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/cpp11_0.5.5.zip"
+    },
+    {
+      "package": "crew",
+      "version": "1.3.2",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/crew_1.3.2.zip"
+    },
+    {
+      "package": "data.table",
+      "version": "1.18.6.1",
+      "license": "MPL-2.0 | file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/data.table_1.18.6.1.zip"
+    },
+    {
+      "package": "datawizard",
+      "version": "1.3.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/datawizard_1.3.1.zip"
+    },
+    {
+      "package": "effectsize",
+      "version": "1.0.3",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/effectsize_1.0.3.zip"
+    },
+    {
+      "package": "emmeans",
+      "version": "2.0.4",
+      "license": "GPL-2 | GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/emmeans_2.0.4.zip"
+    },
+    {
+      "package": "estimability",
+      "version": "2.0.0",
+      "license": "GPL (>= 3)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/estimability_2.0.0.zip"
+    },
+    {
+      "package": "evaluate",
+      "version": "1.0.5",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/evaluate_1.0.5.zip"
+    },
+    {
+      "package": "fastmap",
+      "version": "1.2.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/fastmap_1.2.0.zip"
+    },
+    {
+      "package": "glue",
+      "version": "1.8.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/glue_1.8.1.zip"
+    },
+    {
+      "package": "highr",
+      "version": "0.12",
+      "license": "GPL",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/highr_0.12.zip"
+    },
+    {
+      "package": "igraph",
+      "version": "2.3.3",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/igraph_2.3.3.zip"
+    },
+    {
+      "package": "insight",
+      "version": "1.5.3",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/insight_1.5.3.zip"
+    },
+    {
+      "package": "jsonlite",
+      "version": "2.0.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/jsonlite_2.0.0.zip"
+    },
+    {
+      "package": "knitr",
+      "version": "1.51",
+      "license": "GPL",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/knitr_1.51.zip"
+    },
+    {
+      "package": "later",
+      "version": "1.4.8",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/later_1.4.8.zip"
+    },
+    {
+      "package": "lifecycle",
+      "version": "1.0.5",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/lifecycle_1.0.5.zip"
+    },
+    {
+      "package": "lme4",
+      "version": "2.0-6",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/lme4_2.0-6.zip"
+    },
+    {
+      "package": "magrittr",
+      "version": "2.0.5",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/magrittr_2.0.5.zip"
+    },
+    {
+      "package": "memoise",
+      "version": "2.0.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/memoise_2.0.1.zip"
+    },
+    {
+      "package": "minqa",
+      "version": "1.2.8",
+      "license": "GPL-2",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/minqa_1.2.8.zip"
+    },
+    {
+      "package": "mirai",
+      "version": "2.7.2",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mirai_2.7.2.zip"
+    },
+    {
+      "package": "mnormt",
+      "version": "2.1.2",
+      "license": "GPL-2 | GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mnormt_2.1.2.zip"
+    },
+    {
+      "package": "mvtnorm",
+      "version": "1.4-2",
+      "license": "GPL-2",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/mvtnorm_1.4-2.zip"
+    },
+    {
+      "package": "nanonext",
+      "version": "1.10.2",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/nanonext_1.10.2.zip"
+    },
+    {
+      "package": "nloptr",
+      "version": "2.2.1",
+      "license": "LGPL (>= 3)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/nloptr_2.2.1.zip"
+    },
+    {
+      "package": "numDeriv",
+      "version": "2016.8-1.1",
+      "license": "GPL-2",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/numDeriv_2016.8-1.1.zip"
+    },
+    {
+      "package": "otel",
+      "version": "0.2.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/otel_0.2.0.zip"
+    },
+    {
+      "package": "parameters",
+      "version": "0.29.3",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/parameters_0.29.3.zip"
+    },
+    {
+      "package": "performance",
+      "version": "0.18.1",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/performance_0.18.1.zip"
+    },
+    {
+      "package": "pillar",
+      "version": "1.11.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/pillar_1.11.1.zip"
+    },
+    {
+      "package": "pkgconfig",
+      "version": "2.0.3",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/pkgconfig_2.0.3.zip"
+    },
+    {
+      "package": "prettyunits",
+      "version": "1.2.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/prettyunits_1.2.0.zip"
+    },
+    {
+      "package": "processx",
+      "version": "3.9.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/processx_3.9.0.zip"
+    },
+    {
+      "package": "promises",
+      "version": "1.5.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/promises_1.5.0.zip"
+    },
+    {
+      "package": "ps",
+      "version": "1.9.3",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/ps_1.9.3.zip"
+    },
+    {
+      "package": "psych",
+      "version": "2.6.5",
+      "license": "GPL (>= 2)",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/psych_2.6.5.zip"
+    },
+    {
+      "package": "rbibutils",
+      "version": "2.4.1",
+      "license": "GPL-2",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/rbibutils_2.4.1.zip"
+    },
+    {
+      "package": "reformulas",
+      "version": "0.4.4",
+      "license": "GPL-3",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/reformulas_0.4.4.zip"
+    },
+    {
+      "package": "rlang",
+      "version": "1.3.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/rlang_1.3.0.zip"
+    },
+    {
+      "package": "secretbase",
+      "version": "1.3.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/secretbase_1.3.0.zip"
+    },
+    {
+      "package": "targets",
+      "version": "1.12.0",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/targets_1.12.0.zip"
+    },
+    {
+      "package": "tibble",
+      "version": "3.3.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/tibble_3.3.1.zip"
+    },
+    {
+      "package": "tidyselect",
+      "version": "1.2.1",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/tidyselect_1.2.1.zip"
+    },
+    {
+      "package": "utf8",
+      "version": "1.2.6",
+      "license": "Apache License (== 2.0) | file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/utf8_1.2.6.zip"
+    },
+    {
+      "package": "vctrs",
+      "version": "0.7.3",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/vctrs_0.7.3.zip"
+    },
+    {
+      "package": "withr",
+      "version": "3.0.3",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/withr_3.0.3.zip"
+    },
+    {
+      "package": "xfun",
+      "version": "0.60",
+      "license": "MIT + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/xfun_0.60.zip"
+    },
+    {
+      "package": "yaml",
+      "version": "2.3.12",
+      "license": "BSD_3_clause + file LICENSE",
+      "binary_url": "https://cloud.r-project.org/bin/windows/contrib/4.6/yaml_2.3.12.zip"
+    }
+  ],
+  "runtime_packages": [
+    {
+      "package": "KernSmooth",
+      "version": "2.23-26"
+    },
+    {
+      "package": "MASS",
+      "version": "7.3-65"
+    },
+    {
+      "package": "Matrix",
+      "version": "1.7-5"
+    },
+    {
+      "package": "base",
+      "version": "4.6.1"
+    },
+    {
+      "package": "boot",
+      "version": "1.3-32"
+    },
+    {
+      "package": "class",
+      "version": "7.3-23"
+    },
+    {
+      "package": "cluster",
+      "version": "2.1.8.2"
+    },
+    {
+      "package": "codetools",
+      "version": "0.2-20"
+    },
+    {
+      "package": "compiler",
+      "version": "4.6.1"
+    },
+    {
+      "package": "datasets",
+      "version": "4.6.1"
+    },
+    {
+      "package": "foreign",
+      "version": "0.8-91"
+    },
+    {
+      "package": "grDevices",
+      "version": "4.6.1"
+    },
+    {
+      "package": "graphics",
+      "version": "4.6.1"
+    },
+    {
+      "package": "grid",
+      "version": "4.6.1"
+    },
+    {
+      "package": "lattice",
+      "version": "0.22-9"
+    },
+    {
+      "package": "methods",
+      "version": "4.6.1"
+    },
+    {
+      "package": "mgcv",
+      "version": "1.9-4"
+    },
+    {
+      "package": "nlme",
+      "version": "3.1-169"
+    },
+    {
+      "package": "nnet",
+      "version": "7.3-20"
+    },
+    {
+      "package": "parallel",
+      "version": "4.6.1"
+    },
+    {
+      "package": "rpart",
+      "version": "4.1.27"
+    },
+    {
+      "package": "spatial",
+      "version": "7.3-18"
+    },
+    {
+      "package": "splines",
+      "version": "4.6.1"
+    },
+    {
+      "package": "stats",
+      "version": "4.6.1"
+    },
+    {
+      "package": "stats4",
+      "version": "4.6.1"
+    },
+    {
+      "package": "survival",
+      "version": "3.8-6"
+    },
+    {
+      "package": "tcltk",
+      "version": "4.6.1"
+    },
+    {
+      "package": "tools",
+      "version": "4.6.1"
+    },
+    {
+      "package": "translations",
+      "version": "4.6.1"
+    },
+    {
+      "package": "utils",
+      "version": "4.6.1"
+    }
+  ]
+}

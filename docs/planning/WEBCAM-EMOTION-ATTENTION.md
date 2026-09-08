@@ -1,0 +1,69 @@
+# Webcam, emotion and attention mechanisms
+
+**Version 0.2 revision:** The [biovital audit](BIOVITAL-TEAM-REVIEW.md) and [application contract](ARCHITECTURE-CONTRACT.md) make webcam readiness specific to participant, camera, display and protocol, and separate frame capture time from inference completion. Facial movement, model annotations, explicit emotion ratings and operational attention measures remain distinct outputs. The added Lookback precheck references illustrate guided permission/setup states, not evidence of gaze or emotion accuracy.
+
+Planning supplement, checked against primary project documentation on 5 September 2026. This is a proposed implementation and qualification plan; no webcam accuracy or psychological inference has yet been validated for this platform.
+
+Build a webcam route that lets a student run an accessible remote visual study, automatically prepares its gaze and facial-behaviour evidence, and brings that evidence together with reported liking, affect and task performance. The same study can use a laboratory tracker when its question needs finer spatial or temporal measurement. Webcam collection is a first-class acquisition route in the shared platform, with a visibly qualified capability profile.
+
+## 1. Define the measurements before naming the experience
+
+The interface should expose an understandable “Webcam attention and response” recipe while retaining distinct measurement layers:
+
+| Layer | Stored observation or estimate | Appropriate initial interpretation |
+|---|---|---|
+| Acquisition and visibility | Camera frames where retained; capture timestamps; frame dimensions; actual frame intervals; detected face and tracking quality. | Whether usable observations were available. Face presence alone is not evidence of attention. |
+| Facial geometry and movement | Landmarks; named blendshape coefficients; head-pose estimate; detected blink/eye-closure events. | A model's description of observable geometry or movement under qualified conditions. |
+| Calibrated webcam gaze | Estimated screen coordinates, calibration and held-out validation error, gaze-valid intervals. | Estimated visual allocation to suitably sized regions; no automatic equivalence to a laboratory tracker. |
+| Facial behaviour | Optional named action-unit presence/intensity estimates with model metadata and quality masks. | Estimated facial muscle-action patterns; an AU is not a felt emotion. |
+| Expression-model annotation | Optional model category scores or valence/arousal predictions. | The model's annotation of facial appearance, labelled as such; not a participant's emotional ground truth. |
+| Reported experience | Explicit liking, emotion labels, valence/arousal ratings, confidence or comprehension responses. | What participants report through the declared question and scale. |
+| Research interpretation | Prespecified contrasts and associations linking the above to a stimulus or task. | A contextual research conclusion whose assumptions and uncertainty remain visible. |
+
+Use operational attention measures: proportion of valid observation time with estimated gaze inside a declared region; task discovery/success; appropriately handled time to first fixation; and task performance. Keep head orientation, blink rate and face visibility as separate signals. Do not generate a universal “attention percentage” or infer distraction from one movement. Small-word reading, precise saccade timing and physiological pupillometry remain unavailable on a webcam profile until their exact measurement requirements are demonstrated.
+
+## 2. Components and current evidence
+
+**MediaPipe Face Landmarker is a strong first geometry component.** Its official guide specifies 478 face landmarks, 52 blendshape coefficients and transformation matrices. These outputs support facial movement and pose workflows; the documented output is not a calibrated screen-gaze measurement or a validated emotion diagnosis. Store native coefficient names rather than relabelling them as FACS action units. [Google Face Landmarker guide](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker)
+
+The official blendshape model card identifies Apache 2.0 licensing, an AR-oriented intended use, and degradation under poor lighting, movement and partial visibility. These are concrete qualification dimensions. A coefficient in the range zero to one is not automatically a calibrated probability that a psychological state is present. [Google blendshape model card](https://storage.googleapis.com/mediapipe-assets/Model%20Card%20Blendshape%20V2.pdf)
+
+**WebGazer is a candidate gaze adapter, with a maintenance and licensing decision attached.** The official project describes browser-local gaze inference and calibration. Its current site and README state GPLv3, not AGPL; the README also describes a conditional LGPLv3 commercial option. Pin the exact artifact and establish distribution obligations for the chosen architecture instead of assuming a permissive licence or that a process boundary resolves them. As of February 2026, official updates are no longer guaranteed. The project also warns that its current implementation differs from the published original, so historical accuracy numbers cannot be transferred automatically. [Official project](https://webgazer.cs.brown.edu/), [current project README](https://github.com/brownhci/WebGazer/blob/master/README.md)
+
+**Py-Feat is an optional facial-analysis sidecar candidate.** Official documentation describes AU, expression, landmark and additional model outputs, with modular and multitask detector options. The package is MIT-licensed, but its documentation explicitly states that individual models carry their own terms and some are non-commercial. Qualify and inventory the exact selected model weights and dependencies; package-level licensing is insufficient. Disable identity embedding output where possible and do not persist it. [Py-Feat documentation and licence notes](https://py-feat.org/)
+
+**OpenFace is useful as a research comparison or separately licensed adapter.** The named TadasBaltrusaitis/OpenFace repository supports landmarks, head pose, AUs and gaze estimation; its licence restricts the supplied software to noncommercial research, and its README points to commercial licensing. It is not a default redistributable commercial dependency under that licence. Treat newer OpenFace projects as distinct artifacts requiring their own review. [OpenFace project](https://github.com/TadasBaltrusaitis/OpenFace), [licence](https://github.com/TadasBaltrusaitis/OpenFace/blob/master/OpenFace-license.txt)
+
+A provider service can implement the same adapter contract when it offers useful support or a better qualified operating range. Require documented outputs, model/version traceability, coordinate and timestamp semantics, data-transfer/retention terms, cost and export access. No provider is assumed to deliver laboratory precision or better validity because it is paid. A local gaze/geometry route should remain available independently of paid services where licensing permits.
+
+## 3. Participant experience and recovery
+
+Add webcam capability beneath the existing guided flow; it should not add a technical settings page. The participant sees a concise explanation of what is processed and retained, grants camera access, selects the correct camera if needed, receives framing/lighting guidance, completes gaze calibration and an independent validation step, then starts the study. Microphone access is off unless a separate recipe explicitly requires audio. Browser camera access requires permission and a suitable secure context; denial, no device, an ignored permission prompt and unsupported constraints need distinct recovery states. [Mozilla camera API documentation](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
+
+Use friendly, specific guidance: “Move closer until your eyes fit the guide” or “The window behind you is reducing image quality.” Offer large targets, keyboard alternatives, clear focus and non-colour-only quality cues. Camera permission and calibration are measured acquisition actions, recorded separately from prepared-study authoring budgets. The sample demonstration requests no camera permission.
+
+On camera unplugging, tab suspension, multiple faces, heavy motion or inadequate illumination, preserve completed work and mark the affected interval. Reacquire and revalidate at an appropriate boundary. Do not silently replace missing gaze with the last valid point or carry calibration from a previous participant. Explicitly clear per-participant training state on shared computers. A non-camera alternative can retain questionnaire/task participation when the protocol permits it, with the analysis denominators reflecting which measures exist.
+
+## 4. Runtime, storage and automation
+
+Run lightweight browser inference in a worker where feasible and isolate it from the time-critical task loop. Record actual processing cadence and dropped frames instead of assuming camera settings equal delivered sample rate. An optional local Python/native sidecar can handle heavier AU/expression models through the existing job and adapter contracts. R owns recipe configuration, quality rules, aggregation, inferential analysis and report generation.
+
+Extend the common event schema with camera-frame identity, available capture/arrival/inference timestamps, source clock and alignment uncertainty, model/version/hash, calibration revision, coordinate system, quality reason codes and output type. Join all derived features to participant, session, stimulus, AOI and question revisions. Source timestamps that are unavailable must remain unknown rather than being manufactured from frame number.
+
+Default to processing frames locally and retaining only the derived fields required by the recipe. A study can separately enable raw-video retention for review or a validation corpus, with an explicit storage location, retention setting and export scope. Derived facial data still requires controlled access; do not call it anonymous simply because video was discarded. If video is not retained, report that complete future re-extraction from raw frames will be impossible. Preserve the original derived outputs, model manifest and quality decisions so the performed analysis remains reproducible.
+
+Automatically execute calibration checks → frame/face quality masks → gaze or facial feature extraction → alignment → AOI mapping → declared windows → participant-aware summaries → appropriate condition comparisons → evidence-linked report. Local processing reduces upload bandwidth; a required remote service needs resumable bounded transfer and explicit failure states. Changes in resolution, model, filtering or frame rate create configuration revisions.
+
+## 5. Emotion and attention recipes with useful outcomes
+
+The first remote recipe compares two sufficiently large visual concepts and collects explicit liking. Its report shows valid-data coverage, region-level gaze allocation, paired liking differences and any prespecified association, keeping missingness separate by measure. A video-response recipe aligns reviewed facial-behaviour changes with events and optional post-clip affect ratings. It should not interrupt a clip with repeated self-report unless that interruption is part of the research design.
+
+Facial-expression annotations may appear as an optional timeline with neutral wording such as “model score for smile-related appearance.” A methods panel gives the exact model label. Participants' reported happiness, frustration or arousal remains a separate questionnaire outcome. Convergence and disagreement are research findings to inspect; the system never declares one channel the respondent's true feeling. Comparing modalities uses participant/stimulus-aware models and uncertainty; individual frames do not become independent participants.
+
+## 6. Qualification and release gates
+
+**G0–G1:** include webcam observations, masks, labels and questionnaire linkage in schemas; inspect exact licences; build synthetic fixtures and a browser capability spike. **G2:** demonstrate camera-free sample replay plus local capture, geometry, explicit affect questions and bounded gaze prototypes. **G3:** qualify the remote acquisition route on named browsers/cameras alongside the laboratory rig. **G4:** graduate exact gaze, blink/AU or expression outputs only after their intended research use passes independent benchmarks. **G5:** ship a supported webcam/explicit-affect route and accurately labelled optional model annotations; advanced inferential claims retain their own evidence gates.
+
+The qualification corpus needs held-out participants, diverse lighting, glasses, head movement, face positions, devices and relevant populations. Use known screen targets for gaze; expert annotations with disagreement retained for blinks/AUs; and task outcomes or declared self-report for the appropriate research question. A posed expression label is not ground truth for felt emotion. Evaluate spatial error, precision, calibration failure, valid coverage, time alignment, AU/event accuracy, downstream metric error and novice completion. Report quality and failure coverage across permissioned demographic strata; do not infer protected attributes from participant faces to drive inclusion decisions. Repair environment problems before exclusion and retain subgroup-specific uncertainty.
+
+Set tolerances from AOI size and research estimand, not an arbitrary universal confidence score. Validate webcam-versus-lab differences empirically for any claimed comparable output. The enabling destination is fast remote research with a transparent quality envelope, integrated emotion self-report, and increasingly capable facial-behaviour analysis as the evidence improves.

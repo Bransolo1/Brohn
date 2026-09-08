@@ -1,0 +1,52 @@
+source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=TRUE)
+source("tests/fixtures/original-task-journal.R",encoding="UTF-8")
+local({
+  checks<-0L;check<-function(ok,label){if(!isTRUE(ok))stop(label,call.=FALSE);checks<<-checks+1L}
+  rejects<-function(expr)inherits(try(force(expr),silent=TRUE),"try-error")
+  store<-brohn_open_store(tempfile("brohn-task-export-"));on.exit(brohn_close_store(store),add=TRUE);brohn_initialise_library(store)
+  study<-brohn_create_study(store,"Original complete task export","blank")
+  d<-study$body;d$blocks<-list(brohn_task_new("rt-deary-liewald-choice/1.0",id="original-export-task"))
+  study<-brohn_save_study(store,d,study$revision);release<-brohn_publish(store,study$id,"sample",alias_required=TRUE)
+  start<-.brohn_delivery_start(store,release$token,list(consented=TRUE,participant_alias="001",client_id="original-export-client",operation_id="original-export-start"))
+  check(rejects(brohn_task_run_evidence(store,start$run_id,study$id,"default",d$blocks[[1]]$id)),"An incomplete run cannot export complete task evidence")
+  protocol<-brohn_run(store,start$run_id)$protocol
+  events<-original_task_journal(protocol,function(t)if(!t$scored||t$trial_index==1L)list(outcome="correct",rt=500)else list(outcome="timeout"))
+  .brohn_delivery_receive(store,start$run_id,start$access_token,list(events=events,operation_id="original-task-events"))
+  .brohn_delivery_finish(store,start$run_id,start$access_token,list(outcome="completed",final_sequence=length(events),operation_id="original-task-finish"))
+  jobs<-brohn_list_jobs(store,request_filters=list(run_id=start$run_id))
+  for(job in jobs)brohn_cancel_job(store,job$id)
+  check(all(vapply(brohn_list_jobs(store),function(j)j$attempt==0L&&j$status=="cancelled",logical(1))),"Source-export fixture explicitly settles queued jobs without a scientific process")
+  evidence<-brohn_task_run_evidence(store,start$run_id,study$id,"default",d$blocks[[1]]$id)
+  check(length(evidence$rows)==48L&&evidence$evidence$level=="brohn_journal_replayed","Every original trial is exported only after complete receiver replay")
+  check(identical(vapply(evidence$rows,`[[`,character(1),"presentation_index"),as.character(1:48)),"Original frozen trial ordinals are explicit")
+  check(all(vapply(evidence$rows,function(r)identical(r$participant_id,"001")&&identical(r$participant_linkage,"true"),logical(1))),"Native participant code and declared repeat linkage stay exact")
+  serialized<-brohn_json(evidence)
+  check(!grepl(start$access_token,serialized,fixed=TRUE)&&!grepl(release$token,serialized,fixed=TRUE)&&!grepl("original-export-client",serialized,fixed=TRUE),"Export contains no access/deployment tokens or private client ID")
+  check(evidence$declarations$source_rt_definition=="first_and_final_correct_ms_from_target_onset"&&is.null(evidence$declarations$source_software),"Recorded timing meaning stays separate from unknown original software version")
+  csv<-tempfile(fileext=".csv");json<-tempfile(fileext=".json");on.exit(unlink(c(csv,json)),add=TRUE)
+  brohn_export_task_trial_csv(evidence,csv);brohn_export_task_registry(evidence,json)
+  imported_registry<-brohn_read_json_file(json)
+  check(identical(brohn_hash(imported_registry),brohn_hash(evidence$registry)),"Registry download retains full original compiled table identity")
+  data<-brohn_read_table(csv,"csv",20000L)
+  check(nrow(data)==48L&&identical(data$participant_id,rep("001",48))&&all(data$first_response_ms[10:48]==""),"Machine CSV preserves leading zeros and genuinely absent response cells")
+  metadata<-list(task_id=d$blocks[[1]]$id,source_collection_id=release$id,origin_statement="Original synthetic receiver fixture exported through Brohn",source_software=NULL,
+    source_rt_definition=evidence$declarations$source_rt_definition,terminal_response_rule=evidence$declarations$terminal_response_rule,evidence_level="declared_trial_summary")
+  names_map<-c(participant="participant_id",participant_linkage="participant_linkage",session="session_id",attempt="attempt_id",protocol="protocol_id",
+    presentation_index="presentation_index",trial="trial_id",presented="presented",outcome="outcome",first_code="first_code",final_code="final_code",first_correct="first_correct",
+    first_response_ms="first_response_ms",final_correct_ms="final_correct_ms",missing_reason="missing_reason")
+  for(field in names(names_map))metadata[[paste0(field,"_column")]]<-unname(names_map[[field]])
+  metadata$task_column<-"task_id";metadata$origin_column<-"origin"
+  source<-list(hash=digest::digest(file=csv,algo="sha256"),origin="sample",id="original-imported-task",revision=1L,registry_object_hash=digest::digest(file=json,algo="sha256"))
+  imported<-brohn_import_task_trials(data,metadata,d,source,imported_registry)
+  metric<-function(name)Filter(function(m)m$name==name,imported$task_scores[[1]]$metrics)[[1]]
+  check(metric("test_omission_rate")$value==39/40&&metric("correct_test_rt_mean")$value==500&&is.null(metric("correct_test_rt_sd")$value),"Native CSV and registry reimport reproduce independent partial RT oracle")
+  check(imported$task_attempts[[1]]$evidence_level=="declared_trial_summary"&&!imported$task_attempts[[1]]$timing_quality$journal_replayed,"Summary reimport does not acquire the original full journal's replay claim")
+  original_hash<-brohn_hash(evidence);changed<-study$body;changed$title<-"Changed later";brohn_save_study(store,changed,study$revision)
+  check(identical(original_hash,brohn_hash(brohn_task_run_evidence(store,start$run_id,study$id,"default",d$blocks[[1]]$id))),"Later draft edits do not reconstruct or change original export")
+  check(rejects(brohn_task_run_evidence(store,start$run_id,study$id,"other-project",d$blocks[[1]]$id))&&rejects(brohn_task_run_evidence(store,start$run_id,study$id,"default","other-task")),"Foreign project or task cannot export this session")
+  run<-brohn_run(store,start$run_id)
+  check(rejects(brohn_task_evidence_from_run(run,events[-length(events)],d$blocks[[1]]$id)),"Removing ending evidence prevents a complete export")
+  bad<-events;at<-which(vapply(bad,function(e)e$type=="task_event"&&e$payload$kind=="task_trial_finished",logical(1)))[1];bad[[at]]$payload$data$first_response_ms<-501
+  check(rejects(brohn_task_evidence_from_run(run,bad,d$blocks[[1]]$id)),"Changed terminal latency cannot bypass original key-history replay")
+  cat(sprintf("PASS: %d native task journal/export/reimport checks\n",checks))
+})

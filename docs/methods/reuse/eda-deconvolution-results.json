@@ -1,0 +1,61 @@
+{
+  "schema_version": "brohn-method-reference/0.1.0",
+  "production_enabled": false,
+  "evidence": "synthetic_model_compatible_recovery",
+  "status": "reference_checks_passed",
+  "packages": {
+    "neurokit2": "0.2.13",
+    "cvxopt": "1.3.2",
+    "numpy": "2.5.3"
+  },
+  "sampling_rate_hz": 25,
+  "samples": 1000,
+  "settings": {
+    "tau0": 2.0,
+    "tau1": 0.7,
+    "delta_knot": 10.0,
+    "alpha": 0.0008,
+    "gamma": 0.01,
+    "solver": null,
+    "reltol": 1e-09
+  },
+  "checks": [
+    {
+      "name": "pinned effective CVX helper defaults",
+      "passed": true
+    },
+    {
+      "name": "public wrapper ignores CVX kwargs: explicit adoption constraint",
+      "passed": true,
+      "evidence": "upstream_wrapper_behavior_probe"
+    },
+    {
+      "name": "aligned finite components",
+      "passed": true
+    },
+    {
+      "name": "synthetic reconstruction RMSE < 0.05 source units",
+      "passed": true,
+      "observed": 0.0008242992610132736
+    },
+    {
+      "name": "synthetic tonic MAE < 0.10 source units",
+      "passed": true,
+      "observed": 0.0007328911039881393
+    },
+    {
+      "name": "synthetic phasic MAE < 0.10 source units",
+      "passed": true,
+      "observed": 0.0007712588638615917
+    }
+  ],
+  "settings_origin": "verified_private_helper_defaults_used_by_public_wrapper",
+  "implementation_sha256": "23d23d3847826456dcd490a54657c235a82125e1e151e6d9e2950ad394920c66",
+  "api_observation": "NeuroKit 0.2.13 eda_phasic ignores cvxEDA kwargs. Only the pinned defaults were fitted; reject configurable CVX options until an adapter is verified.",
+  "method_source": "https://github.com/lciti/cvxEDA",
+  "limitations": [
+    "Known signal matches the fitted response model; this is not external empirical validation.",
+    "No noise, motion, gaps, individual response variability or overlapping event attribution was benchmarked.",
+    "Original cvxEDA and CVXOPT have GPL-family terms; inspect applicable distribution requirements."
+  ]
+}

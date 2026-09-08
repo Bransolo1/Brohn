@@ -1,0 +1,17 @@
+# Local integrated profile. Owned child processes stop with this supervisor.
+source("scripts/runtime-dependencies.R", encoding = "UTF-8")
+brohn_require_runtime()
+source("R/platform-load.R", encoding = "UTF-8"); brohn_load()
+options(shiny.maxRequestSize = 512*1024^2)
+port <- suppressWarnings(as.integer(Sys.getenv("RESEARCH_PLATFORM_PORT", "3838")))
+participant_port <- suppressWarnings(as.integer(Sys.getenv("BROHN_PARTICIPANT_PORT", "3840")))
+brohn_require(brohn_number(port, 1024, 65535, TRUE) && port != participant_port, "Researcher and participant ports must be distinct and between 1024 and 65535.")
+local({
+  services <- brohn_start_services(brohn_workspace_path(), participant_port)
+  on.exit(brohn_stop_services(services), add = TRUE)
+  options(brohn.services = services)
+  brohn_monitor_services(services)
+  Sys.setenv(BROHN_APP_MODE = "platform")
+  message("Brohn workspace: http://127.0.0.1:", port, "/")
+  shiny::runApp(".", host = "127.0.0.1", port = port, launch.browser = FALSE)
+})

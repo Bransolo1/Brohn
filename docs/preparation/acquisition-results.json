@@ -1,0 +1,299 @@
+{
+  "schema": "brohn-acquisition-preparation/0.1",
+  "generated_utc": "2026-09-08T00:35:33.900351+00:00",
+  "origin": "synthetic",
+  "product_enabled": false,
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "script_sha256": "6ce8dcb8420017cd083ad56bf96e577fbed4af4916ebc1c333e6a8b60256e466",
+  "versions": {
+    "pylsl": "1.18.2",
+    "brainflow": "5.22.2",
+    "pyxdf": "1.17.5",
+    "pyarrow": "25.0.1",
+    "duckdb": "1.5.5",
+    "mne": "1.12.1",
+    "mne-bids": "0.19.0",
+    "mne-connectivity": "0.9.0",
+    "snirf": "0.8.0",
+    "pybv": "0.8.1",
+    "mne-nirs": "0.7.3"
+  },
+  "summary": {
+    "checks": 27,
+    "passed": 27,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "name": "Pinned engine versions",
+      "passed": true,
+      "evidence": "environment identity",
+      "observed": {
+        "pylsl": "1.18.2",
+        "brainflow": "5.22.2",
+        "pyxdf": "1.17.5",
+        "pyarrow": "25.0.1",
+        "duckdb": "1.5.5",
+        "mne": "1.12.1",
+        "mne-bids": "0.19.0",
+        "mne-connectivity": "0.9.0",
+        "snirf": "0.8.0",
+        "pybv": "0.8.1",
+        "mne-nirs": "0.7.3"
+      }
+    },
+    {
+      "name": "BrainFlow synthetic board samples",
+      "passed": true,
+      "evidence": "synthetic acquisition",
+      "rows": 32,
+      "samples": 148,
+      "nominal_hz": 250
+    },
+    {
+      "name": "BrainFlow synthetic clock ordering",
+      "passed": true,
+      "evidence": "synthetic acquisition"
+    },
+    {
+      "name": "BrainFlow inserted marker",
+      "passed": true,
+      "evidence": "synthetic event transport"
+    },
+    {
+      "name": "BrainFlow synthetic EEG channels",
+      "passed": true,
+      "evidence": "synthetic acquisition",
+      "eeg_channels": 16
+    },
+    {
+      "name": "BrainFlow session released",
+      "passed": true,
+      "evidence": "resource lifecycle"
+    },
+    {
+      "name": "LSL synthetic payload",
+      "passed": true,
+      "evidence": "same-machine loopback"
+    },
+    {
+      "name": "LSL explicit original timestamp",
+      "passed": true,
+      "evidence": "same-machine loopback",
+      "postprocessing": "proc_none"
+    },
+    {
+      "name": "LSL clock correction query",
+      "passed": true,
+      "evidence": "same-machine clock API smoke",
+      "correction_seconds": -1.595006324350834e-05
+    },
+    {
+      "name": "LSL synthetic provenance metadata",
+      "passed": true,
+      "evidence": "same-machine metadata transport"
+    },
+    {
+      "name": "Parquet exact source ticks above 2^53",
+      "passed": true,
+      "evidence": "integer serialization roundtrip"
+    },
+    {
+      "name": "Parquet channel/clock/schema metadata",
+      "passed": true,
+      "evidence": "metadata roundtrip"
+    },
+    {
+      "name": "Parquet null and validity remain distinct",
+      "passed": true,
+      "evidence": "missingness roundtrip"
+    },
+    {
+      "name": "DuckDB integer/null aggregation",
+      "passed": true,
+      "evidence": "bounded analytic query",
+      "observed": [
+        4,
+        "9007199254740993",
+        "9007199254741002",
+        3
+      ]
+    },
+    {
+      "name": "DuckDB parameterized bounded window",
+      "passed": true,
+      "evidence": "bounded analytic query"
+    },
+    {
+      "name": "XDF synthetic numeric stream",
+      "passed": true,
+      "evidence": "synthetic XDF parser fixture"
+    },
+    {
+      "name": "XDF raw timestamps retained",
+      "passed": true,
+      "evidence": "synthetic XDF parser fixture"
+    },
+    {
+      "name": "XDF unit/provenance retained",
+      "passed": true,
+      "evidence": "synthetic XDF parser fixture"
+    },
+    {
+      "name": "MNE connectivity identical-channel coherence",
+      "passed": true,
+      "evidence": "analytic identity on synthetic epochs",
+      "observed": 1.0
+    },
+    {
+      "name": "BIDS EEG voltage and sample roundtrip",
+      "passed": true,
+      "evidence": "synthetic BIDS/BrainVision roundtrip",
+      "max_error_volts": 1.7216825990725272e-13
+    },
+    {
+      "name": "BIDS synthetic event roundtrip",
+      "passed": true,
+      "evidence": "synthetic event metadata roundtrip"
+    },
+    {
+      "name": "SNIRF synthetic structure validation",
+      "passed": true,
+      "evidence": "synthetic file schema validation",
+      "fatal_errors": []
+    },
+    {
+      "name": "SNIRF samples, geometry and units roundtrip",
+      "passed": true,
+      "evidence": "synthetic file roundtrip"
+    },
+    {
+      "name": "fNIRS optical density analytic reference",
+      "passed": true,
+      "evidence": "independent logarithmic arithmetic"
+    },
+    {
+      "name": "fNIRS Beer-Lambert executable conversion",
+      "passed": true,
+      "evidence": "synthetic conversion API smoke",
+      "ppf": 6.0
+    },
+    {
+      "name": "fNIRS synthetic shared short-channel regression",
+      "passed": true,
+      "evidence": "analytic common-signal removal",
+      "threshold_metres": 0.01
+    },
+    {
+      "name": "fNIRS GLM known coefficients",
+      "passed": true,
+      "evidence": "independent linear-model arithmetic",
+      "max_error": 4.235164736271502e-22
+    }
+  ],
+  "observations": {
+    "brainflow": {
+      "board_id": -1,
+      "board_name": "SYNTHETIC_BOARD",
+      "sampling_rate_hz": 250,
+      "sample_count": 148,
+      "row_count": 32,
+      "timestamp_channel": 30,
+      "marker_channel": 31,
+      "eeg_channels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "interpretation": "Synthetic transport only; no physical sampling latency, hardware units, or clock accuracy established."
+    },
+    "lsl": {
+      "native_library_version": 117,
+      "scope": "machine",
+      "stream_selection": "unique random source_id of newly created outlet only; isolated session id",
+      "processing_flags": "proc_none",
+      "timestamp_clock": "lsl_local_clock seconds; not UTC",
+      "initial_probe_issue": "Opening an inlet using outlet.get_info() timed out; resolving this outlet's unique source_id supplies the required network address.",
+      "interpretation": "Local payload/API check, not inter-device synchronization or stimulus-onset qualification."
+    },
+    "columnar": {
+      "format": "Parquet 2.6 zstd",
+      "ticks_encoding": "signed int64; explicit ns scale and monotonic clock id",
+      "json_boundary": "Represent source_ticks as decimal strings, never JavaScript numeric values",
+      "sample_count": 4,
+      "file_sha256": "e72ad268f35f157d9ea0efa942d7dcf1eba3015ab2482dac71d813aabeb0b03b",
+      "duckdb_memory_limit": "64MB",
+      "duckdb_threads": 1,
+      "external_access": false,
+      "scale_limit": "Four-row serialization test, not a volume/performance benchmark."
+    },
+    "xdf": {
+      "fixture_sha256": "7809fb129fbd177085354d28dbe661b3c7c838cf0b84d800b3a780f05f55e5ba",
+      "file_version": {
+        "info": {
+          "version": [
+            "1.0"
+          ]
+        }
+      },
+      "synchronize_clocks": false,
+      "dejitter_timestamps": false,
+      "interpretation": "Generated minimum numeric fixture; no LabRecorder file, clock-offset/reset recovery or multiple-device alignment tested."
+    },
+    "connectivity": {
+      "method": "coh",
+      "mode": "fourier",
+      "sfreq_hz": 128,
+      "epochs": 10,
+      "samples_per_epoch": 512,
+      "band_hz": [
+        8,
+        12
+      ],
+      "interpretation": "Coherence identity verifies executable API; it does not establish neural directionality, independence from volume conduction, or valid study inference."
+    },
+    "bids": {
+      "format": "BrainVision via pybv",
+      "channels": 2,
+      "samples": 300,
+      "mne_input_unit": "V",
+      "max_error_volts": 1.7216825990725272e-13,
+      "interpretation": "Synthetic EEG writer/reader check; external BIDS validator and real manufacturer imports not exercised."
+    },
+    "snirf": {
+      "sample_count": 20,
+      "channels": 2,
+      "amplitude_units": "synthetic arbitrary intensity units",
+      "measurement_type": "continuous-wave amplitude",
+      "interpretation": "Format/metadata readiness only; no optical-density, haemoglobin conversion or fNIRS GLM tested here."
+    },
+    "fnirs": {
+      "optical_density_formula": "-log(intensity / per-channel arithmetic mean intensity)",
+      "beer_lambert_ppf": 6.0,
+      "short_channel_max_dist_m": 0.01,
+      "glm_noise_model": "ols for analytic fixture only",
+      "short_channel_source_observation": "mne-nirs 0.7.3 chooses nearest short channel by geometry without a wavelength check; exactly max_dist channels are neither short nor long. Brohn must require compatible selected regressors and explicit distance rules; this fixture intentionally gives identical short-channel signals.",
+      "interpretation": "OD and GLM arithmetic references plus conversion/regression smoke; no haemodynamic reference dataset, optimum PPF, nuisance-control or autoregressive inference qualification."
+    }
+  },
+  "limitations": [
+    "No physical devices, camera or participant data used.",
+    "No sensor/display/response latency or inter-device synchronization qualified.",
+    "No application adapter, job service, recorder recovery or R interoperability implemented by this probe.",
+    "All tests are small synthetic references; they are not volume benchmarks or empirical validity evidence."
+  ]
+}

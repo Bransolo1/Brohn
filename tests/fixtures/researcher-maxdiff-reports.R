@@ -1,0 +1,23 @@
+# Read-only report/retained-object oracle; the browser owns collection and UI.
+args<-commandArgs(trailingOnly=TRUE)
+source('R/platform-load.R');brohn_load(ui=FALSE)
+folder<-normalizePath(args[[1L]],winslash='/',mustWork=TRUE)
+stopifnot(grepl('^brohn-maxdiff-researcher-',basename(folder)))
+config<-brohn_read_json_file(file.path(folder,'evidence','results.json'))
+local({
+  store<-brohn_open_store(file.path(folder,'workspace'));on.exit(brohn_close_store(store),add=TRUE)
+  study<-brohn_study(store,config$study_id)
+  reports<-Filter(function(r)identical(r$body$study_id,study$id),brohn_list_entities(store,'report',limit=10000L))
+  result<-list(study=study,runs=brohn_runs(store,study$id),
+    reports=lapply(reports,function(record){
+      object<-record$body$result_object
+      path<-brohn_object_path(store,object$hash)
+      envelope<-brohn_read_json_file(path)
+      list(id=record$id,revision=record$revision,hash=brohn_hash(record$body),body=record$body,
+        stored_object_hash=digest::digest(file=path,algo='sha256'),
+        envelope_matches=identical(brohn_hash(envelope$report),brohn_hash(record$body[setdiff(names(record$body),'result_object')])))
+    }),
+    jobs=lapply(brohn_list_jobs(store,limit=10000L),function(j)j[intersect(c('id','operation','request','status','result','error'),names(j))]),
+    retries=brohn_list_entities(store,'job_retry'))
+  brohn_write_json_file(result,file.path(folder,'report-snapshot.json'))
+})

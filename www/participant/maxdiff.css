@@ -1,0 +1,11 @@
+/* Scoped to the explicit-choice screen; it inherits the frozen participant
+   foreground/background and does not alter a stimulus or researcher surface. */
+.brohn-maxdiff { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.brohn-maxdiff .maxdiff-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.brohn-maxdiff .maxdiff-groups > * { min-width: 0; }
+.brohn-maxdiff .maxdiff-choice { min-height: 48px; white-space: pre-wrap; }
+.brohn-maxdiff .maxdiff-choice:has(input:disabled):not(:has(input:checked)) { border-style: dashed; cursor: default; }
+.brohn-maxdiff .maxdiff-choice span { min-width: 0; }
+.brohn-maxdiff .maxdiff-error { border: 2px solid currentColor; border-radius: 8px; padding: 14px; }
+.brohn-maxdiff .actions > button { min-height: 48px; min-width: 48px; max-width: 100%; }
+@media (max-width: 600px) { .brohn-maxdiff .maxdiff-groups { grid-template-columns: minmax(0, 1fr); gap: 0; } }

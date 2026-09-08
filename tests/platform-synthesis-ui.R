@@ -1,0 +1,53 @@
+source("R/platform-load.R"); brohn_load()
+local({
+  count <- 0L
+  check <- function(label, value) {if (!isTRUE(value)) stop(label); count <<- count + 1L}
+  refuses <- function(expr) inherits(tryCatch(force(expr), error = identity), "error")
+  catalog <- list(sources = list(list(report_id = "report-one"), list(report_id = "report-two")), identities = list(
+    list(report_id = "report-one", source_participant_id = "001", source_session_id = "visit-a", proposed_participant_id = "001", proposed_session_id = "visit-a", confirmed = FALSE),
+    list(report_id = "report-two", source_participant_id = "sensor-X", source_session_id = "recording-2", proposed_participant_id = "sensor-X", proposed_session_id = "recording-2", confirmed = FALSE)))
+  exact <- brohn_mm_crosswalk_from_input(catalog, "source_codes", list())
+  check("explicit source mode preserves leading zeros and exact visit codes", identical(exact[[1]]$participant_id, "001") && exact[[2]]$session_id == "recording-2")
+  check("proposed fields cannot leak into accepted mapping", !any(c("confirmed", "proposed_participant_id") %in% names(exact[[1]])))
+  edited <- brohn_mm_crosswalk_from_input(catalog, "edit", list(mm_person_1 = "001", mm_session_1 = "V1", mm_person_2 = "001", mm_session_2 = "V1"))
+  check("reviewed edits explicitly join one person and visit across source codes", edited[[1]]$participant_id == edited[[2]]$participant_id && edited[[1]]$session_id == edited[[2]]$session_id && edited[[2]]$source_participant_id == "sensor-X")
+  partial <- brohn_mm_crosswalk_from_input(catalog, "edit", list(mm_person_1 = "001", mm_session_1 = "V1", mm_person_2 = "", mm_session_2 = ""))
+  check("blank pair is deliberately unlinked", length(partial) == 1L)
+  check("half-mapped identity is refused", refuses(brohn_mm_crosswalk_from_input(catalog, "edit", list(mm_person_1 = "001", mm_session_1 = ""))))
+  check("file mode cannot reuse missing upload", refuses(brohn_mm_crosswalk_from_input(catalog, "file", list())))
+  path <- tempfile(fileext = ".csv"); on.exit(unlink(path), add = TRUE)
+  writeLines(c("report_id,source_participant_id,source_session_id,participant_id,session_id", "report-one,001,visit-a,001,V1"), path)
+  uploaded <- brohn_mm_read_crosswalk(path, "mapping.csv", catalog)
+  check("CSV identity codes retain leading zeroes", identical(uploaded[[1]]$source_participant_id, "001") && identical(uploaded[[1]]$participant_id, "001"))
+  writeLines(c("report_id,source_participant_id,source_session_id,participant_id,session_id", "report-one,unknown,visit-a,001,V1"), path)
+  check("uploaded phantom source identity is rejected", refuses(brohn_mm_read_crosswalk(path, "mapping.csv", catalog)))
+  writeLines(brohn_json(c(uploaded, uploaded)), path)
+  check("duplicate mapping rejected before queue", refuses(brohn_mm_read_crosswalk(path, "mapping.json", catalog)))
+  writeLines(brohn_json(uploaded), path)
+  check("JSON mapping survives exact roundtrip", identical(brohn_hash(brohn_mm_read_crosswalk(path, "mapping.json", catalog)), brohn_hash(uploaded)))
+  big <- catalog; big$identities <- rep(catalog$identities, 51)
+  check("large crosswalk directs researcher to file review", refuses(brohn_mm_crosswalk_from_input(big, "edit", list())))
+  report <- list(analysis = list(observations = list(), features = list(), task_scores = list(list(task_id = "task-x", title = "Reaction time", profile = "rt", participant_id = "001", session_id = "V1", origin = "pilot", eligible = TRUE, status = "scored", reason = NULL,
+    metrics = list(list(name = "mean_rt", value = 431.25, unit = "ms"), list(name = "omission_rate", value = .05, unit = "proportion"))))))
+  brohn_export_report_csv(report, path)
+  out <- utils::read.csv(path, colClasses = "character", check.names = FALSE)
+  check("task-only CSV contains actual metrics and provenance", nrow(out) == 2 && out$value[[1]] == "431.25" && out$participant_id[[1]] == "001" && all(out$origin == "pilot"))
+  report$analysis$observations <- list(list(value = c(1, 2, 3), label = "=1+1", missing = NULL))
+  brohn_export_report_csv(report, path); out <- utils::read.csv(path, colClasses = "character")
+  check("nested numeric result vector serializes into one JSON cell", out$value[[1]] == "[1,2,3]")
+  check("export is spreadsheet safe and does not replace actual values", out$label[[1]] == "'=1+1" && out$missing[[1]] == "")
+  report$analysis$observations <- lapply(c("task-one", "run-two", "true", "test_omission_rate", "rt-profile", "\tformula", "\rformula", "=SUM(A1)", "-3.25"), function(v) list(text = v))
+  brohn_export_report_csv(report, path); out <- utils::read.csv(path, colClasses = "character")
+  check("ordinary t/r identifiers and true are never spreadsheet-prefixed", identical(out$text[1:5], c("task-one", "run-two", "true", "test_omission_rate", "rt-profile")))
+  bytes <- rawToChar(readBin(path, "raw", n = file.info(path)$size))
+  check("actual control characters and formulas are prefixed while negative numbers remain exact", grepl("\"'\tformula\"", bytes, fixed = TRUE) &&
+    grepl("\"'\rformula\"", bytes, fixed = TRUE) && identical(out$text[8:9], c("'=SUM(A1)", "-3.25")))
+  stale <- list(map_origin = "Source description", map_participant = "person", map_session = "visit", map_condition = "", map_stimulus = "stimulus", map_exposure = "exposure",
+    map_question = "question", map_values = "answer", map_unit = "numeric_rating", map_sampling_rate = 128, map_x = "old_x", map_y = "old_y", map_time = "old_clock", map_time_unit = "ms", map_passive_only = TRUE)
+  mapped <- brohn_dataset_base_mapping(stale, list(modality = "questionnaire", source = list(format = "csv")))
+  check("questionnaire mapping ignores stale gaze and physiology controls", !any(c("x_column", "y_column", "time_column", "time_unit", "sampling_rate", "source_phase") %in% names(mapped)) && mapped$question_column == "question" && !"condition_column" %in% names(mapped))
+  stale$map_sampling_rate <- NA_real_; stale$map_unit <- "native"
+  mapped <- brohn_dataset_base_mapping(stale, list(modality = "eeg", source = list(format = "edf")))
+  check("native source does not inherit tabular identities or unset numeric controls", identical(sort(names(mapped)), sort(c("origin_statement", "unit"))))
+  cat(sprintf("PASS: %d synthesis identity and report export checks\n", count))
+})

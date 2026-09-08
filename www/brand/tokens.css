@@ -1,0 +1,25 @@
+@font-face{font-family:Manrope;src:url("fonts/Manrope-Variable.ttf") format("truetype");font-weight:200 800;font-display:swap}
+:root{
+  --brohn-canvas: #11171C;
+  --brohn-surface: #192229;
+  --brohn-raised: #222E36;
+  --brohn-hover: #2C3A43;
+  --brohn-text: #EDF2F2;
+  --brohn-secondary: #B7C5CB;
+  --brohn-muted: #99ACB5;
+  --brohn-line: #34454F;
+  --brohn-control-border: #718994;
+  --brohn-accent: #97D8C4;
+  --brohn-accent-ink: #10251F;
+  --brohn-lavender: #BEB7EA;
+  --brohn-blue: #91BFE6;
+  --brohn-amber: #E3C38D;
+  --brohn-rose: #E8A2A8;
+  --brohn-focus: #C5D5FF;
+  --brohn-font: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --brohn-radius-control:10px;
+  --brohn-radius-card:18px;
+  --brohn-target:44px;
+  --brohn-motion:180ms;
+}
+@media(prefers-reduced-motion:reduce){:root{--brohn-motion:0ms}}

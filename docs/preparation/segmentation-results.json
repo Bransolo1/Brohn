@@ -1,0 +1,91 @@
+{
+  "schema": "brohn-segmentation-reference/0.1",
+  "generated": "2026-09-08T00:40:54.014349+00:00",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "origin": "synthetic/reference",
+  "application_integration": false,
+  "mediapipe": "0.10.21",
+  "numpy": "1.26.4",
+  "delegate": "CPU",
+  "model": {
+    "name": "MagicTouch v1 float32",
+    "bytes": 6227884,
+    "source_url": "https://storage.googleapis.com/mediapipe-models/interactive_segmenter/magic_touch/float32/1/magic_touch.tflite",
+    "provider_generation": "1683146867404767",
+    "pinned_download_url": "https://storage.googleapis.com/mediapipe-models/interactive_segmenter/magic_touch/float32/1/magic_touch.tflite?generation=1683146867404767",
+    "sha256": "e24338a717c1b7ad8d159666677ef400babb7f33b8ad60c4d96db4ecf694cd25"
+  },
+  "checks_passed": 6,
+  "checks": [
+    {
+      "id": "pinned_mediapipe",
+      "passed": true,
+      "actual": "0.10.21",
+      "evidence": "synthetic model execution / output contract"
+    },
+    {
+      "id": "pinned_magictouch_v1_hash",
+      "passed": true,
+      "actual": "e24338a717c1b7ad8d159666677ef400babb7f33b8ad60c4d96db4ecf694cd25",
+      "evidence": "synthetic model execution / output contract"
+    },
+    {
+      "id": "category_shape",
+      "passed": true,
+      "actual": [
+        240,
+        320
+      ],
+      "evidence": "synthetic model execution / output contract"
+    },
+    {
+      "id": "category_type_and_ids",
+      "passed": true,
+      "actual": {
+        "dtype": "uint8",
+        "ids": [
+          0,
+          255
+        ]
+      },
+      "evidence": "synthetic model execution / output contract"
+    },
+    {
+      "id": "confidence_shape",
+      "passed": true,
+      "actual": [
+        [
+          240,
+          320
+        ]
+      ],
+      "evidence": "synthetic model execution / output contract"
+    },
+    {
+      "id": "confidence_finite_and_bounded",
+      "passed": true,
+      "actual": [
+        {
+          "min": 0.0,
+          "max": 1.0
+        }
+      ],
+      "evidence": "synthetic model execution / output contract"
+    }
+  ],
+  "foreground_pixels": 17096,
+  "mask_encoding": {
+    "foreground_category": 0,
+    "background_category": 255,
+    "confidence_channels": 1,
+    "upstream_foreground_cutoff": ">0.5"
+  },
+  "probe_correction": "Initial two-class 0/1 assumption failed. Pinned upstream C++ source establishes single-channel MagicTouch uses foreground 0/background 255; assertions now require that specific encoding.",
+  "limitations": [
+    "This is a synthetic inference and shape/finite-value probe; no segmentation accuracy benchmark was run.",
+    "A keypoint prompts an object/background mask; no semantic AOI label, temporal tracking or human-reviewed AOI is produced.",
+    "The installed combination is MediaPipe 0.10.21 with MagicTouch v1, not MagicTouch v2 or MediaPipe 1.0.1.",
+    "No participant media, camera/microphone capture or model weights were added to the repository."
+  ]
+}

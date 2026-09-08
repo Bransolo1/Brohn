@@ -1,0 +1,26 @@
+brohn_load <- function(envir = parent.frame(), ui = TRUE) {
+  # Legacy readers retain their original validators and identifiers.
+  legacy <- c("study", "comparison", "presentation", "records", "json", "storage", "drafts", "assets", "aois",
+    "analysis", "sample-analysis", "gaze-import", "import-report", "protocol", "protocol-storage")
+  platform <- c("core", "question-flow", "analysis-plan", "store", "publication", "methods", "library", "catalog", "delivery", "portability", "analysis", "gaze", "vision", "neural", "eda-events", "headers", "physiology-artifacts", "signal", "multimodal", "jobs", "runtime")
+  if (file.exists("R/platform-task-delivery.R")) platform <- c(platform, "task-delivery")
+  if (file.exists("R/platform-backup.R")) platform <- c(platform, "backup")
+  if (file.exists("R/platform-interchange.R")) platform <- c(platform, "interchange")
+  if (file.exists("R/platform-capture.R")) platform <- c(platform, "capture")
+  if (file.exists("R/platform-acquisition.R")) platform <- c(platform, "acquisition")
+  if (file.exists("R/platform-stream-curation.R")) platform <- c(platform, "stream-curation")
+  if (file.exists("R/platform-scales.R")) platform <- c(platform, "scales")
+  platform <- c(platform, "peripheral", "peripheral-synthesis")
+  platform <- c(platform, "ingestion")
+  platform <- c(platform, "run-review", "run-catalog", "question-sections")
+  platform <- c(platform, "question-revision", "question-revision-delivery")
+  platform <- c(platform, "run-evidence", "questionnaire-artifacts", "questionnaire-artifact-storage")
+  platform <- c(platform, "task-import", "task-import-storage", "task-evidence")
+  platform <- c(platform, "task-cohort", "task-cohort-storage")
+  if (file.exists("R/platform-scale-comparisons.R")) platform <- c(platform, "scale-comparisons")
+  if (file.exists("R/platform-related-catalog.R")) platform <- c(platform, "related-catalog")
+  if (file.exists("R/platform-maxdiff.R")) platform <- c(platform, "maxdiff", "maxdiff-platform", "maxdiff-import")
+  for (file in c(paste0("R/", legacy, ".R"), paste0("R/platform-", platform, ".R"))) source(file, local = envir, encoding = "UTF-8")
+  if (ui) for (name in c("shell", "aoi", "vision-views", "question-flow-views", "question-sections-views", "question-revision-views", "questionnaire-artifact-views", "scale-views", "maxdiff-views", "maxdiff-import-views", "task-import-views", "task-cohort-views", "capture-views", "acquisition-views", "stream-curation-views", "collection-routes", "views", "task-views", "gaze-views", "neural-views", "neural-views-plots", "eda-events-views", "peripheral-views", "peripheral-report", "ingestion-views", "run-review-views", "data-views", "signal-views", "gaze-report-views", "headers-views", "analysis-plan-views", "multimodal-views", "interchange-views", "app")) source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
+  invisible(TRUE)
+}

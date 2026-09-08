@@ -1,0 +1,1062 @@
+{
+  "origin": "original_synthetic",
+  "oracle": "Python standard-library hashlib and json; no R compiler calls",
+  "rows": [
+    {
+      "allocation_index": 1,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice2",
+        "choice3",
+        "choice5",
+        "choice6",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "fad8d8ada567b794d8719857b50a0903bc69442cf76d96d0900110adb9af49d1",
+        "choice2": "46ad28783fa9db869a97236a5032f9a8059043f26f914487ccc65a5fcb9daba8",
+        "choice3": "8e3df59382bc1b5889ea6ece0b5d58e22170110b872fd989d8ce0ee5e72b774d",
+        "choice4": "2341a126806b7e5ad3bbd33f2e9fc56060f3a4a09ca62beaccba1c5abe888c42",
+        "choice5": "b0f94d12aee7848f7ffc31fa58a4eabdbc12f0bc08d79be7868a8c3d26ccecd7",
+        "choice6": "fa26583d1dfcf711a618243c15f00e0c8eaef0b0350ed534fce6be82c9872e52"
+      }
+    },
+    {
+      "allocation_index": 1,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice6",
+        "choice4",
+        "choice1",
+        "choice2",
+        "choice3",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "a6ab552423752997e4a7aff4afc097bf8b40a9ef9c00f5f04276c39b8e94063f",
+        "choice2": "b4cccefe9b22b148450b0855294b7857755ff149bb668686450bb442b83ce8a2",
+        "choice3": "e8c8efd411c23d3e65eb15fd1be1141343573f43042b53771c4a13e1cdcd1de3",
+        "choice4": "768658d3c49899c4fb0e404c9547eca81615bd69e99dba161d68e9eaa264d5ba",
+        "choice5": "f359824a54d7b7318bdb8d59ec002ae14061ff82733c13dd9b4e5d152a44ebe6",
+        "choice6": "671df7969fc3324c11a50dfa07248cfefb42ae849625588c0042c670b86db5ef"
+      }
+    },
+    {
+      "allocation_index": 1,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice5",
+        "choice2",
+        "choice3",
+        "choice1",
+        "choice4",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "37018257e320599b8997abf26d5742263686257208f1a4b89a6a06fe47cd2216",
+        "choice2": "18a22fa129e56287d0edd6527f074e3dbe7fd6b87bf11df5fb3f8a6679e42d55",
+        "choice3": "1e4fdd8f450d1d185b0ac47686a587530ce32ce39fb114c6b1d0c84f2188e7bb",
+        "choice4": "79a91e7f23bb1ec43cde2ebc6a9f8524820dd2cfc9a98f772e25b42022500843",
+        "choice5": "14bf41120b8843c39173ed585b529c78914a87dda4577565b1bc2ad603d05cb3",
+        "choice6": "94c54b86ebd403fbd873a0a0282b6fc0af12ca80808a7823a40cf93ccc643531"
+      }
+    },
+    {
+      "allocation_index": 1,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice2",
+        "choice4",
+        "choice1",
+        "choice6",
+        "choice5",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "8219a466a077aa00f01d8ace464458839639dc63e60265ced8e0bf06af6a5eb0",
+        "choice2": "06cd332fd567b536401f2b1fab2dde0f058246884f166c2f4a10525ebf509713",
+        "choice3": "c8cb29bddcb031be596f7b17f949e00cd57f9550a3c0b9a2f82d8e1d63d0b64a",
+        "choice4": "5b2a1bbe209d218e11e9b6fc341f8e68323ceb3b73cc0b1861ebe8d8737202e3",
+        "choice5": "a682765ee12ac4c158034768a666478ffd532945c22c089e20a345c07fe9af01",
+        "choice6": "88a6781a7ec3df836d793e18cbe3968e73cbd6725f9b9965f8e79e57ff8ed6e8"
+      }
+    },
+    {
+      "allocation_index": 2,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice6",
+        "choice1",
+        "choice5",
+        "choice3",
+        "choice2"
+      ],
+      "rank_hashes": {
+        "choice1": "a71fb81497fa7195e134ef42169477114a1b94279e09cd8fb05544b8042e35fe",
+        "choice2": "dcb348f737d86a18b808885c8ea81bb0b25a540955bba8e8b632d4d6c1770d9b",
+        "choice3": "d647c305ebe0a03e575fd41b5f015db078c6fe89551f6e2b2679a89914cb1874",
+        "choice4": "58940d126661845ee2d4b7aa687a0c4aaacad128d797028a76c721e76ee4af08",
+        "choice5": "bc31e74b0107cae30f42742b872446b79dc91eb25365a4eb9d058df09f44db0b",
+        "choice6": "5aa6411a8307bb8eeeffefe379924aa5914963004b91453e67600f7d9c3cae59"
+      }
+    },
+    {
+      "allocation_index": 2,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice2",
+        "choice3",
+        "choice5",
+        "choice4",
+        "choice1",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "c6e7b8c4b430757fe4b8a845342f05249e3aa8709962f2eaa4cfffdde88442f2",
+        "choice2": "1157093a4f0a6902d5b79cf233f6093464d23a00dc0e198402f042689ea97aba",
+        "choice3": "19e4d565c7cf8b66fa3524c0272aa535870512a7221acaf9baacc3a2fc2d9e74",
+        "choice4": "6e7d8d3abb591a62149883ac00c11d8ecf7606c1558291d3a5bcd3c2447d89ad",
+        "choice5": "49ce64e211dfdeafbe059623b6219c9bea40a48da17bfe77306b2665be927da1",
+        "choice6": "c9bdf4b910f157f0b7c4f679718f05c4c1aea9ab1a0e44db058de5c62249e50e"
+      }
+    },
+    {
+      "allocation_index": 2,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice2",
+        "choice1",
+        "choice5",
+        "choice3",
+        "choice4",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "6fbbcecd409aaf0ac890e881c2f7038fb35d0555587cab4b4f3be6e8f14d0506",
+        "choice2": "48ff2ed20b1cf64e1cced4e327ae5feb866f01f082a8e1ef7fbde17f5c5aae2e",
+        "choice3": "86046de13617d7c90618d483ab43a54891f47fc197a56b1aca65dc970f0186c6",
+        "choice4": "9305c33cc29cfb9d5f0e745ebb029319dac584c441b8fe77aba9e84f08414d03",
+        "choice5": "7ec1dbf249354b4ec686262b25bb77fbc92f06d64353e0f7cf796b046e657c6b",
+        "choice6": "cbf825ea06e1711d2a6f5f9ca1eb74fc65617b3771d1ffc000d34cd6ec904eda"
+      }
+    },
+    {
+      "allocation_index": 2,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice6",
+        "choice4",
+        "choice3",
+        "choice2",
+        "choice1",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "821762c506c2aaa71ccc8941900ba385d5071dbdd299cc90eae648e0448eb85e",
+        "choice2": "72dc30bafd93cf57fe62963c8c0d102ce7e730e4e206fd1688e89a41b0023ba4",
+        "choice3": "6a677737349c328f901c04e883859653e8025a400d3c1e3284a8aeddaff02507",
+        "choice4": "15f613ba734dab02c9208c8dc26481c09488400f3cc1942849274bf81a914a87",
+        "choice5": "fb9b80a8cf79349be69ecbc347aff74c80bc33ab2fe47af451157efb6c338ed3",
+        "choice6": "0e4666cbb8961e2aa3c31e2c53e49709bc1d4b8dee43b5ef589ea8f90133dad6"
+      }
+    },
+    {
+      "allocation_index": 3,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice6",
+        "choice5",
+        "choice2",
+        "choice1",
+        "choice4",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "81fa7a82643f5eac2dffb0950256bcf3195d1f00655e0eb654de2a23abf2b076",
+        "choice2": "69cd11e7ceb29830c8e5242bc6634c8c2892c1f77a8f70e4cd69739d3fbade3e",
+        "choice3": "b62c4b0ff21e1501797cad834ed7e6c38103368ca3228553c2842e73fdc2cdad",
+        "choice4": "88f50fe7581ef8f9f34cbc886ddb5079dd014e708c241f6b80970ee8cc3a22b4",
+        "choice5": "19eb8a967caba920191b77b6a90c29357f85c46a8a64c7d30ca03df0f9752ee5",
+        "choice6": "15c987dcbcf9473e4663c0da747da9c0b7b3a385b48b21ebeee5e01967d393db"
+      }
+    },
+    {
+      "allocation_index": 3,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice5",
+        "choice1",
+        "choice3",
+        "choice4",
+        "choice2",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "5e7a462e0327a9e50edb2f379feb68ffe52ca65324a50470fce23641c86ce2d4",
+        "choice2": "dfd790710c030d179b31c70c3dc5419b1763757fb3a19a21de217befa0682b53",
+        "choice3": "8c1d953377c9c61c645e9cb1b8e2aa1a2956daf12a08814e5875643fdf97ecd2",
+        "choice4": "ad33e396bb8a23779f0cadc19b1d4bee4e9ff567cdc019ad0f42a780b3e8d657",
+        "choice5": "27b98a49d7f2ba4177615c421c4781b37210a283a30f12da314b506a5599e256",
+        "choice6": "fd09e20a97347a37470b9fc8e0f4389810c2d4ca7c2031ee788992c35caa6414"
+      }
+    },
+    {
+      "allocation_index": 3,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice1",
+        "choice5",
+        "choice3",
+        "choice2",
+        "choice6",
+        "choice4"
+      ],
+      "rank_hashes": {
+        "choice1": "65549103a588612498510be134a41c0ba8b6a4f7c8116fe149d101356ca92f47",
+        "choice2": "ad77d98c1aedd3c470db5c7007e93350b94438eafb0f216fd5b64482afea737a",
+        "choice3": "7db6cb7d84ee65bfa3028b504bdc5799ef3528df857f0830e7091fd40d05207e",
+        "choice4": "d82feb2f2510515ac30d2048c5ce432f10abd685ce690b8ce92302fc8be7a02c",
+        "choice5": "77ca98a407344432058e1b24124e09fee71dbd8568a194e14cbbab95ff8aed7d",
+        "choice6": "bf90ee849988967fc10151d248e20bbf88f90137f285d67976059f961e0e00a8"
+      }
+    },
+    {
+      "allocation_index": 3,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice5",
+        "choice2",
+        "choice4",
+        "choice6",
+        "choice3",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "979a0527b82260b12245463d4498824002d766171d4bf1b62e4241b85740fa6a",
+        "choice2": "33a707a1aa31b5d60ca506e8332ae0ae5b16493ea38e5eae08bcbfd2c35cbd19",
+        "choice3": "836996347b227f81695808ee913b799ce519452fe6e92011ab9788e2338b9cdc",
+        "choice4": "3d77f605925c0357c2a78b1a17520bd77403180fceadda2b6d976b68a0321446",
+        "choice5": "0a25cbbd6a5ce1563582930c2d8fd65fa464c12c38efa4471ffddb974c711616",
+        "choice6": "701885b946bcdba2a819c17c7eaaaca7a81a45f5a9de4f842b5446cb50169a40"
+      }
+    },
+    {
+      "allocation_index": 4,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice2",
+        "choice3",
+        "choice1",
+        "choice4",
+        "choice6",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "8e9f7cc01d2ae72ddcaeeea3f433079b3c89b6bdc894ba19451ff7e8b63a037e",
+        "choice2": "0d75c43eefd893e4f9e946727157a745dc72a2c882cc988cc6904787e0d28e6d",
+        "choice3": "2872936619492da15b9597fa0c9f4e46e017f264244673e4df38bfca2fe005d4",
+        "choice4": "cc5eb372f8529cb1b0bfa9405945b7bba1e6cc91f01734ee3681e8dd6cd44e05",
+        "choice5": "fe73b51648e9d692993a747d58d78566d164a3beb0259110d755454bf20eb827",
+        "choice6": "d7afdd52ab001eb178d5bac4aec7630a954378e4f39b6bd4784e2343a0145bdc"
+      }
+    },
+    {
+      "allocation_index": 4,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice3",
+        "choice1",
+        "choice2",
+        "choice4",
+        "choice5",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "6a522b3c7504c9bcd7a5949cb35152c4c57e0071ab208ad7162a57915df07ca5",
+        "choice2": "92d26520c5daec2f531d9ac945b35196eb7f6725ab5d05f46d0fe32822ad2212",
+        "choice3": "37355e05b735e194d698c683d7a689e2a7b6140ed3cd5f6b6b573ad4cf3e3d85",
+        "choice4": "99b352988c7dce96790daf2948cf880e9a63cc29849667b14320d0bcb81e4f7c",
+        "choice5": "e5271ad63e0beb6a934745f12c21ada46a87dd3dd0da0f996907d854f5878005",
+        "choice6": "ed065b7449f0faa9f0e04c519874d21b0ebc9265a5dabbe9310dc1c1e8811ba1"
+      }
+    },
+    {
+      "allocation_index": 4,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice5",
+        "choice4",
+        "choice3",
+        "choice2",
+        "choice1",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "ab3d3cdadd0c7aa66a683389da8dd9be53660ab27f9434dc9ab736b5e6e69500",
+        "choice2": "9336dd603363c9bb3817246ad61943a1c1d6921800f197bc8751acaeb173c98b",
+        "choice3": "6403b085844e5397de66505bef15e76c44e9fab13af380a79adfbc5600da1541",
+        "choice4": "54dd0b59975e190b7b963a3597d2945a591859c0a4ffd08402c105c265987832",
+        "choice5": "072c7493a5b0bb8cd796bc7214134849443a5f26bdf3b8649302b1b14226d018",
+        "choice6": "c37da87af3e6a7e4803cf3a721c2691610780cd1d232eac68f682d44f38dba7e"
+      }
+    },
+    {
+      "allocation_index": 4,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice5",
+        "choice4",
+        "choice6",
+        "choice2",
+        "choice3",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "f84def22ece17884a2a4aad2574998754a0b5ac9e39e945714c9a1687921ff71",
+        "choice2": "c46e7bea6323c3cf4f2a1e2e33d62de4ffa30eaa255abe1de7a24f693dc2c11c",
+        "choice3": "e7918453997fb1e8ba7a6deeddb186dd29317b77632636a66a332bc191bf84ef",
+        "choice4": "4612aa8e6603a0f6864a01f6e239aecca7fdca5dc44a8222503c0f6996028502",
+        "choice5": "2870d811f048f306364aff2d292c6c0b630543589cba66f6d8e40567fb6bdfb3",
+        "choice6": "a85d4ab79de5f5086792c80428046664687f50c0a8b4e4456ca163056cb963bb"
+      }
+    },
+    {
+      "allocation_index": 5,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice6",
+        "choice2",
+        "choice5",
+        "choice1",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "9be9e94f1e05a278faa53017f4195a5ef95126a21ae96b9c859152c51c1848a7",
+        "choice2": "554d25669165862271b51970ed2c05e70b9c60f85bd15c5a0a35eb5dc85ebf52",
+        "choice3": "cf20eee1063d2c6abdacea43a758f04329271c6088b1fb2171b3329672292d45",
+        "choice4": "034baa50830d2788124570b0965c70b2249bdeeee4e429b547e86a7a49444729",
+        "choice5": "7cd6df9854e3afe9a838688b8950aa81e527b92f2345d30e86811bc157b2f37a",
+        "choice6": "3bc8934dba51d652ced2d5ebe72f0d047840579fa63dca39de5235011b2f60f3"
+      }
+    },
+    {
+      "allocation_index": 5,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice3",
+        "choice1",
+        "choice5",
+        "choice6",
+        "choice4",
+        "choice2"
+      ],
+      "rank_hashes": {
+        "choice1": "1961432bc6db6c2f86e57181e5badf82b861a5d9720f8b68df42e9c60ec71e0e",
+        "choice2": "cb748870dbe6c1673b5eb52040ba282d814f3a8fd21c027284654589116b02a4",
+        "choice3": "14fac81dfc427325d6a8e65fdd3bd65637053c0489fd9901c133b7459a4fd82a",
+        "choice4": "79d4656403862214c68916df1459d3ef8c798df7a5bdba5d390144c6a3b8867c",
+        "choice5": "1eb0add450a431be35c443cb4f088276f430f317524bc2953a217638b3f85c7e",
+        "choice6": "6112d90c7a61c9628ea5cace07f5301a3a2437db5bb8d864c11d27ec4fc1eda6"
+      }
+    },
+    {
+      "allocation_index": 5,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice2",
+        "choice4",
+        "choice6",
+        "choice3",
+        "choice5",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "fec116ce158ec7bbfb0ffee66bb96eb05fb40e69656e241acabdec8e45010e5c",
+        "choice2": "0545b4e4f1d7374a91dc99287fcfca5e298d5e6b02ac70bc163375e3af7900f2",
+        "choice3": "a980fd5105dca7f1c0cd728704b5b39a07ae4048c4bca21ebdcc196f4076a9be",
+        "choice4": "102ae6c818bc3a2ec6b22ddc16c966650c258f9c2156ee98d3697b53fca91571",
+        "choice5": "ce1e4299a465d6671a28a23ca82fb4bcab55699cc8a7284de246de050de54dda",
+        "choice6": "610ecce1469c67c706b721f0cbf9ced4ac52f2b399faa25612cd82fe7ffdde3e"
+      }
+    },
+    {
+      "allocation_index": 5,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice6",
+        "choice1",
+        "choice5",
+        "choice4",
+        "choice3",
+        "choice2"
+      ],
+      "rank_hashes": {
+        "choice1": "236ac7dfaec00c39b2785754d55769ffce063e37589ef6cc7c69618d7f0b0201",
+        "choice2": "edbeea4ec48921846e0879f90aa2570d1fea8f0a5f9fc2131b9e08e2bad3e909",
+        "choice3": "d41a587cd28e30335cb5ea6eed50e1cbe5281c8527734ad82f7b9039a06163dc",
+        "choice4": "72e5b709167d20a0afcd3c9820750c6ea3cb3f865097ad0a567899a831748bf5",
+        "choice5": "4b90ebd38f8e033a482e43d4b01d4bcf74700affc590d8d07f50deea4dc8d400",
+        "choice6": "0f345aed211624a6267e65abe186362fc040678f7983a40d22486b8837bc776f"
+      }
+    },
+    {
+      "allocation_index": 6,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice6",
+        "choice1",
+        "choice4",
+        "choice3",
+        "choice2",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "2c46566b827b03dae53062e8432c2af1b22cb7b8c36c0cc5073e1a7cf14150bd",
+        "choice2": "9d3fe5b487f5be9383832921be4c8a192728bf159fc96e301ada912e63823ec8",
+        "choice3": "6bdf553f5464ad0b705dac6a1421948fb45d61983d7af10f6fe02418ecdc8c93",
+        "choice4": "4ce37adf87ab22e1758f66479e4230c8800f9112d658e57e9c216f114ef33767",
+        "choice5": "c7e3ead8a7f2c5958fd6e6d9f8da6ecffb080fd201c46e439818cae2111e0d41",
+        "choice6": "1110967cabfc7073d23cf7ec50e033d0d9c0d9e8237df5d6935aa06dbf3b8b33"
+      }
+    },
+    {
+      "allocation_index": 6,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice6",
+        "choice4",
+        "choice5",
+        "choice1",
+        "choice2",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "8a713e1009432b9580f7626110bc9f8590374259b1d1ba00fe26fbabf8036fa6",
+        "choice2": "b5a8143c4e02f5fe5e6fd6f7a3a4c5c22e914f011414da841d51d22764199e19",
+        "choice3": "c21c49615aa7f1fe9ee1f96007539e8e2fb84b8c72aaaa444a280b2b1cf8c1bd",
+        "choice4": "52d62b797bcfbd26c8f79cc8774888f0b9796cfaa7fbb391a9e3a1644dd8b4fd",
+        "choice5": "6befa5b875858f3972cb6ff54ecf37290f343b79ba7ac9f378fb8af44994f0da",
+        "choice6": "45c17f89542b64ee1788c005d388b66677c6a4fac10e8a57b1da78697dbe2c59"
+      }
+    },
+    {
+      "allocation_index": 6,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice6",
+        "choice4",
+        "choice3",
+        "choice1",
+        "choice2",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "89677111898f8180c8757404a494dfd315219022244c6995c89b8fc16f01c921",
+        "choice2": "a27a2e3559be50250350bb0d674c9f9c210b4ffab3700b0217ca707ed58da96e",
+        "choice3": "659a1cc7a272e8f62ec363e8d95e80bb22298174887b7b9050c2a1e9bb33210b",
+        "choice4": "43a57d3137974394a1bed2f1b265a43a7974ac153e3741758e8e2e07e6cc291c",
+        "choice5": "ee1a01f3c088bb79dfecb511ea869bac103f5602d003c115a1d8d7b97c3f6e47",
+        "choice6": "093ad034b524200309956c399d0c0c649aefe864e257e866653ecc9ad2f7f434"
+      }
+    },
+    {
+      "allocation_index": 6,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice1",
+        "choice3",
+        "choice5",
+        "choice2",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "1ce598e2c69d4c5f733d94c8a8ce9d73bbcecf32990c1476092da2f33f59c48a",
+        "choice2": "bf953eb60a24d9770f04b7c3b60ddc3859389128ce78d39763bc553dc2f29807",
+        "choice3": "56d6f1ab96df530f264c035bc8db4b8c61892126dc3828d544e317701348021b",
+        "choice4": "172de6cb138aca5dd1371b35bc146056af9d2a5293cdd6800a5531afc0959672",
+        "choice5": "bf79425e8a1d904b5357e7d03bce32c7d1b4ccc2c6115b3d22a2c36435b6d321",
+        "choice6": "cdd162a88dce5dc6c32466434a383bc9a46aa50d2c83e427479341c79e729aba"
+      }
+    },
+    {
+      "allocation_index": 7,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice5",
+        "choice4",
+        "choice2",
+        "choice1",
+        "choice3",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "7dc2faca201c66147b1e6da5ecd0a75772b2b8fb1f867d13813ea6eee710448e",
+        "choice2": "723724904e965e98a4cfbd63492793e3207289a21283b0b10da7519319ff6852",
+        "choice3": "d87ced039d0d0867d67228d27e4899c18e8a98eaddfb416b41221db67eecd5fb",
+        "choice4": "4bf88ab648c162a883d48f9ae563edab1688aff45963e479db0280f833685f1d",
+        "choice5": "269c7e010badcd449ec1e0ca7ca04f8707b30291bf7b175cb9ffb49625c6174f",
+        "choice6": "dd818d019ea175c4686c0aa14ead319a5aa16ce22e8c30ef22c29dda1725b814"
+      }
+    },
+    {
+      "allocation_index": 7,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice3",
+        "choice5",
+        "choice2",
+        "choice4",
+        "choice1",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "cd81825cee381d7924957af48e9f1e781b063a5654218cbdd891f890821704ca",
+        "choice2": "75cdd427fae065f569acb955992481e595d1ca3cffbcd8cf1181edfc278f2196",
+        "choice3": "2c6e2c5828f8adb78d141f3c95d5bfbeeea63572953ccd7fef9ba530ed2a3e26",
+        "choice4": "9f441dfd5bfabb1ce927cb781c35f554367f58ed81d0596367e01af12cfe3794",
+        "choice5": "54bffbc1b08a9d5b2840e2af2743cd34f47ee58759db3a209ca30968184cb165",
+        "choice6": "eb18a549842f9f8c4bb9259e48a192f78d6f86076220f9cb0db133b326f56b16"
+      }
+    },
+    {
+      "allocation_index": 7,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice6",
+        "choice1",
+        "choice2",
+        "choice3",
+        "choice5",
+        "choice4"
+      ],
+      "rank_hashes": {
+        "choice1": "8b95b37ecd263f2a1f781d78a8c2c4757e99305d51c9749b19af58d0acd91d5b",
+        "choice2": "8fbfea38028f1a1e12936bad16c3254ad79c34eba216f8d920748154c15b8adf",
+        "choice3": "e67688a44f5d003e70f97667238dbdf0da62e0ae252d336d54d95940f3e86aaa",
+        "choice4": "fd3d637cec75a51a4c2834b4cada9cc5a0cdecf00a268ab27c80a6db563a9aa3",
+        "choice5": "f5cea9b839f919b3a2114e52ab363c9a6e7ffc2672d162e3005c912099592d5a",
+        "choice6": "634a232c7171cc95f64a7234fafca918328eac32bc53fa932bd5859627a10c5e"
+      }
+    },
+    {
+      "allocation_index": 7,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice5",
+        "choice1",
+        "choice6",
+        "choice3",
+        "choice2",
+        "choice4"
+      ],
+      "rank_hashes": {
+        "choice1": "2337c1f8987094388f197251f284f8970ea11a1c7daf274688eff7dc8470af33",
+        "choice2": "c70743cf58a115d41afffeb0ee5e88e2e1aadd5a8bf7f8b5993e6966fe145de8",
+        "choice3": "7779b28c4e79b85246efa2283bc09a73501453e0a4e3aef3f7c2efd2d7b32db0",
+        "choice4": "df548f60e8c9399f118e030e714a03f6489352cfa712543bfd23bdcc4255c8bd",
+        "choice5": "1984105d8cfeab43bf596b45f4ccd8e0e951660b4b8452c3496ea7063bb48086",
+        "choice6": "6fe259b5c564f536aba595cea74614e7db049377506ab299d65d30f913197ff0"
+      }
+    },
+    {
+      "allocation_index": 8,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice2",
+        "choice5",
+        "choice6",
+        "choice1",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "9fd95b2868bfd5cba9b647164a15f7ac2eec17b3ba02c1dd55e3bfdf13e44517",
+        "choice2": "4d95af07ba58dde82286f7287c1af0f26bcb0094cce4d7d0b3654a0551b8f2da",
+        "choice3": "c22ce897a907b500db6693ad5395d21dd9633ce3d1d7825e6e13dc48070b75c7",
+        "choice4": "1ee450f522c3abf0f6a0bf334c329cdc280e048a0eaee982772b96349d64a4fb",
+        "choice5": "7a14d27244a2a72940f10da29cce0ffab8586be55932a18cb1fa57c01d3f9ec5",
+        "choice6": "8df1bdd44a3c1bd635bde5fdfe4ea78940485d962bb9aab3815be6fcdedcf16b"
+      }
+    },
+    {
+      "allocation_index": 8,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice6",
+        "choice5",
+        "choice2",
+        "choice4",
+        "choice3",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "ec47f5d19bcad03e2569a8d623d70634b2eb83ba3df7e2147a1596be2db86ad1",
+        "choice2": "4a26382b1846ea208b76996507243f27b25d9460922d4418809743849b85719e",
+        "choice3": "de9207cb5159a5ebc3df1c6ee6e90fcda85ca5307ea3d475ae4752592c77213a",
+        "choice4": "99b6e4c5bca15e99ed126ad7ab77c76492df752927379e8abb44da329b889075",
+        "choice5": "344e0494dd8e40d0467b5b465e57ba0900c895eb9749eef09d1ac61dc3f65e2d",
+        "choice6": "174a603b25333a121874def95408b684e71a30593361d1bf013d06633b4457be"
+      }
+    },
+    {
+      "allocation_index": 8,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice4",
+        "choice3",
+        "choice6",
+        "choice2",
+        "choice1",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "b94d6799d24c2e3eeced6f5e0a25e3e0ccc6fe5124052267f9346df2fa9ee385",
+        "choice2": "6ee3fb446eb423c836d33ba6f36214d0a375c8621d10d7faa3d4b160d224c3b1",
+        "choice3": "50170dbeaf4528128310fc5ee613d9f31c33f5dd05fb29e2d5607a6674f54120",
+        "choice4": "1a4760254f3003bed3e1ea8b87da2644bbfea4c54e0098f29039e0abbb4bee28",
+        "choice5": "fcc4eefb71f89cf5941a6b435a259ec3f8d0dd6814b4235955054ff9aa86cf95",
+        "choice6": "6db08f6e87f93098afd64fb80b6f22aa398c4282d54021b905ae1b7aea87f1ff"
+      }
+    },
+    {
+      "allocation_index": 8,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice5",
+        "choice4",
+        "choice3",
+        "choice6",
+        "choice2",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "d85b3c4b4135be87e1c454d2b5c1f82f49e87fa16ad8e338ab870a63d5230f9a",
+        "choice2": "cd56ebebbdbc7de5345b22a7cfe30b7aaf665a503d580ba9f10f626f8014a4e8",
+        "choice3": "94f5ddfaa28ba65cd776c1265ca2754d402d8c2ca5189e2908e102292fbc1b69",
+        "choice4": "330f698975a1e144b0b61424def482d180b6e9ec105b8fb53ae5d0529a6da9bd",
+        "choice5": "0aed8a9bbb1163d8d6671f6462bdc5e04721b3d3e53087baa0066e508f5809d4",
+        "choice6": "a7e686de6045e72dac66c35ef70c36191aaea2a90d21cf512de75a20cd619651"
+      }
+    },
+    {
+      "allocation_index": 9,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice1",
+        "choice3",
+        "choice4",
+        "choice2",
+        "choice5",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "463c43e30950c4481e4d3b3485c09a74ae58fea0ac94a25b5f07822122787d15",
+        "choice2": "7f6e82e11b58d68393093243a93a742431212165baadbe81a6a29f8d22f09576",
+        "choice3": "5399acbea0e26c90336fe5e3b68262f03a9661970fdbd6184b8db0356ef89f67",
+        "choice4": "7007b48c7e3f4699ba0c5a8a65c30198d7a24be8663ddfe7042d8e40abee5b9d",
+        "choice5": "8b12f22732767c97b519e316392243ef4d1859f4632c45b384a194fde9e330b0",
+        "choice6": "d970860029b86b4ab7423c422b6b8e07948c29163e25315080b2bda828e24842"
+      }
+    },
+    {
+      "allocation_index": 9,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice1",
+        "choice2",
+        "choice3",
+        "choice4",
+        "choice6",
+        "choice5"
+      ],
+      "rank_hashes": {
+        "choice1": "4445e9e4413ecbdbe3df0c205272410f159e01243ef01b70b576c699ca53a256",
+        "choice2": "760b3371c056332e5aa5918617cb3cddc8c28d4ca98ed94f87669812527006bb",
+        "choice3": "7b435cd2744e00aa964b3269e4e68ace101cdc82c20bf1df295409cd90c26fda",
+        "choice4": "84976e42be65e8264c5284d6fe571c44e2d6fbe27e2565d8b826d1c263aea7c1",
+        "choice5": "ec8ebb321c409bb7847606044f408daff30b894e5401ed1b645a19e6672e78ae",
+        "choice6": "9ad87d641745f046c17ad85752370fc33d4e9bb310400ffd63b287d6b50fe88d"
+      }
+    },
+    {
+      "allocation_index": 9,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice2",
+        "choice4",
+        "choice5",
+        "choice1",
+        "choice6",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "a78544daf0c07aada5d8f99a1ce9dd3382e03918d3b79618510245350cc310b4",
+        "choice2": "005b720461d82e2bdbdbdae1a1e85d67d21bd739c4acc6e62d5ab3282f057b99",
+        "choice3": "f42252fc0b15d391e08d02377365efed707c631a8a78bd2f96f8d98fc00871f2",
+        "choice4": "23348875fd49f4e8b10dbed53d7121de54112a3dc33fe708615af98fe9157770",
+        "choice5": "7d3046f46ed8030070a455f04cd0d40c5e1013d3ad3166fd466d4cd2115f2cc0",
+        "choice6": "c5c95a1878c36fe21343da68d7faa6b6bdef16bd0715ff50120aac027159f120"
+      }
+    },
+    {
+      "allocation_index": 9,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice4",
+        "choice2",
+        "choice5",
+        "choice3",
+        "choice6",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "a631a6631f73d843997b5c4943a28531561c658d547034d814dbea612e9a4145",
+        "choice2": "6e638ae82f5dac636f4918b662fa71715d1ae03b0db62ab9d5cae11b12807ffe",
+        "choice3": "825005e9311d0d6887bcd8f3f1e40559ef1d16541a0e3a5efbd330bb1982dee8",
+        "choice4": "370cef70c51df3e3210b03e2dbdce9ece6157dd0e41551d7ed4d2ab8c12bf227",
+        "choice5": "7f33f1d33b5072198394a158222b5f6703ab50a6c711c9ea133edb054d499ee2",
+        "choice6": "9ee0a9daa2d0798e79fb3dcd741b6bbc249d1a06d34106a9d6748360da7133e6"
+      }
+    },
+    {
+      "allocation_index": 10,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice3",
+        "choice4",
+        "choice1",
+        "choice2",
+        "choice5",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "abd8842bd68e9cf8b5292b56c7a547a09883f907689a98a4fc73dfc06730050b",
+        "choice2": "ae7af6542931d8b258448024145386c699bd454a4844ff39a2b3abd8d24ef078",
+        "choice3": "5844813ea75d23cbd10e6dc67a2ada34c34df74613bb6ce2680a239f542f4893",
+        "choice4": "a933eff5391139fb17040bcfc6b0999a67599630ba9bbe73429f4bdd4d81684f",
+        "choice5": "b6dd65db40071ba7bb41deb7ac61439d5465943e37b0f52becda6e4e0de90b40",
+        "choice6": "e9851cbe3b96e3b8fd62ef989adcc9f2e5285c5cefc684c3882720ab3b377448"
+      }
+    },
+    {
+      "allocation_index": 10,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice2",
+        "choice3",
+        "choice1",
+        "choice5",
+        "choice4",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "b60f6f230b37404acb63bb4f6b0cd4237d217216e2a55828fa202caaa9e310e6",
+        "choice2": "11dc191999bda29bffd4926b9bfb591afae0b3a93f586749cdf76394e8ffd569",
+        "choice3": "2e9721e2519997984c292be5d65e57df4816a92f875ce7aeeede5ee0aeabd73b",
+        "choice4": "f8261fa388e04dc9c57c51b067b6c1e478dd1ed048a4980b5874dd428ba3805b",
+        "choice5": "ccb01a38b9639fe91af6082e8975d455f28e12bd9e4f466e64975d5818329c36",
+        "choice6": "fb0572bc7e7ec7b438619e0a36051504979430131f31cd4f8e7d2bb88eb2ec2c"
+      }
+    },
+    {
+      "allocation_index": 10,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice4",
+        "choice2",
+        "choice5",
+        "choice1",
+        "choice6",
+        "choice3"
+      ],
+      "rank_hashes": {
+        "choice1": "9a7ca9536debc25fd6958415e5ca5efcdd84697a0bc0a5164f1b3507188599de",
+        "choice2": "422ed09c758deb96e311b4d18d440653fae172a3e726a0df65934d70ead5b61a",
+        "choice3": "e9fd60245fa15b3875f723f225aa336c9d45cb423a8a809b93e0ef42707b2756",
+        "choice4": "2f385cc5aa2ad7edc0c25546b543507b40f9419ebf10eaf256030a18be2de614",
+        "choice5": "52606c298b4524460930c0be2e3d6b92372693b980f0bbf3ba916cd586c6910d",
+        "choice6": "b37f7ced7ffbed10dcc1a7db59357391de43b0762a7c90d113ff571056067524"
+      }
+    },
+    {
+      "allocation_index": 10,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice3",
+        "choice6",
+        "choice5",
+        "choice4",
+        "choice2",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "a8ed084986d841ea8bf5c38c34ebb89d4d4d95b8839d44236be13658d59594a5",
+        "choice2": "a7dc16b0f23fe127f45f83dbc07c930260da08ed4face6ff193327be6c82b104",
+        "choice3": "56462a10a4d4e7fc59e32e77ba9eb8c9b1fcd16545a24e3bf4d0251cf2676d7b",
+        "choice4": "71c586a92fda61f93cbc0e9598b0d382ab7adda58c8f0d281d1618f5d549ea42",
+        "choice5": "702984cf7199167056fc84b956aa9d903052c3c5077b18c90936a776a3980e45",
+        "choice6": "68d0c735f2ac60d3d5d029c26df2fd70409c1fc8abc3e69571ed7b040c7e2602"
+      }
+    },
+    {
+      "allocation_index": 11,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice3",
+        "choice5",
+        "choice4",
+        "choice2",
+        "choice6",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "ecd20706e1712a6938da7cf20d0fc4976666cf5e1859a158f016ce96676d71d9",
+        "choice2": "7e5db17f0322db905a91fb812bbebbc250ed61f8d083d7a0f0a5d1493edbd961",
+        "choice3": "3151f25020300f6a61990b155ca50c0b1f3e77e6ea1e609f83755ab6a7fc4be2",
+        "choice4": "7c55d2a51b71bf32ac2e3f05213ac09d37634de27245a1f041c0bc82f37d340c",
+        "choice5": "4f5103a04bac0125f5860a5074fc029d8307bea17623b8e1ae90b185f2413d05",
+        "choice6": "b8f944513fdf763434dadb43e130df18efefbea033a2ca6cd62581370c4add29"
+      }
+    },
+    {
+      "allocation_index": 11,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice2",
+        "choice5",
+        "choice3",
+        "choice4",
+        "choice6",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "d4457d78b2ce44cf420f4256f28a55577552001329dff0d094b15f37a3bf3ea4",
+        "choice2": "391160888c6eb14e427e44f0a0649933cab4eafdd9375a6a7853b59362b3a44f",
+        "choice3": "846c814d263783c658f4af53c9442d13ad3be42a2f7997617423c8ac668701cc",
+        "choice4": "8f79abeaf665cecb400c542df2cbb68eab4b8e8e01973afa65c89eccff22cae1",
+        "choice5": "42dfe04d1f0a426f713005c52889df5349a24ac28ecf49796d0d0cbd4a94db5b",
+        "choice6": "c14899c6212f1f71a8add62c5a8ed02b911d38901e2f2bbeac3e3274d862dfd7"
+      }
+    },
+    {
+      "allocation_index": 11,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice4",
+        "choice1",
+        "choice5",
+        "choice2",
+        "choice3",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "66f1a81b23275faa761d396ba0b00d74032cb52746250ab60a0838e244f5e939",
+        "choice2": "db6d7a376ca7d9cec2dae445260315818a6c077bfbe4a5221371d52be4b8434a",
+        "choice3": "e0cd0b0d13254acd3ff1aa65aea69b9cdda1b613aa62d8cd6267df52c3619455",
+        "choice4": "29fa992ee6042a53142a470a4d95fc006a9066229ccc12be5d79862ab0917e09",
+        "choice5": "cc70ade55d2037baf817ae71b1b8715d5d8354f4e168b982d8f9dffbbfdf07a6",
+        "choice6": "f9b3924376de0a16d8462b4562f9f3ca3e5a3d1d145dddd47c49d7451d318a70"
+      }
+    },
+    {
+      "allocation_index": 11,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice6",
+        "choice3",
+        "choice2",
+        "choice5",
+        "choice4",
+        "choice1"
+      ],
+      "rank_hashes": {
+        "choice1": "eddd26d845ba01ac9b1634228855e1044459aa6ecb79e62402c3bd0c57a95cec",
+        "choice2": "ad3bb310843b7fb08e2370e32e101676c43ea6c8566597a3ebfae86d8139e792",
+        "choice3": "a1ca9b6c4278f379441a2132678087cc06ccd0c0f04ecedf7523646b6380221c",
+        "choice4": "eb42aef3c9ae27ecd0077addfbdabcb5b40361840f82b59f4e0b892452f91d06",
+        "choice5": "c3a257c39544045a8ca0983d33c98f293bbc0439ca760b2a3111ef7da80773bc",
+        "choice6": "7575b7c5a9ca7296bdaf8ee165a45f48fc2ff4397cd1537cc9a881bad9646c80"
+      }
+    },
+    {
+      "allocation_index": 12,
+      "question_id": "q-original",
+      "scope": "before",
+      "stimulus_id": null,
+      "option_order": [
+        "choice1",
+        "choice5",
+        "choice2",
+        "choice4",
+        "choice3",
+        "choice6"
+      ],
+      "rank_hashes": {
+        "choice1": "0b339c889173542223053ea91a0fcad2f966aba4fe216e6063a0a336cfd1b6f3",
+        "choice2": "857013c0edb3d5b0e02850572f68f1b55f0ff5fce558c68bc412082391a45bf1",
+        "choice3": "b9351ef120b3bbce5174b177dd0913b51df6f3649efc4c83402d602316b49442",
+        "choice4": "926534b839c7f45a817d7d81f2294be76931d2388229f5f8dcb87c17142b5ca8",
+        "choice5": "54dcd1a158511f80aacad2fe367965fc1361729bab5991d0ce9d300edc737b94",
+        "choice6": "c94117392ca4c10e53edc93ee9eb10f26fe132e823a70a2e439872afbb3742eb"
+      }
+    },
+    {
+      "allocation_index": 12,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "option_order": [
+        "choice6",
+        "choice3",
+        "choice4",
+        "choice5",
+        "choice1",
+        "choice2"
+      ],
+      "rank_hashes": {
+        "choice1": "7997f1f5a581e780f2c6eb8487bd032c7a24f75cb216c3c45a660047ed4a9e50",
+        "choice2": "db69b66b6682a3d430fa94b433f51861b2000309b01431cea7ff06dde39ba5b4",
+        "choice3": "0ae4e6051a41f571451450c4d78cae13b3d8e9d382552b7a30928a8746593005",
+        "choice4": "0c4d282394fea7321c4ab8c849be39cbe6a323d19ffcacace41b322fd80370da",
+        "choice5": "310142897a7482bf87ff6cd6f5ec417c751d2d97d371a9ae8d9ba2a8eaca653e",
+        "choice6": "0931697c698086d9dccea5e7d9a17576c95e69a81de10915afbb576dc548f2a0"
+      }
+    },
+    {
+      "allocation_index": 12,
+      "question_id": "q-after",
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "option_order": [
+        "choice5",
+        "choice1",
+        "choice3",
+        "choice2",
+        "choice6",
+        "choice4"
+      ],
+      "rank_hashes": {
+        "choice1": "05b3fc9a61fc3f973f06328a62b9402a16cf0449fd9685d64bfd21ad0eccf232",
+        "choice2": "9e329dfc9ae65f0bcab15b2fdf450631a5d1621130c31eafe98b9a5a81fa3996",
+        "choice3": "0fe239275224d093963857fb80623bed64d5ce2a6c2647752dd4d611beedea29",
+        "choice4": "ed58eaddc81c3119572600856e6b8e003850aa92ada3be1a6abbfb75f70266bd",
+        "choice5": "00106440e917797d2fdc63ffbabb4bd6a096c06d0f8ea002d1c1e5d2fa939e83",
+        "choice6": "ba7b4c6a9828ccb41472ad7413a23a83ea719c478eb9b4c466682f2a978de020"
+      }
+    },
+    {
+      "allocation_index": 12,
+      "question_id": "q-end",
+      "scope": "end",
+      "stimulus_id": null,
+      "option_order": [
+        "choice1",
+        "choice3",
+        "choice4",
+        "choice5",
+        "choice6",
+        "choice2"
+      ],
+      "rank_hashes": {
+        "choice1": "1ca923b4cc3cce8c09622dfbd78bb6ee6be7f9d36ac7c78fedf31641d4c7cfbe",
+        "choice2": "d6ce8417a6e72949f884d589efed832b065e3173a10789c79be735c4a9a0d0b8",
+        "choice3": "39770016f41db9818cd11b3085514ac9109b22b167b19894bd1cde464c41a7a7",
+        "choice4": "a6a502006ddf2b26e2d89eee25989889823cafa20d0e5f919891c2f2f0e0652e",
+        "choice5": "bf4149a1035fde84eca13499f51f5eb785677926b8d0ab3d5819fbacd7d21c73",
+        "choice6": "c10b1f5d44650d4c24c4aac949b941650b073abff00be5b9327fe33a5c02d15a"
+      }
+    }
+  ]
+}

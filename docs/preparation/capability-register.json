@@ -1,0 +1,2432 @@
+{
+  "schema_version": "1.0.0-planning",
+  "prepared_at": "2026-09-08",
+  "product": "Brohn",
+  "purpose": "Holistic implementation scope; not an enabled feature manifest.",
+  "entry_count": 50,
+  "tier_definitions": {
+    "core_build": "Proposed first large-build scope, delivered through integration checkpoints. This does not mean already implemented.",
+    "extension": "Explicit supported expansion route using shared contracts; each named recipe must be completed before activation.",
+    "needs_named_device_or_provider": "Adapter requires a selected device/export/model/provider and its concrete data contract; generic imports can precede live acquisition."
+  },
+  "status_note": "Current status describes product scope and integration. Separate preparation_evidence records bounded reference probes, model smoke checks or artifacts; these do not enable a capability, qualify a physical device or establish construct validity.",
+  "taxonomy": {
+    "modality": "What is recorded, including sensor, response or media streams.",
+    "paradigm": "What participants do and how stimuli/control conditions are scheduled.",
+    "analysis": "What a versioned recipe computes.",
+    "construct": "Interpretation supported by a named design/model, not a sensor type or automatic universal score."
+  },
+  "global_contract_requirements": [
+    "protocol and recipe IDs/revisions",
+    "source units, sample rate and coordinate frame",
+    "raw and mapped clocks with uncertainty",
+    "participant/session/trial/exposure/phase linkage",
+    "baseline/control/practice/error definitions",
+    "engine/model/config hashes",
+    "quality masks and valid support",
+    "observational unit and estimand",
+    "missing/exclusion reasons",
+    "reproducible artifacts and reports"
+  ],
+  "capabilities": [
+    {
+      "id": "gaze.events",
+      "family_id": "gaze",
+      "label": "Raw gaze and ocular events",
+      "implementation_tier": "core_build",
+      "current_status": "reference_benchmarked_not_integrated",
+      "modalities": [
+        "screen_eye_tracker",
+        "imported_gaze"
+      ],
+      "paradigms": [
+        "free_viewing",
+        "visual_search",
+        "prosaccade_antisaccade_extension",
+        "smooth_pursuit_extension"
+      ],
+      "analyses": [
+        "fixation_detection",
+        "saccade_detection",
+        "validity_coverage",
+        "oculomotor_latency_error_gain_extension"
+      ],
+      "inputs": [
+        "time,x,y,eye,validity",
+        "sample_rate",
+        "coordinate_geometry"
+      ],
+      "outputs": [
+        "fixation_and_saccade_events",
+        "duration_amplitude_velocity",
+        "valid_seconds"
+      ],
+      "dependencies": [
+        "R gaze detector profile",
+        "vendor importer"
+      ],
+      "required_controls_and_quality": [
+        "Segment gaps/trials before the declared detector",
+        "Keep pixels and visual-angle conversions explicit",
+        "Preserve vendor events separately",
+        "Oculomotor tasks require a named sufficient-rate device and separate protocol."
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/api/preprocessing.html",
+        "https://github.com/tmalsburg/saccades"
+      ]
+    },
+    {
+      "id": "gaze.aoi",
+      "family_id": "gaze",
+      "label": "AOIs, scanpaths and attention allocation",
+      "implementation_tier": "core_build",
+      "current_status": "prepared_interval_draft_only",
+      "modalities": [
+        "gaze"
+      ],
+      "paradigms": [
+        "stimulus_comparison",
+        "usability_task"
+      ],
+      "analyses": [
+        "dwell",
+        "visits",
+        "fixation_count",
+        "time_to_first_fixation",
+        "transitions",
+        "heatmaps"
+      ],
+      "inputs": [
+        "gaze_events",
+        "versioned_AOI_geometry",
+        "exposure_intervals"
+      ],
+      "outputs": [
+        "AOI_summaries",
+        "transition_matrix",
+        "scanpath",
+        "censored_first_fixation"
+      ],
+      "dependencies": [
+        "R geometry/interval engine",
+        "reviewable AOI proposals"
+      ],
+      "required_controls_and_quality": [
+        "Choose denominator and overlap policy",
+        "Right-censor apparent nonhits at exposure end only under the declared complete-observation policy; missing gaze can conceal a first hit and requires an explicit missing-support exclusion or appropriate censoring model",
+        "Use stimulus coordinates and valid support"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://github.com/tmalsburg/saccades",
+        "https://mne.tools/stable/api/preprocessing.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/media-results.json",
+          "specification_path": "docs/preparation/MEDIA-TOOLING.md",
+          "scope": "Hashed object model executes with bounded output; synthetic two-colour GrabCut foreground, independent contour geometry and known optical-flow translation are checked.",
+          "limitations": "No natural-image detector accuracy, semantic/brand AOI benchmark or production proposal/review route established.",
+          "product_integration": "not_established_by_this_evidence"
+        },
+        {
+          "result_path": "docs/preparation/segmentation-results.json",
+          "specification_path": "docs/preparation/SEGMENTATION-TOOLING.md",
+          "scope": "Pinned MediaPipe 0.10.21/MagicTouch v1 CPU execution and synthetic mask/confidence contract; foreground category 0 and background 255.",
+          "limitations": "Separate compatible environment resolves the MediaPipe 1.0.1 Windows missing-symbol route; six checks are not segmentation accuracy or completed AOI automation.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "gaze.pupil_blink",
+      "family_id": "gaze",
+      "label": "Pupil responses and blinks",
+      "implementation_tier": "core_build",
+      "current_status": "specified_not_integrated",
+      "modalities": [
+        "pupil_diameter",
+        "gaze"
+      ],
+      "paradigms": [
+        "event_related",
+        "sustained_viewing"
+      ],
+      "analyses": [
+        "baseline_corrected_pupil",
+        "peak_and_area",
+        "blink_rate_duration"
+      ],
+      "inputs": [
+        "left_right_diameter_and_units",
+        "blink_and_gap_masks",
+        "luminance_and_baseline_events"
+      ],
+      "outputs": [
+        "pupil_timecourse",
+        "response_summaries",
+        "blink_events",
+        "valid_coverage"
+      ],
+      "dependencies": [
+        "R pupil recipes or MNE eye utilities"
+      ],
+      "required_controls_and_quality": [
+        "Retain eye-specific quality",
+        "Limit blink interpolation",
+        "Model luminance/viewing changes and avoid interpolating long loss"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/api/preprocessing.html"
+      ]
+    },
+    {
+      "id": "gaze.naturalistic",
+      "family_id": "gaze",
+      "label": "Glasses, screen recording, video and VR gaze",
+      "implementation_tier": "needs_named_device_or_provider",
+      "current_status": "architecture_extension_not_integrated",
+      "modalities": [
+        "scene_video",
+        "gaze_ray",
+        "screen_capture",
+        "head_pose"
+      ],
+      "paradigms": [
+        "naturalistic",
+        "web_navigation",
+        "VR"
+      ],
+      "analyses": [
+        "moving_AOI_mapping",
+        "surface_mapping",
+        "3D_intersection",
+        "revisits"
+      ],
+      "inputs": [
+        "calibration",
+        "video_frame_clock",
+        "camera_or_world_transforms",
+        "gaze"
+      ],
+      "outputs": [
+        "frame_or_world_AOI_events",
+        "mapped_gaze",
+        "tracking_quality"
+      ],
+      "dependencies": [
+        "named glasses/VR/export adapter",
+        "CV object tracker",
+        "manual correction tools"
+      ],
+      "required_controls_and_quality": [
+        "Store coordinate frames and occlusion",
+        "Require frame-level time mapping",
+        "Retain user-approved AOI revisions"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://imotions.com/",
+        "https://docs.psychopy.org/hardware/"
+      ]
+    },
+    {
+      "id": "eeg.erp",
+      "family_id": "eeg",
+      "label": "EEG preprocessing, epochs and ERP",
+      "implementation_tier": "core_build",
+      "current_status": "analytic_reference_benchmarked_not_integrated",
+      "modalities": [
+        "EEG",
+        "EOG",
+        "ECG"
+      ],
+      "paradigms": [
+        "oddball",
+        "stimulus_locked",
+        "response_locked"
+      ],
+      "analyses": [
+        "reference_filter_bad_channels",
+        "ICA_review",
+        "epoch_baseline",
+        "ERP_amplitude_latency"
+      ],
+      "inputs": [
+        "raw_channels_in_volts",
+        "montage_reference",
+        "events",
+        "quality_masks"
+      ],
+      "outputs": [
+        "cleaned_signal",
+        "retained_epochs",
+        "ERP_and_contrasts",
+        "drop_log"
+      ],
+      "dependencies": [
+        "MNE worker",
+        "native-format adapters"
+      ],
+      "required_controls_and_quality": [
+        "Freeze channel/time ROI",
+        "Record artifact decisions",
+        "Keep first response and correction timing distinct"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/auto_tutorials/epochs/10_epochs_overview.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "Synthetic BIDS/BrainVision voltage, samples and events roundtrip provides a prepared neural interchange seam.",
+          "limitations": "Interchange checks do not qualify ERP/spectral/time-frequency pipelines; retain their separate numerical references and complete application fixtures.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "eeg.spectrum",
+      "family_id": "eeg",
+      "label": "EEG spectra, band power and asymmetry",
+      "implementation_tier": "core_build",
+      "current_status": "analytic_reference_benchmarked_not_integrated",
+      "modalities": [
+        "EEG"
+      ],
+      "paradigms": [
+        "rest",
+        "task_interval",
+        "eyes_open_closed"
+      ],
+      "analyses": [
+        "Welch_or_multitaper_PSD",
+        "absolute_relative_band_power",
+        "log_power_asymmetry"
+      ],
+      "inputs": [
+        "clean_EEG",
+        "reference_and_ROI",
+        "window_and_frequency_definition"
+      ],
+      "outputs": [
+        "PSD_density",
+        "integrated_power",
+        "band_contrast",
+        "uncertainty"
+      ],
+      "dependencies": [
+        "MNE worker"
+      ],
+      "required_controls_and_quality": [
+        "Define PSD normalization and relative denominator",
+        "Separate eye state and movement",
+        "No default workload interpretation from arbitrary band ratio"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/auto_tutorials/time-freq/10_spectrum_class.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "Synthetic BIDS/BrainVision voltage, samples and events roundtrip provides a prepared neural interchange seam.",
+          "limitations": "Interchange checks do not qualify ERP/spectral/time-frequency pipelines; retain their separate numerical references and complete application fixtures.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "eeg.time_frequency",
+      "family_id": "eeg",
+      "label": "EEG time-frequency and phase consistency",
+      "implementation_tier": "core_build",
+      "current_status": "specified_not_benchmarked",
+      "modalities": [
+        "EEG"
+      ],
+      "paradigms": [
+        "event_related",
+        "motor_response"
+      ],
+      "analyses": [
+        "ERSP",
+        "ERD_ERS",
+        "ITC"
+      ],
+      "inputs": [
+        "epochs",
+        "frequency_grid_cycles",
+        "baseline_mode"
+      ],
+      "outputs": [
+        "time_frequency_power",
+        "phase_consistency",
+        "condition_contrast"
+      ],
+      "dependencies": [
+        "MNE worker"
+      ],
+      "required_controls_and_quality": [
+        "Keep power and phase estimands separate",
+        "Declare edge effects and multiple-comparison family"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/generated/mne.Epochs.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "Synthetic BIDS/BrainVision voltage, samples and events roundtrip provides a prepared neural interchange seam.",
+          "limitations": "Interchange checks do not qualify ERP/spectral/time-frequency pipelines; retain their separate numerical references and complete application fixtures.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "eeg.frequency_tagging",
+      "family_id": "eeg",
+      "label": "SSVEP, ASSR and frequency tagging",
+      "implementation_tier": "extension",
+      "current_status": "new_scope_candidate_not_benchmarked",
+      "modalities": [
+        "EEG",
+        "stimulus_onset_evidence"
+      ],
+      "paradigms": [
+        "SSVEP",
+        "ASSR",
+        "frequency_tagged_attention"
+      ],
+      "analyses": [
+        "fundamental_harmonic_response",
+        "SNR",
+        "phase"
+      ],
+      "inputs": [
+        "stimulus_frequency_phase",
+        "EEG",
+        "onset_offset",
+        "display_audio_profile"
+      ],
+      "outputs": [
+        "target_frequency_response",
+        "harmonics",
+        "SNR"
+      ],
+      "dependencies": [
+        "MNE frequency-tagging recipe",
+        "qualified stimulus runner"
+      ],
+      "required_controls_and_quality": [
+        "Measure physical stimulus frequency/timing",
+        "Declare neighboring noise bins and onset discard",
+        "Use method-specific participant screening"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/1.7/auto_tutorials/time-freq/50_ssvep.html",
+        "https://devdocs.psychopy.org/general/timing/index.html"
+      ]
+    },
+    {
+      "id": "fnirs.hemodynamics",
+      "family_id": "fnirs",
+      "label": "fNIRS oxygenation and task GLM",
+      "implementation_tier": "extension",
+      "current_status": "synthetic_interchange_and_analysis_probes_not_integrated",
+      "modalities": [
+        "fNIRS"
+      ],
+      "paradigms": [
+        "block_design",
+        "event_related"
+      ],
+      "analyses": [
+        "optical_density",
+        "HbO_HbR_conversion",
+        "motion_correction",
+        "short_channel_regression",
+        "GLM"
+      ],
+      "inputs": [
+        "SNIRF_or_supported_native",
+        "wavelengths",
+        "optode_geometry",
+        "pathlength_factor",
+        "events"
+      ],
+      "outputs": [
+        "HbO_HbR_series",
+        "channel_QC",
+        "ROI_betas_and_contrasts"
+      ],
+      "dependencies": [
+        "MNE",
+        "MNE-NIRS"
+      ],
+      "required_controls_and_quality": [
+        "Retain short channels for nuisance modeling",
+        "Record scalp coupling and motion decisions",
+        "Specify HRF/FIR and autocorrelation model"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/mne-nirs/stable/index.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "Synthetic SNIRF schema/geometry/unit roundtrip; independent optical-density arithmetic, Beer-Lambert API smoke, synthetic common short-channel removal and known GLM coefficients.",
+          "limitations": "No empirical fNIRS accuracy claim; short-channel selection needs explicit wavelength/geometry policy and real data/quality fixtures before a named route is qualified.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "neural.advanced",
+      "family_id": "neural",
+      "label": "Connectivity, source models and neural decoding",
+      "implementation_tier": "extension",
+      "current_status": "advanced_extension_not_integrated",
+      "modalities": [
+        "EEG",
+        "fNIRS",
+        "imported_MEG"
+      ],
+      "paradigms": [
+        "connectivity",
+        "decoding",
+        "hyperscanning"
+      ],
+      "analyses": [
+        "coherence_wPLI",
+        "source_estimation",
+        "microstates_or_complexity_profile",
+        "cross_validated_decoding",
+        "aperiodic_spectrum_extension",
+        "EEG_entropy_extension"
+      ],
+      "inputs": [
+        "clean_epochs",
+        "sensor_geometry",
+        "optional_head_model",
+        "participant_group_labels"
+      ],
+      "outputs": [
+        "connectivity_or_source_artifact",
+        "model_predictions",
+        "held_out_performance"
+      ],
+      "dependencies": [
+        "MNE-Connectivity",
+        "MNE inverse/decoding",
+        "separately_selected_microstate_engine"
+      ],
+      "required_controls_and_quality": [
+        "Avoid volume-conduction causal claims",
+        "Split by participant/stimulus to prevent leakage",
+        "Each estimator needs its own recipe and reference"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/mne-connectivity/stable/generated/mne_connectivity.spectral_connectivity_epochs.html",
+        "https://mne.tools/stable/index.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "MNE-Connectivity coherence equals one for identical synthetic channels.",
+          "limitations": "One analytic identity does not qualify other estimators, source analysis, causal interpretation or decoding.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "eda.activity",
+      "family_id": "eda",
+      "label": "EDA tonic, phasic and response analysis",
+      "implementation_tier": "core_build",
+      "current_status": "reference_benchmarked_not_integrated",
+      "modalities": [
+        "EDA"
+      ],
+      "paradigms": [
+        "event_related",
+        "interval",
+        "control_comparison"
+      ],
+      "analyses": [
+        "SCL",
+        "phasic_decomposition",
+        "SCR_peaks_amplitude_latency_recovery",
+        "response_area",
+        "nonspecific_response_rate"
+      ],
+      "inputs": [
+        "conductance_and_units",
+        "calibration",
+        "events",
+        "validity_mask"
+      ],
+      "outputs": [
+        "tonic_phasic_series",
+        "SCR_events",
+        "valid_time_summaries",
+        "paired_contrasts"
+      ],
+      "dependencies": [
+        "NeuroKit",
+        "optional cvxEDA or PsPM profile"
+      ],
+      "required_controls_and_quality": [
+        "Separate absolute and relative thresholds",
+        "Do not assign overlapping peaks to nearest event",
+        "Missing amplitude is not zero"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/eda.html"
+      ]
+    },
+    {
+      "id": "ecg.hrv",
+      "family_id": "cardiac",
+      "label": "ECG, beats and HRV",
+      "implementation_tier": "core_build",
+      "current_status": "analytic_and_execution_references_not_integrated",
+      "modalities": [
+        "ECG"
+      ],
+      "paradigms": [
+        "rest",
+        "event_related",
+        "interval"
+      ],
+      "analyses": [
+        "R_peaks",
+        "rate",
+        "NN_QC",
+        "time_frequency_nonlinear_HRV"
+      ],
+      "inputs": [
+        "ECG_volts",
+        "sample_rate",
+        "events",
+        "beat_decisions"
+      ],
+      "outputs": [
+        "beat_table",
+        "HR_timecourse",
+        "HRV_metrics",
+        "valid_support",
+        "Poincare_SD1_SD2_and_entropy_when_recipe_eligible"
+      ],
+      "dependencies": [
+        "NeuroKit worker"
+      ],
+      "required_controls_and_quality": [
+        "Keep corrected beats auditable",
+        "Match metric to usable duration",
+        "Declare interval units and pNN denominator"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/ecg.html",
+        "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+      ]
+    },
+    {
+      "id": "ppg.prv",
+      "family_id": "cardiac",
+      "label": "PPG, pulse and pulse-rate variability",
+      "implementation_tier": "core_build",
+      "current_status": "specified_not_benchmarked",
+      "modalities": [
+        "contact_PPG"
+      ],
+      "paradigms": [
+        "rest",
+        "task_interval"
+      ],
+      "analyses": [
+        "pulse_detection",
+        "pulse_rate",
+        "PRV",
+        "pulse_amplitude"
+      ],
+      "inputs": [
+        "PPG",
+        "sampling_and_sensor_site",
+        "motion"
+      ],
+      "outputs": [
+        "pulse_events",
+        "rate",
+        "PRV",
+        "pulse_amplitude"
+      ],
+      "dependencies": [
+        "NeuroKit worker",
+        "named oximeter for SpO2"
+      ],
+      "required_controls_and_quality": [
+        "Label PRV separately from ECG HRV",
+        "Retain perfusion/motion quality",
+        "SpO2 requires a calibrated supported device"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/ppg.html"
+      ]
+    },
+    {
+      "id": "respiration.cycles",
+      "family_id": "respiration",
+      "label": "Respiration cycles and variability",
+      "implementation_tier": "core_build",
+      "current_status": "execution_smoke_not_integrated",
+      "modalities": [
+        "respiration_belt",
+        "airflow"
+      ],
+      "paradigms": [
+        "rest",
+        "event_related",
+        "interval"
+      ],
+      "analyses": [
+        "cycle_detection",
+        "rate",
+        "amplitude",
+        "inspiration_expiration",
+        "respiratory_variability"
+      ],
+      "inputs": [
+        "resp_signal_and_units",
+        "sensor_type",
+        "events"
+      ],
+      "outputs": [
+        "cycle_table",
+        "rate_depth_proxy",
+        "cycle_ratio",
+        "variability"
+      ],
+      "dependencies": [
+        "NeuroKit worker"
+      ],
+      "required_controls_and_quality": [
+        "Belt amplitude is not calibrated tidal volume",
+        "Record sigh/motion masks and valid cycles"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/rsp.html"
+      ]
+    },
+    {
+      "id": "cardiorespiratory.coupling",
+      "family_id": "cardiorespiratory",
+      "label": "Respiratory sinus arrhythmia and coupling",
+      "implementation_tier": "extension",
+      "current_status": "specified_candidate_not_benchmarked",
+      "modalities": [
+        "ECG",
+        "respiration"
+      ],
+      "paradigms": [
+        "rest",
+        "paced_breathing",
+        "task"
+      ],
+      "analyses": [
+        "RSA",
+        "cardiorespiratory_phase_coupling"
+      ],
+      "inputs": [
+        "aligned_beat_and_breath_events",
+        "clock_uncertainty",
+        "window"
+      ],
+      "outputs": [
+        "coupling_metrics",
+        "usable_cycles",
+        "condition_contrast"
+      ],
+      "dependencies": [
+        "NeuroKit HRV/RSA",
+        "R contrast model"
+      ],
+      "required_controls_and_quality": [
+        "Require simultaneous valid streams",
+        "Declare breathing rate and duration support",
+        "No generic sympathetic-vagal balance interpretation"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+      ]
+    },
+    {
+      "id": "emg.activation",
+      "family_id": "emg",
+      "label": "Surface EMG activation and fatigue",
+      "implementation_tier": "core_build",
+      "current_status": "specified_not_benchmarked",
+      "modalities": [
+        "surface_EMG"
+      ],
+      "paradigms": [
+        "movement",
+        "sustained_contraction"
+      ],
+      "analyses": [
+        "filter_rectify_envelope",
+        "burst_onset_duration",
+        "RMS_integrated_EMG",
+        "median_frequency"
+      ],
+      "inputs": [
+        "EMG_volts",
+        "electrode_site",
+        "reference_contraction",
+        "events"
+      ],
+      "outputs": [
+        "activation_events",
+        "normalized_amplitude",
+        "fatigue_profile"
+      ],
+      "dependencies": [
+        "NeuroKit stages",
+        "explicit spectral recipe"
+      ],
+      "required_controls_and_quality": [
+        "Record placement/filter/notch/MVC procedure",
+        "Distinguish baseline and normalization",
+        "Separate motion contamination"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/emg.html"
+      ]
+    },
+    {
+      "id": "emg.facial_startle",
+      "family_id": "emg",
+      "label": "Facial EMG and startle responses",
+      "implementation_tier": "extension",
+      "current_status": "specified_not_benchmarked",
+      "modalities": [
+        "facial_EMG",
+        "startle_EMG"
+      ],
+      "paradigms": [
+        "affective_viewing",
+        "startle_probe"
+      ],
+      "analyses": [
+        "corrugator_zygomaticus_response",
+        "blink_magnitude",
+        "onset_latency",
+        "habituation"
+      ],
+      "inputs": [
+        "muscle_channels",
+        "probe_onset_evidence",
+        "prestimulus_baseline"
+      ],
+      "outputs": [
+        "muscle_specific_contrasts",
+        "startle_response_table"
+      ],
+      "dependencies": [
+        "EMG worker",
+        "named probe/output hardware"
+      ],
+      "required_controls_and_quality": [
+        "Separate spontaneous blink from probe response",
+        "Specify probe eligibility and nonresponse rule",
+        "Preserve muscle names"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/emg.html",
+        "https://docs.psychopy.org/hardware/"
+      ]
+    },
+    {
+      "id": "eog.ocular",
+      "family_id": "eog",
+      "label": "EOG blinks and ocular activity",
+      "implementation_tier": "extension",
+      "current_status": "engine_available_recipe_not_benchmarked",
+      "modalities": [
+        "EOG"
+      ],
+      "paradigms": [
+        "ocular_artifact_monitoring",
+        "blink_task"
+      ],
+      "analyses": [
+        "blink_detection",
+        "blink_morphology",
+        "ocular_artifact_regression"
+      ],
+      "inputs": [
+        "EOG_channels",
+        "electrode_mapping",
+        "sampling"
+      ],
+      "outputs": [
+        "blink_events",
+        "quality_regressors",
+        "ocular_timecourse"
+      ],
+      "dependencies": [
+        "NeuroKit EOG",
+        "MNE EOG utilities"
+      ],
+      "required_controls_and_quality": [
+        "Do not treat EOG as calibrated screen gaze",
+        "Separate physiological blink output from EEG artifact decisions"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://neuropsychology.github.io/NeuroKit/functions/eog.html",
+        "https://mne.tools/stable/api/preprocessing.html"
+      ]
+    },
+    {
+      "id": "temperature.peripheral",
+      "family_id": "temperature",
+      "label": "Peripheral temperature and thermal change",
+      "implementation_tier": "extension",
+      "current_status": "new_scope_candidate_not_integrated",
+      "modalities": [
+        "skin_temperature",
+        "thermal_camera"
+      ],
+      "paradigms": [
+        "rest",
+        "event_related",
+        "environmental_exposure"
+      ],
+      "analyses": [
+        "level_slope",
+        "baseline_change",
+        "thermal_ROI"
+      ],
+      "inputs": [
+        "temperature_units",
+        "sensor_site",
+        "ambient_temperature",
+        "events"
+      ],
+      "outputs": [
+        "temperature_timecourse",
+        "baseline_contrasts",
+        "thermal_ROI_summary"
+      ],
+      "dependencies": [
+        "R interval recipes",
+        "named sensor or thermal-camera adapter"
+      ],
+      "required_controls_and_quality": [
+        "Record equilibration and ambient conditions",
+        "Thermal frames require calibration and ROI tracking"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.biopac.com/physiological-signals-biopac/"
+      ]
+    },
+    {
+      "id": "hemodynamics.advanced",
+      "family_id": "hemodynamics",
+      "label": "Blood pressure, impedance and oxygenation",
+      "implementation_tier": "needs_named_device_or_provider",
+      "current_status": "new_scope_named_device_extension",
+      "modalities": [
+        "blood_pressure",
+        "impedance_cardiography",
+        "pulse_oximetry"
+      ],
+      "paradigms": [
+        "cardiovascular_reactivity"
+      ],
+      "analyses": [
+        "systolic_diastolic_MAP",
+        "PEP_LVET",
+        "stroke_volume_profile",
+        "baroreflex",
+        "SpO2"
+      ],
+      "inputs": [
+        "calibrated_device_channels",
+        "ECG_for_alignment",
+        "device_model_and_settings"
+      ],
+      "outputs": [
+        "native_and_derived_hemodynamics",
+        "beat_or_window_QC"
+      ],
+      "dependencies": [
+        "named device/export SDK",
+        "published estimator profile"
+      ],
+      "required_controls_and_quality": [
+        "Separate direct measurement from estimated output",
+        "Record device calibration and required electrode geometry",
+        "Do not infer oxygenation from generic webcam RGB"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.biopac.com/application/cardiovascular-hemodynamics/",
+        "https://www.biopac.com/application/icg-impedance-cardiographycardiac-output/"
+      ]
+    },
+    {
+      "id": "movement.sensors",
+      "family_id": "movement",
+      "label": "IMU, force, posture and location streams",
+      "implementation_tier": "needs_named_device_or_provider",
+      "current_status": "new_scope_named_device_extension",
+      "modalities": [
+        "accelerometer",
+        "gyroscope",
+        "force",
+        "pressure",
+        "GPS"
+      ],
+      "paradigms": [
+        "naturalistic",
+        "approach_avoidance",
+        "ergonomics"
+      ],
+      "analyses": [
+        "movement_onset",
+        "trajectory",
+        "postural_sway",
+        "activity_context"
+      ],
+      "inputs": [
+        "axes_units_coordinate_frame",
+        "sampling",
+        "calibration",
+        "events"
+      ],
+      "outputs": [
+        "kinematics",
+        "motion_masks",
+        "location_context",
+        "force_timecourse"
+      ],
+      "dependencies": [
+        "named sensor adapter",
+        "R/scipy geometry"
+      ],
+      "required_controls_and_quality": [
+        "Keep gravity/orientation and coordinate transforms explicit",
+        "GPS is contextual, not affective",
+        "Force needs calibration"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.biopac.com/physiological-signals-biopac/",
+        "https://imotions.com/"
+      ]
+    },
+    {
+      "id": "webcam.facial",
+      "family_id": "webcam",
+      "label": "Face geometry, action units and expression outputs",
+      "implementation_tier": "core_build",
+      "current_status": "offline_contract_and_blank_frame_geometry_smoke_passed_AU_expression_adapter_not_integrated",
+      "modalities": [
+        "webcam_video",
+        "imported_facial_outputs"
+      ],
+      "paradigms": [
+        "stimulus_viewing",
+        "interview"
+      ],
+      "analyses": [
+        "face_landmarks",
+        "head_pose",
+        "action_units",
+        "native_expression_scores"
+      ],
+      "inputs": [
+        "frames_and_clock",
+        "model_configuration",
+        "face_quality"
+      ],
+      "outputs": [
+        "landmarks_AUs_scores",
+        "valid_face_coverage",
+        "event_summaries"
+      ],
+      "dependencies": [
+        "MediaPipe/Py-Feat candidate",
+        "optional Affectiva or FaceReader adapter"
+      ],
+      "required_controls_and_quality": [
+        "Preserve model/native scale and face track IDs",
+        "Record no-face/occlusion rather than zero",
+        "No identity recognition required"
+      ],
+      "interpretation": "Expression geometry/model labels are distinct from reported emotion; construct claims require a named supported profile.",
+      "source_urls": [
+        "https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker",
+        "https://imotions.com/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/media-results.json",
+          "specification_path": "docs/preparation/MEDIA-TOOLING.md",
+          "scope": "Official face-landmarker artifact hash and blank-frame no-face model smoke complement the earlier offline facial-provider contract.",
+          "limitations": "No positive-face landmark accuracy, native AU/emotion model output, camera capture or integrated provider adapter; facial geometry is not a happiness measure.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "webcam.pose",
+      "family_id": "webcam",
+      "label": "Body/hand pose and visible movement",
+      "implementation_tier": "extension",
+      "current_status": "negative_frame_and_synthetic_flow_probes_not_integrated",
+      "modalities": [
+        "webcam_video"
+      ],
+      "paradigms": [
+        "interaction",
+        "ergonomics",
+        "naturalistic"
+      ],
+      "analyses": [
+        "pose_landmarks",
+        "joint_angles",
+        "visible_movement"
+      ],
+      "inputs": [
+        "frames",
+        "image_geometry",
+        "visibility_confidence"
+      ],
+      "outputs": [
+        "pose_series",
+        "movement_events",
+        "quality"
+      ],
+      "dependencies": [
+        "MediaPipe pose/hand models"
+      ],
+      "required_controls_and_quality": [
+        "Require camera geometry for metric distances",
+        "Treat occluded points as uncertain",
+        "Do not label gestures as intention without a model"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/media-results.json",
+          "specification_path": "docs/preparation/MEDIA-TOOLING.md",
+          "scope": "Official pose/hand artifact hashes, blank-frame no-body/no-hand smoke and independent known-image-translation optical flow.",
+          "limitations": "No positive-pose accuracy, metric movement calibration, intention inference or camera integration established.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "webcam.gaze",
+      "family_id": "webcam",
+      "label": "Calibrated webcam gaze and screen attention",
+      "implementation_tier": "core_build",
+      "current_status": "candidate_not_integrated",
+      "modalities": [
+        "webcam_video",
+        "calibration_targets"
+      ],
+      "paradigms": [
+        "remote_viewing",
+        "remote_usability"
+      ],
+      "analyses": [
+        "calibration",
+        "validation",
+        "screen_gaze",
+        "coarse_AOI_dwell"
+      ],
+      "inputs": [
+        "camera_frames",
+        "screen_geometry",
+        "validation_targets"
+      ],
+      "outputs": [
+        "screen_coordinates",
+        "validation_error",
+        "AOI_time_support"
+      ],
+      "dependencies": [
+        "WebGazer or named provider",
+        "shared gaze pipeline"
+      ],
+      "required_controls_and_quality": [
+        "Calibrate then independently validate",
+        "AOI size depends on observed precision",
+        "Head pose or eye direction alone is not calibrated gaze"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://github.com/jspsych/jsPsych/blob/main/docs/extensions/webgazer.md"
+      ]
+    },
+    {
+      "id": "webcam.physiology",
+      "family_id": "webcam",
+      "label": "Webcam pulse and respiration",
+      "implementation_tier": "extension",
+      "current_status": "candidate_not_integrated",
+      "modalities": [
+        "webcam_video"
+      ],
+      "paradigms": [
+        "remote_rest",
+        "remote_viewing"
+      ],
+      "analyses": [
+        "rPPG",
+        "camera_respiration",
+        "rate_quality"
+      ],
+      "inputs": [
+        "frame_times",
+        "color_or_motion_signal",
+        "reference_sensor_for_benchmark"
+      ],
+      "outputs": [
+        "pulse_or_breath_rate",
+        "quality_by_window"
+      ],
+      "dependencies": [
+        "pyVHR candidate",
+        "separate respiration algorithm/provider"
+      ],
+      "required_controls_and_quality": [
+        "Retain variable frame rate/illumination/motion",
+        "Benchmark against simultaneous reference",
+        "Do not expose ECG HRV or SpO2 as equivalent outputs"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://github.com/phuselab/pyVHR",
+        "https://imotions.com/"
+      ]
+    },
+    {
+      "id": "audio.acoustics",
+      "family_id": "audio",
+      "label": "Voice, speech timing and acoustics",
+      "implementation_tier": "core_build",
+      "current_status": "analytic_audio_and_VAD_smoke_probes_not_integrated",
+      "modalities": [
+        "microphone_audio"
+      ],
+      "paradigms": [
+        "think_aloud",
+        "interview",
+        "spoken_response"
+      ],
+      "analyses": [
+        "pitch_intensity",
+        "speech_pause_rate",
+        "jitter_shimmer_HNR",
+        "acoustic_features"
+      ],
+      "inputs": [
+        "PCM_audio_and_sample_rate",
+        "channel_and_gain",
+        "speech_segments"
+      ],
+      "outputs": [
+        "acoustic_timecourse",
+        "segment_features",
+        "speech_timing"
+      ],
+      "dependencies": [
+        "Praat-Parselmouth",
+        "optional licensed openSMILE",
+        "optional transcription adapter"
+      ],
+      "required_controls_and_quality": [
+        "Keep automatic gain/noise and voiced support",
+        "Acoustics and transcript-derived meaning are separate",
+        "Save model/language for optional inference"
+      ],
+      "interpretation": "Acoustic descriptors are primary outputs; emotion or stress predictions require a separate named model and evidence.",
+      "source_urls": [
+        "https://parselmouth.readthedocs.io/en/stable/",
+        "https://praat.org/manual/Harmonicity.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/media-results.json",
+          "specification_path": "docs/preparation/MEDIA-TOOLING.md",
+          "scope": "Praat recovers a known 220 Hz tone; RMS matches sine amplitude; pinned Silero ONNX returns finite recurrent probabilities and low silence output.",
+          "limitations": "Synthetic acoustic/model probes only; representative speech segmentation, capture, language/transcription and affect validity remain separate.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "implicit.iat",
+      "family_id": "implicit_association",
+      "label": "Full IAT",
+      "implementation_tier": "core_build",
+      "current_status": "scorer_reference_benchmarked_runner_not_integrated",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "IAT"
+      ],
+      "analyses": [
+        "named_D_scoring",
+        "error_fast_trial_audit"
+      ],
+      "inputs": [
+        "block_category_key_mapping",
+        "first_and_corrected_RT",
+        "accuracy"
+      ],
+      "outputs": [
+        "D_score_direction",
+        "retained_counts",
+        "uncertainty"
+      ],
+      "dependencies": [
+        "jsPsych primitive plus correction events",
+        "R IATscores wrapper"
+      ],
+      "required_controls_and_quality": [
+        "Apply selected algorithm in exact order",
+        "Persist counterbalance",
+        "Keep original latencies"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://cran.r-project.org/package=IATscores"
+      ]
+    },
+    {
+      "id": "implicit.biat",
+      "family_id": "implicit_association",
+      "label": "Brief IAT",
+      "implementation_tier": "core_build",
+      "current_status": "paper_profile_specified_no_complete_runner",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "BIAT_Nosek2014",
+        "named_vendor_BIAT"
+      ],
+      "analyses": [
+        "profile_specific_D",
+        "warmup_prefatory_rules"
+      ],
+      "inputs": [
+        "focal_categories",
+        "ordered_blocks",
+        "final_correct_latency"
+      ],
+      "outputs": [
+        "BIAT_D",
+        "fast_rate_denominator",
+        "retained_trials"
+      ],
+      "dependencies": [
+        "Brohn BIAT compiler/scorer",
+        "jsPsych"
+      ],
+      "required_controls_and_quality": [
+        "Do not inherit full-IAT defaults",
+        "Keep vendor and paper profiles distinct",
+        "Freeze eligible denominator"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://faculty.washington.edu/agg/pdf/Nosek%26al.BIAT%20scoring%20algorith.PLoS%20ONE.2014.pdf"
+      ]
+    },
+    {
+      "id": "implicit.single_category",
+      "family_id": "implicit_association",
+      "label": "SC-IAT and ST-IAT",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocol_not_frozen",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "SC_IAT",
+        "ST_IAT"
+      ],
+      "analyses": [
+        "named_single_category_scoring"
+      ],
+      "inputs": [
+        "category_attribute_mapping",
+        "response_sequence",
+        "RT_accuracy"
+      ],
+      "outputs": [
+        "profile_score",
+        "cell_QC"
+      ],
+      "dependencies": [
+        "jsPsych runner",
+        "separate R scorer"
+      ],
+      "required_controls_and_quality": [
+        "Choose original protocol and scorer before activation",
+        "Single-category variants are not renamed BIAT"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/categories/implicitattitudes"
+      ]
+    },
+    {
+      "id": "implicit.gnat",
+      "family_id": "implicit_association",
+      "label": "Go/No-Go Association Task",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocol_not_frozen",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "GNAT"
+      ],
+      "analyses": [
+        "signal_detection_d_prime",
+        "deadline_accuracy"
+      ],
+      "inputs": [
+        "go_nogo_target_distractor",
+        "deadline",
+        "hits_false_alarms"
+      ],
+      "outputs": [
+        "sensitivity_by_pairing",
+        "contrast",
+        "count_audit"
+      ],
+      "dependencies": [
+        "jsPsych runner",
+        "R signal-detection recipe"
+      ],
+      "required_controls_and_quality": [
+        "Declare extreme-rate correction",
+        "Keep deadline and response mapping fixed",
+        "Distinguish GNAT from generic inhibition go/no-go"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/categories/implicitattitudes"
+      ]
+    },
+    {
+      "id": "implicit.priming",
+      "family_id": "implicit_priming",
+      "label": "Evaluative and semantic priming",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocol_not_frozen",
+      "modalities": [
+        "keyboard_events",
+        "optional_audio_response"
+      ],
+      "paradigms": [
+        "evaluative_priming",
+        "semantic_priming",
+        "masked_priming"
+      ],
+      "analyses": [
+        "congruency_RT_accuracy",
+        "prime_target_effect"
+      ],
+      "inputs": [
+        "prime_mask_target_schedule",
+        "condition",
+        "response"
+      ],
+      "outputs": [
+        "condition_contrasts",
+        "timing_quality"
+      ],
+      "dependencies": [
+        "jsPsych runner",
+        "R trial model"
+      ],
+      "required_controls_and_quality": [
+        "Declare SOA, mask and prime-awareness procedure",
+        "Sub-frame or subliminal claims need measured delivery evidence"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/categories/priming",
+        "https://devdocs.psychopy.org/general/timing/index.html"
+      ]
+    },
+    {
+      "id": "implicit.amp",
+      "family_id": "implicit_priming",
+      "label": "Affect Misattribution Procedure",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocol_not_frozen",
+      "modalities": [
+        "rating_events"
+      ],
+      "paradigms": [
+        "AMP"
+      ],
+      "analyses": [
+        "pleasant_response_proportion",
+        "prime_category_contrast"
+      ],
+      "inputs": [
+        "prime_target_mask",
+        "category",
+        "evaluation"
+      ],
+      "outputs": [
+        "response_proportions",
+        "control_contrast"
+      ],
+      "dependencies": [
+        "jsPsych runner",
+        "R binomial model"
+      ],
+      "required_controls_and_quality": [
+        "Preserve neutral/control prime and task instructions",
+        "Score evaluation rather than generic RT D"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/amp"
+      ]
+    },
+    {
+      "id": "approach.aat",
+      "family_id": "approach_avoidance",
+      "label": "Push/pull Approach-Avoidance Task",
+      "implementation_tier": "core_build",
+      "current_status": "specified_import_and_simulation_only",
+      "modalities": [
+        "joystick",
+        "gamepad",
+        "mouse_or_touch"
+      ],
+      "paradigms": [
+        "AAT_assessment",
+        "AAT_training"
+      ],
+      "analyses": [
+        "onset_RT",
+        "movement_time",
+        "push_pull_difference"
+      ],
+      "inputs": [
+        "neutral_state",
+        "movement_trace",
+        "category_action_mapping"
+      ],
+      "outputs": [
+        "per_category_action_contrasts",
+        "movement_QC"
+      ],
+      "dependencies": [
+        "input-specific runner plugin",
+        "R/AATtools candidate"
+      ],
+      "required_controls_and_quality": [
+        "Assessment balances category by action",
+        "Training is a separate mode",
+        "Physical and simulated actions have distinct profile IDs"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/aat"
+      ]
+    },
+    {
+      "id": "approach.vaast_manikin",
+      "family_id": "approach_avoidance",
+      "label": "VAAST and manikin tasks",
+      "implementation_tier": "extension",
+      "current_status": "scope_candidate_not_integrated",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "VAAST",
+        "manikin"
+      ],
+      "analyses": [
+        "compatibility_RT_accuracy"
+      ],
+      "inputs": [
+        "self_object_movement_semantics",
+        "trial_timing",
+        "response"
+      ],
+      "outputs": [
+        "profile_contrast",
+        "error_audit"
+      ],
+      "dependencies": [
+        "jsPsych custom plugin",
+        "author R analysis reference"
+      ],
+      "required_controls_and_quality": [
+        "Distinguish self movement from object zoom",
+        "Each variant retains original visual-response semantics"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://us.psytoolkit.org/experiment-library/vaast_images.html"
+      ]
+    },
+    {
+      "id": "implicit.agile_relational",
+      "family_id": "implicit_association",
+      "label": "Timed association and relational methods",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_only",
+      "modalities": [
+        "keyboard_or_button_events"
+      ],
+      "paradigms": [
+        "timed_brand_association",
+        "speeded_verification",
+        "EAST_extension",
+        "IRAP_extension",
+        "RRT_extension"
+      ],
+      "analyses": [
+        "endorsement_and_conditional_latency",
+        "named_relational_scorer"
+      ],
+      "inputs": [
+        "statement_or_attribute",
+        "mapping",
+        "response",
+        "timeout"
+      ],
+      "outputs": [
+        "endorsement",
+        "RT_distribution",
+        "profile_specific_score"
+      ],
+      "dependencies": [
+        "jsPsych primitives",
+        "R profile-specific scorers"
+      ],
+      "required_controls_and_quality": [
+        "Timed endorsement remains explicit endorsement",
+        "EAST/IRAP/RRT require separate extension recipes",
+        "No universal hidden preference score"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/categories/implicitattitudes"
+      ]
+    },
+    {
+      "id": "attention.tasks",
+      "family_id": "attention",
+      "label": "Orienting, search and sustained attention",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocols_not_frozen",
+      "modalities": [
+        "keyboard_events",
+        "optional_gaze"
+      ],
+      "paradigms": [
+        "dot_probe",
+        "Posner",
+        "visual_search",
+        "ANT",
+        "PVT_SART_extensions"
+      ],
+      "analyses": [
+        "cue_congruency",
+        "search_slope",
+        "lapses",
+        "gaze_orienting"
+      ],
+      "inputs": [
+        "stimulus_locations",
+        "set_size_or_cue",
+        "responses",
+        "gaze"
+      ],
+      "outputs": [
+        "RT_accuracy_contrasts",
+        "search_or_orienting_metrics"
+      ],
+      "dependencies": [
+        "jsPsych task plugins",
+        "R method recipes"
+      ],
+      "required_controls_and_quality": [
+        "Freeze task-specific bias definition",
+        "Separate behavioral effects from gaze endpoints",
+        "Shortened task reliability must be reported"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.millisecond.com/library/v7/dotprobe/dotprobe_macleod/dotprobe_macleod/dotprobe_macleod.manual",
+        "https://www.psytoolkit.org/library/"
+      ]
+    },
+    {
+      "id": "inhibition.interference",
+      "family_id": "inhibition",
+      "label": "Interference and Go/No-Go tasks",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_protocols_not_frozen",
+      "modalities": [
+        "keyboard_events"
+      ],
+      "paradigms": [
+        "Stroop",
+        "Flanker",
+        "Simon",
+        "Go_NoGo"
+      ],
+      "analyses": [
+        "congruency_cost",
+        "commission_omission",
+        "speed_accuracy"
+      ],
+      "inputs": [
+        "trial_congruency",
+        "go_nogo",
+        "RT_accuracy"
+      ],
+      "outputs": [
+        "task_specific_costs",
+        "error_rates"
+      ],
+      "dependencies": [
+        "jsPsych primitives",
+        "R contrast recipes"
+      ],
+      "required_controls_and_quality": [
+        "Keep congruent/neutral controls where specified",
+        "Do not equate all interference effects or GNAT"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.psytoolkit.org/library/"
+      ]
+    },
+    {
+      "id": "inhibition.stop_signal",
+      "family_id": "inhibition",
+      "label": "Stop-signal task",
+      "implementation_tier": "extension",
+      "current_status": "consensus_reference_identified_not_integrated",
+      "modalities": [
+        "keyboard_events",
+        "stop_signal"
+      ],
+      "paradigms": [
+        "stop_signal"
+      ],
+      "analyses": [
+        "adaptive_SSD",
+        "SSRT_integration",
+        "race_model_checks"
+      ],
+      "inputs": [
+        "go_response",
+        "stop_onset_delay",
+        "omissions"
+      ],
+      "outputs": [
+        "SSRT",
+        "stop_success",
+        "diagnostics"
+      ],
+      "dependencies": [
+        "jsPsych staircase",
+        "consensus R reference"
+      ],
+      "required_controls_and_quality": [
+        "Implement omissions and failed-stop RT checks",
+        "Preserve adaptive history",
+        "Use declared stopping procedure"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://elifesciences.org/articles/46323"
+      ]
+    },
+    {
+      "id": "learning.memory",
+      "family_id": "learning_memory",
+      "label": "Learning, recognition and working memory",
+      "implementation_tier": "extension",
+      "current_status": "scope_candidate_not_integrated",
+      "modalities": [
+        "keyboard_or_choice_events"
+      ],
+      "paradigms": [
+        "serial_reaction_time",
+        "recognition",
+        "n_back",
+        "reversal_learning",
+        "conditioning"
+      ],
+      "analyses": [
+        "learning_curve",
+        "recognition_d_prime",
+        "retention",
+        "trial_model"
+      ],
+      "inputs": [
+        "trial_sequence",
+        "outcome_feedback",
+        "old_new_or_load"
+      ],
+      "outputs": [
+        "accuracy_RT",
+        "sensitivity",
+        "learning_parameters"
+      ],
+      "dependencies": [
+        "jsPsych plugins",
+        "separate R recipes"
+      ],
+      "required_controls_and_quality": [
+        "Do not conflate implicit learning with implicit attitudes",
+        "Preserve exposure history and foil/control definitions"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.psytoolkit.org/library/",
+        "https://www.millisecond.com/library/categories/implicitattitudes"
+      ]
+    },
+    {
+      "id": "choice.psychophysics",
+      "family_id": "choice",
+      "label": "Speeded choice, thresholds and decision models",
+      "implementation_tier": "extension",
+      "current_status": "scope_candidate_not_integrated",
+      "modalities": [
+        "keyboard_or_button_events"
+      ],
+      "paradigms": [
+        "forced_choice",
+        "psychophysical_staircase",
+        "delay_discounting",
+        "risk_choice"
+      ],
+      "analyses": [
+        "choice_RT",
+        "psychometric_threshold",
+        "discounting",
+        "diffusion_extension"
+      ],
+      "inputs": [
+        "stimulus_intensity_or_offer",
+        "response",
+        "adaptive_history"
+      ],
+      "outputs": [
+        "threshold_or_choice_curve",
+        "parameter_uncertainty"
+      ],
+      "dependencies": [
+        "jsPsych primitives",
+        "selected R psychometric/decision package"
+      ],
+      "required_controls_and_quality": [
+        "Model-specific fit diagnostics and sufficient design support",
+        "Censored timeouts are distinct from choices"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.jspsych.org/v8/overview/plugins/",
+        "https://www.psytoolkit.org/library/"
+      ]
+    },
+    {
+      "id": "motor.trajectory",
+      "family_id": "motor",
+      "label": "Mouse, touch and movement trajectories",
+      "implementation_tier": "core_build",
+      "current_status": "scope_candidate_not_integrated",
+      "modalities": [
+        "pointer_events",
+        "touch_events",
+        "joystick"
+      ],
+      "paradigms": [
+        "choice_trajectory",
+        "drag_drop",
+        "reaching"
+      ],
+      "analyses": [
+        "onset_latency",
+        "path_deviation",
+        "velocity",
+        "area_under_path"
+      ],
+      "inputs": [
+        "timestamped_coordinates",
+        "target_geometry",
+        "start_state"
+      ],
+      "outputs": [
+        "trajectory",
+        "movement_metrics"
+      ],
+      "dependencies": [
+        "jsPsych mouse-tracking",
+        "R geometry"
+      ],
+      "required_controls_and_quality": [
+        "Record browser sampling and coordinate changes",
+        "Motor conflict interpretation is separate from movement measurement"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.jspsych.org/v8/extensions/mouse-tracking/"
+      ]
+    },
+    {
+      "id": "questionnaire.items",
+      "family_id": "explicit",
+      "label": "Full questionnaire item library",
+      "implementation_tier": "core_build",
+      "current_status": "single_liking_item_only",
+      "modalities": [
+        "explicit_responses"
+      ],
+      "paradigms": [
+        "questionnaire",
+        "post_exposure_rating"
+      ],
+      "analyses": [
+        "item_validation",
+        "coded_responses"
+      ],
+      "inputs": [
+        "single_multi_choice",
+        "text_numeric",
+        "Likert_matrix",
+        "slider",
+        "rank_constant_sum",
+        "hotspot"
+      ],
+      "outputs": [
+        "item_level_responses",
+        "shown_skipped_missing_states"
+      ],
+      "dependencies": [
+        "Brohn questionnaire compiler",
+        "accessible browser widgets"
+      ],
+      "required_controls_and_quality": [
+        "Stable item/option IDs",
+        "Keyboard alternatives to drag/sliders",
+        "No forced default selection"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/question-types-guide/question-types-overview/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-web.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "Compatible SurveyJS Form Library/browser probes exercise required/display branches, zero/false/missing states, hidden-answer clearing, matrix identity, completion and schema roundtrip.",
+          "limitations": "Library behavior is checked; Brohn canonical compiler, accessible authoring, complete item/flow inventory and persisted response history are not integrated.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "questionnaire.flow",
+      "family_id": "explicit",
+      "label": "Questionnaire branching and repeated flows",
+      "implementation_tier": "core_build",
+      "current_status": "planned_not_integrated",
+      "modalities": [
+        "explicit_responses",
+        "study_events"
+      ],
+      "paradigms": [
+        "screening",
+        "loop_merge",
+        "longitudinal",
+        "stimulus_linked_survey"
+      ],
+      "analyses": [
+        "branch_evaluation",
+        "randomization",
+        "quota_checks"
+      ],
+      "inputs": [
+        "block_graph",
+        "display_skip_rules",
+        "piping",
+        "embedded_variables"
+      ],
+      "outputs": [
+        "realized_path",
+        "item_exposure_links",
+        "assignment_audit"
+      ],
+      "dependencies": [
+        "R flow compiler",
+        "browser runner"
+      ],
+      "required_controls_and_quality": [
+        "Validate every reachable path",
+        "Freeze randomization and translations",
+        "Do not back-edit collected study versions"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.qualtrics.com/support/conjoint-project/survey-tab-px/building-additional-survey-content-px/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-web.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "Compatible SurveyJS Form Library/browser probes exercise required/display branches, zero/false/missing states, hidden-answer clearing, matrix identity, completion and schema roundtrip.",
+          "limitations": "Library behavior is checked; Brohn canonical compiler, accessible authoring, complete item/flow inventory and persisted response history are not integrated.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "questionnaire.scales",
+      "family_id": "explicit",
+      "label": "Scale scoring, UX outcomes and psychometrics",
+      "implementation_tier": "core_build",
+      "current_status": "planned_not_integrated",
+      "modalities": [
+        "explicit_responses",
+        "UX_task_events"
+      ],
+      "paradigms": [
+        "liking",
+        "SUS_or_UEQ_profile",
+        "NASA_TLX_profile",
+        "custom_scale"
+      ],
+      "analyses": [
+        "reverse_code",
+        "subscale_scores",
+        "reliability",
+        "factor_model_extension",
+        "task_success_time"
+      ],
+      "inputs": [
+        "licensed_item_version",
+        "scoring_key",
+        "coverage",
+        "task_attempts"
+      ],
+      "outputs": [
+        "scale_scores",
+        "completion_ease_time",
+        "uncertainty"
+      ],
+      "dependencies": [
+        "R scale registry",
+        "psych/lavaan candidates"
+      ],
+      "required_controls_and_quality": [
+        "Keep exact anchors and missing-item rules",
+        "Instrument rights and translation are separate",
+        "Reliability is not construct validity"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://lavaan.ugent.be/",
+        "https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/question-types-guide/question-types-overview/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-r.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "Raw alpha agrees with independent arithmetic for a small fixture.",
+          "limitations": "This is not validation of a questionnaire instrument; source-bound keys, missing/prorating, translations and end-to-end scoring remain necessary.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "choice.conjoint_maxdiff",
+      "family_id": "explicit_choice",
+      "label": "Ranking, MaxDiff and conjoint",
+      "implementation_tier": "extension",
+      "current_status": "new_scope_candidate_not_integrated",
+      "modalities": [
+        "explicit_choices"
+      ],
+      "paradigms": [
+        "paired_comparison",
+        "best_worst",
+        "choice_based_conjoint"
+      ],
+      "analyses": [
+        "balanced_design",
+        "conditional_logit",
+        "utility_estimates",
+        "scenario_simulation"
+      ],
+      "inputs": [
+        "attributes_levels",
+        "choice_sets",
+        "none_option",
+        "choices"
+      ],
+      "outputs": [
+        "preference_utilities",
+        "attribute_importance",
+        "scenario_shares"
+      ],
+      "dependencies": [
+        "R cbcTools/mlogit candidates",
+        "questionnaire runner"
+      ],
+      "required_controls_and_quality": [
+        "Preserve design and coding",
+        "Report uncertainty and simulator assumptions",
+        "Explicit choice is not an implicit measure"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://cran.r-project.org/web/packages/cbcTools/index.html",
+        "https://cran.r-project.org/web/packages/mlogit/index.html"
+      ]
+    },
+    {
+      "id": "design.protocols",
+      "family_id": "study_design",
+      "label": "Study templates, controls and stimulus delivery",
+      "implementation_tier": "core_build",
+      "current_status": "planned_protocol_snapshot_draft_only",
+      "modalities": [
+        "all_selected_modalities"
+      ],
+      "paradigms": [
+        "within_between_factorial",
+        "counterbalanced",
+        "blocked_randomized"
+      ],
+      "analyses": [
+        "protocol_compilation",
+        "precision_planning",
+        "preflight"
+      ],
+      "inputs": [
+        "research_question",
+        "controls_baselines_practice",
+        "stimuli",
+        "allocation_seed"
+      ],
+      "outputs": [
+        "frozen_run_bundle",
+        "order_assignment",
+        "analysis_plan"
+      ],
+      "dependencies": [
+        "R domain/compiler",
+        "jsPsych runner"
+      ],
+      "required_controls_and_quality": [
+        "Keep rating/movement/rest epochs separate",
+        "Use template-specific controls and baselines",
+        "Record actual execution as distinct from plan"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.jspsych.org/v8/overview/plugins/",
+        "https://devdocs.psychopy.org/general/timing/index.html"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-web.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "Fifteen pinned jsPsych plugin browser bundles and metadata load alongside the tested survey engine.",
+          "limitations": "Bundle loading is not task execution or timing qualification. Each newly activated profile, including SC-IAT, still needs its exact source-bound procedure and scorer.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "centralization.recordings",
+      "family_id": "platform",
+      "label": "Import, capture and synchronized recordings",
+      "implementation_tier": "core_build",
+      "current_status": "portable_contracts_prepared_gaze_import_only",
+      "modalities": [
+        "all_streams",
+        "events",
+        "media"
+      ],
+      "paradigms": [
+        "lab",
+        "remote",
+        "import"
+      ],
+      "analyses": [
+        "clock_mapping",
+        "unit_normalization",
+        "segment_quality"
+      ],
+      "inputs": [
+        "native_files_or_sidecars",
+        "calibration",
+        "clock_pairs",
+        "stream_metadata"
+      ],
+      "outputs": [
+        "immutable_recording_bundle",
+        "linked_events",
+        "clock_uncertainty"
+      ],
+      "dependencies": [
+        "device sidecars",
+        "LSL/XDF/pyxdf",
+        "R import registry"
+      ],
+      "required_controls_and_quality": [
+        "Preserve raw clocks and offsets",
+        "Never align streams by row number",
+        "Live adapters need a named rig even when file import works"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html",
+        "https://docs.psychopy.org/hardware/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/acquisition-results.json",
+          "specification_path": "docs/preparation/ACQUISITION-TOOLING.md",
+          "scope": "BrainFlow synthetic-board sampling/markers/release; same-machine exact-source LSL loopback; generated XDF, BIDS/BrainVision and SNIRF roundtrips; Parquet int64/unit/null preservation and bounded DuckDB queries.",
+          "limitations": "No physical rig, real multi-device synchronization, production capture/import adapter or durable run service qualified.",
+          "product_integration": "not_established_by_this_evidence"
+        },
+        {
+          "result_path": "docs/preparation/platform-results-r.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "SQLite transaction, replay/conflict, rollback and key probes; processx success/failure, targets reuse, crew worker execution and R/Python decimal-tick/null/unit roundtrip.",
+          "limitations": "Isolated platform probes; durable leases/fencing, acquisition recovery and end-to-end automatic reports still require application integration.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "multimodal.analysis",
+      "family_id": "multimodal",
+      "label": "Multimodal alignment, contrasts and models",
+      "implementation_tier": "core_build",
+      "current_status": "architecture_plan_not_integrated",
+      "modalities": [
+        "all_valid_streams",
+        "explicit_responses",
+        "behavior"
+      ],
+      "paradigms": [
+        "event_locked",
+        "stimulus_comparison",
+        "repeated_measures"
+      ],
+      "analyses": [
+        "aligned_views",
+        "paired_hierarchical_models",
+        "crossmodal_association",
+        "fusion_extension"
+      ],
+      "inputs": [
+        "shared_exposure_phase_keys",
+        "per_modality_quality",
+        "prespecified_estimand"
+      ],
+      "outputs": [
+        "aligned_traces",
+        "condition_effects",
+        "uncertainty",
+        "missing_modality_audit"
+      ],
+      "dependencies": [
+        "R models",
+        "MNE/NeuroKit artifacts"
+      ],
+      "required_controls_and_quality": [
+        "Participant/stimulus nesting defines independence",
+        "Account for different response lags",
+        "Fusion requires held-out reference outcomes"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html",
+        "https://lavaan.ugent.be/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-r.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "Paired estimate, standard error and dz agree with hand arithmetic; lme4 coefficient matches an upstream example replay.",
+          "limitations": "No multimodal synchronization, full inferential recipe, predictive model or construct validity established.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "reporting.automation",
+      "family_id": "platform",
+      "label": "Automated quality review and reproducible reports",
+      "implementation_tier": "core_build",
+      "current_status": "draft_gaze_report_only",
+      "modalities": [
+        "analysis_artifacts"
+      ],
+      "paradigms": [
+        "all_supported_recipes"
+      ],
+      "analyses": [
+        "job_DAG",
+        "provenance",
+        "report_generation",
+        "export"
+      ],
+      "inputs": [
+        "recipe_versions",
+        "raw_and_config_hashes",
+        "QC_decisions",
+        "result_support"
+      ],
+      "outputs": [
+        "plain_language_report",
+        "methods_appendix",
+        "tidy_tables",
+        "reproducible_bundle"
+      ],
+      "dependencies": [
+        "R orchestration",
+        "Quarto",
+        "durable worker/storage"
+      ],
+      "required_controls_and_quality": [
+        "Invalidate affected descendants after edits",
+        "Surface actionable exceptions",
+        "No silent imputation or new post-hoc primary outcome"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://mne.tools/stable/index.html",
+        "https://www.jspsych.org/v8/overview/plugins/"
+      ],
+      "preparation_evidence": [
+        {
+          "result_path": "docs/preparation/platform-results-r.json",
+          "specification_path": "docs/preparation/PLATFORM-TOOLING.md",
+          "scope": "SQLite transaction, replay/conflict, rollback and key probes; processx success/failure, targets reuse, crew worker execution and R/Python decimal-tick/null/unit roundtrip.",
+          "limitations": "Isolated platform probes; durable leases/fencing, acquisition recovery and end-to-end automatic reports still require application integration.",
+          "product_integration": "not_established_by_this_evidence"
+        }
+      ]
+    },
+    {
+      "id": "operations.research",
+      "family_id": "platform",
+      "label": "Research operations and accessible completion",
+      "implementation_tier": "core_build",
+      "current_status": "local_single_user_draft_only",
+      "modalities": [
+        "study_and_session_metadata"
+      ],
+      "paradigms": [
+        "teaching",
+        "commercial_team",
+        "remote_panel"
+      ],
+      "analyses": [
+        "consent_and_eligibility",
+        "session_resume",
+        "role_review",
+        "version_audit",
+        "workspace_and_historical_study_catalog",
+        "dataset_curation_and_version_history",
+        "template_and_asset_library",
+        "clone_and_portable_design_exchange",
+        "participant_deployment_and_enrollment",
+        "collection_closure_and_reanalysis",
+        "archive_sharing_backup_and_retention"
+      ],
+      "inputs": [
+        "project_roles",
+        "participant_alias",
+        "run_status",
+        "locale_access_needs"
+      ],
+      "outputs": [
+        "recoverable_session",
+        "review_queue",
+        "audit_export"
+      ],
+      "dependencies": [
+        "R/Shiny workbench",
+        "participant runner",
+        "storage and permissions"
+      ],
+      "required_controls_and_quality": [
+        "Separate identifiers from analysis exports",
+        "Consent applies to chosen cameras/microphones/providers",
+        "Support keyboard/screen-reader workflow and focus recovery",
+        "Design-only clone/export/import never transfers observed participant state or activates recruitment",
+        "Archived studies, datasets and frozen reports remain discoverable independently of current draft revision",
+        "Hosted participant access requires an actual configured endpoint and isolation; loopback is local only"
+      ],
+      "interpretation": "Measured outcomes and prespecified contrasts; no universal latent-construct score.",
+      "source_urls": [
+        "https://www.qualtrics.com/support/conjoint-project/survey-tab-px/building-additional-survey-content-px/",
+        "https://www.jspsych.org/v8/overview/plugins/"
+      ],
+      "operational_specifications": [
+        "docs/product/STUDY-LIFECYCLE.md",
+        "docs/product/DESIGN-PORTABILITY.md",
+        "docs/product/journey-acceptance.json"
+      ]
+    }
+  ]
+}

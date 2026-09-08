@@ -1,0 +1,1624 @@
+{
+  "schema_version": "brohn-researcher-acceptance/1.0.0",
+  "prepared_at": "2026-09-08",
+  "origin": "original_synthetic",
+  "purpose": "Independent research-fit expectations for service tests and an actual researcher/participant UI walkthrough.",
+  "evidence_status": "verified_synthetic_harnesses_with_remaining_original_acceptance_clauses",
+  "product_data_schema": false,
+  "notes": [
+    "These are acceptance inputs, not a supported uploaded study bundle.",
+    "No participant data, live-device data or borrowed research stimuli are present.",
+    "Adapt fixture fields at the test boundary; never derive expected values with product functions.",
+    "All origin values remain synthetic even when a transport or UI action succeeds."
+  ],
+  "tolerances": {
+    "absolute_numeric": 1e-09,
+    "relative_numeric": 1e-09,
+    "identity_units_origin_missing_reasons": "exact"
+  },
+  "study": {
+    "name": "Package clarity: original researcher QA fixture",
+    "research_question": "Does package B change valid gaze share on the logo compared with current package A, and does reported liking differ?",
+    "conditions": [
+      {
+        "id": "A",
+        "role": "experimental_control",
+        "label": "Current package"
+      },
+      {
+        "id": "B",
+        "role": "test",
+        "label": "Revised package"
+      }
+    ],
+    "contrast": "B_minus_A",
+    "allocation": {
+      "policy": "counterbalanced_AB_BA",
+      "observed_balance_not_guaranteed": true
+    },
+    "measure_requirements": {
+      "liking": "required",
+      "gaze": "optional_in_partial_failure_scenario",
+      "eda": "optional_in_partial_failure_scenario"
+    },
+    "participant_appearance": {
+      "background_srgb": "#808080",
+      "stimulus_rect_normalized": [
+        0.1,
+        0.1,
+        0.8,
+        0.8
+      ],
+      "inherits_researcher_theme": false
+    },
+    "phases": [
+      {
+        "kind": "practice",
+        "scored": false
+      },
+      {
+        "kind": "physiological_baseline",
+        "duration_ms": 10000,
+        "is_control_condition": false
+      },
+      {
+        "kind": "passive_viewing",
+        "duration_ms": 5000,
+        "condition_order": "allocation"
+      },
+      {
+        "kind": "active_response",
+        "question_id": "liking",
+        "after_each_presentation": true,
+        "in_passive_analysis": false
+      },
+      {
+        "kind": "debrief",
+        "scored": false
+      }
+    ],
+    "timing_note": "These times are software-test settings only. EDA event windows use their separate synthetic oracle and cannot be assumed to fit every five-second exposure.",
+    "aoi": {
+      "semantic_id": "logo",
+      "source_space": "stimulus_normalized",
+      "geometry_revision": "aoi-1",
+      "rect": [
+        0,
+        0,
+        0.5,
+        1
+      ],
+      "edge_policy": "left_top_inclusive_right_bottom_exclusive"
+    },
+    "analysis_policy": {
+      "gaze": "Percentage of valid passive-viewing time inside logo AOI",
+      "liking": "Declared equal-person mean of within-session B-minus-A rating differences",
+      "repeated_sessions": "Mean valid paired session differences within each participant, then equal-weight participants",
+      "gaze_missing_pair": "Exclude only the gaze contrast; retain other eligible measures",
+      "multiplicity": "No significance claims in this fixture",
+      "ttff": "Unavailable where missing observation may hide the first hit"
+    }
+  },
+  "sessions": [
+    {
+      "participant_id": "P01",
+      "session_id": "P01-S1",
+      "order": "AB",
+      "origin": "original_synthetic",
+      "A": {
+        "valid_gaze_ms": 4000,
+        "logo_gaze_ms": 1000,
+        "liking": 3
+      },
+      "B": {
+        "valid_gaze_ms": 5000,
+        "logo_gaze_ms": 2500,
+        "liking": 6
+      }
+    },
+    {
+      "participant_id": "P01",
+      "session_id": "P01-S2",
+      "order": "BA",
+      "origin": "original_synthetic",
+      "A": {
+        "valid_gaze_ms": 5000,
+        "logo_gaze_ms": 2000,
+        "liking": 4
+      },
+      "B": {
+        "valid_gaze_ms": 5000,
+        "logo_gaze_ms": 3000,
+        "liking": 6
+      }
+    },
+    {
+      "participant_id": "P02",
+      "session_id": "P02-S1",
+      "order": "BA",
+      "origin": "original_synthetic",
+      "A": {
+        "valid_gaze_ms": 4000,
+        "logo_gaze_ms": 2000,
+        "liking": 4
+      },
+      "B": {
+        "valid_gaze_ms": 4000,
+        "logo_gaze_ms": 2400,
+        "liking": 5
+      }
+    },
+    {
+      "participant_id": "P03",
+      "session_id": "P03-S1",
+      "order": "AB",
+      "origin": "original_synthetic",
+      "A": {
+        "valid_gaze_ms": 5000,
+        "logo_gaze_ms": 1000,
+        "liking": 5
+      },
+      "B": {
+        "valid_gaze_ms": 4000,
+        "logo_gaze_ms": 800,
+        "liking": 5
+      }
+    },
+    {
+      "participant_id": "P04",
+      "session_id": "P04-S1",
+      "order": "BA",
+      "origin": "original_synthetic",
+      "A": {
+        "valid_gaze_ms": 0,
+        "logo_gaze_ms": 0,
+        "liking": 2,
+        "missing_reason": "zero_valid_passive_duration"
+      },
+      "B": {
+        "valid_gaze_ms": 5000,
+        "logo_gaze_ms": 1500,
+        "liking": 4
+      }
+    }
+  ],
+  "gaze_interval_oracle": {
+    "participant_id": "P01",
+    "session_id": "P01-S1",
+    "condition": "A",
+    "presentation_id": "P01-S1-A-1",
+    "time_unit": "ms",
+    "coordinate_space": "stimulus_normalized",
+    "intervals": [
+      {
+        "start": 0,
+        "end": 1000,
+        "x": 0.25,
+        "y": 0.5,
+        "valid": true,
+        "phase": "passive_viewing"
+      },
+      {
+        "start": 1000,
+        "end": 2500,
+        "x": 0.75,
+        "y": 0.5,
+        "valid": true,
+        "phase": "passive_viewing"
+      },
+      {
+        "start": 2500,
+        "end": 3500,
+        "x": null,
+        "y": null,
+        "valid": false,
+        "phase": "passive_viewing"
+      },
+      {
+        "start": 3500,
+        "end": 5000,
+        "x": 0.75,
+        "y": 0.5,
+        "valid": true,
+        "phase": "passive_viewing"
+      },
+      {
+        "start": 5000,
+        "end": 7000,
+        "x": 0.25,
+        "y": 0.5,
+        "valid": true,
+        "phase": "active_response"
+      }
+    ],
+    "expected": {
+      "valid_passive_duration_ms": 4000,
+      "invalid_passive_duration_ms": 1000,
+      "active_duration_ms": 2000,
+      "logo_duration_ms": 1000,
+      "share_pct": 25,
+      "wrong_share_if_active_included_pct": 50
+    }
+  },
+  "expected_comparisons": {
+    "session_gaze_difference_pp": {
+      "P01-S1": 25,
+      "P01-S2": 20,
+      "P02-S1": 10,
+      "P03-S1": 0,
+      "P04-S1": null
+    },
+    "participant_gaze_difference_pp": {
+      "P01": 22.5,
+      "P02": 10,
+      "P03": 0,
+      "P04": null
+    },
+    "participant_liking_difference": {
+      "P01": 2.5,
+      "P02": 1,
+      "P03": 0,
+      "P04": 2
+    },
+    "gaze_participants": 3,
+    "liking_participants": 4,
+    "sessions_total": 5,
+    "gaze_mean_difference_pp": 10.833333333333334,
+    "liking_mean_difference": 1.375,
+    "incorrect_session_pooled_gaze_mean_pp": 13.75,
+    "observed_order_counts": {
+      "AB": 2,
+      "BA": 3
+    },
+    "P04_B_share_pct": 30,
+    "P04_A_share_pct": null,
+    "P04_liking_difference": 2
+  },
+  "eda_oracles": {
+    "kind": "declared_feature_arithmetic_not_peak_detection_accuracy",
+    "unit": "microSiemens",
+    "interval": {
+      "valid_duration_ms": 10000,
+      "accepted_peak_amplitudes": [
+        0.2,
+        0.4
+      ],
+      "expected": {
+        "count": 2,
+        "peaks_per_valid_minute": 12,
+        "amplitude_mean": 0.3,
+        "amplitude_denominator": 2
+      }
+    },
+    "event_windows": [
+      {
+        "id": "E1",
+        "complete": true,
+        "response": true,
+        "magnitude": 0.2
+      },
+      {
+        "id": "E2",
+        "complete": true,
+        "response": true,
+        "magnitude": 0.4
+      },
+      {
+        "id": "E3",
+        "complete": true,
+        "response": false,
+        "magnitude": 0
+      },
+      {
+        "id": "E4",
+        "complete": false,
+        "response": null,
+        "magnitude": null,
+        "missing_reason": "missing_signal"
+      }
+    ],
+    "event_expected": {
+      "complete_windows": 3,
+      "missing_windows": 1,
+      "responders": 2,
+      "response_probability": 0.6666666666666666,
+      "mean_magnitude_complete_windows": 0.2,
+      "mean_amplitude_responders": 0.3
+    },
+    "baseline": {
+      "baseline_samples": [
+        4,
+        4,
+        4
+      ],
+      "viewing_samples": [
+        5,
+        6,
+        5
+      ],
+      "expected_baseline_mean": 4,
+      "expected_viewing_mean": 5.333333333333333,
+      "expected_mean_change": 1.3333333333333333
+    },
+    "phasic_area": {
+      "time_s": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "values": [
+        0,
+        0.2,
+        0.2,
+        0
+      ],
+      "rule": "piecewise_linear_trapezoid",
+      "expected_area_microSiemens_s": 0.4
+    },
+    "eligibility_failures": [
+      "Unknown relative amplitude must not be relabelled microSiemens",
+      "Peak-to-stimulus causation must not be inferred from closest timestamp",
+      "Incomplete required response window is unavailable rather than nonresponse",
+      "Baseline screen and control package must remain different concepts"
+    ]
+  },
+  "questionnaire_oracles": {
+    "items": [
+      {
+        "id": "liking",
+        "type": "integer_rating",
+        "min": 1,
+        "max": 7,
+        "required": true,
+        "referent": "realized_presentation_id",
+        "phase": "active_response"
+      },
+      {
+        "id": "units_bought",
+        "type": "integer",
+        "min": 0,
+        "required": true
+      },
+      {
+        "id": "familiar",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "id": "preferred",
+        "type": "single_choice",
+        "options": [
+          "A",
+          "B",
+          "neither"
+        ]
+      },
+      {
+        "id": "why_B",
+        "type": "text",
+        "show_if": {
+          "eq": [
+            "preferred",
+            "B"
+          ]
+        }
+      }
+    ],
+    "truth_table": [
+      {
+        "answers": {
+          "units_bought": 0,
+          "familiar": false,
+          "preferred": "A"
+        },
+        "expected_valid_required_values": [
+          "units_bought",
+          "familiar"
+        ],
+        "why_B_visible": false
+      },
+      {
+        "answers": {
+          "preferred": "B"
+        },
+        "why_B_visible": true
+      },
+      {
+        "answers": {
+          "preferred": null
+        },
+        "why_B_visible": false
+      }
+    ],
+    "history": [
+      {
+        "sequence": 1,
+        "item_id": "preferred",
+        "value": "B"
+      },
+      {
+        "sequence": 2,
+        "item_id": "why_B",
+        "value": "Logo is easy to see"
+      },
+      {
+        "sequence": 3,
+        "item_id": "preferred",
+        "value": "A"
+      }
+    ],
+    "expected_current_answers": {
+      "preferred": "A",
+      "why_B": null
+    },
+    "expected_history_count": 3,
+    "expected_why_B_current_state": "not_shown_after_answer_change",
+    "missing_states_to_preserve": [
+      "unanswered",
+      "skipped",
+      "not_shown",
+      "declined"
+    ],
+    "scale_arithmetic_only": {
+      "item_values": [
+        1,
+        4,
+        5
+      ],
+      "range": [
+        1,
+        5
+      ],
+      "reverse_item_indexes_one_based": [
+        2
+      ],
+      "missing_policy": "require_all",
+      "expected_keyed_values": [
+        1,
+        2,
+        5
+      ],
+      "expected_mean": 2.6666666666666665,
+      "claim": "Original arithmetic fixture, not a validated psychological scale"
+    }
+  },
+  "timing_oracles": {
+    "correction_trial": {
+      "scheduled_onset_ms": 900,
+      "observed_presentation_timestamp_ms": 1000,
+      "first_response_ms": 1400,
+      "first_response_correct": false,
+      "final_correct_response_ms": 1650,
+      "expected_first_rt_ms": 400,
+      "expected_final_correct_rt_ms": 650,
+      "wrong_rt_from_scheduled_onset_ms": 750,
+      "onset_evidence": "Browser presentation timestamp; not photodiode-confirmed onset"
+    },
+    "native_ticks": {
+      "start": "9007199254740993",
+      "end": "9007199254741018",
+      "ticks_per_second": 1000,
+      "expected_delta_ticks": 25,
+      "expected_delta_ms": 25
+    },
+    "interrupted_trial": {
+      "events": [
+        "presented",
+        "focus_lost",
+        "page_reloaded"
+      ],
+      "expected_status": "interrupted",
+      "same_trial_may_be_silently_rescored": false,
+      "resume_requires": "procedure-specific policy and fresh realized presentation identity"
+    },
+    "cross_modal": {
+      "device_event_ms": 1000,
+      "device_to_runner_offset_ms": 100,
+      "expected_runner_event_ms": 1100,
+      "other_event_ms": 1099,
+      "expected_difference_ms": 1,
+      "maximum_combined_uncertainty_ms": 5,
+      "accepted_component_uncertainties_ms": [
+        2,
+        3
+      ],
+      "rejected_component_uncertainties_ms": [
+        3,
+        5
+      ],
+      "without_clock_mapping": "unavailable_cross_modal_but_unimodal_may_remain_available"
+    }
+  },
+  "biat_oracles": {
+    "profile_id": "biat-nosek2014-goodfocal-16plus4x20",
+    "reference": "docs/methods/reuse/IMPLICIT-REUSE.md",
+    "candidate_definition": {
+      "warmup_count": 16,
+      "subsequent_blocks": 4,
+      "trials_per_block": 20,
+      "excluded_attribute_prefix_per_block": 4,
+      "expected_total_trials": 96,
+      "expected_candidate_trials": 64
+    },
+    "fast_fraction_case": {
+      "candidate_latencies_ms": [
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        11000,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "expected_after_slow_removal": 63,
+      "expected_fast_numerator": 6,
+      "expected_fast_fraction": 0.09523809523809523,
+      "wrong_all_trial_denominator": 96,
+      "fast_count_uses": "Original values before 400-to-2000 ms bounding"
+    },
+    "pair_math_only": {
+      "complete_task": false,
+      "pair_1": {
+        "A": [
+          500,
+          700
+        ],
+        "B": [
+          900,
+          1100
+        ],
+        "expected_combined_sample_sd": 258.19888974716116,
+        "expected_D": 1.5491933384829668
+      },
+      "pair_2": {
+        "A": [
+          600,
+          800
+        ],
+        "B": [
+          800,
+          1000
+        ],
+        "expected_combined_sample_sd": 163.29931618554522,
+        "expected_D": 1.224744871391589
+      },
+      "expected_mean_D": 1.3869691049372779,
+      "full_profile_result_expected": "unavailable_incomplete_task"
+    },
+    "activation_prerequisites": [
+      "Source-versioned complete profile",
+      "Final-correct event capture",
+      "Actual category/key and block identities",
+      "Procedure-specific exclusions and direction",
+      "Allowed stimuli/materials and declared applicability",
+      "Separate author-data reference evidence where required"
+    ]
+  },
+  "aat_oracles": {
+    "kind": "original_cell_arithmetic_not_an_activated_protocol",
+    "device_profile": "keyboard_categorization",
+    "latency_definition": "observed_onset_to_correct_keypress_ms",
+    "cells": {
+      "target_push": [
+        700,
+        900
+      ],
+      "target_pull": [
+        600,
+        700
+      ],
+      "control_push": [
+        650,
+        750
+      ],
+      "control_pull": [
+        600,
+        700
+      ]
+    },
+    "expected_means_ms": {
+      "target_push": 800,
+      "target_pull": 650,
+      "control_push": 700,
+      "control_pull": 650
+    },
+    "formula": "(target_push - target_pull) - (control_push - control_pull)",
+    "expected_double_mean_difference_ms": 100,
+    "expected_interpretation": "Positive means a larger push-minus-pull latency difference for target than control under this declared mapping.",
+    "forbidden_outputs": [
+      "joystick_movement_initiation",
+      "joystick_movement_execution",
+      "physical_approach_distance",
+      "individual_preference_cutoff"
+    ],
+    "physical_profile_requirements": [
+      "Named movement device and axis calibration",
+      "Initiation/execution/completion timestamps",
+      "Balanced category-by-action cells",
+      "Frozen relevant/irrelevant response mapping",
+      "Applicable motor and latency exclusions"
+    ]
+  },
+  "history_and_portability_oracles": {
+    "original_analysis": {
+      "session_id": "P01-S1",
+      "aoi_revision": "aoi-1",
+      "A_share_pct": 25,
+      "B_share_pct": 50,
+      "difference_pp": 25
+    },
+    "amended_analysis": {
+      "session_id": "P01-S1",
+      "aoi_revision": "aoi-2",
+      "A_logo_gaze_ms": 1500,
+      "A_valid_gaze_ms": 4000,
+      "A_share_pct": 37.5,
+      "B_share_pct": 50,
+      "difference_pp": 12.5
+    },
+    "raw_content_hash_must_change": false,
+    "analysis_configuration_identity_must_change": true,
+    "clone_copy_semantics": [
+      "condition roles and contrast",
+      "baseline and practice phases",
+      "timing and participant appearance",
+      "questionnaire graph and truth tables",
+      "design AOIs and source geometry",
+      "recipe versions and declared parameters"
+    ],
+    "clone_reset_counts": {
+      "participants": 0,
+      "responses": 0,
+      "runs": 0,
+      "allocations": 0,
+      "reports": 0,
+      "invitations": 0,
+      "deployments": 0
+    },
+    "clone_new_identities": [
+      "study",
+      "editable_revision"
+    ],
+    "portable_package": {
+      "format": "brohn-study-package/1.0",
+      "suffix": ".brohn-study.zip",
+      "arbitrary_code_execution": false,
+      "auto_publish": false,
+      "auto_download_dependencies": false,
+      "preserve_semantics_under_id_remapping": true,
+      "unknown_structure": "reject_without_partial_import",
+      "unsupported_capability": "visible_draft_dependency"
+    },
+    "independent_roundtrip_fingerprints": [
+      "A stays experimental control",
+      "B-minus-A remains comparison",
+      "baseline is not a condition",
+      "passive duration remains 5000 ms",
+      "liking remains post-presentation and required",
+      "units_bought zero remains valid",
+      "familiar false remains valid",
+      "preferred B alone shows why_B",
+      "logo geometry and semantic pairing unchanged",
+      "same fixed-seed schedule where supported"
+    ],
+    "mutations_that_must_fail_equivalence": [
+      "Change A control to B",
+      "Move liking into passive viewing",
+      "Reverse branch operator",
+      "Change scoring key",
+      "Drop baseline",
+      "Change stimulus bytes",
+      "Drop an AOI reference"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "RQA-01",
+      "name": "Create controlled study",
+      "journey_ids": [
+        "UX-J02"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Create two conditions and semantic logo AOIs",
+        "Designate A as control",
+        "Add distinct baseline, practice, viewing and question phases",
+        "Inspect plan"
+      ],
+      "oracle_paths": [
+        "study.conditions",
+        "study.phases",
+        "study.analysis_policy"
+      ],
+      "expected_outcome": "No control/baseline substitution; visible B-minus-A estimand.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-02",
+      "name": "Preview, pilot and freeze",
+      "journey_ids": [
+        "UX-J01",
+        "UX-J02"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Preview AB and BA",
+        "Run a fictional pilot",
+        "Freeze release",
+        "Edit draft"
+      ],
+      "oracle_paths": [
+        "study.allocation",
+        "study.phases"
+      ],
+      "expected_outcome": "Pinned release unchanged; pilot excluded from analytical cohort; both order variants link liking to actual presentation.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-03",
+      "name": "Serve participant route",
+      "journey_ids": [
+        "UX-J23",
+        "UX-J24",
+        "UX-J27"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Create local release",
+        "Open in fresh participant browser",
+        "Complete entry and consent",
+        "Reach debrief"
+      ],
+      "oracle_paths": [],
+      "expected_outcome": "Participant sees pinned study without researcher session or researcher data; local URL accurately labelled; failed deployment supplies no claimed working link.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-04",
+      "name": "Branch and correct questionnaire",
+      "journey_ids": [
+        "UX-J03"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Submit numeric zero and boolean false",
+        "Choose B and answer why_B",
+        "Change preference to A",
+        "Leave required liking empty then correct"
+      ],
+      "oracle_paths": [
+        "questionnaire_oracles"
+      ],
+      "expected_outcome": "Truth table and current/history distinction pass; validation identifies and focuses correct item.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-05",
+      "name": "Receipt retry and next participant",
+      "journey_ids": [
+        "UX-J09",
+        "UX-J17",
+        "UX-J25",
+        "UX-J26"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Submit one event batch",
+        "Repeat identical batch key",
+        "Reconnect and resume approved checkpoint",
+        "Start a fresh lab participant"
+      ],
+      "oracle_paths": [
+        "timing_oracles.interrupted_trial"
+      ],
+      "expected_outcome": "No duplicated observations or allocation; exact acknowledged sequence; no previous participant answers or private token retained.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-06",
+      "name": "Curate and import sessions",
+      "journey_ids": [
+        "UX-J10",
+        "UX-J20"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Import deterministic fixtures",
+        "Map participant/session/presentation and geometry",
+        "Resolve invalid mapping",
+        "Accept dataset and reopen"
+      ],
+      "oracle_paths": [
+        "sessions",
+        "gaze_interval_oracle"
+      ],
+      "expected_outcome": "Immutable source bytes and explicit accepted version; invalid or ambiguous data blocked from affected analysis.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-07",
+      "name": "Compare correct analysis units",
+      "journey_ids": [
+        "UX-J13"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Let accepted dataset analyse",
+        "Open report denominators and contrast",
+        "Export results"
+      ],
+      "oracle_paths": [
+        "expected_comparisons"
+      ],
+      "expected_outcome": "Matches equal-person oracle; no session/frame pseudoreplication or invented significance.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-08",
+      "name": "Recover optional gaze failure",
+      "journey_ids": [
+        "UX-J08"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Inspect P04 missing A gaze",
+        "Continue eligible analysis",
+        "Read per-measure report quality"
+      ],
+      "oracle_paths": [
+        "expected_comparisons"
+      ],
+      "expected_outcome": "P04 gaze pair unavailable; B share 30 percent and liking difference +2 retained; missing not zero.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-09",
+      "name": "Inspect EDA report",
+      "journey_ids": [
+        "UX-J05"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Run supported EDA recipe or feature import",
+        "Inspect peaks, support and baseline",
+        "Read interval and event summaries"
+      ],
+      "oracle_paths": [
+        "eda_oracles"
+      ],
+      "expected_outcome": "Correct units and distinct amplitude/magnitude/count denominators; no event attribution by nearest peak.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-10",
+      "name": "Inspect aligned multimodal timeline",
+      "journey_ids": [
+        "UX-J05"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Load mapped clocks and phase events",
+        "Inspect timeline",
+        "Remove mapping or increase uncertainty"
+      ],
+      "oracle_paths": [
+        "timing_oracles.cross_modal",
+        "gaze_interval_oracle"
+      ],
+      "expected_outcome": "Only eligible cross-modal output remains; questions excluded from passive measures; exact clock values preserved.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-11",
+      "name": "Reanalyse and compare history",
+      "journey_ids": [
+        "UX-J12",
+        "UX-J19",
+        "UX-J29"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Open original report",
+        "Change AOI with reason",
+        "Reanalyse same dataset",
+        "Compare and reopen both versions"
+      ],
+      "oracle_paths": [
+        "history_and_portability_oracles.original_analysis",
+        "history_and_portability_oracles.amended_analysis"
+      ],
+      "expected_outcome": "Original +25 pp remains; new +12.5 pp has new configuration; raw hash unchanged.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-12",
+      "name": "Clone historical design",
+      "journey_ids": [
+        "UX-J21"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Select historical revision",
+        "Clone and rename",
+        "Inspect new design and participant library",
+        "Reopen original"
+      ],
+      "oracle_paths": [
+        "history_and_portability_oracles.clone_copy_semantics",
+        "history_and_portability_oracles.clone_reset_counts"
+      ],
+      "expected_outcome": "New draft, fresh identities and zero operational records; source unchanged.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-13",
+      "name": "Template and portable roundtrip",
+      "journey_ids": [
+        "UX-J22",
+        "UX-J31"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Save design as template",
+        "Export design",
+        "Import into clean workspace",
+        "Preview both orders and question branches"
+      ],
+      "oracle_paths": [
+        "history_and_portability_oracles.portable_package",
+        "history_and_portability_oracles.independent_roundtrip_fingerprints"
+      ],
+      "expected_outcome": "Independent behaviour preserved despite ID remapping; no results or provider secrets transferred.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-14",
+      "name": "Import recovery and malformed input",
+      "journey_ids": [
+        "UX-J32"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Cancel import",
+        "Retry corrupt hash or unsupported schema",
+        "Simulate unavailable write destination"
+      ],
+      "oracle_paths": [
+        "history_and_portability_oracles.portable_package"
+      ],
+      "expected_outcome": "No visible partial study or overwritten source; bounded non-executing import with actionable repair.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-15",
+      "name": "Audit BIAT timing and scoring",
+      "journey_ids": [
+        "UX-J06"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Inspect first-error and final-correct trial events",
+        "Execute fast-fraction fixture",
+        "Try incomplete pair-math fixture as full task"
+      ],
+      "oracle_paths": [
+        "timing_oracles.correction_trial",
+        "timing_oracles.native_ticks",
+        "biat_oracles"
+      ],
+      "expected_outcome": "650 ms correction-inclusive RT; 6/63 fast fraction; eight-value pair math cannot masquerade as completed BIAT.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-16",
+      "name": "Audit AAT device and score",
+      "journey_ids": [
+        "UX-J06"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Configure named response profile",
+        "Inspect category by action cells",
+        "Run arithmetic reference",
+        "Attempt physical outcome on keyboard profile"
+      ],
+      "oracle_paths": [
+        "aat_oracles"
+      ],
+      "expected_outcome": "Double mean difference +100 ms with declared direction; no fabricated physical-movement output.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-17",
+      "name": "Accessible complete workflow",
+      "journey_ids": [
+        "UX-J14",
+        "UX-J15",
+        "UX-J16",
+        "UX-J18"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "major",
+      "actions": [
+        "Use keyboard only for create/import/run/review/clone",
+        "Run at narrow width",
+        "Enable researcher reduced motion",
+        "Inspect participant preview settings"
+      ],
+      "oracle_paths": [
+        "study.participant_appearance"
+      ],
+      "expected_outcome": "No unreachable commands or focus traps; readable chart alternatives; researcher preference leaves frozen participant appearance unchanged.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    },
+    {
+      "id": "RQA-18",
+      "name": "Close, archive and restore",
+      "journey_ids": [
+        "UX-J28",
+        "UX-J33",
+        "UX-J34"
+      ],
+      "actor": "simulated_consumer_researcher_and_participant",
+      "status": "not_executed",
+      "severity_if_failed": "critical",
+      "actions": [
+        "Close enrollment with active run pending",
+        "Resolve terminal run state",
+        "Freeze report",
+        "Archive and restore",
+        "Reopen historical report"
+      ],
+      "oracle_paths": [],
+      "expected_outcome": "No new enrollment; completion/pending/interrupted distinct; restore does not reopen collection or revive purged records.",
+      "required_evidence": [
+        "product_revision",
+        "fixture_hash",
+        "execution_type",
+        "actual_output_or_browser_evidence",
+        "failure_or_blocker_if_any"
+      ],
+      "execution_evidence": []
+    }
+  ],
+  "execution_ledger_note": "The original scenarios below are unexecuted as their complete original bundles; their status is not a claim that no product testing occurred. The following executed harnesses are the actual coverage ledger, with narrower original synthetic oracles. Read RESEARCHER-QA.md for findings, limits and remaining clauses. No human usability or physical-device/scientific qualification is asserted.",
+  "execution_ledger": [
+    {
+      "harness": "tests/researcher-workspace.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 85,
+      "evidence": "../../work/test-runs/brohn-ui-evidence/results.json",
+      "evidence_sha256": "f303743694e2d2d01e99681aadea768ea24faed4ed599b7d0de517f8547efdaa",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-extensions.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 27,
+      "evidence": "../../work/test-runs/brohn-extension-evidence/results.json",
+      "evidence_sha256": "0f57cadb858c4ebc617d286f099bcd45716aec22416133175729359dddbb2d4a",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-task-exports.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 6,
+      "evidence": "../../work/test-runs/brohn-task-export-evidence/results.json",
+      "evidence_sha256": "ee5e8be8516bd7fd5488fb1c02e6c9d0a8dd5f2d4015020010c41ca6c0ad9c1e",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-multimodal.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 29,
+      "evidence": "../../work/test-runs/brohn-multimodal-ui-evidence/results.json",
+      "evidence_sha256": "4f60558cc0333ab73c128f56bdaae2210cdee866350e404e3ef89ebf5b69dab3",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-interchange.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 39,
+      "evidence": "../../work/test-runs/brohn-interchange-ui-evidence/results.json",
+      "evidence_sha256": "35a481c8e67bced8f5ffe60cd68db7031e58d9c102c0564e88c95da15447ee73",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-analysis-plan.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 29,
+      "evidence": "../../work/test-runs/brohn-analysis-plan-ui-evidence/results.json",
+      "evidence_sha256": "12d6894c46843aba185d215ef7bba71e3a6a5d12a856b7790e2bd6c03381c07f",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-native-eda.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 45,
+      "evidence": "../../work/test-runs/brohn-native-eda-ui-evidence/results.json",
+      "evidence_sha256": "1a567746855d26a38a7d701ca352b9740df123e54a1615c5f688987363dc535c",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-question-flow.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 18,
+      "evidence": "../../work/test-runs/brohn-question-flow-ui-evidence/results.json",
+      "evidence_sha256": "dc6441905fbabeb48032c12907f7d501e79f2b43dd24e6acf73f22ae43eb1345",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-gaze-view.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 23,
+      "evidence": "../../work/test-runs/brohn-gaze-view-ui-evidence/results.json",
+      "evidence_sha256": "3023af4c776eb6fe21ab24a905b8d899db06d133c4efe69003addfa55fd9e14f",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-camera.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 63,
+      "evidence": "../../work/test-runs/brohn-camera-ui-evidence/results.json",
+      "evidence_sha256": "82f148236a31c74a8cb2296373dbea70a4f1d88d9fc27d5b610f9dd208f4ce06",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-acquisition.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 36,
+      "evidence": "../../work/test-runs/brohn-acquisition-ui-evidence/results.json",
+      "evidence_sha256": "31d20ee0592750009ce4da9d40b226148b86cf479d96c69cf7adaae5924034a8",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/participant-camera-races.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 16,
+      "evidence": "../../work/test-runs/brohn-camera-race-evidence/results.json",
+      "evidence_sha256": "6c76715578305470a62bdf8ea824fa4dce02c8554d8ab503c097c3456488a7b1",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-stream-curation.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 33,
+      "evidence": "../../work/test-runs/brohn-stream-curation-ui-evidence/results.json",
+      "evidence_sha256": "3fa25a1d5fa4269191751119b8031085c2316859e540ae0d641f05f6d9ff0fb9",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-signal-view.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 34,
+      "evidence": "../../work/test-runs/brohn-signal-view-ui-evidence/results.json",
+      "evidence_sha256": "22d969f6f2fe7b87ba2f94bc826ee2aea730733b9b89da1c48e3f1f54a450b4b",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-scales.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 34,
+      "evidence": "../../work/test-runs/brohn-scales-ui-evidence/results.json",
+      "evidence_sha256": "2235ca91751d2aacf1cafc15fc76664eb011871d2f14a737143c79639cdc36dd",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-neural-plots.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 66,
+      "evidence": "../../work/test-runs/brohn-neural-plots-ui-evidence/results.json",
+      "evidence_sha256": "b545d4fa40109e073cdfcb7de9c60659de863df23fea1af09a63c8aa63ce9fe8",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-scale-comparisons.mjs",
+      "execution_type": "automated_actual_browser_and_local_services",
+      "origin": "original_synthetic",
+      "passed_assertions": 26,
+      "evidence": "../../work/test-runs/brohn-scale-comparisons-ui-evidence/results.json",
+      "evidence_sha256": "fa875109bda28275ffbf4c1bb0099b8202e3eb9b6f3cfef96e78d5b232a3572e",
+      "scope_and_limit_document": "docs/qa/RESEARCHER-QA.md"
+    },
+    {
+      "harness": "tests/researcher-history-pages.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_service",
+      "origin": "original_synthetic_catalog_fixture",
+      "passed_assertions": 21,
+      "evidence": "../../work/test-runs/brohn-history-pages-1788846680547/browser-evidence/results.json",
+      "evidence_sha256": "b6fc8e5c7d72ae00931379eafbd57004bea749d2267026fe5d8a9fd8a6c1a03d",
+      "scope_and_limit_document": "docs/qa/HISTORICAL-RETRIEVAL.md"
+    },
+    {
+      "harness": "tests/researcher-history-selectors.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_service",
+      "origin": "original_synthetic_catalog_fixture",
+      "passed_assertions": 16,
+      "evidence": "../../work/test-runs/brohn-history-pages-selectors-z1jO5u/selector-evidence/results.json",
+      "evidence_sha256": "944eb05faeedb341b6742c0a6c7d316426c2b341accb8201ecc8f89bcae50397",
+      "scope_and_limit_document": "docs/qa/HISTORICAL-RETRIEVAL.md"
+    },
+    {
+      "harness": "tests/researcher-maxdiff.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_services_no_scientific_worker",
+      "origin": "original_synthetic",
+      "passed_assertions": 27,
+      "evidence": "../../work/test-runs/brohn-maxdiff-researcher-Quiv8b/evidence/results.json",
+      "evidence_sha256": "69ef17ba03aff753e8541bd219132a5aac15a29a284129ba2b55dba5770e90ca",
+      "scope_and_limit_document": "docs/qa/MAXDIFF-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-maxdiff-import.mjs --mapping-only",
+      "execution_type": "automated_actual_browser_and_isolated_local_service_no_scientific_worker",
+      "origin": "original_synthetic",
+      "passed_assertions": 14,
+      "evidence": "../../work/test-runs/brohn-maxdiff-import-ui-a5UATH/evidence/results.json",
+      "evidence_sha256": "e275a87a67034a1689f081afedc30fb91f7be6d221fca45baca4bcde87779150",
+      "scope_and_limit_document": "docs/qa/MAXDIFF-IMPORT-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-maxdiff-import.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_service_and_scientific_workers",
+      "origin": "original_synthetic",
+      "passed_assertions": 23,
+      "evidence": "../../work/test-runs/brohn-maxdiff-import-ui-CVT7Zh/evidence/results.json",
+      "evidence_sha256": "9cb8fec909942e081c61e95cdee3d79220d5a77d690fa5d09b903c5e1211e0b0",
+      "scope_and_limit_document": "docs/qa/MAXDIFF-IMPORT-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-maxdiff-reports.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_services_and_scientific_workers",
+      "origin": "original_synthetic_sample",
+      "passed_assertions": 24,
+      "evidence": "../../work/test-runs/brohn-maxdiff-researcher-Quiv8b/report-evidence/results.json",
+      "evidence_sha256": "ff57b2a3978f93adad09c386e8cc4472a4b5b59342ba6a246cb022ec4f9a96d3",
+      "scope_and_limit_document": "docs/qa/MAXDIFF-REPORT-JOURNEY.md"
+    },
+    {
+      "harness": "tests/workers/peripheral-independent.py",
+      "execution_type": "independent_original_numerical_and_full_artifact_preview_tests_no_application_or_device",
+      "origin": "original_synthetic",
+      "passed_test_methods": 19,
+      "evidence": "../../work/test-runs/brohn-peripheral-independent/test-output.txt",
+      "evidence_sha256": "139954a4c858c2f2170dd9599813947eb9e8845f5e3bf91ba66546727c15e6dc",
+      "source_hashes": "../../work/test-runs/brohn-peripheral-independent/source-hashes.json",
+      "scope_and_limit_document": "docs/qa/PERIPHERAL-INDEPENDENT-REVIEW.md"
+    },
+    {
+      "harness": "tests/researcher-peripheral.mjs",
+      "execution_type": "automated_actual_browser_and_isolated_local_services_with_verified_retained_source_continuations",
+      "origin": "original_synthetic",
+      "passed_assertions": 48,
+      "accessibility_scans": 8,
+      "durable_jobs": 14,
+      "successful_reports": 5,
+      "evidence": "../../work/test-runs/brohn-peripheral-ui-leyspE/evidence/results.json",
+      "evidence_sha256": "198759423034fa89333d141beb39b50b8fa5ed7148c7293c11d0ff257b0494c5",
+      "scope_and_limit_document": "docs/qa/PERIPHERAL-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-option-assignment.mjs",
+      "execution_type": "automated_actual_researcher_and_participant_services_with_verified_review_continuation_no_scientific_worker",
+      "origin": "original_synthetic",
+      "passed_assertions": 32,
+      "accessibility_scans": 6,
+      "completed_browser_sessions": 8,
+      "native_responses": 32,
+      "evidence": "../../work/test-runs/brohn-option-assignment-ui-YSHGe3/evidence/results.json",
+      "evidence_sha256": "0fa9bd552da1cd28689be7c69e42b63e6a7bee7343a088bfc00a5d6c7e2adde9",
+      "scope_and_limit_document": "docs/qa/QUESTION-ASSIGNMENT-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-report-comprehension.mjs",
+      "execution_type": "read_only_actual_saved_report_presentation_no_scientific_workers",
+      "origin": "original_synthetic",
+      "passed_assertions": 17,
+      "accessibility_scans": 5,
+      "unchanged_saved_reports": 5,
+      "scoped_R_checks": 22,
+      "existing_offline_HTML_checks": 10,
+      "evidence": "../../work/test-runs/brohn-peripheral-ui-leyspE/presentation-retake/results.json",
+      "evidence_sha256": "e5f366b3cfa40c96e889fd85e36e69f001f51d2bdc7e971b476fdba69cbb0072",
+      "scope_and_limit_document": "docs/qa/SAVED-REPORT-COMPREHENSION.md"
+    },
+    {
+      "harness": "tests/researcher-question-sections.mjs",
+      "execution_type": "automated_actual_researcher_participant_and_scientific_worker_after_editor_correction",
+      "origin": "original_synthetic",
+      "passed_assertions": 18,
+      "accessibility_scans": 4,
+      "completed_browser_sessions": 2,
+      "successful_reports": 2,
+      "exact_scale_observations": 4,
+      "evidence": "../../work/test-runs/brohn-question-sections-ui-BKOX6s/evidence/results.json",
+      "evidence_sha256": "9ecd7bb4e961a2b2dc7e869bc35622c6c672d9356231da41c86bf9f3c16941e5",
+      "scope_and_limit_document": "docs/qa/QUESTION-SECTIONS-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-session-task-review.mjs",
+      "execution_type": "actual_researcher_UI_metadata_fixture_and_direct_strict_inner_task_receiver_scoring_no_scientific_worker",
+      "origin": "original_synthetic",
+      "passed_assertions": 25,
+      "accessibility_scans": 7,
+      "uncompleted_metadata_starts": 42,
+      "scientific_jobs": 0,
+      "evidence": "../../work/test-runs/brohn-session-task-review-6GXiNg/evidence/results.json",
+      "evidence_sha256": "31c71cd42dc272fe2a87b94042d612f886f7a9aa498116232757815c6ba45375",
+      "scope_and_limit_document": "docs/qa/SESSION-TASK-REVIEW.md"
+    },
+    {
+      "harness": "tests/researcher-task-import.mjs",
+      "execution_type": "actual_researcher_browser_and_scientific_workers_with_verified_retained_original_intake_continuation",
+      "origin": "original_synthetic",
+      "passed_assertions": 19,
+      "accessibility_scans": 5,
+      "native_receiver_trials": 48,
+      "successful_ingestion_jobs": 1,
+      "successful_scientific_import_jobs": 2,
+      "cancelled_unstarted_native_analysis_jobs": 1,
+      "evidence": "../../work/test-runs/brohn-native-task-import-SqroKv/evidence-resume-1788861347657/results.json",
+      "evidence_sha256": "15582505be802f74b50e03adabe4854b35cf2ea7bd7963332a1ebf2b6875020e",
+      "scope_and_limit_document": "docs/qa/NATIVE-TASK-IMPORT-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-question-revision.mjs",
+      "continuation": "tests/researcher-question-revision-reuse.mjs",
+      "execution_type": "actual_researcher_participant_and_scientific_worker_with_retained_protocol_reuse_continuation",
+      "origin": "original_synthetic",
+      "passed_assertions": 19,
+      "accessibility_scans": 5,
+      "completed_browser_sessions": 1,
+      "uncompleted_legacy_browser_starts": 1,
+      "successful_scientific_jobs": 1,
+      "sealed_questionnaire_occurrences": 4,
+      "final_status_records": 12,
+      "ordinary_observations": 9,
+      "final_scale_score": 5,
+      "evidence": "../../work/test-runs/brohn-question-revision-ui-UGrjMV/reuse-retake-1788862851261/results.json",
+      "evidence_sha256": "91f59b29a45b668e1c530dd0b1c214b25eceef8b43cb32cc58f70dc73e3843c5",
+      "scope_and_limit_document": "docs/qa/QUESTION-REVISION-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-questionnaire-artifacts.mjs",
+      "execution_type": "actual_researcher_retained_receiver_report_downloads_and_complete_artifact_synthesis_worker",
+      "origin": "original_synthetic",
+      "passed_assertions": 10,
+      "accessibility_scans": 7,
+      "retained_final_records": 200,
+      "retained_answer_commits": 400,
+      "retained_questionnaire_history_events": 803,
+      "successful_scientific_jobs_this_journey": 1,
+      "beyond_preview_numeric_rows": 6,
+      "independent_mean_difference": 4,
+      "evidence": "../../work/test-runs/brohn-questionnaire-artifact-ui-TKsPwT/evidence-1788865953753/results.json",
+      "evidence_sha256": "8be8b9d9a12d3052ce532871af0355d0807c07e3278ddf2dbe38420459319c4c",
+      "scope_and_limit_document": "docs/qa/QUESTIONNAIRE-ARTIFACT-RESEARCHER-JOURNEY.md"
+    }
+  ]
+}

@@ -1,0 +1,1133 @@
+{
+  "R_version": "R version 4.6.1 (2026-06-24 ucrt)",
+  "compiler_sha256": "d8d9aa19aa5bd66073771c56a148ab95bce0ab570b231dc8be7bd665250c24a9",
+  "description": "Original synthetic pre-change compiler snapshot; no participant data",
+  "design": {
+    "appearance": {
+      "background": "#FFFFFF",
+      "foreground": "#111111"
+    },
+    "archived": false,
+    "baseline_ms": 0,
+    "blocks": [],
+    "conditions": [
+      {
+        "id": "condition-a",
+        "label": "Control",
+        "role": "control"
+      },
+      {
+        "id": "condition-b",
+        "label": "Test",
+        "role": "test"
+      }
+    ],
+    "consent": {
+      "required": true,
+      "text": "Please read the study information provided by your researcher. Participation is voluntary. You can stop at any time.",
+      "title": "Taking part in this study"
+    },
+    "debrief": "Thank you for taking part. Contact your researcher if you have questions about the study.",
+    "description": "",
+    "fixation_ms": 0,
+    "id": "study-assignment",
+    "instructions": "",
+    "lineage": null,
+    "measures": [
+      "gaze",
+      "questionnaire"
+    ],
+    "methods": [],
+    "order": "fixed",
+    "project_id": "default",
+    "questions": [
+      {
+        "id": "q-original",
+        "max": 7,
+        "min": 1,
+        "options": [
+          {
+            "id": "choice1",
+            "label": "Number zero",
+            "value": 0
+          },
+          {
+            "id": "choice2",
+            "label": "Boolean false",
+            "value": false
+          },
+          {
+            "id": "choice3",
+            "label": "Text zero",
+            "value": "0"
+          },
+          {
+            "id": "choice4",
+            "label": "Text one",
+            "value": "1"
+          },
+          {
+            "id": "choice5",
+            "label": "Number one",
+            "value": 1
+          },
+          {
+            "id": "choice6",
+            "label": "Boolean true",
+            "value": true
+          }
+        ],
+        "prompt": "Choose an original typed answer",
+        "randomize_options": true,
+        "required": true,
+        "rows": [],
+        "scope": "before",
+        "show_if": null,
+        "step": 1,
+        "type": "single_choice"
+      },
+      {
+        "id": "q-after",
+        "max": 7,
+        "min": 1,
+        "options": [
+          {
+            "id": "choice1",
+            "label": "Number zero",
+            "value": 0
+          },
+          {
+            "id": "choice2",
+            "label": "Boolean false",
+            "value": false
+          },
+          {
+            "id": "choice3",
+            "label": "Text zero",
+            "value": "0"
+          },
+          {
+            "id": "choice4",
+            "label": "Text one",
+            "value": "1"
+          },
+          {
+            "id": "choice5",
+            "label": "Number one",
+            "value": 1
+          },
+          {
+            "id": "choice6",
+            "label": "Boolean true",
+            "value": true
+          }
+        ],
+        "prompt": "Choose after this concept",
+        "randomize_options": true,
+        "required": true,
+        "rows": [],
+        "scope": "after_each",
+        "show_if": null,
+        "step": 1,
+        "type": "single_choice"
+      },
+      {
+        "id": "q-end",
+        "max": 7,
+        "min": 1,
+        "options": [
+          {
+            "id": "choice1",
+            "label": "Number zero",
+            "value": 0
+          },
+          {
+            "id": "choice2",
+            "label": "Boolean false",
+            "value": false
+          },
+          {
+            "id": "choice3",
+            "label": "Text zero",
+            "value": "0"
+          },
+          {
+            "id": "choice4",
+            "label": "Text one",
+            "value": "1"
+          },
+          {
+            "id": "choice5",
+            "label": "Number one",
+            "value": 1
+          },
+          {
+            "id": "choice6",
+            "label": "Boolean true",
+            "value": true
+          }
+        ],
+        "prompt": "Choose at the end",
+        "randomize_options": true,
+        "required": true,
+        "rows": [],
+        "scope": "end",
+        "show_if": null,
+        "step": 1,
+        "type": "single_choice"
+      }
+    ],
+    "schema_version": "brohn-design/1.0.0",
+    "seed": 104729,
+    "stimuli": [
+      {
+        "aois": [],
+        "asset": null,
+        "condition_id": "condition-a",
+        "content": "Original concept 1",
+        "duration_ms": 100,
+        "id": "stimulus-a",
+        "title": "Concept A",
+        "type": "text"
+      },
+      {
+        "aois": [],
+        "asset": null,
+        "condition_id": "condition-b",
+        "content": "Original concept 2",
+        "duration_ms": 100,
+        "id": "stimulus-b",
+        "title": "Concept B",
+        "type": "text"
+      }
+    ],
+    "tags": [],
+    "template": "comparison",
+    "title": "Original option assignment fixture"
+  },
+  "protocols": [
+    {
+      "allocation_index": 1,
+      "design": {
+        "appearance": {
+          "background": "#FFFFFF",
+          "foreground": "#111111"
+        },
+        "archived": false,
+        "baseline_ms": 0,
+        "blocks": [],
+        "conditions": [
+          {
+            "id": "condition-a",
+            "label": "Control",
+            "role": "control"
+          },
+          {
+            "id": "condition-b",
+            "label": "Test",
+            "role": "test"
+          }
+        ],
+        "consent": {
+          "required": true,
+          "text": "Please read the study information provided by your researcher. Participation is voluntary. You can stop at any time.",
+          "title": "Taking part in this study"
+        },
+        "debrief": "Thank you for taking part. Contact your researcher if you have questions about the study.",
+        "description": "",
+        "fixation_ms": 0,
+        "id": "study-assignment",
+        "instructions": "",
+        "lineage": null,
+        "measures": [
+          "gaze",
+          "questionnaire"
+        ],
+        "methods": [],
+        "order": "fixed",
+        "project_id": "default",
+        "questions": [
+          {
+            "id": "q-original",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose an original typed answer",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "before",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          {
+            "id": "q-end",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose at the end",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "end",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          }
+        ],
+        "schema_version": "brohn-design/1.0.0",
+        "seed": 104729,
+        "stimuli": [
+          {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-a",
+            "content": "Original concept 1",
+            "duration_ms": 100,
+            "id": "stimulus-a",
+            "title": "Concept A",
+            "type": "text"
+          },
+          {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-b",
+            "content": "Original concept 2",
+            "duration_ms": 100,
+            "id": "stimulus-b",
+            "title": "Concept B",
+            "type": "text"
+          }
+        ],
+        "tags": [],
+        "template": "comparison",
+        "title": "Original option assignment fixture"
+      },
+      "design_hash": "f092473f1221829097651d667ee2a1338d24c442e0ee8dc740fc27cf3ad15c91",
+      "realized_stimulus_order": [
+        "stimulus-a",
+        "stimulus-b"
+      ],
+      "schema_version": "brohn-protocol/1.0.0",
+      "timeline": [
+        {
+          "condition_id": null,
+          "id": "step-1",
+          "phase": "active_response",
+          "question": {
+            "id": "q-original",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              }
+            ],
+            "prompt": "Choose an original typed answer",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "before",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": null,
+          "type": "question"
+        },
+        {
+          "condition_id": "condition-a",
+          "duration_ms": 100,
+          "id": "step-2",
+          "phase": "passive_viewing",
+          "stimulus": {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-a",
+            "content": "Original concept 1",
+            "duration_ms": 100,
+            "id": "stimulus-a",
+            "title": "Concept A",
+            "type": "text"
+          },
+          "stimulus_id": "stimulus-a",
+          "type": "stimulus"
+        },
+        {
+          "condition_id": "condition-a",
+          "id": "step-3",
+          "phase": "active_response",
+          "question": {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": "stimulus-a",
+          "type": "question"
+        },
+        {
+          "condition_id": "condition-b",
+          "duration_ms": 100,
+          "id": "step-4",
+          "phase": "passive_viewing",
+          "stimulus": {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-b",
+            "content": "Original concept 2",
+            "duration_ms": 100,
+            "id": "stimulus-b",
+            "title": "Concept B",
+            "type": "text"
+          },
+          "stimulus_id": "stimulus-b",
+          "type": "stimulus"
+        },
+        {
+          "condition_id": "condition-b",
+          "id": "step-5",
+          "phase": "active_response",
+          "question": {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": "stimulus-b",
+          "type": "question"
+        },
+        {
+          "condition_id": null,
+          "id": "step-6",
+          "phase": "active_response",
+          "question": {
+            "id": "q-end",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              }
+            ],
+            "prompt": "Choose at the end",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "end",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": null,
+          "type": "question"
+        }
+      ],
+      "timing_evidence": "browser_observation_not_physical_qualification"
+    },
+    {
+      "allocation_index": 2,
+      "design": {
+        "appearance": {
+          "background": "#FFFFFF",
+          "foreground": "#111111"
+        },
+        "archived": false,
+        "baseline_ms": 0,
+        "blocks": [],
+        "conditions": [
+          {
+            "id": "condition-a",
+            "label": "Control",
+            "role": "control"
+          },
+          {
+            "id": "condition-b",
+            "label": "Test",
+            "role": "test"
+          }
+        ],
+        "consent": {
+          "required": true,
+          "text": "Please read the study information provided by your researcher. Participation is voluntary. You can stop at any time.",
+          "title": "Taking part in this study"
+        },
+        "debrief": "Thank you for taking part. Contact your researcher if you have questions about the study.",
+        "description": "",
+        "fixation_ms": 0,
+        "id": "study-assignment",
+        "instructions": "",
+        "lineage": null,
+        "measures": [
+          "gaze",
+          "questionnaire"
+        ],
+        "methods": [],
+        "order": "fixed",
+        "project_id": "default",
+        "questions": [
+          {
+            "id": "q-original",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose an original typed answer",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "before",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          {
+            "id": "q-end",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              }
+            ],
+            "prompt": "Choose at the end",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "end",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          }
+        ],
+        "schema_version": "brohn-design/1.0.0",
+        "seed": 104729,
+        "stimuli": [
+          {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-a",
+            "content": "Original concept 1",
+            "duration_ms": 100,
+            "id": "stimulus-a",
+            "title": "Concept A",
+            "type": "text"
+          },
+          {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-b",
+            "content": "Original concept 2",
+            "duration_ms": 100,
+            "id": "stimulus-b",
+            "title": "Concept B",
+            "type": "text"
+          }
+        ],
+        "tags": [],
+        "template": "comparison",
+        "title": "Original option assignment fixture"
+      },
+      "design_hash": "f092473f1221829097651d667ee2a1338d24c442e0ee8dc740fc27cf3ad15c91",
+      "realized_stimulus_order": [
+        "stimulus-a",
+        "stimulus-b"
+      ],
+      "schema_version": "brohn-protocol/1.0.0",
+      "timeline": [
+        {
+          "condition_id": null,
+          "id": "step-1",
+          "phase": "active_response",
+          "question": {
+            "id": "q-original",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              }
+            ],
+            "prompt": "Choose an original typed answer",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "before",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": null,
+          "type": "question"
+        },
+        {
+          "condition_id": "condition-a",
+          "duration_ms": 100,
+          "id": "step-2",
+          "phase": "passive_viewing",
+          "stimulus": {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-a",
+            "content": "Original concept 1",
+            "duration_ms": 100,
+            "id": "stimulus-a",
+            "title": "Concept A",
+            "type": "text"
+          },
+          "stimulus_id": "stimulus-a",
+          "type": "stimulus"
+        },
+        {
+          "condition_id": "condition-a",
+          "id": "step-3",
+          "phase": "active_response",
+          "question": {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": "stimulus-a",
+          "type": "question"
+        },
+        {
+          "condition_id": "condition-b",
+          "duration_ms": 100,
+          "id": "step-4",
+          "phase": "passive_viewing",
+          "stimulus": {
+            "aois": [],
+            "asset": null,
+            "condition_id": "condition-b",
+            "content": "Original concept 2",
+            "duration_ms": 100,
+            "id": "stimulus-b",
+            "title": "Concept B",
+            "type": "text"
+          },
+          "stimulus_id": "stimulus-b",
+          "type": "stimulus"
+        },
+        {
+          "condition_id": "condition-b",
+          "id": "step-5",
+          "phase": "active_response",
+          "question": {
+            "id": "q-after",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              }
+            ],
+            "prompt": "Choose after this concept",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "after_each",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": "stimulus-b",
+          "type": "question"
+        },
+        {
+          "condition_id": null,
+          "id": "step-6",
+          "phase": "active_response",
+          "question": {
+            "id": "q-end",
+            "max": 7,
+            "min": 1,
+            "options": [
+              {
+                "id": "choice6",
+                "label": "Boolean true",
+                "value": true
+              },
+              {
+                "id": "choice5",
+                "label": "Number one",
+                "value": 1
+              },
+              {
+                "id": "choice3",
+                "label": "Text zero",
+                "value": "0"
+              },
+              {
+                "id": "choice1",
+                "label": "Number zero",
+                "value": 0
+              },
+              {
+                "id": "choice4",
+                "label": "Text one",
+                "value": "1"
+              },
+              {
+                "id": "choice2",
+                "label": "Boolean false",
+                "value": false
+              }
+            ],
+            "prompt": "Choose at the end",
+            "randomize_options": true,
+            "required": true,
+            "rows": [],
+            "scope": "end",
+            "show_if": null,
+            "step": 1,
+            "type": "single_choice"
+          },
+          "stimulus_id": null,
+          "type": "question"
+        }
+      ],
+      "timing_evidence": "browser_observation_not_physical_qualification"
+    }
+  ],
+  "rng_kind": [
+    "Mersenne-Twister",
+    "Inversion",
+    "Rejection"
+  ]
+}

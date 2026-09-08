@@ -1,0 +1,1884 @@
+{
+  "schema_version": "brohn-journey-acceptance/1.0.0-planning",
+  "prepared_at": "2026-09-08",
+  "product": "Brohn",
+  "purpose": "Whole-journey product and accessibility acceptance; not component-unit-test duplication or achieved usability evidence.",
+  "companion": "UNIFIED-EXPERIENCE.md",
+  "scope_reference": "../preparation/capability-register.json",
+  "journey_count": 34,
+  "surface_coverage": [
+    {
+      "surface_id": "eye",
+      "label": "Eye movement",
+      "capability_ids": [
+        "gaze.events",
+        "gaze.aoi",
+        "gaze.pupil_blink",
+        "gaze.naturalistic",
+        "webcam.gaze"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "brain",
+      "label": "Brain activity",
+      "capability_ids": [
+        "eeg.erp",
+        "eeg.spectrum",
+        "eeg.time_frequency",
+        "eeg.frequency_tagging",
+        "fnirs.hemodynamics",
+        "neural.advanced"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "skin",
+      "label": "Skin response",
+      "capability_ids": [
+        "eda.activity",
+        "temperature.peripheral"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "heart",
+      "label": "Heart and circulation",
+      "capability_ids": [
+        "ecg.hrv",
+        "ppg.prv",
+        "hemodynamics.advanced",
+        "cardiorespiratory.coupling"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "breathing",
+      "label": "Breathing",
+      "capability_ids": [
+        "respiration.cycles"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "muscle",
+      "label": "Muscle and ocular electrical activity",
+      "capability_ids": [
+        "emg.activation",
+        "emg.facial_startle",
+        "eog.ocular"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "movement",
+      "label": "Movement",
+      "capability_ids": [
+        "movement.sensors",
+        "webcam.pose",
+        "motor.trajectory"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "camera",
+      "label": "Camera observations",
+      "capability_ids": [
+        "webcam.facial",
+        "webcam.physiology"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "voice",
+      "label": "Voice",
+      "capability_ids": [
+        "audio.acoustics"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "association",
+      "label": "Association and action",
+      "capability_ids": [
+        "implicit.iat",
+        "implicit.biat",
+        "implicit.single_category",
+        "implicit.gnat",
+        "implicit.priming",
+        "implicit.amp",
+        "approach.aat",
+        "approach.vaast_manikin",
+        "implicit.agile_relational"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "behaviour",
+      "label": "Behavioural tasks",
+      "capability_ids": [
+        "attention.tasks",
+        "inhibition.interference",
+        "inhibition.stop_signal",
+        "learning.memory",
+        "choice.psychophysics"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "explicit",
+      "label": "Explicit responses",
+      "capability_ids": [
+        "questionnaire.items",
+        "questionnaire.flow",
+        "questionnaire.scales",
+        "choice.conjoint_maxdiff"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    },
+    {
+      "surface_id": "shared",
+      "label": "Shared study services",
+      "capability_ids": [
+        "design.protocols",
+        "centralization.recordings",
+        "multimodal.analysis",
+        "reporting.automation",
+        "operations.research"
+      ],
+      "shared_states": [
+        "not_selected",
+        "needs_setup",
+        "ready",
+        "collecting_or_importing",
+        "partial",
+        "processing",
+        "review_needed",
+        "result_available",
+        "unavailable_with_next_action"
+      ],
+      "device_configuration": "One selected source profile reused across dependent measures; required/optional and supported live/import status remain explicit."
+    }
+  ],
+  "measurement_rules": {
+    "activation": "Click, tap or equivalent command activation; include file chooser and confirmations.",
+    "separate_counts": [
+      "typing",
+      "focus movements",
+      "physical setup",
+      "consent",
+      "sensor fitting",
+      "calibration",
+      "participant task duration",
+      "exception work"
+    ],
+    "elapsed_time": "Report full elapsed time alongside the stated active-software budget and separately observed components.",
+    "cohorts": "Record novice/experienced and access-need groups, unaided/assisted completion, raw counts, median/spread and uncertainty; formative samples are not population qualification.",
+    "telemetry": "Collect workflow state, action category, duration and outcome without copying participant answers, raw physiology, video/audio or identity into UX telemetry.",
+    "accessibility": "Automated scans supplement observed keyboard/screen-reader/reflow tasks; they do not substitute for them.",
+    "zero_targets": "A zero-defect target is an acceptance requirement for the tested journey, not evidence that all configurations are error-free."
+  },
+  "journeys": [
+    {
+      "id": "UX-J01",
+      "name": "First report from a prepared sample",
+      "actor": "Undergraduate novice",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Fictional sample with prepared materials and recordings; installed environment"
+      ],
+      "actions": [
+        "Open sample",
+        "Follow the main action through preparation and results",
+        "Explain the report and download it"
+      ],
+      "acceptance": [
+        "Sample origin stays visible and never increases real participant counts",
+        "No mandatory scientific configuration or empty review confirmation",
+        "User explains comparison, measure, usable sample and uncertainty"
+      ],
+      "targets": {
+        "activations_max": 5,
+        "scientific_decisions_max": 0,
+        "elapsed_minutes_max": 10
+      },
+      "evidence": [
+        "Observed action log including file dialogs",
+        "Unaided completion and comprehension transcript",
+        "Downloaded report"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J02",
+      "name": "Author the complete multimodal flagship",
+      "actor": "Novice with prepared assets and saved station",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect"
+      ],
+      "preconditions": [
+        "Supported eye/EEG/EDA profiles; named BIAT and physical AAT profiles"
+      ],
+      "actions": [
+        "Choose prepared flagship recipe",
+        "Add control/test assets and semantic AOIs",
+        "Inspect phase preview and selected measure cards",
+        "Prepare participant flow"
+      ],
+      "acceptance": [
+        "Control image, physiological baseline, practice, passive viewing and question periods remain distinct",
+        "Recipe specifies allocation and task-block order/counterbalancing",
+        "Capture uses the current compiled questionnaire/protocol hash; subsequent edits create a new revision",
+        "Every selected measure states phases and expected outputs"
+      ],
+      "targets": {
+        "activations_max": 18,
+        "scientific_decisions_max": 6,
+        "active_software_minutes_max": 15
+      },
+      "evidence": [
+        "Observed authoring session",
+        "Rendered phase list and frozen run bundle",
+        "User explanation of control versus baseline"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J03",
+      "name": "Linked questionnaire branching and correction",
+      "actor": "Researcher and participant",
+      "stages": [
+        "Questions",
+        "Collect",
+        "Results"
+      ],
+      "preconditions": [
+        "Repeated A/B exposures, post-exposure liking, conditional follow-up and required item"
+      ],
+      "actions": [
+        "Preview both order variants",
+        "Change a branch-driving answer",
+        "Submit an incomplete required item then correct it",
+        "Inspect linked report"
+      ],
+      "acceptance": [
+        "Each answer refers to the actual presentation and question revision",
+        "Untouched, skipped, not shown and declined remain distinct",
+        "Current hidden dependent answers follow policy while append-only history survives",
+        "Error summary links/focuses the field; preview exit restores launcher"
+      ],
+      "targets": {
+        "unlinked_or_misattributed_answers": 0
+      },
+      "evidence": [
+        "Participant walkthrough",
+        "Response history alongside rendered flow",
+        "Report referent inspection"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J04",
+      "name": "Every capability fits shared cards and readiness",
+      "actor": "Novice configuring a station",
+      "stages": [
+        "Plan",
+        "Collect"
+      ],
+      "preconditions": [
+        "Representative supported, import-only, unavailable and optional profiles across every surface in surface_coverage"
+      ],
+      "actions": [
+        "Add and remove measures",
+        "Reuse one source across several measures",
+        "Resolve one readiness action",
+        "Open one extension's import or profile route"
+      ],
+      "acceptance": [
+        "All 50 capability IDs have a user-facing surface mapping",
+        "No measure creates an empty or disconnected dashboard",
+        "One readiness summary names required blockers and optional consequences",
+        "Completing setup restores focus to the originating card; device mapping is reused"
+      ],
+      "targets": {
+        "duplicate_source_configuration": 0,
+        "dead_end_capability_cards": 0
+      },
+      "evidence": [
+        "Capability-to-surface review",
+        "Observed setup walkthrough",
+        "Readiness and focus state recordings"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J05",
+      "name": "Simultaneous eye, EEG and EDA viewing",
+      "actor": "Lab operator and participant",
+      "stages": [
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Approved named station profile and configured recipe; synthetic fixture route for software checks"
+      ],
+      "actions": [
+        "Start participant",
+        "Complete baseline and counterbalanced viewing with linked questions",
+        "Open synchronized timeline",
+        "Inspect modality results"
+      ],
+      "acceptance": [
+        "One run links all streams to realized exposure IDs and phase events",
+        "Planned/requested times remain distinct from observed onset evidence",
+        "One timeline/table shows signal coverage and clock uncertainty",
+        "Passive-viewing analysis excludes question and motor periods according to recipe"
+      ],
+      "targets": {
+        "required_manual_cross_file_joins": 0
+      },
+      "evidence": [
+        "Observed operator journey",
+        "Run/stream/event manifest",
+        "Timeline table and report provenance"
+      ],
+      "qualification_note": "Synthetic software execution does not qualify a physical station.",
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J06",
+      "name": "Sequential BIAT and physical AAT inside the same study",
+      "actor": "Participant with operator oversight",
+      "stages": [
+        "Plan",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Named BIAT procedure and supported physical AAT input; block-order plan"
+      ],
+      "actions": [
+        "Follow separate instructions and practice",
+        "Complete scored BIAT and AAT blocks",
+        "Inspect study report"
+      ],
+      "acceptance": [
+        "Practice and scored trials have separate inclusion rules",
+        "BIAT retains first and final-correct timing; AAT retains neutral state and movement trace",
+        "Each block uses its own score, direction, exclusions and response demands",
+        "Continuous physiological recording is phase-linked; movement data are not treated as passive viewing"
+      ],
+      "targets": {
+        "manual_task_dataset_merges": 0
+      },
+      "evidence": [
+        "Participant flow observation",
+        "Task event traces with block lineage",
+        "Separate task outcome cards"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J07",
+      "name": "Optional webcam and microphone with shared capture",
+      "actor": "Researcher and participant",
+      "stages": [
+        "Plan",
+        "Collect",
+        "Results"
+      ],
+      "preconditions": [
+        "Selected camera/microphone routes and explicit capture/provider choices"
+      ],
+      "actions": [
+        "Select facial outputs and optional webcam gaze or camera physiology",
+        "Review capture choices",
+        "Grant or decline permissions",
+        "Inspect available outputs"
+      ],
+      "acceptance": [
+        "One camera capture supplies permitted dependent models without competing camera sessions",
+        "Independent webcam gaze calibration/validation has an actionable step",
+        "Declined optional camera/microphone preserves permitted sensor and questionnaire routes",
+        "No-face, occlusion and unvoiced support do not become zero scores",
+        "Provider destination and native model/output identity are inspectable"
+      ],
+      "targets": {
+        "duplicate_camera_sessions": 0
+      },
+      "evidence": [
+        "Permission and decline walkthrough",
+        "Capture/source manifest",
+        "Coverage and output explanation"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J08",
+      "name": "Sensor loss without losing the study",
+      "actor": "Novice operator",
+      "stages": [
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Active multimodal run; explicit optional and required stream-loss policies"
+      ],
+      "actions": [
+        "Encounter seeded optional EDA disconnect",
+        "Read affected-data message and repair or continue",
+        "Repeat with a required-signal-loss scenario"
+      ],
+      "acceptance": [
+        "Other valid streams and responses remain stored and eligible",
+        "Optional loss follows frozen continue policy; required loss invokes declared stop/pause boundary",
+        "Recovery creates a segment/gap rather than fabricated continuity",
+        "Operator identifies affected outcomes and a permitted next action"
+      ],
+      "targets": {
+        "recovery_decision_seconds_max": 60,
+        "unrelated_data_loss": 0
+      },
+      "evidence": [
+        "Observed recovery and comprehension",
+        "Run gap/terminal events",
+        "Modality-specific report coverage"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J09",
+      "name": "Interrupted participant trial and durable recovery",
+      "actor": "Participant and operator",
+      "stages": [
+        "Collect",
+        "Review"
+      ],
+      "preconditions": [
+        "Task interruption policy; persistence acknowledgement available"
+      ],
+      "actions": [
+        "Reload or lose focus during a timed trial",
+        "Reopen session",
+        "Choose the protocol-permitted recovery"
+      ],
+      "acceptance": [
+        "UI names the last durably saved boundary and interrupted presentation",
+        "Retry/restart has a new attempt/presentation identity; old data remain auditable",
+        "No duplicate allocation, answer or quietly resumed timed trial",
+        "Focus moves to recovery heading and then the chosen action"
+      ],
+      "targets": {
+        "silently_replayed_trials": 0
+      },
+      "evidence": [
+        "Observed interruption journey",
+        "Acknowledgement/journal lineage",
+        "Recovery accessibility recording"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J10",
+      "name": "Import several modalities with one repair",
+      "actor": "Researcher with supported exports",
+      "stages": [
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Eye/physiology/event files with one deliberately ambiguous unit or clock"
+      ],
+      "actions": [
+        "Add files in one import action",
+        "Resolve the contextual mapping issue",
+        "Inspect automatic preparation and linked outcomes"
+      ],
+      "acceptance": [
+        "Original bytes remain retained with provenance",
+        "Ambiguous units/clocks are explained beside concrete source values and affected measures",
+        "Unambiguous streams progress without guessing or row-number alignment",
+        "Mapping correction affects only its dependent outputs"
+      ],
+      "targets": {
+        "required_manual_spreadsheet_joins": 0
+      },
+      "evidence": [
+        "Observed import and mapping",
+        "Import manifest and mapping revision",
+        "Result lineage"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J11",
+      "name": "Analysis cancellation and restart",
+      "actor": "Researcher",
+      "stages": [
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "At least two modality jobs and an older report"
+      ],
+      "actions": [
+        "Cancel or encounter a worker failure",
+        "Continue other work",
+        "Retry the failed job",
+        "Reopen results"
+      ],
+      "acceptance": [
+        "Progress reports real stage/units; indeterminate work has no invented percentage",
+        "Unaffected jobs/results remain available",
+        "Expired or cancelled attempts cannot publish stale success",
+        "Retry resumes valid dependencies and preserves previous report revision",
+        "Status announcements do not steal focus"
+      ],
+      "targets": {
+        "stale_artifact_publication": 0
+      },
+      "evidence": [
+        "Observed recovery journey",
+        "Job/lease and artifact publication records",
+        "Report revision comparison"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J12",
+      "name": "Correct an automated AOI and understand its effect",
+      "actor": "Novice reviewer",
+      "stages": [
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Plausible wrong AOI proposal plus a gaze-gap case"
+      ],
+      "actions": [
+        "Inspect grouped exception",
+        "Correct geometry using pointer or numeric/keyboard equivalent",
+        "Preview affected results",
+        "Apply and optionally undo"
+      ],
+      "acceptance": [
+        "Proposed versus accepted geometry is distinguishable",
+        "Correction has revision, provenance and downstream impact",
+        "First-fixation nonhits follow declared observability policy when gaps could hide a hit",
+        "Focus returns to reviewed row or next exception; unrelated outcomes remain intact"
+      ],
+      "targets": {
+        "unrelated_result_invalidation": 0
+      },
+      "evidence": [
+        "Observed correction effort",
+        "AOI and mask revision history",
+        "Before/after metric agreement with declared reference"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J13",
+      "name": "Explain and export one multimodal report",
+      "actor": "Undergraduate and independent recipient",
+      "stages": [
+        "Results"
+      ],
+      "preconditions": [
+        "Completed cohort with at least one partially missing modality"
+      ],
+      "actions": [
+        "Read primary comparison and supporting outcomes",
+        "Open one evidence detail",
+        "Download accessible report and reproducible bundle",
+        "Answer four comprehension questions"
+      ],
+      "acceptance": [
+        "Attention, explicit liking, physiology and task scores remain distinguishable",
+        "Valid participant/stimulus support and uncertainty accompany every outcome",
+        "Missing one modality does not silently remove other usable outcomes",
+        "Recipient identifies comparison, operational measure, usable coverage and uncertainty"
+      ],
+      "targets": {
+        "novices_correct_on_all_four_questions_percent_min": 80
+      },
+      "evidence": [
+        "Blinded recipient responses with raw counts and assistance",
+        "Accessible exported HTML/tables",
+        "Independent report reproduction evidence"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J14",
+      "name": "Keyboard-only whole-study completion",
+      "actor": "Keyboard-only researcher",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Declared desktop browser matrix; supported prepared fixture"
+      ],
+      "actions": [
+        "Author and reorder flow without dragging",
+        "Edit one AOI numerically",
+        "Handle validation and readiness",
+        "Navigate timeline and export report"
+      ],
+      "acceptance": [
+        "No pointer-only step or keyboard trap",
+        "Focus is visible and follows logical order",
+        "Dialogs restore focus; error summaries link to fields",
+        "Tables and list views provide equivalent actions and information"
+      ],
+      "targets": {
+        "pointer_required_actions": 0,
+        "keyboard_traps": 0
+      },
+      "evidence": [
+        "Observed keyboard walkthrough",
+        "Focus sequence and action log",
+        "Export completed by keyboard"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J15",
+      "name": "Screen-reader navigation and live status",
+      "actor": "Researcher using a declared screen reader/browser pairing",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "Declared tested pairing, such as NVDA with a supported Windows browser"
+      ],
+      "actions": [
+        "Navigate landmarks/cards",
+        "Correct a questionnaire error",
+        "Observe acquisition status and seeded failure",
+        "Read result table and export"
+      ],
+      "acceptance": [
+        "Names, roles, values and relationships are understandable",
+        "Polite save/progress messages do not repeat at sample rate",
+        "Critical required-stop announcement is concise and actionable",
+        "Dynamic updates preserve current reading/focus position",
+        "Visual timeline and charts have meaningful equivalent tables"
+      ],
+      "targets": {
+        "unannounced_blocking_errors": 0,
+        "unrequested_focus_jumps": 0
+      },
+      "evidence": [
+        "Observed assistive-technology session",
+        "Speech/focus recording with participant consent",
+        "Task completion and assistance log"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J16",
+      "name": "Reflow, zoom and reduced motion",
+      "actor": "Researcher with low vision or motion sensitivity",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "320 CSS pixel viewport or 400% zoom; reduced-motion preference"
+      ],
+      "actions": [
+        "Use every stage at narrow/reflow layout",
+        "Complete a matrix item through its alternative",
+        "Inspect a wide scientific table",
+        "Run participant preview with motion-sensitive requirements"
+      ],
+      "acceptance": [
+        "Controls, errors and main action remain reachable without whole-page horizontal scrolling",
+        "Wide tables scroll within labelled regions; plots have tables",
+        "Decorative movement respects preference",
+        "Scientific stimulus motion/timing is unchanged unless a separate accommodation profile is selected"
+      ],
+      "targets": {
+        "inaccessible_primary_actions": 0
+      },
+      "evidence": [
+        "Observed zoom/reflow walkthrough",
+        "Representative screenshots",
+        "Recorded preference and participant-profile choice"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J17",
+      "name": "Next participant, collection finish and reuse",
+      "actor": "Returning researcher",
+      "stages": [
+        "Collect",
+        "Results",
+        "Plan"
+      ],
+      "preconditions": [
+        "Saved station and completed first participant; eligible cohort"
+      ],
+      "actions": [
+        "Start next participant",
+        "Finish collection explicitly",
+        "Download frozen report",
+        "Create a new study from the pinned recipe"
+      ],
+      "acceptance": [
+        "New participant inherits station setup, not prior answers or run identity",
+        "Participant finish and collection finish are visibly distinct",
+        "Finalization freezes cohort and triggers the agreed report without analysis reconfiguration",
+        "Reopening or reusing preserves the original report and creates new study/revision identity"
+      ],
+      "targets": {
+        "next_participant_operator_activations_max": 4,
+        "required_analysis_configuration_decisions": 0
+      },
+      "evidence": [
+        "Observed repeat-use session",
+        "Participant/cohort/study lineage",
+        "Original report retained after reuse"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J18",
+      "name": "Accessible task accommodation without hidden method changes",
+      "actor": "Participant and researcher selecting an accommodation",
+      "stages": [
+        "Plan",
+        "Questions",
+        "Collect",
+        "Results"
+      ],
+      "preconditions": [
+        "Participant need changes input, presentation, instruction or timing demands"
+      ],
+      "actions": [
+        "Open accessible alternatives",
+        "Select a supported accommodation profile or an appropriate alternative task",
+        "Preview the actual participant experience",
+        "Inspect report grouping"
+      ],
+      "acceptance": [
+        "Accommodation has a clear path with readable explanation",
+        "No quiet conversion of physical AAT to keyboard AAT or timed task to untimed equivalent",
+        "Input/display/timing and profile revision are retained",
+        "Analysis eligibility/grouping follows the selected profile while authoring/reporting remain accessible"
+      ],
+      "targets": {
+        "unrecorded_protocol_changes": 0
+      },
+      "evidence": [
+        "Observed participant/researcher decision",
+        "Profile/configuration record",
+        "Eligibility and report grouping"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured"
+    },
+    {
+      "id": "UX-J19",
+      "name": "Find and reopen historical research",
+      "actor": "Returning researcher",
+      "stages": [
+        "Home",
+        "Study library",
+        "Overview",
+        "Results"
+      ],
+      "preconditions": [
+        "Several active and archived studies in different projects; a preserved final report and linked dataset"
+      ],
+      "actions": [
+        "Restart Brohn",
+        "Find the archived study using search and project/date/status filters",
+        "Open its report and linked dataset",
+        "Restore the study to the active library"
+      ],
+      "acceptance": [
+        "The library restores from durable metadata independently of a prior browser session",
+        "Search and permissions expose the permitted study, revision, report and data lineage",
+        "Archiving or restoring library visibility does not delete data, reopen recruitment or change the final report",
+        "The overview offers the actual next action and a direct Clone this design action"
+      ],
+      "targets": {
+        "mandatory_filesystem_navigation_steps": 0,
+        "unintended_reopened_deployments": 0
+      },
+      "evidence": [
+        "Observed keyboard library task",
+        "Restart and scoped-search integration fixture",
+        "Preserved report hashes and deployment state"
+      ],
+      "work_package_ids": [
+        "BWP15",
+        "BWP01",
+        "BWP02"
+      ],
+      "lifecycle_areas": [
+        "workspace_history"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J20",
+      "name": "Curate and reuse a historical dataset",
+      "actor": "Researcher importing or reusing data",
+      "stages": [
+        "Data library",
+        "Import",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "A multi-file multimodal dataset with provenance and a second permitted study"
+      ],
+      "actions": [
+        "Import and inspect detected metadata",
+        "Repair an ambiguous mapping",
+        "Attach a fixed dataset version to two analyses",
+        "Inspect source files and both study links"
+      ],
+      "acceptance": [
+        "Dataset identity, original files, units, clocks, source rights and processing lineage remain discoverable",
+        "Ambiguous metadata becomes a repair task rather than an inferred silent conversion",
+        "Duplicate byte imports can reuse authorized content-addressed storage while retaining distinct import provenance",
+        "Attaching a dataset does not create new participants, observations or unrestricted cross-project access",
+        "Both analyses retain their selected immutable dataset versions"
+      ],
+      "targets": {
+        "fabricated_observations": 0,
+        "silent_mapping_assumptions": 0
+      },
+      "evidence": [
+        "Observed import and reuse task",
+        "Duplicate-import and permission fixtures",
+        "Dataset-to-analysis provenance manifests"
+      ],
+      "work_package_ids": [
+        "BWP06",
+        "BWP01",
+        "BWP02",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "dataset_curation",
+        "reanalysis"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J21",
+      "name": "Clone a study design from library, overview or archive",
+      "actor": "Researcher preparing a replication or new cohort",
+      "stages": [
+        "Study library",
+        "Overview",
+        "Archive",
+        "Plan"
+      ],
+      "preconditions": [
+        "An authorized source study with design, collected data and a published report; an authorized destination"
+      ],
+      "actions": [
+        "Select the source draft or published revision and Clone this design",
+        "Review the compact copy summary and destination/name",
+        "Create the new draft and inspect its readiness"
+      ],
+      "acceptance": [
+        "Clone is reachable from Library, Overview and Archive with equivalent keyboard actions",
+        "Design-only default copies permitted stimuli, design AOIs, conditions, question/recipe definitions and timing settings with complete new-ID reference remapping",
+        "Participant/contact/consent-response records, observations, answers, results, run-specific exclusions, assignments, filled quotas, invites, deployment links, secrets and station calibration do not copy",
+        "Design seeds may preserve schedule semantics while allocation and run state are fresh; approved shared asset bytes remain content-addressed with authorized references",
+        "Cross-project permissions and reuse scope are checked again on commit; source roles and links are not inherited",
+        "Original design, data and reports remain unchanged; reanalysis of an existing dataset is a distinct action"
+      ],
+      "targets": {
+        "clone_action_plus_destination_steps_max": 2,
+        "copied_participant_or_deployment_records": 0
+      },
+      "evidence": [
+        "Observed clone task from all three entry points",
+        "Source-to-destination entity map and allowlist fixture",
+        "Cross-project restriction fixture and unchanged source hashes"
+      ],
+      "work_package_ids": [
+        "BWP03",
+        "BWP01",
+        "BWP02",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "clone",
+        "workspace_history",
+        "assets_templates"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J22",
+      "name": "Save and reuse versioned templates and assets",
+      "actor": "Researcher or tutor curating reusable materials",
+      "stages": [
+        "Plan",
+        "Templates and assets",
+        "Questions",
+        "Collect"
+      ],
+      "preconditions": [
+        "A reusable design with questionnaire logic, controls and design AOIs; one running deployment using a pinned revision"
+      ],
+      "actions": [
+        "Save an authorized design as a named template",
+        "Create a new study from the pinned template",
+        "Replace a stimulus or questionnaire revision",
+        "Inspect affected requirements and publish a later template revision"
+      ],
+      "acceptance": [
+        "Template reuse follows the design-only allowlist and preserves source citations and permitted lineage",
+        "Asset changes show affected AOIs, branches, scoring and readiness; no missing stimulus is silently substituted",
+        "The new study has its own editable identities while preserving valid references and recipe settings",
+        "An upstream template or asset update never changes an already pinned deployment or historical report",
+        "A required unavailable model or asset appears as a named dependency with a repair path"
+      ],
+      "targets": {
+        "silently_changed_live_revisions": 0,
+        "silently_substituted_assets": 0
+      },
+      "evidence": [
+        "Observed save-template and reuse task",
+        "Pinned deployment fixture",
+        "Independent affected-reference and readiness expectations"
+      ],
+      "work_package_ids": [
+        "BWP03",
+        "BWP04",
+        "BWP07",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "assets_templates"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J23",
+      "name": "Pilot, publish and serve a participant study",
+      "actor": "Researcher and fresh-browser participant",
+      "stages": [
+        "Plan",
+        "Collect",
+        "Participant entry"
+      ],
+      "preconditions": [
+        "A compiled protocol and declared supported lab, supervised LAN or hosted browser route"
+      ],
+      "actions": [
+        "Complete the required preview and pilot",
+        "Inspect deployment readiness and publish the selected revision",
+        "Open its URL or QR destination in a fresh supported participant browser",
+        "Pause or revoke the deployment and revisit the link"
+      ],
+      "acceptance": [
+        "The delivery profile declares its actual reachable endpoint; a loopback address is never represented as a public participant link",
+        "Participant renderer and assets use the published immutable revision; researcher edits remain separate drafts",
+        "Preview and pilot data do not consume live allocation or enter live sample counts",
+        "Hosted routes require authenticated researcher controls, project isolation and HTTPS deployment before being offered as ready",
+        "Failed publication, closed, paused, revoked and unsupported-profile destinations show useful states without exposing researcher records",
+        "URL and QR destinations are equivalent and retain a keyboard-readable link"
+      ],
+      "targets": {
+        "preview_or_pilot_runs_in_live_counts": 0,
+        "silent_protocol_upgrades": 0
+      },
+      "evidence": [
+        "Fresh-browser lab and declared hosted-profile journeys",
+        "Deployment/revision manifests and failure fixtures",
+        "Reachability and scoped-access evidence"
+      ],
+      "work_package_ids": [
+        "BWP05",
+        "BWP03",
+        "BWP15",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "delivery"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J24",
+      "name": "Participant consent, eligibility and accessible entry",
+      "actor": "Participant joining a study",
+      "stages": [
+        "Participant entry",
+        "Consent and eligibility",
+        "Participant runner"
+      ],
+      "preconditions": [
+        "A published protocol with entry requirements, versioned consent text and optional media policy"
+      ],
+      "actions": [
+        "Open the participant link",
+        "Choose an available language and supported access profile",
+        "Complete required browser/input/device checks and consent",
+        "Follow eligible, declined-media or screened-out route"
+      ],
+      "acceptance": [
+        "Consent response links to the exact text/version and declared data destinations before permitted capture begins",
+        "Optional camera or microphone refusal preserves allowed non-media routes; required capability failure explains the applicable alternative or end state",
+        "Consent refusal, ineligibility, unanswered and participant withdrawal remain distinct outcomes",
+        "Question wording, language, access accommodation and changed input/timing profiles remain versioned",
+        "Participant-facing entry does not require a researcher account unless the selected enrollment policy explicitly requires participant authentication"
+      ],
+      "targets": {
+        "unconsented_capture_starts": 0,
+        "silent_accommodation_changes": 0
+      },
+      "evidence": [
+        "Observed participant entry including keyboard and assistive-technology routes",
+        "Consent/version and capability fixtures",
+        "Eligibility and optional-media branch truth tables"
+      ],
+      "work_package_ids": [
+        "BWP05",
+        "BWP03",
+        "BWP04",
+        "BWP11",
+        "BWP12",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "participant_entry"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J25",
+      "name": "Invitations, quotas and concurrent participant starts",
+      "actor": "Researcher and concurrently arriving participants",
+      "stages": [
+        "Collect",
+        "Participant entry",
+        "Enrollment"
+      ],
+      "preconditions": [
+        "A declared invitation/repeat policy and quota with one remaining place; two concurrent eligible entrants"
+      ],
+      "actions": [
+        "Create a scoped invitation or permitted open-link deployment",
+        "Attempt concurrent starts",
+        "Retry a lost reservation reply and expire an abandoned reservation",
+        "Revisit with a reused or revoked invitation"
+      ],
+      "acceptance": [
+        "Only one entrant reserves the final place; allocation and quota accounting are transactional and idempotent",
+        "Reservation expiry and completed/withdrawn/interrupted outcomes update quota counts according to the declared policy",
+        "Revoked or already-used invitations follow explicit rules without leaking study contents",
+        "Invitation/contact identity stays separate from response and analysis identifiers",
+        "Anonymous links state the limits of duplicate detection; no unsupported claim of perfect repeat prevention or hidden invasive fingerprinting"
+      ],
+      "targets": {
+        "quota_oversubscriptions": 0,
+        "duplicate_allocations_from_retry": 0
+      },
+      "evidence": [
+        "Concurrent reservation/expiry fixture",
+        "Participant-facing repeat and quota-full states",
+        "Scoped-token and identity-separation checks"
+      ],
+      "work_package_ids": [
+        "BWP02",
+        "BWP05",
+        "BWP15",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "access_quotas",
+        "participant_entry"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J26",
+      "name": "Resume participation and return for a later session",
+      "actor": "Returning participant and lab operator",
+      "stages": [
+        "Participant entry",
+        "Participant runner",
+        "Collect"
+      ],
+      "preconditions": [
+        "A repeated-session protocol with an explicit recovery boundary and an interrupted prior session"
+      ],
+      "actions": [
+        "Return through the permitted resume route",
+        "Inspect the saved boundary and recover according to the profile",
+        "Return for the next scheduled session",
+        "Start another participant on the same lab machine"
+      ],
+      "acceptance": [
+        "Enrollment links repeated sessions while each new run, attempt and realized presentation has the required distinct identity",
+        "Recovery records the interrupted interval and never silently replays a timed trial as its original presentation",
+        "Only the declared checkpoint can resume; expired or unsupported recovery offers a truthful end or restart route",
+        "The next person receives no prior participant answers, enrollment secrets or residual capture state",
+        "Session windows and missed/late sessions remain distinguishable from completed observations"
+      ],
+      "targets": {
+        "silent_trial_replays": 0,
+        "cross_participant_answer_leaks": 0
+      },
+      "evidence": [
+        "Observed returning-participant and station handoff tasks",
+        "Enrollment/session/presentation lineage fixture",
+        "Expired-link and unsupported-boundary recovery checks"
+      ],
+      "work_package_ids": [
+        "BWP05",
+        "BWP02",
+        "BWP03",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "resume_waves"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J27",
+      "name": "Finish, withdraw and return to a recruitment destination",
+      "actor": "Participant ending a study",
+      "stages": [
+        "Participant runner",
+        "Debrief",
+        "Completion"
+      ],
+      "preconditions": [
+        "Protocol-defined completion, withdrawal, screen-out and quota-full endings; an optional approved recruitment return destination"
+      ],
+      "actions": [
+        "Exercise each ending route",
+        "Inspect debrief and data persistence status",
+        "Follow the configured return link when applicable",
+        "Retry after delayed upload acknowledgment"
+      ],
+      "acceptance": [
+        "Completed, withdrawn, screened-out, quota-full and interrupted endings have distinct recorded reasons and appropriate visible messages",
+        "Participant task completion and locally or remotely durable data receipt remain separate; pending transfers never appear as verified receipt",
+        "Debrief and participant contact/withdrawal instructions match the published protocol",
+        "Configured return destinations receive only approved opaque identifiers and status fields; browser input cannot select arbitrary redirect destinations",
+        "Repeating the ending or upload acknowledgment does not duplicate completion, enrollment or data"
+      ],
+      "targets": {
+        "false_verified_receipts": 0,
+        "duplicate_terminal_records": 0
+      },
+      "evidence": [
+        "Participant-facing ending snapshots and keyboard task",
+        "Durability/receipt reconciliation fixture",
+        "Allowlisted return-destination and payload fixture"
+      ],
+      "work_package_ids": [
+        "BWP05",
+        "BWP02",
+        "BWP04",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "endings",
+        "delivery"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J28",
+      "name": "Monitor, pause, close and finalize collection",
+      "actor": "Researcher supervising collection",
+      "stages": [
+        "Overview",
+        "Collect",
+        "Review",
+        "Results"
+      ],
+      "preconditions": [
+        "An open collection window with active sessions, one pending upload and a prior provisional report"
+      ],
+      "actions": [
+        "Inspect participant and persistence counts",
+        "Pause recruitment",
+        "Close collection under the declared active-session policy",
+        "Resolve outstanding dependencies and finalize",
+        "Reopen through a new collection window if permitted"
+      ],
+      "acceptance": [
+        "Pause prevents new enrollment without silently terminating already active sessions",
+        "Close names its effect on current participants, pending uploads and eligibility rather than treating every terminal run as complete",
+        "Finalization freezes a cohort and agreed analysis snapshot after declared prerequisites; unresolved data permit only explicitly provisional output",
+        "The stopping rule and any amendment remain attributed and visible; outcome-driven changes are not hidden",
+        "Reopening creates a new collection window and report snapshot while preserving the previous final cohort and conclusion"
+      ],
+      "targets": {
+        "silently_terminated_active_sessions": 0,
+        "overwritten_final_reports": 0
+      },
+      "evidence": [
+        "Observed collection-control and comprehension task",
+        "Concurrent session/close/upload fixture",
+        "Cohort, amendment and report lineage"
+      ],
+      "work_package_ids": [
+        "BWP15",
+        "BWP02",
+        "BWP05",
+        "BWP13"
+      ],
+      "lifecycle_areas": [
+        "collection_closure"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J29",
+      "name": "Reanalyse a historical dataset without recollecting",
+      "actor": "Researcher comparing an analytical revision",
+      "stages": [
+        "Data library",
+        "Results",
+        "Review",
+        "Analysis history"
+      ],
+      "preconditions": [
+        "An immutable dataset and preserved report with known AOI, mask and method versions"
+      ],
+      "actions": [
+        "Choose Reanalyse existing data",
+        "Inspect and change an allowed AOI, mask or method revision",
+        "Review affected outcomes and run the new analysis",
+        "Compare original and revised reports"
+      ],
+      "acceptance": [
+        "Reanalysis creates a new analysis identity over explicitly selected existing observations without cloning participants or starting collection",
+        "Changes show their parameter, eligibility and descendant impact before results are promoted",
+        "Original raw files, prior review decisions and final report remain retrievable",
+        "The comparison labels changed cohort/support, method and assumptions; unlike estimates are not presented as an unexplained numerical improvement"
+      ],
+      "targets": {
+        "new_observations_implied_by_reanalysis": 0,
+        "overwritten_prior_reports": 0
+      },
+      "evidence": [
+        "Observed reanalysis and interpretation task",
+        "Input/mask/AOI/method and report hashes",
+        "Independent expected invalidation and comparison fixture"
+      ],
+      "work_package_ids": [
+        "BWP13",
+        "BWP02",
+        "BWP07",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "reanalysis",
+        "workspace_history"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J30",
+      "name": "Collaborate and share a revocable frozen report",
+      "actor": "Researcher, reviewer and report recipient",
+      "stages": [
+        "Project access",
+        "Plan",
+        "Review",
+        "Results",
+        "Shared report"
+      ],
+      "preconditions": [
+        "A supported shared deployment, two editors, a scoped reviewer and a frozen report"
+      ],
+      "actions": [
+        "Grant the reviewer appropriate project or report access",
+        "Edit the same question from two clients and resolve the conflict",
+        "Share a named report snapshot with a selected audience",
+        "Collect another participant and then revoke the share"
+      ],
+      "acceptance": [
+        "Server authorization enforces project roles and object-level access; navigation visibility alone is insufficient",
+        "Concurrent edits retain both submitted drafts and show an attributed resolution rather than silently overwriting one",
+        "Comments remain attached to the specific question, AOI or revision reviewed",
+        "Recipient sees the declared immutable snapshot and only permitted included content; later responses do not alter it",
+        "Revocation prevents future access and leaves an auditable grant record; it does not claim to recall previously downloaded copies",
+        "Expired/revoked links disclose no study details and provide an accessible status"
+      ],
+      "targets": {
+        "silent_edit_overwrites": 0,
+        "unauthorized_project_or_media_accesses": 0,
+        "mutated_shared_snapshots": 0
+      },
+      "evidence": [
+        "Role/permission and concurrent-edit integration fixtures",
+        "Observed reviewer and recipient tasks",
+        "Snapshot hashes and share grant/revocation audit"
+      ],
+      "work_package_ids": [
+        "BWP17",
+        "BWP01",
+        "BWP02",
+        "BWP13",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "collaboration"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J31",
+      "name": "Export and import a portable study design",
+      "actor": "Researcher moving a design into a fresh workspace",
+      "stages": [
+        "Overview",
+        "Export design",
+        "Study library",
+        "Import design",
+        "Plan"
+      ],
+      "preconditions": [
+        "A design with nested survey logic, repeated stimuli, control/baseline phases, scoring keys and design AOIs; a clean supported destination workspace"
+      ],
+      "actions": [
+        "Review design contents and dependencies",
+        "Export a versioned .brohn-study.zip",
+        "Import through choose file, review and create",
+        "Resolve permitted missing dependencies and compare behavior against independent expected fixtures"
+      ],
+      "acceptance": [
+        "The package contains only permitted design assets and declarative definitions with manifest versions, hashes, sizes and attribution; no collected data, credentials, live links or private paths",
+        "All imported entity IDs and references are remapped consistently; original IDs remain authorized provenance only",
+        "Independent fixtures confirm graph reachability, branch truth tables, controls, timing, seeds, scoring keys, AOIs and recipe settings rather than relying solely on exporter/importer agreement",
+        "Missing redistributable rights retain a named dependency instead of silently packaging or replacing an asset; unsupported capabilities create a labelled draft with repair tasks",
+        "The imported study has fresh allocation and deployment state, never starts collection and cannot accidentally resolve an old ID to an unrelated local entity",
+        "Name collisions and repeated package hashes offer explicit new-copy or open-existing choices without overwriting another study"
+      ],
+      "targets": {
+        "silent_semantic_changes": 0,
+        "automatic_collection_starts": 0,
+        "copied_collected_or_secret_records": 0
+      },
+      "evidence": [
+        "Clean-workspace portable roundtrip artifact",
+        "Independent expected protocol and questionnaire fixtures including non-ASCII names",
+        "ID/reference mapping and design-only allowlist checks",
+        "Observed keyboard export/import and dependency-repair task"
+      ],
+      "work_package_ids": [
+        "BWP01",
+        "BWP02",
+        "BWP03",
+        "BWP05",
+        "BWP15",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "portability",
+        "assets_templates"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J32",
+      "name": "Reject unsafe or incompatible design packages atomically",
+      "actor": "Researcher importing an invalid or incomplete package",
+      "stages": [
+        "Import design",
+        "Validation report",
+        "Study library"
+      ],
+      "preconditions": [
+        "Fixtures with an unmigratable schema, an unexpectedly missing declared file, tampered content, escaping paths, archive expansion/size excess and disallowed executable content"
+      ],
+      "actions": [
+        "Attempt each invalid import",
+        "Inspect the actionable validation result and cancel or retry",
+        "Interrupt validation or exhaust available storage",
+        "Inspect the destination library and network/process evidence"
+      ],
+      "acceptance": [
+        "Incompatible structural schemas, missing declared bundled files, hash mismatch, path traversal and configured resource-limit violations fail before a visible study is committed",
+        "Legitimately declared external or unavailable capability dependencies remain distinct from corrupt packages and can create only a labelled draft under the portable contract",
+        "Bounded quarantine validates actual streamed sizes, hashes, entry types and resolved paths; absolute/UNC/drive paths, links, collisions and unsupported active content cannot escape or execute",
+        "Import never automatically evaluates uploaded code, installs packages, runs models or fetches network assets",
+        "Cancellation, disk failure, permission loss and process interruption leave no visible partial study; staged bytes are reconciled safely and retry is idempotent",
+        "Error output names the violated condition and preserves unrelated studies and shared objects"
+      ],
+      "targets": {
+        "visible_partial_imports": 0,
+        "automatic_code_or_network_actions": 0,
+        "writes_outside_quarantine_or_authorized_commit": 0
+      },
+      "evidence": [
+        "Adversarial ZIP and schema fixtures with expected failures",
+        "Atomicity/crash/disk-failure and permission-loss checks",
+        "Filesystem, process and network observations",
+        "Accessible validation-report task"
+      ],
+      "work_package_ids": [
+        "BWP01",
+        "BWP02",
+        "BWP03",
+        "BWP15",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "portability"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J33",
+      "name": "Restore and relocate a whole workspace",
+      "actor": "Researcher recovering or moving Brohn",
+      "stages": [
+        "Workspace settings",
+        "Backup",
+        "Restore",
+        "Home",
+        "Results"
+      ],
+      "preconditions": [
+        "A workspace with studies, raw objects, reports, audit history and interrupted jobs; a consistent backup and a different supported storage location"
+      ],
+      "actions": [
+        "Create and verify a whole-workspace backup",
+        "Restore into an authorized destination and reconcile interrupted operations",
+        "Open historical studies and reproduce a selected report",
+        "Review deployment, storage and device readiness"
+      ],
+      "acceptance": [
+        "The backup covers a consistent database/object snapshot with integrity manifests, audit and pending-operation state; a design-only export is never represented as a data backup",
+        "Relocation resolves internal object references without requiring old absolute paths and does not accidentally bind another workspace object",
+        "Corrupt or missing objects produce a repairable restore state rather than a false successful restoration",
+        "Interrupted jobs and staged promotions reconcile without duplicate artifacts or stale success",
+        "Restoring never automatically reopens live participant endpoints, pairs devices or resumes capture; deployment authorization and readiness are reviewed separately",
+        "Historical cohorts, raw inputs and report hashes remain traceable after restore"
+      ],
+      "targets": {
+        "automatic_live_endpoint_restarts": 0,
+        "silently_missing_required_backup_objects": 0
+      },
+      "evidence": [
+        "Clean-destination backup/restore and relocation fixture",
+        "Consistent database/object and selected report hashes",
+        "Interrupted-job reconciliation and missing-object tests",
+        "Observed recovery task"
+      ],
+      "work_package_ids": [
+        "BWP17",
+        "BWP01",
+        "BWP02",
+        "BWP15"
+      ],
+      "lifecycle_areas": [
+        "backup",
+        "workspace_history"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "id": "UX-J34",
+      "name": "Withdraw or purge retained data without confusing archive",
+      "actor": "Authorized researcher handling a participant request or retention policy",
+      "stages": [
+        "Participant records",
+        "Retention review",
+        "Data library",
+        "Backup and restore",
+        "Archive"
+      ],
+      "preconditions": [
+        "A participant with recordings, derivatives, cached artifacts, report contributions and backups under an explicit withdrawal/retention policy"
+      ],
+      "actions": [
+        "Inspect affected records and the permitted retention action",
+        "Apply authorized removal or restriction",
+        "Review downstream report and cache consequences",
+        "Restore a backup under the recorded deletion policy",
+        "Archive and restore an unrelated study"
+      ],
+      "acceptance": [
+        "Archive changes organization/read-only policy and never implies deletion, anonymization or withdrawal completion",
+        "The action enumerates raw records, derivatives, caches, indexes, shared references, report contributions and backups within its authorized scope",
+        "Deletion/restriction tombstones contain the minimum necessary identifiers and policy/audit evidence rather than the removed participant content",
+        "Where purge is required, old backups follow the declared expiry/cryptographic erasure or restore-suppression policy; restoration replays tombstones before researcher or participant access",
+        "Report provenance records removal/redaction or required reanalysis; missing observations never become zero scores and frozen copies are not silently falsified",
+        "Objects still legitimately referenced elsewhere follow scope and retention policy rather than indiscriminate byte deletion; irretrievable external downloads remain distinguishable from controlled storage"
+      ],
+      "targets": {
+        "resurrected_purged_records_after_restore": 0,
+        "archive_actions_that_delete_data": 0
+      },
+      "evidence": [
+        "Scoped withdrawal/retention dependency fixture",
+        "Cache and report invalidation checks",
+        "Tombstone and backup-restore suppression fixture",
+        "Observed affected-record comprehension task"
+      ],
+      "work_package_ids": [
+        "BWP02",
+        "BWP13",
+        "BWP15",
+        "BWP17"
+      ],
+      "lifecycle_areas": [
+        "retention",
+        "backup",
+        "workspace_history"
+      ],
+      "status": "planned_not_executed",
+      "target_status": "proposed_unmeasured",
+      "measurement_status": "planned_not_executed"
+    }
+  ],
+  "lifecycle_measurement_status": "planned_not_executed",
+  "lifecycle_coverage": [
+    {
+      "area_id": "workspace_history",
+      "label": "Workspace, study library and historical research",
+      "journey_ids": [
+        "UX-J19",
+        "UX-J21",
+        "UX-J29",
+        "UX-J33",
+        "UX-J34"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "dataset_curation",
+      "label": "Dataset curation, provenance and permitted reuse",
+      "journey_ids": [
+        "UX-J20"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "assets_templates",
+      "label": "Reusable stimuli, questionnaires, AOIs and templates",
+      "journey_ids": [
+        "UX-J21",
+        "UX-J22",
+        "UX-J31"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "clone",
+      "label": "Design-only study cloning",
+      "journey_ids": [
+        "UX-J21"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "portability",
+      "label": "Portable study design export and import",
+      "journey_ids": [
+        "UX-J31",
+        "UX-J32"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "delivery",
+      "label": "Publishing and serving participant studies",
+      "journey_ids": [
+        "UX-J23",
+        "UX-J27"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "participant_entry",
+      "label": "Consent, eligibility and accessible entry",
+      "journey_ids": [
+        "UX-J24",
+        "UX-J25"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "access_quotas",
+      "label": "Invitations, repeats, quotas and enrollment access",
+      "journey_ids": [
+        "UX-J25"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "resume_waves",
+      "label": "Participant recovery and repeated sessions",
+      "journey_ids": [
+        "UX-J26"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "endings",
+      "label": "Completion, withdrawal, debrief and return destinations",
+      "journey_ids": [
+        "UX-J27"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "collection_closure",
+      "label": "Monitoring, pause, close and finalization",
+      "journey_ids": [
+        "UX-J28"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "reanalysis",
+      "label": "Historical dataset reanalysis and comparison",
+      "journey_ids": [
+        "UX-J20",
+        "UX-J29"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "collaboration",
+      "label": "Roles, concurrent edits and frozen report sharing",
+      "journey_ids": [
+        "UX-J30"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "backup",
+      "label": "Whole-workspace backup, restore and relocation",
+      "journey_ids": [
+        "UX-J33",
+        "UX-J34"
+      ],
+      "measurement_status": "planned_not_executed"
+    },
+    {
+      "area_id": "retention",
+      "label": "Retention, withdrawal, purge and restore suppression",
+      "journey_ids": [
+        "UX-J34"
+      ],
+      "measurement_status": "planned_not_executed"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "brohn-facial-contract-evidence/0.1.0-draft",
+  "origin": "public-documentation-example-and-synthetic-contract-probes",
+  "qualification": "offline-specification-replay-only",
+  "checked_on": "2026-09-08",
+  "runtime": "v24.19.0",
+  "sources": {
+    "api": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-9-api-overview-and-usage",
+    "log": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-10-detailed-log"
+  },
+  "public_example": {
+    "origin": "public-documentation-example",
+    "specification": "FaceReader 9 API technical note",
+    "AnalysisType": "Video",
+    "FrameTimeTicks": "3697600000",
+    "classification": {
+      "Type": "Value",
+      "Label": "Neutral",
+      "Value": [
+        0.201352075
+      ],
+      "State": []
+    }
+  },
+  "passed": 8,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "published frame ticks reproduce 369.76 seconds exactly",
+      "status": "pass"
+    },
+    {
+      "name": "camera and video use distinct documented clock origins",
+      "status": "pass"
+    },
+    {
+      "name": "published numeric label and array remain native",
+      "status": "pass"
+    },
+    {
+      "name": "state classification is never coerced to numeric intensity",
+      "status": "pass"
+    },
+    {
+      "name": "synthetic zero, null and absent remain distinct",
+      "status": "pass"
+    },
+    {
+      "name": "documented detailed-log failure tokens remain missing",
+      "status": "pass"
+    },
+    {
+      "name": "synthetic timestamp above JavaScript safe integer remains exact",
+      "status": "pass"
+    },
+    {
+      "name": "synthetic multi-value arrays and unsupported types remain explicit",
+      "status": "pass"
+    }
+  ],
+  "limitations": [
+    "No vendor SDK, model weights, camera, participant data, upload or paid endpoint was used.",
+    "This is not a full XML parser, live API test, supported FaceReader 10 wire contract or model validation.",
+    "No model version, model determinism, classification accuracy or timing accuracy was established.",
+    "Custom missing tokens, acquisition timestamps and XML placement require a versioned vendor fixture."
+  ]
+}

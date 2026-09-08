@@ -1,0 +1,6 @@
+source("R/study.R")
+study <- new_study(include_liking = TRUE)
+session <- new_session(study, "sample-run-001", "synthetic-participant-001")
+stopifnot(length(validate_study(study)) == 0L)
+str(list(study = study, session = session), max.level = 2)
+cat("Synthetic draft only. No recording, scoring or participant data.\n")

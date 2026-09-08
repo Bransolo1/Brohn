@@ -1,0 +1,30 @@
+# Protocol intentions cannot silently become claims of acquired sensor data.
+source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=TRUE)
+source("R/platform-collection-routes.R",encoding="UTF-8")
+local({
+  checks<-0L;check<-function(name,value){if(!isTRUE(value))stop(name,call.=FALSE);checks<<-checks+1L}
+  design<-brohn_new_design("Original route QA");design$questions<-list();design$blocks<-list();design$measures<-list("gaze","questionnaire","iat","facial_expression","webcam_gaze","eog")
+  routes<-brohn_collection_routes(design);get<-function(id) Filter(function(r)r$id==id,routes)[[1L]]
+  check("selected gaze needs its separate recording",!get("gaze")$participant_link && get("gaze")$state=="Separate gaze recording")
+  check("an empty questionnaire is not advertised as collected",!get("questionnaire")$participant_link && get("questionnaire")$state=="Add questions")
+  check("selected IAT without a block needs configuration",!get("iat")$participant_link && get("iat")$state=="Configure a task")
+  check("unimplemented expression and webcam gaze remain explicit",grepl("not enabled",get("facial_expression")$state) && grepl("not enabled",get("webcam_gaze")$state))
+  check("retained EOG does not claim an analysis",get("eog")$state=="Source retention available")
+  design$measures<-list("temperature","movement"); routes<-brohn_collection_routes(design)
+  check("temperature offers its calibrated import route",get("temperature")$state=="Calibrated temperature import" && !get("temperature")$participant_link)
+  check("acceleration offers its exact three-axis route without generic movement claims",get("movement")$state=="Calibrated acceleration import" && grepl("Other movement sensors",get("movement")$detail,fixed=TRUE))
+  q<-brohn_question(type="rating");design$questions<-list(q);design$measures<-list("eeg");design$blocks<-list(brohn_task_new("rt-deary-liewald-simple/1.0"))
+  routes<-brohn_collection_routes(design)
+  check("configured question appears even when intention checkbox is omitted",get("questionnaire")$participant_link)
+  check("configured task appears even when intention checkbox is omitted",get("rt")$participant_link)
+  check("EEG source selection remains an explicit separate action",!get("eeg")$participant_link && grepl("start recording explicitly",get("eeg")$detail))
+  design$measures<-list("facial_geometry");design$camera<-list(audio=FALSE,required=FALSE,analysis_profile="none")
+  routes<-brohn_collection_routes(design)
+  check("camera policy is included even without a selected measure",get("camera")$participant_link && get("camera")$state=="Optional participant setup")
+  check("recording alone does not imply automatic geometry",!get("facial_geometry")$participant_link)
+  design$camera$analysis_profile<-"face_geometry_v1";routes<-brohn_collection_routes(design)
+  check("geometry automation follows the actual frozen policy",get("facial_geometry")$participant_link)
+  html<-htmltools::renderTags(brohn_collection_routes_ui(design))$html
+  check("rendered checklist describes sources without claiming hardware readiness",grepl("Collection routes",html,fixed=TRUE) && !grepl("Device connected|Hardware ready",html))
+  cat(sprintf("PASS: %d collection route assertions\n",checks))
+})

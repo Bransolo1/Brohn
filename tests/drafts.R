@@ -1,0 +1,27 @@
+source("R/drafts.R")
+draft <- create_draft()
+expect(identical(draft$session$mode, "preview") && !length(draft$events))
+expect(identical(create_draft("sample")$session$mode, "sample"))
+expect(!identical(create_draft()$study$id, draft$study$id))
+renamed <- revise_draft(draft, "Packaging study", TRUE)
+expect(identical(renamed$study$id, draft$study$id) && identical(draft_title(renamed), "Packaging study"))
+expect(renamed$study$revision == 2 && renamed$session$study_revision == 2)
+expect(isTRUE(all.equal(revise_draft(renamed, "Packaging study", TRUE), renamed)))
+question_changed <- revise_draft(renamed, "Packaging study", TRUE, "How appealing is this design?")
+expect(question_changed$study$questions[[1]]$revision == 2)
+without <- revise_draft(question_changed, "Packaging study", FALSE)
+expect(!length(without$study$questions) && identical(without$study$measures, "eye"))
+restored <- revise_draft(without, "Packaging study", TRUE)
+expect(!identical(restored$study$questions[[1]]$id, question_changed$study$questions[[1]]$id))
+expect(inherits(try(revise_draft(sample_bundle(), "Alter evidence", TRUE), silent = TRUE), "try-error"))
+expect(inherits(try(revise_draft(draft, "   ", TRUE), silent = TRUE), "try-error"))
+legacy <- draft; legacy$study$title <- NULL
+expect(!length(validate_bundle(legacy)) && identical(draft_title(legacy), legacy$study$id))
+expect(isTRUE(all.equal(bundle_from_json(bundle_to_json(legacy)), legacy)))
+custom <- draft
+custom$study$measures <- c(custom$study$measures, "eeg")
+custom$study$questions[[1]]$required <- TRUE
+custom$study$questions[[1]]$labels[2] <- "Slightly"
+preserved <- revise_draft(custom, "Renamed only", TRUE)
+expect("eeg" %in% preserved$study$measures && preserved$study$questions[[1]]$required)
+expect(identical(preserved$study$questions[[1]]$labels, custom$study$questions[[1]]$labels))

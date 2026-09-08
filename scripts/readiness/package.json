@@ -1,0 +1,28 @@
+{
+  "name": "brohn-platform-readiness-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "description": "Isolated survey and browser task readiness tools; not an application runtime.",
+  "dependencies": {
+    "survey-core": "2.5.41",
+    "survey-js-ui": "2.5.41",
+    "jspsych": "8.3.0",
+    "@jspsych/plugin-iat-html": "2.1.0",
+    "@jspsych/plugin-iat-image": "2.1.0",
+    "@jspsych/plugin-html-keyboard-response": "2.2.0",
+    "@jspsych/plugin-image-keyboard-response": "2.2.0",
+    "@jspsych/plugin-preload": "2.1.0",
+    "@jspsych/plugin-html-button-response": "2.1.0",
+    "@jspsych/plugin-survey": "4.0.0",
+    "@jspsych/plugin-fullscreen": "2.1.0",
+    "@jspsych/plugin-browser-check": "2.1.0",
+    "@jspsych/plugin-audio-keyboard-response": "2.2.0",
+    "@jspsych/plugin-video-keyboard-response": "2.2.0",
+    "@jspsych/plugin-html-slider-response": "2.1.0",
+    "@jspsych/plugin-canvas-keyboard-response": "2.2.0",
+    "@jspsych/plugin-reconstruction": "2.1.0",
+    "@jspsych/plugin-serial-reaction-time": "2.1.0"
+  }
+}

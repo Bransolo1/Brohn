@@ -1,0 +1,240 @@
+{
+  "schema": "brohn-large-build-preparation/0.1.0",
+  "generated_utc": "2026-09-08T01:17:37.856896+00:00",
+  "development_preparation_ready": true,
+  "product_implemented": false,
+  "capability_count": 50,
+  "family_count": 28,
+  "work_packages": 17,
+  "new_reference_assertions": 101,
+  "planned_journeys": 34,
+  "shared_ui_families": 13,
+  "lifecycle_areas": 15,
+  "planned_operational_journeys": 16,
+  "original_icons": 32,
+  "brand_contrast_pairs": 31,
+  "checks": [
+    {
+      "name": "capability registry count and unique IDs",
+      "passed": true
+    },
+    {
+      "name": "every capability has exactly one owning work package",
+      "passed": true
+    },
+    {
+      "name": "work package IDs are unique",
+      "passed": true
+    },
+    {
+      "name": "work package prerequisites exist",
+      "passed": true
+    },
+    {
+      "name": "work package dependencies are acyclic",
+      "passed": true
+    },
+    {
+      "name": "work package statuses and acceptance are explicit",
+      "passed": true
+    },
+    {
+      "name": "authoritative documents exist",
+      "passed": true
+    },
+    {
+      "name": "local links in architecture, tooling and product documents resolve",
+      "passed": true,
+      "broken": []
+    },
+    {
+      "name": "every capability appears once in the shared user interface map",
+      "passed": true
+    },
+    {
+      "name": "shared interface families have unique identities and states",
+      "passed": true
+    },
+    {
+      "name": "planned whole-journey scenarios have unique identities and acceptance evidence",
+      "passed": true
+    },
+    {
+      "name": "usability goals remain explicitly unmeasured",
+      "passed": true
+    },
+    {
+      "name": "research lifecycle covers required operational areas exactly once",
+      "passed": true
+    },
+    {
+      "name": "lifecycle areas link to known planned journeys",
+      "passed": true
+    },
+    {
+      "name": "operational journeys have known package owners and consistent reverse coverage",
+      "passed": true
+    },
+    {
+      "name": "local and hosted delivery have explicit package gates",
+      "passed": true
+    },
+    {
+      "name": "cross-cutting lifecycle and portability specifications resolve",
+      "passed": true
+    },
+    {
+      "name": "original brand assets exist and match declared icon inventory",
+      "passed": true
+    },
+    {
+      "name": "local brand font matches pinned provenance and includes its licence",
+      "passed": true
+    },
+    {
+      "name": "brand tokens and reviewable desktop/narrow previews exist",
+      "passed": true
+    },
+    {
+      "name": "recorded brand contrast checks passed",
+      "passed": true
+    },
+    {
+      "name": "recorded desktop and narrow accessibility preview checks passed",
+      "passed": true
+    },
+    {
+      "name": "recorded reference results: acquisition-results.json",
+      "passed": true
+    },
+    {
+      "name": "recorded reference results: platform-results-r.json",
+      "passed": true
+    },
+    {
+      "name": "recorded reference results: platform-results-web.json",
+      "passed": true
+    },
+    {
+      "name": "recorded reference results: media-results.json",
+      "passed": true
+    },
+    {
+      "name": "recorded reference results: segmentation-results.json",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: face_landmarker.task",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: pose_landmarker_lite.task",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: hand_landmarker.task",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: efficientdet_lite0.tflite",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: interactive_segmentation.task",
+      "passed": true
+    },
+    {
+      "name": "cached model integrity: silero_vad.onnx",
+      "passed": true
+    },
+    {
+      "name": "selected compatible segmentation model integrity",
+      "passed": true
+    },
+    {
+      "name": "media result binds current model manifest",
+      "passed": true
+    },
+    {
+      "name": "local Python worker exists: methods-venv",
+      "passed": true
+    },
+    {
+      "name": "local Python worker exists: acquisition-venv",
+      "passed": true
+    },
+    {
+      "name": "local Python worker exists: vision-audio-venv",
+      "passed": true
+    },
+    {
+      "name": "local Python worker exists: segmentation-venv",
+      "passed": true
+    },
+    {
+      "name": "isolated R preparation library exists: r-library-platform",
+      "passed": true
+    },
+    {
+      "name": "isolated R preparation library exists: r-library-methods",
+      "passed": true
+    },
+    {
+      "name": "isolated R preparation library exists: r-library-implicit-methods",
+      "passed": true
+    },
+    {
+      "name": "isolated survey/task packages exist",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "file": "docs/preparation/acquisition-results.json",
+      "passing_assertions": 27,
+      "status": "recorded_reference_results"
+    },
+    {
+      "file": "docs/preparation/platform-results-r.json",
+      "passing_assertions": 22,
+      "status": "recorded_reference_results"
+    },
+    {
+      "file": "docs/preparation/platform-results-web.json",
+      "passing_assertions": 29,
+      "status": "recorded_reference_results"
+    },
+    {
+      "file": "docs/preparation/media-results.json",
+      "passing_assertions": 17,
+      "status": "passed_with_unavailable_capability"
+    },
+    {
+      "file": "docs/preparation/segmentation-results.json",
+      "passing_assertions": 6,
+      "status": "recorded_reference_results"
+    }
+  ],
+  "preserved_unavailable": [
+    {
+      "capability": "mediapipe-1.0.1-interactive-segmentation-windows",
+      "attempted": true,
+      "failure": "function 'MpInteractiveSegmenterCreate' not found",
+      "fallback": "OpenCV GrabCut; separately assessed compatible model version"
+    }
+  ],
+  "selected_segmentation_fallback": "MediaPipe 0.10.21 + MagicTouch v1; separate environment",
+  "external_inputs": [
+    "Named hardware and licensed SDK access for claimed live profiles",
+    "Selected entitled facial/AU provider or locally pinned model with reference outputs",
+    "Source-bound procedure/scorer profiles and materials for newly enabled tasks",
+    "Representative undergraduate task observations",
+    "GitHub destination and selected distribution licence before publication",
+    "Selected HTTPS hosting/storage destination and operator configuration before opening hosted participant recruitment; local lab operation is independently deliverable"
+  ],
+  "limitations": [
+    "This reads recorded test evidence and verifies artifact presence/integrity; it does not rerun the tests.",
+    "Installed binaries are not evidence that all product routes, physical devices or populations are supported.",
+    "Planned usability scenarios are not participant findings; accessibility evidence covers the static brand preview only."
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "schema": "brohn-platform-library-probes/0.1",
+  "generated": "2026-09-08 00:33:28 UTC",
+  "origin": "synthetic/reference",
+  "application_integration": false,
+  "checks_passed": 22,
+  "checks": [
+    {
+      "id": "transaction_first_append",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "idempotent_replay",
+      "passed": true,
+      "actual": false,
+      "expected": false,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "idempotent_count",
+      "passed": true,
+      "actual": 1,
+      "expected": 1,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "idempotence_conflict_rejected",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "rollback_error",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "rollback_leaves_original_only",
+      "passed": true,
+      "actual": 1,
+      "expected": 1,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "raw_tick_stays_text",
+      "passed": true,
+      "actual": "9007199254740993",
+      "expected": "9007199254740993",
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "foreign_key_rejected",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "external_r_process",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "external_failure_status",
+      "passed": true,
+      "actual": 7,
+      "expected": 7,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "python_worker_success",
+      "passed": true,
+      "actual": 0,
+      "expected": 0,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "python_decimal_tick_identity",
+      "passed": true,
+      "actual": "9007199254740993",
+      "expected": "9007199254740993",
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "python_explicit_null_and_unit",
+      "passed": true,
+      "actual": true,
+      "expected": true,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "python_result_arithmetic",
+      "passed": true,
+      "actual": 10,
+      "expected": 10,
+      "evidence": "independent arithmetic across R/Python JSON seam"
+    },
+    {
+      "id": "targets_known_total",
+      "passed": true,
+      "actual": 6,
+      "expected": 6,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "targets_cache_current",
+      "passed": true,
+      "actual": 0,
+      "expected": 0,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "crew_local_result",
+      "passed": true,
+      "actual": 10,
+      "expected": 10,
+      "evidence": "synthetic integration probe"
+    },
+    {
+      "id": "paired_contrast_estimate",
+      "passed": true,
+      "actual": 2.5000000000000009,
+      "expected": 2.5,
+      "evidence": "independent arithmetic"
+    },
+    {
+      "id": "paired_contrast_standard_error",
+      "passed": true,
+      "actual": 0.42817441928883787,
+      "expected": 0.4281744192888377,
+      "evidence": "independent arithmetic"
+    },
+    {
+      "id": "paired_effect_size_dz",
+      "passed": true,
+      "actual": 2.3836564731139807,
+      "expected": 2.3836564731139807,
+      "evidence": "independent arithmetic"
+    },
+    {
+      "id": "lme4_upstream_example_coefficient",
+      "passed": true,
+      "actual": 10.467285959595987,
+      "expected": 10.4672859595969,
+      "evidence": "upstream example replay; not independent empirical validation"
+    },
+    {
+      "id": "raw_alpha_arithmetic",
+      "passed": true,
+      "actual": 0.9375,
+      "expected": 0.9375,
+      "evidence": "independent arithmetic; not scale validation"
+    }
+  ],
+  "package_versions": {
+    "DBI": "1.3.0",
+    "RSQLite": "3.53.3",
+    "processx": "3.9.0",
+    "targets": "1.12.0",
+    "crew": "1.3.2",
+    "lme4": "2.0.6",
+    "emmeans": "2.0.4",
+    "psych": "2.6.5",
+    "effectsize": "1.0.3",
+    "jsonlite": "2.0.0"
+  },
+  "limitations": ["Single-process SQLite probes do not test concurrent writers, migrations, crash recovery or large streams.", "Local targets/crew probes are not an implemented durable queue, cancellation, retry policy or Shiny integration.", "Statistical arithmetic does not select an analysis design or establish questionnaire validity."]
+}

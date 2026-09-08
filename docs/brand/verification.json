@@ -1,0 +1,240 @@
+{
+  "schema": "brohn-brand-verification/0.1.0",
+  "browser": "152.0.7977.82",
+  "status": "passed",
+  "colour_pairs": [
+    {
+      "foreground": "text",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 15.977086075184912,
+      "passed": true
+    },
+    {
+      "foreground": "secondary",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 10.19834703960431,
+      "passed": true
+    },
+    {
+      "foreground": "muted",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 7.671089484848011,
+      "passed": true
+    },
+    {
+      "foreground": "accent",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 11.120830766409354,
+      "passed": true
+    },
+    {
+      "foreground": "lavender",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 9.586746949819155,
+      "passed": true
+    },
+    {
+      "foreground": "blue",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 9.284102851364034,
+      "passed": true
+    },
+    {
+      "foreground": "amber",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 10.709473869935447,
+      "passed": true
+    },
+    {
+      "foreground": "rose",
+      "background": "canvas",
+      "minimum": 4.5,
+      "ratio": 8.738881948689809,
+      "passed": true
+    },
+    {
+      "foreground": "control-border",
+      "background": "canvas",
+      "minimum": 3,
+      "ratio": 4.907344252845655,
+      "passed": true
+    },
+    {
+      "foreground": "focus",
+      "background": "canvas",
+      "minimum": 3,
+      "ratio": 12.324834862741383,
+      "passed": true
+    },
+    {
+      "foreground": "text",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 14.27155753858523,
+      "passed": true
+    },
+    {
+      "foreground": "secondary",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 9.10968970745116,
+      "passed": true
+    },
+    {
+      "foreground": "muted",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 6.852212878585087,
+      "passed": true
+    },
+    {
+      "foreground": "accent",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 9.93369976307417,
+      "passed": true
+    },
+    {
+      "foreground": "lavender",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 8.563376954869229,
+      "passed": true
+    },
+    {
+      "foreground": "blue",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 8.29303963275115,
+      "passed": true
+    },
+    {
+      "foreground": "amber",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 9.566254561283625,
+      "passed": true
+    },
+    {
+      "foreground": "rose",
+      "background": "surface",
+      "minimum": 4.5,
+      "ratio": 7.806020194592148,
+      "passed": true
+    },
+    {
+      "foreground": "control-border",
+      "background": "surface",
+      "minimum": 3,
+      "ratio": 4.3834930560278496,
+      "passed": true
+    },
+    {
+      "foreground": "focus",
+      "background": "surface",
+      "minimum": 3,
+      "ratio": 11.00917833636564,
+      "passed": true
+    },
+    {
+      "foreground": "text",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 12.290279480726383,
+      "passed": true
+    },
+    {
+      "foreground": "secondary",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 7.84501847009827,
+      "passed": true
+    },
+    {
+      "foreground": "muted",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 5.9009404622834065,
+      "passed": true
+    },
+    {
+      "foreground": "accent",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 8.5546336505826,
+      "passed": true
+    },
+    {
+      "foreground": "lavender",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 7.37454869866907,
+      "passed": true
+    },
+    {
+      "foreground": "blue",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 7.141741506187141,
+      "passed": true
+    },
+    {
+      "foreground": "amber",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 8.23819977771007,
+      "passed": true
+    },
+    {
+      "foreground": "rose",
+      "background": "raised",
+      "minimum": 4.5,
+      "ratio": 6.722333533978254,
+      "passed": true
+    },
+    {
+      "foreground": "control-border",
+      "background": "raised",
+      "minimum": 3,
+      "ratio": 3.774945699847302,
+      "passed": true
+    },
+    {
+      "foreground": "focus",
+      "background": "raised",
+      "minimum": 3,
+      "ratio": 9.480806719327791,
+      "passed": true
+    },
+    {
+      "foreground": "accent-ink",
+      "background": "accent",
+      "minimum": 4.5,
+      "ratio": 9.901155695773419,
+      "passed": true
+    }
+  ],
+  "views": [
+    {
+      "viewport": "1400px",
+      "violations": []
+    },
+    {
+      "viewport": "390px",
+      "violations": []
+    }
+  ],
+  "failures": [],
+  "reduced_motion_checked": true,
+  "limitations": [
+    "Contrast pairs and automated checks cover this design preview, not the future whole application.",
+    "Keyboard/screen-reader research workflows and undergraduate usability still require the planned acceptance journeys."
+  ]
+}

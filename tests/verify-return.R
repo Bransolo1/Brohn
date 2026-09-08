@@ -1,0 +1,18 @@
+source("examples/records.R")
+directory <- Sys.getenv("CONTRACT_FIXTURE_DIR")
+stopifnot(nzchar(directory))
+returned <- paste(readLines(file.path(directory, "bundle.node.json"), warn = FALSE), collapse = "")
+stopifnot(isTRUE(all.equal(bundle_from_json(returned), sample_bundle())))
+original_images <- bundle_from_json(paste(readLines(file.path(directory, "images.json"), warn = FALSE), collapse = ""))
+returned_images <- bundle_from_json(paste(readLines(file.path(directory, "images.node.json"), warn = FALSE), collapse = ""))
+stopifnot(isTRUE(all.equal(original_images, returned_images)))
+precision <- bundle_from_json(paste(readLines(file.path(directory, "precision.node.json"), warn = FALSE), collapse = ""))
+stopifnot(precision$study$revision == 9007199254740991,
+  precision$study$questions[[1]]$revision == 1234567890123456,
+  precision$events[[3]]$sequence == 9007199254740991)
+cat("PASS: JavaScript re-encoded bundle decoded and compared in R\n")
+source("R/protocol.R")
+original_protocol <- protocol_from_json(paste(readLines(file.path(directory, "protocol.json"), warn = FALSE, encoding = "UTF-8"), collapse = ""))
+returned_protocol <- protocol_from_json(paste(readLines(file.path(directory, "protocol.node.json"), warn = FALSE, encoding = "UTF-8"), collapse = ""))
+stopifnot(identical(protocol_to_json(original_protocol), protocol_to_json(returned_protocol)))
+cat("PASS: JavaScript re-encoded protocol retains its validated content hash\n")

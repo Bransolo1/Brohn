@@ -1,0 +1,1146 @@
+{
+  "origin": "original_synthetic",
+  "oracle": "Independent Python hashlib/json with explicit anchored layouts",
+  "rows": [
+    {
+      "allocation_index": 1,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 1,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 1,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 1,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 2,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 2,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 2,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 2,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 3,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-independent",
+          "group-anchor",
+          "group-pair"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-later",
+        "q-independent",
+        "q-anchor",
+        "q-driver",
+        "q-follow",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 3,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 3,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 3,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 4,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-choices",
+        "section-middle",
+        "section-extra",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-middle",
+        "q-extra",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 4,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 4,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 4,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 5,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-pair",
+          "group-independent",
+          "group-anchor",
+          "group-later"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-driver",
+        "q-follow",
+        "q-independent",
+        "q-anchor",
+        "q-later",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 5,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 5,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 5,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 6,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-independent",
+          "group-pair",
+          "group-anchor",
+          "group-later"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-independent",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-later",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 6,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 6,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 6,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 7,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-choices",
+        "section-middle",
+        "section-extra",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-middle",
+        "q-extra",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 7,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 7,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 7,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 8,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-choices",
+        "section-middle",
+        "section-extra",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-middle",
+        "q-extra",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 8,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 8,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 8,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 9,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-independent",
+          "group-anchor",
+          "group-pair"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-later",
+        "q-independent",
+        "q-anchor",
+        "q-driver",
+        "q-follow",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 9,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 9,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 9,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 10,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 10,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 10,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 10,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 11,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-choices",
+        "section-middle",
+        "section-extra",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-choices": [
+          "group-later",
+          "group-pair",
+          "group-anchor",
+          "group-independent"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-later",
+        "q-driver",
+        "q-follow",
+        "q-anchor",
+        "q-independent",
+        "q-middle",
+        "q-extra",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 11,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 11,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 11,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    },
+    {
+      "allocation_index": 12,
+      "scope": "before",
+      "stimulus_id": null,
+      "section_order": [
+        "section-first",
+        "section-extra",
+        "section-middle",
+        "section-choices",
+        "section-last"
+      ],
+      "group_orders": {
+        "section-first": [
+          "group-start"
+        ],
+        "section-extra": [
+          "group-extra"
+        ],
+        "section-middle": [
+          "group-middle"
+        ],
+        "section-choices": [
+          "group-pair",
+          "group-independent",
+          "group-anchor",
+          "group-later"
+        ],
+        "section-last": [
+          "group-last"
+        ]
+      },
+      "question_order": [
+        "q-start",
+        "q-extra",
+        "q-middle",
+        "q-driver",
+        "q-follow",
+        "q-independent",
+        "q-anchor",
+        "q-later",
+        "q-last"
+      ]
+    },
+    {
+      "allocation_index": 12,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-a",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after-extra",
+          "group-after"
+        ]
+      },
+      "question_order": [
+        "q-after-extra",
+        "q-after"
+      ]
+    },
+    {
+      "allocation_index": 12,
+      "scope": "after_each",
+      "stimulus_id": "stimulus-b",
+      "section_order": [
+        "section-after"
+      ],
+      "group_orders": {
+        "section-after": [
+          "group-after",
+          "group-after-extra"
+        ]
+      },
+      "question_order": [
+        "q-after",
+        "q-after-extra"
+      ]
+    },
+    {
+      "allocation_index": 12,
+      "scope": "end",
+      "stimulus_id": null,
+      "section_order": [
+        "section-end"
+      ],
+      "group_orders": {
+        "section-end": [
+          "group-end"
+        ]
+      },
+      "question_order": [
+        "q-end"
+      ]
+    }
+  ]
+}
