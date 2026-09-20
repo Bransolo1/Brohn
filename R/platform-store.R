@@ -478,8 +478,8 @@ brohn_claim_job <- function(store, worker, lease_seconds = 60) {
   .brohn_store_tx(store, function() {
     if (.brohn_store_execution_paused(store)) return(NULL)
     now <- .brohn_store_now()
-    rows <- DBI::dbGetQuery(store$con, paste("SELECT * FROM jobs WHERE status='queued' OR",
-      "(status='running' AND lease_until<=?) ORDER BY created_at ASC,id ASC LIMIT 1"), params = list(now))
+    rows <- DBI::dbGetQuery(store$con, paste("SELECT * FROM jobs WHERE operation NOT IN ('acquisition_preserve','acquisition_prepare') AND (status='queued' OR",
+      "(status='running' AND lease_until<=?)) ORDER BY created_at ASC,id ASC LIMIT 1"), params = list(now))
     if (!nrow(rows)) return(NULL)
     attempt <- .brohn_store_integer(rows$attempt[[1]] + 1L, "Job attempt", 1L)
     token <- as.character(attempt)

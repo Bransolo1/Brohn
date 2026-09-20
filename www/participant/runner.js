@@ -905,6 +905,19 @@
     } catch (error) { showError(error); content.append(button("Retry session setup", () => start(consented))); }
     finally { busy = false; }
   }
+  function welcomeScreen() {
+    screen(entry.welcome.title);
+    if (!window.BrohnWelcome) throw new Error("The study welcome page could not load. Reload this page or contact your researcher.");
+    let source = null;
+    if (entry.welcome.asset) {
+      const url = new URL(entry.welcome_image_url || "", location.href);
+      if (url.origin !== location.origin || !url.pathname.startsWith("/api/assets/")) throw new Error("The study welcome image address is unavailable. Please contact your researcher.");
+      source = url.href;
+    }
+    window.BrohnWelcome.render(content, entry.welcome, {imageSource: source, onContinue: consentScreen,
+      onError: showError, onReady: clearError});
+    status.textContent = "Your session has not started. Study information and consent follow this welcome page.";
+  }
   function consentScreen() {
     screen(entry.consent.title || entry.deployment.title, entry.consent.text);
     const form = node("form", null, {novalidate: "novalidate"}), label = node("label", null, {class: "choice", for: "consent"});
@@ -927,7 +940,9 @@
       if (new TextEncoder().encode(participantAlias).length > 200) { showError("This participant alias is too long. Use a shorter code from your researcher."); alias.focus(); return; }
       await start(input.checked, participantAlias);
     });
-    content.append(form); status.textContent = "Your session starts only when you choose Start study.";
+    content.append(form);
+    if (entry.welcome) content.append(button("Back to welcome", welcomeScreen));
+    status.textContent = "Your session starts only when you choose Start study.";
   }
   async function boot() {
     if (!token || !/^[A-Za-z0-9_-]{16,256}$/.test(token)) throw new Error("This study link is incomplete. Open the full participant link supplied by your researcher.");
@@ -940,7 +955,7 @@
         appearance: record.protocol.design.appearance, supported: true};
     }
     if (!entry.supported && !record?.run_id) throw new Error("This study is not available in this browser delivery profile. Please contact your researcher.");
-    document.title = `${entry.deployment.title} | IRP study`;
+    document.title = `${entry.deployment.title} | Brohn study`;
     $("study-origin").textContent = entry.deployment.origin === "live" ? "" : `${entry.deployment.origin || "pilot"} session`;
     applyAppearance(record?.protocol?.design?.appearance || entry.appearance);
     if (!record?.run_id && !record?.pending_start && entry.deployment.status !== "open") {
@@ -951,7 +966,7 @@
       status.textContent = "No participant session has been started.";
       return;
     }
-    if (!record) { consentScreen(); return; }
+    if (!record) { if (entry.welcome) welcomeScreen(); else consentScreen(); return; }
     if (record.pending_start) {
       screen("Your session setup is unfinished", "Continue the same setup request to avoid creating a duplicate participant session.");
       content.append(button("Continue session setup", () => start(record.pending_start.consented), true)); return;

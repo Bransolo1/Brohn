@@ -154,7 +154,11 @@ brohn_validate_question <- function(q, earlier_ids) {
   brohn_validate_rule(q$show_if, earlier_ids)
 }
 brohn_validate_design <- function(x, publish = FALSE) {
-  brohn_fields(x, c("schema_version", "id", "project_id", "title", "description", "template", "archived", "tags", "conditions", "stimuli", "questions", "order", "seed", "baseline_ms", "fixation_ms", "instructions", "consent", "debrief", "appearance", "measures", "methods", "blocks", "lineage"), optional = c("analysis_plan", "camera", "scales", "maxdiff", "questionnaire_sections", "questionnaire_navigation"), label = "Design")
+  brohn_fields(x, c("schema_version", "id", "project_id", "title", "description", "template", "archived", "tags", "conditions", "stimuli", "questions", "order", "seed", "baseline_ms", "fixation_ms", "instructions", "consent", "debrief", "appearance", "measures", "methods", "blocks", "lineage"), optional = c("analysis_plan", "camera", "scales", "maxdiff", "questionnaire_sections", "questionnaire_navigation", "welcome"), label = "Design")
+  if ("welcome" %in% names(x)) {
+    brohn_require(exists("brohn_validate_welcome", mode = "function"), "This design requires its registered welcome-page module.")
+    brohn_validate_welcome(x$welcome)
+  }
   if (!is.null(x$camera)) {
     brohn_require(exists("brohn_validate_camera_policy", mode = "function"), "This study requires its registered camera collection module.")
     brohn_validate_camera_policy(x$camera)

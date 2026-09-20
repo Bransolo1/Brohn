@@ -29,6 +29,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   message <- function(text) {state$status <- text; invisible(text)}
   brohn_install_multimodal_ui(input, output, session, store, state, current, attempt, message, refresh)
   brohn_install_task_cohort_ui(input, output, session, store, state, current, attempt, message, refresh)
+  brohn_install_task_plots(input,output,session,store,state,attempt,prepare_download)
   brohn_install_interchange_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_header_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_signal_server(input, output, session, store, state, attempt, message, prepare_download)
@@ -98,6 +99,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       d$order <- value("study_order", d$order); d$seed <- value("study_seed", d$seed)
       d$baseline_ms <- value("baseline_ms", d$baseline_ms); d$fixation_ms <- value("fixation_ms", d$fixation_ms)
       d$instructions <- value("study_instructions", d$instructions)
+      d <- brohn_capture_welcome(input, d)
       d$consent$text <- value("consent_text", d$consent$text); d$debrief <- value("debrief_text", d$debrief)
       d$appearance$background <- value("participant_background", d$appearance$background)
       d$appearance$foreground <- value("participant_foreground", d$appearance$foreground)
@@ -154,7 +156,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     session$sendCustomMessage("brohn-navigation", list(page = page, focus = TRUE))
   })
   for (page in c("home", "studies", "datasets", "designs", "activity", "settings")) local({p <- page; shiny::observeEvent(input[[paste0("nav_", p)]], navigate(p))})
-  for (stage in c("Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")) local({s <- stage; shiny::observeEvent(input[[paste0("stage_", tolower(s))]], attempt(function() {capture(); state$stage <- s; refresh(); session$sendCustomMessage("brohn-focus", "brohn-main")}))})
+  for (stage in c("Overview", "Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")) local({s <- stage; shiny::observeEvent(input[[paste0("stage_", tolower(s))]], attempt(function() {capture(); state$stage <- s; refresh(); session$sendCustomMessage("brohn-focus", "brohn-main")}))})
   shiny::observeEvent(input$save_study, attempt(function() {capture(); message(paste("Saved revision", current$study$revision))}))
   brohn_install_analysis_plan_ui(input, output, session, current, attempt, capture, update_study, state)
   brohn_install_question_flow_server(input, output, session, current, state, capture, update_study, attempt, message)
@@ -163,13 +165,12 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_camera_plan_ui(input, output, session, current, state, capture, attempt, update_study, message)
   brohn_install_scale_ui(input, output, session, current, state, attempt, capture, update_study)
   brohn_install_maxdiff_ui(input, output, session, current, state, attempt, capture, update_study)
-  shiny::observeEvent(input$brohn_open_study, attempt(function() {capture(); select_study(input$brohn_open_study)}))
-  shiny::observeEvent(input$new_study, shiny::showModal(shiny::modalDialog(title = "Start a study",
-    shiny::textInput("new_title", "Study name", "My study"),
-    shiny::radioButtons("new_template", "Starting point", c("Controlled concept comparison" = "comparison", "Questionnaire" = "survey", "Blank design" = "blank")),
-    footer = shiny::tagList(shiny::modalButton("Cancel"), shiny::actionButton("create_study", "Create study", class = "btn-primary")))))
+  brohn_install_guidance_ui(input, output, session, store, state, current, attempt, capture, refresh)
+  brohn_install_welcome_ui(input, output, session, store, state, current, attempt, capture, update_study)
+  shiny::observeEvent(input$brohn_open_study, attempt(function() {capture(); select_study(input$brohn_open_study, "Overview")}))
+  shiny::observeEvent(input$new_study, shiny::showModal(brohn_start_study_ui()))
   shiny::observeEvent(input$create_study, attempt(function() {s <- brohn_create_study(store, input$new_title, input$new_template); shiny::removeModal(); select_study(s$id)}))
-  shiny::observeEvent(input$open_sample, attempt(function() {s <- brohn_sample_study(store); select_study(s$id)}))
+  shiny::observeEvent(input$open_sample, attempt(function() {s <- brohn_sample_study(store); select_study(s$id, "Overview")}))
   shiny::observeEvent(input$clone_study, attempt(function() {capture(); shiny::showModal(shiny::modalDialog(title = "Clone study design",
     shiny::p("Copies the design, stimuli, areas and questions into a new draft. Participant observations, results and links stay with the original."),
     shiny::textInput("clone_title", "Name for the new study", paste(current$study$body$title, "copy")),
@@ -570,7 +571,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     shiny::invalidateLater(2500, session)
     # A saved report is immutable. Its derived explorers poll their own progress;
     # workspace audit activity must not rebuild those inputs or change selection.
-    if (state$page == "activity" || (state$page == "study" && state$stage %in% c("Review", "Results"))) {
+    if (state$page == "activity" || (state$page == "study" && state$stage %in% c("Overview", "Review", "Results"))) {
       stamp <- DBI::dbGetQuery(store$con, "SELECT coalesce(max(sequence),0) AS n FROM audit_log")$n[[1]]
       if (is.null(current$audit_stamp) || !identical(current$audit_stamp, stamp)) {current$audit_stamp <- stamp; refresh()}
     }
@@ -578,7 +579,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   # Inputs are saved after a quiet period without rebuilding their DOM or stealing focus.
   edits <- shiny::reactive({
     names <- names(shiny::reactiveValuesToList(input))
-    selected <- names[grepl("^(study_|condition_(label|role)_|stimulus_(title|text|duration|condition)_|q_(prompt|scope|required|random|options|min|max|step|rows|logic|equals)_|task_(title|origin|rights|seed|control|interval|timeout|category|material)_|baseline_ms$|fixation_ms$|consent_text$|debrief_text$|participant_(background|foreground)$)", names)]
+    selected <- names[grepl("^(welcome_(enabled|title|text|image_alt)$|study_|condition_(label|role)_|stimulus_(title|text|duration|condition)_|q_(prompt|scope|required|random|options|min|max|step|rows|logic|equals)_|task_(title|origin|rights|seed|control|interval|timeout|category|material)_|baseline_ms$|fixation_ms$|consent_text$|debrief_text$|participant_(background|foreground)$)", names)]
     lapply(selected, function(id) input[[id]])
   })
   quiet <- shiny::debounce(edits, 900)
@@ -597,15 +598,7 @@ brohn_study_card <- function(record) brohn_card(title = record$body$title,
   shiny::div(class = "brohn-toolbar", brohn_command("Open study", "brohn_open_study", record$id, "btn btn-primary")))
 brohn_render_page <- function(store, state, record) {
   page <- state$page
-  if (page == "home") {
-    studies <- brohn_studies(store, limit = 6L)
-    return(brohn_page("Your next discovery starts here.", "Bring the question, the study and the evidence together.",
-      actions = shiny::actionButton("new_study", "Create a study", class = "btn-primary"),
-      brohn_card(title = "Start with a complete example", subtitle = "Learn the workflow using original fictional packaging. Your study starts without participant data.",
-        shiny::actionButton("open_sample", "Explore a practice design", class = "btn-primary")),
-      if (length(studies)) shiny::tagList(shiny::h2("Recent studies"), shiny::div(class = "brohn-grid", lapply(head(studies, 6), brohn_study_card))) else
-        brohn_empty("A clear place to begin", "Create your first study or explore the practice design.")))
-  }
+  if (page == "home") return(brohn_guided_home_ui(store))
   if (page == "studies") return(brohn_page("Studies", "Every design, dataset and result stays connected to its study.",
     actions = shiny::actionButton("new_study", "Create a study", class = "btn-primary"),
     shiny::div(class = "brohn-form-grid", shiny::textInput("study_search", "Search studies", placeholder = "Name, research question or tag"),
@@ -649,8 +642,8 @@ brohn_render_page <- function(store, state, record) {
   if (page == "report") return(brohn_report_detail_ui(store, state$report_id))
   if (page != "study" || is.null(record)) return(brohn_empty("Choose a study", "Open a saved design from Studies."))
   d <- record$body
-  stages <- if (isTRUE(d$archived)) c("Review", "Results", "History") else c("Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")
-  body <- switch(state$stage, Plan = brohn_plan_ui(store, d), Questions = brohn_questions_ui(d), Tasks = brohn_tasks_ui(d), Collect = brohn_collect_ui(store, record),
+  stages <- if (isTRUE(d$archived)) c("Overview", "Review", "Results", "History") else c("Overview", "Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")
+  body <- switch(state$stage, Overview = brohn_study_overview_ui(store, record), Plan = brohn_plan_ui(store, d), Questions = brohn_questions_ui(d), Tasks = brohn_tasks_ui(d), Collect = brohn_collect_ui(store, record),
     Review = brohn_review_ui(store, record, state), Results = brohn_results_ui(store, record, state), History = brohn_history_ui(store, record, state))
   brohn_page(d$title, paste("Saved revision", record$revision, "\u00b7", if (isTRUE(d$archived)) "Archived study" else "Research workspace"),
     shiny::tags$div(hidden = NA, shiny::textInput("study_form_identity", NULL, paste(d$id, state$stage, sep = ":"))),

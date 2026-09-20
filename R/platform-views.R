@@ -2,11 +2,13 @@ brohn_plan_ui <- function(store, d) {
   choices <- stats::setNames(brohn_ids(d$conditions), vapply(d$conditions, function(c) c$label, character(1)))
   measure_choices <- c("Eye tracking" = "gaze", "Questionnaires" = "questionnaire", "EEG" = "eeg", "EDA" = "eda", "ECG / HRV" = "ecg", "PPG" = "ppg", "Respiration" = "respiration", "Muscle activity" = "emg", "EOG" = "eog", "fNIRS" = "fnirs", "Temperature" = "temperature", "Movement" = "movement", "Webcam gaze" = "webcam_gaze", "Facial geometry" = "facial_geometry", "Facial expression" = "facial_expression", "Body pose" = "pose", "Voice" = "voice", "Reaction time" = "rt", "IAT" = "iat", "Brief IAT" = "biat", "Approach / avoidance" = "aat")
   shiny::tagList(
+    brohn_guidance_plan_intro_ui(d),
     brohn_card(title = "What are you investigating?",
       shiny::textInput("study_title", "Study name", d$title),
       shiny::textAreaInput("study_description", "Research question and primary comparison", d$description, rows = 2),
       shiny::checkboxGroupInput("study_measures", "Measures in this study", measure_choices, selected = unlist(d$measures), inline = TRUE),
       shiny::p(class = "brohn-muted", "A selected measure describes study intent. Its data source and usable support are checked separately; selecting a sensor does not start recording.")),
+    brohn_welcome_authoring_ui(store, d),
     brohn_card(title = "Conditions and controls", subtitle = "Name what you are comparing. A control condition is separate from a physiological baseline.",
       shiny::div(class = "brohn-form-grid", lapply(seq_along(d$conditions), function(i) shiny::div(
         shiny::textInput(paste0("condition_label_", i), paste("Condition", i), d$conditions[[i]]$label),
@@ -36,7 +38,9 @@ brohn_plan_ui <- function(store, d) {
         shiny::numericInput("baseline_ms", "Baseline before each stimulus (ms; 0 disables)", d$baseline_ms, 0, 600000, 100),
         shiny::numericInput("fixation_ms", "Fixation cue before each stimulus (ms)", d$fixation_ms, 0, 600000, 100)),
       shiny::p(class = "brohn-muted", "These are declared presentation settings. Physiological recipes check whether their baseline and response windows have enough support."),
-      shiny::textAreaInput("study_instructions", "Participant instructions", d$instructions, rows = 3),
+      shiny::h3("Information at each stage"),
+      shiny::p(class = "brohn-muted", "Participants see the welcome page first when enabled, then the separate consent information. Instructions follow consent, and debrief appears after the session."),
+      shiny::textAreaInput("study_instructions", "Instructions after consent", d$instructions, rows = 3),
       shiny::textAreaInput("consent_text", "Participant information and consent", d$consent$text, rows = 4),
       shiny::textAreaInput("debrief_text", "Debrief and contact information", d$debrief, rows = 3),
       shiny::tags$details(shiny::tags$summary("Participant appearance"),
@@ -59,7 +63,7 @@ brohn_question_assignment_ui <- function(design, question) {
 brohn_questions_ui <- function(d) {
   types <- c("Rating" = "rating", "Single choice" = "single_choice", "Multiple choice" = "multiple_choice", "Dropdown" = "dropdown", "Short text" = "text", "Long text" = "long_text", "Number" = "number", "Slider" = "slider", "Matrix" = "matrix", "Ranking" = "ranking", "Point allocation" = "allocation", "Information" = "information")
   shiny::tagList(brohn_card(title = "Questions connected to the study", subtitle = "Place questions before the study, after each stimulus or at the end. Answers retain the right stimulus and condition.",
-    shiny::div(class = "brohn-toolbar", shiny::selectInput("question_type", "Question type", types), shiny::actionButton("add_question", "Add question", class = "btn-primary"))),
+    shiny::div(class = "brohn-toolbar", shiny::selectInput("question_type", "Question type", types, selectize = FALSE), shiny::actionButton("add_question", "Add question", class = "btn-primary"))),
     brohn_question_sections_ui(d), brohn_question_revision_ui(d), brohn_scales_summary_ui(d),
     if (!length(d$questions)) brohn_empty("Add the participant's perspective", "Choose a question type above. Questions are optional when the research design does not need them."),
     lapply(seq_along(d$questions), function(i) {
@@ -91,7 +95,7 @@ brohn_collect_ui <- function(store, record) {
   shiny::tagList(brohn_card(title = "Prepare and release", subtitle = "A release pins this design and its materials. Later edits do not change a participant's study.",
     if (length(issues)) shiny::div(class = "brohn-alert brohn-alert-warning", shiny::strong("Before starting"), shiny::p(issues)) else brohn_badge("Design checks passed", "success"),
     shiny::div(class = "brohn-form-grid", shiny::selectInput("release_origin", "Collection origin", c("Example walkthrough (sample)" = "sample", "Pilot / practice" = "pilot", "Live study" = "live"),
-      if(any(vapply(record$body$maxdiff,function(exercise)identical(exercise$origin,"synthetic"),logical(1)))) "sample" else "pilot"),
+      if(identical(record$body$lineage$operation, "original_sample_design") || any(vapply(record$body$maxdiff,function(exercise)identical(exercise$origin,"synthetic"),logical(1)))) "sample" else "pilot"),
       shiny::numericInput("release_quota", "Maximum participant starts", 100, 1, 100000, 1)),
     shiny::checkboxInput("release_alias", "Require a researcher-issued participant code to link repeat sessions", FALSE),
     shiny::p(class = "brohn-muted", "Without participant codes, results describe sessions. Codes must follow your study's pseudonymous identity scheme."),

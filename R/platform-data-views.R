@@ -15,6 +15,21 @@ brohn_table <- function(rows, columns = NULL, labels = NULL, maximum = 100L, lab
       shiny::tags$tbody(lapply(head(rows, maximum), function(row) shiny::tags$tr(lapply(columns, function(column) shiny::tags$td(display(row[[column]], column)))))))),
     if (length(rows) > maximum) shiny::p(class = "brohn-muted", paste("Showing", maximum, "of", length(rows), "rows. Download the report for retained observations.")))
 }
+brohn_respiration_input <- function(input, prefix = "map_respiration") {
+  list(source_quantity = input[[paste0(prefix, "_quantity")]], polarity = input[[paste0(prefix, "_polarity")]],
+    mapping_source = input[[paste0(prefix, "_source")]])
+}
+brohn_respiration_settings_ui <- function(parameters = NULL, prefix = "map_respiration") {
+  shiny::tagList(
+    shiny::p("Breathing phase estimates require belt displacement or calibrated lung volume. Airflow peaks have a different meaning and cannot use this analysis. The original recording stays available."),
+    shiny::selectInput(paste0(prefix, "_quantity"), "What does the respiratory channel measure?",
+      c("Choose from source documentation" = "", "Belt displacement (a.u., V or mV)" = "belt_displacement", "Calibrated lung volume (L)" = "lung_volume"), brohn_default(parameters$source_quantity, "")),
+    shiny::selectInput(paste0(prefix, "_polarity"), "During inspiration, the recorded value",
+      c("Confirm the direction" = "", "Increases" = "positive_inspiration", "Decreases" = "negative_inspiration"), brohn_default(parameters$polarity, "")),
+    shiny::textAreaInput(paste0(prefix, "_source"), "Evidence for quantity and inspiration direction", brohn_default(parameters$mapping_source, ""), rows = 2, width = "100%",
+      placeholder = "Sensor/export documentation and reviewed breathing maneuver. A waveform alone does not establish physiological direction."),
+    shiny::p(class = "brohn-muted", "The saved recipe estimates phases between displacement extrema, with Khodadad cleaning/detection and at least 5 seconds excluded at each edge. Flow onsets and breath holds need a different method."))
+}
 brohn_dataset_base_mapping <- function(input, dataset) {
   if (identical(dataset$modality,"maxdiff")) return(brohn_maxdiff_mapping_input(input))
   # Shiny retains values for controls removed by navigation. Read only controls
@@ -35,6 +50,8 @@ brohn_dataset_base_mapping <- function(input, dataset) {
   if (dataset$modality %in% c("temperature", "movement")) m$stimulus_column <- NULL
   if (tabular && !gaze) m$value_columns <- as.list(brohn_default(input$map_values, character()))
   if (gaze && isTRUE(input$map_passive_only)) m$source_phase <- "passive_viewing_only"
+  if (identical(dataset$modality, "respiration")) m$parameters <- c(list(recipe = "respiration-displacement-khodadad/1.0",
+    edge_exclusion_s = brohn_default(dataset$metadata$parameters$edge_exclusion_s, 5)), brohn_respiration_input(input))
   Filter(function(v) !(is.null(v) || (is.character(v) && length(v) == 1L && identical(v, "")) || (is.numeric(v) && length(v) == 1L && is.na(v))), m)
 }
 brohn_dataset_detail_ui <- function(store, id) {
@@ -116,6 +133,7 @@ brohn_dataset_detail_ui <- function(store, id) {
       if (gaze) brohn_raw_gaze_settings_ui(m, columns),
       if (d$modality == "eeg") brohn_neural_settings_ui(m, columns, d$source$format),
       if (d$modality == "eda") brohn_eda_events_settings_ui(m, columns, d$source$format),
+      if (d$modality == "respiration") brohn_respiration_settings_ui(m$parameters),
       if (peripheral) brohn_peripheral_settings_ui(m, columns, d$modality),
       shiny::textAreaInput("map_origin", "Recording provenance and collection notes", brohn_default(m$origin_statement, ""), width = "100%", rows = 3,
         placeholder = "Device/export, collection setting, identity scheme, preprocessing already applied and known gaps."),
@@ -312,14 +330,14 @@ brohn_report_detail_ui <- function(store, id) {
     if (length(r$body$analysis$artifacts)) brohn_card(title = "Complete processing artifacts", subtitle = "Download the full retained output, including observations beyond the on-screen preview.",
       shiny::selectInput("report_artifact_kind", "Saved artifact", stats::setNames(vapply(r$body$analysis$artifacts, `[[`, character(1), "kind"), gsub("-", " ", vapply(r$body$analysis$artifacts, `[[`, character(1), "kind")))),
       shiny::downloadButton("report_artifact", "Download complete artifact", icon = NULL)),
-    brohn_questionnaire_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body))
+    brohn_questionnaire_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body))
 }
 brohn_export_report_html <- function(report, path, store = NULL) {
   # All user text is escaped by htmltools. No external content or executable
   # research expression is inserted in the exported report.
   page <- shiny::tagList(shiny::tags$head(shiny::tags$meta(charset = "UTF-8"),
     shiny::tags$title(paste("Brohn", report$title)), shiny::tags$meta(name = "viewport", content = "width=device-width, initial-scale=1"),
-    shiny::tags$style(htmltools::HTML("body{font-family:system-ui,sans-serif;background:#11171c;color:#edf2f2;max-width:1080px;margin:auto;padding:32px;line-height:1.6;overflow-wrap:anywhere}main,header,footer,.brohn-card,.brohn-grid>*{min-width:0;max-width:100%}h1,h2{line-height:1.25}h2{font-size:1.2rem}.brohn-card{background:#192229;border:1px solid #415057;border-radius:16px;padding:24px;margin:24px 0}.brohn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.brohn-badge{display:inline-block;border:1px solid #65767e;border-radius:20px;padding:4px 12px;margin-right:8px}.brohn-muted{color:#b7c4c9}.brohn-table{overflow:auto;max-width:100%}table{border-collapse:collapse;min-width:100%}td,th{padding:10px;text-align:left;border-bottom:1px solid #415057;vertical-align:top}pre{white-space:pre-wrap;overflow-wrap:anywhere}img,svg{max-width:100%}summary{cursor:pointer}.brohn-result-number{color:#97d8c4;font-size:1.8rem}*{box-sizing:border-box}:focus-visible{outline:3px solid #97d8c4;outline-offset:3px}@media(max-width:600px){body{padding:16px}h1{font-size:1.8rem}.brohn-card{padding:16px}.brohn-grid{grid-template-columns:minmax(0,1fr)}}"))),
+    shiny::tags$style(htmltools::HTML("body{font-family:system-ui,sans-serif;background:#11171c;color:#edf2f2;max-width:1080px;margin:auto;padding:32px;line-height:1.6;overflow-wrap:anywhere}main,header,footer,.brohn-card,.brohn-grid>*{min-width:0;max-width:100%}h1,h2{line-height:1.25}h2{font-size:1.2rem}.brohn-card{background:#192229;border:1px solid #415057;border-radius:16px;padding:24px;margin:24px 0}.brohn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.brohn-badge{display:inline-block;border:1px solid #65767e;border-radius:20px;padding:4px 12px;margin-right:8px}.brohn-muted{color:#b7c4c9}.brohn-table{overflow:auto;max-width:100%}table{border-collapse:collapse;min-width:100%}td,th{padding:10px;text-align:left;border-bottom:1px solid #415057;vertical-align:top}pre{white-space:pre-wrap;overflow-wrap:anywhere}img,svg{max-width:100%}.brohn-signal-compact{display:none}@media(max-width:560px){.brohn-signal-wide{display:none}.brohn-signal-compact{display:block}}summary{cursor:pointer}.brohn-result-number{color:#97d8c4;font-size:1.8rem}*{box-sizing:border-box}:focus-visible{outline:3px solid #97d8c4;outline-offset:3px}@media(max-width:600px){body{padding:16px}h1{font-size:1.8rem}.brohn-card{padding:16px}.brohn-grid{grid-template-columns:minmax(0,1fr)}}"))),
     shiny::tags$body(shiny::tags$header(shiny::h1(report$title), shiny::p("Brohn research report"), shiny::p(report$created_at)),
       shiny::tags$main(if (!is.null(store)) brohn_gaze_report_ui(store, report), brohn_neural_report_plots(report), brohn_report_content(report)), shiny::tags$footer(shiny::p(paste("Report identity:", report$id)))))
   # htmltools hoists head tags out of the body. Serialize both parts explicitly:
@@ -375,17 +393,14 @@ brohn_export_report_csv <- function(report, path) {
   # Machine CSV preserves exact typed/source values. Text cells use an explicit
   # spreadsheet-safe prefix where formula interpretation could occur.
   for (column in names(table)) table[[column]] <- ifelse(grepl("^[=+@\\t\\r]", table[[column]], perl = TRUE) | grepl("^-[^0-9.]", table[[column]]), paste0("'", table[[column]]), table[[column]])
-  if (questionnaire_rows) {
-    # Explicit UTF-8 bytes avoid native-locale transliteration by write.table on
-    # Windows (for example C locale turning Unicode into literal <U+....> text).
-    # All fields are strings already; retain the existing quoted CSV convention.
-    con <- file(path, "wb"); on.exit(close(con), add = TRUE)
-    write_row <- function(cells) {
-      quoted <- paste0('"', gsub('"', '""', enc2utf8(cells), fixed = TRUE), '"')
-      writeBin(charToRaw(enc2utf8(paste0(paste(quoted, collapse = ","), if (.Platform$OS.type == "windows") "\r\n" else "\n"))), con)
-    }
-    write_row(names(table))
-    for (i in seq_len(nrow(table))) write_row(vapply(table, `[[`, character(1), i))
-  } else utils::write.csv(table, path, row.names = FALSE, na = "", fileEncoding = "UTF-8")
+  # Explicit UTF-8 bytes preserve every measurement's researcher labels under
+  # Windows C locale. All fields are encoded strings; retain quoted CSV syntax.
+  con <- file(path, "wb"); on.exit(close(con), add = TRUE)
+  write_row <- function(cells) {
+    quoted <- paste0('"', gsub('"', '""', enc2utf8(cells), fixed = TRUE), '"')
+    writeBin(charToRaw(enc2utf8(paste0(paste(quoted, collapse = ","), if (.Platform$OS.type == "windows") "\r\n" else "\n"))), con)
+  }
+  write_row(names(table))
+  for (i in seq_len(nrow(table))) write_row(vapply(table, `[[`, character(1), i))
   invisible(path)
 }

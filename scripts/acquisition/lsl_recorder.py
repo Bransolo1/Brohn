@@ -1,6 +1,7 @@
 """Explicit machine-scope LSL collection; raw clock evidence, durable chunks."""
 from __future__ import annotations
 import argparse
+from collections import deque
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
@@ -233,6 +234,14 @@ def validate_request(request):
             require(channel["unit"] is not None or channel["value_type"] == "string", "Numeric units must be declared, including explicit 'unknown' when unavailable.")
         if stream.get("gap_threshold_s") is not None:
             number(stream["gap_threshold_s"], "gap threshold", .000001, 3600)
+        readiness = stream.get("readiness")
+        if readiness is not None:
+            require(isinstance(readiness, dict) and readiness.get("schema") in {"brohn-acquisition-readiness/1.0","brohn-acquisition-readiness/1.1"},
+                    "Unsupported source-readiness declaration.")
+            preview = readiness.get("preview_channels")
+            require(isinstance(preview, list) and 1 <= len(preview) <= 8 and len(set(preview)) == len(preview)
+                    and set(preview) <= cids, "Monitoring preview must select one to eight original channels.")
+            validate_acquisition_checks(readiness, channels)
     limits = request.get("limits", {})
     for key, low, high, integer in (("max_duration_s", .1, 86400, False), ("max_samples", 1, 2000000, True),
                                    ("max_bytes", 65536, 512*1024**2, True), ("chunk_samples", 1, 512, True),
@@ -255,6 +264,121 @@ def value_record(value, fmt):
     return value if state == "observed" else None, state, bits
 
 
+def validate_acquisition_checks(readiness, channels):
+    checks=readiness.get("acquisition_checks",[])
+    require(isinstance(checks,list) and len(checks)<=8, "Select at most eight named acquisition checks per stream.")
+    require(not checks or readiness.get("schema")=="brohn-acquisition-readiness/1.1", "Named acquisition checks require readiness /1.1.")
+    ids=set(); indexed={c["id"]:c for c in channels}
+    for rule in checks:
+        require(isinstance(rule,dict),"Acquisition check must be an explicit object.")
+        safe_id(rule.get("id"));require(rule["id"] not in ids,"Duplicate acquisition check.");ids.add(rule["id"])
+        for field in ("name","version","source","rationale","unit"):
+            text(rule.get(field),"Acquisition check "+field,2000 if field in {"source","rationale"} else 100)
+        cid=rule.get("channel_id")
+        require(cid in indexed and cid in readiness["preview_channels"],"Acquisition check needs an explicitly monitored original channel.")
+        require(rule["unit"]==indexed[cid]["unit"] and rule["unit"] not in {"unknown",""},"Acquisition check needs matching declared source units.")
+        require(rule.get("kind") in {"source_code","finite_fraction","range_fraction","cadence"},"Unsupported acquisition check kind.")
+        require(rule.get("window_s")==5,"This acquisition check profile uses the bounded five-second committed window.")
+        number(rule.get("minimum_samples"),"minimum check samples",2,2000000,True)
+        number(rule.get("minimum_span_s"),"minimum check span",.001,5)
+        number(rule.get("maximum_age_s"),"maximum source age",.001,3600)
+        if rule["kind"]=="source_code":
+            codes=rule.get("accepted_values")
+            require(isinstance(codes,list) and 1<=len(codes)<=8 and all(
+                (isinstance(v,str) and 0<len(v.encode())<=64) or (type(v) in {int,float} and math.isfinite(v)) for v in codes),
+                "Declare one to eight exact source codes (numeric or native text).")
+            require(all(isinstance(v,str) if indexed[cid]["value_type"] in {"string","int64"} else type(v) in {int,float} for v in codes),
+                "Accepted source codes must match the original native channel type.")
+        if rule["kind"] in {"source_code","finite_fraction","range_fraction"}:
+            number(rule.get("minimum_fraction"),"minimum passing fraction",0,1)
+        if rule["kind"] in {"range_fraction","cadence"}:
+            number(rule.get("lower"),"lower acquisition bound",-1e300,1e300)
+            number(rule.get("upper"),"upper acquisition bound",rule["lower"],1e300)
+            require(rule["lower"]<rule["upper"] and (rule["kind"]!="cadence" or rule["lower"]>0),"Acquisition bounds must increase; cadence is positive Hz.")
+        if rule["kind"]!="source_code":
+            require(indexed[cid]["value_type"] not in {"string","int64"},"Numeric acquisition checks need a supported native numeric channel.")
+
+
+class WindowMonitor:
+    """O(channels * fixed buckets), independent of source sample cadence.
+
+    Every bucket retains first/minimum/maximum/last actual finite points per
+    channel and full raw counts/check sufficient statistics. Whole expired
+    buckets are discarded, so actual retained support is at most five seconds.
+    No raw five-second ring grows with sample rate. Resets begin a new window.
+    """
+    def __init__(self, selected, buckets):
+        self.selected=selected;self.capacity=buckets;self.width=5/buckets
+        ids=[c["id"] for c in selected["channels"]]
+        self.indices=[ids.index(cid) for cid in selected.get("readiness",{}).get("preview_channels",ids[:8])]
+        self.rules=selected.get("readiness",{}).get("acquisition_checks",[])
+        self.rule_indices=[ids.index(r["channel_id"]) for r in self.rules]
+        self.buckets=deque();self.fragments={i:0 for i in self.indices};self.was_finite={i:False for i in self.indices}
+        self.segment=None;self.resets_discarded=0
+
+    def append(self,row):
+        timestamp=float(row["source_timestamp"])
+        if self.segment is not None and row["segment"]!=self.segment:
+            self.buckets.clear();self.resets_discarded+=1
+            self.was_finite={i:False for i in self.indices}
+        self.segment=row["segment"]
+        while self.buckets and self.buckets[0]["first_time"]<timestamp-5:
+            self.buckets.popleft()
+        if not self.buckets or timestamp-self.buckets[-1]["first_time"]>=self.width:
+            if len(self.buckets)>=self.capacity:self.buckets.popleft()
+            self.buckets.append({"first_time":timestamp,"last_time":timestamp,"rows":0,"boundaries":0,
+                "channels":{i:{"finite":0,"nonfinite":0,"first":None,"min":None,"max":None,"last":None,
+                    "fragment_first":None,"fragment_last":None} for i in self.indices},"passed":[0]*len(self.rules)})
+        bucket=self.buckets[-1];bucket["last_time"]=timestamp;bucket["rows"]+=1
+        boundary=bool(row["boundary_reasons"]);bucket["boundaries"]+=int(boundary)
+        for i in self.indices:
+            value=row["values"][i];state=row["value_states"][i]
+            numeric=type(value) in {int,float} and math.isfinite(value) and state=="observed"
+            stats=bucket["channels"][i]
+            if not numeric:
+                stats["nonfinite"]+=1;self.was_finite[i]=False;continue
+            if boundary or not self.was_finite[i]:self.fragments[i]+=1
+            self.was_finite[i]=True;stats["finite"]+=1
+            point=[row["sequence"],row["segment"],row["source_timestamp"],value,self.fragments[i]]
+            if stats["first"] is None:stats["first"]=point;stats["fragment_first"]=self.fragments[i]
+            stats["last"]=point;stats["fragment_last"]=self.fragments[i]
+            if stats["min"] is None or value<stats["min"][3]:stats["min"]=point
+            if stats["max"] is None or value>stats["max"][3]:stats["max"]=point
+        for j,(rule,i) in enumerate(zip(self.rules,self.rule_indices)):
+            value=row["values"][i];observed=row["value_states"][i]=="observed"
+            numeric=observed and type(value) in {int,float} and math.isfinite(value)
+            passes=(observed and any(type(value)==type(code) and value==code or type(value) in {int,float} and type(code) in {int,float} and value==code for code in rule.get("accepted_values",[]))) if rule["kind"]=="source_code" else numeric and (rule["kind"]!="range_fraction" or rule["lower"]<=value<=rule["upper"])
+            bucket["passed"][j]+=int(passes)
+
+    def snapshot(self):
+        buckets=list(self.buckets);count=sum(b["rows"] for b in buckets)
+        first=buckets[0]["first_time"] if buckets else None;last=buckets[-1]["last_time"] if buckets else None
+        channels=[]
+        for i in self.indices:
+            points={};fragments=set();omitted=0
+            for bucket in buckets:
+                stats=bucket["channels"][i]
+                retained={p[4] for p in [stats[k] for k in ("first","min","max","last")] if p is not None}
+                if stats["fragment_first"] is not None:omitted+=max(0,stats["fragment_last"]-stats["fragment_first"]+1-len(retained))
+                for key in ("first","min","max","last"):
+                    point=stats[key]
+                    if point is not None:points[point[0]]=point;fragments.add(point[4])
+            channels.append({"index":i+1,"points":[points[k] for k in sorted(points)],
+                "finite":sum(b["channels"][i]["finite"] for b in buckets),"unavailable_numeric":sum(b["channels"][i]["nonfinite"] for b in buckets),
+                "represented_fragments":len(fragments),"omitted_fragments":omitted})
+        boundaries=sum(b["boundaries"] for b in buckets)
+        return {"schema":"brohn-acquisition-window/1.0","algorithm":"source-time-first-min-max-last/1.0","requested_window_s":5,
+            "source_start_s":first,"source_end_s":last,"actual_span_s":None if first is None else last-first,
+            "committed_rows":count,"bucket_capacity":self.capacity,"bucket_width_s":self.width,"stored_buckets":len(buckets),
+            "point_capacity":4*self.capacity*len(self.indices),"plotted_points":sum(len(c["points"]) for c in channels),
+            "source_segment":self.segment,"prior_segments_discarded":self.resets_discarded,"boundaries":boundaries,
+            "coverage_policy":"Whole expired buckets omitted; only the current source-clock segment; actual support shown.",
+            "connection_policy":"Only points with the same source segment and fragment; no interpolation across unavailable values or declared boundaries.",
+            "channels":channels,"checks":[{"criterion":rule,"samples":count,"passed":sum(b["passed"][j] for b in buckets),
+                "observed_cadence_hz":(count-1)/(last-first) if count>=2 and last>first and boundaries==0 else None}
+                for j,rule in enumerate(self.rules)]}
+
+
 class Writer:
     def __init__(self, directory, request, evidence):
         self.root, self.request = directory, request
@@ -262,6 +386,19 @@ class Writer:
         self.counts = {stream["id"]: 0 for stream in request["streams"]}
         self.previous = {}; self.segments = {sid: 1 for sid in self.counts}; self.quality = {sid: {"nonfinite_values": 0, "gaps": 0, "resets": 0} for sid in self.counts}
         self.evidence = evidence
+        self.monitor = {}
+        preview_count=sum(len(stream.get("readiness",{}).get("preview_channels",stream["channels"][:8])) for stream in request["streams"])
+        bucket_capacity=min(128,max(1,4096//(4*preview_count)))
+        self.windows={stream["id"]:WindowMonitor(stream,bucket_capacity) for stream in request["streams"]}
+        for stream in request["streams"]:
+            ids = [channel["id"] for channel in stream["channels"]]
+            selected = stream.get("readiness", {}).get("preview_channels", ids[:8])
+            self.monitor[stream["id"]] = {"id": stream["id"], "connection": "not_subscribed",
+                "received_samples": 0, "committed_samples": 0, "last_received_monotonic_s": None,"last_committed_monotonic_s":None,
+                "preview_channel_indices": [ids.index(cid)+1 for cid in selected], "preview": deque(maxlen=16),
+                "channels": [{"index": i+1, "finite": 0, "nonfinite": 0, "constant_transitions": 0,
+                              "minimum": None, "maximum": None} for i in range(len(ids))],
+                "last_values": [None]*len(ids)}
         self.journal = child_path(directory, "journal.jsonl").open("xb")
         atomic(directory / "request.json", request, replace=False)
         atomic(directory / "streams.json", evidence, replace=False)
@@ -279,13 +416,31 @@ class Writer:
         self.journal_bytes += len(raw)
 
     def status(self, status, reason=None):
-        atomic(self.root / "status.json", {"schema": SCHEMA, "recording_id": self.request["recording_id"],
+        streams = {}
+        for sid, source in self.monitor.items():
+            streams[sid] = {key: value for key, value in source.items() if key not in ("preview", "last_values")}
+            streams[sid]["preview"] = list(source["preview"])
+            streams[sid]["gaps"] = self.quality[sid]["gaps"]
+            streams[sid]["resets"] = self.quality[sid]["resets"]
+            streams[sid]["window"] = self.windows[sid].snapshot()
+        payload = {"schema": SCHEMA, "recording_id": self.request["recording_id"],
             "request_sha256": sha(encoded(self.request)), "completion_status": status, "reason": reason, "updated_at": utc(),
             "samples": self.rows, "sample_bytes": self.bytes, "stream_counts": self.counts, "chunks": len(self.chunks),
-            "journal_tip": self.tip, "quality": self.quality, "quality_qualified": False})
+            "journal_tip": self.tip, "quality": self.quality, "quality_qualified": False,
+            "monitoring": {"schema": "brohn-acquisition-monitoring/2.0", "updated_epoch": time.time(),
+                "updated_monotonic_s": time.monotonic(), "streams": streams, "maximum_rows_per_stream": 16,
+                "maximum_preview_channels": 8, "preview_string_bytes": 64, "quality_qualified": False,"maximum_window_points_total":4096,
+                "scope": "Monitoring copy only; canonical complete values and clock evidence stay in committed chunks."}}
+        require(len(encoded(payload)) <= 2*1024**2, "Monitoring snapshot exceeds its bounded two MiB profile.")
+        atomic(self.root / "status.json", payload)
 
     def chunk(self, selected, values, stamps, before, after, reset=False):
         sid = selected["id"]; fmt = selected["channels"][0]["value_type"]
+        require(len(values) == len(stamps), "Received values and timestamps must have equal counts.")
+        monitoring = self.monitor[sid]
+        monitoring["received_samples"] += len(stamps)
+        if stamps:
+            monitoring["last_received_monotonic_s"] = time.monotonic()
         prior = (self.previous.get(sid), self.segments[sid], dict(self.quality[sid]))
         records = []
         for offset, (sample, timestamp) in enumerate(zip(values, stamps)):
@@ -328,6 +483,32 @@ class Writer:
                  "first_sequence": self.counts[sid]+1, "last_sequence": self.counts[sid]+len(records)}
         self.log("chunk", chunk=entry)
         self.chunks.append(entry); self.counts[sid] += len(records); self.rows += len(records); self.bytes += len(raw)
+        monitoring["committed_samples"] += len(records)
+        if records:monitoring["last_committed_monotonic_s"]=time.monotonic()
+        for row in records:
+            self.windows[sid].append(row)
+            for index, value in enumerate(row["values"]):
+                observed = row["value_states"][index] == "observed"
+                stats = monitoring["channels"][index]
+                # Exact int64 and string payloads remain text; their presence
+                # is observable, but a numeric waveform is never fabricated.
+                numeric = isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+                if numeric and observed:
+                    stats["finite"] += 1
+                    stats["minimum"] = value if stats["minimum"] is None else min(stats["minimum"], value)
+                    stats["maximum"] = value if stats["maximum"] is None else max(stats["maximum"], value)
+                elif not observed:
+                    stats["nonfinite"] += 1
+                prior = monitoring["last_values"][index]
+                if observed and prior is not None and prior == value:
+                    stats["constant_transitions"] += 1
+                monitoring["last_values"][index] = value if observed else None
+            indices = [index-1 for index in monitoring["preview_channel_indices"]]
+            def preview_value(value):
+                return value.encode("utf-8")[:64].decode("utf-8", errors="ignore") if isinstance(value, str) else value
+            monitoring["preview"].append({"sequence": row["sequence"], "segment": row["segment"],
+                "source_timestamp": row["source_timestamp"], "values": [preview_value(row["values"][i]) for i in indices],
+                "states": [row["value_states"][i] for i in indices]})
         self.status("recording")
         return True
 
@@ -340,6 +521,8 @@ class Writer:
             "quality": self.quality, "quality_qualified": False, "signal_quality": "not_qualified",
             "clock_synchronized": False, "closed_at": utc()}
         atomic(self.root / "manifest.json", manifest, replace=False)
+        for source in self.monitor.values():
+            source["connection"] = "closed"
         self.status(status, reason); self.journal.close()
         return manifest
 
@@ -386,8 +569,9 @@ def record(request):
             require(buffered_samples * len(selected["channels"]) <= 4000000, "Declared inlet buffer exceeds four million channel values.")
             evidence["streams"].append({"id": selected["id"], "observed": observed, "declared": selected})
         writer = Writer(directory, request, evidence)
-        for _, inlet in inlets:
+        for selected, inlet in inlets:
             inlet.open_stream(timeout=3)
+            writer.monitor[selected["id"]]["connection"] = "subscribed"
         writer.log("subscribed", receiver_timestamp_s=repr(api.local_clock()))
         writer.status("recording")
         started = time.monotonic(); correction_at = started; reason = None; status = "completed"

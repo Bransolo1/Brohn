@@ -1,0 +1,6 @@
+# Isolated reference reader only; never install into a production methods profile.
+# Exercised on Windows Python3.12.10. These pins avoid WFDB4.3.0/Pandas3 incompatibility.
+wfdb==4.3.0
+numpy==2.2.6
+pandas==2.2.3
+scipy==1.15.3

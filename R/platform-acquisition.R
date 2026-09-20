@@ -1,4 +1,6 @@
 # Explicit LSL acquisition queue and independently owned local manager.
+.brohn_acq_publication_code <- stats::setNames(lapply(c("R/platform-acquisition.R", "scripts/acquisition/lsl_recorder.py"),
+  function(path) digest::digest(file = path, algo = "sha256")), c("R/platform-acquisition.R", "scripts/acquisition/lsl_recorder.py"))
 .brohn_acq_path <- function(store, ...) {
   root <- file.path(store$root, "acquisitions")
   if (!dir.exists(root)) brohn_require(dir.create(root), "Cannot create the acquisition workspace.")
@@ -68,7 +70,7 @@ brohn_acquisitions <- function(store, study_id = NULL, limit = 500L, status = NU
 brohn_acquisition <- function(store, id) {
   record <- brohn_get_entity(store, "acquisition", id)
   brohn_require(!is.null(record), "This acquisition is unavailable."); brohn_project(store, record$project_id)
-  snapshot <- .brohn_acq_read(file.path(.brohn_acq_directory(store,record),"status.json"),65536)
+  snapshot <- .brohn_acq_read(file.path(.brohn_acq_directory(store,record),"status.json"),2*1024^2)
   if(!is.null(snapshot) && identical(snapshot$recording_id,id) && (is.null(record$body$python_request_hash) || identical(snapshot$request_sha256,record$body$python_request_hash)))
     record$live_snapshot <- snapshot
   record
@@ -106,7 +108,7 @@ brohn_retry_lsl_discovery <- function(store, id, expected_revision) {
     brohn_put_entity(store,"acquisition_discovery",retry$id,body,retry$revision,retry$project_id)
   })
 }
-brohn_lsl_selection <- function(discovery, uid, id, clock_id, clock_kind, kind, channels, unit_provenance, gap_threshold_s = NULL) {
+brohn_lsl_selection <- function(discovery, uid, id, clock_id, clock_kind, kind, channels, unit_provenance, gap_threshold_s = NULL, readiness = NULL) {
   brohn_require(identical(discovery$body$status, "ready"), "Wait for a completed discovery before reviewing sources.")
   matches <- Filter(function(s) identical(s$uid, uid), discovery$body$result$streams)
   brohn_require(length(matches) == 1L && isTRUE(matches[[1L]]$supported), "Select one supported exact outlet UID.")
@@ -120,6 +122,7 @@ brohn_lsl_selection <- function(discovery, uid, id, clock_id, clock_kind, kind, 
   result <- list(id = id, uid = observed$uid, source_id = observed$source_id, metadata_sha256 = observed$metadata_sha256,
     clock_id = clock_id, clock_kind = clock_kind, kind = kind, channels = channels, unit_provenance = unit_provenance)
   if (!is.null(gap_threshold_s)) result$gap_threshold_s <- gap_threshold_s
+  if (!is.null(readiness)) {brohn_validate_acquisition_readiness(readiness,channels);result$readiness<-readiness}
   result
 }
 brohn_queue_acquisition <- function(store, study_id, discovery_id, selections, identity, origin, origin_statement,
@@ -136,7 +139,7 @@ brohn_queue_acquisition <- function(store, study_id, discovery_id, selections, i
     brohn_require(length(active) == 0L, "This local profile permits one recording at a time. Stop or resolve the current recording first.")
     brohn_require(brohn_array(selections) && length(selections) >= 1L && length(selections) <= 16L && !anyDuplicated(brohn_ids(selections)) &&
       !anyDuplicated(vapply(selections, `[[`, character(1), "uid")), "Choose 1 to 16 distinct reviewed sources.")
-    selections <- lapply(selections, function(s) brohn_lsl_selection(discovery, s$uid, s$id, s$clock_id, s$clock_kind, s$kind, s$channels, s$unit_provenance, s$gap_threshold_s))
+    selections <- lapply(selections, function(s) brohn_lsl_selection(discovery, s$uid, s$id, s$clock_id, s$clock_kind, s$kind, s$channels, s$unit_provenance, s$gap_threshold_s, s$readiness))
     brohn_require(is.list(identity) && all(c("participant_id", "session_id") %in% names(identity)) &&
       all(names(identity) %in% c("participant_id", "session_id", "condition_id", "exposure_id")) && all(vapply(identity, brohn_text, logical(1), max = 500)), "Supply explicit participant/session IDs; source labels are not person identities.")
     brohn_require(origin %in% c("sample", "pilot", "live") && brohn_text(origin_statement, 4000), "Declare the collection origin and its source.")
@@ -192,7 +195,9 @@ brohn_acquisition_download <- function(store, id) {
 }
 .brohn_acq_assert <- function(store, manager) {
   current <- brohn_get_entity(store,"acquisition_service","local")
-  brohn_require(!is.null(current) && identical(current$body$manager_id,manager$id), "This acquisition manager has lost its ownership fence.")
+  brohn_require(!is.null(current) && identical(current$body$manager_id,manager$id) &&
+    identical(current$body$workspace_id,store$workspace_id) && identical(current$body$workspace_root,store$root) &&
+    identical(brohn_hash(current$body$process),brohn_hash(manager$identity)), "This acquisition manager has lost its ownership fence.")
   invisible(current)
 }
 .brohn_acq_reconcile_discoveries <- function(store, manager) {
@@ -231,6 +236,7 @@ brohn_acquisition_manager <- function(store) {
     body <- list(manager_id=state$id,workspace_id=store$workspace_id,workspace_root=store$root,process=state$identity,status="running",started_at=brohn_now())
     brohn_put_entity(store,"acquisition_service","local",body,if(is.null(previous)) 0L else previous$revision)
     .brohn_acq_reconcile_discoveries(store,state)
+    .brohn_acq_reconcile_publications(store,state)
     .brohn_acq_atomic(c(body,list(updated_at=brohn_now(),updated_epoch=as.numeric(Sys.time()))),.brohn_acq_path(store,"service.json"))
     state
   })
@@ -305,11 +311,20 @@ brohn_acquisition_stop_requested <- function(store, manager) {
     abs(as.numeric(value$process_created)-as.numeric(manager$identity$created)) <= .001
 }
 .brohn_acq_directory <- function(store, record) .brohn_acq_path(store,"recordings",record$id)
-.brohn_acq_run <- function(operation, request = NULL, recording = NULL, output, extra = character(), timeout = 120) {
+.brohn_acq_run <- function(operation, request = NULL, recording = NULL, output, extra = character(), timeout = 120, checkpoint = NULL) {
   args <- c(.brohn_acq_script(),operation,"--output",output)
   if (!is.null(request)) args <- c(args,"--request",request)
   if (!is.null(recording)) args <- c(args,"--recording",recording)
-  process <- processx::run(.brohn_acq_python(),c(args,extra),timeout=timeout,error_on_status=FALSE,cleanup_tree=TRUE,windows_hide_window=TRUE)
+  if (is.null(checkpoint)) process <- processx::run(.brohn_acq_python(),c(args,extra),timeout=timeout,error_on_status=FALSE,cleanup_tree=TRUE,windows_hide_window=TRUE) else {
+    out <- paste0(output,".stdout"); err <- paste0(output,".stderr")
+    child <- processx::process$new(.brohn_acq_python(),c(args,extra),stdout=out,stderr=err,cleanup_tree=TRUE,windows_hide_window=TRUE)
+    on.exit(if(child$is_alive()){child$kill_tree();child$wait(3000)},add=TRUE)
+    start <- as.numeric(Sys.time())
+    while(child$is_alive()) {child$wait(100);checkpoint();brohn_require(as.numeric(Sys.time())-start <= timeout,
+      "The acquisition helper exceeded its time limit. The original source is preserved.")}
+    checkpoint(TRUE)
+    process <- list(status=child$get_exit_status(),timeout=FALSE,stderr=paste(head(readLines(err,warn=FALSE),10L),collapse="\n"))
+  }
   brohn_require(!isTRUE(process$timeout), paste("The acquisition helper exceeded its", timeout, "second time limit. The original source is preserved."))
   result <- .brohn_acq_read(output,16*1024^2)
   brohn_require(!is.null(result) && process$status==0 && !identical(result$status,"error"),
@@ -329,17 +344,18 @@ brohn_acquisition_stop_requested <- function(store, manager) {
   }
   paths
 }
-.brohn_acq_preserve <- function(store, record, scratch) {
+.brohn_acq_preserve <- function(store, record, scratch, checkpoint = function(...) invisible(NULL)) {
   directory <- .brohn_acq_directory(store,record)
-  inspection <- .brohn_acq_run("inspect",recording=directory,output=file.path(scratch,"inspection.json"))
+  inspection <- .brohn_acq_run("inspect",recording=directory,output=file.path(scratch,"inspection.json"),checkpoint=checkpoint)
   brohn_require(identical(inspection$recording_id,record$id) && identical(brohn_hash(inspection$request),record$body$request_hash),"The recorded request differs from its frozen catalog request.")
   brohn_require(identical(inspection$evidence$engine$script_sha256,record$body$script_hash),"Recorder code differs from the reviewed acquisition request.")
   paths <- .brohn_acq_walk(directory)
   members <- substring(paths,nchar(normalizePath(directory,winslash="/"))+2L)
   brohn_require(!anyDuplicated(members) && sum(file.info(paths)$size) <= 700*1024^2,"Original recording exceeds the archival profile.")
-  inventory <- lapply(seq_along(paths),function(i) list(path=members[[i]],hash=.brohn_acq_hash(paths[[i]]),size=file.info(paths[[i]])$size))
+  inventory <- lapply(seq_along(paths),function(i) {checkpoint();list(path=members[[i]],hash=.brohn_acq_hash(paths[[i]]),size=file.info(paths[[i]])$size)})
   archive <- file.path(scratch,"original-recording.brohn-acquisition.zip")
   zip::zipr(archive,members,root=directory,mode="mirror",recurse=FALSE,include_directories=FALSE,compression_level=1)
+  checkpoint(TRUE); archive_hash <- .brohn_acq_hash(archive)
   listing <- zip::zip_list(archive)
   brohn_require(setequal(listing$filename,members) && !anyDuplicated(listing$filename),"Archived recording inventory differs from original evidence.")
   # A short fresh path avoids legacy Windows ZIP extraction path limits.
@@ -350,9 +366,180 @@ brohn_acquisition_stop_requested <- function(store, manager) {
     .brohn_acq_walk(canonical); unlink(canonical,recursive=TRUE,force=TRUE)
   },add=TRUE)
   zip::unzip(archive,exdir=verified)
-  for(i in seq_along(inventory)) brohn_require(identical(.brohn_acq_hash(file.path(verified,inventory[[i]]$path)),inventory[[i]]$hash) &&
-    identical(.brohn_acq_hash(paths[[i]]),inventory[[i]]$hash),"Original bytes changed during archive publication.")
-  list(archive=archive,inspection=inspection,inventory=inventory)
+  for(i in seq_along(inventory)) {checkpoint();brohn_require(identical(.brohn_acq_hash(file.path(verified,inventory[[i]]$path)),inventory[[i]]$hash) &&
+    identical(.brohn_acq_hash(paths[[i]]),inventory[[i]]$hash),"Original bytes changed during archive publication.")}
+  brohn_require(identical(.brohn_acq_hash(archive),archive_hash),"The verified original archive changed during preparation.")
+  checkpoint(TRUE); list(archive=archive,archive_hash=archive_hash,inspection=inspection,inventory=inventory)
+}
+# Acquisition publication uses the common job/native-seal contract, with jobs
+# reserved for the independent manager rather than the scientific worker queue.
+.brohn_acq_reconcile_publications <- function(store, manager) {
+  .brohn_acq_assert(store,manager)
+  ids <- DBI::dbGetQuery(store$con,"SELECT id FROM jobs WHERE operation IN ('acquisition_preserve','acquisition_prepare') AND status IN ('queued','running')")$id
+  for(id in ids) {
+    job <- brohn_get_job(store,id)
+    owner <- job$request$owner
+    brohn_require(identical(owner$workspace_id,store$workspace_id) && identical(owner$workspace_root,store$root) &&
+      identical(.brohn_acq_probe(owner$process),"absent"),"An acquisition publication owner is still alive or uncertain; its attempt was retained.")
+    brohn_cancel_job(store,job$id)
+    .brohn_store_audit(store,"acquisition.publication_recovered",job$id,list(previous_manager_id=owner$manager_id,
+      manager_id=manager$id,source_preserved=TRUE,policy="proven_absent_owner_new_fenced_attempt"))
+  }
+  invisible(NULL)
+}
+.brohn_acq_publication_owner <- function(store, record, manager, job = NULL) {
+  service <- .brohn_acq_assert(store,manager)
+  brohn_require(!isTRUE(manager$stopped) && identical(service$body$status,"running"),"This acquisition publication manager has stopped.")
+  brohn_require(identical(.brohn_acq_probe(manager$identity),"owned_alive"),"The acquisition publication manager process cannot be verified.")
+  current <- brohn_acquisition(store,record$id)
+  brohn_require(identical(current$revision,record$revision) && identical(brohn_hash(current$body),brohn_hash(record$body)),
+    "The acquisition changed during publication; its complete source is retained for a new review.")
+  if(!is.null(job)) {
+    .brohn_publication_job(store,job)
+    brohn_require(identical(job$request$owner$manager_id,manager$id) && identical(job$request$acquisition_hash,brohn_hash(record$body)),
+      "This publication belongs to another acquisition owner or revision.")
+    brohn_require(identical(brohn_hash(job$request$implementation),brohn_hash(.brohn_acq_publication_code)) &&
+      all(vapply(names(.brohn_acq_publication_code),function(path)identical(.brohn_acq_hash(path),.brohn_acq_publication_code[[path]]),logical(1))),
+      "Acquisition publication implementation changed; restart the manager and retry from the retained source.")
+  }
+  invisible(current)
+}
+.brohn_acq_publication_job <- function(store, record, manager, operation) {
+  brohn_require(operation %in% c("acquisition_preserve","acquisition_prepare"),"Unsupported acquisition publication operation.")
+  brohn_require(.Platform$OS.type=="windows","Acquisition staged publication currently requires the qualified Windows native guard.")
+  brohn_require(!RSQLite::sqliteIsTransacting(store$con),"Prepare acquisition evidence outside the metadata transaction.")
+  brohn_require(all(vapply(names(.brohn_acq_publication_code),function(path)
+    identical(.brohn_acq_hash(path),.brohn_acq_publication_code[[path]]),logical(1))),"Restart the acquisition manager after source changes.")
+  request <- list(schema="brohn-acquisition-publication/1.0",acquisition_id=record$id,acquisition_revision=record$revision,
+    acquisition_hash=brohn_hash(record$body),project_id=record$project_id,implementation=.brohn_acq_publication_code,
+    owner=list(manager_id=manager$id,process=manager$identity,workspace_id=store$workspace_id,workspace_root=store$root))
+  brohn_store_batch(store,function() {
+    .brohn_acq_publication_owner(store,record,manager)
+    job <- brohn_enqueue_job(store,operation,request,paste0("acquisition-publication:",brohn_hash(request),":",brohn_id("attempt")))
+    # The queue insertion and exact-id claim are invisible to other writers
+    # until this transaction commits. Generic workers exclude both operations.
+    changed <- DBI::dbExecute(store$con,"UPDATE jobs SET status='running',attempt=1,worker=?,token='1',lease_until=?,updated_at=? WHERE id=? AND status='queued'",
+      params=list(manager$id,as.numeric(Sys.time())+300,.brohn_store_stamp(),job$id))
+    brohn_require(changed==1L,"The acquisition publication could not acquire its exact job fence.")
+    .brohn_store_audit(store,"job.claimed",job$id,list(attempt=1L,worker=manager$id,reclaimed=FALSE,owner="acquisition_manager"))
+    brohn_get_job(store,job$id)
+  })
+}
+.brohn_acq_publication_checkpoint <- function(store,record,manager,job) {
+  check <- .brohn_publication_checkpoint(store,job); last <- 0
+  function(force=FALSE) {
+    check(force);now<-as.numeric(Sys.time())
+    if(force || now-last>=1) {.brohn_acq_publication_owner(store,record,manager,job);last<<-now}
+    invisible(TRUE)
+  }
+}
+.brohn_acq_publication_failure <- function(store,job,error) {
+  tryCatch(brohn_fail_job(store,job$id,job$worker,job$token,list(message=substr(conditionMessage(error),1,4000),source_preserved=TRUE)),error=function(e)NULL)
+  stop(error)
+}
+.brohn_acq_publish_preservation <- function(store,record,manager,scratch) {
+  job <- .brohn_acq_publication_job(store,record,manager,"acquisition_preserve")
+  checkpoint <- .brohn_acq_publication_checkpoint(store,record,manager,job)
+  archive <- document <- NULL; committed <- FALSE
+  on.exit({if(!is.null(document))brohn_close_publication(document$guard,committed);if(!is.null(archive))brohn_close_publication(archive$guard,committed)},add=TRUE)
+  tryCatch({
+    brohn_require(identical(.brohn_acq_probe(record$body$process),"absent"),"Wait for the exact recorder process to exit before preserving it.")
+    preserved <- .brohn_acq_preserve(store,record,scratch,checkpoint)
+    archive <- .brohn_publication_stage(store,job,list(list(key="original-acquisition",kind="original-acquisition",path=preserved$archive,
+      sha256=preserved$archive_hash,bytes=as.numeric(file.info(preserved$archive)$size),media_type="application/zip")))
+    b <- record$body
+    b$original <- archive$descriptors[[1L]][c("hash","size","media_type")]
+    b$original_inventory <- preserved$inventory;b$inspection <- preserved$inspection;b$completion_status <- preserved$inspection$completion_status
+    b$status <- b$completion_status;b$preserved_at <- brohn_now();b$error <- NULL
+    b$preservation <- list(schema="brohn-acquisition-preservation/1.0",job_id=job$id,source_revision=record$revision,
+      source_hash=job$request$acquisition_hash,owner=job$request$owner,implementation=.brohn_acq_publication_code,
+      publication=.brohn_publication_processing(archive))
+    document <- .brohn_publication_stage_json(store,job,list(schema="brohn-acquisition-preservation-result/1.0",acquisition=b),
+      file.path(scratch,"preservation-publication.json"));checkpoint(TRUE)
+    result <- brohn_store_batch(store,function() {
+      .brohn_acq_publication_owner(store,record,manager,job)
+      .brohn_publication_register(store,archive)
+      b$preservation$result_object <- .brohn_publication_register(store,document)[[1L]][c("hash","size","media_type")]
+      saved <- brohn_put_entity(store,"acquisition",record$id,b,record$revision,record$project_id)
+      brohn_complete_job(store,job$id,job$worker,job$token,list(acquisition_id=record$id,acquisition_revision=saved$revision,
+        original_hash=b$original$hash,result_hash=b$preservation$result_object$hash))
+      saved
+    })
+    committed<-TRUE;result
+  },error=function(e).brohn_acq_publication_failure(store,job,e))
+}
+.brohn_acq_extract_original <- function(path,inventory,checkpoint) {
+  members <- vapply(inventory,`[[`,character(1),"path")
+  listing <- zip::zip_list(path)
+  brohn_require(length(members)>0 && !anyDuplicated(members) && setequal(listing$filename,members) &&
+    !anyDuplicated(listing$filename) && !any(grepl("(^[/\\\\]|^[A-Za-z]:|(^|[/\\\\])\\.\\.([/\\\\]|$))",members)),
+    "The preserved recording archive has an unsafe or changed inventory.")
+  directory <- tempfile("brohn-acq-review-");dir.create(directory);success<-FALSE
+  on.exit(if(!success).brohn_acq_remove_extraction(directory),add=TRUE)
+  zip::unzip(path,exdir=directory);checkpoint(TRUE)
+  for(item in inventory) {checkpoint();member<-file.path(directory,item$path)
+    brohn_require(file.exists(member) && !dir.exists(member) && file.info(member)$size==item$size && identical(.brohn_acq_hash(member),item$hash),
+      "The extracted recording differs from its complete preserved inventory.")}
+  .brohn_acq_walk(directory);success<-TRUE;directory
+}
+.brohn_acq_remove_extraction <- function(directory) {
+  canonical<-normalizePath(directory,winslash="/",mustWork=TRUE)
+  brohn_require(identical(dirname(canonical),normalizePath(tempdir(),winslash="/",mustWork=TRUE)) && startsWith(basename(canonical),"brohn-acq-review-"),
+    "Refusing cleanup outside the owned recording extraction.")
+  .brohn_acq_walk(canonical);unlink(canonical,recursive=TRUE,force=TRUE);invisible(NULL)
+}
+.brohn_acq_publish_review <- function(store,record,manager,scratch) {
+  job <- .brohn_acq_publication_job(store,record,manager,"acquisition_prepare")
+  checkpoint <- .brohn_acq_publication_checkpoint(store,record,manager,job)
+  original <- bundle <- document <- extracted <- NULL;committed<-FALSE
+  on.exit({if(!is.null(document))brohn_close_publication(document$guard,committed);if(!is.null(bundle))brohn_close_publication(bundle$guard,committed)
+    if(!is.null(original))brohn_close_publication(original$guard,committed);if(!is.null(extracted)).brohn_acq_remove_extraction(extracted)},add=TRUE)
+  tryCatch({
+    b<-record$body
+    brohn_require(identical(b$review$status,"queued") && identical(b$review$original_hash,b$original$hash),"Review refers to another original recording.")
+    original_path<-brohn_object_path(store,b$original$hash,verify=FALSE)
+    original<-.brohn_publication_stage(store,job,list(list(key="retained-original",kind="retained-original",path=original_path,
+      sha256=b$original$hash,bytes=b$original$size,media_type="application/zip")))
+    extracted<-.brohn_acq_extract_original(original$paths[["retained-original"]],b$original_inventory,checkpoint)
+    output<-file.path(scratch,"stream-bundle.json")
+    receipt<-.brohn_acq_run("export-bundle",recording=extracted,output=file.path(scratch,"export.json"),
+      extra=c("--bundle-output",output,if(isTRUE(b$review$allow_incomplete))"--allow-incomplete"),checkpoint=checkpoint)
+    brohn_require(identical(receipt$parent_journal_tip,b$inspection$journal_tip) && identical(receipt$sha256,.brohn_acq_hash(output)),
+      "Export differs from the preserved original journal.")
+    size<-as.numeric(file.info(output)$size);brohn_require(brohn_number(size,1,512*1024^2,TRUE),"The stream bundle exceeds its supported source limit.")
+    bundle<-.brohn_publication_stage(store,job,list(list(key="stream-bundle",kind="acquisition-export",path=output,sha256=receipt$sha256,
+      bytes=size,media_type="application/json")));checkpoint(TRUE)
+    source<-c(bundle$descriptors[[1L]][c("hash","size","media_type")],list(filename="stream-bundle.json",format="json"))
+    dataset_id<-brohn_id("dataset");dependent_id<-.brohn_store_id(store$con,"job")
+    data<-list(schema_version="brohn-dataset/1.0.0",id=dataset_id,title=paste(b$title,"streams"),modality="multimodal",origin=b$origin,
+      study_id=b$study_id,study_revision=b$study_revision,source=source,columns=list(),preview=list(),
+      metadata=list(origin_statement=b$request$origin_statement,clock_policy="preserve_only"),status="accepted",data_revision=1L,notes="",
+      source_provenance=list(imported_at=brohn_now(),source_hash=source$hash,parent_acquisition=list(id=record$id,original=b$original,
+        journal_tip=b$inspection$journal_tip,completion_status=b$completion_status)))
+    brohn_validate_dataset_mapping(data);brohn_validate_interchange_mapping(data)
+    study<-brohn_study(store,b$study_id,b$study_revision)
+    brohn_require(identical(study$project_id,record$project_id) && identical(brohn_hash(study$body),b$design_hash),"The frozen acquisition study is no longer available in this project.")
+    request<-list(dataset_id=dataset_id,dataset_revision=1L,dataset_hash=brohn_hash(data),source_hash=source$hash,
+      project_id=record$project_id,recipe="multistream-preservation/1.0.0")
+    b$review$status<-"prepared";b$review$error<-NULL;b$import_dataset_id<-dataset_id;b$import_job_id<-dependent_id
+    b$review$publication<-list(job_id=job$id,source_revision=record$revision,source_hash=job$request$acquisition_hash,
+      owner=job$request$owner,implementation=.brohn_acq_publication_code,publication=.brohn_publication_processing(bundle))
+    document<-.brohn_publication_stage_json(store,job,list(schema="brohn-acquisition-review-result/1.0",acquisition=b,dataset=data,
+      dependent_job=list(id=dependent_id,request=request)),file.path(scratch,"review-publication.json"));checkpoint(TRUE)
+    result<-brohn_store_batch(store,function() {
+      .brohn_acq_publication_owner(store,record,manager,job)
+      .brohn_publication_register(store,original);.brohn_publication_register(store,bundle)
+      b$review$publication$result_object<-.brohn_publication_register(store,document)[[1L]][c("hash","size","media_type")]
+      dataset<-brohn_put_entity(store,"dataset",dataset_id,data,project_id=record$project_id)
+      dependent<-brohn_enqueue_job(store,"normalise_dataset",request,paste0("multistream:",brohn_hash(request)),prepared_id=dependent_id)
+      brohn_require(identical(dependent$id,dependent_id),"The acquisition export's frozen processing identity changed.")
+      saved<-brohn_put_entity(store,"acquisition",record$id,b,record$revision,record$project_id)
+      brohn_complete_job(store,job$id,job$worker,job$token,list(acquisition_id=record$id,acquisition_revision=saved$revision,
+        dataset_id=dataset_id,dependent_job_id=dependent_id,result_hash=b$review$publication$result_object$hash))
+      saved
+    })
+    committed<-TRUE;result
+  },error=function(e).brohn_acq_publication_failure(store,job,e))
 }
 .brohn_acq_update <- function(store, record, body, manager) brohn_store_batch(store,function() {
   .brohn_acq_assert(store,manager)
@@ -367,6 +554,7 @@ brohn_acquisition_tick <- function(store, manager) {
   brohn_require(length(active)<=1L,"Multiple unresolved recordings require manual review; no new writer was started.")
   if(length(active)) {
     r <- active[[1L]]; b <- r$body
+    if(identical(b$status,"attention_required") && isTRUE(b$writer_exited)) return(invisible(NULL))
     if(b$status=="queued") {
       brohn_require(identical(b$request_hash,brohn_hash(b$request)) && identical(b$script_hash,.brohn_acq_hash(.brohn_acq_script())),"Frozen recording request or recorder code changed.")
       request_path <- file.path(work,paste0(r$id,"-request.json")); brohn_require(!file.exists(request_path),"A prior launch request exists; inspect it before starting another writer.")
@@ -397,7 +585,7 @@ brohn_acquisition_tick <- function(store, manager) {
     directory <- .brohn_acq_directory(store,r)
     if(probe=="owned_alive") {
       brohn_require(identical(.brohn_acq_hash(b$request_path),b$request_file_hash),"Writer request file changed; no control was sent.")
-      snapshot <- .brohn_acq_read(file.path(directory,"status.json"),65536)
+      snapshot <- .brohn_acq_read(file.path(directory,"status.json"),2*1024^2)
       if(!is.null(snapshot)) {
         brohn_require(identical(snapshot$recording_id,r$id),"Writer status belongs to another recording.")
         b$python_request_hash <- snapshot$request_sha256
@@ -416,16 +604,12 @@ brohn_acquisition_tick <- function(store, manager) {
     # Known writer exited: inspection never creates a replacement or repairs a
     # false completion marker. A missing/invalid journal is retained for review.
     scratch <- tempfile(paste0("preserve-",r$id,"-"),tmpdir=work); dir.create(scratch)
-    preserved <- tryCatch(.brohn_acq_preserve(store,r,scratch),error=identity)
+    preserved <- tryCatch(.brohn_acq_publish_preservation(store,r,manager,scratch),error=identity)
     if(inherits(preserved,"error")) {
       b$status <- "attention_required"; b$error <- conditionMessage(preserved); b$writer_exited <- TRUE
       .brohn_acq_update(store,r,b,manager); return(invisible(NULL))
     }
-    original <- brohn_store_object(store,path=preserved$archive,media_type="application/zip")
-    b$original <- original; b$original_inventory <- preserved$inventory
-    b$inspection <- preserved$inspection; b$completion_status <- preserved$inspection$completion_status
-    b$status <- b$completion_status; b$preserved_at <- brohn_now(); b$error <- NULL
-    .brohn_acq_update(store,r,b,manager); return(invisible(NULL))
+    return(invisible(NULL))
   }
   discoveries <- brohn_lsl_discoveries(store, status = "queued")
   if(length(discoveries)) {
@@ -456,24 +640,8 @@ brohn_acquisition_tick <- function(store, manager) {
   if(length(reviews)) {
     r <- reviews[[1L]]; b <- r$body
     result <- tryCatch({
-      brohn_require(identical(b$review$original_hash,b$original$hash),"Review refers to a different original recording.")
-      brohn_object_path(store,b$original$hash)
       scratch <- tempfile(paste0("import-",r$id,"-"),tmpdir=work); dir.create(scratch)
-      output <- file.path(scratch,"stream-bundle.json")
-      receipt <- .brohn_acq_run("export-bundle",recording=.brohn_acq_directory(store,r),output=file.path(scratch,"export.json"),
-        extra=c("--bundle-output",output,if(isTRUE(b$review$allow_incomplete)) "--allow-incomplete"))
-      brohn_require(identical(receipt$parent_journal_tip,b$inspection$journal_tip) && identical(receipt$sha256,.brohn_acq_hash(output)),"Export differs from the preserved original journal.")
-      brohn_store_batch(store,function() {
-        .brohn_acq_assert(store,manager)
-        dataset <- brohn_ingest_dataset(store,output,paste(b$title,"streams"),"multimodal",b$study_id,project_id=r$project_id,origin=b$origin)
-        data <- dataset$body; data$source_provenance$parent_acquisition <- list(id=r$id,original=b$original,journal_tip=b$inspection$journal_tip,completion_status=b$completion_status)
-        dataset <- brohn_put_entity(store,"dataset",dataset$id,data,dataset$revision,dataset$project_id)
-        dataset <- brohn_curate_dataset(store,dataset$id,list(origin_statement=b$request$origin_statement,clock_policy="preserve_only"),dataset$revision,
-          study_revision=b$study_revision)
-        job <- brohn_queue_multistream(store,dataset$id)
-        b$review$status <- "prepared"; b$import_dataset_id <- dataset$id; b$import_job_id <- job$id
-        .brohn_acq_update(store,r,b,manager)
-      })
+      .brohn_acq_publish_review(store,r,manager,scratch)
     },error=identity)
     if(inherits(result,"error")) {b$review$status <- "failed"; b$review$error <- conditionMessage(result); .brohn_acq_update(store,r,b,manager)}
   }

@@ -19,6 +19,7 @@ require=artifacts.require
 MAX_TABLES=50
 MAX_FRAGMENTS=2000
 MAX_ENVELOPE_BINS=10000
+MAX_CARDIAC_MARKERS=2000
 
 
 def finite(value): return isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value)
@@ -243,20 +244,108 @@ def preview(request,manifest):
     return output
 
 
+def cardiac_markers(request,manifest,view):
+    """Join saved detections by exact source sample and clock, never nearest time."""
+    overlay=request["marker_overlay"]
+    require(isinstance(overlay,dict) and set(overlay)=={"event_artifact","event_type"} and
+            overlay["event_type"] in {"r_peak","systolic_pulse_peak"},"Choose the saved ECG or PPG detection type.")
+    require(manifest["kind"]=="physiology-series" and view["axis"]["kind"]=="time" and view["axis"]["unit"]=="s" and
+            view["selection"]["value_column"]=="clean","Cardiac markers require their saved cleaned waveform in seconds.")
+    events=bind_receipt({"artifact":overlay["event_artifact"],"verification_receipt":request["verification_receipt"]})
+    require(events["kind"]=="physiology-events" and events["provenance_sha256"]==manifest["provenance_sha256"],
+            "Waveform and detections must share one exact processing provenance.")
+    fields=("kind","sha256","bytes","schema","tables","rows","provenance_sha256")
+    result={"schema":"brohn-cardiac-marker-overlay/1.0","status":"empty","event_artifact":{k:events[k] for k in fields},
+            "review_status":"unreviewed_algorithm_detections","event_type":overlay["event_type"],"markers":[],
+            "selected_marker_count":0,"limit":MAX_CARDIAC_MARKERS,"alignment":"exact_source_sample_and_recorded_time",
+            "value_unit":view["axis"]["value_unit"],"time_unit":"s"}
+    selected={t["table_id"]:t for t in view["tables"]};event_tables={};matched_series=set();previous={};marker_keys={}
+    def on_table(t):
+        if t["coordinates"]["axis"]!="event":return
+        matches=[s for s in selected.values() if s["identity"]==t["identity"]]
+        if not matches:return
+        require(len(matches)==1,"An event table has an ambiguous saved waveform identity.")
+        s=matches[0];sid=s["table_id"]
+        require(sid not in matched_series,"Multiple event tables refer to the same selected waveform.")
+        require(all(s["coordinates"][k]==t["coordinates"][k] for k in ("reference","source_time_origin","source_time_unit")),
+                "Event and waveform clocks differ; proximity cannot establish synchronization.")
+        names={c["name"]:c for c in t["columns"]}
+        required={"type":("string",None),"time_s":("float64","s"),"source_sample_index":("integer","sample_index"),
+                  "previous_interval_ms":("float64","ms"),"previous_interval_plausible":("boolean",None)}
+        require(all(k in names and (names[k]["type"],names[k]["unit"])==v for k,v in required.items()),
+                "Saved detections lack exact typed sample, time or interval evidence.")
+        require(t["support"].get("source")==s["support"].get("source") and t["support"].get("method")==s["support"].get("method"),
+                "Event and waveform source support or processing recipe differ.")
+        source=s["support"].get("source",{})
+        require(integer(source.get("source_row_start"),0,2**53-1) and integer(source.get("source_row_end_exclusive"),1,2**53-1) and
+                source["source_row_start"]<source["source_row_end_exclusive"],"Cardiac markers need their declared original sample bounds.")
+        event_tables[t["table_id"]]=(t,sid);matched_series.add(sid)
+    def on_rows(tid,offset,rows):
+        if tid not in event_tables:return
+        t,sid=event_tables[tid];names=[c["name"] for c in t["columns"]]
+        for i,row in enumerate(rows):
+            event=dict(zip(names,row));index=event["source_sample_index"];when=event["time_s"]
+            require(event["type"]==overlay["event_type"] and integer(index,0,2**53-1) and finite(when),"Unexpected cardiac event or missing original coordinate.")
+            source=t["support"]["source"];extent=selected[sid]["coordinate_range"]
+            require(source["source_row_start"]<=index<source["source_row_end_exclusive"] and extent is not None and extent[0]<=when<=extent[1],
+                    "A cardiac event exceeds the original sample bounds or observed waveform time extent.")
+            prev=previous.get(tid)
+            require(prev is None or (index>prev[0] and when>prev[1]),"Cardiac markers must retain distinct increasing source samples and times.")
+            previous[tid]=(index,when)
+            bounds=view["effective_range"]
+            if bounds is None or not bounds[0]<=when<=bounds[1]:continue
+            result["selected_marker_count"]+=1
+            if result["selected_marker_count"]>MAX_CARDIAC_MARKERS:
+                result["markers"]=[];marker_keys.clear();continue
+            marker={"event_table_id":tid,"event_row_index":offset+i,"series_table_id":sid,"source_sample_index":index,
+                    "time_s":when,"value":None,"previous_interval_ms":event["previous_interval_ms"],
+                    "previous_interval_plausible":event["previous_interval_plausible"]}
+            result["markers"].append(marker);marker_keys[(sid,index)]=marker
+    artifacts.verify_artifact(events,on_table=on_table,on_rows=on_rows)
+    require(matched_series==set(selected),"A selected waveform has no uniquely matching saved detection table.")
+    if result["selected_marker_count"]>MAX_CARDIAC_MARKERS:
+        # This is an exact count of saved event rows in the requested time range,
+        # not a claim that their per-sample/retention joins were checked. Narrowing
+        # the range performs those checks before any marker can be displayed.
+        result["status"]="too_many_markers";result["alignment"]="not_checked_display_limit_exceeded";return result
+    matched=set()
+    def values(tid,offset,rows):
+        if tid not in selected:return
+        # Descriptors omit non-measure support columns; use the full declaration
+        # collected during this independently verified pass instead.
+        t=declarations[tid]
+        for i,row in enumerate(rows):
+            point=sample(t,row,offset+i,view["selection"]["value_column"]);key=(tid,point["source_sample_index"])
+            if key not in marker_keys:continue
+            marker=marker_keys[key]
+            require(key not in matched and point["x"]==marker["time_s"] and finite(point["y"]) and point["retained"],
+                    "A saved detection does not match an exact retained waveform sample and time.")
+            marker["value"]=point["y"];matched.add(key)
+    declarations={}
+    def waveform(t):
+        if t["table_id"] in selected:declarations[t["table_id"]]=t
+    artifacts.verify_artifact(manifest,on_table=waveform,on_rows=values)
+    require(matched==set(marker_keys),"A saved detection has no exact sample in the selected cleaned waveform.")
+    if result["selected_marker_count"]:result["status"]="available"
+    return result
+
+
 def run(request):
     require(isinstance(request,dict) and request.get("schema")=="brohn-signal-preview-request/1.0" and request.get("operation") in {"signal_catalog","signal_preview"},"Unsupported processed-signal view request.")
-    allowed={"schema","operation","artifact","verification_receipt","selection","parameters","page"}
+    allowed={"schema","operation","artifact","verification_receipt","selection","parameters","page","marker_overlay"}
     require(set(request)<=allowed,"Unknown signal view setting; no input is silently ignored.")
     manifest=bind_receipt(request)
     is_catalog=request["operation"]=="signal_catalog" or ("selection" in request and request["selection"] is None)
     if is_catalog:
+        require("marker_overlay" not in request,"Marker overlays belong to a waveform view, not its catalog.")
         require(request.get("selection") is None and not request.get("parameters"),"Catalog requests do not accept preview selections or parameters.")
         result=catalog(request,manifest)
     else:
         require("page" not in request,"Preview requests do not use catalog pagination.")
         result=preview(request,manifest)
+        if "marker_overlay" in request:result["marker_overlay"]=cardiac_markers(request,manifest,result)
     result["artifact"]={key:manifest[key] for key in ("kind","sha256","bytes","schema","tables","rows","provenance_sha256")}
-    result["engine"]={"name":"Brohn processed signal view","version":"1.0.0","worker_sha256":artifacts.digest_file(Path(__file__)),"artifact_reader_sha256":artifacts.digest_file(Path(artifacts.__file__))}
+    result["engine"]={"name":"Brohn processed signal view","version":"1.1.0","worker_sha256":artifacts.digest_file(Path(__file__)),"artifact_reader_sha256":artifacts.digest_file(Path(artifacts.__file__))}
     result["limitations"]=["Views preserve observed extrema and support boundaries; they do not recompute physiology features, align independent clocks or create new scientific scores.",
         "Coordinates remain relative to the artifact's declared clock origin. The exact original origin is a string; plotting uses the recorded finite float64 relative coordinates.",
         "Min/max envelopes retain spikes inside each displayed bin but are a bounded visual summary. Full typed source rows remain available in the immutable artifact."]

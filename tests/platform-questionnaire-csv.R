@@ -41,6 +41,13 @@ local({
   lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
   check("non-questionnaire scalar export bytes retain the prior columns and precision", identical(lines,
     c('"participant_id","value"', '"original-person","0.33333333333333331"')))
+  native_label<-"\u00e9\u6f22\U0001f512\nOriginal, \"recording\""
+  mixed<-list(analysis=list(kind="physiology",observations=list(list(label=native_label,unit="\u00b5S",value=0),
+    list(label="=SUM(1,2)",unit="\u00b5S",value=NULL))))
+  path<-file.path(folder,"physiology-unicode.csv");brohn_export_report_csv(mixed,path)
+  recovered<-utils::read.csv(path,colClasses="character",encoding="UTF-8",na.strings=NULL,check.names=FALSE)
+  check("physiology labels units quotes and newlines retain exact UTF-8 under C locale", identical(recovered$label[[1]],native_label)&&all(recovered$unit=="\u00b5S"))
+  check("all measurement CSVs retain zero missing and formula-safe distinctions", identical(recovered$value,c("0",""))&&identical(recovered$label[[2]],"'=SUM(1,2)"))
   summaries <- list(analysis = list(kind = "questionnaire", observations = list(), features = list(list(question_id = "q-summary", response_count = 0))))
   path <- file.path(folder, "summaries.csv"); brohn_export_report_csv(summaries, path)
   check("summary fallback does not mislabel a feature as an original response", !grepl("response_record_json", readLines(path, n = 1L), fixed = TRUE))

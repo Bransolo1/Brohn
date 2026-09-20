@@ -1,5 +1,50 @@
 # Resume here — Brohn
 
+## Active full-build authorization — 20 September 2026
+
+The owner explicitly requested continued implementation until Brohn is a finished,
+premium, end-to-end competitor to iMotions. The owner also requires historical
+iMotions release posts and official YouTube content to inform the benchmark before
+sign-off. This supersedes the earlier scoped continuation. Work continues across
+checkpoints; completing one slice is not permission to call the platform finished.
+
+Current connected work: guided Home/Overview and participant sequence preview,
+researcher welcome/image authoring, manager-owned guarded acquisition publication,
+15-family truthful equipment observations, saved recording intervals with exact
+full-data comparisons, and MaxDiff figures. Each has scoped actual browser or
+worker evidence linked from the completion backlog. The historical iMotions
+release/video benchmark and complete measurement academic audit are saved.
+Respiration now distinguishes airflow from displacement/volume and requires
+quantity/polarity evidence; new Morlet baselines expose frequency-dependent
+support and reject wavelets reaching event onset. Task/person visualizations,
+cardiac spectra and full time-frequency maps now have scoped worker/browser
+acceptance. An annotated four-record MIT-BIH ECG evaluation exposed substantial
+beat-location errors on record108 and variability differences on record200;
+read docs/qa/ECG-RECORDED-REFERENCE.md before making cardiac accuracy claims.
+Saved installation configuration passes38 checks, but a clean-machine release
+and hosted operations remain open. Longer useful live waveform windows and
+measurement-specific acquisition-quality criteria now pass replay and UI
+acceptance: five-second previews, complete committed support, exact reviewed
+source-code/range/finite/cadence criteria, and unknown stale/interrupted states.
+Reusable equipment setups remain open. The material-authoring audit identifies
+preview/description/revision-binding gaps in existing passive and task uploads;
+these are the next authoring slice. Import now rechecks receipt arrival after process inspection; the
+actual guarded intake regression passes40 checks.
+Exact saved ECG/PPG detections now overlay cleaned waveforms with full interval
+tables and SVG/JSON downloads. The recorded108 display preserves the same failed
+detector events; reviewing them does not qualify or correct the method. Read
+docs/qa/CARDIAC-MARKER-ACCEPTANCE.md for scoped full-app and bound-correction evidence.
+The owner confirmed no physical hardware is available. Use academic guidance,
+independent numerical checks and recorded/replay evidence while keeping actual
+hardware performance unverified. The owner additionally requires tested automatic
+analysis and visualizations for every measurement type, simplified study setup,
+researcher-authored welcome pages/image uploads and real equipment recording/
+signal-quality feedback. All requirements and acceptance gates are saved in
+[the completion backlog](docs/PRODUCT-COMPLETION-BACKLOG.md).
+
+Do not publish a competitor-readiness sign-off until the benchmark, enabled
+whole-journey checks, installation/recovery and external evidence gates agree.
+
 Product name: **Brohn** (reconfirmed by the owner, 20 September 2026).
 Development resumed from the public Brohn checkpoint `9473c89` on local branch
 `brohn/resume-20260920`. Existing schemas, environment variables, stored studies

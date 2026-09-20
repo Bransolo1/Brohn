@@ -6,14 +6,14 @@ brohn_stream_units <- function(modality) switch(modality,
   eda = c("uS", "S"), ppg = c("a.u.", "V", "mV"), respiration = c("a.u.", "V", "mV", "L", "L/s"), character())
 brohn_stream_unit <- function(value) gsub("\u00b5|\u03bc", "u", value)
 
-brohn_stream_standard_parameters <- function(modality, sampling_rate) {
+brohn_stream_standard_parameters <- function(modality, sampling_rate, respiration = NULL) {
   switch(modality,
     eeg = list(recipe = "eeg-welch-channel/1.0", window_s = 2, overlap_fraction = .5,
       bands_hz = list(delta = list(1,4), theta = list(4,8), alpha = list(8,13), beta = list(13,30), gamma = list(30,45)), relative_denominator_hz = list(1,45)),
     eda = list(recipe = "eda-neurokit-highpass/1.0", phasic_cutoff_hz = .05, amplitude_min_relative_prominence = .1, edge_exclusion_s = 10),
     ecg = list(recipe = "ecg-neurokit-detected-rr/1.0", powerline_hz = 50, edge_exclusion_s = 2, interval_min_ms = 300, interval_max_ms = 2000, frequency_min_duration_s = 300),
     ppg = list(recipe = "ppg-elgendi-detected-prv/1.0", edge_exclusion_s = 2, interval_min_ms = 300, interval_max_ms = 2000, frequency_min_duration_s = 300),
-    respiration = list(recipe = "respiration-khodadad-cycles/1.0", edge_exclusion_s = 5),
+    respiration = c(list(recipe = "respiration-displacement-khodadad/1.0", edge_exclusion_s = 5), respiration),
     emg = list(recipe = "emg-butterworth-rms/1.0", highpass_hz = 20, lowpass_hz = min(450, sampling_rate*.4), rms_window_s = .05,
       edge_exclusion_s = .25, burst_threshold_uv = NULL, burst_min_duration_s = .1), NULL)
 }
@@ -22,7 +22,7 @@ brohn_validate_stream_selection <- function(stream, selection) {
   s <- stream$manifest
   brohn_require(identical(s$schema, "brohn-imported-stream/1.0") && identical(s$kind, "signal"), "Select an analogue signal stream. Event markers and unclassified streams remain preserved source data.")
   brohn_require(stream$origin %in% c("sample", "imported", "pilot", "live"), "Resolve this stream's mixed or unclassified origin before creating analysis inputs.")
-  brohn_fields(selection, c("schema", "channel_ids", "modality", "unit", "sampling_rate", "participant_id", "session_id", "origin_statement", "unit_rationale", "confirm_source_units", "confirm_boundaries", "run_analysis"), label = "Stream curation selection")
+  brohn_fields(selection, c("schema", "channel_ids", "modality", "unit", "sampling_rate", "participant_id", "session_id", "origin_statement", "unit_rationale", "confirm_source_units", "confirm_boundaries", "run_analysis"), "respiration", label = "Stream curation selection")
   brohn_require(identical(selection$schema, "brohn-stream-selection/1.0") && selection$modality %in% brohn_stream_modalities(), "Choose a supported analogue analysis family.")
   brohn_require(brohn_array(selection$channel_ids) && length(selection$channel_ids) >= 1L && length(selection$channel_ids) <= 64L &&
     !anyDuplicated(unlist(selection$channel_ids)) && all(vapply(selection$channel_ids, brohn_valid_id, logical(1))) &&
@@ -34,6 +34,8 @@ brohn_validate_stream_selection <- function(stream, selection) {
   brohn_require(isTRUE(selection$confirm_source_units) && isTRUE(selection$confirm_boundaries), "Confirm the source units and listwise missing-row/boundary policy.")
   brohn_require(is.logical(selection$run_analysis) && length(selection$run_analysis) == 1L && !is.na(selection$run_analysis), "Choose whether to run standard channel analysis after preparation.")
   if (isTRUE(selection$run_analysis)) {
+    if (identical(selection$modality, "respiration")) brohn_validate_respiration_parameters(
+      brohn_stream_standard_parameters("respiration", selection$sampling_rate, selection$respiration), selection$unit)
     minimum_rate <- c(eeg = 90, eda = 8, ecg = 100, ppg = 25, respiration = 10, emg = 250)[[selection$modality]]
     brohn_require(selection$sampling_rate >= minimum_rate, paste("The standard", toupper(selection$modality), "recipe needs at least", minimum_rate,
       "Hz. Uncheck automatic analysis to prepare the source for a separately supported recipe."))
@@ -178,10 +180,11 @@ brohn_analyse_stream_curation <- function(input, scratch) {
         source_provenance = list(imported_at = brohn_now(), acquisition = "curated_stream", source_hash = source$hash, curation_id = id,
           lineage = lineage, selection = input$selection, quality = result$quality, artifacts = promoted, processing = processing))
       if (isTRUE(input$selection$run_analysis)) {
-        body$metadata$parameters <- brohn_stream_standard_parameters(input$selection$modality, input$selection$sampling_rate)
+        body$metadata$parameters <- brohn_stream_standard_parameters(input$selection$modality, input$selection$sampling_rate, input$selection$respiration)
         result$metadata$parameters <- body$metadata$parameters
       }
-      brohn_validate_dataset_mapping(body)
+      if (identical(input$selection$modality, "respiration") && !isTRUE(input$selection$run_analysis)) body$status <- "needs_mapping"
+      if (body$status == "accepted") brohn_validate_dataset_mapping(body)
       brohn_put_entity(store, "dataset", dataset_id, body, expected_revision = 0L, project_id = input$project_id)
       if (isTRUE(input$selection$run_analysis)) analysis_job <- brohn_queue_dataset(store, dataset_id, revision = 1L)
     }
@@ -244,11 +247,12 @@ brohn_publish_stream_curation <- function(store, output, scratch, job, input, ou
       source_provenance=list(imported_at=brohn_now(),acquisition="curated_stream",source_hash=source$hash,curation_id=id,
         lineage=lineage,selection=input$selection,quality=result$quality,artifacts=promoted,processing=processing))
     if(isTRUE(input$selection$run_analysis)) {
-      dataset$metadata$parameters<-brohn_stream_standard_parameters(input$selection$modality,input$selection$sampling_rate)
+      dataset$metadata$parameters<-brohn_stream_standard_parameters(input$selection$modality,input$selection$sampling_rate,input$selection$respiration)
       result$metadata$parameters<-dataset$metadata$parameters
       analysis_id<-.brohn_store_id(store$con,"job")
     }
-    brohn_validate_dataset_mapping(dataset)
+    if(identical(input$selection$modality,"respiration") && !isTRUE(input$selection$run_analysis)) dataset$status<-"needs_mapping"
+    if(dataset$status=="accepted")brohn_validate_dataset_mapping(dataset)
   }
   body<-list(schema="brohn-stream-curation/1.0",id=id,dataset_id=dataset_id,source_dataset_id=input$dataset$id,stream_id=input$stream$id,
     title=output$report$title,origin=input$stream$origin,status=result$status,lineage=lineage,extraction=result,processing=processing,

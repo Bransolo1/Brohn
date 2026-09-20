@@ -27,7 +27,9 @@ _spec = importlib.util.spec_from_file_location("brohn_neural_io", Path(__file__)
 io = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(io)
 InputError, require, finite = io.InputError, io.require, io.finite
-RECIPES = {"eeg-erp-epochs/1.0", "eeg-morlet-epochs/1.0", "eeg-frequency-tagging/1.0"}
+MORLET_RECIPES = {"eeg-morlet-epochs/1.0", "eeg-morlet-epochs/1.1"}
+RECIPES = {"eeg-erp-epochs/1.0", "eeg-frequency-tagging/1.0"} | MORLET_RECIPES
+BASELINE_POLICY = "complete-pre-event-wavelet-support/1.0"
 MAX_EVENTS = 10000
 MAX_ARRAY_VALUES = 500000
 MAX_EPOCH_VALUES = 10000000
@@ -62,6 +64,7 @@ def settings(supplied, fs, channels):
               "minimum_trials", "overlap_policy", "settings_source", "event_tolerance_s"}
     specific = {"eeg-erp-epochs/1.0": {"amplitude_window_s", "peak_polarity"},
                 "eeg-morlet-epochs/1.0": {"frequencies_hz", "n_cycles", "power", "power_baseline", "summary_window_s"},
+                "eeg-morlet-epochs/1.1": {"frequencies_hz", "n_cycles", "power", "power_baseline", "summary_window_s"},
                 "eeg-frequency-tagging/1.0": {"spectral_window_s", "tag_frequencies_hz", "harmonics", "window", "noise_neighbor_bins", "noise_skip_bins", "max_bin_offset_hz"}}[supplied["recipe"]]
     require(not (set(supplied)-common-specific), "Unknown neural recipe setting; no parameter is silently ignored.")
     require((common-{"event_tolerance_s"}) <= set(supplied) and specific <= set(supplied), "Neural recipes require explicit reference, filter, epoch, baseline, rejection and method settings.")
@@ -104,7 +107,7 @@ def settings(supplied, fs, channels):
     if p["recipe"] == "eeg-erp-epochs/1.0":
         window(p["amplitude_window_s"], "amplitude_window_s", lo, hi)
         require(p["peak_polarity"] in {"positive","negative","absolute","none"}, "Declare ERP peak polarity, or disable peak extraction.")
-    elif p["recipe"] == "eeg-morlet-epochs/1.0":
+    elif p["recipe"] in MORLET_RECIPES:
         freqs=p["frequencies_hz"]; cycles=p["n_cycles"]
         require(isinstance(freqs,list) and 1 <= len(freqs) <= 40, "Declare 1 to 40 increasing Morlet frequencies.")
         for f in freqs: finite(f,"Morlet frequency",.1,fs/2-.001)
@@ -117,10 +120,16 @@ def settings(supplied, fs, channels):
         require(isinstance(b,dict) and b.get("mode") in {"none","subtract","ratio","percent","db"}, "Select an explicit Morlet power baseline transform.")
         if b["mode"]=="none": require(set(b)=={"mode"}, "Disabled power baseline cannot carry ignored settings.")
         else:
-            require(set(b)=={"mode","window_s","minimum_power_uv2"}, "Power baseline requires window and a declared minimum denominator.")
+            reviewed=p["recipe"]=="eeg-morlet-epochs/1.1"
+            require(set(b)=={"mode","window_s","minimum_power_uv2"} | ({"adequacy"} if reviewed else set()), "Power baseline requires window, denominator floor and, for Morlet 1.1, an explicit duration review.")
             window(b["window_s"],"power baseline",lo,hi)
             require(b["window_s"][1] <= 0, "Power baseline must end at or before the event.")
             finite(b["minimum_power_uv2"],"minimum_power_uv2",0,1e12)
+            if reviewed:
+                a=b["adequacy"]
+                require(isinstance(a,dict) and set(a)=={"policy","minimum_cycles","rationale"} and a["policy"]==BASELINE_POLICY and text(a["rationale"]),
+                        "Declare the named baseline support policy and a study-specific duration rationale; this declaration does not establish scientific validity.")
+                finite(a["minimum_cycles"],"minimum baseline cycles at the lowest frequency",.000001,1e6)
     else:
         window(p["spectral_window_s"],"spectral_window_s",lo,hi)
         require(p["window"] in {"hann","boxcar"}, "Declare Hann or boxcar spectral window.")
@@ -258,6 +267,53 @@ def clean_array(array):
     return np.where(np.isfinite(a),a,None).tolist()
 
 
+class BaselineSupportError(InputError):
+    def __init__(self, message, derived):
+        super().__init__(message)
+        self.derived_settings=derived
+
+
+def morlet_baseline_support(times, p, fs, wavelets):
+    """A finite-kernel separation policy, not a universal baseline recommendation.
+
+    Duration is last sampled centre minus first, not N/fs. Using actual discrete
+    wavelet lengths makes an onset-touching kernel fail even at a grid boundary.
+    This cannot rule out smearing from earlier acquisition or zero-phase filters.
+    """
+    b=p["power_baseline"]; enabled=b["mode"]!="none"
+    indices=np.flatnonzero(mask_window(times,b["window_s"])) if enabled else np.array([],dtype=int)
+    duration=float((indices[-1]-indices[0])/fs) if len(indices) else None
+    rows=[]
+    for f,n,w in zip(p["frequencies_hz"],p["n_cycles"],wavelets):
+        half=(len(w)-1)//2; sigma=float(n/(2*np.pi*f))
+        first=int(indices[0])-half if len(indices) else None
+        last=int(indices[-1])+half if len(indices) else None
+        # The epoch includes onset on its declared grid. Strictly earlier than
+        # that integer index excludes the onset sample as well as later samples.
+        before=bool(last < round(-p["epoch_s"][0]*fs)) if last is not None else None
+        rows.append({"frequency_hz":f,"n_cycles":n,"temporal_sigma_s":sigma,
+            "kernel_samples":len(w),"half_support_s":half/fs,
+            "baseline_cycles":duration*f if duration is not None else None,
+            "centre_separation_sigma":float(-times[indices[-1]]/sigma) if len(indices) else None,
+            "latest_kernel_sample_s":float(p["epoch_s"][0]+last/fs) if last is not None else None,
+            "complete_epoch_support":bool(first>=0 and last<len(times)) if first is not None else None,
+            "strictly_before_event":before})
+    observed_cycles=duration*min(p["frequencies_hz"]) if duration is not None else None
+    duration_ok=bool(observed_cycles is not None and observed_cycles+1e-10>=b["adequacy"]["minimum_cycles"]) if enabled else None
+    eligible=bool(len(indices)>=2 and duration_ok and all(r["complete_epoch_support"] and r["strictly_before_event"] for r in rows)) if enabled else None
+    return {"policy":BASELINE_POLICY,"status":"eligible" if eligible else "unavailable" if enabled else "not_applied",
+        "mode":b["mode"],"baseline_sample_count":len(indices),
+        "first_sample_s":float(times[indices[0]]) if len(indices) else None,
+        "last_sample_s":float(times[indices[-1]]) if len(indices) else None,
+        "sample_span_s":duration,"duration_convention":"last sample centre minus first sample centre",
+        "cycles_at_lowest_frequency":observed_cycles,
+        "minimum_cycles":b["adequacy"]["minimum_cycles"] if enabled else None,
+        "rationale":b["adequacy"]["rationale"] if enabled else None,
+        "duration_criterion_met":duration_ok,"frequencies":rows,
+        "filter_mode":p["filter"]["mode"],
+        "scope":"Finite Morlet kernel support only. Prior filtering, including forward/backward zero-phase filters, can spread activity in time. Event timing and baseline suitability require study-specific review; eligibility is not scientific qualification."}
+
+
 def analyse_cell(epochs,times,p,fs):
     features=[]; series=[]; channels=epochs.ch_names; data=epochs.get_data(copy=True); count=len(epochs)
     def add(name,value,unit,channel,**extra):
@@ -278,10 +334,15 @@ def analyse_cell(epochs,times,p,fs):
                 add("erp_peak_latency",times[indices[peak]] if eligible else None,"s",c,polarity=p["peak_polarity"])
             series.append({"type":"erp","channel":c,"time_s":times.tolist(),"mean_uv":waveform[ci].tolist(),"sem_uv":clean_array(sem[ci]),"trial_count":count,"sem_scope":"within_recording_trials; not participant inference"})
         return features,series,{}
-    if p["recipe"]=="eeg-morlet-epochs/1.0":
+    if p["recipe"] in MORLET_RECIPES:
         mne=io.require_mne(); freqs=p["frequencies_hz"]; cycles=p["n_cycles"]
         wavelets=mne.time_frequency.morlet(fs,freqs,n_cycles=cycles,zero_mean=True)
         half=max((len(w)-1)//2 for w in wavelets)
+        derived={"wavelet_samples":[len(w) for w in wavelets],"edge_exclusion_samples_each_side":half,"power_normalization_order":"average trial power, then baseline transform","decimation":1,"zero_mean":True}
+        if p["recipe"]=="eeg-morlet-epochs/1.1":
+            support=morlet_baseline_support(times,p,fs,wavelets); derived["baseline_support"]=support
+            if support["status"]=="unavailable":
+                raise BaselineSupportError("Morlet 1.1 baseline is unavailable: it needs at least two samples, the declared duration, complete epoch wavelet support and every kernel strictly before event onset. Choose an earlier baseline, lengthen the epoch, or select no power baseline; inspect saved baseline_support for actual duration and per-frequency separation.",derived)
         require(2*half+2<len(times),"Epoch has insufficient support after the complete Morlet wavelet edges are excluded.")
         require(data.size*len(freqs)<=MAX_TFR_WORK,"Morlet trial/channel/frequency workload exceeds the bounded job limit.")
         valid=np.zeros(len(times),bool); valid[half:len(times)-half]=True
@@ -326,7 +387,7 @@ def analyse_cell(epochs,times,p,fs):
             series.append({"type":"morlet","channel":c,"time_s":times[valid].tolist(),"frequency_hz":freqs,
                 "power_uv2":clean_array(power[ci,:,valid].T),"transformed_power":clean_array(transformed[ci,:,valid].T),
                 "itc":clean_array(itc[ci,:,valid].T),"array_axes":["frequency","time"],"transformed_unit":unit,"trial_count":count})
-        return features,series,{"wavelet_samples":[len(w) for w in wavelets],"edge_exclusion_samples_each_side":half,"power_normalization_order":"average trial power, then baseline transform","decimation":1,"zero_mean":True}
+        return features,series,derived
     selected=mask_window(times,p["spectral_window_s"],inclusive=False)
     require(selected.sum()>=4,"Frequency tagging requires at least four sampled points inside the half-open spectral window.")
     psd,freqs=io.require_mne().time_frequency.psd_array_welch(data[:,:,selected],sfreq=fs,n_fft=int(selected.sum()),n_per_seg=int(selected.sum()),n_overlap=0,window=p["window"],average="mean",remove_dc=True,verbose=False)
@@ -390,7 +451,8 @@ def run(request):
                 epochs=mne.EpochsArray(data[indices],mne.create_info(r["channels"],r["fs"],ch_types="eeg"),tmin=p["epoch_s"][0],baseline=tuple(p["baseline_s"]) if p["baseline_s"] is not None else None,proj=False,verbose=False)
                 try: features,series,derived=analyse_cell(epochs,times,p,r["fs"])
                 except InputError as error:
-                    output["recordings"].append({**summary,"status":"unavailable","reason":str(error)}); unavailable+=1; continue
+                    diagnostic={"derived_settings":error.derived_settings} if isinstance(error,BaselineSupportError) else {}
+                    output["recordings"].append({**summary,"status":"unavailable","reason":str(error),**diagnostic}); unavailable+=1; continue
                 for record in series:
                     arrays+=sum(np.asarray(value).size for value in record.values() if isinstance(value,list))
                 require(arrays<=MAX_ARRAY_VALUES,"Neural result arrays exceed 500,000 inline values; split into smaller recording jobs.")

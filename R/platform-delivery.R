@@ -87,6 +87,7 @@ brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_
     compiled_steps <- sum(vapply(protocol$timeline, function(step) if (identical(step$type, "task")) length(step$task$timeline) else 1L, integer(1)))
     .brohn_delivery_require(compiled_steps <= 20000L, "Compiled study exceeds the supported 20,000-step delivery limit, including task trials.", 422, "study_limit")
     materials <- c(design$stimuli, unlist(lapply(design$blocks, function(block) block$materials), recursive = FALSE))
+    if (!is.null(design$welcome$asset)) materials <- c(materials, list(list(type = "image", asset = design$welcome$asset)))
     for (stimulus in materials) {
       .brohn_delivery_require(stimulus$type %in% c("text", "image", "audio", "video"),
         "This local delivery profile supports text, raster images, audio and video stimuli.", 422, "unsupported_stimulus")
@@ -593,11 +594,11 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       if (method == "GET" && identical(path, "/api/health")) return(.brohn_delivery_response(value =
         list(service = "brohn-participant", schema = "brohn-delivery/1.0", workspace_id = store$workspace_id)))
       routes <- c("/participant" = "index.html", "/participant/" = "index.html", "/participant/runner.js" = "runner.js", "/participant/tasks.js" = "tasks.js", "/participant/camera.js" = "camera.js", "/participant/runner.css" = "runner.css", "/participant/maxdiff.js" = "maxdiff.js", "/participant/maxdiff.css" = "maxdiff.css",
-        "/participant/question-revision.js" = "question-revision.js", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
+        "/participant/question-revision.js" = "question-revision.js", "/participant/welcome.js" = "welcome.js", "/participant/welcome.css" = "welcome.css", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
       if (method == "GET" && path %in% names(routes)) {
         filename <- routes[[path]]; file <- file.path(static_root, filename)
         .brohn_delivery_require(file.exists(file) && !dir.exists(file), "Participant interface is unavailable.", 503, "interface_unavailable")
-        type <- if (filename %in% c("runner.js", "tasks.js", "camera.js", "maxdiff.js", "question-revision.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
+        type <- if (filename %in% c("runner.js", "tasks.js", "camera.js", "maxdiff.js", "question-revision.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
         return(.brohn_delivery_response(body = readBin(file, "raw", n = file.info(file)$size), type = type))
       }
       parts <- strsplit(sub("^/", "", path), "/", fixed = TRUE)[[1]]
@@ -608,6 +609,7 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
         .brohn_delivery_require(nrow(row) == 1L, "Asset was not found.", 404, "not_found")
         hash <- parts[[4]]; design <- .brohn_delivery_design(row)
         materials <- c(design$stimuli, unlist(lapply(design$blocks, function(block) block$materials), recursive = FALSE))
+        if (!is.null(design$welcome$asset)) materials <- c(materials, list(design$welcome))
         assets <- Filter(function(s) !is.null(s$asset) && identical(s$asset$hash, hash), materials)
         .brohn_delivery_require(length(assets) > 0L && .brohn_delivery_media_allowed(assets[[1]]$asset$media_type), "Asset is not part of this release.", 404, "not_found")
         file <- brohn_object_path(store, hash, verify = TRUE)
@@ -621,6 +623,12 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
         value <- list(deployment = list(id = row$id[[1]], title = row$title[[1]], origin = row$origin[[1]], status = row$status[[1]]),
           consent = design$consent, appearance = design$appearance, supported = TRUE,
           alias_required = as.logical(row$alias_required[[1]]), debrief = design$debrief)
+        # Keep the frozen manifest unchanged. The release capability only grants
+        # image access to the asset retained in this release's original design.
+        if (!is.null(design$welcome)) {
+          value$welcome <- design$welcome
+          if (!is.null(design$welcome$asset)) value$welcome_image_url <- paste0("/api/assets/", identity, "/", design$welcome$asset$hash)
+        }
         return(.brohn_delivery_response(value = value))
       }
       .brohn_delivery_require(method == "POST" && operation %in% c("start", "events", "finish", "questionnaire_state", "camera_start", "camera_chunk", "camera_finish"), "Route was not found.", 404, "not_found")

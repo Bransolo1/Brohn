@@ -60,6 +60,10 @@ stopifnot(is.environment(.brohn_ingestion_sources))
   deadline<-as.numeric(Sys.time())+10
   while(!file.exists(receipt_path)) {
     .brohn_publication_observe_guard(h)
+    # Process-tree inspection can outlast the helper's small metadata handoff.
+    # Recheck readiness before applying the wait deadline; the receipt still
+    # undergoes the complete nonce, request, process and native identity checks.
+    if(file.exists(receipt_path))break
     brohn_require(h$child$is_alive() && as.numeric(Sys.time())<deadline,"The metadata-only upload snapshot did not become ready within ten seconds.")
     h$child$wait(10)
   }

@@ -24,7 +24,7 @@ brohn_task_cohort_report_ui <- function(analysis) {
     shiny::p(paste(analysis$quality$selected_attempt_count,"explicitly selected administrations.",
       if(isTRUE(analysis$quality$fully_linked))paste(analysis$quality$selected_person_count,"people according to the reviewed identity map.")else
         "Person counts and cohort summaries are unavailable because some selected identities are unlinked.")),
-    shiny::p("These are descriptive means. Each measure keeps its own eligible people and sessions; no confidence interval or hypothesis test was calculated."),
+    shiny::p("These are descriptive means. Each measure keeps its own eligible people and sessions; no confidence interval or hypothesis test was calculated. Open task plots above to inspect every person's saved value and measure-specific support."),
     brohn_table(rows,maximum=30L,label="Task cohort outcomes and measure-specific support"),
     shiny::tags$details(shiny::tags$summary("Review selected administrations and identities"),
       shiny::p(paste("Showing up to 30 of",length(analysis$membership),"selected administrations. JSON + provenance retains the complete membership and source hashes.")),

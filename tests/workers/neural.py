@@ -31,8 +31,11 @@ class NeuralTests(unittest.TestCase):
         if recipe!="eeg-erp-epochs/1.0":
             p.pop("amplitude_window_s"); p.pop("peak_polarity")
             p.update(epoch_s=[-2,2],baseline_s=None,rejection={"window_s":[-2,2],"peak_to_peak_uv":100,"flat_uv":None})
-        if recipe=="eeg-morlet-epochs/1.0":
+        if recipe in {"eeg-morlet-epochs/1.0","eeg-morlet-epochs/1.1"}:
             p.update(frequencies_hz=[10,20],n_cycles=[3,3],power="total",power_baseline={"mode":"ratio","window_s":[-1,-.5],"minimum_power_uv2":1e-20},summary_window_s=[0,.5])
+            if recipe=="eeg-morlet-epochs/1.1":
+                p["power_baseline"]["adequacy"]={"policy":"complete-pre-event-wavelet-support/1.0","minimum_cycles":4,
+                    "rationale":"Independent stationary 10-Hz sine fixture; require four full baseline cycles for this test, not a universal threshold."}
         elif recipe=="eeg-frequency-tagging/1.0":
             p.update(spectral_window_s=[0,2],tag_frequencies_hz=[10],harmonics=[1],window="boxcar",noise_neighbor_bins=2,noise_skip_bins=1,max_bin_offset_hz=1e-8)
         return p
@@ -235,6 +238,89 @@ class NeuralTests(unittest.TestCase):
         result=worker.run(request)
         self.assertEqual(result["status"],"insufficient_support")
         self.assertIn("wavelet support",result["recordings"][0]["reason"])
+
+    def test_reviewed_morlet_stationary_oracle_and_exact_diagnostics(self):
+        request=self.sine_request("eeg-morlet-epochs/1.1")
+        result=worker.run(request); support=result["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertAlmostEqual(self.features(result,"morlet_power_mean")[0]["value"],1,places=7)
+        self.assertEqual(support["status"],"eligible"); self.assertEqual(support["baseline_sample_count"],51)
+        self.assertEqual(support["sample_span_s"],.5); self.assertEqual(support["cycles_at_lowest_frequency"],5)
+        self.assertEqual([r["baseline_cycles"] for r in support["frequencies"]],[5,10])
+        self.assertAlmostEqual(support["frequencies"][0]["temporal_sigma_s"],3/(20*np.pi))
+        self.assertEqual(support["frequencies"][0]["latest_kernel_sample_s"],-.27)
+        self.assertIn("zero-phase",support["scope"]); self.assertFalse(result["quality"]["scientifically_qualified"])
+        self.assertEqual(request["parameters"]["power_baseline"]["window_s"],[-1,-.5])
+
+    def test_event_only_impulse_reveals_legacy_leakage_and_new_refusal(self):
+        # A zero pre-event signal with a 10-uV onset impulse is an independent
+        # oracle: every strictly pre-event input is zero. A two-sample baseline
+        # near onset nevertheless receives convolution energy in recipe 1.0.
+        request=self.sine_request("eeg-morlet-epochs/1.0"); values=np.zeros(1800)
+        values[[300,800,1300]]=10
+        p=request["parameters"]; p["power_baseline"]["window_s"]=[-.02,-.01]
+        p["power_baseline"]["minimum_power_uv2"]=1e-12
+        request=self.request(values,events=request["metadata"]["events"],parameters=p)
+        legacy=worker.run(request); s=legacy["series"][0]
+        before=np.array(s["time_s"])<0
+        self.assertGreater(np.max(np.array(s["power_uv2"])[0,before]),.01)
+        self.assertIsNotNone(self.features(legacy,"morlet_power_mean")[0]["value"])
+        request["parameters"]["recipe"]="eeg-morlet-epochs/1.1"
+        request["parameters"]["power_baseline"]["adequacy"]={"policy":worker.BASELINE_POLICY,"minimum_cycles":.1,"rationale":"Deliberately short contamination test; no scientific duration recommendation."}
+        rejected=worker.run(request); d=rejected["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertEqual(rejected["status"],"insufficient_support"); self.assertTrue(d["duration_criterion_met"])
+        self.assertFalse(d["frequencies"][0]["strictly_before_event"])
+        self.assertIn("earlier baseline",rejected["recordings"][0]["reason"])
+        request["parameters"]["power_baseline"]["window_s"]=[-1,-.5]
+        clean=worker.run(request); s=clean["series"][0]; b=(np.array(s["time_s"])>=-1)&(np.array(s["time_s"])<=-.5)
+        self.assertLess(np.max(np.array(s["power_uv2"])[:,b]),1e-20)
+        self.assertGreater(np.max(s["power_uv2"][0]),.01)
+        self.assertTrue(all(v is None for v in s["transformed_power"][0])) # no positive denominator invented
+
+    def test_exact_kernel_onset_boundary_and_duration_are_separate(self):
+        request=self.sine_request("eeg-morlet-epochs/1.1"); b=request["parameters"]["power_baseline"]
+        b["adequacy"]["minimum_cycles"]=2; b["window_s"]=[-.5,-.23]
+        touched=worker.run(request); d=touched["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertEqual(d["frequencies"][0]["latest_kernel_sample_s"],0)
+        self.assertEqual(touched["status"],"insufficient_support")
+        b["window_s"]=[-.5,-.24]
+        self.assertTrue(worker.run(request)["quality"]["usable"])
+        b["window_s"]=[-1.005,-.5]; b["adequacy"]["minimum_cycles"]=5.01
+        short=worker.run(request); d=short["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertEqual(d["sample_span_s"],.5); self.assertEqual(d["cycles_at_lowest_frequency"],5)
+        self.assertFalse(d["duration_criterion_met"]); self.assertTrue(d["frequencies"][0]["strictly_before_event"])
+
+    def test_every_frequency_support_is_checked_not_only_lowest(self):
+        request=self.sine_request("eeg-morlet-epochs/1.1")
+        request["parameters"]["n_cycles"]=[1,30]
+        b=request["parameters"]["power_baseline"]; b["adequacy"]["minimum_cycles"]=1; b["window_s"]=[-.7,-.5]
+        result=worker.run(request); d=result["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertTrue(d["frequencies"][0]["strictly_before_event"])
+        self.assertFalse(d["frequencies"][1]["strictly_before_event"])
+        self.assertEqual(result["status"],"insufficient_support")
+
+    def test_reviewed_epoch_edges_and_no_baseline_remediation(self):
+        request=self.sine_request("eeg-morlet-epochs/1.1")
+        request["parameters"]["power_baseline"]["window_s"]=[-2,-1.5]
+        result=worker.run(request); d=result["recordings"][0]["derived_settings"]["baseline_support"]
+        self.assertFalse(d["frequencies"][0]["complete_epoch_support"])
+        self.assertTrue(d["duration_criterion_met"]); self.assertEqual(result["status"],"insufficient_support")
+        request["parameters"]["power_baseline"]={"mode":"none"}
+        result=worker.run(request)
+        self.assertEqual(result["recordings"][0]["derived_settings"]["baseline_support"]["status"],"not_applied")
+        self.assertGreater(self.features(result,"morlet_power_mean")[0]["value"],0)
+
+    def test_new_duration_contract_is_required_and_legacy_is_not_rescored(self):
+        for a in [None,{}, {"policy":worker.BASELINE_POLICY,"minimum_cycles":0,"rationale":"reason"},
+                  {"policy":worker.BASELINE_POLICY,"minimum_cycles":True,"rationale":"reason"},
+                  {"policy":"invented","minimum_cycles":4,"rationale":"reason"},
+                  {"policy":worker.BASELINE_POLICY,"minimum_cycles":4,"rationale":" "}]:
+            request=self.sine_request("eeg-morlet-epochs/1.1")
+            if a is None: request["parameters"]["power_baseline"].pop("adequacy")
+            else: request["parameters"]["power_baseline"]["adequacy"]=a
+            with self.assertRaises(worker.InputError): worker.run(request)
+        legacy=worker.run(self.sine_request("eeg-morlet-epochs/1.0"))
+        self.assertNotIn("baseline_support",legacy["recordings"][0]["derived_settings"])
+        self.assertEqual(legacy["parameters"]["recording-1"]["recipe"],"eeg-morlet-epochs/1.0")
 
     def test_morlet_db_is_ten_log_power_ratio_after_averaging(self):
         fs=100; times=np.arange(1800)/fs; amplitude=np.full(1800,10.)

@@ -338,8 +338,10 @@ def write_physiology_bundle(series_writer,event_writer,modality,identity,bundle,
                            _column("peak_rms_uv","float64","uV"),_column("boundary_truncated","boolean",None,role="support")]
         support={**support,"end_time_policy":"source worker's exclusive sample-cell boundary; final observed timestamp plus one declared sample interval"}
     if modality!="eeg": coordinates={**coordinates,"axis":"event"}
+    spectrum_rows = [event for event in bundle["events"] if modality in {"ecg","ppg"} and event.get("type")=="interval_psd_bin"]
+    time_events = [event for event in bundle["events"] if event.get("type")!="interval_psd_bin"] if spectrum_rows else bundle["events"]
     def event_rows():
-        for event in bundle["events"]:
+        for event in time_events:
             item=copy.deepcopy(event)
             for field,destination in (("peak_sample","source_peak_sample"),("sample_index","source_sample_index")):
                 if field in item:
@@ -348,7 +350,17 @@ def write_physiology_bundle(series_writer,event_writer,modality,identity,bundle,
                     require(isinstance(value,int) and not isinstance(value,bool) and 0<=value<end-start, "Candidate index is outside its declared source segment.")
                     item[field]=value;item[destination]=start+value
             yield item
-    output.append(event_writer.write_table(table_prefix+"-events",identity,event_columns,coordinates,support,event_rows(),len(bundle["events"])))
+    output.append(event_writer.write_table(table_prefix+"-events",identity,event_columns,coordinates,support,event_rows(),len(time_events)))
+    if spectrum_rows:
+        spectrum = bundle["support"].get("interval_spectrum")
+        require(isinstance(spectrum,dict) and spectrum.get("schema")=="brohn-cardiac-interval-spectrum/1.0" and
+                spectrum.get("status")=="available" and spectrum.get("density_unit")=="ms^2/Hz" and
+                spectrum.get("normal_to_normal_confirmed") is False, "Cardiac spectrum needs its exact unqualified interval basis and method support.")
+        columns = base+[_column("frequency_hz","float64","Hz",role="coordinate"),_column("density_ms2_hz","float64","ms^2/Hz")]
+        spectral_coordinates = {**coordinates,"axis":"frequency",
+            "reference":"Welch spectrum of " + spectrum["interval_basis"] + "; no temporal-event or normal-to-normal interpretation"}
+        output.append(event_writer.write_table(table_prefix+"-interval-spectrum",identity,columns,spectral_coordinates,
+            {**support,"interval_spectrum":spectrum},spectrum_rows,len(spectrum_rows)))
     return output
 
 

@@ -236,7 +236,7 @@ class Artifacts(unittest.TestCase):
             for modality,(fs,x) in examples.items():
                 with self.subTest(modality=modality):
                     directory=self.root/modality;directory.mkdir()
-                    request=case.request(modality,x,fs);request["artifact_directory"]=str(directory)
+                    request=case.request(modality,x,fs,parameters=fixture.RESPIRATION_DECLARATION if modality=="respiration" else None);request["artifact_directory"]=str(directory)
                     result=fixture.worker.run(request)
                     self.assertTrue(result["quality"]["usable"])
                     self.assertTrue(result["quality"]["complete_processed_artifacts"])

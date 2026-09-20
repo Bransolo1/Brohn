@@ -253,6 +253,67 @@
   .brohn-signal-compact { display: block; }
 }
 /* Complete questionnaire explorer: one semantic table reflows into record cards. */
+/* Guided first use and study overview; participant stimuli remain independent. */
+.brohn-app .brohn-guidance { min-width: 0; }
+.brohn-app .brohn-guidance .brohn-page-heading { margin-bottom: 32px; }
+.brohn-app .brohn-guidance-recent, .brohn-app .brohn-guidance-overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 24px; }
+.brohn-app .brohn-guidance-recent .brohn-card, .brohn-app .brohn-guidance-overview-grid .brohn-card { margin: 0; }
+.brohn-app .brohn-guidance-example { padding: 28px; }
+.brohn-app .brohn-guidance-example-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+.brohn-app .brohn-guidance-example-grid h3 { font-size: 1.4rem; margin: 18px 0 12px; line-height: 1.35; }
+.brohn-app .brohn-guidance-example-grid .btn { margin: 4px 0 12px; }
+.brohn-app .brohn-guidance-specimens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.brohn-app .brohn-guidance-specimens figure { margin: 0; }
+.brohn-app .brohn-guidance-specimens img { display: block; width: 100%; height: 220px; object-fit: contain; border-radius: 12px; background: var(--brohn-raised); }
+.brohn-app .brohn-guidance-specimens figcaption { padding-top: 8px; text-align: center; color: var(--brohn-secondary); }
+.brohn-app .brohn-guidance-path { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; padding: 0; margin: 20px 0 32px; list-style: none; }
+.brohn-app .brohn-guidance-path li { border-top: 1px solid var(--brohn-control-border); padding-top: 16px; }
+.brohn-app .brohn-guidance-path h3 { margin-top: 12px; }
+.brohn-app .brohn-guidance-path p { color: var(--brohn-secondary); font-size: .9rem; }
+.brohn-app .brohn-guidance-step { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; border-radius: 50%; color: var(--brohn-accent); background: var(--brohn-raised); font-variant-numeric: tabular-nums; }
+.brohn-app .brohn-guidance-next { border-left: 4px solid var(--brohn-accent); margin-bottom: 24px; }
+.brohn-app .brohn-guidance-next .brohn-card-title { font-size: 1.5rem; }
+.brohn-app .brohn-guidance-next .brohn-toolbar { margin: 16px 0 0; }
+.brohn-app .brohn-guidance-practice { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 20px; }
+.brohn-app .brohn-guidance-practice p { color: var(--brohn-secondary); margin: 0; flex: 1 1 260px; }
+.brohn-app .brohn-guidance-facts { display: grid; grid-template-columns: minmax(110px, .65fr) minmax(0, 1fr); gap: 12px 16px; margin: 20px 0; }
+.brohn-app .brohn-guidance-facts dt { color: var(--brohn-secondary); font-weight: 550; }
+.brohn-app .brohn-guidance-facts dd { margin: 0; overflow-wrap: anywhere; }
+.brohn-app .brohn-guidance-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 12px 0 24px; }
+.brohn-app .brohn-guidance-metrics > div { display: flex; flex-direction: column; gap: 4px; }
+.brohn-app .brohn-guidance-metrics strong { font-size: 2.1rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.brohn-app .brohn-guidance-metrics span { color: var(--brohn-secondary); font-size: .88rem; }
+.brohn-app .brohn-guidance-checkpoints { list-style: none; margin: 0; padding: 0; }
+.brohn-app .brohn-guidance-checkpoints li { display: flex; justify-content: space-between; gap: 24px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--brohn-line); }
+.brohn-app .brohn-guidance-checkpoints li:last-child { border-bottom: 0; padding-bottom: 0; }
+.brohn-app .brohn-guidance-checkpoints p { margin: 8px 0 0; }
+.brohn-app .brohn-guidance-checkpoints .btn { flex-shrink: 0; }
+.brohn-app .brohn-guidance-disclosure { border: 1px solid var(--brohn-line); border-radius: 12px; margin: 16px 0; padding: 12px 20px; }
+.brohn-app .brohn-guidance summary { min-height: 44px; padding: 10px 0; cursor: pointer; font-weight: 550; }
+.brohn-app .brohn-guidance-start-note { border-left: 3px solid var(--brohn-accent); background: var(--brohn-raised); padding: 16px; border-radius: 0 10px 10px 0; margin: 20px 0; }
+.brohn-app .brohn-guidance .radio { padding: 8px 0; }
+.brohn-app .brohn-welcome-image { margin: 16px 0; }
+.brohn-app .brohn-welcome-image img { display: block; max-width: 100%; max-height: 240px; width: auto; height: auto; object-fit: contain; }
+.brohn-app .brohn-welcome-image figcaption { color: var(--brohn-secondary); padding-top: 8px; overflow-wrap: anywhere; }
+.brohn-app .brohn-welcome-preview { display: block; width: 100%; height: min(640px, 65vh); min-height: 300px; border: 1px solid var(--brohn-control-border); border-radius: 10px; background: white; margin-bottom: 16px; }
+.brohn-app .brohn-guidance-preview { margin: 20px 0; padding-left: 28px; }
+.brohn-app .brohn-guidance-preview li { padding: 12px 0 16px 8px; border-bottom: 1px solid var(--brohn-line); }
+.brohn-app .brohn-guidance-preview p { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .brohn-app .brohn-guidance-example-grid { grid-template-columns: minmax(0, 1fr); }
+  .brohn-app .brohn-guidance-path { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .brohn-app .brohn-guidance-path li { display: flex; gap: 16px; padding: 16px 0; }
+  .brohn-app .brohn-guidance-path h3 { margin-top: 0; }
+  .brohn-app .brohn-guidance-step { flex: 0 0 32px; }
+}
+@media (max-width: 600px) {
+  .brohn-app .brohn-guidance-recent, .brohn-app .brohn-guidance-overview-grid { grid-template-columns: minmax(0, 1fr); }
+  .brohn-app .brohn-guidance-example { padding: 20px; }
+  .brohn-app .brohn-guidance-specimens img { height: 160px; }
+  .brohn-app .brohn-guidance-checkpoints li { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .brohn-app .brohn-guidance-facts { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .brohn-app .brohn-guidance-facts dd { margin-bottom: 10px; }
+}
 .brohn-qx, .brohn-qx * { min-width: 0; }
 .brohn-qx { overflow-wrap: anywhere; }
 .brohn-qx .brohn-qx-controls { margin: 20px 0; }

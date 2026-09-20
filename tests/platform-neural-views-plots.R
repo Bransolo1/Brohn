@@ -15,26 +15,56 @@ local({
     "import importlib.util,json,sys,shutil; from pathlib import Path",
     "s=importlib.util.spec_from_file_location('neural_fixtures','tests/workers/neural.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m)",
     "x=m.NeuralTests(); x.root=Path(sys.argv[1])",
-    "for name,recipe in [('erp','eeg-erp-epochs/1.0'),('morlet','eeg-morlet-epochs/1.0'),('tag','eeg-frequency-tagging/1.0')]:",
+    "for name,recipe in [('erp','eeg-erp-epochs/1.0'),('morlet','eeg-morlet-epochs/1.0'),('tag','eeg-frequency-tagging/1.0'),('reviewed','eeg-morlet-epochs/1.1')]:",
     "    q=x.request(x.pulse()) if name=='erp' else x.sine_request(recipe)",
     "    result=m.worker.run(q); original=x.root/(name+'.csv'); shutil.copyfile(q['source_path'],original); q['source_path']=str(original)",
     "    (x.root/(name+'.json')).write_text(json.dumps({'request':q,'result':result},allow_nan=False),encoding='utf-8')", sep = "\n")
   processx::run(brohn_python_profile("eeg"), c("-B", "-c", fixture, root), timeout = 60000, windows_hide_window = TRUE)
-  records <- lapply(c("erp", "morlet", "tag"), function(name) {
+  records <- lapply(c("erp", "morlet", "tag", "reviewed"), function(name) {
     x <- brohn_read_json_file(file.path(root, paste0(name, ".json"))); object <- brohn_store_object(store, path = x$request$source_path, media_type = "text/csv")
     body <- list(id = paste0("report-neural-", name), title = paste("Original", name, "fixture"), origin = "sample", created_at = "2026-09-08",
       analysis = c(list(kind = "eeg"), x$result), provenance = list(source = object, mapping = c(x$request$metadata, list(parameters = x$request$parameters))),
       processing = list(code_hashes = list(neural = x$result$engine$worker_sha256)))
     brohn_put_entity(store, "report", body$id, body, expected_revision = 0L, project_id = "default")
-  }); names(records) <- c("erp", "morlet", "tag")
+  }); names(records) <- c("erp", "morlet", "tag", "reviewed")
   reports <- lapply(records, `[[`, "body"); before <- lapply(reports, brohn_hash)
   models <- lapply(reports, brohn_neural_plot_model); erp <- models$erp; morlet <- models$morlet; tag <- models$tag
+  reviewed_html <- as.character(brohn_neural_report_plots(reports$reviewed))
+  check("reviewed baseline has a readable summary and expandable frequency cards", grepl("Latest contributing sample:", reviewed_html, fixed = TRUE) &&
+    grepl("Review support at each frequency", reviewed_html, fixed = TRUE) && grepl("Temporal sigma:", reviewed_html, fixed = TRUE) &&
+    grepl("not scientific validation", reviewed_html, fixed = TRUE))
   e <- brohn_neural_plot_selection(erp); m <- brohn_neural_plot_selection(morlet); t <- brohn_neural_plot_selection(tag)
   check("actual evoked pulse stays 10 uV with three trials", max(e$y) == 10 && e$cell$support$retained_trials == 3 && max(e$sem) < 1e-10)
   check("absent condition remains an unavailable support row, not a trace", length(erp$cells) == 1L && length(erp$recordings) == 2L && erp$recordings[[2L]]$retained_trials == 0)
   check("actual stationary Morlet summary is retained near one", close(Filter(function(f) f$name == "morlet_power_mean" && f$frequency_hz == 10,
     m$cell$features)[[1L]]$value, 1, 1e-7) && m$unit == "ratio" && m$frequency_hz == 10)
   check("actual phase consistency is read from original saved total signal", close(brohn_neural_plot_selection(morlet, metric = "itc")$y, rep(1, length(m$y))))
+  map <- brohn_neural_map_model(m)
+  check("complete map is the exact original saved frequency-time matrix", identical(unname(map$values), do.call(rbind, m$cell$values$transformed_power)) &&
+    identical(map$frequencies_hz, c(10, 20)) && identical(map$times_s, m$cell$axis) && map$cell_count == 2*length(m$cell$axis))
+  map_png <- png::readPNG(brohn_neural_map_png(map))
+  check("native map encodes one pixel for every original cell", identical(dim(map_png), c(2L, length(m$cell$axis), 3L)))
+  short_map <- brohn_neural_map_model(brohn_neural_plot_selection(morlet, start_index = 11, maximum_points = 7))
+  check("exact slice paging cannot truncate or rescale complete map", identical(map$values, short_map$values) && identical(map$limits, short_map$limits))
+  check("epoch mask exposes both unsupported edges without zero filling", close(map$epoch_extent_s, c(-2.005, 2.005)) &&
+    close(map$retained_extent_s, c(-1.775, 1.775)) && map$excluded_samples_each_edge == 23)
+  compact_map <- as.character(brohn_neural_map_svg(m, 320))
+  check("standalone map contains native pixels, units, hashes and discrete-frequency warning", grepl("data:image/png;base64,", compact_map, fixed = TRUE) &&
+    grepl("image-rendering:pixelated", compact_map, fixed = TRUE) && grepl("not continuous frequency bands", compact_map, fixed = TRUE) &&
+    grepl(m$report_hash, compact_map, fixed = TRUE) && grepl("ratio", compact_map, fixed = TRUE) && grepl("Unsupported", compact_map, fixed = TRUE))
+  check("map indicates exact selected frequency without creating intermediate rows", grepl('data-selected-frequency="10"', compact_map, fixed = TRUE) &&
+    grepl('data-frequency-cells="2"', compact_map, fixed = TRUE))
+  # Independent presentation-boundary fixture: one known late cell among
+  # 160,000 cells. This is a renderer test, not an additional EEG recording.
+  dense <- m; dense$cell$frequencies <- seq_len(40); dense$frequency_hz <- 40
+  dense$cell$axis <- -1.77+(0:3999)/100; dense$cell$parameters$epoch_s <- list(-2, 38.45)
+  dense$cell$values$transformed_power <- lapply(seq_len(40), function(i) rep(0, 4000))
+  dense$cell$values$transformed_power[[40L]][[4000L]] <- 100
+  dense_map <- brohn_neural_map_model(dense); dense_png <- png::readPNG(brohn_neural_map_png(dense_map))
+  check("large complete map retains a known cell beyond the 2000-point slice limit", identical(dim(dense_png), c(40L, 4000L, 3L)) &&
+    dense_map$cell_count == 160000 && dense_map$values[40,4000] == 100 && identical(dense_map$limits, c(0,100)))
+  check("highest-frequency late cell occupies top-right native pixel without downsampling", !isTRUE(all.equal(dense_png[1,4000,], dense_png[1,3999,])) &&
+    isTRUE(all.equal(dense_png[40,4000,], dense_png[1,3999,])))
   check("frequency by time axes are neither flattened nor transposed", identical(m$y, as.numeric(unlist(reports$morlet$analysis$series[[1L]]$transformed_power[[1L]]))) &&
     identical(brohn_neural_plot_selection(morlet, frequency_hz = 20)$y, as.numeric(unlist(reports$morlet$analysis$series[[1L]]$transformed_power[[2L]]))))
   check("actual tag peak is independently known 400 uV-squared per Hz at 10 Hz", close(t$y[[which(t$x == 10)]], 400) && t$unit == "uV^2/Hz")
@@ -55,16 +85,38 @@ local({
     check(paste(name, "self-contained responsive export without external media"), grepl("@media(max-width:600px)", html, fixed = TRUE) && !grepl('src="https?://|href="https?://|<script', html, perl = TRUE))
     path <- file.path(root, paste0(name, "-full.csv")); brohn_neural_plot_csv(model, model$cells[[1L]]$selector, path)
     csv <- utils::read.csv(path, check.names = FALSE, stringsAsFactors = FALSE)
-    check(paste(name, "download includes every sample/frequency beyond chart preview"), nrow(csv) == length(model$cells[[1L]]$axis)*if (name == "morlet") 2L else 1L)
+    check(paste(name, "download includes every sample/frequency beyond chart preview"), nrow(csv) == length(model$cells[[1L]]$axis)*if (model$cells[[1L]]$type == "morlet") 2L else 1L)
     check(paste(name, "download preserves immutable lineage"), all(csv$report_sha256 == model$report_hash) && all(csv$source_sha256 == model$source_hash))
   }
   nulls <- reports$morlet; nulls$analysis$series[[1L]]$transformed_power[[1L]][10L] <- list(NULL)
   nm <- brohn_neural_plot_model(nulls); nv <- brohn_neural_plot_selection(nm)
   check("null trace sample disconnects two actual support paths", lengths(regmatches(as.character(brohn_neural_plot_svg(nv)), gregexpr("<polyline", as.character(brohn_neural_plot_svg(nv)), fixed = TRUE))) == 2L && is.na(nv$y[[10L]]))
+  missing_map <- brohn_neural_map_model(nv); image <- png::readPNG(brohn_neural_map_png(missing_map))
+  check("null cell is explicitly masked at its original low-frequency row and exact time", missing_map$missing_count == 1 && missing_map$missing[1L, 10L] &&
+    close(image[2L, 10L, ], as.numeric(grDevices::col2rgb("#89949b"))/255, 1e-8) && !isTRUE(all.equal(image[1L, 10L, ], image[2L, 10L, ])))
   nulls$analysis$series[[1L]]$transformed_power[[1L]] <- rep(list(NULL), length(nv$y)); nm <- brohn_neural_plot_model(nulls); nv <- brohn_neural_plot_selection(nm)
   check("unavailable transform draws no zero line", is.null(brohn_neural_plot_svg(nv)) && grepl("no zero-valued response", as.character(brohn_neural_report_plots(nulls)), fixed = TRUE))
+  map <- brohn_neural_map_model(nv)
+  check("one unavailable frequency row remains present beside other observed rows", all(map$missing[1L, ]) && !any(map$missing[2L, ]) && nrow(map$values) == 2)
+  all_missing <- nv; all_missing$cell$values$transformed_power <- lapply(all_missing$cell$values$transformed_power, function(x) rep(NA_real_, length(x)))
+  none_map <- brohn_neural_map_model(all_missing)
+  check("all-missing map has no quantitative colour scale but retains support masks", is.null(none_map$limits) && all(none_map$missing) &&
+    grepl("No available values", as.character(brohn_neural_map_svg(all_missing)), fixed = TRUE))
+  zero <- all_missing; zero$cell$values$transformed_power <- lapply(zero$cell$values$transformed_power, function(x) rep(0, length(x)))
+  zero_map <- brohn_neural_map_model(zero)
+  check("observed zero has a quantitative colour distinct from missing", zero_map$missing_count == 0 && identical(zero_map$limits, c(0, 1)) &&
+    !isTRUE(all.equal(png::readPNG(brohn_neural_map_png(zero_map))[1,1,], png::readPNG(brohn_neural_map_png(none_map))[1,1,])))
+  signed <- m; signed$cell$parameters$power_baseline$mode <- "db"; signed$cell$source$transformed_unit <- "dB"; signed$unit <- "dB"
+  signed$cell$values$transformed_power[[1L]][1:3] <- c(-6, 0, 3)
+  signed_map <- brohn_neural_map_model(signed)
+  check("signed baseline transform uses common symmetric zero-centred scale", identical(signed_map$limits, c(-6, 6)) && signed_map$signed &&
+    identical(signed_map$values[1L,1:3], c(-6, 0, 3)))
+  phase_map <- brohn_neural_map_model(brohn_neural_plot_selection(morlet, metric = "itc"))
+  check("phase consistency colour range stays physically bounded zero to one", identical(phase_map$limits, c(0, 1)) && phase_map$unit == "proportion (0 to 1)")
   path <- file.path(root, "null.csv"); brohn_neural_plot_csv(nm, nm$cells[[1L]]$selector, path); empty <- utils::read.csv(path)
   check("full CSV preserves missing transform and other retained metrics", all(is.na(empty$transformed_power[empty$frequency_hz == 10])) && all(is.finite(empty$power_uv2)))
+  check("numerical export distinguishes missing and observed values plus excluded edges", all(empty$transformed_power_support[empty$frequency_hz == 10] == "missing_value") &&
+    all(empty$power_uv2_support == "retained_value") && all(empty$excluded_wavelet_samples_each_edge == 23))
   bad <- reports$erp; bad$analysis$source$sha256 <- paste(rep("a", 64), collapse = "")
   check("source mismatch refuses view", rejects(brohn_neural_plot_model(bad)))
   bad <- reports$erp; bad$analysis$series[[1L]]$trial_count <- 2L

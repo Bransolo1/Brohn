@@ -5,10 +5,10 @@
   "checkpoint": {
     "status": "implementing",
     "date": "2026-09-20",
-    "handoff": "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
+    "handoff": "docs/PRODUCT-COMPLETION-BACKLOG.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "Owner resumed development and reconfirmed the Brohn name. Complete-answer explorer connected; scoped acceptance recorded separately. Broader packages remain incomplete."
+    "note": "Owner authorizes sustained end-to-end competitor build with no hardware. Guided workflows, welcome/images, manager acquisition publication, source monitoring, interval comparisons and method corrections have scoped evidence. Remaining packages and release gates stay open."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -80,7 +80,8 @@
         "docs/operations/NUMERIC-TRANSPORT.md",
         "tests/platform-ingestion-integration.R",
         "tests/platform-ingestion-views.R",
-        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md"
+        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
+        "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md"
       ],
       "acceptance": [
         "Duplicate allocation/job requests are idempotent; conflicts are explicit.",
@@ -109,7 +110,8 @@
       "status": "implementing",
       "implementation_evidence": [
         "docs/sprints/02-full-platform.md",
-        "docs/qa/RESEARCHER-QA.md"
+        "docs/qa/RESEARCHER-QA.md",
+        "docs/qa/WELCOME-PAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Every enabled template compiles its controls, order, baseline, practice, checks, timings and analysis prerequisites.",
@@ -205,7 +207,8 @@
         "docs/qa/RESEARCHER-QA.md",
         "tests/participant-camera-races.mjs",
         "docs/product/ASSIGNED-PROTOCOL-REVIEW.md",
-        "tests/platform-run-review.R"
+        "tests/platform-run-review.R",
+        "docs/qa/WELCOME-PAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Preload, focus loss, failed asset, reload, disconnect and duplicate event delivery have declared outcomes.",
@@ -240,7 +243,10 @@
         "docs/qa/RESEARCHER-QA.md",
         "tests/platform-stream-curation.R",
         "docs/methods/STREAM-CURATION.md",
-        "docs/qa/ACQUISITION-COMPLETION-INVESTIGATION.md"
+        "docs/qa/ACQUISITION-COMPLETION-INVESTIGATION.md",
+        "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
+        "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
+        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
@@ -303,7 +309,9 @@
         "docs/sprints/02-full-platform.md",
         "docs/qa/RESEARCHER-QA.md",
         "tests/platform-neural-views-plots.R",
-        "docs/methods/NEURAL-PLOTS.md"
+        "docs/methods/NEURAL-PLOTS.md",
+        "docs/qa/NEURAL-BASELINE-ACCEPTANCE.md",
+        "docs/qa/NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md"
       ],
       "acceptance": [
         "EEG reference/filter/epoch/PSD/TFR recipes run import to report with retained-trial counts.",
@@ -346,7 +354,12 @@
         "tests/platform-peripheral-integration.R",
         "tests/platform-peripheral-synthesis.R",
         "docs/qa/PERIPHERAL-RESEARCHER-JOURNEY.md",
-        "tests/researcher-peripheral.mjs"
+        "tests/researcher-peripheral.mjs",
+        "docs/qa/MEASUREMENT-ACADEMIC-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-SPECTRUM-ACCEPTANCE.md",
+        "docs/qa/ECG-RECORDED-REFERENCE.md",
+        "docs/qa/ECG-DETECTOR-REFERENCE-REVIEW.md",
+        "docs/qa/CARDIAC-MARKER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
@@ -407,7 +420,8 @@
         "tests/platform-task-cohort.R",
         "tests/platform-task-cohort-storage.R",
         "tests/platform-task-cohort-views.R",
-        "docs/methods/IMPLICIT-TASK-COHORT.md"
+        "docs/methods/IMPLICIT-TASK-COHORT.md",
+        "docs/qa/TASK-PLOT-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
@@ -495,7 +509,8 @@
       "implementation_evidence": [
         "docs/sprints/02-full-platform.md",
         "docs/qa/RESEARCHER-QA.md",
-        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md"
+        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
+        "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -531,7 +546,8 @@
         "tests/platform-maxdiff-import.R",
         "tests/platform-maxdiff-import-platform.R",
         "docs/qa/MAXDIFF-RESEARCHER-JOURNEY.md",
-        "docs/qa/MAXDIFF-IMPORT-JOURNEY.md"
+        "docs/qa/MAXDIFF-IMPORT-JOURNEY.md",
+        "docs/qa/MAXDIFF-PLOT-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Choice-set design, attributes/levels, allocation and outside choices are preserved.",
@@ -561,7 +577,12 @@
       "implementation_evidence": [
         "docs/sprints/02-full-platform.md",
         "docs/qa/RESEARCHER-QA.md",
-        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md"
+        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
+        "docs/qa/GUIDED-STUDY-OVERVIEW.md",
+        "docs/qa/IMOTIONS-COMPETITOR-BENCHMARK.md",
+        "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md",
+        "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
+        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -623,7 +644,8 @@
         "docs/qa/RESEARCHER-QA.md",
         "scripts/run-checks.R",
         "scripts/qa-catalog.json",
-        "docs/qa/RUNNING-CHECKS.md"
+        "docs/qa/RUNNING-CHECKS.md",
+        "docs/qa/LOCAL-CONFIGURATION-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

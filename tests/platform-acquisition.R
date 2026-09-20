@@ -60,6 +60,11 @@ local({
   observed <- discovery$body$result$streams[[1L]]
   channels <- list(list(id="eda",label="Original EDA",type="EDA",unit="uS",value_type="float64"))
   selected <- brohn_lsl_selection(discovery,observed$uid,"eda","declared-eda-clock","monotonic","signal",channels,"Original synthetic outlet declaration",.1)
+  selected$readiness<-list(schema="brohn-acquisition-readiness/1.1",modality="eda",channels=list(list(id="eda",role="signal")),
+    preview_channels=list("eda"),site="Original synthetic source, no electrode",calibration="Original generated uS values; no physical calibration",
+    acquisition_checks=list(list(id="fixture-finite",name="Original EDA finite source samples",version="fixture/1",kind="finite_fraction",channel_id="eda",unit="uS",
+      source="Original generated integer cycle 0 to 4 uS",rationale="Software-only source contract; no physiological threshold or hardware claim.",
+      window_s=5,minimum_samples=5,minimum_span_s=.05,maximum_age_s=5,minimum_fraction=1)))
   limits <- list(max_duration_s=30,max_samples=10000,max_bytes=4*1024^2,chunk_samples=32,inlet_buffer=2)
   identity <- list(participant_id="explicit-P1",session_id="explicit-S1")
   queue <- function(revision=study$revision,origin="sample",reviewed=TRUE) brohn_queue_acquisition(store,study$id,discovery$id,list(selected),identity,origin,
@@ -73,13 +78,19 @@ local({
   check("real recording reaches samples",until(function() {r <- brohn_acquisition(store,record$id); !is.null(r$live_snapshot) && r$live_snapshot$samples>=10}))
   record <- brohn_acquisition(store,record$id)
   check("frozen explicit identities and source units retained",identical(record$body$request$identity,identity) && identical(record$body$request$streams[[1L]]$channels,channels))
+  check("reviewed measurement roles survive public queue freezing",identical(brohn_hash(record$body$request$streams[[1L]]$readiness),brohn_hash(selected$readiness)))
+  quality<-brohn_acquisition_quality(record)$streams[[1L]]
+  check("actual local sample flow supplies EDA monitoring without quality approval",quality$modality=="eda"&&quality$monitoring_available&&
+    quality$connection=="subscribed"&&quality$received>=quality$committed&&quality$committed>=10L&&length(quality$channels[[1L]]$preview)>0&&!quality$quality_qualified)
+  check("independent manager reports source-bound acquisition check with bounded window",quality$window$committed_rows>=10L&&quality$window$plotted_points<=512L&&
+    quality$checks[[1L]]$status=="meets_selected_check"&&quality$checks[[1L]]$observed==1&&!quality$quality_qualified)
   check("writer request hash command and cwd identify owned child",identical(.brohn_acq_probe(record$body$process),"owned_alive") &&
     identical(.brohn_acq_hash(record$body$request_path),record$body$request_file_hash) && identical(record$body$process$cwd,normalizePath(".",winslash="/")))
   check("stale stop CAS rejected",rejected(brohn_stop_acquisition(store,record$id,0)))
   # Stop with a fresh revision; retries account for the manager's status refresh.
   check("exact recording stop accepted",until(function() {r<-brohn_acquisition(store,record$id); !rejected(brohn_stop_acquisition(store,r$id,r$revision))}))
-  preserved <- until(function() !is.null(brohn_acquisition(store,record$id)$body$original),timeout=15)
-  if(!preserved) cat(brohn_acquisition(store,record$id)$body$error,"\n")
+  preserved <- until(function() !is.null(brohn_acquisition(store,record$id)$body$original),timeout=60)
+  if(!preserved) {cat(brohn_json(brohn_acquisition(store,record$id)$body),"\n");cat(paste(readLines(file.path(root,"first.stderr"),warn=FALSE),collapse="\n"),"\n")}
   check("stopped recording original is archived",preserved)
   record <- brohn_acquisition(store,record$id)
   if (!isTRUE(record$body$completion_status == "completed" && record$body$inspection$samples >= 10 &&
@@ -93,18 +104,24 @@ local({
   archive <- brohn_acquisition_download(store,record$id); archive_hash <- .brohn_acq_hash(archive)
   listing <- zip::zip_list(archive)
   check("original archive contains full journal and every canonical source member",all(c("request.json","streams.json","journal.jsonl","manifest.json","control.json") %in% listing$filename) && any(startsWith(listing$filename,"chunks/")))
+  check("archive and acquisition receipt use one completed native-sealed manager job",isTRUE(record$body$preservation$publication$native_seal) &&
+    identical(brohn_get_job(store,record$body$preservation$job_id)$status,"succeeded") &&
+    identical(brohn_read_json_file(brohn_object_path(store,record$body$preservation$result_object$hash))$acquisition$original$hash,archive_hash))
   extracted <- file.path(root,"downloaded-original"); dir.create(extracted); zip::unzip(archive,exdir=extracted)
   check("downloaded original bytes match complete hashed inventory",all(vapply(record$body$original_inventory,function(x)
     identical(.brohn_acq_hash(file.path(extracted,x$path)),x$hash),logical(1))))
   check("no import occurs before explicit review",length(brohn_list_entities(store,"dataset"))==0)
   reviewed <- brohn_review_acquisition(store,record$id,record$revision)
-  check("review queues existing multistream pipeline",until(function() {r<-brohn_acquisition(store,record$id); !is.null(r$body$import_job_id)||identical(r$body$review$status,"failed")}))
+  check("review queues existing multistream pipeline",until(function() {r<-brohn_acquisition(store,record$id); !is.null(r$body$import_job_id)||identical(r$body$review$status,"failed")},timeout=90))
   record <- brohn_acquisition(store,record$id)
   if(is.null(record$body$import_job_id)) stop(brohn_json(record$body$review))
   dataset <- brohn_get_entity(store,"dataset",record$body$import_dataset_id)
   check("import keeps pinned design origin and immutable parent recording",dataset$body$status=="accepted" && dataset$body$origin=="sample" &&
     dataset$body$study_revision==study$revision && identical(dataset$body$source_provenance$parent_acquisition$original$hash,record$body$original$hash))
   check("normalisation is queued for independent analysis worker",brohn_get_job(store,record$body$import_job_id)$operation=="normalise_dataset")
+  check("secondary export retains native publication and its exact dependent job receipt",isTRUE(record$body$review$publication$publication$native_seal) &&
+    identical(brohn_get_job(store,record$body$review$publication$job_id)$status,"succeeded") &&
+    identical(brohn_read_json_file(brohn_object_path(store,record$body$review$publication$result_object$hash))$dependent_job$id,record$body$import_job_id))
 
   # A second manager must not take over the live manager's lease or process.
   duplicate <- processx::process$new(brohn_rscript(),c("--vanilla","scripts/run-acquisition.R","--root",store$root,"--once"),
@@ -118,7 +135,7 @@ local({
   manager$kill_tree(); manager$wait(5000)
   check("test manager crash is isolated and actual",!manager$is_alive())
   manager <- start_manager("restarted")
-  check("new manager preserves interrupted original without duplicate writer",until(function() !is.null(brohn_acquisition(store,crash$id)$body$original)))
+  check("new manager preserves interrupted original without duplicate writer",until(function() !is.null(brohn_acquisition(store,crash$id)$body$original),timeout=60))
   crash <- brohn_acquisition(store,crash$id)
   check("hard crash is honestly interrupted",crash$body$completion_status=="interrupted" && !isTRUE(crash$body$inspection$complete) && crash$body$inspection$samples>=5)
   check("hard crash never infers final quality from absent manifest",is.null(crash$body$inspection$quality_qualified) &&

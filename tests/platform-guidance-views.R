@@ -1,0 +1,113 @@
+# Original synthetic designs and metadata. No observed people or scientific
+# outputs are used; qualification is limited to saved-state UI and commands.
+source("R/platform-load.R", encoding = "UTF-8"); brohn_load(ui = TRUE)
+local({
+  checks <- 0L
+  check <- function(ok, label) {if (!isTRUE(ok)) stop(label, call. = FALSE); checks <<- checks+1L; cat("PASS", label, "\n")}
+  html <- function(ui) as.character(htmltools::renderTags(ui)$html)
+  store <- brohn_open_store(tempfile("brohn-guidance-")); on.exit(brohn_close_store(store), add = TRUE)
+  brohn_initialise_library(store)
+  tables <- DBI::dbListTables(store$con); before <- length(brohn_studies(store))
+  home <- html(brohn_guided_home_ui(store))
+  check(grepl("Practice design", home) && grepl("data:image/png;base64,", home) && grepl("no recorded responses", home), "Empty Home offers original materials with an explicit no-data practice boundary")
+  check(length(brohn_studies(store)) == before && identical(tables, DBI::dbListTables(store$con)), "Viewing Home creates neither designs nor delivery tables")
+  comparison <- brohn_create_study(store, "Independent materials check", "comparison")
+  model <- brohn_guidance_model(comparison, brohn_guidance_snapshot(store, comparison))
+  check(model$next_step$stage == "Plan" && model$next_step$focus == "stimulus_text_1" && length(model$missing_materials) == 2 && !model$design_ready, "Unfinished comparison points to its first actual empty material")
+  check(identical(tables, DBI::dbListTables(store$con)), "Readiness metadata is read-only before collection exists")
+  survey <- brohn_create_study(store, "Independent question check", "survey")
+  model <- brohn_guidance_model(survey, brohn_guidance_snapshot(store, survey))
+  check(model$next_step$stage == "Questions" && model$next_step$label == "Add your first question", "Empty questionnaire points directly to the supported question builder")
+  sample <- brohn_sample_study(store)
+  model <- brohn_guidance_model(sample, brohn_guidance_snapshot(store, sample))
+  check(model$design_ready && model$sample && model$next_step$stage == "Collect" && model$snapshot$sessions == 0 && model$snapshot$reports == 0, "Complete practice design has no invented sessions or reports")
+  collect <- html(brohn_collect_ui(store, sample))
+  check(grepl('<option value="sample" selected>', collect, fixed = TRUE), "Original practice design defaults collection to explicit sample origin")
+  overview <- html(brohn_study_overview_ui(store, sample))
+  check(grepl("Preview participant sequence", overview) && grepl("Selected measures describe intent", overview), "Ready overview offers a source preview while keeping measure intent separate from availability")
+  # Metadata deliberately does not claim a valid scientific report.
+  brohn_put_entity(store, "dataset", "data-guidance-one", list(id = "data-guidance-one", study_id = sample$id, status = "needs_mapping", origin = "imported"))
+  brohn_put_entity(store, "dataset", "data-guidance-two", list(id = "data-guidance-two", study_id = sample$id, status = "ready", origin = "sample"))
+  brohn_put_entity(store, "report", "report-guidance-one", list(id = "report-guidance-one", study_id = sample$id, origin = "sample", status = "Available"))
+  brohn_put_entity(store, "project", "other-project", list(id = "other-project", title = "Other project", archived = FALSE))
+  brohn_put_entity(store, "dataset", "data-other-project", list(id = "data-other-project", study_id = sample$id, status = "needs_mapping", origin = "live"), project_id = "other-project")
+  snap <- brohn_guidance_snapshot(store, sample)
+  check(snap$datasets == 2 && snap$reports == 1 && snap$needs_mapping == 1 && length(snap$source_origins) == 3, "Counts use exact study and authorized project with distinct source origins")
+  check(brohn_guidance_model(sample, snap)$next_step$label == "Review data mapping", "Unresolved mapping takes priority over existing report counts")
+  original_get <- brohn_get_entity
+  assign("brohn_get_entity", function(store, kind, ...) {if (kind %in% c("dataset", "report")) stop("Scientific body was hydrated"); original_get(store, kind, ...)}, .GlobalEnv)
+  bounded <- tryCatch(brohn_guidance_snapshot(store, sample), finally = assign("brohn_get_entity", original_get, .GlobalEnv))
+  check(bounded$datasets == 2 && bounded$reports == 1, "Overview aggregates metadata without hydrating report or dataset bodies")
+  release <- brohn_publish(store, sample$id, "sample")
+  changed <- sample$body; changed$description <- "Changed purpose on a later saved revision."
+  sample <- brohn_save_study(store, changed, sample$revision)
+  snap <- brohn_guidance_snapshot(store, sample)
+  check(snap$releases == 1 && snap$open_releases == 1 && snap$older_releases == 1 && snap$sessions == 0, "Saved older release stays distinct from the edited draft and does not imply a visit")
+  check(grepl("saved releases use an earlier design revision", html(brohn_study_overview_ui(store, sample)), fixed = TRUE), "Overview explains immutable release versions")
+  d <- survey$body
+  d$questions <- lapply(1:60, function(i) brohn_question(paste0("Exact question ", i, " <script>text</script>"), "text", "end", paste0("guidance-question-", i)))
+  survey <- brohn_save_study(store, d, survey$revision)
+  readonly_before <- DBI::dbGetQuery(store$con, "SELECT count(*) n FROM delivery_runs")$n
+  saved_hash <- brohn_hash(survey$body)
+  server <- function(input, output, session) {
+    state <- shiny::reactiveValues(page = "study", study_id = survey$id, stage = "Overview", refresh = 0L, error = NULL)
+    current <- new.env(); current$study <- survey
+    calls <- new.env(); calls$capture_count <- 0L
+    attempt <- function(fn, ...) {state$error <- NULL; tryCatch(fn(), error = function(e) {state$error <- conditionMessage(e); NULL})}
+    guidance <- brohn_install_guidance_ui(input, output, session, store, state, current, attempt,
+      function() {calls$capture_count <- calls$capture_count+1L}, function() {state$refresh <- state$refresh+1L})
+  }
+  shiny::testServer(server, {
+    command <- function(...) c(.brohn_guidance_binding(current$study), list(...))
+    session$setInputs(guidance_stage = command(stage = "Questions", focus = "question_type"))
+    if (!is.null(state$error)) stop(state$error)
+    check(state$stage == "Questions" && calls$capture_count == 1L && is.null(state$error), "Bound next action captures saved work and enters the requested builder")
+    session$setInputs(guidance_stage = list(study_id = "foreign-study", revision = survey$revision, design_hash = saved_hash, stage = "Results"))
+    check(state$stage == "Questions" && !is.null(state$error), "A delayed action from a different study is rejected")
+    session$setInputs(guidance_stage = command(stage = "Results", focus = "javascript:alert(1)"))
+    check(state$stage == "Questions" && !is.null(state$error), "Focus targets are bounded to actual preparation controls")
+    state$stage <- "Overview"; session$flushReact()
+    session$setInputs(guidance_preview = command())
+    if (!is.null(state$error)) stop(state$error)
+    p <- guidance$preview()
+    check(identical(p$protocol, brohn_compile(survey$body, 1L)) && guidance$offset() == 0L, "Read-only preview uses the exact saved compiler allocation without an assigned session")
+    check(grepl("Example allocation 1", output$guidance_preview_content$html) && grepl("&lt;script&gt;text&lt;/script&gt;", output$guidance_preview_content$html), "Preview identifies the example allocation and escapes original question text")
+    check(length(gregexpr('<li>', output$guidance_preview_content$html, fixed = TRUE)[[1]]) == 25L, "Long source sequence renders exactly twenty-five outer steps per page")
+    session$setInputs(guidance_preview_page = list(identity = p$identity, offset = 0L, direction = 1L))
+    check(guidance$offset() == 25L && grepl("Showing 26", output$guidance_preview_content$html), "Preview next page reaches source steps beyond the first twenty-five")
+    session$setInputs(guidance_preview_page = list(identity = p$identity, offset = 0L, direction = 1L))
+    check(!is.null(state$error) && guidance$offset() == 25L, "Stale preview page controls cannot advance a different page")
+    session$setInputs(guidance_preview_page = list(identity = p$identity, offset = 25L, direction = -1L))
+    check(guidance$offset() == 0L && is.null(state$error), "Previous source steps return without losing the saved protocol")
+    session$setInputs(guidance_preview_close = 1L)
+    check(is.null(guidance$preview()), "Closing preview releases its compiled source from the UI session")
+    session$setInputs(guidance_preview = command())
+    state$page <- "home"; session$flushReact()
+    check(is.null(guidance$preview()), "Changing page clears open source preview")
+    state$page <- "study"; session$flushReact(); session$setInputs(guidance_preview = command())
+    updated <- current$study$body; updated$description <- "Externally saved after the preview opened."
+    newer <- brohn_save_study(store, updated, current$study$revision)
+    session$setInputs(guidance_preview_page = list(identity = p$identity, offset = 0L, direction = 1L))
+    check(!is.null(state$error) && is.null(guidance$preview()), "Changing the saved source revokes and clears an already-open preview")
+    current$study <- newer
+    session$setInputs(guidance_preview = command()); check(!is.null(guidance$preview()), "Reopened current version recovers after stale source rejection")
+    project <- brohn_project(store); project$body$archived <- TRUE
+    brohn_put_entity(store, "project", project$id, project$body, project$revision)
+    session$setInputs(guidance_preview_page = list(identity = guidance$preview()$identity, offset = 0L, direction = 1L))
+    check(is.null(guidance$preview()) && !is.null(state$error), "Loss of project access clears the source preview immediately on the next action")
+    project$body$archived <- FALSE
+    brohn_put_entity(store, "project", project$id, project$body, project$revision+1L)
+    current$study <- brohn_archive_study(store, newer$id, TRUE)
+    session$setInputs(guidance_stage = command(stage = "Plan"))
+    check(!is.null(state$error) && state$stage == "Overview", "Archived study preparation links cannot enter editing stages")
+    session$setInputs(guidance_stage = command(stage = "History"))
+    check(state$stage == "History" && is.null(state$error), "Archived study recovery remains available through preserved history")
+    session$setInputs(guidance_templates = 1L)
+    check(state$page == "designs", "Home reuse action enters the existing design library")
+  })
+  check(identical(DBI::dbGetQuery(store$con, "SELECT count(*) n FROM delivery_runs")$n, readonly_before), "Every preview and preparation action left participant session allocation untouched")
+  archived <- brohn_study(store, survey$id)
+  view <- html(brohn_study_overview_ui(store, archived))
+  check(grepl("Review preserved history", view) && !grepl("Preview participant sequence", view) && !grepl("Add the research question", view), "Archived overview preserves inspection with clear restore guidance")
+  cat("PASS", checks, "guided-study component checks\n")
+})

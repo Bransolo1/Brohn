@@ -165,6 +165,14 @@ class RecorderTests(unittest.TestCase):
         self.assertFalse(result["clock_synchronized"]); self.assertEqual(result["signal_quality"], "not_qualified")
         self.assertEqual(inspection["request"]["identity"]["participant_id"], "explicit-P1")
         self.assertEqual(inspection["evidence"]["streams"][0]["observed"]["source_origin"], "synthetic")
+        monitoring = recorder.load(directory / "status.json", 2*1024**2)["monitoring"]["streams"][selected["id"]]
+        self.assertEqual(monitoring["connection"], "closed")
+        self.assertEqual(monitoring["received_samples"], 7)
+        self.assertEqual(monitoring["committed_samples"], 7)
+        self.assertEqual(monitoring["channels"][0]["finite"], 5)
+        self.assertEqual(monitoring["channels"][0]["nonfinite"], 2)
+        self.assertEqual([float(row["source_timestamp"]) for row in monitoring["preview"]], stamps)
+        self.assertFalse(result["quality_qualified"])
         self.assertIsNotNone(child.poll())  # Child exit destroys its inlet handles.
 
     def test_real_multistream_int32_strings_and_existing_interchange(self):
@@ -280,6 +288,11 @@ class RecorderTests(unittest.TestCase):
         self.assertEqual(inspected["signal_quality"], "not_qualified")
         self.assertEqual(inspected["quality_evidence"], "verified_final_manifest")
         self.assertEqual(inspected["manifest_sha256"], recorder.file_sha(directory / "manifest.json"))
+        monitoring = recorder.load(directory / "status.json", 2*1024**2)["monitoring"]["streams"][selected["id"]]
+        self.assertEqual(monitoring["received_samples"], 0)
+        self.assertEqual(monitoring["committed_samples"], 0)
+        self.assertIsNone(monitoring["last_received_monotonic_s"])
+        self.assertEqual(monitoring["preview"], [])
 
     @unittest.skipUnless(os.name == "nt", "Windows path profile")
     def test_real_unsupported_path_rejected_before_subscribing_or_creating_recording(self):
@@ -312,6 +325,10 @@ class RecorderTests(unittest.TestCase):
             result = writer.finish("incomplete", "max_bytes")
             self.assertLessEqual(result["sample_bytes"], 65536); self.assertFalse(result["complete"])
             self.assertEqual(recorder.inspect_recording(directory)["samples"], result["samples"])
+            monitoring = recorder.load(directory / "status.json", 2*1024**2)["monitoring"]["streams"][selected["id"]]
+            self.assertEqual(monitoring["committed_samples"], result["samples"])
+            self.assertEqual(monitoring["received_samples"], result["samples"] + 1)
+            self.assertLessEqual(len(monitoring["preview"]), 16)
         finally:
             writer.journal.close()
 
@@ -321,6 +338,37 @@ class RecorderTests(unittest.TestCase):
         chunk = directory/writer.chunks[0]["path"]; chunk.write_bytes(chunk.read_bytes().replace(b'1.0', b'9.0', 1))
         with self.assertRaisesRegex(recorder.RecorderError, "absent or corrupt"):
             recorder.inspect_recording(directory)
+
+    def test_monitoring_preview_bound_never_truncates_canonical_strings(self):
+        writer, selected, directory = self.fake_writer(maximum=4*1024**2)
+        # A separate original request uses text channels; the first fake writer
+        # is closed cleanly before creating its independent source directory.
+        writer.finish("completed", "empty_original_fixture")
+        selected = copy.deepcopy(selected)
+        selected["channels"][0]["value_type"] = "string"
+        request = self.request([selected], samples=100)
+        second = self.root / request["recording_id"]
+        second.mkdir(); (second / "chunks").mkdir()
+        original = "\U0001F600"*100
+        source = recorder.Writer(second, request, {"synthetic": True})
+        source.chunk(selected, [[original] for _ in range(20)], [float(i) for i in range(20)], 1., 2.)
+        source.finish("completed", "test")
+        status = recorder.load(second / "status.json", 2*1024**2)
+        preview = status["monitoring"]["streams"][selected["id"]]["preview"]
+        self.assertEqual(len(preview), 16)
+        self.assertTrue(all(len(row["values"][0].encode()) <= 64 for row in preview))
+        self.assertEqual(preview[0]["sequence"], 5)
+        inspected = recorder.inspect_recording(second)
+        self.assertEqual([row["values"][0] for row in self.rows(inspected, second)], [original]*20)
+        self.assertFalse(status["monitoring"]["quality_qualified"])
+
+    def test_monitoring_declared_channel_selection_is_validated(self):
+        writer, selected, directory = self.fake_writer()
+        writer.finish("completed", "test")
+        request = copy.deepcopy(writer.request)
+        request["streams"][0]["readiness"] = {"schema": "brohn-acquisition-readiness/1.0", "preview_channels": ["foreign"]}
+        with self.assertRaisesRegex(recorder.RecorderError, "original channels"):
+            recorder.validate_request(request)
 
     def test_absent_committed_chunk_is_rejected(self):
         writer, selected, directory = self.fake_writer()

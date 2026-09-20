@@ -1,8 +1,10 @@
 # R owns the declared EEG recipe boundary; numerical epochs run outside Shiny.
 brohn_neural_recipe_choices <- function() c("Recording spectrum (Welch)" = "eeg-welch-channel/1.0",
-  "Event-related response (ERP)" = "eeg-erp-epochs/1.0", "Time-frequency response (Morlet)" = "eeg-morlet-epochs/1.0",
+  "Event-related response (ERP)" = "eeg-erp-epochs/1.0", "Time-frequency response (Morlet)" = "eeg-morlet-epochs/1.1",
   "Frequency-tagged response (SSVEP)" = "eeg-frequency-tagging/1.0")
-brohn_neural_is_epoch <- function(m) !is.null(m$parameters$recipe) && m$parameters$recipe %in% unname(brohn_neural_recipe_choices())[-1L]
+brohn_neural_morlet_recipes <- function() c("eeg-morlet-epochs/1.0", "eeg-morlet-epochs/1.1")
+brohn_neural_registered_recipes <- function() unique(c(unname(brohn_neural_recipe_choices()), brohn_neural_morlet_recipes()))
+brohn_neural_is_epoch <- function(m) !is.null(m$parameters$recipe) && m$parameters$recipe %in% setdiff(brohn_neural_registered_recipes(), "eeg-welch-channel/1.0")
 .brohn_neural_numbers <- function(x, label, minimum = -Inf, maximum = Inf, count = NULL, integer = FALSE) {
   brohn_require(brohn_array(x) && length(x) > 0 && (is.null(count) || length(x) == count) &&
     all(vapply(x, brohn_number, logical(1), min = minimum, max = maximum, integer = integer)), paste(label, "needs an array of finite numbers in its allowed range."))
@@ -16,7 +18,7 @@ brohn_validate_neural_mapping <- function(m, columns = NULL, source_format = NUL
   brohn_require(is.list(m), "Confirm the EEG mapping first.")
   p <- m$parameters
   recipe <- brohn_default(p$recipe, "eeg-welch-channel/1.0")
-  brohn_require(recipe %in% unname(brohn_neural_recipe_choices()), "Select an available EEG analysis recipe.")
+  brohn_require(recipe %in% brohn_neural_registered_recipes(), "Select an available EEG analysis recipe.")
   if (recipe == "eeg-welch-channel/1.0") return(invisible(m))
   brohn_require(is.null(source_format) || source_format %in% c("csv", "tsv", "edf", "bdf", "fif"), "Event-related EEG recipes accept CSV, TSV, EDF, BDF or FIF.")
   brohn_require(brohn_number(m$sampling_rate, 1, 100000), "Declare the EEG sample rate in Hz; native headers must agree.")
@@ -34,7 +36,7 @@ brohn_validate_neural_mapping <- function(m, columns = NULL, source_format = NUL
   } else if (!is.null(source_format)) brohn_require(identical(brohn_text(m$participant_id, 500), brohn_text(m$session_id, 500)), "Supply native participant and session identities together.")
   common <- c("recipe", "event_codes", "event_source", "epoch_s", "baseline_s", "reference", "filter", "rejection", "minimum_trials", "overlap_policy", "settings_source")
   specific <- switch(recipe, `eeg-erp-epochs/1.0` = c("amplitude_window_s", "peak_polarity"),
-    `eeg-morlet-epochs/1.0` = c("frequencies_hz", "n_cycles", "power", "power_baseline", "summary_window_s"),
+    `eeg-morlet-epochs/1.0` = , `eeg-morlet-epochs/1.1` = c("frequencies_hz", "n_cycles", "power", "power_baseline", "summary_window_s"),
     `eeg-frequency-tagging/1.0` = c("spectral_window_s", "tag_frequencies_hz", "harmonics", "window", "noise_neighbor_bins", "noise_skip_bins", "max_bin_offset_hz"))
   brohn_fields(p, c(common, specific), "event_tolerance_s", "EEG recipe")
   brohn_require(brohn_text(p$settings_source, 4000) && brohn_text(p$event_source, 4000), "Describe the protocol settings and measured event timing source.")
@@ -91,7 +93,7 @@ brohn_validate_neural_mapping <- function(m, columns = NULL, source_format = NUL
   if (recipe == "eeg-erp-epochs/1.0") {
     .brohn_neural_window(p$amplitude_window_s, "ERP amplitude window", epoch[1], epoch[2])
     brohn_require(p$peak_polarity %in% c("positive", "negative", "absolute", "none"), "Choose ERP peak polarity or no peak extraction.")
-  } else if (recipe == "eeg-morlet-epochs/1.0") {
+  } else if (recipe %in% brohn_neural_morlet_recipes()) {
     f <- .brohn_neural_numbers(p$frequencies_hz, "Morlet frequencies", .1, fs/2-.001)
     brohn_require(length(f) <= 40 && all(diff(f) > 0), "Provide up to 40 increasing Morlet frequencies.")
     .brohn_neural_numbers(p$n_cycles, "Morlet cycle counts", 1, 30, length(f))
@@ -100,9 +102,15 @@ brohn_validate_neural_mapping <- function(m, columns = NULL, source_format = NUL
     b <- p$power_baseline
     brohn_require(is.list(b) && b$mode %in% c("none", "subtract", "ratio", "percent", "db"), "Select a power-baseline transform.")
     if (b$mode == "none") brohn_fields(b, "mode", label = "Disabled power baseline") else {
-      brohn_fields(b, c("mode", "window_s", "minimum_power_uv2"), label = "Power baseline")
+      brohn_fields(b, c("mode", "window_s", "minimum_power_uv2", if (recipe == "eeg-morlet-epochs/1.1") "adequacy"), label = "Power baseline")
       window <- .brohn_neural_window(b$window_s, "Power baseline", epoch[1], epoch[2])
       brohn_require(window[2] <= 0 && brohn_number(b$minimum_power_uv2, 0, 1e12), "Power baseline needs pre-onset support and an explicit nonnegative denominator floor.")
+      if (recipe == "eeg-morlet-epochs/1.1") {
+        brohn_fields(b$adequacy, c("policy", "minimum_cycles", "rationale"), label = "Power baseline duration review")
+        brohn_require(identical(b$adequacy$policy, "complete-pre-event-wavelet-support/1.0") &&
+          brohn_number(b$adequacy$minimum_cycles, .000001, 1e6) && brohn_text(b$adequacy$rationale, 4000),
+          "Declare a positive minimum baseline duration in cycles at the lowest frequency and explain its study-specific rationale. This declaration does not establish scientific validity.")
+      }
     }
   } else {
     .brohn_neural_window(p$spectral_window_s, "Frequency-tagging window", epoch[1], epoch[2])
@@ -174,12 +182,14 @@ brohn_neural_input <- function(input, metadata, source_format = "csv") {
   if (identical(p$filter$mode, "butterworth_bandpass")) p$filter <- list(mode = p$filter$mode, low_hz = get("filter_low"), high_hz = get("filter_high"), order = get("filter_order"), edge_exclusion_s = get("filter_edge"))
   if (identical(recipe, "eeg-erp-epochs/1.0")) {
     p$amplitude_window_s <- pair("amplitude_start", "amplitude_end"); p$peak_polarity <- get("polarity")
-  } else if (identical(recipe, "eeg-morlet-epochs/1.0")) {
+  } else if (recipe %in% brohn_neural_morlet_recipes()) {
     p$frequencies_hz <- .brohn_neural_csv_numbers(get("frequencies"), "Morlet frequencies")
     p$n_cycles <- .brohn_neural_csv_numbers(get("cycles"), "Morlet cycle counts")
     p$power <- get("power"); p$summary_window_s <- pair("summary_start", "summary_end")
     p$power_baseline <- list(mode = get("power_baseline"))
-    if (!identical(p$power_baseline$mode, "none")) p$power_baseline <- list(mode = p$power_baseline$mode, window_s = pair("power_baseline_start", "power_baseline_end"), minimum_power_uv2 = get("power_floor"))
+    if (!identical(p$power_baseline$mode, "none")) p$power_baseline <- list(mode = p$power_baseline$mode,
+      window_s = pair("power_baseline_start", "power_baseline_end"), minimum_power_uv2 = get("power_floor"),
+      adequacy = list(policy = "complete-pre-event-wavelet-support/1.0", minimum_cycles = get("baseline_minimum_cycles"), rationale = get("baseline_rationale")))
   } else {
     p$spectral_window_s <- pair("spectral_start", "spectral_end")
     p$tag_frequencies_hz <- .brohn_neural_csv_numbers(get("tags"), "Tag frequencies")

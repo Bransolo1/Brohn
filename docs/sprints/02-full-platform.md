@@ -4,6 +4,28 @@ Resumed by the owner on 20 September 2026 after the public source handoff.
 The current connected slice is recorded in [explorer acceptance](../qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
 The broader unchecked roadmap remains open; this is not a full release claim.
 
+20 September full-build continuation (scoped evidence, no competitor sign-off):
+
+- [x] Primary iMotions release/video benchmark and measurement academic audit.
+- [x] Guided Home/Overview and read-only participant sequence preview.
+- [x] Optional welcome content and PNG upload/replace/preview/reuse with frozen releases.
+- [x] Manager-owned guarded original/reviewed acquisition publication and recovery.
+- [x] Truthful15-family source/subscription/receipt/committed-sample observations.
+- [x] Versioned recording intervals, recovery, exact full-data summaries and exports.
+- [x] MaxDiff choice/utility plots, denominator/missingness evidence and SVG/data export.
+- [x] Saved checked installation configuration; clean-machine release still open.
+- [x] Respiration quantity/polarity correction and conservative explicit Morlet baseline support.
+- [x] Longer live waveform previews and selected measurement-specific preflight criteria.
+- [ ] Reusable equipment setups with fresh exact source/criteria review for each recording.
+- [ ] Complete pinned material upload/preview/description/replacement across existing study and task routes.
+- [x] Complete task/person, cardiac-spectrum and full time-frequency visual journeys.
+- [x] Run the first preselected annotated ECG reference subset; preserve failed agreement.
+- [ ] Resolve cardiac polarity/morphology review and broader independent detector validation.
+- [ ] Whole-platform reference validation, synchronized replay, research operations and hosted profile.
+
+Read [completion backlog](../PRODUCT-COMPLETION-BACKLOG.md) for acceptance and
+[measurement audit](../qa/MEASUREMENT-ACADEMIC-ACCEPTANCE.md) for remaining method gaps.
+
 Authorized 2026-09-08. Quality and complete researcher journeys take precedence
 over speed. This checklist is a continuation record, not a release claim.
 

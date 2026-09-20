@@ -62,6 +62,8 @@ brohn_install_stream_curation_ui <- function(input, output, session, store, stat
       shiny::checkboxInput("stream_curation_units_confirmed", "I reviewed the source units and any missing-unit declaration", FALSE),
       shiny::checkboxInput("stream_curation_boundaries_confirmed", "Keep resets and gaps separate, and omit rows missing any selected channel without interpolation", FALSE),
       shiny::checkboxInput("stream_curation_run_analysis", "Run standard channel analysis after preparation", TRUE),
+      shiny::conditionalPanel("input.stream_curation_modality === 'respiration' && input.stream_curation_run_analysis",
+        brohn_respiration_settings_ui(prefix = "stream_curation_respiration")),
       shiny::uiOutput("stream_curation_recipe"),
       shiny::p("Short segments and method-specific exclusions remain visible. No condition or exposure identity is invented. Uncheck automatic analysis to prepare the dataset for a separately configured supported recipe."),
       footer = shiny::tagList(brohn_command("Cancel", "cancel_stream_curation", list(editor_id = id)),
@@ -76,10 +78,11 @@ brohn_install_stream_curation_ui <- function(input, output, session, store, stat
       eda = "EDA: NeuroKit cleaning, tonic/phasic decomposition at 0.05 Hz, relative-prominence response peaks and 10-second edge exclusions. This is descriptive channel activity, not an inferred stress score.",
       ecg = "ECG: NeuroKit cleaning/detected intervals, 50 Hz mains setting, 2-second edge exclusions and 300-2000 ms interval screening. Confirm a 50 Hz acquisition environment; this is not automatically qualified normal-to-normal HRV.",
       ppg = "PPG: Elgendi pulse detection, 2-second edge exclusions and 300-2000 ms interval screening. Pulse-rate variability is retained separately from ECG HRV.",
-      respiration = "Respiration: Khodadad cleaning/cycle detection and 5-second edge exclusions. Confirm that a positive source excursion represents inspiration.",
+      respiration = "Respiration: explicitly declared belt displacement or calibrated lung volume, reviewed inspiration direction, Khodadad cleaning/cycle detection and 5-second edge exclusions. Airflow can be prepared with automatic analysis unchecked.",
       emg = "EMG: zero-phase Butterworth filtering, 50 ms RMS envelope and 0.25-second edge exclusions. Burst thresholds and MVC normalisation are not invented.")
     shiny::tagList(shiny::p(summary), shiny::p(class = "brohn-muted", "These are descriptive channel/recording analyses. Participant comparisons, experimental baselines and condition effects require their own supported design and mapping."),
-      shiny::tags$details(shiny::tags$summary("Standard recipe parameters saved for this analysis"), shiny::tags$pre(brohn_json(brohn_stream_standard_parameters(modality, a$sampling_rate), TRUE))))
+      shiny::tags$details(shiny::tags$summary("Standard recipe parameters saved for this analysis"), shiny::tags$pre(brohn_json(brohn_stream_standard_parameters(modality, a$sampling_rate,
+        if (identical(modality, "respiration")) brohn_respiration_input(input, "stream_curation_respiration") else NULL), TRUE))))
   })
   shiny::observeEvent(input$cancel_stream_curation, attempt(function() {
     brohn_require(!is.null(draft$active) && is.list(input$cancel_stream_curation) && identical(input$cancel_stream_curation$editor_id, draft$active$id), "Choose the current curation dialog's Cancel button.")
@@ -96,6 +99,7 @@ brohn_install_stream_curation_ui <- function(input, output, session, store, stat
       participant_id = blank(input$stream_curation_participant), session_id = blank(input$stream_curation_session), origin_statement = input$stream_curation_origin,
       unit_rationale = input$stream_curation_unit_rationale, confirm_source_units = isTRUE(input$stream_curation_units_confirmed), confirm_boundaries = isTRUE(input$stream_curation_boundaries_confirmed),
       run_analysis = if (is.logical(input$stream_curation_run_analysis) && length(input$stream_curation_run_analysis) == 1L) input$stream_curation_run_analysis else NULL)
+    if (identical(selection$modality, "respiration") && isTRUE(selection$run_analysis)) selection$respiration <- brohn_respiration_input(input, "stream_curation_respiration")
     brohn_queue_stream_curation(store, record$id, selection, record$revision)
     draft$active <- NULL; shiny::removeModal(); message("Selected channels queued for curation. The original source remains preserved."); refresh()
   }))

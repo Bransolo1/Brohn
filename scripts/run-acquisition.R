@@ -9,6 +9,8 @@ root <- argument("--root",Sys.getenv("BROHN_WORKSPACE",""))
 if(!nzchar(root)) stop("Choose --root PATH for the acquisition workspace.")
 source("R/platform-load.R",encoding="UTF-8"); brohn_load(ui=FALSE)
 if(!exists("brohn_acquisition_manager",mode="function")) source("R/platform-acquisition.R",encoding="UTF-8")
+publication <- brohn_publication_readiness()
+brohn_require(isTRUE(publication$ready),paste("Acquisition preservation is not ready.",publication$message,publication$action))
 local({
   store <- brohn_open_store(root); on.exit(brohn_close_store(store),add=TRUE)
   manager <- brohn_acquisition_manager(store)

@@ -5,6 +5,15 @@ The platform remains named **Brohn**, reconfirmed by the owner on 20 September
 code identifiers, schemas, environment variables and GitHub destination.
 
 The owner resumed implementation on 20 September 2026 after the 8 September pause.
+The latest instruction authorizes the full sustained build toward a premium
+end-to-end iMotions competitor, and explicitly requires historical iMotions
+release posts and YouTube content before readiness sign-off. Continue across
+reviewable checkpoints and keep actual external qualification gaps explicit.
+The owner has no hardware for testing; qualify software using academic sources,
+independent/reference cases and replay while retaining that physical limitation.
+Read docs/PRODUCT-COMPLETION-BACKLOG.md for the latest required measurement tests,
+visualizations, simplified workflows, welcome/material authoring and live quality
+feedback before selecting follow-on work or considering a sign-off.
 Read docs/HANDOFF-JOHN.md and STATUS.md before resuming. A new collaborator's
 explicit development request can resume scoped work; merely opening the repo
 does not authorize an autonomous full build. The questionnaire explorer is now

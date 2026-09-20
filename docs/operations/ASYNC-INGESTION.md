@@ -200,3 +200,13 @@ have these timings.
 The cross-volume route is explicitly rejected by the implementation, but no
 second physical Windows volume was available for an actual cross-volume test.
 Browser transfer/navigation behaviour has its own UI QA scope.
+
+20 September readiness correction: receipt availability is now rechecked after
+process-tree observation. A receipt written during a slow observation no longer
+fails the subsequent ten-second waiting check. The original nonce, request hash,
+process ancestry and native-file identity checks still run before acceptance.
+The actual-process ingestion regression passes40 checks; a separate deterministic
+race run passes two checks with only the polling clock advanced and a real sealed
+helper. Final neural import-to-export acceptance also passed after this correction.
+The measured initial metadata queue in that regression was9.290 seconds; this
+is a local observation, not a launch-time guarantee.

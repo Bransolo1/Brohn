@@ -16,6 +16,9 @@ SPEC = importlib.util.spec_from_file_location("brohn_physiology", ROOT / "script
 worker = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(worker)
 
+RESPIRATION_DECLARATION = {"recipe": "respiration-displacement-khodadad/1.0", "source_quantity": "belt_displacement",
+                           "polarity": "positive_inspiration", "mapping_source": "Original synthetic displacement: increases for inspiration; no physical device."}
+
 
 class PhysiologyTests(unittest.TestCase):
     def setUp(self):
@@ -187,7 +190,7 @@ class PhysiologyTests(unittest.TestCase):
         ppg=nk.ppg_simulate(duration=duration,sampling_rate=fs,heart_rate=70,frequency_modulation=0,ibi_randomness=0,drift=0,motion_amplitude=0,powerline_amplitude=0,burst_amplitude=0,random_state=42)
         rsp=np.sin(2*np.pi*.2*np.arange(fs*duration)/fs)
         for modality,values in [("ecg",ecg),("ppg",ppg),("respiration",rsp)]:
-            result=worker.run(self.request(modality,values,fs))
+            result=worker.run(self.request(modality,values,fs,parameters=RESPIRATION_DECLARATION if modality == "respiration" else None))
             self.assertEqual(result["status"],"completed",str(result["recordings"]))
             self.assertTrue(result["events"])
         self.assertAlmostEqual(self.feature(result,"respiration_rate"),12,places=1)
@@ -203,6 +206,44 @@ class PhysiologyTests(unittest.TestCase):
         self.assertEqual(result["quality"]["missing_channel_samples"],200)
         self.assertAlmostEqual(self.feature(result,"alpha_absolute_power","Cz"),200,places=4)
         self.assertEqual(result["source"]["annotation_count"],1)
+
+    def test_respiration_asymmetric_volume_and_declared_inversion(self):
+        # Independent physical construction: volume rises for exactly 2 s and
+        # falls for 3 s. Its flow extrema at 1 and 3.5 s are not phase onsets.
+        fs=100; t=np.arange(fs*120)/fs; phase=t % 5
+        volume=np.where(phase < 2, (1-np.cos(np.pi*phase/2))/2,
+                        (1+np.cos(np.pi*(phase-2)/3))/2)
+        settings={**RESPIRATION_DECLARATION,"source_quantity":"lung_volume","edge_exclusion_s":20}
+        positive=worker.run(self.request("respiration",volume,fs,unit="L",parameters=settings))
+        negative=worker.run(self.request("respiration",-volume,fs,unit="L",parameters={**settings,"polarity":"negative_inspiration"}))
+        self.assertAlmostEqual(self.feature(positive,"respiration_rate"),12,delta=.02)
+        self.assertAlmostEqual(self.feature(positive,"inspiration_duration"),2,delta=.04)
+        self.assertAlmostEqual(self.feature(positive,"expiration_duration"),3,delta=.04)
+        self.assertAlmostEqual(self.feature(positive,"inspiration_expiration_ratio"),2/3,delta=.02)
+        self.assertEqual(positive["features"],negative["features"])
+        self.assertEqual(positive["events"],negative["events"])
+        np.testing.assert_array_equal([v["raw"] for v in negative["series"]],[-v["raw"] for v in positive["series"]])
+        np.testing.assert_array_equal([v["clean"] for v in negative["series"]],[v["clean"] for v in positive["series"]])
+        self.assertEqual(next(iter(negative["parameters"].values()))["source_polarity_multiplier"],-1)
+
+    def test_respiration_flow_derivative_cannot_be_interpreted_as_volume(self):
+        fs=100; t=np.arange(fs*60)/fs; phase=t % 5
+        flow=np.where(phase<2,np.pi/4*np.sin(np.pi*phase/2),-np.pi/6*np.sin(np.pi*(phase-2)/3))
+        self.assertEqual(t[np.argmax(flow[:500])],1)
+        self.assertEqual(t[np.argmin(flow[:500])],3.5)
+        with self.assertRaisesRegex(worker.InputError,"Unsupported.*unit"):
+            worker.run(self.request("respiration",flow,fs,unit="L/s",parameters={**RESPIRATION_DECLARATION,"source_quantity":"lung_volume"}))
+        with self.assertRaisesRegex(worker.InputError,"Airflow"):
+            worker.run(self.request("respiration",flow,fs,parameters={**RESPIRATION_DECLARATION,"source_quantity":"airflow"}))
+
+    def test_respiration_old_or_unspecified_mapping_needs_explicit_review(self):
+        x=np.sin(2*np.pi*.2*np.arange(6000)/100)
+        for settings in ({},{"recipe":"respiration-khodadad-cycles/1.0"},
+                         {**RESPIRATION_DECLARATION,"polarity":None},
+                         {**RESPIRATION_DECLARATION,"mapping_source":" "},
+                         {**RESPIRATION_DECLARATION,"source_quantity":"lung_volume"}):
+            with self.subTest(settings=settings), self.assertRaises(worker.InputError):
+                worker.run(self.request("respiration",x,parameters=settings))
 
     def test_cli_atomic_json_and_error_exit(self):
         fs=100; t=np.arange(fs*6)/fs

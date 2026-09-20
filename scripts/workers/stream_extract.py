@@ -106,7 +106,7 @@ def validate(request):
     require(isinstance(stream, dict) and stream.get("schema") == "brohn-imported-stream/1.0" and stream.get("kind") == "signal", "Choose a declared analogue signal stream; marker or unclassified streams cannot become measurements.")
     require(isinstance(stream.get("sample_count"), int) and not isinstance(stream["sample_count"], bool) and 0 <= stream["sample_count"] <= MAX_ROWS, "Stream sample count is invalid.")
     selection = request["selection"]
-    fields(selection, ("schema", "channel_ids", "modality", "unit", "sampling_rate", "participant_id", "session_id", "origin_statement", "unit_rationale", "confirm_source_units", "confirm_boundaries", "run_analysis"))
+    fields(selection, ("schema", "channel_ids", "modality", "unit", "sampling_rate", "participant_id", "session_id", "origin_statement", "unit_rationale", "confirm_source_units", "confirm_boundaries", "run_analysis"), ("respiration",))
     require(selection["schema"] == "brohn-stream-selection/1.0" and selection["modality"] in UNITS, "Select an implemented analogue analysis family.")
     require(selection["confirm_source_units"] is True and selection["confirm_boundaries"] is True, "Confirm source units and the explicit gap/missing-value policy.")
     require(isinstance(selection["run_analysis"], bool), "Automatic analysis choice must be an explicit boolean.")
@@ -128,6 +128,14 @@ def validate(request):
             "Confirm the source's positive nominal rate exactly. Irregular or absent rates need a separate resampling protocol.")
     target = unit(selection["unit"])
     require(target in UNITS[selection["modality"]], "The declared output unit is unsupported for this analysis family.")
+    if selection["modality"] == "respiration" and selection["run_analysis"]:
+        respiratory = selection.get("respiration")
+        fields(respiratory, ("source_quantity", "polarity", "mapping_source"))
+        require((respiratory["source_quantity"] == "lung_volume" and target == "L") or
+                (respiratory["source_quantity"] == "belt_displacement" and target in {"a.u.", "V", "mV"}),
+                "Automatic respiration analysis needs declared displacement/volume in compatible units; retain airflow without automatic analysis.")
+        require(respiratory["polarity"] in {"positive_inspiration", "negative_inspiration"}, "Declare the observed inspiration direction.")
+        text(respiratory["mapping_source"], "Respiratory quantity and polarity evidence", 4000)
     conversions = []
     for cid in selected:
         channel = by_id[cid]

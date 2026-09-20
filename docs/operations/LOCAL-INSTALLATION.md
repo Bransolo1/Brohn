@@ -93,6 +93,38 @@ methods environment. Set the explicit absolute paths for other installations.
 
 ## Start and stop
 
+### Save a checked installation once
+
+After restoring the dependencies and preparing the publication guard above,
+save their paths in one local configuration. This verifies the actual pinned
+R library, publication helper and portable-design interpreter before saving:
+
+```powershell
+./scripts/configure-local.ps1 -RscriptPath $rscript -LibraryPath $applicationLibrary `
+  -PublicationPythonPath 'C:/Python312/python.exe' `
+  -PublicationManifestPath 'C:/Brohn/tooling/native/publication-guard.json' `
+  -Workspace $workspace
+./run-local.ps1 -CheckOnly
+./run-local.ps1
+```
+
+The default configuration is `.brohn/local-installation.json`, excluded from
+source control. To place it elsewhere, pass `-ConfigurationPath PATH` to both
+commands. Relative paths in an imported configuration resolve against that
+file's folder. Explicit launcher paths and ports override configured defaults.
+`-CheckOnly` reruns readiness without starting services or opening a research
+workspace. Use `-Replace` when intentionally updating an existing configuration;
+a failed check preserves its previous bytes.
+
+Optional scientific environments can be saved with
+`-ScientificProfiles @{methods='C:/Brohn/tooling/methods-venv/Scripts/python.exe'}`
+(also `acquisition`, `vision-audio` and `segmentation`). Every supplied profile
+must pass its actual dependency/model check before the configuration is saved.
+The configuration records paths and ports, not participant data or credentials.
+This command connects an installed runtime; it does not install dependencies.
+
+### Launch with explicit paths
+
 ```powershell
 ./run-local.ps1 -RscriptPath $rscript -LibraryPath $applicationLibrary `
   -Workspace $workspace -Port 3838 -ParticipantPort 3840

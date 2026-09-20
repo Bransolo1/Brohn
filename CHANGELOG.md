@@ -1,5 +1,33 @@
 # Changes
 
+## Connected research workflows — 2026-09-20 (in progress)
+
+- Added guided study entry, an actual saved-state overview and read-only participant
+  sequence preview; optional welcome content/image upload uses frozen release assets.
+- Acquisition originals and reviewed imports now publish through manager-owned
+  guarded atomic paths. Equipment views distinguish subscriptions, incoming data,
+  committed recording and unqualified measurement quality across15 families.
+- Added versioned signal intervals, restoration, full-data descriptive comparisons,
+  exact support, and standalone graph/table/provenance exports.
+- Added MaxDiff choice/utility plots and exact chart-value exports; all report CSVs
+  now preserve Unicode labels/units under Windows C locale.
+- Added complete task timing/distribution/person plots, source-bound cardiac
+  interval spectra and complete time-frequency maps with explicit missing/edge masks.
+- Completed an annotated ECG subset comparison, retaining the detector's failed
+  noisy-record agreement as an unresolved accuracy finding rather than qualification.
+- Added exact saved ECG/PPG detection markers, interval tables and SVG/JSON exports;
+  over-limit counts explicitly retain unchecked alignment until a narrower range.
+- Added five-second live signal previews and source-bound acquisition criteria;
+  stale, interrupted and unqualified evidence cannot acquire a usable-signal claim.
+- Corrected an import readiness race and included welcome validation in automatic
+  saved-report analysis, preserving the original frozen welcome image and responses.
+- Corrected respiration source quantity/polarity handling and added explicit
+  frequency-dependent Morlet baseline support. Historical results stay unchanged.
+- Saved local configuration checks exact runtimes before writing; failed replacements
+  preserve prior setup. Historical iMotions and academic acceptance audits are saved.
+- These are qualified software slices. Whole-platform completion, physical equipment
+  qualification and competitor parity remain open.
+
 ## Brohn continuation — 2026-09-20
 
 - Resumed development with the existing Brohn name and visual identity,

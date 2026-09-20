@@ -2,6 +2,8 @@
 brohn_neural_settings_ui <- function(m, columns = character(), source_format = "csv") {
   p <- brohn_default(m$parameters, list()); native <- !source_format %in% c("csv", "tsv")
   recipe <- brohn_default(p$recipe, "eeg-welch-channel/1.0")
+  legacy_morlet <- identical(recipe, "eeg-morlet-epochs/1.0")
+  if (legacy_morlet) recipe <- "eeg-morlet-epochs/1.1"
   id <- function(name) paste0("map_neural_", name)
   num <- function(name, label, value, fallback = NA_real_, min = NA, max = NA, step = NA) shiny::numericInput(id(name), label, brohn_default(value, fallback), min, max, step)
   txt <- function(name, label, value = NULL, placeholder = NULL) shiny::textInput(id(name), label, brohn_default(value, ""), placeholder = placeholder)
@@ -16,6 +18,7 @@ brohn_neural_settings_ui <- function(m, columns = character(), source_format = "
   baseline_on <- !is.null(p$baseline_s)
   shiny::tagList(shiny::h3("What would you like to measure?"),
     select("recipe", "EEG analysis", brohn_neural_recipe_choices(), recipe, "eeg-welch-channel/1.0"),
+    if (legacy_morlet) shiny::p("The saved Morlet 1.0 result keeps its original settings. Saving a new mapping uses Morlet 1.1: review baseline duration and event separation before running it."),
     condition("input.map_neural_recipe === 'eeg-welch-channel/1.0'",
       shiny::p("Summarise channel spectra across usable recording segments. This route does not need event markers and keeps the acquisition reference.")),
     condition("input.map_neural_recipe !== 'eeg-welch-channel/1.0'",
@@ -63,7 +66,7 @@ brohn_neural_settings_ui <- function(m, columns = character(), source_format = "
           pair("amplitude_start", "amplitude_end", "Mean-amplitude window", p$amplitude_window_s, list(.3, .5)),
           select("polarity", "Optional peak measurement in the same window", c("Do not extract a peak" = "none", "Positive peak" = "positive", "Negative peak" = "negative", "Largest absolute peak" = "absolute"), p$peak_polarity, "none"),
           shiny::p(class = "brohn-muted", "The full average waveform is retained. Peak and window choices should come from your protocol, before comparing condition results."))),
-      condition("input.map_neural_recipe === 'eeg-morlet-epochs/1.0'",
+      condition("input.map_neural_recipe === 'eeg-morlet-epochs/1.1'",
         shiny::tags$details(open = NA, shiny::tags$summary("4. Describe the time-frequency response"),
           txt("frequencies", "Frequencies (Hz), comma separated", paste(unlist(p$frequencies_hz), collapse = ", "), "8, 10, 12"),
           txt("cycles", "Wavelet cycles, one value per frequency", paste(unlist(p$n_cycles), collapse = ", "), "5, 5, 5"),
@@ -71,8 +74,12 @@ brohn_neural_settings_ui <- function(m, columns = character(), source_format = "
           pair("summary_start", "summary_end", "Power summary", p$summary_window_s, list(.3, .5)),
           select("power_baseline", "Power baseline correction", c("None" = "none", "Subtract baseline power" = "subtract", "Divide by baseline power" = "ratio", "Percent change" = "percent", "Decibels (10 log10 ratio)" = "db"), p$power_baseline$mode, "none"),
           condition("input.map_neural_power_baseline !== 'none'", pair("power_baseline_start", "power_baseline_end", "Power baseline", p$power_baseline$window_s, list(-1, -.5)),
-            num("power_floor", "Minimum usable baseline power (microvolts squared)", p$power_baseline$minimum_power_uv2, min = 0, max = 1e12)),
-          shiny::p(class = "brohn-muted", "Power and baseline windows need complete wavelet support. Unsupported edges are excluded. Phase consistency is reported separately with retained trial counts."))),
+            num("power_floor", "Minimum usable baseline power (microvolts squared)", p$power_baseline$minimum_power_uv2, min = 0, max = 1e12),
+            num("baseline_minimum_cycles", "Minimum baseline duration (cycles at the lowest analysed frequency)", p$power_baseline$adequacy$minimum_cycles, min = .000001, max = 1e6),
+            shiny::textAreaInput(id("baseline_rationale"), "Why is this baseline duration suitable for this study?", brohn_default(p$power_baseline$adequacy$rationale, ""), rows = 3, width = "100%"),
+            shiny::p("Choose the duration from your study design and frequency resolution; there is no universal cycle threshold. The observed sample span must meet your declared minimum. Declaring it does not validate the study."),
+            shiny::p("Brohn 1.1 requires every baseline wavelet to have complete epoch support and end strictly before the event. If it does not, choose an earlier baseline, lengthen the epoch, or select no power baseline. Windows are never shifted automatically.")),
+          shiny::p(class = "brohn-muted", "This conservative rule checks finite wavelet support, not all sources of contamination. Zero-phase filters can spread activity backward in time; event timing, preprocessing and the baseline's suitability still need review. Phase consistency is reported separately with retained trial counts."))),
       condition("input.map_neural_recipe === 'eeg-frequency-tagging/1.0'",
         shiny::tags$details(open = NA, shiny::tags$summary("4. Describe the tagged-frequency response"),
           pair("spectral_start", "spectral_end", "Spectral window (end excluded)", p$spectral_window_s, list(0, .8)),

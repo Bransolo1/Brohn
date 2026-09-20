@@ -12,6 +12,77 @@
   vapply(as.list(x), function(v) if (is.null(v)) NA_real_ else as.numeric(v), numeric(1))
 }
 
+# Check the saved diagnostic against its frozen grid/declarations. This is
+# metadata validation only; no waveform, baseline power or transform is rerun.
+.brohn_np_baseline_support <- function(r, p) {
+  if (!identical(p$recipe, "eeg-morlet-epochs/1.1")) return(invisible(NULL))
+  d <- r$derived_settings$baseline_support
+  if (is.null(d) && !identical(r$status, "computed")) return(invisible(NULL))
+  brohn_require(is.list(d) && identical(d$policy, "complete-pre-event-wavelet-support/1.0") &&
+    identical(d$mode, p$power_baseline$mode) && identical(d$filter_mode, p$filter$mode), "Saved baseline support lacks its frozen policy or preprocessing identity.")
+  fs <- r$sampling_rate; n <- r$sample_count_per_epoch
+  brohn_require(brohn_number(fs, 1, 100000) && brohn_number(n, 1, 10000000, TRUE), "Saved baseline support lacks its sample grid.")
+  freqs <- .brohn_np_vector(p$frequencies_hz, lower = .1); cycles <- .brohn_np_vector(p$n_cycles, length(freqs), lower = 1, upper = 30)
+  lengths <- .brohn_np_vector(r$derived_settings$wavelet_samples, length(freqs), lower = 1)
+  brohn_require(all(lengths == floor(lengths) & lengths %% 2 == 1) && length(d$frequencies) == length(freqs), "Saved baseline support has inconsistent kernels.")
+  same <- function(a, b) if (is.null(b)) is.null(a) else brohn_number(a) && abs(a-b) <= 1e-8
+  enabled <- !identical(d$mode, "none"); b <- p$power_baseline; start <- p$epoch_s[[1L]]
+  first <- if (enabled) max(0, ceiling((b$window_s[[1L]]-start)*fs-1e-8)) else 0
+  last <- if (enabled) min(n-1, floor((b$window_s[[2L]]-start)*fs+1e-8)) else -1
+  count <- max(0, last-first+1); span <- if (count) (last-first)/fs else NULL
+  observed <- if (count) span*min(freqs) else NULL
+  duration_ok <- if (enabled) !is.null(observed) && observed+1e-10 >= b$adequacy$minimum_cycles else NULL
+  brohn_require(same(d$baseline_sample_count, count) && same(d$sample_span_s, span) && same(d$cycles_at_lowest_frequency, observed) &&
+    same(d$first_sample_s, if (count) start+first/fs else NULL) && same(d$last_sample_s, if (count) start+last/fs else NULL) &&
+    identical(d$duration_criterion_met, duration_ok) && same(d$minimum_cycles, if (enabled) b$adequacy$minimum_cycles else NULL) &&
+    identical(d$rationale, if (enabled) b$adequacy$rationale else NULL), "Saved baseline duration or rationale disagrees with its sampled window.")
+  eligible <- count >= 2 && isTRUE(duration_ok)
+  for (i in seq_along(freqs)) {
+    row <- d$frequencies[[i]]; half <- (lengths[[i]]-1)/2; sigma <- cycles[[i]]/(2*pi*freqs[[i]])
+    complete <- if (count) first-half >= 0 && last+half < n else NULL
+    before <- if (count) last+half < round(-start*fs) else NULL
+    brohn_require(same(row$frequency_hz, freqs[[i]]) && same(row$n_cycles, cycles[[i]]) && same(row$kernel_samples, lengths[[i]]) &&
+      same(row$temporal_sigma_s, sigma) && same(row$half_support_s, half/fs) && same(row$baseline_cycles, if (count) span*freqs[[i]] else NULL) &&
+      same(row$centre_separation_sigma, if (count) -(start+last/fs)/sigma else NULL) &&
+      same(row$latest_kernel_sample_s, if (count) start+(last+half)/fs else NULL) &&
+      identical(row$complete_epoch_support, complete) && identical(row$strictly_before_event, before), "Saved per-frequency baseline support disagrees with its exact grid.")
+    eligible <- eligible && isTRUE(complete) && isTRUE(before)
+  }
+  brohn_require(identical(d$status, if (!enabled) "not_applied" else if (eligible) "eligible" else "unavailable") &&
+    (!identical(r$status, "computed") || !enabled || eligible), "Saved baseline eligibility cannot support this computed trace.")
+  invisible(d)
+}
+
+.brohn_np_baseline_ui <- function(r, p) {
+  if (!p$recipe %in% brohn_neural_morlet_recipes()) return(NULL)
+  if (identical(p$recipe, "eeg-morlet-epochs/1.0")) return(shiny::p(class = "brohn-alert",
+    "Historical Morlet 1.0 result: the original calculation is preserved. It did not enforce a declared baseline duration or complete pre-event kernel separation. Review those choices before using it; a new mapping offers Morlet 1.1."))
+  d <- r$derived_settings$baseline_support
+  if (is.null(d)) return(NULL)
+  shiny::div(class = "brohn-card brohn-baseline-support",
+    shiny::h4(paste("Power baseline support:", d$status)),
+    if (identical(d$mode, "none")) shiny::p("No power baseline transform was requested.") else shiny::tagList(
+      shiny::p(paste("Actual baseline:", d$baseline_sample_count, "samples from", .brohn_np_number(d$first_sample_s), "to", .brohn_np_number(d$last_sample_s),
+        "s; sample span", .brohn_np_number(d$sample_span_s), "s, covering", .brohn_np_number(d$cycles_at_lowest_frequency),
+        "cycles at the lowest frequency. Declared minimum:", .brohn_np_number(d$minimum_cycles), "cycles.")),
+      shiny::p(paste("Duration rationale:", d$rationale)),
+      shiny::p(paste("Longest wavelet half-support:", .brohn_np_number(max(vapply(d$frequencies, `[[`, numeric(1), "half_support_s"))),
+        "s. Latest contributing sample:", .brohn_np_number(if (d$baseline_sample_count > 0) max(vapply(d$frequencies, `[[`, numeric(1), "latest_kernel_sample_s")) else NULL),
+        "s. Every contributing sample must be strictly before zero; touching event onset fails this policy.")),
+      shiny::p(paste("Complete epoch support:", sum(vapply(d$frequencies, function(f) isTRUE(f$complete_epoch_support), logical(1))), "of", length(d$frequencies),
+        "frequencies. Strictly before onset:", sum(vapply(d$frequencies, function(f) isTRUE(f$strictly_before_event), logical(1))), "of", length(d$frequencies), "frequencies.")),
+      shiny::tags$details(shiny::tags$summary("Review support at each frequency"),
+        shiny::div(style = "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px",
+          lapply(d$frequencies, function(f) shiny::div(style = "border:1px solid #415057;border-radius:8px;padding:12px;min-width:0",
+            shiny::h5(paste(.brohn_np_number(f$frequency_hz), "Hz")),
+            shiny::p(paste("Wavelet:", .brohn_np_number(f$n_cycles), "cycles;", f$kernel_samples, "samples. Temporal sigma:", .brohn_np_number(f$temporal_sigma_s), "s.")),
+            shiny::p(paste("Half support:", .brohn_np_number(f$half_support_s), "s. Baseline:", .brohn_np_number(f$baseline_cycles), "cycles.")),
+            shiny::p(paste("Centre separation:", .brohn_np_number(f$centre_separation_sigma), "temporal standard deviations before onset. Latest contributing sample:", .brohn_np_number(f$latest_kernel_sample_s), "s.")),
+            shiny::p(paste("Complete epoch support:", if (isTRUE(f$complete_epoch_support)) "yes" else "no", "; strictly before onset:", if (isTRUE(f$strictly_before_event)) "yes" else "no", ".")))))),
+      if (identical(d$status, "unavailable")) shiny::p("Choose an earlier baseline, lengthen the epoch, or select no power baseline. The saved window has not been shifted.")),
+    shiny::p("This is Brohn's conservative finite-wavelet policy. Duration is the last sampled centre minus the first; the researcher chooses its minimum. Passing this check is not scientific validation. Prior filtering, including zero-phase filters, can spread activity backward in time."))
+}
+
 brohn_neural_plot_model <- function(report) {
   brohn_require(.brohn_np_supported(report), "This report has no registered neural waveform adapter.")
   a <- report$analysis; p <- report$provenance
@@ -29,13 +100,14 @@ brohn_neural_plot_model <- function(report) {
       brohn_number, logical(1), min = 0, max = 10000, integer = TRUE)) &&
       all(c("requested_trials", "retained_trials", "excluded_trials", "minimum_trials") %in% names(r)) &&
       r$requested_trials == r$retained_trials+r$excluded_trials, "Saved trial counts are inconsistent.")
+    .brohn_np_baseline_support(r, a$parameters[[r$recording_id]])
   }
   total <- 0L; report_hash <- brohn_hash(report)
   cells <- lapply(series, function(s) {
     brohn_require(brohn_text(s$channel, 500) && brohn_text(s$type, 100) && s$type %in% names(expected), "Unregistered neural series type or missing channel.")
     index <- which(hashes == .brohn_np_key(s)); brohn_require(length(index) == 1L, "A neural series has no exact recording/condition/source-group support.")
     r <- recordings[[index]]; settings <- a$parameters[[s$recording_id]]
-    brohn_require(identical(settings$recipe, unname(expected[[s$type]])) && identical(r$status, "computed") &&
+    brohn_require((identical(settings$recipe, unname(expected[[s$type]])) || s$type == "morlet" && settings$recipe %in% brohn_neural_morlet_recipes()) && identical(r$status, "computed") &&
       identical(s$trial_count, r$retained_trials) && s$trial_count >= r$minimum_trials &&
       identical(s$origin, r$origin) && identical(s$origin, report$origin), "The series recipe, origin or retained trial support disagrees with its recording.")
     brohn_require(brohn_text(settings$event_source) && brohn_text(settings$settings_source) && is.list(settings$reference) &&
@@ -84,7 +156,7 @@ brohn_neural_plot_model <- function(report) {
   })
   brohn_require(!anyDuplicated(vapply(cells, `[[`, character(1), "selector")), "Duplicate neural channel cells cannot be merged.")
   list(report_id = report$id, report_hash = report_hash, source_hash = p$source$hash, origin = report$origin,
-    provenance = p, processing = report$processing, quality = a$quality, cells = cells, recordings = recordings)
+    provenance = p, processing = report$processing, quality = a$quality, cells = cells, recordings = recordings, parameters = a$parameters)
 }
 
 brohn_neural_plot_selection <- function(model, selector = NULL, metric = NULL, frequency_hz = NULL, start_index = 1L, maximum_points = 2000L) {
@@ -116,6 +188,124 @@ brohn_neural_plot_selection <- function(model, selector = NULL, metric = NULL, f
     rows = rows, total_points = length(cell$axis), missing_points = sum(is.na(y)), window_missing_points = sum(is.na(y[indices])))
 }
 
+brohn_neural_map_model <- function(view) {
+  c <- view$cell
+  brohn_require(identical(c$type, "morlet"), "A time-frequency map requires saved Morlet cells.")
+  values <- do.call(rbind, c$values[[view$metric]])
+  missing <- is.na(values); finite <- values[!missing]
+  signed <- identical(view$metric, "transformed_power") && c$parameters$power_baseline$mode %in% c("subtract", "percent", "db")
+  limits <- if (!length(finite)) NULL else if (identical(view$metric, "itc")) c(0, 1) else if (signed) {
+    amplitude <- max(abs(finite)); if (amplitude == 0) amplitude <- 1
+    c(-amplitude, amplitude)
+  } else c(0, max(c(finite, if (identical(view$metric, "transformed_power") && c$parameters$power_baseline$mode == "ratio") 1 else 0,
+    if (all(finite == 0)) 1 else 0)))
+  palette <- grDevices::hcl.colors(256L, if (signed) "Blue-Red 3" else "Viridis")
+  index <- matrix(257L, nrow(values), ncol(values))
+  if (length(finite)) index[!missing] <- 1L+pmin(255L, pmax(0L, floor((finite-limits[[1L]])/diff(limits)*255)))
+  fs <- c$support$sampling_rate; half_sample <- .5/fs
+  list(schema = "brohn-neural-time-frequency-map/1.0", metric = view$metric, unit = view$unit,
+    report_hash = view$report_hash, source_hash = view$source_hash, selector = view$selector,
+    frequencies_hz = c$frequencies, times_s = c$axis, values = values, missing = missing, colour_index = index,
+    palette = palette, missing_colour = "#89949b", limits = limits, signed = signed,
+    epoch_extent_s = unlist(c$parameters$epoch_s, use.names = FALSE)+c(-half_sample, half_sample),
+    retained_extent_s = range(c$axis)+c(-half_sample, half_sample), sample_width_s = 1/fs,
+    excluded_samples_each_edge = c$support$derived_settings$edge_exclusion_samples_each_side,
+    missing_count = sum(missing), cell_count = length(values),
+    scale_rule = if (is.null(limits)) "No available values; no quantitative colour scale" else if (view$metric == "itc") "Fixed 0 to 1" else
+      if (signed) "Symmetric around zero, maximum absolute value across this complete channel/measure" else
+      "Zero to the maximum across this complete channel/measure; ratio includes one; all-zero fallback upper bound is one",
+    rendering = "One native raster pixel per saved frequency/time cell; 256 colour levels; nearest-neighbour screen scaling only. No numerical interpolation, aggregation or scientific resampling.",
+    frequency_axis = "Discrete equally spaced labelled frequency rows, not continuous frequency bands. Unrequested frequencies have no values.")
+}
+
+brohn_neural_map_metadata <- function(view) {
+  m <- brohn_neural_map_model(view)
+  m[c("schema", "metric", "unit", "report_hash", "source_hash", "selector", "frequencies_hz", "epoch_extent_s", "retained_extent_s",
+    "sample_width_s", "excluded_samples_each_edge", "limits", "missing_count", "cell_count", "scale_rule", "rendering", "frequency_axis")]
+}
+
+brohn_neural_map_png <- function(map) {
+  brohn_require(requireNamespace("png", quietly = TRUE), "Install the prepared PNG runtime to display the complete time-frequency map.")
+  # PNG is lossless with one pixel for every saved cell. Reversed image rows
+  # place the lowest requested frequency at the bottom; source arrays stay put.
+  index <- map$colour_index[rev(seq_len(nrow(map$colour_index))), , drop = FALSE]
+  colours <- grDevices::col2rgb(c(map$palette, map$missing_colour))/255
+  pixels <- array(0, dim = c(nrow(index), ncol(index), 3L))
+  for (i in 1:3) pixels[, , i] <- matrix(colours[i, as.vector(index)], nrow(index), ncol(index))
+  png::writePNG(pixels, target = raw())
+}
+
+brohn_neural_map_svg <- function(view, width = 680) {
+  brohn_require(width %in% c(320, 680), "Use the compact or wide time-frequency map layout.")
+  m <- brohn_neural_map_model(view); nf <- length(m$frequencies_hz)
+  left <- 78; right <- width-18; top <- 28; bottom <- top+max(128, nf*24); height <- bottom+158
+  px <- function(t) left+(t-m$epoch_extent_s[[1L]])/diff(m$epoch_extent_s)*(right-left)
+  row_height <- (bottom-top)/nf; fmt <- function(x) formatC(x, digits = 4, format = "f", decimal.mark = ".")
+  id <- paste0("neural-map-", substr(brohn_hash(list(view$selector, view$metric, view$frequency_hz, width)), 1, 20))
+  hatch <- paste0(id, "-unsupported"); gradient <- paste0(id, "-scale")
+  unit <- switch(view$metric, power_uv2 = "Wavelet power (uV^2)", itc = "Phase consistency (0 to 1)",
+    transformed_power = paste("Power (", if (view$unit == "uV^2 (wavelet power)") "uV^2" else view$unit, ")", sep = ""))
+  baseline <- view$cell$parameters$power_baseline
+  boundary <- if (baseline$mode == "none") "No power baseline" else paste("Baseline", paste(unlist(baseline$window_s), collapse = " to "), "s")
+  shiny::tags$svg(xmlns = "http://www.w3.org/2000/svg", viewBox = paste(0, 0, width, height), class = "brohn-neural-map",
+    role = "img", `aria-labelledby` = paste(id, paste0(id, "-desc")), focusable = "false",
+    style = "display:block;width:100%;height:auto;max-width:100%;background:#11171c;border-radius:8px",
+    shiny::tags$title(id = id, paste("Complete time-frequency map:", view$label, "|", view$cell$label)),
+    shiny::tags$desc(id = paste0(id, "-desc"), paste(m$cell_count, "saved cells;", m$missing_count, "missing values are grey. Hatched epoch edges are unsupported.",
+      m$frequency_axis, m$rendering, "Colour scale:", m$scale_rule, "in", m$unit, "; limits", brohn_json(as.list(m$limits)),
+      "Report SHA-256", m$report_hash, "; source SHA-256", m$source_hash, "; recipe", view$cell$parameters$recipe,
+      "; power baseline", brohn_json(baseline), "; baseline support", brohn_json(view$cell$support$derived_settings$baseline_support))),
+    shiny::tags$defs(
+      shiny::tags$pattern(id = hatch, patternUnits = "userSpaceOnUse", width = 8, height = 8,
+        shiny::tags$rect(width = 8, height = 8, fill = "#232c33"), shiny::tags$path(d = "M-2 2L2 -2M0 8L8 0M6 10L10 6", stroke = "#d6c48a", `stroke-width` = 1)),
+      shiny::tags$linearGradient(id = gradient, x1 = "0%", x2 = "100%", y1 = "0%", y2 = "0%",
+        lapply(seq_along(m$palette), function(i) shiny::tags$stop(offset = paste0((i-1)/255*100, "%"), `stop-color` = m$palette[[i]])))),
+    shiny::tags$rect(x = left, y = top, width = right-left, height = bottom-top, fill = paste0("url(#", hatch, ")")),
+    shiny::tags$image(x = fmt(px(m$retained_extent_s[[1L]])), y = top,
+      width = fmt(diff(px(m$retained_extent_s))), height = bottom-top, preserveAspectRatio = "none", style = "image-rendering:pixelated",
+      href = paste0("data:image/png;base64,", base64enc::base64encode(brohn_neural_map_png(m))),
+      `data-time-cells` = length(m$times_s), `data-frequency-cells` = nf),
+    lapply(seq_len(nf), function(i) {
+      y <- bottom-i*row_height
+      shiny::tagList(shiny::tags$text(x = left-8, y = y+row_height/2+4, `text-anchor` = "end", fill = "#edf2f2", `font-size` = 11,
+        `font-weight` = if (m$frequencies_hz[[i]] == view$frequency_hz) "bold" else "normal", .brohn_np_number(m$frequencies_hz[[i]])),
+        shiny::tags$line(x1 = left, x2 = right, y1 = y, y2 = y, stroke = "#11171c", `stroke-width` = .6),
+        if (m$frequencies_hz[[i]] == view$frequency_hz) shiny::tags$rect(x = left+.5, y = y+.5, width = right-left-1, height = row_height-1,
+          fill = "none", stroke = "#ffffff", `stroke-width` = 1.5, `stroke-dasharray` = "5 3", `data-selected-frequency` = view$frequency_hz))
+    }),
+    shiny::tags$line(x1 = fmt(px(0)), x2 = fmt(px(0)), y1 = top, y2 = bottom, stroke = "#ffffff", `stroke-width` = 1, `stroke-dasharray` = "3 4"),
+    shiny::tags$text(x = 8, y = 16, fill = "#edf2f2", `font-size` = 11, "Hz (rows)"),
+    lapply(unique(c(view$cell$parameters$epoch_s[[1L]], 0, view$cell$parameters$epoch_s[[2L]])), function(t)
+      shiny::tags$text(x = fmt(px(t)), y = bottom+18, `text-anchor` = "middle", fill = "#edf2f2", `font-size` = 11, .brohn_np_number(t))),
+    shiny::tags$text(x = (left+right)/2, y = bottom+36, `text-anchor` = "middle", fill = "#edf2f2", `font-size` = 11, "Time from event (s)"),
+    shiny::tags$text(x = left, y = bottom+57, fill = "#edf2f2", `font-size` = 11, unit),
+    if (!is.null(m$limits)) shiny::tagList(
+      shiny::tags$rect(x = left, y = bottom+65, width = right-left, height = 12, fill = paste0("url(#", gradient, ")")),
+      shiny::tags$text(x = left, y = bottom+92, fill = "#edf2f2", `font-size` = 11, .brohn_np_number(m$limits[[1L]])),
+      shiny::tags$text(x = right, y = bottom+92, `text-anchor` = "end", fill = "#edf2f2", `font-size` = 11, .brohn_np_number(m$limits[[2L]]))) else
+      shiny::tags$text(x = left, y = bottom+76, fill = "#edf2f2", `font-size` = 11, "No available values"),
+    shiny::tags$rect(x = left, y = bottom+104, width = 12, height = 12, fill = m$missing_colour),
+    shiny::tags$text(x = left+17, y = bottom+114, fill = "#edf2f2", `font-size` = 11, "Missing"),
+    shiny::tags$rect(x = left+90, y = bottom+104, width = 12, height = 12, fill = paste0("url(#", hatch, ")")),
+    shiny::tags$text(x = left+107, y = bottom+114, fill = "#edf2f2", `font-size` = 11, "Unsupported"),
+    shiny::tags$text(x = left, y = bottom+141, fill = "#edf2f2", `font-size` = 11, boundary))
+}
+
+.brohn_np_map_ui <- function(view) {
+  if (view$cell$type != "morlet") return(NULL)
+  m <- brohn_neural_map_model(view)
+  shiny::div(class = "brohn-neural-map-view",
+    shiny::h4("Complete time-frequency map"),
+    shiny::p(paste(length(m$frequencies_hz), "recorded frequencies by", length(m$times_s), "saved times;", m$missing_count,
+      "missing values. This map includes the complete channel, independently of the slice window below.")),
+    shiny::div(class = "brohn-signal-wide", brohn_neural_map_svg(view)), shiny::div(class = "brohn-signal-compact", brohn_neural_map_svg(view, 320)),
+    shiny::p("Each labelled row is one requested frequency, not a frequency band. Grey cells are unavailable values; hatched areas are excluded wavelet edges. The dashed row selects the frequency slice below; the vertical dashed line marks event onset."),
+    shiny::p(paste("Colour scale:", m$scale_rule, ". Units:", m$unit, ". The same complete-channel scale is retained as the slice window changes.")),
+    shiny::p("Every saved cell is encoded at native resolution, without averaging or interpolation. A small screen cannot show every time cell separately; use the exact frequency slice and complete CSV/JSON values for detail."),
+    shiny::tags$details(shiny::tags$summary("Inspect map support and colour scale"), shiny::tags$pre(brohn_json(brohn_neural_map_metadata(view), TRUE))),
+    shiny::h4("Exact frequency slice"))
+}
+
 # Each path contains adjacent available samples only. Disjoint/null support is
 # disconnected; shaded ERP uncertainty is mean +/- the already-saved trial SEM.
 brohn_neural_plot_svg <- function(view, width = 680) {
@@ -140,12 +330,13 @@ brohn_neural_plot_svg <- function(view, width = 680) {
   title <- paste(view$label, if (!is.null(view$frequency_hz)) paste("at", view$frequency_hz, "Hz"), "in", view$unit, "|", view$cell$label)
   id <- paste0("neural-", substr(brohn_hash(list(view$selector, view$metric, view$frequency_hz, view$indices, width)), 1, 20))
   target <- if (view$cell$type == "frequency_tagging_psd") Filter(function(f) f$name == "tag_bin_density" && brohn_number(f$actual_bin_hz), view$cell$features) else list()
-  shiny::tags$svg(xmlns = "http://www.w3.org/2000/svg", viewBox = paste(0, 0, width, height), role = "img", `aria-labelledby` = paste(id, paste0(id, "-desc")),
+  shiny::tags$svg(xmlns = "http://www.w3.org/2000/svg", viewBox = paste(0, 0, width, height), class = "brohn-neural-slice", role = "img", `aria-labelledby` = paste(id, paste0(id, "-desc")),
     style = "display:block;width:100%;height:auto;max-width:100%;background:#11171c;border-radius:8px", focusable = "false",
     shiny::tags$title(id = id, title), shiny::tags$desc(id = paste0(id, "-desc"), paste("Exact saved samples", min(view$indices), "through", max(view$indices), "of", view$total_points,
       ". Missing values break the line. Numerical alternatives follow. Positive voltage is plotted upward; no condition or participant averaging occurs in this view.",
       "Report SHA-256", view$report_hash, "; source SHA-256", view$source_hash, "; retained trials", view$cell$support$retained_trials,
-      "; voltage baseline", brohn_json(view$cell$parameters$baseline_s), "; recipe", view$cell$parameters$recipe)),
+      "; voltage baseline", brohn_json(view$cell$parameters$baseline_s), "; recipe", view$cell$parameters$recipe,
+      if (view$cell$type == "morlet") paste("; power baseline support", brohn_json(view$cell$support$derived_settings$baseline_support)))),
     lapply(ticks, function(y) shiny::tagList(line(left, py(y), right, py(y), stroke = "#415057"),
       shiny::tags$text(x = left-8, y = py(y)+4, `text-anchor` = "end", fill = "#edf2f2", `font-size` = 12, tick_label(y)))),
     lapply(c(xrange[[1L]], mean(xrange), xrange[[2L]]), function(x) shiny::tags$text(x = px(x), y = bottom+22, `text-anchor` = "middle", fill = "#edf2f2", `font-size` = 12, tick_label(x))),
@@ -168,12 +359,14 @@ brohn_neural_plot_svg <- function(view, width = 680) {
     shiny::h3(view$label), shiny::p(view$cell$label),
     shiny::p(paste(r$retained_trials, "retained of", r$requested_trials, "requested trials;", r$excluded_trials, "excluded; minimum", r$minimum_trials, ". Origin:", model$origin, ".")),
     shiny::p(paste("Units:", view$unit, if (!is.null(view$frequency_hz)) paste("; recorded frequency", view$frequency_hz, "Hz"))),
+    .brohn_np_baseline_ui(r, p),
+    .brohn_np_map_ui(view),
     if (!any(is.finite(view$y))) shiny::p("This saved window is unavailable. Missing values remain missing; no zero-valued response is drawn.") else
       shiny::div(style = "min-width:0;max-width:100%", shiny::div(class = "brohn-signal-wide", brohn_neural_plot_svg(view)), shiny::div(class = "brohn-signal-compact", brohn_neural_plot_svg(view, 320))),
     shiny::p(paste("Showing exact saved samples", min(view$indices), "to", max(view$indices), "of", view$total_points, ";", view$window_missing_points,
       "unavailable in this window and", view$missing_points, "in this complete trace. No samples are averaged or decimated by the view.")),
     shiny::p(if (view$cell$type == "erp") "The shaded band is mean plus/minus the saved pointwise trial SEM within this recording and condition. It is not a participant confidence interval. Single-trial SEM stays unavailable. Positive voltage is upward." else
-      if (view$cell$type == "morlet") "Choose an actual recorded frequency to inspect its time course. Frequencies are separate measured analysis rows, with no interpolated heatmap. ITC uses the original total-signal phases, including when induced power was chosen." else
+      if (view$cell$type == "morlet") "Choose an actual recorded frequency to inspect its time course. The map and slice share the exact saved values. ITC uses the original total-signal phases, including when induced power was chosen." else
       "Dashed gold lines mark saved target bins. Density is mean trial power per Hz, not integrated power or oscillation amplitude. SNR and neighboring noise values below are the saved worker outputs."),
     shiny::p(paste("Voltage baseline:", if (is.null(p$baseline_s)) "no subtraction" else paste(brohn_json(p$baseline_s), "s, inclusive"),
       "; reference:", p$reference$mode, "; filtering:", p$filter$mode, ".")),
@@ -198,6 +391,8 @@ brohn_neural_report_plots <- function(report, selector = NULL, metric = NULL, fr
       if (length(model$cells)) shiny::tagList(.brohn_np_view_ui(model, brohn_neural_plot_selection(model, selector, metric, frequency_hz, start_index, maximum_points)),
         shiny::p(paste("This view contains one of", length(model$cells), "separate recording/condition/channel cells. The complete report JSON retains all cells and arrays."))) else
         shiny::p("No supported waveform was retained. The trial support below explains why; missing conditions are not plotted as zero."),
+      lapply(Filter(function(r) identical(r$status, "unavailable") && !is.null(r$derived_settings$baseline_support), model$recordings), function(r)
+        shiny::tagList(shiny::h3(paste(r$recording_id, r$condition_id)), .brohn_np_baseline_ui(r, model$parameters[[r$recording_id]]))),
       shiny::tags$details(shiny::tags$summary("All saved recording and condition outcomes"), brohn_table(model$recordings, maximum = 100L, label = "Neural trial eligibility including unavailable conditions")))
   }, error = function(e) brohn_card(title = "Neural plot needs attention", shiny::p(conditionMessage(e)), shiny::p("The saved numerical report remains available. No repair or replacement calculation is performed by this view.")))
 }
@@ -224,7 +419,15 @@ brohn_neural_plot_csv <- function(model, selector, path) {
   for (field in c("recording_id", "condition_id", "channel", "origin")) rows[[field]] <- safe(c$identity[[field]])
   rows$group_json <- safe(brohn_json(c$identity$group)); rows$report_sha256 <- model$report_hash; rows$source_sha256 <- model$source_hash
   rows$coordinate_unit <- view$axis_unit
-  if (c$type == "morlet") rows$transformed_unit <- c$source$transformed_unit
+  if (c$type == "morlet") {
+    rows$transformed_unit <- c$source$transformed_unit
+    rows$recipe <- c$parameters$recipe
+    rows$power_baseline_json <- safe(brohn_json(c$parameters$power_baseline))
+    rows$baseline_support_json <- safe(brohn_json(c$support$derived_settings$baseline_support))
+    for (metric in c("power_uv2", "transformed_power", "itc")) rows[[paste0(metric, "_support")]] <- ifelse(is.na(rows[[metric]]), "missing_value", "retained_value")
+    rows$epoch_start_s <- c$parameters$epoch_s[[1L]]; rows$epoch_end_s <- c$parameters$epoch_s[[2L]]
+    rows$excluded_wavelet_samples_each_edge <- c$support$derived_settings$edge_exclusion_samples_each_side
+  }
   utils::write.csv(rows, path, row.names = FALSE, na = "", fileEncoding = "UTF-8")
   invisible(path)
 }
@@ -241,7 +444,8 @@ brohn_install_neural_plots <- function(input, output, session, store, state, att
         shiny::selectInput("neural_plot_frequency", "Recorded analysis frequency (Hz)", stats::setNames(seq_along(c$frequencies), format(c$frequencies, digits = 15, trim = TRUE)))),
       shiny::numericInput("neural_plot_start", "First saved sample index (up to 2,000 consecutive points per view)", 1, min = 1, max = length(c$axis), step = 1),
       shiny::div(class = "brohn-toolbar", shiny::downloadButton("neural_plot_csv", "Download complete channel series", icon = NULL),
-        shiny::downloadButton("neural_plot_json", "Download series + provenance", icon = NULL), shiny::downloadButton("neural_plot_svg", "Download displayed chart", icon = NULL)))
+        shiny::downloadButton("neural_plot_json", "Download series + provenance", icon = NULL), shiny::downloadButton("neural_plot_svg", "Download displayed chart", icon = NULL),
+        if (c$type == "morlet") shiny::downloadButton("neural_map_svg", "Download time-frequency map", icon = NULL)))
   })
   selected <- shiny::reactive({m <- model(); c <- cell()
     shiny::req(identical(input$neural_plot_form, c$selector), input$neural_plot_start)
@@ -257,9 +461,12 @@ brohn_install_neural_plots <- function(input, output, session, store, state, att
     content = function(file) prepare_download(function() {v <- selected(); m <- model(); brohn_write_json_file(list(schema = "brohn-neural-channel-export/1.0",
       report_id = m$report_id, report_hash = m$report_hash, source_hash = m$source_hash, series = v$cell$source, features = v$cell$features,
       support = v$cell$support, parameters = v$cell$parameters, provenance = m$provenance, processing = m$processing,
+      time_frequency_map = if (v$cell$type == "morlet") brohn_neural_map_metadata(v) else NULL,
       displayed_window = list(first_index = min(v$indices), last_index = max(v$indices), metric = v$metric, frequency_hz = v$frequency_hz)), file)}))
   output$neural_plot_svg <- shiny::downloadHandler(filename = function() paste0(model()$report_id, "-neural.svg"), contentType = "image/svg+xml",
     content = function(file) prepare_download(function() {v <- selected(); svg <- brohn_neural_plot_svg(v); brohn_require(!is.null(svg), "This window has no supported chart to download.")
       writeLines(enc2utf8(as.character(svg)), file, useBytes = TRUE)}))
+  output$neural_map_svg <- shiny::downloadHandler(filename = function() paste0(model()$report_id, "-time-frequency.svg"), contentType = "image/svg+xml",
+    content = function(file) prepare_download(function() {v <- selected(); writeLines(enc2utf8(as.character(brohn_neural_map_svg(v))), file, useBytes = TRUE)}))
   invisible(list(model = model, selected = selected))
 }

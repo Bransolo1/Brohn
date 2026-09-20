@@ -24,6 +24,7 @@ brohn_python_profile <- function(modality) {
   normalizePath(candidate, winslash = "/", mustWork = TRUE)
 }
 brohn_job_input <- function(store, job) {
+  if (identical(job$operation, "summarize_signal_windows")) return(brohn_signal_windows_input(store, job))
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   request <- job$request
   if (identical(job$operation, "analyse_task_cohort")) return(list(schema = "brohn-analysis-input/1.0", operation = job$operation,
@@ -80,7 +81,8 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "assemble_capture", "extract_stream"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "summarize_signal_windows", "assemble_capture", "extract_stream"), "Use the operation's setup screen to choose a new destination or source.")
+  if(identical(job$operation,"summarize_signal_windows"))brohn_signal_windows_input(store,job)
   brohn_store_batch(store, function() {
     retried <- brohn_enqueue_job(store, job$operation, job$request, paste0("retry:", id, ":", brohn_id("request")))
     brohn_put_entity(store, "job_retry", brohn_id("retry"), list(source_job_id = id, new_job_id = retried$id, at = brohn_now(), policy = "same_frozen_inputs_new_attempt"))
@@ -160,6 +162,7 @@ brohn_analyse_runs <- function(input) {
 }
 brohn_analyse_input_unplanned <- function(input, scratch) {
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
+  if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
   if (identical(input$operation, "analyse_task_cohort")) return(brohn_analyse_task_cohort(input$task_cohort))
   if (identical(input$operation, "ingest_source")) return(brohn_analyse_ingestion(input, scratch))
@@ -445,6 +448,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation, "ingest_source"))
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
     if (explorer) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
+    if (identical(job$operation, "summarize_signal_windows")) return(brohn_publish_signal_windows(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("normalise_dataset", "import_multistream"))
       return(brohn_publish_stream_import(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("signal_catalog", "signal_preview"))

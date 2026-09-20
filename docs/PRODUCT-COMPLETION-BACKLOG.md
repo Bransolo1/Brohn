@@ -1,0 +1,51 @@
+# Brohn completion backlog
+
+Owner-authorized scope, 20 September 2026. Continue building until Brohn is a
+finished, premium end-to-end research platform that can credibly compete with
+iMotions. Preserve the Brohn name and established visual identity. The complete
+50-capability register and 17-package master architecture remain in scope.
+Do not stop at a polished prototype or declare completion after one feature.
+
+The owner has **no physical hardware available for testing**. Use primary academic
+guidance, independently calculated fixtures, recorded/public reference data and
+replay/synthetic streams to exercise the software. Actual hardware accuracy,
+physical timing and named-device qualification must remain explicitly unverified.
+This limitation does not block building or testing independent software routes.
+
+## Required product and verification work
+
+| ID | Required outcome | Acceptance before closing | Status |
+|---|---|---|---|
+| PC01 | Historical and current iMotions benchmark | Read official historical release posts and official YouTube demonstration content; map demonstrated workflows to Brohn's observable acceptance; record dates, URLs and whether a transcript/content was actually accessible. Consult this before final sign-off. | Reviewed: official release history and five full official transcripts; docs/qa/IMOTIONS-COMPETITOR-BENCHMARK.md. No parity sign-off. |
+| PC02 | Premium coherent end-to-end experience | Create/import/clone a study, configure it, preview participants, collect/import, check quality, analyse automatically, inspect/export/reopen results through one understandable workflow. Desktop, narrow, keyboard and error/recovery states must work. | In progress |
+| PC03 | Academic basis for every measurement and automatic analysis | Maintain a per-profile matrix covering implicit/cognitive tasks, gaze/eye metrics, HR/ECG/PPG/HRV, EEG/fNIRS, EDA, respiration, EMG/EOG, temperature, movement, camera/face and audio plus remaining registered capabilities. Pin primary sources, effective settings, units, timing/baseline requirements, exclusions, missingness, denominators and supported interpretations. Best practice is specific to the named procedure and context, not a universal default. | Audit saved; respiration source/polarity corrected and Morlet baseline support strengthened. Four-record MIT-BIH ECG evaluation exposed unresolved beat-timing errors (docs/qa/ECG-RECORDED-REFERENCE.md). Reference and remaining-profile validation continues. |
+| PC04 | Test every enabled measurement type | Exercise valid, invalid, missing, noisy, interrupted and boundary inputs with independent numeric expectations and recorded/reference data where available. Check the complete input-to-saved-report route, exports and restart; installed libraries alone do not count. | Open; many existing scoped suites |
+| PC05 | Visualizations for every enabled measurement type | Provide understandable appropriate plots, units, quality/coverage, event/baseline context, unavailable states, accessible numerical alternatives and exportable figures/data. Verify figures against the actual full saved source and numerical results. | In progress: interval, MaxDiff, task/cohort, cardiac PSD and full time-frequency views have scoped acceptance; every remaining enabled view still requires reconciliation. |
+| PC06 | Each study executes its intended design | Verify controls, stimulus order/allocation, questionnaire branches, task instructions/practice/scoring, stimulus/image/media identity, timing records, response capture, consent, pause/recovery and distinct endings against the frozen protocol. Preview must not silently consume live allocation or change recorded design. | In progress |
+| PC07 | Massively simplified researcher workflow | Question-led creation, meaningful defaults, clear next action, one readiness summary and direct fixes. Keep advanced settings available with explanations. Avoid separate disconnected modality dashboards and technical implementation details in normal study setup. | In progress: Home/Overview/sequence preview accepted (8 actual browser journeys,8 clean scans). |
+| PC08 | Researcher-authored welcome pages | Researchers can configure participant-facing welcome/instruction content, preview the actual frozen presentation and reuse it through template/clone/portable design. Keep welcome, consent and debrief roles clear; validate accessible content and stale revisions. | Implemented and scoped acceptance passed:19 domain,13 Shiny,8 browser assertions/3 clean scans; legacy regressions109/90/56; actual automatic saved-report checks also passed. |
+| PC09 | Image uploads and study materials | Upload images wherever the supported design needs them, preview actual content, replace/reuse assets safely, preserve asset hashes and geometry through release/import/export/clone. Clear supported format/size messages and recoverable upload errors; no missing stimulus advertised ready. Extend other supported media routes consistently. | In progress: welcome PNG upload/replacement/reuse qualified; docs/qa/STUDY-MATERIAL-AUTHORING-AUDIT.md identifies exact remaining preview, description and revision-binding work. |
+| PC10 | Per-measurement equipment recording and signal-quality feedback | Provide the appropriate version for **each measurement type when required**. Distinguish disconnected, connected, receiving samples, recorder writing, interrupted and usable/poor/unknown quality. Do not turn green solely because a process exists. Use actual gaze validity/position, ECG/PPG waveform/beat support, EEG channel/signal status (impedance only when supplied), EDA/respiration/EMG/temperature/movement signal checks, audio/camera capture checks and task input/timing/trial checks as applicable. Show source-grounded previews and actionable fixes; never invent unavailable diagnostics or universal quality thresholds. Retain gaps/clock resets and exercise states through replay. | Partial:15-family recorded-source monitoring accepted; connected/receiving/committed/unknown-quality separated. Five-second bounded previews and exact reviewed acquisition criteria accepted:6 Python,25 R,53 manager and7 browser journey/5 scans plus3 final render/3 scans. Reusable setups and device/protocol qualification remain open. |
+| PC11 | Reliable acquisition and immutable source preservation | Manager-owned recordings, imports and analysis artifacts publish atomically with correct ownership/fencing, bounded work, safe cancellation/retry and recovery. Collection remains responsive during large outputs. | Manager-owned original/reviewed publication accepted:23 guarded-publication and53 actual-manager checks; remaining bulk and wider lifecycle paths open. |
+| PC12 | Synchronized review and reusable annotations | Replay appropriate linked stimuli/media/signals using explicit clock/source alignment; event/interval/AOI annotations remain editable, versioned and reusable. Complete-artifact window summaries, baseline/task/cohort comparisons and graph plus underlying table exports retain support and provenance. Never infer synchronization from timestamp proximity. | Partial: source-bound versioned intervals, complete-data summaries, recovery and SVG/CSV/JSON export accepted. Linked synchronized replay and cross-recording annotation reuse remain open. |
+| PC13 | Complete study/research operations | Enrollment/consent, participant/session history, deployment closure, waves/endings as supported, design library/reuse, historical results, retention, controlled sharing and consistent backup/restore. | Open; existing local lifecycle evidence |
+| PC14 | Reproducible installation and launch | Exact dependencies, understandable setup/check/launch/stop, optional-profile availability, clean supported installation and restart/restore evidence. A working development checkout is not a clean-machine release. | In progress: checked configuration passes 38 assertions |
+| PC15 | Remote/hosted profile | HTTPS, researcher authentication, project isolation, bounded participant access, expiry/revocation, monitoring and safe restore before remote recruitment. Prepare software locally; an actual hosting destination is an external deployment input. | Open |
+| PC16 | Whole-platform release and honest sign-off | Reconcile every capability/package and the competitive matrix; run required integrated/release checks; distinguish current enabled capabilities, planned extensions and hardware-unverified routes. Save launch instructions, evidence, limitations and reproducible release artifacts. | Open |
+
+## Current implementation ownership
+
+- Coordinator: integration, saved installation configuration, shared domain/API
+  wiring, completion ledger and next source-bound review/annotation workflow.
+- Acquisition worker: manager-owned guarded publication, followed by actual
+  sample/recording/quality feedback and replay-tested equipment diagnostics.
+- Experience worker: guided Home/Overview/participant-sequence preview and
+  responsive/accessibility checks; welcome/material authoring follows.
+- Evidence worker: historical iMotions releases and five official YouTube
+  transcripts now reviewed in docs/qa/IMOTIONS-COMPETITOR-BENCHMARK.md;
+  per-measurement academic, quality and visualization reconciliation is active.
+
+Update statuses only with executed evidence. Retain failed runs and corrections.
+Keep PC01-PC16 connected to the master architecture and package manifest; this
+list adds the owner's latest acceptance requirements without discarding earlier
+scope. A requirement is not complete because it is written in this file.

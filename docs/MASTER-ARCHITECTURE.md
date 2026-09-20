@@ -2,8 +2,8 @@
 
 **Resumed 20 September 2026:** the owner resumed implementation, keeping the
 Brohn name. [Current status](../STATUS.md) and the
-[complete-answer explorer acceptance](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
-record the latest connected work. [John's handoff](HANDOFF-JOHN.md) preserves the
+[completion backlog](PRODUCT-COMPLETION-BACKLOG.md)
+record the latest connected work and its scoped acceptance. [John's handoff](HANDOFF-JOHN.md) preserves the
 8 September stopped checkpoint. This plan remains incomplete.
 
 Revision 2026-09-08. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.

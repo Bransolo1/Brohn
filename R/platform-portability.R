@@ -119,6 +119,7 @@
     function(s) list(stimulus_id = s$id, reason = "asset_not_attached")), rights = "researcher_review_required")
 .brohn_port_assets <- function(design) {
   assets <- Filter(Negate(is.null), lapply(design$stimuli, function(s) s$asset))
+  if (!is.null(design$welcome$asset)) assets <- c(assets, list(design$welcome$asset))
   for (block in design$blocks) assets <- c(assets, Filter(Negate(is.null), lapply(block$materials, function(m) m$asset)))
   unique <- list()
   for (asset in assets) {

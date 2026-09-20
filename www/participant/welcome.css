@@ -1,0 +1,5 @@
+/* Only the untimed, pre-consent opening page. Scientific stimulus geometry and
+   timing continue to use the unchanged stimulus-stage rules. */
+.welcome-image { display: block; max-width: 100%; width: auto; height: auto; max-height: 60vh; object-fit: contain; margin: 24px 0; }
+.welcome-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+#preview-status { font-size: .85rem; padding-top: 16px; }

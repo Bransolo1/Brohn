@@ -166,10 +166,12 @@ brohn_maxdiff_result_ui <- function(result,exercise_number=1L) {
       quality$exposure_records-quality$presented_exposures, "not presented;", quality$session_count, "source sessions.")),
     shiny::p(if (is.null(quality$participant_count)) "Unique people are unavailable: anonymous or mixed source codes do not establish participant linkage." else paste(quality$participant_count, "source-linked participant codes; this is a descriptive aggregate choice-weighted analysis.")),
     shiny::p("The exposure-adjusted score is (best - worst) divided by complete-pair exposures containing that item. Missing choices are shown separately; no eligible choices yields Unavailable."),
+    brohn_maxdiff_plot_ui(result,"adjusted",exercise_number),
     brohn_table(lapply(result$items, function(i) list(item = i$label, best = i$best_count, worst = i$worst_count, presented = i$presented_exposures,
       complete_pair_denominator = i$answered_exposures, missing = i$missing_exposures, adjusted_score = i$exposure_adjusted_score)), maximum = 60L, label = region_label("Complete-pair counts and denominators")),
     if (identical(model$status, "estimated")) shiny::tagList(shiny::h3("Aggregate paired utilities"),
       shiny::p("Relative logit utilities sum to zero. Each complete pair has equal weight; more answered choices contribute more to the fit. Individual preferences and population confidence intervals are unavailable."),
+      brohn_maxdiff_plot_ui(result,"utility",exercise_number),
       brohn_table(lapply(model$utilities, function(u) list(item = brohn_find(result$design$items, u$item_id)$label, utility = u$utility, unit = u$unit,
         standard_error = u$standard_error)), maximum = 60L, label = region_label("Saved aggregate paired MaxDiff utilities"))) else
       shiny::p(class = "brohn-alert brohn-alert-warning", paste("Aggregate utilities:", gsub("_", " ", model$status), "-", gsub("_", " ", brohn_default(model$reason, "No usable saved fit.")))),

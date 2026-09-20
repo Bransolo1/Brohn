@@ -90,7 +90,7 @@ def unit_conversion(modality, unit):
         "ecg": {"V": (1e6, "uV"), "mV": (1e3, "uV"), "uV": (1.0, "uV"), "\u00b5V": (1.0, "uV"), "\u03bcV": (1.0, "uV")},
         "emg": {"V": (1e6, "uV"), "mV": (1e3, "uV"), "uV": (1.0, "uV"), "\u00b5V": (1.0, "uV"), "\u03bcV": (1.0, "uV")},
         "ppg": {"a.u.": (1.0, "a.u."), "V": (1.0, "V"), "mV": (1e-3, "V")},
-        "respiration": {"a.u.": (1.0, "a.u."), "V": (1.0, "V"), "mV": (1e-3, "V"), "L": (1.0, "L"), "L/s": (1.0, "L/s")},
+        "respiration": {"a.u.": (1.0, "a.u."), "V": (1.0, "V"), "mV": (1e-3, "V"), "L": (1.0, "L")},
     }
     require(unit in units.get(modality, {}), f"Unsupported or missing {modality} amplitude unit {unit!r}. Declare calibrated voltage/conductance or supported source units explicitly.")
     return units[modality][unit]
@@ -105,14 +105,17 @@ def parameters(modality, supplied, fs):
                 "interval_min_ms": 300.0, "interval_max_ms": 2000.0, "frequency_min_duration_s": 300.0},
         "ppg": {"recipe": "ppg-elgendi-detected-prv/1.0", "edge_exclusion_s": 2.0,
                 "interval_min_ms": 300.0, "interval_max_ms": 2000.0, "frequency_min_duration_s": 300.0},
-        "respiration": {"recipe": "respiration-khodadad-cycles/1.0", "edge_exclusion_s": 5.0},
+        "respiration": {"recipe": "respiration-displacement-khodadad/1.0", "edge_exclusion_s": 5.0,
+                        "source_quantity": None, "polarity": None, "mapping_source": None},
         "emg": {"recipe": "emg-butterworth-rms/1.0", "highpass_hz": 20.0, "lowpass_hz": min(450.0, fs * .4),
                 "rms_window_s": .05, "edge_exclusion_s": .25, "burst_threshold_uv": None, "burst_min_duration_s": .1},
     }
     require(isinstance(supplied, dict), "parameters must be an object.")
     result = defaults[modality].copy()
     require(not (set(supplied) - set(result)), f"Unsupported {modality} parameters: {', '.join(sorted(set(supplied) - set(result)))}")
-    require("recipe" not in supplied or supplied["recipe"] == result["recipe"], "The requested recipe is not implemented by this worker.")
+    require("recipe" not in supplied or supplied["recipe"] == result["recipe"],
+            "Review the original respiration mapping and declare its displacement/volume quantity, inspiration polarity and evidence for the new recipe; historical reports remain unchanged."
+            if modality == "respiration" else "The requested recipe is not implemented by this worker.")
     result.update(supplied)
     if "edge_exclusion_s" in result:
         finite(result["edge_exclusion_s"], "edge_exclusion_s", defaults[modality]["edge_exclusion_s"], 120)
@@ -146,7 +149,14 @@ def parameters(modality, supplied, fs):
             require(result["powerline_hz"] <= fs/2, "The selected powerline frequency exceeds Nyquist; provide an acquisition-compatible cleaning profile rather than silently applying it.")
     elif modality == "respiration":
         require(fs >= 10, "The respiration recipe requires at least 10 Hz.")
-        result.update(cleaner="khodadad2018", detector="khodadad2018", polarity="positive_excursion_toward_inspiration; confirm sensor mapping")
+        require(result["source_quantity"] in {"belt_displacement", "lung_volume"},
+                "Declare source_quantity as belt_displacement or lung_volume from source evidence. Airflow and unspecified signals remain preserved source data; this cycle-phase recipe cannot analyse them.")
+        require(result["polarity"] in {"positive_inspiration", "negative_inspiration"},
+                "Declare the observed inspiration polarity as positive_inspiration or negative_inspiration; it is not inferred from the waveform.")
+        require(isinstance(result["mapping_source"], str) and 0 < len(result["mapping_source"].strip()) <= 4000,
+                "Provide mapping_source evidence for the respiratory quantity and polarity, such as the sensor/export protocol and reviewed breathing maneuver.")
+        result.update(cleaner="khodadad2018", detector="khodadad2018", processing_polarity="positive_inspiration",
+                      phase_definition="displacement_trough_to_peak_and_peak_to_next_trough", source_polarity_multiplier=1 if result["polarity"] == "positive_inspiration" else -1)
     elif modality == "emg":
         require(fs >= 250, "The surface EMG recipe requires at least 250 Hz.")
         finite(result["highpass_hz"], "highpass_hz", 5, fs / 2)
@@ -413,7 +423,7 @@ def eeg(x, t, fs, p):
                         "Band power is a signal measure, not a universal attention, engagement or emotion score."])
 
 
-def interval_metrics(peaks, fs, p, prefix):
+def interval_metrics(peaks, fs, p, prefix, return_spectrum=False):
     intervals = np.diff(peaks) * 1000 / fs
     valid = (intervals >= p["interval_min_ms"]) & (intervals <= p["interval_max_ms"])
     retained = intervals[valid]
@@ -430,20 +440,50 @@ def interval_metrics(peaks, fs, p, prefix):
                 feature(f"{prefix}_mean_interval_rate", np.mean(60000 / retained) if len(retained) else None, "beats/min")]
     duration = (peaks[-1] - peaks[0]) / fs if len(peaks) > 1 else 0
     frequency = {"lf_power": None, "hf_power": None, "lf_hf_ratio": None}
-    frequency_reason = "requires_complete_plausible_intervals_and_at_least_300_seconds"
+    frequency_reason = "requires_complete_plausible_intervals_and_declared_minimum_duration"
+    spectrum = {"schema": "brohn-cardiac-interval-spectrum/1.0", "status": "unavailable",
+        "interval_basis": "detected_pulse_intervals_prv" if prefix == "detected_prv" else "detected_r_peak_intervals_rr",
+        "rhythm_basis": "PRV from detected pulse peaks" if prefix == "detected_prv" else "RR from detected R peaks; normal-to-normal intervals not established",
+        "normal_to_normal_confirmed": False, "coordinate_unit": "Hz", "density_unit": "ms^2/Hz",
+        "estimator": "scipy.signal.welch", "interpolation": "linear between successive detected interval endpoint times; no extrapolation",
+        "interpolation_hz": p["frequency_interpolation_hz"], "window": p["frequency_psd_window"],
+        "window_s": p["frequency_psd_window_s"], "overlap_fraction": p["frequency_psd_overlap_fraction"],
+        "window_convention": "DFT-even", "detrend": "constant per Welch segment", "scaling": "density", "average": "mean", "one_sided": True,
+        "band_integration": "sum complete included density bins times frequency_bin_width_hz; no interpolated band edges",
+        "bands": [{"name": "LF", "lower_hz": .04, "upper_hz": .15, "lower_inclusive": True, "upper_inclusive": False},
+                  {"name": "HF", "lower_hz": .15, "upper_hz": .4, "lower_inclusive": True, "upper_inclusive": True}],
+        "support": {"detected_peak_count": len(peaks), "interval_count": len(intervals), "plausible_interval_count": int(valid.sum()),
+                    "detected_peak_span_s": float(duration), "minimum_peak_span_s": p["frequency_min_duration_s"],
+                    "minimum_intervals": 10, "complete_plausible_intervals_required": True},
+        "rows": []}
     if len(intervals) >= 10 and valid.all() and duration >= p["frequency_min_duration_s"]:
         times = peaks[1:] / fs
-        uniform = np.arange(times[0], times[-1], .25)
+        rate = p["frequency_interpolation_hz"]
+        uniform = np.arange(times[0], times[-1], 1 / rate)
         interpolated = np.interp(uniform, times, intervals)
-        frequencies, power = signal.welch(interpolated, fs=4, window="hann", nperseg=512, noverlap=256, detrend="constant", scaling="density")
+        nperseg = int(p["frequency_psd_window_s"] * rate)
+        noverlap = int(nperseg * p["frequency_psd_overlap_fraction"])
+        frequencies, power = signal.welch(interpolated, fs=rate, window=p["frequency_psd_window"], nperseg=nperseg,
+                                          noverlap=noverlap, detrend="constant", scaling="density", return_onesided=True, average="mean")
         df = frequencies[1] - frequencies[0]
         lf = float(power[(frequencies >= .04) & (frequencies < .15)].sum() * df)
         hf = float(power[(frequencies >= .15) & (frequencies <= .4)].sum() * df)
         frequency = {"lf_power": lf, "hf_power": hf, "lf_hf_ratio": lf / hf if hf > 0 else None}
         frequency_reason = None
+        spectrum.update(status="available", nperseg=nperseg, noverlap=noverlap, nfft=nperseg,
+                        frequency_bin_width_hz=float(df), frequency_range_hz=[float(frequencies[0]), float(frequencies[-1])],
+                        integrated_bands_ms2={"LF": lf, "HF": hf}, total_density_integral_ms2=float(power.sum()*df))
+        spectrum["support"].update(interval_endpoint_start_s=float(times[0]), interval_endpoint_end_s=float(times[-1]),
+            interval_time_reference="seconds from start of this continuous source segment", interpolated_sample_count=len(uniform),
+            interpolation_grid_start_s=float(uniform[0]), interpolation_grid_last_s=float(uniform[-1]),
+            interpolation_grid_end_exclusive_s=float(times[-1]), welch_segments=1+(len(uniform)-nperseg)//(nperseg-noverlap))
+        spectrum["rows"] = [{"type": "interval_psd_bin", "frequency_hz": float(f), "density_ms2_hz": float(d)}
+                            for f, d in zip(frequencies, power)]
+    spectrum["unavailable_reason"] = frequency_reason
     for name, value in frequency.items():
-        features.append(feature(f"{prefix}_{name}_candidate", value, "ratio" if name.endswith("ratio") else "ms^2", unavailable_reason=frequency_reason))
-    return features, intervals, valid
+        reason = "hf_power_is_zero" if name=="lf_hf_ratio" and frequency_reason is None and value is None else frequency_reason
+        features.append(feature(f"{prefix}_{name}_candidate", value, "ratio" if name.endswith("ratio") else "ms^2", unavailable_reason=reason))
+    return (features, intervals, valid, spectrum) if return_spectrum else (features, intervals, valid)
 
 
 def cardiac(x, t, fs, p, modality):
@@ -461,16 +501,22 @@ def cardiac(x, t, fs, p, modality):
         peaks = np.asarray(info["PPG_Peaks"], int)
         prefix, event_type = "detected_prv", "systolic_pulse_peak"
     peaks = peaks[(peaks >= lo) & (peaks < hi)]
-    features, intervals, valid = interval_metrics(peaks, fs, p, prefix)
+    features, intervals, valid, spectrum = interval_metrics(peaks, fs, p, prefix, return_spectrum=True)
     features.insert(0, feature("detected_peak_count", len(peaks), "count"))
     events = [{"type": event_type, "time_s": float(t[peak]), "sample_index": int(peak),
                "previous_interval_ms": float(intervals[i-1]) if i else None,
                "previous_interval_plausible": bool(valid[i-1]) if i else None}
               for i, peak in enumerate(peaks)]
+    # Spectral bins are a separate typed table in the complete event artifact;
+    # including them in the generic display list keeps total artifact row
+    # support exact without relabelling them as time-domain cardiac events.
+    events.extend(spectrum.pop("rows"))
+    spectrum["support"]["segment_source_time_start_s"] = float(t[0])
     return output_pack(features, events, {"time_s": t, "raw": x, "clean": clean,
                                          "retained": (np.arange(len(x)) >= lo) & (np.arange(len(x)) < hi)}, p,
                        {"retained_samples": hi-lo, "retained_duration_s": (hi-lo)/fs, "filter_edge_samples": 2*lo,
-                        "detected_peak_count": len(peaks), "implausible_interval_count": int((~valid).sum()), "normal_to_normal_intervals_confirmed": False},
+                        "detected_peak_count": len(peaks), "implausible_interval_count": int((~valid).sum()), "normal_to_normal_intervals_confirmed": False,
+                        "interval_spectrum": spectrum},
                        ["Detected beats/pulses require review; no automatic artifact correction was applied.",
                         "Interval plausibility screening does not establish normal-to-normal intervals or clinical HRV qualification.",
                         "Rejected intervals do not create new successive pairs across the gap.",
@@ -482,7 +528,7 @@ def respiration(x, t, fs, p):
     nk = require_neurokit()
     lo, hi = trim_bounds(len(x), fs, p["edge_exclusion_s"])
     require((hi-lo)/fs >= 20, "Respiration requires twenty retained seconds after edge exclusions.")
-    clean = np.asarray(nk.rsp_clean(x, sampling_rate=fs, method="khodadad2018"))
+    clean = np.asarray(nk.rsp_clean(x * p["source_polarity_multiplier"], sampling_rate=fs, method="khodadad2018"))
     _, info = nk.rsp_peaks(clean, sampling_rate=fs, method="khodadad2018")
     peaks, troughs = np.asarray(info["RSP_Peaks"], int), np.asarray(info["RSP_Troughs"], int)
     events = []
@@ -508,7 +554,7 @@ def respiration(x, t, fs, p):
     return output_pack(features, events, {"time_s": t, "raw": x, "clean": clean,
                                          "retained": (np.arange(len(x)) >= lo) & (np.arange(len(x)) < hi)}, p,
                        {"retained_samples": hi-lo, "retained_duration_s": (hi-lo)/fs, "filter_edge_samples": 2*lo, "complete_cycle_count": len(events)},
-                       ["Positive excursion is treated as inspiration; confirm the sensor's polarity.",
+                       ["Phase durations are displacement extrema estimates using the explicitly declared source quantity and polarity; source raw values retain their original sign. Flow onsets and breath holds need a distinct qualified profile.",
                         "Belt/source amplitude is not automatically tidal volume. The amplitude-per-duration output is an explicitly defined cycle metric, not a substituted published RVT algorithm.",
                         "No detected complete breaths yields unavailable rate, not zero breathing."])
 
@@ -813,6 +859,10 @@ def _run(request):
         for recording in recordings:
             fs = recording["fs"]
             p = parameters(modality, request.get("parameters", metadata.get("parameters", {})), fs)
+            if modality == "respiration":
+                require((p["source_quantity"] == "lung_volume" and recording["source_unit"] == "L") or
+                        (p["source_quantity"] == "belt_displacement" and recording["source_unit"] in {"a.u.", "V", "mV"}),
+                        "Respiration quantity and unit disagree: calibrated lung_volume needs L; belt_displacement needs a.u., V or mV. Airflow cannot use this displacement recipe.")
             output["parameters"][recording["id"]] = p
             for channel_index, channel in enumerate(recording["channels"]):
                 segments, quality = continuous_segments(recording, channel_index, metadata, modality)

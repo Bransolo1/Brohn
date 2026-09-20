@@ -1,3 +1,17 @@
+brohn_validate_respiration_parameters <- function(parameters, unit) {
+  brohn_require(is.list(parameters) && identical(parameters$recipe, "respiration-displacement-khodadad/1.0"),
+    "Review the original respiration mapping: the new displacement recipe requires source quantity, inspiration direction and supporting evidence. Historical reports remain unchanged; airflow remains available as source data.")
+  brohn_fields(parameters, c("recipe", "source_quantity", "polarity", "mapping_source"), "edge_exclusion_s", "Respiration parameters")
+  brohn_require(isTRUE(parameters$source_quantity %in% c("belt_displacement", "lung_volume")) &&
+    ((identical(parameters$source_quantity, "lung_volume") && identical(unit, "L")) ||
+     (identical(parameters$source_quantity, "belt_displacement") && isTRUE(unit %in% c("a.u.", "V", "mV")))),
+    "Choose confirmed belt displacement (a.u., V or mV) or calibrated lung volume (L). Airflow, including L/s, needs a separate onset-analysis method; preserve it without automatic analysis.")
+  brohn_require(isTRUE(parameters$polarity %in% c("positive_inspiration", "negative_inspiration")) && brohn_text(parameters$mapping_source, 4000),
+    "Declare which direction represents inspiration and the source evidence for this quantity and polarity; they cannot be inferred from a waveform.")
+  brohn_require(is.null(parameters$edge_exclusion_s) || brohn_number(parameters$edge_exclusion_s, 5, 120), "Respiration edge exclusion must be 5 to 120 seconds.")
+  invisible(parameters)
+}
+
 # Explicit import mappings and transparent report arithmetic. Heavy processing
 # is performed by the worker process, never by the Shiny session.
 brohn_rows <- function(table) lapply(seq_len(nrow(table)), function(i) {
@@ -86,6 +100,7 @@ brohn_validate_dataset_mapping <- function(dataset) {
     brohn_require(length(m$value_columns) == 1L && m$value_columns[[1]] %in% columns, "Map one response-value column.")
     brohn_require(m$unit %in% c("numeric_rating", "text", "json"), "Declare whether response values are numeric ratings, text or typed JSON.")
   } else if (dataset$modality %in% c("eda", "eeg", "ecg", "ppg", "respiration", "emg", "audio", "fnirs")) {
+    if (dataset$modality == "respiration") brohn_validate_respiration_parameters(m$parameters, m$unit)
     if (dataset$modality == "eeg") brohn_validate_neural_mapping(m, columns, dataset$source$format)
     if (tabular) {
       column("time_column")

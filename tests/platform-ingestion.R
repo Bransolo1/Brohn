@@ -134,5 +134,28 @@ local({
   check("capture failure never claims an incoming original exists", failure$body$status == "needs_attention" &&
     identical(failure$body$incoming_file_present, FALSE) && is.null(failure$body$source_snapshot) && is.null(failure$body$job_id) &&
     grepl("could not be captured", failure$body$error, fixed = TRUE))
+  # Exercise receipt arrival during process inspection with the actual sealed
+  # helper. Advance only the polling clock, not the process/file validators.
+  racing_hold <- .brohn_ingestion_hold
+  clock_calls <- 0L; observed_receipt <- FALSE; forced_initial_poll <- FALSE; clock_start <- Sys.time()
+  racing_env <- new.env(parent=environment(racing_hold))
+  racing_env$Sys.time <- function(){clock_calls<<-clock_calls+1L;clock_start+if(clock_calls==1L)0 else 20}
+  racing_env$file.exists <- function(path){
+    if(identical(basename(path),"snapshot-receipt.json")&&!forced_initial_poll){forced_initial_poll<<-TRUE;return(FALSE)}
+    file.exists(path)
+  }
+  racing_env$.brohn_publication_observe_guard <- function(h){
+    .brohn_publication_observe_guard(h)
+    ready <- h$args[[match("--receipt",h$args)+1L]];until <- Sys.time()+5
+    while(!file.exists(ready)&&h$child$is_alive()&&Sys.time()<until)h$child$wait(10)
+    observed_receipt<<-file.exists(ready)
+  }
+  environment(racing_hold)<-racing_env
+  racing_queue<-brohn_queue_ingestion
+  environment(racing_queue)<-list2env(list(.brohn_ingestion_hold=racing_hold),parent=environment(racing_queue))
+  raced<-racing_queue(store,upload("sample,value\n0,1\n"),"Ready during inspection","temperature","sample",operation_id="receipt-during-inspection")
+  check("actual sealed receipt arriving during inspection wins over stale wait clock",forced_initial_poll&&observed_receipt&&raced$body$status=="queued"&&clock_calls==1L)
+  check("readiness race preserves the original native read seal",suppressWarnings(rejects({con<-file(raced$body$source_snapshot$path,"r+b");close(con)})))
+  brohn_cancel_ingestion(store,raced$id,raced$revision)
   cat(checks," ingestion checks passed; metadata-only queue ",sprintf("%.3f",queue_seconds)," seconds\n",sep="")
 })
