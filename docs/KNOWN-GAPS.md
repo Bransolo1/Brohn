@@ -1,12 +1,9 @@
-# Remaining work at the paused checkpoint
+# Remaining work — Brohn
 
-Updated **8 September 2026**. Development is paused at the owner's request for
-the public source handoff. Read [John's handoff](HANDOFF-JOHN.md) and
-[current status](../STATUS.md) before resuming. The
-[master architecture](MASTER-ARCHITECTURE.md),
-[17-package manifest](preparation/build-manifest.json) and
-[50-capability register](preparation/capability-register.json) retain the full
-intended scope; they are not lists of enabled or qualified features.
+Updated **20 September 2026** after the owner resumed implementation.
+Read [current status](../STATUS.md), the [master architecture](MASTER-ARCHITECTURE.md)
+and [17-package manifest](preparation/build-manifest.json). The 50-capability
+register remains the complete intended scope, not an enabled-feature claim.
 
 The connected application already includes durable study/data/design libraries,
 participant delivery on the local computer, historical reports, clone/templates,
@@ -16,19 +13,14 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
-- **Complete-answer explorer:** the existing report UI has bounded previews and
-  complete downloads. `R/platform-questionnaire-index.R` is unregistered and has
-  **49 standalone synthetic checks**. `R/platform-questionnaire-explorer.R` is
-  an unregistered, parse-only storage draft with **zero storage or integration
-  tests**. There is no explorer UI or worker registration. Qualify storage,
-  ownership, resource limits, cancellation and publication before connecting it;
-  then exercise the complete researcher journey. Review the unexecuted Windows
-  path-prefix escaping and opened-handle/context checks recorded in the
-  [storage handoff](qa/QUESTIONNAIRE-EXPLORER-STORAGE-HANDOFF.md) and
-  [explorer contract](qa/QUESTIONNAIRE-COMPLETE-EXPLORER-CONTRACT.md).
-- **Participant review wording:** replace the information row's “Edit answer”
-  with “Review information” and make review progress describe the questionnaire.
-  Preserve protocol order, assessment boundaries and scored timing.
+- **Complete-answer explorer follow-ons:** the connected source-bound workflow
+  now has component, storage, actual-worker and browser acceptance; evidence and
+  exact profile limitations are in [the acceptance record](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
+  Safe saved-session navigation needs exact local protocol/event authorization.
+  Cross-platform publication, shared aggregate cache budgets, larger bounded
+  streaming readers and human comprehension remain separate qualifications.
+- **Participant review wording:** completed in the current slice, with branching,
+  adjacent-assessment and resume evidence recorded in that acceptance record.
 - **Remaining publication paths:** manager-owned acquisition preservation and
   legacy/direct import callers still need their own qualified ownership paths.
   Continue the [publication transaction plan](operations/PUBLICATION-TRANSACTIONS.md).

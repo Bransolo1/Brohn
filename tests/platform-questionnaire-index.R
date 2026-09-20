@@ -39,6 +39,11 @@ local({
   rows <- c(first$rows, second$rows)
   check("all72 records appear exactly once across the50-row boundary", first$returned == 50 && second$returned == 22 && is.null(second$next_cursor) &&
     first$matching_total == 72 && first$source_total == 72 && !anyDuplicated(vapply(rows, `[[`, character(1), "record_key")) && identical(vapply(rows, `[[`, integer(1), "ordinal"), 1:72))
+  back <- brohn_questionnaire_index_page(h, "answers", cursor = second$previous_cursor)
+  check("previous keyset cursor reproduces the exact preceding page", identical(back$rows, first$rows) && is.null(first$previous_cursor))
+  pages25 <- list(brohn_questionnaire_index_page(h, "answers", limit = 25))
+  for (i in 2:3) pages25[[i]] <- brohn_questionnaire_index_page(h, "answers", cursor = pages25[[i-1L]]$next_cursor, limit = 25)
+  check("backward paging from a partial third page preserves source boundaries", identical(brohn_questionnaire_index_page(h, "answers", cursor = pages25[[3L]]$previous_cursor, limit = 25)$rows, pages25[[2L]]$rows))
   check("page metadata distinguishes native0 false text and null", identical(vapply(rows[1:6], `[[`, character(1), "value_kind"), c("number", "boolean", "text", "text", "null", "text")))
   check("long and HTML-like text remain escaped-data previews rather than markup", isTRUE(rows[[9L]]$value_preview$truncated) && identical(rows[[8L]]$value_preview$text, "<script>original</script>"))
   q <- brohn_questionnaire_index_page(h, "questions", filters = list(question_id = "q-12"))
@@ -55,6 +60,14 @@ local({
   reject("a cursor cannot cross filter contexts", brohn_questionnaire_index_page(h, "answers", list(question_id = "q-72"), first$next_cursor))
   bad_cursor <- first$next_cursor; bad_cursor$index_hash <- strrep("a", 64)
   reject("a cursor cannot cross source indexes", brohn_questionnaire_index_page(h, "answers", cursor = bad_cursor))
+  reject("a cursor cannot cross page sizes", brohn_questionnaire_index_page(h, "answers", cursor = first$next_cursor, limit = 25))
+  reject("unsupported page sizes cannot bypass the bounded profile", brohn_questionnaire_index_page(h, "answers", limit = 1))
+  reject("structured filters cannot enter query bindings", brohn_questionnaire_index_page(h, "answers", filters = list(question_id = list("q-1"))))
+  invalid_utf8 <- rawToChar(as.raw(c(0xc3, 0x28))); Encoding(invalid_utf8) <- "UTF-8"
+  reject("malformed UTF8 search is rejected", brohn_questionnaire_index_page(h, "answers", filters = list(search = invalid_utf8)))
+  sparse <- brohn_questionnaire_index_page(h, "answers", list(session_id = "session-two"), limit = 25)
+  forged <- sparse$next_cursor; forged$after <- 49L
+  reject("cursor boundary must itself match the exact selected query", brohn_questionnaire_index_page(h, "answers", list(session_id = "session-two"), forged, 25))
   record <- brohn_questionnaire_index_record(h, rows[[1L]]$record_key, rows[[1L]]$source_hash)
   check("record detail reconstructs the exact original typed row and source path", identical(brohn_hash(brohn_parse(record$record_json)), brohn_hash(observations[[1L]])) &&
     identical(brohn_json(record$source_path), brohn_json(.brohn_qindex_path("observations", 1))))
@@ -63,6 +76,7 @@ local({
   reject("record detail rejects foreign record key", brohn_questionnaire_index_record(h, paste0("qr-", strrep("a", 64)), rows[[1L]]$source_hash))
   large <- rows[[9L]]; detail <- brohn_questionnaire_index_record(h, large$record_key, large$source_hash)
   check("large source row is chunked without copying it into the bounded detail", detail$record_chunked && is.null(detail$record_json) && detail$record_bytes > 128*1024)
+  check("chunked source rows still return their full frozen prompt", identical(detail$full_prompt, observations[[9L]]$prompt) && !detail$prompt_chunked)
   join_chunks <- function(row, field = "value", bytes = 8191L) {
     parts <- list(); offset <- 0L
     repeat {
@@ -80,6 +94,22 @@ local({
   check("structured values keep native0 false and null through chunking", identical(brohn_json(brohn_parse(join_chunks(rows[[7L]]))), brohn_json(values[[7L]])))
   reject("value chunks reject a stale value hash", brohn_questionnaire_index_value(h, large$record_key, strrep("b", 64)))
   reject("value chunks reject an offset beyond the complete value", brohn_questionnaire_index_value(h, large$record_key, large$value_hash, 1e8))
+  reject("value chunks reject a nonscalar field", brohn_questionnaire_index_value(h, large$record_key, large$value_hash, field = c("value", "record")))
+  boundary <- brohn_questionnaire_index_value(h, large$record_key, large$value_hash, 2L, 4L)
+  check("four-byte Unicode code points remain whole at the minimum raw chunk budget", identical(boundary$text, "\U0001f512") && boundary$next_offset == 3L)
+  budget_analysis <- list(kind = "questionnaire", features = list(), observations = list(list(question_id = "budget", prompt = strrep("p", 16000L), value = strrep("\001\n\"\\", 16000L))))
+  budget_built <- brohn_build_questionnaire_index(input_for(report_for(budget_analysis, "report-budget")), file.path(folder, "budget.sqlite"), list(max_response_bytes = 16384))
+  budget_handle <- open_index(budget_built); budget_row <- brohn_questionnaire_index_page(budget_handle, "answers")$rows[[1L]]
+  budget_parts <- character(); budget_offset <- 0L; budget_peak <- 0L
+  repeat {
+    chunk <- brohn_questionnaire_index_value(budget_handle, budget_row$record_key, budget_row$value_hash, budget_offset)
+    budget_peak <- max(budget_peak, nchar(brohn_json(chunk), type = "bytes")); budget_parts <- c(budget_parts, chunk$text)
+    if (is.null(chunk$next_offset)) break
+    stopifnot(chunk$next_offset > budget_offset); budget_offset <- chunk$next_offset
+  }
+  check("escape-heavy chunks honor encoded response budgets without losing source text", budget_peak <= 16384 && identical(paste0(budget_parts, collapse = ""), budget_analysis$observations[[1L]]$value))
+  budget_detail <- brohn_questionnaire_index_record(budget_handle, budget_row$record_key, budget_row$source_hash)
+  check("small detail budgets explicitly leave an oversized frozen prompt in complete row chunks", budget_detail$record_chunked && budget_detail$prompt_chunked && is.null(budget_detail$full_prompt))
   reject("read-only handle cannot modify the SQLite source", DBI::dbExecute(h$con, "DELETE FROM records"))
 
   # Source-bound revision history with typed routing, repeated assessment,
@@ -119,6 +149,10 @@ local({
   check("revision final states replace overlapping observations without double counting",rp$returned==7L&&revised$index$counts$answers==7L&&rh$manifest$original_counts$observations==5L)
   check("repeated question/stimulus label keeps both occurrence identities",brohn_questionnaire_index_page(rh,"answers",list(question_id="q-scale-one"))$matching_total==2L)
   check("information and hidden states are inspectable but not invented scored responses",sum(vapply(rp$rows,function(r)r$status %in% c("not_displayed","information_acknowledged"),logical(1)))==2L)
+  answer_detail <- brohn_questionnaire_index_record(rh, rp$rows[[1L]]$record_key, rp$rows[[1L]]$source_hash)
+  check("revision answers retain the exact overlapping observation source link", identical(answer_detail$links$observation$source_hash, brohn_hash(response_subset[[1L]])) &&
+    identical(brohn_json(answer_detail$links$observation$source_path), brohn_json(.brohn_qindex_path("observations", 1))))
+  check("missing retained run identity remains explicitly unsupported", answer_detail$links$run_source$support == "identity_not_retained")
   history <- brohn_questionnaire_index_page(rh,"history",list(step_id="scale-one"))
   hd <- lapply(history$rows,function(r)brohn_questionnaire_index_record(rh,r$record_key,r$source_hash))
   check("history links exact source events and confirmation without inventing a version",length(hd)==3L&&isTRUE(hd[[3L]]$links$reference$confirmation)&&
@@ -140,8 +174,27 @@ local({
     reject(label,brohn_build_questionnaire_index(input_for(r),p));check(paste(label,"leaves no partial published index"),!file.exists(p)&&!length(list.files(folder,pattern="partial\\.sqlite")))}
   reject_source("missing-history",function(a){a$questionnaire_revision$runs[[1L]]$history_events<-events[-2L];a})
   reject_source("foreign-event-hash",function(a){a$questionnaire_revision$runs[[1L]]$history_records[[1L]]$source_event_hash<-strrep("f",64);a})
+  reject_source("text-event-sequence",function(a){r<-a$questionnaire_revision$runs[[1L]];r$history_events[[1L]]$sequence<-"1";r$history_records[[1L]]$source_event_hash<-brohn_hash(r$history_events[[1L]]);a$questionnaire_revision$runs[[1L]]<-r;a})
+  reject_source("foreign-visit-reference",function(a){a$questionnaire_revision$runs[[1L]]$history_records[[1L]]$visit_id<-"foreign-visit";a})
+  reject_source("foreign-state-reference",function(a){a$questionnaire_revision$runs[[1L]]$history_records[[1L]]$state_version<-999L;a})
   reject_source("missing-invalidation-cause",function(a){a$questionnaire_revision$runs[[1L]]$invalidations[[1L]]$cause_event_id<-"event-missing";a})
+  reject_source("foreign-invalidation-question",function(a){a$questionnaire_revision$runs[[1L]]$invalidations[[1L]]$question_id<-"q-foreign";a})
+  reject_source("missing-invalidation-rule",function(a){a$questionnaire_revision$runs[[1L]]$invalidations[[1L]]$rule_hash<-NULL;a})
+  reject_source("hidden-current-value",function(a){r<-a$questionnaire_revision$runs[[1L]];r$effective_records[[2L]]$value<-2;r$projection_hash<-brohn_hash(r$effective_records);a$questionnaire_revision$runs[[1L]]<-r;a})
   reject_source("mixed-observations",function(a){a$observations<-c(a$observations,list(observations[[1L]]));a})
+  repeated <- revised_analysis; run2 <- revision; run2$run_id <- "run-second"
+  run2$effective_records <- lapply(run2$effective_records, function(r) {r$session_id <- "run-second"; r})
+  run2$projection_hash <- brohn_hash(run2$effective_records)
+  run2$history_events <- rev(run2$history_events)
+  repeated$questionnaire_revision$runs[[2L]] <- run2
+  repeated$observations <- c(response_subset, Filter(function(r) r$status %in% c("answered", "optional_omission") && !isTRUE(r$information), run2$effective_records))
+  repeated_built <- brohn_build_questionnaire_index(input_for(report_for(repeated, "report-repeated")), file.path(folder, "repeated.sqlite")); repeated_handle <- open_index(repeated_built)
+  run2_answers <- brohn_questionnaire_index_page(repeated_handle, "answers", list(run_id = "run-second"))
+  run2_history <- brohn_questionnaire_index_page(repeated_handle, "history", list(parent_key = run2_answers$rows[[1L]]$record_key))
+  run2_event <- brohn_questionnaire_index_record(repeated_handle, run2_history$rows[[1L]]$record_key, run2_history$rows[[1L]]$source_hash)
+  check("duplicate event IDs across runs join only the exact run despite reordered event storage", run2_answers$returned == 7L && run2_history$returned == 2L &&
+    all(vapply(run2_history$rows, function(r) r$run_id == "run-second", logical(1))) &&
+    identical(brohn_json(run2_event$source_path), brohn_json(.brohn_qindex_path("questionnaire_revision", "runs", 2, "history_events", 10))))
   target<-file.path(folder,"row-limit.sqlite");reject("row limit never returns a truncated index",brohn_build_questionnaire_index(input,target,list(max_rows=2)))
   check("row limit failure leaves destination absent",!file.exists(target))
   target<-file.path(folder,"disk-limit.sqlite");reject("disk limit never returns a partial index",brohn_build_questionnaire_index(input,target,list(max_index_bytes=16384)))
@@ -153,5 +206,10 @@ local({
   corrupted<-file.path(folder,"corrupt.sqlite");file.copy(built$index$path,corrupted)
   f<-file(corrupted,"r+b");seek(f,100);writeBin(as.raw(255),f);close(f)
   reject("corrupt SQLite bytes cannot masquerade as a saved index",brohn_questionnaire_index_open(corrupted,built$index,input$binding))
+  changed_path <- file.path(folder, "changed.sqlite"); file.copy(built$index$path, changed_path)
+  changed_handle <- brohn_questionnaire_index_open(changed_path, built$index, input$binding); handles[[length(handles)+1L]] <- changed_handle
+  timestamp_changed <- Sys.setFileTime(changed_path, Sys.time()+5)
+  if (isTRUE(timestamp_changed)) reject("an open handle refuses source identity changes before returning content", brohn_questionnaire_index_page(changed_handle, "answers")) else
+    check("the open SQLite reader prevents a file timestamp mutation on this platform", identical(file.info(changed_handle$path)[c("size", "mtime", "ctime")], changed_handle$stamp))
   cat("PASS:",n,"questionnaire index checks; source fixtures are synthetic; no scientific workers.\n")
 })

@@ -1,8 +1,9 @@
 # Complete questionnaire explorer: implementation contract
 
-Status: proposed next implementation slice. This document changes no runtime,
-source data, analysis or participant protocol. Resource settings below are
-proposed qualification targets, not measured performance guarantees.
+Status: implementation resumed and connected on 20 September 2026. See the
+[acceptance record](QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md) for executed evidence and
+remaining boundaries. This contract includes proposed targets beyond the first
+implemented profile; it is not itself a performance or completion claim.
 
 ## Researcher outcome
 

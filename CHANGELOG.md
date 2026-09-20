@@ -1,5 +1,21 @@
 # Changes
 
+## Brohn continuation — 2026-09-20
+
+- Resumed development with the existing Brohn name and visual identity,
+  preserving schemas, identifiers, installation paths and saved studies.
+- Completed the source-bound questionnaire index/storage/worker connection and
+  researcher explorer: Questions/Answers filtering, complete paging, native and
+  structured values, unabridged UTF-8 chunks, distributions and retained changes.
+  Cancel/retry and failed preparation preserve original reports and downloads.
+  See [scoped acceptance](docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
+- Corrected the Windows identity probe, opened-handle authority checks and
+  retained-source publication guards. Added explicit monitored preparation limits
+  and kept immutable report controls stable during unrelated workspace refresh.
+- Participant information rows use Review information; questionnaire progress
+  tracks visible questions in the current part and distinguishes answer/final
+  review. The actual browser/receiver suite passes 32 checks and two clear scans.
+
 ## Public source checkpoint — paused, 2026-09-08
 
 - Paused feature development at the owner's request. Added MIT licensing,

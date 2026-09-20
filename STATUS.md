@@ -1,4 +1,44 @@
-# Resume here
+# Resume here — Brohn
+
+Product name: **Brohn** (reconfirmed by the owner, 20 September 2026).
+Development resumed from the public Brohn checkpoint `9473c89` on local branch
+`brohn/resume-20260920`. Existing schemas, environment variables, stored studies
+and the GitHub repository name remain compatible.
+
+## Current 20 September checkpoint
+
+The complete-answer explorer is connected to saved reports, supervised workers,
+source-bound immutable indexes and the researcher interface. Search Questions
+and Answers, page every record, read complete native/structured values, and inspect
+retained changes and dependent-answer clearing. Browsing never recalculates scores.
+
+Evidence: 77 pure index checks, 59 storage/publication checks, 40 Shiny checks,
+13 actual-worker/resource assertions, 30 existing job regressions and 24 existing
+artifact storage/export regressions. Researcher browser acceptance passed 14
+journey checks including real cancellation/retry; the final layout correction
+passed a further 12-check journey and five clear desktop/narrow-screen scans.
+The detailed [acceptance record](docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
+retains fixture size, source identity, measurements and limitations.
+
+Participant information review wording and within-questionnaire progress pass
+32 actual receiver/browser checks and two clear automated accessibility scans,
+including branching, adjacent assessments and resumed review.
+
+The broader 17-package roadmap remains incomplete. Continue from
+[known gaps](docs/KNOWN-GAPS.md) and the [build manifest](docs/preparation/build-manifest.json),
+with remaining acquisition-owned/legacy publication paths, larger research
+operations and the remaining method packs. Safe saved-session navigation from
+explorer detail and a globally budgeted shared cache are still separate work.
+The first explorer publisher is qualified only on the existing Windows native
+guard profile. No human or physical-device qualification is inferred.
+
+Launch `run-local.ps1` with the restored library as before. The repository's
+8 September history below is retained for provenance; its paused/unregistered
+statements describe that historical checkpoint, not current authorization.
+
+---
+
+# Historical 8 September 2026 checkpoint
 
 Product name: **Brohn** (confirmed 2026-09-08). App header, browser title and
 development package metadata use this name.

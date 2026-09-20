@@ -1,4 +1,9 @@
-# John: start here
+# John: historical 8 September handoff
+
+**Update, 20 September 2026:** the owner resumed work and reconfirmed the name Brohn.
+Use [current status](../STATUS.md) and [explorer acceptance](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
+for the latest implementation. The stopped-state notes below remain historical evidence.
+
 
 Development paused at the owner's request on **8 September 2026**. This is a
 public source checkpoint, not a finished product release. No background build

@@ -1,8 +1,8 @@
-# Full platform build — paused checkpoint
+# Full platform build — Brohn continuation
 
-Paused at the owner's request on 8 September 2026 for public MIT source handoff.
-See [John's handoff](../HANDOFF-JOHN.md). Remaining unchecked work is resumable;
-no continuation is scheduled and this checkpoint is not a full release claim.
+Resumed by the owner on 20 September 2026 after the public source handoff.
+The current connected slice is recorded in [explorer acceptance](../qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
+The broader unchecked roadmap remains open; this is not a full release claim.
 
 Authorized 2026-09-08. Quality and complete researcher journeys take precedence
 over speed. This checklist is a continuation record, not a release claim.
@@ -26,8 +26,10 @@ checks/five publications and the browser journey passes 19 checks/five scans.
   Connected components pass 57 input, 62 codec, 24 storage/export/synthesis and
   ten independent integrity checks. Actual large workers pass 27 checks/two
   publications; browser downloads/reopen/synthesis pass ten checks/seven scans.
-- [ ] Finish the unregistered complete-answer explorer: pure index49 checks,
-  storage draft parse-only/zero integration tests, no UI or worker registration.
+- [x] Connect and qualify complete-answer storage/index, guarded worker preparation
+  and researcher browsing; see the current scoped acceptance record.
+- [x] Refine participant information review wording and within-part progress:
+  32 actual browser/receiver checks, two clear automated accessibility scans.
 
 Latest connected evidence: camera 61 backend checks, 39 form/download checks and
 63 actual researcher/participant checks with nine clear accessibility scans;

@@ -24,6 +24,7 @@ brohn_python_profile <- function(modality) {
   normalizePath(candidate, winslash = "/", mustWork = TRUE)
 }
 brohn_job_input <- function(store, job) {
+  if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   request <- job$request
   if (identical(job$operation, "analyse_task_cohort")) return(list(schema = "brohn-analysis-input/1.0", operation = job$operation,
     task_cohort = brohn_task_cohort_input(store, request), project_id = request$project_id))
@@ -159,6 +160,7 @@ brohn_analyse_runs <- function(input) {
 }
 brohn_analyse_input_unplanned <- function(input, scratch) {
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
+  if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
   if (identical(input$operation, "analyse_task_cohort")) return(brohn_analyse_task_cohort(input$task_cohort))
   if (identical(input$operation, "ingest_source")) return(brohn_analyse_ingestion(input, scratch))
   if (identical(input$operation, "extract_stream")) return(brohn_analyse_stream_curation(input, scratch))
@@ -367,6 +369,15 @@ brohn_publish_entity_result <- function(store,job,input,output,kind,body,publica
   })
   committed<-TRUE;result
 }
+.brohn_questionnaire_worker_profile <- function() list(schema = "brohn-questionnaire-view-resources/1.0",
+  max_rss_bytes = 1024^3, max_scratch_bytes = 1024^3, deadline_seconds = 300,
+  monitoring = "polled resident memory; transient allocation spikes may precede termination")
+.brohn_questionnaire_worker_check <- function(profile, elapsed, rss, scratch_bytes) {
+  brohn_require(is.finite(elapsed) && is.finite(rss) && is.finite(scratch_bytes) &&
+    elapsed <= profile$deadline_seconds && rss <= profile$max_rss_bytes && scratch_bytes <= profile$max_scratch_bytes,
+    "This saved result exceeds this installation's interactive-view limit. Its original report and complete downloads remain available.")
+  invisible(TRUE)
+}
 brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   brohn_require(job$status == "running", "Claim the job before processing it.")
   scratch_parent <- file.path(store$root, "scratch")
@@ -382,7 +393,15 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
+  explorer <- identical(job$operation, "questionnaire_index")
+  profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
+  peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
+  if (explorer) on.exit(tryCatch(.brohn_store_audit(store, "questionnaire_index.resources", job$id,
+    list(profile = profile, elapsed_seconds = as.numeric(Sys.time())-started,
+      sampled_peak_rss_bytes = peak_rss, sampled_peak_scratch_bytes = peak_scratch,
+      operation = job$operation, attempt = job$attempt)), error = function(e) NULL), add = TRUE)
   tryCatch({
+    if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "The saved-answer view requires process memory monitoring.")
     input <- if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
     request_path <- file.path(scratch, "request.json"); result_path <- file.path(scratch, "result.json")
     brohn_write_json_file(input, request_path)
@@ -391,10 +410,21 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       stdout = file.path(scratch, "stdout.txt"), stderr = file.path(scratch, "stderr.txt"),
       env = c("current", R_LIBS_USER = paste(.libPaths(), collapse = .Platform$path.sep)),
       windows_hide_window = TRUE, cleanup_tree = TRUE)
-    started <- as.numeric(Sys.time()); renewal <- started
+    if (!explorer) started <- as.numeric(Sys.time())
+    renewal <- as.numeric(Sys.time())
+    process_handle <- if (explorer) ps::ps_handle(child$get_pid()) else NULL
     while (child$is_alive()) {
       child$wait(200)
       now <- as.numeric(Sys.time())
+      if (explorer) {
+        rss <- tryCatch(as.numeric(ps::ps_memory_info(process_handle)[["rss"]]), error = function(e) {
+          if (child$is_alive()) stop(e) else 0
+        })
+        files <- list.files(scratch, full.names = TRUE, recursive = TRUE, all.files = TRUE)
+        disk <- sum(file.info(files)$size, na.rm = TRUE)
+        peak_rss <- max(peak_rss, rss); peak_scratch <- max(peak_scratch, disk)
+        .brohn_questionnaire_worker_check(profile, now-started, rss, disk)
+      }
       brohn_require(now-started <= timeout_seconds, "Analysis exceeded its declared time limit. The source and earlier reports remain intact.")
       current <- brohn_get_job(store, job$id)
       brohn_require(current$status == "running" && identical(current$token, job$token) && identical(current$worker, job$worker), "This processing attempt was cancelled or replaced.")
@@ -403,12 +433,18 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     }
     brohn_require(child$get_exit_status() == 0 && file.exists(result_path), paste("Analysis did not complete.",
       paste(head(readLines(file.path(scratch, "stderr.txt"), warn = FALSE, encoding = "UTF-8"), 8), collapse = " ")))
+    if (explorer) {
+      files <- list.files(scratch, full.names = TRUE, recursive = TRUE, all.files = TRUE)
+      peak_scratch <- max(peak_scratch, sum(file.info(files)$size, na.rm = TRUE))
+      .brohn_questionnaire_worker_check(profile, as.numeric(Sys.time())-started, peak_rss, peak_scratch)
+    }
     result <- brohn_read_json_file(result_path)
     brohn_require(identical(result$schema, "brohn-analysis-output/1.0") && is.list(result$report), "Analysis returned an invalid result document.")
     brohn_require(is.list(result$code_identity) && "scripts/analysis-worker.R" %in% names(result$code_identity) &&
       all(vapply(result$code_identity, function(hash) brohn_text(hash, 64) && grepl("^[a-f0-9]{64}$", hash), logical(1))), "Analysis returned no verifiable implementation identity.")
     if (identical(job$operation, "ingest_source"))
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
+    if (explorer) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("normalise_dataset", "import_multistream"))
       return(brohn_publish_stream_import(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("signal_catalog", "signal_preview"))

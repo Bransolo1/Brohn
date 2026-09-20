@@ -5,9 +5,9 @@
 .brohn_qexplorer_loaded <- stats::setNames(lapply(c("R/platform-questionnaire-explorer.R", "R/platform-questionnaire-index.R"),
   function(path) digest::digest(file = path, algo = "sha256")), c("R/platform-questionnaire-explorer.R", "R/platform-questionnaire-index.R"))
 .brohn_qexplorer_catalog <- function(store, kind, id, revision, project_id) {
-  rows <- DBI::dbGetQuery(store$con, "SELECT project_id,body_hash FROM entity_versions WHERE kind=? AND id=? AND revision=?",
+  rows <- DBI::dbGetQuery(store$con, "SELECT v.project_id,v.body_hash,e.project_id AS current_project_id FROM entity_versions v JOIN entities e ON e.kind=v.kind AND e.id=v.id WHERE v.kind=? AND v.id=? AND v.revision=?",
     params = list(kind, id, revision))
-  brohn_require(nrow(rows) == 1L && identical(rows$project_id[[1L]], project_id), "This saved source revision is unavailable in the selected project.")
+  brohn_require(nrow(rows) == 1L && identical(rows$project_id[[1L]], project_id) && identical(rows$current_project_id[[1L]], project_id), "This saved source revision is unavailable in the selected project.")
   rows$body_hash[[1L]]
 }
 .brohn_questionnaire_index_source <- function(store, report_id, report_revision, expected_report_hash, project_id, verify_bytes = TRUE) {
@@ -68,6 +68,9 @@ brohn_queue_questionnaire_index <- function(store, report_id, report_revision, e
   request <- brohn_prepare_questionnaire_index(store, report_id, report_revision, expected_report_hash, project_id)
   key <- paste0("questionnaire-index:", brohn_hash(request))
   brohn_store_batch(store, function() {
+    brohn_project(store, project_id)
+    brohn_require(identical(.brohn_qexplorer_catalog(store, "report", report_id, report_revision, project_id), request$catalog_hash),
+      "The selected report authority changed before the view could be queued.")
     if (!rebuild) {
       old <- .brohn_qexplorer_latest(store, request)
       if (!is.null(old)) return(old)
@@ -97,6 +100,7 @@ brohn_questionnaire_index_input <- function(store, job) {
 
 .brohn_qexplorer_job <- function(store, job_id, project_id) {
   brohn_require(brohn_text(job_id, 96) && brohn_text(project_id, 96), "Choose the saved-answer request in this project.")
+  brohn_project(store, project_id)
   rows <- DBI::dbGetQuery(store$con, "SELECT id FROM jobs WHERE id=? AND operation='questionnaire_index' AND json_extract(request_json,'$.project_id')=?",
     params = list(job_id, project_id))
   brohn_require(nrow(rows) == 1L, "This saved-answer request is unavailable in the selected project.")
@@ -114,6 +118,9 @@ brohn_retry_questionnaire_index <- function(store, job_id, project_id) {
   request <- brohn_prepare_questionnaire_index(store, old$request$report_id, old$request$report_revision, old$request$report_hash, project_id)
   brohn_require(identical(brohn_hash(request), brohn_hash(old$request)), "The old view uses another implementation or source. Explicitly rebuild from the retained report.")
   brohn_store_batch(store, function() {
+    brohn_project(store, project_id)
+    brohn_require(identical(.brohn_qexplorer_catalog(store, "report", request$report_id, request$report_revision, project_id), request$catalog_hash),
+      "The selected report authority changed before the view could be retried.")
     latest <- .brohn_qexplorer_latest(store, request)
     if (!identical(latest$id, old$id)) return(latest)
     .brohn_qexplorer_idle(store)
@@ -135,6 +142,14 @@ brohn_publish_questionnaire_index <- function(store, output, scratch, job, input
   brohn_require(.Platform$OS.type == "windows", "Saved-answer index publication currently requires the qualified Windows native file guard.")
   brohn_require(!RSQLite::sqliteIsTransacting(store$con), "Prepare complete indexes outside the metadata transaction.")
   .brohn_publication_output_identity(output, .brohn_qexplorer_loaded); .brohn_publication_job(store, job)
+  output_path <- .brohn_store_contained(store, output_path)
+  brohn_require(file.exists(output_path) && !dir.exists(output_path) &&
+    identical(tolower(dirname(output_path)), tolower(normalizePath(scratch, winslash = "/", mustWork = TRUE))),
+    "The questionnaire worker output leaves its owned attempt directory.")
+  # Hold retained source objects before re-verifying them, through the final
+  # catalog commit. Their initial input verification alone is not a lifetime seal.
+  source_guards <- .brohn_qexplorer_source_guards(store, job$request)
+  on.exit(for (guard in source_guards) .brohn_qexplorer_release(guard), add = TRUE)
   brohn_require(identical(brohn_hash(input), brohn_hash(brohn_questionnaire_index_input(store, job))) &&
     identical(brohn_hash(brohn_read_json_file(output_path)), brohn_hash(output)), "Questionnaire view publication substituted its pinned input or output.")
   result <- output$report$questionnaire_index
@@ -171,6 +186,8 @@ brohn_publish_questionnaire_index <- function(store, output, scratch, job, input
     # outside SQL and held through this commit. No analysis/large file is read.
     brohn_require(identical(.brohn_qexplorer_catalog(store, "report", body$report_id, body$report_revision, input$project_id), job$request$catalog_hash),
       "The original saved report revision is no longer available for this publication.")
+    brohn_project(store, input$project_id)
+    for (guard in source_guards) .Call(guard$native$check, guard$pointer)
     .brohn_publication_register(store, context)
     body$result_object <- .brohn_publication_register(store, document)[[1L]][c("hash", "size", "media_type")]
     brohn_put_entity(store, "questionnaire_index", id, body, expected_revision = 0L, project_id = input$project_id)
@@ -190,7 +207,7 @@ brohn_publish_questionnaire_index <- function(store, output, scratch, job, input
     "k=ctypes.WinDLL('kernel32',use_last_error=True)", "k.CreateFileW.argtypes=[w.LPCWSTR,w.DWORD,w.DWORD,w.LPVOID,w.DWORD,w.DWORD,w.HANDLE];k.CreateFileW.restype=w.HANDLE",
     "k.GetFileInformationByHandle.argtypes=[w.HANDLE,ctypes.POINTER(Info)];k.GetFileInformationByHandle.restype=w.BOOL",
     "k.CloseHandle.argtypes=[w.HANDLE];k.CloseHandle.restype=w.BOOL",
-    "p=sys.argv[1];p=p if p.startswith('\\\\?\\') else '\\\\?\\'+p.replace('/','\\')",
+    "p=sys.argv[1];slash=chr(92);prefix=slash*2+'?'+slash;p=p if p.startswith(prefix) else prefix+p.replace('/',slash)",
     "h=k.CreateFileW(p,0x80000000,1,None,3,0x00200000,None)", "assert h not in (None,ctypes.c_void_p(-1).value),ctypes.get_last_error()",
     "try:", " i=Info();assert k.GetFileInformationByHandle(h,ctypes.byref(i)),ctypes.get_last_error()",
     " assert not i.attr&0x410", " print(json.dumps({'volume':str(i.volume),'file_index':str((i.indexhi<<32)|i.indexlo),'bytes':str((i.sizehi<<32)|i.sizelo)}))",
@@ -203,12 +220,34 @@ brohn_publish_questionnaire_index <- function(store, output, scratch, job, input
   brohn_require(identical(identity$bytes, sprintf("%.0f", bytes)), "The derived index file size changed before opening.")
   guard <- new.env(parent = emptyenv()); guard$native <- native
   guard$pointer <- .Call(native$open, path, identity$volume, identity$file_index, identity$bytes)
+  guard$path <- normalizePath(path, winslash = "/", mustWork = TRUE)
+  lockBinding("native", guard); lockBinding("path", guard)
   guard
 }
+.brohn_qexplorer_release <- function(guard) {
+  if (is.environment(guard) && !is.null(guard$pointer)) {
+    .Call(guard$native$close, guard$pointer); guard$pointer <- NULL
+  }
+  invisible(NULL)
+}
+.brohn_qexplorer_source_guards <- function(store, request) {
+  guards <- list(); success <- FALSE
+  on.exit(if (!success) for (guard in guards) .brohn_qexplorer_release(guard), add = TRUE)
+  for (reference in list(request$result_object, request$artifact)) if (!is.null(reference)) {
+    path <- brohn_object_path(store, reference$hash, verify = FALSE)
+    size <- if (!is.null(reference$size)) reference$size else reference$bytes
+    brohn_require(brohn_number(size, 1, 1024^3, TRUE), "The retained questionnaire source has no exact byte size.")
+    guards[[length(guards)+1L]] <- .brohn_qexplorer_hold(path, size)
+  }
+  success <- TRUE; guards
+}
 brohn_close_questionnaire_index <- function(opened) {
-  if (is.list(opened) && !is.null(opened$handle)) brohn_questionnaire_index_close(opened$handle)
-  if (is.list(opened) && is.environment(opened$guard) && !is.null(opened$guard$pointer)) {
-    .Call(opened$guard$native$close, opened$guard$pointer); opened$guard$pointer <- NULL
+  if (is.list(opened)) {
+    # Cleanup owns the handles opened by this view even if a caller has
+    # accidentally mixed its public record/handle fields with another view.
+    owner <- if (is.environment(opened$authority) && environmentIsLocked(opened$authority)) opened$authority else opened
+    if (!is.null(owner$handle)) brohn_questionnaire_index_close(owner$handle)
+    .brohn_qexplorer_release(owner$guard)
   }
   invisible(NULL)
 }
@@ -220,12 +259,14 @@ brohn_open_questionnaire_index <- function(store, index_id, expected_index_hash,
   brohn_require(identical(b$schema, .brohn_qexplorer_schema) && identical(brohn_hash(b), expected_index_hash) &&
     identical(b$report_id, report_id) && b$report_revision == report_revision && identical(b$report_hash, expected_report_hash),
     "This index belongs to another saved report revision. Reopen that exact report.")
-  source <- .brohn_questionnaire_index_source(store, report_id, report_revision, expected_report_hash, project_id, verify_bytes = FALSE)
+  source <- .brohn_questionnaire_index_source(store, report_id, report_revision, expected_report_hash, project_id)
   brohn_require(identical(brohn_hash(b$binding), brohn_hash(source$binding)) && identical(b$request$catalog_hash, source$catalog_hash) &&
     identical(b$source_support, source$source_support), "The index source authority no longer matches the selected report.")
   job <- .brohn_qexplorer_job(store, b$processing$job_id, project_id)
   brohn_require(identical(job$status, "succeeded") && identical(job$result$questionnaire_index_id, index_id) &&
-    identical(job$result$index_hash, expected_index_hash) && identical(brohn_hash(job$request), b$request_hash), "The saved index has no matching completed derived-view receipt.")
+    identical(job$result$index_hash, expected_index_hash) && identical(brohn_hash(job$request), b$request_hash) &&
+    identical(brohn_hash(b$request), b$request_hash) && identical(job$result$artifact_hash, b$index$hash) &&
+    identical(job$result$output_hash, b$result_object$hash), "The saved index has no matching completed derived-view receipt.")
   envelope <- brohn_read_json_file(brohn_object_path(store, b$result_object$hash))
   brohn_require(identical(brohn_hash(envelope), brohn_hash(b[setdiff(names(b), "result_object")])), "The derived view differs from its retained publication document.")
   path <- brohn_object_path(store, b$index$hash, verify = FALSE)
@@ -236,9 +277,17 @@ brohn_open_questionnaire_index <- function(store, index_id, expected_index_hash,
   success <- FALSE; on.exit(if (!success) brohn_close_questionnaire_index(opened), add = TRUE)
   opened$guard <- .brohn_qexplorer_hold(path, b$index$size)
   opened$handle <- brohn_questionnaire_index_open(path, b$index, b$binding)
+  authority <- new.env(parent = emptyenv())
+  authority$context_hash <- brohn_hash(opened$context); authority$record_hash <- brohn_hash(record)
+  authority$handle <- opened$handle; authority$guard <- opened$guard
+  lockEnvironment(authority, bindings = TRUE); opened$authority <- authority
   success <- TRUE; opened
 }
 brohn_check_questionnaire_index_context <- function(store, opened, report_id, report_revision, expected_report_hash, project_id) {
+  a <- opened$authority
+  brohn_require(is.environment(a) && environmentIsLocked(a) && identical(a$handle, opened$handle) && identical(a$guard, opened$guard) &&
+    identical(a$context_hash, brohn_hash(opened$context)) && identical(a$record_hash, brohn_hash(opened$record)),
+    "The opened answer view no longer matches its verified source and handle. Reopen it.")
   c <- opened$context
   brohn_require(is.list(c) && identical(c$workspace_id, store$workspace_id) && identical(c$root, store$root) &&
     identical(c$project_id, project_id) && identical(c$report_id, report_id) && identical(as.numeric(c$report_revision), as.numeric(report_revision)) &&
@@ -248,7 +297,7 @@ brohn_check_questionnaire_index_context <- function(store, opened, report_id, re
     identical(.brohn_qexplorer_catalog(store, "questionnaire_index", c$index_id, c$index_revision, project_id), c$index_catalog_hash),
     "The selected saved-answer source is unavailable or changed.")
   if (.Platform$OS.type == "windows") {
-    brohn_require(is.environment(opened$guard) && !is.null(opened$guard$pointer), "Reopen the closed immutable answer view.")
+    brohn_require(is.environment(opened$guard) && !is.null(opened$guard$pointer) && identical(opened$guard$path, opened$handle$path), "Reopen the closed immutable answer view.")
     .Call(opened$guard$native$check, opened$guard$pointer)
   } else brohn_require(identical(digest::digest(file = opened$handle$path, algo = "sha256"), opened$handle$hash),
     "The immutable index changed. This platform re-verifies bytes for each action.")

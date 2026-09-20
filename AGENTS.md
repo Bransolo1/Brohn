@@ -1,12 +1,15 @@
 # Brohn working agreement
 
-The platform is named **Brohn**. Use this name in product UI and new documentation.
+The platform remains named **Brohn**, reconfirmed by the owner on 20 September
+2026. Use Brohn in product UI and documentation. Preserve its existing identity,
+code identifiers, schemas, environment variables and GitHub destination.
 
-The owner paused implementation on 8 September 2026 for a GitHub/John handoff.
+The owner resumed implementation on 20 September 2026 after the 8 September pause.
 Read docs/HANDOFF-JOHN.md and STATUS.md before resuming. A new collaborator's
 explicit development request can resume scoped work; merely opening the repo
-does not authorize an autonomous full build. The unfinished questionnaire index
-and explorer drafts are unregistered and must stay disabled until qualified.
+does not authorize an autonomous full build. The questionnaire explorer is now
+connected; read docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md for its exact qualified
+Windows profile, executed evidence and deferred capabilities.
 
 Read STATUS.md, docs/MASTER-ARCHITECTURE.md and the relevant work package in
 docs/preparation/build-manifest.json. For a large build, use

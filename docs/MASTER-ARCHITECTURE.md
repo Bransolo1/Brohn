@@ -1,9 +1,10 @@
 # Brohn master architecture and large-build contract
 
-**Checkpoint paused, 8 September 2026:** the owner requested a public MIT source
-handoff and continuation the following week. [John's handoff](HANDOFF-JOHN.md)
-records the exact stopped implementation and qualified scope. The plan below
-remains the intended product; it is not a claim that every work package is done.
+**Resumed 20 September 2026:** the owner resumed implementation, keeping the
+Brohn name. [Current status](../STATUS.md) and the
+[complete-answer explorer acceptance](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
+record the latest connected work. [John's handoff](HANDOFF-JOHN.md) preserves the
+8 September stopped checkpoint. This plan remains incomplete.
 
 Revision 2026-09-08. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
 
@@ -13,8 +14,7 @@ The [unified experience](product/UNIFIED-EXPERIENCE.md) connects all 50 capabili
 
 ## 1. Full product surface
 
-Implementation is paused at the user's request after the full-build checkpoint.
-Resume scoped development only on a new instruction. Progress and
+Implementation resumed at the owner's request on 20 September 2026. Progress and
 remaining gates are tracked in [the build log](sprints/02-full-platform.md) and
 [researcher QA](qa/RESEARCHER-QA.md); package status is not a scientific claim.
 Review uses two complementary layers: independent expected arithmetic and an

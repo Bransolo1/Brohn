@@ -1,4 +1,8 @@
-# Questionnaire explorer storage: stopped, unregistered work
+# Historical questionnaire explorer storage handoff
+
+**20 September 2026:** this draft was resumed and qualified with 59 storage checks
+and actual supervised worker publication. See [current acceptance](QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
+The stopped-state account below records 8 September only.
 
 Development stopped at the user's request on 8 September 2026. This is an
 unfinished handoff, not release or qualification evidence. No explorer loader,

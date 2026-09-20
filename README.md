@@ -1,11 +1,13 @@
-# Brohn
+# Brohn - Implicit Research Platform
 
 Brohn is an open-source, R-first workspace for consumer and psychology research:
 design controlled studies, collect or import data, review traceable analyses,
 and reuse study designs. It aims to make these workflows approachable for
 undergraduate researchers and useful to commercial research teams.
 
-**Development checkpoint: paused on 8 September 2026.** This repository contains
+The product remains named Brohn, reconfirmed on 20 September 2026.
+
+**Development resumed on 20 September 2026.** This repository contains
 a working local application and an unfinished broader roadmap. Start with
 [John's handoff](docs/HANDOFF-JOHN.md) and [STATUS.md](STATUS.md) for what was
 completed, what remains, and where to resume.
@@ -87,11 +89,11 @@ preview. Questionnaire CSV includes exact typed `response_record_json` alongside
 display cells; [UTF-8 export/import checks](docs/qa/QUESTIONNAIRE-EXPORT-INTEGRITY.md)
 cover Unicode, native false/zero/text/null and malformed-input refusal.
 
-The proposed complete in-app questionnaire explorer is **not a feature of this
-checkpoint**. Its new index module is unregistered and has **49 standalone
-checks**; storage acceptance is **0**, and no explorer UI is available. See its
-[unfinished contract](docs/qa/QUESTIONNAIRE-COMPLETE-EXPLORER-CONTRACT.md).
-Complete artifact downloads remain available through the existing report UI.
+The complete in-app questionnaire explorer connects **Explore all answers** to
+source-bound background preparation, paged Questions/Answers, complete values,
+distributions and retained edit history. Read [its acceptance record](docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
+for the tested Windows profile, measurements and remaining boundaries. Full
+artifact downloads remain available even when interactive preparation fails.
 
 These are scoped software checks using original fixtures. They do not establish
 full-platform production readiness, human usability, physical sensor accuracy,

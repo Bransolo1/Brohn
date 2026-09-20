@@ -9,6 +9,7 @@ if (file.exists("R/platform-scales.R")) sources <- c(sources, "R/platform-scales
 sources <- c(sources, "R/platform-question-sections.R")
 sources <- c(sources, "R/platform-question-revision.R", "R/platform-question-revision-delivery.R")
 sources <- c(sources, "R/platform-run-evidence.R", "R/platform-questionnaire-artifacts.R", "R/platform-questionnaire-artifact-storage.R")
+sources <- c(sources, "R/platform-questionnaire-index.R", "R/platform-questionnaire-explorer.R")
 sources <- c(sources, "R/platform-task-import.R", "R/platform-task-import-storage.R")
 sources <- c(sources, "R/platform-task-cohort.R", "R/platform-task-cohort-storage.R")
 if (file.exists("R/platform-scale-comparisons.R")) sources <- c(sources, "R/platform-scale-comparisons.R")

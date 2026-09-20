@@ -508,6 +508,17 @@
   function renderRevision(step, provisional = false) {
     const model = record.revision.model, current = model.packet.latest_occurrence;
     const review = step.type === "questionnaire_review";
+    const final = review && record.protocol.timeline.at(-1)?.id === step.id;
+    // The delivery cursor stays at occurrence entry until sealing. Describe
+    // the displayed questionnaire using its frozen order and server projection.
+    const occurrence = revision().occurrence(step.questionnaire_occurrence_id);
+    const visibleAnswers = new Set(model.records.filter(row => row.occurrence_id === occurrence.id &&
+      row.status !== "not_displayed" && !row.information).map(row => row.step_id));
+    const questionSteps = occurrence.question_step_ids.filter(id => visibleAnswers.has(id));
+    const position = questionSteps.indexOf(step.id);
+    $("study-progress").textContent = review ? (final ? "Final review" : "Answer review") :
+      step.question.type === "information" ? "Information in this part" :
+      position >= 0 ? `Question ${position + 1} of ${questionSteps.length} in this part` : "Questionnaire";
     activeStep = step; screen(review ? "Review your answers" : step.question.prompt);
     content.dataset.questionnaireStep = step.id;
     content.dataset.questionnaireOccurrence = step.questionnaire_occurrence_id;
@@ -520,15 +531,14 @@
         const source = revision().step(row.step_id), item = node("li", null, {class: "matrix-row"});
         item.append(node("h2", source.question.prompt), node("p", readableAnswer(source.question, row)));
         if (model.packet.actions.editable_step_ids.includes(row.step_id)) {
-          const edit = button("Edit answer", () => revisionAction("edit", {target: row.step_id}));
-          edit.setAttribute("aria-label", `Edit: ${source.question.prompt}`); item.append(edit);
+          const edit = button(row.information ? "Review information" : "Edit answer", () => revisionAction("edit", {target: row.step_id}));
+          edit.setAttribute("aria-label", `${row.information ? "Review information" : "Edit"}: ${source.question.prompt}`); item.append(edit);
         }
         list.append(item);
       }
       content.append(list);
       const actions = node("div", null, {class: "actions"});
       if (model.packet.actions.back_step_id) actions.append(button("Back", () => revisionAction("back")));
-      const final = record.protocol.timeline.at(-1)?.id === step.id;
       const seal = button(final ? "Finish study" : "Continue to the next part", () => revisionAction("seal"), true);
       seal.id = "questionnaire-seal"; seal.disabled = !model.packet.actions.can_seal || provisional; actions.append(seal); content.append(actions);
       revisionView = {step, container: content, read: null};
@@ -828,9 +838,12 @@
     if (!record || record.finish || interrupted) return;
     if (record.index >= record.protocol.timeline.length) { await finish("completed"); return; }
     activeStep = record.protocol.timeline[record.index];
-    $("study-progress").textContent = `Part ${record.index + 1} of ${record.protocol.timeline.length}`;
     $("withdraw").hidden = false;
-    if (hasRevision() && activeStep.questionnaire_occurrence_id) return presentRevision(resume);
+    if (hasRevision() && activeStep.questionnaire_occurrence_id) {
+      $("study-progress").textContent = "Questionnaire";
+      return presentRevision(resume);
+    }
+    $("study-progress").textContent = `Part ${record.index + 1} of ${record.protocol.timeline.length}`;
     if (activeStep.type === "question" && !ruleMatches(activeStep.question.show_if, answersFor(activeStep))) {
       const skipped = activeStep;
       await persist(() => {
@@ -927,7 +940,7 @@
         appearance: record.protocol.design.appearance, supported: true};
     }
     if (!entry.supported && !record?.run_id) throw new Error("This study is not available in this browser delivery profile. Please contact your researcher.");
-    document.title = `${entry.deployment.title} | Brohn study`;
+    document.title = `${entry.deployment.title} | IRP study`;
     $("study-origin").textContent = entry.deployment.origin === "live" ? "" : `${entry.deployment.origin || "pilot"} session`;
     applyAppearance(record?.protocol?.design?.appearance || entry.appearance);
     if (!record?.run_id && !record?.pending_start && entry.deployment.status !== "open") {

@@ -1,5 +1,15 @@
 # Active architecture decisions
 
+- 2026-09-20: The owner resumed development and reconfirmed the product name
+  Brohn. Preserve its established name and visual identity, APIs, schemas,
+  environment keys, object identities and GitHub destination.
+- 2026-09-20: Complete-answer exploration is a derived, immutable SQLite view of
+  an exact saved report. It runs as a cancellable, supervised job and never
+  recalculates scoring. The first publishing profile uses the qualified Windows
+  native file guard, a 300-second preparation deadline, polled 1 GiB resident
+  memory and 1 GiB scratch ceilings. Page/detail responses are bounded; complete
+  source records remain available through typed chunking and existing downloads.
+
 - 2026-09-08: [The full lifecycle](product/STUDY-LIFECYCLE.md) promotes research
   operations into explicit libraries, dataset/deployment/enrollment records and
   34 planned journeys. Keep the five study stages inside the global workspace.

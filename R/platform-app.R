@@ -32,6 +32,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_interchange_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_header_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_signal_server(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_questionnaire_explorer(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_neural_plots(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_gaze_report_server(input, output, session, store, state)
   brohn_install_acquisition_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
@@ -537,7 +538,8 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     })
   })
   output$platform_content <- shiny::renderUI({
-    state$refresh
+    # Immutable report controls keep their DOM when other workspace data refresh.
+    if (!identical(state$page, "report")) state$refresh
     brohn_render_page(store, state, current$study)
   })
   output$dataset_reports <- shiny::renderUI({

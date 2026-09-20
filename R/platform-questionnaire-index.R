@@ -64,6 +64,7 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
   }
   brohn_require(identical(full$kind, "questionnaire") && identical(brohn_hash(full), binding$analysis_sha256) &&
     nchar(brohn_json(full), type = "bytes") <= limits$max_analysis_bytes, "The complete questionnaire analysis exceeds its profile or differs from the expected source.")
+  brohn_require(brohn_array(full$features) && brohn_array(full$observations), "Questionnaire summaries and observations must be complete source arrays.")
   brohn_require(brohn_text(output_path, 32768) && !file.exists(output_path) && dir.exists(dirname(output_path)), "Choose a new index file inside an existing owned output directory.")
   destination <- file.path(normalizePath(dirname(output_path), winslash = "/", mustWork = TRUE), basename(output_path))
   partial <- tempfile("questionnaire-index-", tmpdir = dirname(destination), fileext = ".partial.sqlite")
@@ -73,7 +74,11 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
   }, add = TRUE)
   con <- DBI::dbConnect(RSQLite::SQLite(), partial, loadable.extensions = FALSE)
   DBI::dbExecute(con, "PRAGMA journal_mode=DELETE"); DBI::dbExecute(con, "PRAGMA synchronous=FULL")
-  DBI::dbExecute(con, "PRAGMA cache_size=-8192"); DBI::dbExecute(con, "PRAGMA temp_store=FILE")
+  DBI::dbExecute(con, "PRAGMA cache_size=-8192"); DBI::dbExecute(con, "PRAGMA temp_store=MEMORY")
+  # SQLite enforces the database ceiling during each write, including index
+  # construction. Temporary sorting stays in the supervised child's memory.
+  page_bytes <- DBI::dbGetQuery(con, "PRAGMA page_size")[[1L]]
+  DBI::dbExecute(con, paste0("PRAGMA max_page_count=", floor(limits$max_index_bytes/page_bytes)))
   DBI::dbExecute(con, "CREATE TABLE manifest (id INTEGER PRIMARY KEY CHECK(id=1), body_json TEXT NOT NULL)")
   DBI::dbExecute(con, paste("CREATE TABLE records (record_key TEXT PRIMARY KEY, collection TEXT NOT NULL, ordinal INTEGER NOT NULL,",
     "source_path TEXT NOT NULL, source_hash TEXT NOT NULL, parent_key TEXT, run_id TEXT, occurrence_id TEXT, step_id TEXT, question_id TEXT,",
@@ -110,18 +115,22 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
   DBI::dbWithTransaction(con, {
     for (i in seq_along(full$features)) {
       feature <- full$features[[i]]; parent <- add("questions", feature, .brohn_qindex_path("features", i))
+      brohn_require(is.null(feature$counts) || brohn_array(feature$counts), "A questionnaire distribution must retain its original source array.")
       for (j in seq_along(feature$counts)) add("distribution", feature$counts[[j]], .brohn_qindex_path("features", i, "counts", j), identity = feature, parent = parent)
     }
     revisions <- full$questionnaire_revision$runs
     if (!is.null(full$questionnaire_revision)) brohn_require(identical(full$questionnaire_revision$schema, "brohn-questionnaire-revision-results/1.0") && brohn_array(revisions), "Unsupported questionnaire revision source shape.")
     answer_map <- new.env(parent = emptyenv()); observation_keys <- character()
+    observed <- vapply(full$observations, brohn_hash, character(1))
     if (length(revisions)) {
       run_ids <- vapply(revisions, function(r) .brohn_qindex_text(r$run_id), character(1))
       brohn_require(!anyNA(run_ids) && !anyDuplicated(run_ids), "Revision runs need distinct exact run identities.")
       for (r in seq_along(revisions)) {
         revision <- revisions[[r]]; records <- revision$effective_records; refs <- revision$history_records; events <- revision$history_events
-        brohn_require(identical(revision$schema, "brohn-questionnaire-revision-projection/1.0") && brohn_array(records) && brohn_array(refs) && brohn_array(events) &&
+        brohn_require(identical(revision$schema, "brohn-questionnaire-revision-projection/1.0") && brohn_array(records) && brohn_array(refs) && brohn_array(events) && brohn_array(revision$invalidations) &&
           identical(brohn_hash(records), revision$projection_hash) && length(refs) == length(events), "Final questionnaire projection or complete history is inconsistent.")
+        run_source <- list(run_id = revision$run_id, protocol_hash = revision$protocol_hash, design_hash = revision$design_hash, events_hash = revision$events_hash,
+          support = if (all(vapply(revision[c("protocol_hash", "design_hash", "events_hash")], .brohn_questionnaire_artifact_hash, logical(1)))) "retained_run_identity" else "identity_not_retained")
         event_ids <- vapply(events, function(e) .brohn_qindex_text(e$id), character(1))
         brohn_require(!anyNA(event_ids) && !anyDuplicated(event_ids), "Questionnaire history has missing or duplicate source event IDs.")
         event_map <- stats::setNames(events, event_ids); ref_ids <- vapply(refs, function(e) .brohn_qindex_text(e$event_id), character(1))
@@ -131,33 +140,46 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
           brohn_require(all(vapply(row[c("occurrence_id", "step_id", "question_id", "session_id", "participant_id")], brohn_text, logical(1), max = 1024)) &&
             all(c("occurrence_id", "step_id", "question_id", "session_id", "participant_id") %in% names(row)) &&
             identical(row$session_id, revision$run_id) && identical(row$origin, binding$origin), "An effective answer is missing its exact run, occurrence or source identity.")
+          brohn_require(all(c("status", "information", "event_id", "value") %in% names(row)) &&
+            brohn_text(row$status, 64) && row$status %in% c("answered", "optional_omission", "not_displayed", "information_acknowledged", "information_unacknowledged", "invalidated_unanswered", "not_submitted") &&
+            is.logical(row$information) && length(row$information) == 1L && !is.na(row$information) &&
+            (is.null(row$event_id) || brohn_text(row$event_id, 1024)), "An effective questionnaire state has an unsupported shape.")
+          response <- row$status %in% c("answered", "optional_omission") && !isTRUE(row$information)
+          brohn_require(identical(response, !is.null(row$event_id)) &&
+            if (identical(row$status, "answered")) !is.null(row$value) else is.null(row$value), "The current questionnaire value or commit contradicts its final state.")
           composite <- brohn_hash(list(revision$run_id, row$occurrence_id, row$step_id))
           brohn_require(!exists(composite, envir = answer_map, inherits = FALSE), "Duplicate effective questionnaire assessment identity.")
           if (!is.null(row$event_id)) {
             event <- event_map[[row$event_id]]
-            brohn_require(!is.null(event) && identical(event$payload$kind, "commit") && identical(event$step_id, row$step_id) &&
+            brohn_require(!is.null(event) && "value" %in% names(event$payload) && identical(event$payload$kind, "commit") && identical(event$step_id, row$step_id) &&
               identical(event$payload$occurrence_id, row$occurrence_id) && identical(brohn_hash(event$payload$value), brohn_hash(row$value)), "A final answer has no exact matching retained commit.")
           }
           identity <- row; identity$run_id <- revision$run_id
-          key <- add("answers", row, .brohn_qindex_path("questionnaire_revision", "runs", r, "effective_records", i), identity)
+          observation <- if (response) match(brohn_hash(row), observed) else NA_integer_
+          links <- list(run_source = run_source, history_status = "retained_for_this_source")
+          if (!is.na(observation)) links$observation <- list(source_path = .brohn_qindex_path("observations", observation), source_hash = observed[[observation]])
+          key <- add("answers", row, .brohn_qindex_path("questionnaire_revision", "runs", r, "effective_records", i), identity, links = links)
           assign(composite, list(key = key, row = row), envir = answer_map)
-          if (row$status %in% c("answered", "optional_omission") && !isTRUE(row$information)) observation_keys <- c(observation_keys, brohn_hash(row))
+          if (response) observation_keys <- c(observation_keys, brohn_hash(row))
         }
         previous_sequence <- 0
         for (i in seq_along(refs)) {
           ref <- refs[[i]]; event <- event_map[[ref$event_id]]
           brohn_require(!is.null(event) && identical(brohn_hash(event), ref$source_event_hash) && brohn_number(ref$sequence, previous_sequence+1, integer = TRUE) &&
-            event$sequence == ref$sequence && identical(event$type, "questionnaire_event") && identical(event$payload$kind, ref$kind) &&
-            identical(event$step_id, ref$step_id) && identical(event$payload$occurrence_id, ref$occurrence_id), "Questionnaire history event/hash/sequence binding failed.")
+            brohn_number(event$sequence, 1, integer = TRUE) && event$sequence == ref$sequence && identical(event$type, "questionnaire_event") && identical(event$payload$kind, ref$kind) &&
+            identical(event$step_id, ref$step_id) && identical(event$payload$occurrence_id, ref$occurrence_id) &&
+            identical(event$payload$visit_id, ref$visit_id) && identical(event$payload$state_version, ref$state_version) &&
+            is.logical(ref$confirmation) && length(ref$confirmation) == 1L && !is.na(ref$confirmation), "Questionnaire history event/hash/sequence binding failed.")
           previous_sequence <- ref$sequence
           composite <- brohn_hash(list(revision$run_id, ref$occurrence_id, ref$step_id))
           answer <- if (exists(composite, envir = answer_map, inherits = FALSE)) get(composite, envir = answer_map, inherits = FALSE) else NULL
+          brohn_require(!(ref$kind %in% c("commit", "acknowledge")) || !is.null(answer), "An answer history event has no exact final assessment source.")
           identity <- if (is.null(answer)) list() else answer$row
           identity$run_id <- revision$run_id; identity$session_id <- revision$run_id; identity$occurrence_id <- ref$occurrence_id; identity$step_id <- ref$step_id; identity$status <- ref$kind
           event_index <- match(ref$event_id, event_ids)
           add("history", event, .brohn_qindex_path("questionnaire_revision", "runs", r, "history_events", event_index), identity,
             parent = if (is.null(answer)) NULL else answer$key,
-            links = list(reference = ref, reference_path = .brohn_qindex_path("questionnaire_revision", "runs", r, "history_records", i), reference_hash = brohn_hash(ref)),
+            links = list(run_source = run_source, reference = ref, reference_path = .brohn_qindex_path("questionnaire_revision", "runs", r, "history_records", i), reference_hash = brohn_hash(ref)),
             value_present = "value" %in% names(event$payload), value = event$payload$value)
         }
         for (i in seq_along(revision$invalidations)) {
@@ -165,15 +187,18 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
           old <- if (is.null(inv$previous_head_event_id)) NULL else event_map[[inv$previous_head_event_id]]
           composite <- brohn_hash(list(revision$run_id, inv$occurrence_id, inv$step_id))
           brohn_require(exists(composite, envir = answer_map, inherits = FALSE) && !is.null(cause) && identical(cause$payload$kind, "commit") &&
+            .brohn_questionnaire_artifact_hash(inv$rule_hash) && .brohn_questionnaire_artifact_hash(inv$policy_hash) && brohn_number(inv$dependency_generation, 1, integer = TRUE) &&
             identical(cause$payload$occurrence_id, inv$occurrence_id) && (is.null(inv$previous_head_event_id) || (!is.null(old) &&
-              identical(old$step_id, inv$step_id) && identical(old$payload$occurrence_id, inv$occurrence_id) && old$sequence < cause$sequence)),
+              identical(old$payload$kind, "commit") && identical(old$step_id, inv$step_id) && identical(old$payload$occurrence_id, inv$occurrence_id) && old$sequence < cause$sequence)),
             "A dependency invalidation has no exact retained cause or prior answer.")
-          answer <- get(composite, envir = answer_map, inherits = FALSE); identity <- answer$row; identity$run_id <- revision$run_id; identity$status <- "dependency_invalidated"
+          answer <- get(composite, envir = answer_map, inherits = FALSE)
+          brohn_require(identical(inv$question_id, answer$row$question_id) &&
+            (is.null(revision$policy_hash) || identical(inv$policy_hash, revision$policy_hash)), "An invalidation differs from its exact assessment or retained policy.")
+          identity <- answer$row; identity$run_id <- revision$run_id; identity$status <- "dependency_invalidated"
           add("invalidations", inv, .brohn_qindex_path("questionnaire_revision", "runs", r, "invalidations", i), identity, answer$key,
-            links = list(cause_event_hash = brohn_hash(cause), previous_event_hash = if (is.null(old)) NULL else brohn_hash(old)))
+            links = list(run_source = run_source, cause_event_hash = brohn_hash(cause), previous_event_hash = if (is.null(old)) NULL else brohn_hash(old)))
         }
       }
-      observed <- vapply(full$observations, brohn_hash, character(1))
       brohn_require(identical(sort(observed), sort(observation_keys)), "Recorded observations do not exactly match the final revision response subset; mixed sources cannot be silently omitted.")
     } else for (i in seq_along(full$observations)) add("answers", full$observations[[i]], .brohn_qindex_path("observations", i),
       links = list(history_status = "not_retained_for_this_source"))
@@ -182,10 +207,10 @@ brohn_build_questionnaire_index <- function(input, output_path, limits = list())
       counts = counts, original_counts = .brohn_questionnaire_counts(full), answer_source = if (length(revisions)) "revision_effective_records" else "recorded_observations",
       limits = limits, search = "literal_case_sensitive_utf8", ordering = "original_source_ordinal", qualified = FALSE)
     DBI::dbExecute(con, "INSERT INTO manifest VALUES(1,?)", params = list(brohn_json(manifest)))
+    DBI::dbExecute(con, "CREATE INDEX records_page ON records(collection,ordinal)")
+    DBI::dbExecute(con, "CREATE INDEX records_parent ON records(collection,parent_key,ordinal)")
+    DBI::dbExecute(con, "CREATE INDEX records_identity ON records(collection,question_id,session_id,ordinal)")
   })
-  DBI::dbExecute(con, "CREATE INDEX records_page ON records(collection,ordinal)")
-  DBI::dbExecute(con, "CREATE INDEX records_parent ON records(collection,parent_key,ordinal)")
-  DBI::dbExecute(con, "CREATE INDEX records_identity ON records(collection,question_id,session_id,ordinal)")
   brohn_require(identical(DBI::dbGetQuery(con, "PRAGMA integrity_check")[[1L]], "ok") &&
     as.numeric(file.info(partial)$size) <= limits$max_index_bytes, "The complete questionnaire index failed integrity or disk limits; no partial index was published.")
   DBI::dbDisconnect(con); con <- NULL
@@ -212,13 +237,16 @@ brohn_questionnaire_index_open <- function(path, reference, expected_binding) {
   con <- DBI::dbConnect(RSQLite::SQLite(), path, flags = RSQLite::SQLITE_RO, loadable.extensions = FALSE)
   success <- FALSE; on.exit(if (!success) DBI::dbDisconnect(con), add = TRUE)
   DBI::dbExecute(con, "PRAGMA query_only=ON"); DBI::dbExecute(con, "PRAGMA trusted_schema=OFF")
+  DBI::dbExecute(con, "PRAGMA cache_size=-8192"); DBI::dbExecute(con, "PRAGMA temp_store=MEMORY")
   rows <- DBI::dbGetQuery(con, "SELECT body_json FROM manifest WHERE id=1")
   brohn_require(nrow(rows) == 1L, "The questionnaire index has no unique manifest.")
   manifest <- brohn_parse(rows$body_json[[1L]], 1024*1024)
   brohn_require(identical(manifest$schema, .brohn_qindex_schema) && identical(manifest$recipe, .brohn_qindex_recipe) &&
     identical(brohn_hash(manifest), reference$manifest_hash) && identical(brohn_hash(manifest$binding), brohn_hash(expected_binding)) &&
     identical(brohn_hash(manifest$counts), brohn_hash(reference$counts)), "The questionnaire index manifest differs from its immutable reference.")
+  .brohn_qindex_limits(manifest$limits)
   actual <- DBI::dbGetQuery(con, "SELECT collection,count(*) AS n FROM records GROUP BY collection")
+  brohn_require(all(actual$collection %in% .brohn_qindex_collections), "The questionnaire index contains an unsupported collection.")
   for (name in .brohn_qindex_collections) brohn_require(sum(actual$n[actual$collection == name]) == manifest$counts[[name]], "The questionnaire index record counts disagree with its manifest.")
   handle <- new.env(parent = emptyenv()); handle$con <- con; handle$path <- normalizePath(path, winslash = "/", mustWork = TRUE)
   handle$hash <- hash; handle$bytes <- bytes; handle$manifest <- manifest; handle$stamp <- file.info(handle$path)[c("size", "mtime", "ctime")]
@@ -235,6 +263,7 @@ brohn_questionnaire_index_close <- function(handle) {
   invisible(TRUE)
 }
 .brohn_qindex_response <- function(handle, response) {
+  .brohn_qindex_live(handle)
   brohn_require(nchar(brohn_json(response), type = "bytes") <= handle$manifest$limits$max_response_bytes, "This questionnaire view exceeds its response budget; choose a smaller page or read the complete value in chunks.")
   response
 }
@@ -248,10 +277,10 @@ brohn_questionnaire_index_close <- function(handle) {
 
 brohn_questionnaire_index_page <- function(handle, collection, filters = list(), cursor = NULL, limit = 50L) {
   .brohn_qindex_live(handle)
-  brohn_require(brohn_text(collection, 64) && collection %in% .brohn_qindex_collections && brohn_number(limit, 1, 100, TRUE), "Choose a named questionnaire collection and a page of at most100 records.")
+  brohn_require(brohn_text(collection, 64) && collection %in% .brohn_qindex_collections && brohn_number(limit, 1, 100, TRUE) && limit %in% c(25, 50, 100), "Choose a named questionnaire collection and a page of 25, 50 or 100 records.")
   allowed <- c("parent_key", "run_id", "occurrence_id", "step_id", "question_id", "participant_id", "session_id", "stimulus_id", "condition_id", "status", "search")
   brohn_require(is.list(filters) && (!length(filters) || (!is.null(names(filters)) && !anyDuplicated(names(filters)) && all(names(filters) %in% allowed))) &&
-    all(vapply(filters, brohn_text, logical(1), max = 1024, empty = TRUE)), "Use bounded literal questionnaire filters, not expressions or SQL.")
+    all(vapply(filters, function(x) brohn_text(x, 1024, TRUE) && validUTF8(x), logical(1))), "Use bounded literal UTF-8 questionnaire filters, not expressions or SQL.")
   filters <- brohn_canonical(filters); query_hash <- brohn_hash(list(collection = collection, filters = filters, limit = limit, ordering = handle$manifest$ordering))
   after <- 0
   if (!is.null(cursor)) {
@@ -265,14 +294,22 @@ brohn_questionnaire_index_page <- function(handle, collection, filters = list(),
     where <- paste(where, if (name == "search") "AND instr(search_text,?)>0" else paste0("AND ", name, "=?"))
     params <- c(params, list(filters[[name]]))
   }
+  if (after > 0) brohn_require(DBI::dbGetQuery(handle$con, paste("SELECT count(*) AS n FROM records WHERE", where, "AND ordinal=?"), params = c(params, list(after)))$n[[1L]] == 1L,
+    "This page cursor is not an exact member of the selected query.")
   matching <- DBI::dbGetQuery(handle$con, paste("SELECT count(*) AS n FROM records WHERE", where), params = params)$n[[1L]]
   rows <- DBI::dbGetQuery(handle$con, paste("SELECT", .brohn_qindex_select, "FROM records WHERE", where, "AND ordinal>? ORDER BY ordinal LIMIT ?"), params = c(params, list(after, as.integer(limit)+1L)))
   more <- nrow(rows) > limit; rows <- head(rows, limit)
   output <- lapply(seq_len(nrow(rows)), function(i) .brohn_qindex_metadata(as.list(rows[i, , drop = FALSE])))
   next_cursor <- if (more) list(schema = "brohn-questionnaire-index-cursor/1.0", index_hash = handle$hash, query_hash = query_hash, after = tail(rows$ordinal, 1L)) else NULL
+  previous_cursor <- NULL
+  if (after > 0) {
+    prior <- DBI::dbGetQuery(handle$con, paste("SELECT ordinal FROM records WHERE", where, "AND ordinal<=? ORDER BY ordinal DESC LIMIT ?"), params = c(params, list(after, as.integer(limit)+1L)))$ordinal
+    previous_cursor <- list(schema = "brohn-questionnaire-index-cursor/1.0", index_hash = handle$hash, query_hash = query_hash,
+      after = if (length(prior) > limit) tail(prior, 1L) else 0L)
+  }
   .brohn_qindex_response(handle, list(schema = "brohn-questionnaire-index-page/1.0", index_hash = handle$hash, binding = handle$manifest$binding,
     answer_source = handle$manifest$answer_source, collection = collection, query_hash = query_hash, source_total = handle$manifest$counts[[collection]], matching_total = matching,
-    returned = length(output), after = after, next_cursor = next_cursor, rows = output))
+    returned = length(output), after = after, next_cursor = next_cursor, previous_cursor = previous_cursor, rows = output))
 }
 .brohn_qindex_row <- function(handle, key, expected_row_hash = NULL) {
   .brohn_qindex_live(handle); brohn_require(brohn_text(key, 80) && grepl("^qr-[a-f0-9]{64}$", key), "Choose an exact questionnaire record key.")
@@ -288,13 +325,18 @@ brohn_questionnaire_index_record <- function(handle, key, expected_row_hash) {
   include <- row$record_bytes <= min(128*1024, handle$manifest$limits$max_response_bytes/2)
   original <- if (include) DBI::dbGetQuery(handle$con, "SELECT row_json FROM records WHERE record_key=?", params = list(key))$row_json[[1L]] else NULL
   if (include) brohn_require(identical(brohn_hash(brohn_parse(original, 128*1024)), row$source_hash), "The indexed source row failed its canonical hash check.")
-  .brohn_qindex_response(handle, list(schema = "brohn-questionnaire-index-record/1.0", index_hash = handle$hash,
+  prompt <- DBI::dbGetQuery(handle$con, "SELECT prompt FROM records WHERE record_key=?", params = list(key))$prompt[[1L]]
+  response <- list(schema = "brohn-questionnaire-index-record/1.0", index_hash = handle$hash,
     answer_source = handle$manifest$answer_source, record = .brohn_qindex_metadata(row), source_path = brohn_parse(row$source_path), links = brohn_parse(row$links_json),
-    record_json = original, record_chunked = !include, record_bytes = row$record_bytes, record_characters = row$record_characters))
+    full_prompt = if (is.na(prompt)) NULL else prompt, prompt_chunked = FALSE,
+    record_json = original, record_chunked = !include, record_bytes = row$record_bytes, record_characters = row$record_characters)
+  if (nchar(brohn_json(response), type = "bytes") > handle$manifest$limits$max_response_bytes) {response["record_json"] <- list(NULL); response$record_chunked <- TRUE}
+  if (nchar(brohn_json(response), type = "bytes") > handle$manifest$limits$max_response_bytes) {response["full_prompt"] <- list(NULL); response$prompt_chunked <- TRUE}
+  .brohn_qindex_response(handle, response)
 }
 brohn_questionnaire_index_value <- function(handle, key, expected_value_hash, offset = 0L, max_bytes = 65536L, field = "value") {
   row <- .brohn_qindex_row(handle, key)
-  brohn_require(field %in% c("value", "record") && brohn_number(offset, 0, integer = TRUE) && brohn_number(max_bytes, 4, 65536, TRUE), "Choose a bounded complete-value chunk.")
+  brohn_require(brohn_text(field, 16) && field %in% c("value", "record") && brohn_number(offset, 0, 2^53-1, TRUE) && brohn_number(max_bytes, 4, 65536, TRUE), "Choose a bounded complete-value chunk.")
   hash <- if (field == "record") row$source_hash else row$value_hash
   brohn_require(!is.na(hash) && .brohn_questionnaire_artifact_hash(expected_value_hash) && identical(hash, expected_value_hash), "The selected complete value has another source hash or is absent.")
   column <- if (field == "record") "row_json" else "value_text"
@@ -302,12 +344,18 @@ brohn_questionnaire_index_value <- function(handle, key, expected_value_hash, of
     " AS BLOB)) AS bytes,substr(", column, ",?,?) AS fragment FROM records WHERE record_key=?"), params = list(offset+1, max_bytes, key))
   size <- values$characters[[1L]]; brohn_require(offset <= size, "This value cursor lies beyond the complete text.")
   text <- values$fragment[[1L]]; low <- 0; high <- nchar(text, type = "chars")
+  response_for <- function(characters) {
+    finish <- offset+characters
+    list(schema = "brohn-questionnaire-index-value/1.0", index_hash = handle$hash, record_key = key,
+      field = field, value_hash = hash, value_kind = if (field == "record") "canonical_record_json" else row$value_kind,
+      offset = offset, next_offset = if (finish < size) finish else NULL, total_characters = size, total_utf8_bytes = values$bytes[[1L]],
+      text = if (characters == 0L) "" else substr(text, 1L, characters))
+  }
   while (low < high) {
     middle <- ceiling((low+high)/2)
-    if (nchar(substr(text, 1, middle), type = "bytes") <= max_bytes) low <- middle else high <- middle-1
+    if (nchar(substr(text, 1, middle), type = "bytes") <= max_bytes &&
+      nchar(brohn_json(response_for(middle)), type = "bytes") <= handle$manifest$limits$max_response_bytes) low <- middle else high <- middle-1
   }
-  finish <- offset+low; fragment <- if (low == 0) "" else substr(text, 1, low)
-  .brohn_qindex_response(handle, list(schema = "brohn-questionnaire-index-value/1.0", index_hash = handle$hash, record_key = key,
-    field = field, value_hash = hash, value_kind = if (field == "record") "canonical_record_json" else row$value_kind,
-    offset = offset, next_offset = if (finish < size) finish else NULL, total_characters = size, total_utf8_bytes = values$bytes[[1L]], text = fragment))
+  brohn_require(offset == size || low > 0, "The next questionnaire code point exceeds this response budget.")
+  .brohn_qindex_response(handle, response_for(low))
 }
