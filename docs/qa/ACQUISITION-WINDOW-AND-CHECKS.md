@@ -141,7 +141,8 @@ prepared local Chrome and Node runtime.
 
 ## Remaining scope
 
-PC10 remains partial. Reusable reviewed equipment setups, device-specific
+PC10 remains partial. [Reusable reviewed equipment setups](EQUIPMENT-SETUP-REUSE.md)
+now have scoped storage, actual manager and browser acceptance. Device-specific
 qualification, broader measurement-specific protocol libraries, native camera
 frames and native implicit-delivery checks are separate work. Current gaze,
 impedance, contact, camera-model and task observations require actual explicit

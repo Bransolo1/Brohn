@@ -2,6 +2,17 @@
 
 ## Connected research workflows — 2026-09-20 (in progress)
 
+- Added pinned image/material editing, exact previews and descriptions, replacement
+  and text recovery across passive and IAT/BIAT/AAT routes, preserving frozen releases.
+- Added declared interval reuse across recordings with explicit preview, exact
+  boundary precision, immutable lineage and calculations using only target data.
+- Added reusable equipment definitions, exact channel-container metadata comparison,
+  fresh current-source approvals and immutable setup references in each recording.
+- Evaluated a frozen offline ECG candidate on ten annotated recordings; retained
+  production unchanged after mixed detection and interval results.
+- Evaluated unchanged PPG detection against direct human pulse labels on eight
+  preselected recordings; preserved artifact and endpoint disagreement despite
+  complete50ms pulse matching. Reproducible reference harnesses keep raw data outside Git.
 - Added guided study entry, an actual saved-state overview and read-only participant
   sequence preview; optional welcome content/image upload uses frozen release assets.
 - Acquisition originals and reviewed imports now publish through manager-owned

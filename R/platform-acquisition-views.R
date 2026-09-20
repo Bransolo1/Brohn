@@ -108,7 +108,7 @@ brohn_acquisition_gaze_svg <- function(gaze) {
     shiny::p(description),shiny::p(class="brohn-muted",paste("Observed position in",gaze$frame,";",gaze$unit,"coordinates. Spatial calibration accuracy is not established.")))
 }
 brohn_acquisition_quality_ui <- function(model) {
-  shiny::tags$section(`aria-label`=paste("Equipment and recording checks",model$acquisition_id),shiny::h4("Equipment and recording checks"),
+  shiny::tags$section(`aria-label`=paste("Equipment and recording checks",model$acquisition_id),shiny::h3("Equipment and recording checks"),
     if(!isTRUE(model$monitoring_available))shiny::p(class="brohn-alert brohn-alert-warning","Live monitoring is unavailable for this recording. Missing telemetry does not mean the source or signal is healthy."),
     lapply(model$streams,function(stream)shiny::tags$details(open=TRUE,
       shiny::tags$summary(paste(stream$label,"-",stream$id)),
@@ -138,7 +138,7 @@ brohn_acquisition_quality_ui <- function(model) {
       if(length(stream$derived$window_rms))lapply(stream$derived$window_rms,function(value)shiny::p(paste("Monitoring RMS:",
         value$channel_id,brohn_default(value$value,"unavailable"),value$unit,"over",value$finite_samples,"finite values in",value$window_rows,"preview rows.",value$method))),
       lapply(Filter(function(channel)length(channel$preview)>0,stream$channels),function(channel)shiny::div(
-        shiny::h5(paste(channel$label,"-",channel$role,"-",channel$unit)),
+        shiny::h4(paste(channel$label,"-",channel$role,"-",channel$unit)),
         if(!is.null(channel$latest_source))shiny::p(paste("Latest source observation:",channel$latest_source,channel$unit,
           if(channel$value_type=="string")"(monitoring text is limited to 64 UTF-8 bytes; the full original is recorded)" else "")),
         brohn_acquisition_preview_svg(channel,stream$preview),
@@ -188,6 +188,7 @@ brohn_install_acquisition_server <- function(input,output,session,store,state,at
     ids <- brohn_default(input$acq_selected_uids,character())
     Filter(function(s) s$uid %in% ids,d$body$result$streams)
   })
+  equipment<-brohn_install_equipment_setup_server(input,output,session,store,current_study,latest,chosen,reviewed_checks,attempt,message)
   output$acquisition_manager_status <- shiny::renderUI({
     pulse()
     if(brohn_acquisition_ready(store$root)) brohn_badge("Local recorder service available","neutral") else
@@ -237,6 +238,7 @@ brohn_install_acquisition_server <- function(input,output,session,store,state,at
       lapply(seq_along(selected),function(i) {s<-selected[[i]]
         shiny::tags$fieldset(class="brohn-stack",style="min-width:0;max-width:100%;grid-template-columns:minmax(0,1fr)",shiny::tags$legend(s$name),
           shiny::p(paste("Source declares",brohn_default(s$source_origin,"no collection origin"),"and",s$value_type,"samples.")),
+          shiny::uiOutput(paste0("acq_setup_controls_",i)),
           shiny::selectInput(paste0("acq_kind_",i),"Stream role",c("Signal"="signal","Event markers"="markers","Unclassified"="unclassified"),selected=if(s$value_type=="string") "markers" else "signal"),
           shiny::textInput(paste0("acq_clock_",i),"Source clock identity",paste0("lsl-",s$uid)),
           shiny::selectInput(paste0("acq_clock_kind_",i),"Source timestamp clock",c("Epoch not established"="unspecified_epoch","Monotonic clock"="monotonic","Device clock"="device","Unix clock"="unix")),
@@ -292,7 +294,10 @@ brohn_install_acquisition_server <- function(input,output,session,store,state,at
     output[[paste0("acq_check_editors_",i)]]<-shiny::renderUI({
       streams<-chosen();shiny::req(length(streams)>=i)
       count<-brohn_default(input[[paste0("acq_checks_count_",i)]],0);shiny::req(brohn_number(count,0,8,TRUE))
-      brohn_acquisition_checks_ui(i,streams[[i]]$channels,count,shiny::isolate(shiny::reactiveValuesToList(input)),streams[[i]]$value_type)
+      seed<-equipment$check_seed(i)
+      if(!is.null(seed)){count<-length(seed$readiness$acquisition_checks);values<-brohn_equipment_check_form_values(seed,i)}
+      else values<-shiny::isolate(shiny::reactiveValuesToList(input))
+      brohn_acquisition_checks_ui(i,streams[[i]]$channels,count,values,streams[[i]]$value_type)
     })
     output[[paste0("acq_check_review_",i)]]<-shiny::renderUI({
       streams<-chosen();shiny::req(length(streams)>=i)
@@ -334,31 +339,15 @@ brohn_install_acquisition_server <- function(input,output,session,store,state,at
     brohn_require(!is.null(d) && identical(input$acq_form_identity,paste(s$id,s$revision,d$id,d$body$result_hash,sep=":")),"This discovery or study changed. Reopen and review the source form.")
     selections<-lapply(seq_along(selected),function(i) {
       observed<-selected[[i]]
-      channels<-lapply(seq_along(observed$channels),function(j) list(id=paste0("channel-",j),label=brohn_default(observed$channels[[j]]$label,paste("Channel",j)),
-        type=brohn_default(observed$channels[[j]]$type,brohn_default(observed$type,"unclassified")),unit=input[[paste0("acq_unit_",i,"_",j)]],value_type=observed$value_type))
-      gap<-input[[paste0("acq_gap_",i)]];if(is.null(gap)||is.na(gap)) gap<-NULL
-      readiness<-list(schema="brohn-acquisition-readiness/1.1",modality=input[[paste0("acq_measurement_",i)]],acquisition_checks=brohn_acquisition_checks_input(input,i,channels),
-        channels=lapply(seq_along(channels),function(j){item<-list(id=channels[[j]]$id,role=input[[paste0("acq_role_",i,"_",j)]])
-          for(rail in c("min","max")){value<-input[[paste0("acq_rail_",rail,"_",i,"_",j)]];if(!is.null(value)&&!is.na(value))item[[paste0("rail_",rail)]]<-value};item}),
-        preview_channels=as.list(paste0("channel-",input[[paste0("acq_preview_",i)]])))
-      for(field in c("reference","site","calibration","frame","gravity_policy","wavelengths","task_identity")) {
-        key<-if(field=="gravity_policy")"gravity" else field;readiness[[field]]<-input[[paste0("acq_",key,"_",i)]]
-      }
-      if(isTRUE(input[[paste0("acq_gaze_enabled_",i)]]))readiness$gaze<-list(eye=input[[paste0("acq_gaze_eye_",i)]],
-        unit=input[[paste0("acq_gaze_unit_",i)]],frame=readiness$frame,origin=input[[paste0("acq_gaze_origin_",i)]],
-        valid_value=input[[paste0("acq_gaze_valid_",i)]])
-      if(!is.null(readiness$gaze)&&identical(readiness$gaze$unit,"px")) {
-        readiness$gaze$width<-input[[paste0("acq_gaze_width_",i)]];readiness$gaze$height<-input[[paste0("acq_gaze_height_",i)]]
-      }
-      brohn_validate_acquisition_readiness(readiness,channels)
+      selection<-brohn_acquisition_selection_input(d,observed,i,input,TRUE)
+      readiness<-selection$readiness
       for(j in seq_along(readiness$acquisition_checks))brohn_require(identical(reviewed_checks[[paste(i,j,sep="_")]],check_signature(i,j)),
         "This acquisition criterion changed after review. Review its exact settings again before starting collection.")
-      selection<-brohn_lsl_selection(d,observed$uid,paste0("stream-",i),input[[paste0("acq_clock_",i)]],input[[paste0("acq_clock_kind_",i)]],input[[paste0("acq_kind_",i)]],channels,input$acq_provenance,gap)
-      selection$readiness<-readiness;selection
+      selection
     })
     r<-brohn_queue_acquisition(store,s$id,d$id,selections,list(participant_id=input$acq_participant,session_id=input$acq_session_identity),input$acq_origin,input$acq_provenance,
       list(max_duration_s=input$acq_duration,max_samples=input$acq_max_samples,max_bytes=input$acq_max_mib*1024^2,chunk_samples=input$acq_chunk,inlet_buffer=input$acq_buffer),s$revision,isTRUE(input$acq_reviewed),
-      run_id=if(is.null(input$acq_run_id)||!nzchar(input$acq_run_id)) NULL else input$acq_run_id)
+      run_id=if(is.null(input$acq_run_id)||!nzchar(input$acq_run_id)) NULL else input$acq_run_id,equipment_setups=equipment$references())
     message("Recording queued for the independent local manager. Browser disconnection does not stop collection.");refresh()
   }))
   output$acquisition_recordings <- shiny::renderUI({
@@ -368,6 +357,9 @@ brohn_install_acquisition_server <- function(input,output,session,store,state,at
       r<-brohn_acquisition(store,record$id);b<-r$body;snapshot<-r$live_snapshot
       brohn_card(title=b$title,subtitle=paste(b$created_at,"-",b$status),
         shiny::p(paste("Origin:",b$origin,". Participant:",b$request$identity$participant_id,". Session:",b$request$identity$session_id)),
+        if(length(b$equipment_setups))shiny::tags$details(shiny::tags$summary("Equipment setup revisions used for this recording"),
+          shiny::p("These exact saved setup revisions supplied pending settings. The recording request preserves the current source identities and reviewed settings separately."),
+          brohn_table(lapply(names(b$equipment_setups),function(sid)c(list(stream=sid),b$equipment_setups[[sid]])),label=paste("Frozen equipment setup references",r$id))),
         if(!is.null(snapshot)) shiny::p(paste(snapshot$samples,"committed samples;",snapshot$chunks,"committed chunks.")),
         brohn_acquisition_quality_ui(brohn_acquisition_quality(r)),
         if(is.null(b$original)) shiny::p("Signal quality still requires review; live counts do not establish valid research data."),

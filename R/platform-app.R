@@ -167,6 +167,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_maxdiff_ui(input, output, session, current, state, attempt, capture, update_study)
   brohn_install_guidance_ui(input, output, session, store, state, current, attempt, capture, refresh)
   brohn_install_welcome_ui(input, output, session, store, state, current, attempt, capture, update_study)
+  brohn_install_materials(input, output, session, store, current, state, attempt, capture, update_study)
   shiny::observeEvent(input$brohn_open_study, attempt(function() {capture(); select_study(input$brohn_open_study, "Overview")}))
   shiny::observeEvent(input$new_study, shiny::showModal(brohn_start_study_ui()))
   shiny::observeEvent(input$create_study, attempt(function() {s <- brohn_create_study(store, input$new_title, input$new_template); shiny::removeModal(); select_study(s$id)}))
@@ -224,16 +225,6 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       type = "text", content = "", asset = NULL, duration_ms = 5000, aois = list()); update_study(d)
   }))
   shiny::observeEvent(input$add_condition, attempt(function() {capture(); d <- current$study$body; d$conditions[[length(d$conditions)+1L]] <- list(id = brohn_id("condition"), label = paste("Condition", length(d$conditions)+1L), role = "other"); update_study(d)}))
-  # Upload buttons are delegated in one message so dynamically added cards work.
-  shiny::observeEvent(input$upload_stimulus, attempt(function() {
-    capture(); id <- input$upload_stimulus; current$upload_stimulus <- id
-    shiny::showModal(shiny::modalDialog(title = "Attach stimulus image", shiny::fileInput("stimulus_upload", "PNG image", accept = ".png"),
-      shiny::p("Replacing an image clears its old areas. Historical revisions keep their original image and areas."), footer = shiny::modalButton("Cancel")))
-  }))
-  shiny::observeEvent(input$stimulus_upload, attempt(function() {
-    shiny::req(input$stimulus_upload$datapath); d <- brohn_attach_png(store, current$study$body, current$upload_stimulus, input$stimulus_upload$datapath, input$stimulus_upload$name)
-    update_study(d); shiny::removeModal()
-  }))
   show_aoi <- function(stimulus_id, area_id = NULL) {
     capture(); current$aoi_stimulus <- stimulus_id; current$aoi_id <- area_id
     s <- brohn_find(current$study$body$stimuli, current$aoi_stimulus)
@@ -314,23 +305,6 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   }))
   shiny::observeEvent(input$remove_task, attempt(function() {
     capture(); d <- current$study$body; d$blocks <- Filter(function(b) b$id != input$remove_task, d$blocks); update_study(d)
-  }))
-  shiny::observeEvent(input$task_image, attempt(function() {
-    capture(); current$task_image <- input$task_image
-    shiny::showModal(shiny::modalDialog(title = "Task image exemplar", shiny::fileInput("task_image_upload", "PNG image", accept = ".png"),
-      shiny::p("Images become immutable task materials. Review their category membership, salience and comparability before collection."), footer = shiny::modalButton("Cancel")))
-  }))
-  shiny::observeEvent(input$task_image_upload, attempt(function() {
-    shiny::req(input$task_image_upload$datapath)
-    selection <- current$task_image; d <- current$study$body; i <- match(selection$task_id, brohn_ids(d$blocks))
-    brohn_require(!is.na(i), "The task no longer exists."); j <- match(selection$material_id, brohn_ids(d$blocks[[i]]$materials))
-    brohn_require(!is.na(j), "The task exemplar no longer exists.")
-    image <- new_png_asset(input$task_image_upload$datapath, selection$material_id)
-    bytes <- jsonlite::base64_dec(image$data_base64); dimensions <- stimulus_png_header(bytes)
-    asset <- brohn_store_object(store, bytes = bytes, media_type = "image/png")
-    asset$width <- unname(dimensions[["width"]]); asset$height <- unname(dimensions[["height"]]); asset$filename <- basename(input$task_image_upload$name)
-    d$blocks[[i]]$materials[[j]]$asset <- asset; d$blocks[[i]]$materials[[j]]$type <- "image"
-    update_study(d); shiny::removeModal()
   }))
   shiny::observeEvent(input$remove_question, attempt(function() {capture(); d <- brohn_question_sections_remove(current$study$body, input$remove_question); update_study(d)}))
   shiny::observeEvent(input$question_assignment_upgrade, attempt(function() {

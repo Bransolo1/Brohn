@@ -43,7 +43,7 @@
       if (total > 256*1024*1024) throw new Error("Task images exceed the supported preload size.");
       const url = new URL(material.asset?.url || "", location.href);
       if (!material.asset?.url || url.origin !== location.origin || !url.pathname.startsWith("/api/assets/")) throw new Error("A task image has no supported immutable asset address.");
-      const image = new Image(); image.alt = material.content || "Task image";
+      const image = new Image(); image.alt = material.image_alt ?? (material.content || "Task image");
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => reject(new Error("A task image did not load before the task.")), 30000);
         image.onload = () => { clearTimeout(timeout); resolve(); };

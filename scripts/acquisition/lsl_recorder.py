@@ -163,10 +163,14 @@ def descriptor(info):
                  "type": nodes[i].findtext("type") if nodes else None, "value_type": fmt}
                 for i in range(info.channel_count())]
     supported = fmt != "int64" or (os.name != "nt" and struct.calcsize("P") != 4)
+    # Complete ordered channel containers, including attributes/vendor extensions. This
+    # fingerprint excludes the live outlet UID, clock creation time and origin.
+    channel_metadata = [ET.canonicalize(ET.tostring(node, encoding="unicode")) for node in root.findall("./desc/channels")]
     return {"uid": info.uid(), "source_id": info.source_id(), "name": info.name(), "type": info.type(),
             "nominal_srate": info.nominal_srate(), "channel_count": info.channel_count(), "value_type": fmt,
             "hostname": info.hostname(), "source_origin": root.findtext("./desc/origin"), "channels": channels,
-            "metadata_xml": xml, "metadata_sha256": sha(xml.encode()), "supported": supported,
+            "metadata_xml": xml, "metadata_sha256": sha(xml.encode()),
+            "channel_metadata_sha256": sha(encoded(channel_metadata)), "supported": supported,
             "support_reason": None if supported else "Installed pylsl disables int64 transport on Windows/32-bit; choose a supported source representation without converting exact integers to doubles."}
 
 

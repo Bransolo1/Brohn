@@ -63,8 +63,9 @@ brohn_task_validate <- function(block) {
   roles <- vapply(block$categories,function(category)category$role,character(1))
   brohn_require(setequal(roles,required_roles) && !anyDuplicated(roles) && !anyDuplicated(brohn_ids(block$categories)),"The selected profile needs exactly its named category roles.")
   for(material in block$materials) {
-    brohn_fields(material,c("id","category_id","type","content","asset"),label="Task material")
+    brohn_fields(material,c("id","category_id","type","content","asset"),optional="image_alt",label="Task material")
     brohn_require(brohn_valid_id(material$id) && material$category_id %in% brohn_ids(block$categories) && material$type %in% c("text","image"),"Task material identity/category/type is invalid.")
+    if("image_alt" %in% names(material))brohn_require(material$type=="image" && brohn_text(material$image_alt,2000),"A task image description must be nonempty supported text and belong to an image.")
     brohn_require(brohn_text(material$content,4000,material$type=="image"),"Task material text is missing or too long.")
     if(material$type=="image") {
       brohn_fields(material$asset,c("hash","size","media_type"),c("filename","width","height"),"Task image asset")

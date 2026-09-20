@@ -17,17 +17,21 @@ brohn_plan_ui <- function(store, d) {
     brohn_card(title = "Stimuli", subtitle = "Use the same viewing policy where the design requires it. Every image and area is versioned.",
       shiny::div(class = "brohn-grid", lapply(seq_along(d$stimuli), function(i) {
         s <- d$stimuli[[i]]
+        inline_image <- s$type == "image" && !is.null(s$asset) && s$asset$media_type %in% c("image/png", "image/jpeg") && s$asset$size <= 5*1024^2
+        area_ready <- inline_image && !is.null(s$asset$width) && !is.null(s$asset$height)
         shiny::div(class = "brohn-stimulus-card",
-          if (!is.null(s$asset)) shiny::tags$img(src = brohn_asset_data_uri(store, s$asset), alt = s$title, class = "brohn-stimulus-image") else shiny::div(class = "brohn-stimulus-placeholder", brohn_icon("study"), shiny::p("Text or image stimulus")),
+          if (inline_image) tryCatch(shiny::tags$img(src = brohn_asset_data_uri(store, s$asset), alt = brohn_material_description(s, "stimulus"), class = "brohn-stimulus-image"),
+            error = function(e) shiny::p(class = "brohn-alert brohn-alert-warning", "The saved image is unavailable. Open its material editor to review or replace it.")) else
+              shiny::div(class = "brohn-stimulus-placeholder", brohn_icon("study"), shiny::p(if (is.null(s$asset)) "Text or image stimulus" else paste("Saved", s$type, "material"))),
           shiny::textInput(paste0("stimulus_title_", i), paste("Stimulus", i, "name"), s$title),
           shiny::selectInput(paste0("stimulus_condition_", i), paste("Condition for stimulus", i), choices, s$condition_id),
           if (s$type == "text") shiny::textAreaInput(paste0("stimulus_text_", i), paste("Participant text for stimulus", i), s$content, rows = 2),
           shiny::numericInput(paste0("stimulus_duration_", i), paste("Viewing duration", i, "(milliseconds)"), s$duration_ms, min = 100, max = 3600000, step = 100),
-          shiny::div(class = "brohn-toolbar", brohn_command(if (is.null(s$asset)) "Attach image" else "Replace image", "upload_stimulus", s$id),
-            brohn_command("Define area", "edit_aoi", s$id),
+          brohn_material_card_ui(d, "stimulus", s),
+          shiny::div(class = "brohn-toolbar", if (area_ready) brohn_command("Define area", "edit_aoi", s$id),
             if (!is.null(s$asset) && identical(s$asset$media_type, "image/png")) brohn_command("Suggest area", "suggest_aoi", s$id)),
           if (length(s$aois)) shiny::tags$ul(lapply(s$aois, function(a) shiny::tags$li(paste(a$label, "\u00b7", round(100*a$width), "x", round(100*a$height), "%"),
-            shiny::div(class = "brohn-toolbar", brohn_command(paste("Edit", a$label), "edit_existing_aoi", list(stimulus_id = s$id, aoi_id = a$id)),
+            shiny::div(class = "brohn-toolbar", if (area_ready) brohn_command(paste("Edit", a$label), "edit_existing_aoi", list(stimulus_id = s$id, aoi_id = a$id)),
               brohn_command(paste("Remove", a$label), "remove_aoi", list(stimulus_id = s$id, aoi_id = a$id)))))))
       })), shiny::actionButton("add_stimulus", "Add stimulus")),
     shiny::uiOutput("aoi_proposals"),

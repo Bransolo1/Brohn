@@ -21,8 +21,10 @@ records describing only the 01A–01L prototype are historical.
   streaming readers and human comprehension remain separate qualifications.
 - **Participant review wording:** completed in the current slice, with branching,
   adjacent-assessment and resume evidence recorded in that acceptance record.
-- **Remaining publication paths:** manager-owned acquisition preservation and
-  legacy/direct import callers still need their own qualified ownership paths.
+- **Remaining publication paths:** manager-owned original/reviewed acquisition
+  publication now has scoped acceptance in
+  [its record](qa/ACQUISITION-PUBLICATION-AND-MONITORING.md). Legacy/direct import
+  callers and larger lifecycle paths still need their own qualified ownership paths.
   Continue the [publication transaction plan](operations/PUBLICATION-TRANSACTIONS.md).
   Existing large-file checks have declared limits; they do not establish
   unlimited capacity or every combination of concurrent workloads.

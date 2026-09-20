@@ -191,9 +191,10 @@ brohn_validate_design <- function(x, publish = FALSE) {
   }
   brohn_require(!anyDuplicated(brohn_ids(x$conditions)) && !anyDuplicated(brohn_ids(x$stimuli)) && !anyDuplicated(brohn_ids(x$questions)), "Condition, stimulus and question IDs must be unique in their own namespace.")
   for (s in x$stimuli) {
-    brohn_fields(s, c("id", "title", "condition_id", "type", "content", "asset", "duration_ms", "aois"), label = "Stimulus")
+    brohn_fields(s, c("id", "title", "condition_id", "type", "content", "asset", "duration_ms", "aois"), optional = "image_alt", label = "Stimulus")
     brohn_require(brohn_valid_id(s$id) && brohn_text(s$title, 240) && s$condition_id %in% brohn_ids(x$conditions), "A stimulus needs a title and an existing condition.")
     brohn_require(s$type %in% c("text", "image", "audio", "video", "web"), "Unsupported stimulus type.")
+    if ("image_alt" %in% names(s)) brohn_require(s$type == "image" && brohn_text(s$image_alt, 2000), "An image description must be nonempty supported text and belong to an image.")
     brohn_require(brohn_text(s$content, 20000, TRUE) && brohn_number(s$duration_ms, 100, 3600000, TRUE), "Stimulus content or duration is invalid.")
     if (!is.null(s$asset)) {
       brohn_fields(s$asset, c("hash", "size", "media_type"), c("filename", "width", "height"), "Asset")

@@ -53,6 +53,7 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
       shiny::div(class="brohn-form-grid",shiny::textInput("interval_set_title","New interval set name","Recording intervals"),
         shiny::div(class="form-group",shiny::p("Create a versioned set"),shiny::actionButton("create_interval_set","Create interval set",class="btn-primary"))),
       if(length(sets))shiny::div(class="brohn-form-grid",shiny::selectInput("interval_set_choice","Saved interval sets (up to 100 most recent)",choices,selectize=FALSE),shiny::actionButton("open_interval_set","Open interval set")),
+      shiny::uiOutput("signal_interval_reuse"),
       shiny::p(class="brohn-muted","Each set is linked to one recording, channel, person/session and original clock. This action does not align independent clocks or modify the scientific source."))
   })
   shiny::observeEvent(input$create_interval_set,protect(function(){r<-context();c<-catalog();t<-table()
@@ -73,13 +74,13 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
     brohn_card(title=v$title,subtitle=paste("Saved version",r$revision,"with",length(v$intervals),"intervals. Earlier versions remain preserved."),
       shiny::tags$input(id="interval_form_identity",type="text",class="shiny-input-text",value=identity,hidden=NA),
       shiny::div(class="brohn-form-grid",shiny::textInput("interval_label","Interval label",brohn_default(i$label,"")),shiny::textInput("interval_category","Category (optional)",brohn_default(i$category,"")),
-        shiny::numericInput("interval_start","Start in seconds (included)",brohn_default(i$start_s,if(length(bounds))bounds[[1]]else 0)),
-        shiny::numericInput("interval_end","End in seconds (excluded)",brohn_default(i$end_s,if(length(bounds)&&bounds[[2]]>bounds[[1]])bounds[[2]]else 1))),
+        shiny::numericInput("interval_start","Start in seconds (included)",brohn_signal_exact_number(brohn_default(i$start_s,if(length(bounds))bounds[[1]]else 0))),
+        shiny::numericInput("interval_end","End in seconds (excluded)",brohn_signal_exact_number(brohn_default(i$end_s,if(length(bounds)&&bounds[[2]]>bounds[[1]])bounds[[2]]else 1)))),
       shiny::textAreaInput("interval_note","Notes (optional)",brohn_default(i$note,""),rows=2),
       shiny::div(class="brohn-toolbar",shiny::actionButton("save_signal_interval",if(is.null(i))"Add interval"else"Save interval changes",class="btn-primary"),
         if(!is.null(i))brohn_command("Cancel interval edit","signal_interval_command",list(action="cancel",identity=identity))),
       shiny::p(class="brohn-muted","The start is included and the end is excluded, so adjacent intervals do not count their shared boundary twice. Overlapping intervals deliberately reuse samples."),
-      if(length(v$intervals))shiny::div(class="brohn-stack",lapply(v$intervals,function(x)brohn_card(title=x$label,subtitle=paste(x$start_s,"to",x$end_s,"seconds",if(nzchar(x$category))paste("|",x$category)),
+      if(length(v$intervals))shiny::div(class="brohn-stack",lapply(v$intervals,function(x)brohn_card(title=x$label,subtitle=paste(brohn_signal_exact_number(x$start_s),"to",brohn_signal_exact_number(x$end_s),"seconds",if(nzchar(x$category))paste("|",x$category)),
         if(nzchar(x$note))shiny::p(x$note),shiny::div(class="brohn-toolbar",brohn_command("Edit interval","signal_interval_command",list(action="edit",identity=identity,id=x$id)),
           brohn_command("Remove interval","signal_interval_command",list(action="remove",identity=identity,id=x$id)))))),
       shiny::selectInput("interval_measures","Measures to summarize",columns,selected=head(unname(columns),1),multiple=TRUE,selectize=FALSE),
@@ -152,5 +153,7 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
   output$signal_windows_json<-shiny::downloadHandler(filename=function()paste0(result()$id,".json"),content=function(file)prepare_download(function()brohn_copy_object_download(store,result()$body$result_object$hash,file)),contentType="application/json")
   output$signal_windows_csv<-shiny::downloadHandler(filename=function()paste0(result()$id,".csv"),content=function(file)prepare_download(function(){r<-result();rows<-lapply(r$body$summary$summaries,function(row)c(list(report_id=r$body$report_id,annotation_id=r$body$annotation_source$id,annotation_revision=r$body$annotation_source$revision,annotation_hash=r$body$annotation_source$hash,source_artifact_hash=r$body$summary$artifact$sha256),row));brohn_export_report_csv(list(analysis=list(observations=rows)),file)}),contentType="text/csv")
   output$signal_windows_svg<-shiny::downloadHandler(filename=function()paste0(result()$id,".svg"),content=function(file)prepare_download(function(){svg<-brohn_signal_windows_svg(result()$body$summary,chosen_measure());brohn_require(!is.null(svg),"This measure has no eligible comparison chart.");writeLines(enc2utf8(as.character(svg)),file,useBytes=TRUE)}),contentType="image/svg+xml")
-  invisible(list(active=active,editing=editing,summary=summary,job_id=job_id,history=history))
+  reuse<-brohn_install_signal_interval_reuse_ui(input,output,session,store,state,protect,message,context,catalog,table,
+    function(value){active(value);editing(NULL);summary(NULL);job_id(NULL);revision_tick(revision_tick()+1L)})
+  invisible(list(active=active,editing=editing,summary=summary,job_id=job_id,history=history,reuse=reuse))
 }

@@ -126,7 +126,7 @@ brohn_lsl_selection <- function(discovery, uid, id, clock_id, clock_kind, kind, 
   result
 }
 brohn_queue_acquisition <- function(store, study_id, discovery_id, selections, identity, origin, origin_statement,
-                                    limits, expected_study_revision, reviewed = FALSE, run_id = NULL) {
+                                    limits, expected_study_revision, reviewed = FALSE, run_id = NULL, equipment_setups = list()) {
   brohn_require(isTRUE(reviewed), "Confirm the selected source, full channel units, source clocks and participant/session identities.")
   brohn_store_batch(store, function() {
     study <- brohn_study(store, study_id); brohn_project(store, study$project_id)
@@ -140,6 +140,11 @@ brohn_queue_acquisition <- function(store, study_id, discovery_id, selections, i
     brohn_require(brohn_array(selections) && length(selections) >= 1L && length(selections) <= 16L && !anyDuplicated(brohn_ids(selections)) &&
       !anyDuplicated(vapply(selections, `[[`, character(1), "uid")), "Choose 1 to 16 distinct reviewed sources.")
     selections <- lapply(selections, function(s) brohn_lsl_selection(discovery, s$uid, s$id, s$clock_id, s$clock_kind, s$kind, s$channels, s$unit_provenance, s$gap_threshold_s, s$readiness))
+    brohn_require(is.list(equipment_setups)&&(!length(equipment_setups)||(!is.null(names(equipment_setups))&&!anyDuplicated(names(equipment_setups))&&
+      all(names(equipment_setups) %in% vapply(selections,`[[`,character(1),"id")))),"Equipment setup references must name selected streams.")
+    frozen_setups<-lapply(names(equipment_setups),function(sid)brohn_validate_equipment_application(store,equipment_setups[[sid]],discovery,
+      selections[[match(sid,vapply(selections,`[[`,character(1),"id"))]]))
+    names(frozen_setups)<-names(equipment_setups)
     brohn_require(is.list(identity) && all(c("participant_id", "session_id") %in% names(identity)) &&
       all(names(identity) %in% c("participant_id", "session_id", "condition_id", "exposure_id")) && all(vapply(identity, brohn_text, logical(1), max = 500)), "Supply explicit participant/session IDs; source labels are not person identities.")
     brohn_require(origin %in% c("sample", "pilot", "live") && brohn_text(origin_statement, 4000), "Declare the collection origin and its source.")
@@ -167,7 +172,7 @@ brohn_queue_acquisition <- function(store, study_id, discovery_id, selections, i
       identity = identity, references = references, streams = selections, limits = limits)
     brohn_put_entity(store, "acquisition", id, list(id = id, title = paste(study$body$title, "local recording"), study_id = study_id,
       study_revision = study$revision, design_hash = brohn_hash(study$body), design = study$body, discovery_id = discovery_id,
-      discovery_hash = discovery$body$result_hash, origin = origin, status = "queued", request = request,
+      discovery_hash = discovery$body$result_hash, equipment_setups = frozen_setups, origin = origin, status = "queued", request = request,
       request_hash = brohn_hash(request), script_hash = .brohn_acq_hash(.brohn_acq_script()), created_at = brohn_now()), project_id = study$project_id)
   })
 }

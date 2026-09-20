@@ -16,10 +16,16 @@ The broader unchecked roadmap remains open; this is not a full release claim.
 - [x] Saved checked installation configuration; clean-machine release still open.
 - [x] Respiration quantity/polarity correction and conservative explicit Morlet baseline support.
 - [x] Longer live waveform previews and selected measurement-specific preflight criteria.
-- [ ] Reusable equipment setups with fresh exact source/criteria review for each recording.
-- [ ] Complete pinned material upload/preview/description/replacement across existing study and task routes.
+- [x] Reusable equipment setups with fresh exact source/criteria review for each recording.
+- [ ] Native participant camera/input checks that distinguish capture, receipt and task readiness.
+- [x] Pinned material upload/preview/description/replacement across existing passive and IAT/BIAT/AAT routes.
+- [ ] Optional questionnaire illustrations and image choice items with frozen asset identity.
+- [x] Explicit cross-recording interval reuse, exact boundaries and target-data-only summaries.
 - [x] Complete task/person, cardiac-spectrum and full time-frequency visual journeys.
 - [x] Run the first preselected annotated ECG reference subset; preserve failed agreement.
+- [x] Evaluate a frozen offline ECG candidate on declared diagnostic and held-out records; retain the no-promotion outcome.
+- [x] Execute a predeclared annotated PPG reference comparison without substituting ECG timing for pulse peaks; retain the artifact/timing limitations.
+- [ ] Source-bound cardiac artifact review and recalculation without bridging excluded spans.
 - [ ] Resolve cardiac polarity/morphology review and broader independent detector validation.
 - [ ] Whole-platform reference validation, synchronized replay, research operations and hosted profile.
 

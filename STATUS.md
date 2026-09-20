@@ -26,14 +26,27 @@ and hosted operations remain open. Longer useful live waveform windows and
 measurement-specific acquisition-quality criteria now pass replay and UI
 acceptance: five-second previews, complete committed support, exact reviewed
 source-code/range/finite/cadence criteria, and unknown stale/interrupted states.
-Reusable equipment setups remain open. The material-authoring audit identifies
-preview/description/revision-binding gaps in existing passive and task uploads;
-these are the next authoring slice. Import now rechecks receipt arrival after process inspection; the
+Reusable equipment setups pass5 metadata,25 storage,53 actual manager and10
+full-browser checks/4 scans, including complete channel-container metadata and
+two-study/source-restart/fresh-review behavior. Native participant camera/input
+preflight remains separate work. Pinned passive
+and IAT/BIAT/AAT material editing now passes30 domain,19 Shiny,12 browser checks
+and6 scans, including actual passive and IAT frozen automatic reports. Optional
+questionnaire/choice illustrations remain separate work. Import now rechecks receipt arrival after process inspection; the
 actual guarded intake regression passes40 checks.
 Exact saved ECG/PPG detections now overlay cleaned waveforms with full interval
 tables and SVG/JSON downloads. The recorded108 display preserves the same failed
 detector events; reviewing them does not qualify or correct the method. Read
 docs/qa/CARDIAC-MARKER-ACCEPTANCE.md for scoped full-app and bound-correction evidence.
+Cross-recording interval reuse now passes28 domain/five jobs,15 Shiny and15 browser
+checks/3 scans. Explicit anchors, preserved exact boundaries and fresh target-only
+summaries do not imply synchronization. The offline ten-record ECG candidate did
+not meet promotion requirements; documented flutter-target comparison limits and
+interval errors remain. Eight preselected CapnoBase PPG recordings matched all
+5,400 artifact-free annotated pulses within50 ms, but timing and artifact effects
+still materially changed PRV endpoints. Read docs/qa/PPG-RECORDED-REFERENCE.md;
+this is bounded agreement, not whole-record automatic PRV qualification.
+Physical-device qualification remains unavailable.
 The owner confirmed no physical hardware is available. Use academic guidance,
 independent numerical checks and recorded/replay evidence while keeping actual
 hardware performance unverified. The owner additionally requires tested automatic

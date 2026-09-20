@@ -177,7 +177,8 @@
         "tests/platform-question-revision-views.R",
         "docs/qa/QUESTIONNAIRE-REVISION-BROWSER.md",
         "docs/qa/QUESTION-REVISION-RESEARCHER-JOURNEY.md",
-        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md"
+        "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
+        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
@@ -246,7 +247,8 @@
         "docs/qa/ACQUISITION-COMPLETION-INVESTIGATION.md",
         "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
         "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
-        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md"
+        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md",
+        "docs/qa/EQUIPMENT-SETUP-REUSE.md"
       ],
       "acceptance": [
         "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
@@ -359,7 +361,9 @@
         "docs/qa/CARDIAC-SPECTRUM-ACCEPTANCE.md",
         "docs/qa/ECG-RECORDED-REFERENCE.md",
         "docs/qa/ECG-DETECTOR-REFERENCE-REVIEW.md",
-        "docs/qa/CARDIAC-MARKER-ACCEPTANCE.md"
+        "docs/qa/CARDIAC-MARKER-ACCEPTANCE.md",
+        "docs/qa/ECG-CANDIDATE-EVALUATION.md",
+        "docs/qa/PPG-RECORDED-REFERENCE.md"
       ],
       "acceptance": [
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
@@ -421,7 +425,8 @@
         "tests/platform-task-cohort-storage.R",
         "tests/platform-task-cohort-views.R",
         "docs/methods/IMPLICIT-TASK-COHORT.md",
-        "docs/qa/TASK-PLOT-ACCEPTANCE.md"
+        "docs/qa/TASK-PLOT-ACCEPTANCE.md",
+        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
@@ -510,7 +515,8 @@
         "docs/sprints/02-full-platform.md",
         "docs/qa/RESEARCHER-QA.md",
         "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
-        "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md"
+        "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md",
+        "docs/qa/SIGNAL-INTERVAL-REUSE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -581,8 +587,11 @@
         "docs/qa/GUIDED-STUDY-OVERVIEW.md",
         "docs/qa/IMOTIONS-COMPETITOR-BENCHMARK.md",
         "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md",
+        "docs/qa/SIGNAL-INTERVAL-REUSE-ACCEPTANCE.md",
+        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md",
         "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
-        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md"
+        "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md",
+        "docs/qa/EQUIPMENT-SETUP-REUSE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",

@@ -2,6 +2,11 @@
 
 20 September 2026. Read-only source and retained-evidence review; no new browser or scientific worker run was performed for this audit. The complete 50-capability register remains intended scope, not 50 currently enabled participant procedures. Study templates select a design; checking a measurement does not activate a new material renderer.
 
+The findings below preserve the pre-implementation snapshot. The subsequently
+authorized passive/exemplar editor is documented in
+[Material editor acceptance](MATERIAL-EDITOR-ACCEPTANCE.md); consult that document
+for resolved gaps, executed checks and current limits.
+
 ## Current connected support
 
 | Enabled surface / profile | Researcher authoring and preview | Frozen participant delivery and reuse | Gaps or intentional limits |

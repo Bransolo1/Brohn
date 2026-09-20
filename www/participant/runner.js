@@ -735,7 +735,7 @@
     if (!["image", "audio", "video"].includes(stimulus.type)) throw new Error("Web stimuli do not have a supported delivery profile. This session cannot continue. Please contact the researcher.");
     const source = new URL(stimulus.asset?.url || "", location.href);
     if (!stimulus.asset?.url || source.origin !== location.origin || !source.pathname.startsWith("/api/assets/")) throw new Error("The study media address is missing or unsupported.");
-    const media = node(stimulus.type === "image" ? "img" : stimulus.type, null, {src: source.href, ...(stimulus.type === "image" ? {alt: "Study image"} : {preload: "auto", playsinline: "playsinline"})});
+    const media = node(stimulus.type === "image" ? "img" : stimulus.type, null, {src: source.href, ...(stimulus.type === "image" ? {alt: stimulus.image_alt ?? "Study image"} : {preload: "auto", playsinline: "playsinline"})});
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error("The study media did not load. Your timed trial has not been replayed.")), 30000);
       media.addEventListener(stimulus.type === "image" ? "load" : "canplaythrough", () => { clearTimeout(timeout); resolve(); }, {once: true});

@@ -26,8 +26,9 @@ continuous coverage, synchronization, causality or between-person inference.
 
 This version supports one table per annotation set,1–16 numeric measures,
 64 intervals and at most20million source row×measure contributions. Scientific
-baseline correction, synchronized multimedia review and cross-recording reusable
-templates require their own explicit methods/alignment and are not supplied by
-this interval calculation.
+baseline correction and synchronized multimedia review require their own explicit
+methods/alignment. [Interval reuse](SIGNAL-INTERVAL-REUSE.md) separately copies
+labels and declared translated boundaries into a fresh source-bound set; this
+calculation still reads only that set's target data.
 
 See [executed acceptance](../qa/SIGNAL-INTERVAL-ACCEPTANCE.md).

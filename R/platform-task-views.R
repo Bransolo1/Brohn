@@ -20,10 +20,10 @@ brohn_tasks_ui <- function(design) {
             shiny::textInput(paste0("task_category_", i, "_", j), paste("Task", i, "category", j, "label"), category$label),
             lapply(indices, function(k) {
               material <- task$materials[[k]]
-              shiny::div(class = "brohn-form-grid",
+              shiny::div(class = "brohn-material-exemplar-card",
                 if (material$type == "text") shiny::textInput(paste0("task_material_", i, "_", k), paste("Task", i, "exemplar", k), material$content) else
-                  shiny::p(paste("Image exemplar", k, "\u00b7", substr(material$asset$hash, 1, 12))),
-                brohn_command(paste("Replace exemplar", k, "with image"), "task_image", list(task_id = task$id, material_id = material$id)))
+                  shiny::h3(paste("Exemplar", k)),
+                brohn_material_card_ui(design, "exemplar", material, task$id))
             }))
         }),
         shiny::tags$details(shiny::tags$summary("Timing and randomization"),
