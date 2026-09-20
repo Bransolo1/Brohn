@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 source("R/platform-core.R")
 source("R/platform-neural.R")
 source("R/platform-neural-views.R")

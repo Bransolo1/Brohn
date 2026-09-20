@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Real ZIP/catalog roundtrips with original synthetic media and adversarial ZIPs.
 # Parent review supplies an independent check of this implementation workstream.
 source("R/platform-core.R", encoding = "UTF-8")

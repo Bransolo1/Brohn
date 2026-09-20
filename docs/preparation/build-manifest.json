@@ -178,7 +178,9 @@
         "docs/qa/QUESTIONNAIRE-REVISION-BROWSER.md",
         "docs/qa/QUESTION-REVISION-RESEARCHER-JOURNEY.md",
         "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
-        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md"
+        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md",
+        "docs/qa/QUESTION-ILLUSTRATIONS-ACCEPTANCE.md",
+        "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
@@ -209,7 +211,12 @@
         "tests/participant-camera-races.mjs",
         "docs/product/ASSIGNED-PROTOCOL-REVIEW.md",
         "tests/platform-run-review.R",
-        "docs/qa/WELCOME-PAGE-ACCEPTANCE.md"
+        "docs/qa/WELCOME-PAGE-ACCEPTANCE.md",
+        "docs/qa/QUESTION-ILLUSTRATIONS-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-PEER-REVIEW.md",
+        "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md",
+        "docs/qa/MIXED-STUDY-JOURNEY.md"
       ],
       "acceptance": [
         "Preload, focus loss, failed asset, reload, disconnect and duplicate event delivery have declared outcomes.",
@@ -248,7 +255,13 @@
         "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
         "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
         "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md",
-        "docs/qa/EQUIPMENT-SETUP-REUSE.md"
+        "docs/qa/EQUIPMENT-SETUP-REUSE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-PEER-REVIEW.md",
+        "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
+        "docs/qa/MIXED-STUDY-JOURNEY.md"
       ],
       "acceptance": [
         "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
@@ -313,7 +326,8 @@
         "tests/platform-neural-views-plots.R",
         "docs/methods/NEURAL-PLOTS.md",
         "docs/qa/NEURAL-BASELINE-ACCEPTANCE.md",
-        "docs/qa/NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md"
+        "docs/qa/NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md",
+        "docs/qa/EEG-WELCH-RECORDED-REFERENCE.md"
       ],
       "acceptance": [
         "EEG reference/filter/epoch/PSD/TFR recipes run import to report with retained-trial counts.",
@@ -363,7 +377,12 @@
         "docs/qa/ECG-DETECTOR-REFERENCE-REVIEW.md",
         "docs/qa/CARDIAC-MARKER-ACCEPTANCE.md",
         "docs/qa/ECG-CANDIDATE-EVALUATION.md",
-        "docs/qa/PPG-RECORDED-REFERENCE.md"
+        "docs/qa/PPG-RECORDED-REFERENCE.md",
+        "docs/qa/CARDIAC-INPUT-WAVEFORM-ACCEPTANCE.md",
+        "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+        "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md"
       ],
       "acceptance": [
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
@@ -516,7 +535,11 @@
         "docs/qa/RESEARCHER-QA.md",
         "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
         "docs/qa/SIGNAL-INTERVAL-ACCEPTANCE.md",
-        "docs/qa/SIGNAL-INTERVAL-REUSE-ACCEPTANCE.md"
+        "docs/qa/SIGNAL-INTERVAL-REUSE-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
+        "docs/qa/MIXED-STUDY-JOURNEY.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -591,7 +614,16 @@
         "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md",
         "docs/qa/ACQUISITION-WINDOW-AND-CHECKS.md",
         "docs/qa/ACQUISITION-CHECKS-BROWSER-ACCEPTANCE.md",
-        "docs/qa/EQUIPMENT-SETUP-REUSE.md"
+        "docs/qa/EQUIPMENT-SETUP-REUSE.md",
+        "docs/qa/QUESTION-ILLUSTRATIONS-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-INPUT-WAVEFORM-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-PEER-REVIEW.md",
+        "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
+        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
+        "docs/qa/MIXED-STUDY-JOURNEY.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",

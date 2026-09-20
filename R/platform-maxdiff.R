@@ -20,7 +20,8 @@ brohn_maxdiff_validate <- function(design) {
     brohn_valid_id(design$id) && brohn_text(design$title, 240), "Choose a supported object-case MaxDiff design identity/profile.")
   brohn_require(design$origin %in% c("synthetic", "researcher_supplied") && brohn_text(design$materials_rights, 4000), "Declare original item provenance and material rights.")
   brohn_require(brohn_array(design$items) && length(design$items) >= 3L && length(design$items) <= 60L, "MaxDiff requires 3 to 60 explicitly named items.")
-  for (item in design$items) {brohn_fields(item, c("id", "label"), label = "MaxDiff item")
+  for (item in design$items) {brohn_fields(item, c("id", "label"), optional="illustration", label = "MaxDiff item")
+    if("illustration" %in% names(item)) {brohn_require(exists("brohn_validate_illustration",mode="function"),"This exercise requires its illustration validator.");brohn_validate_illustration(item$illustration)}
     brohn_require(brohn_valid_id(item$id) && brohn_text(item$label, 1000), "An item needs a stable identity and nonempty label.")}
   ids <- brohn_ids(design$items); brohn_require(!anyDuplicated(ids), "MaxDiff item identities must be unique.")
   brohn_require(brohn_array(design$sets) && length(design$sets) >= 1L && length(design$sets) <= 200L, "Declare 1 to 200 original choice sets.")

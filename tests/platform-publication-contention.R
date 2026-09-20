@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Opt-in measured experiment, not a performance threshold in the ordinary suite.
 # Usage: Rscript --vanilla tests/platform-publication-contention.R [64,1024] [receipt.json]
 # Generates at most two original fixture files and immutable copies per size.

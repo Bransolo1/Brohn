@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Independent checks of the parent's task clone/package extension. Original
 # synthetic materials only; no downloaded task exemplars or participant data.
 .libPaths(c(normalizePath("../../work/r-library-brohn",winslash="/",mustWork=FALSE),.libPaths()))

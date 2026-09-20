@@ -6,7 +6,10 @@ brohn_camera_plan_ui <- function(design) {
       if (isTRUE(p$audio)) "The microphone is included." else "The microphone is disabled.",
       if (identical(p$analysis_profile, "face_geometry_v1")) "Supported recordings from completed sessions automatically enter local face geometry processing." else "Recordings are retained for researcher review.")),
     if (!is.null(p)) shiny::p(class = "brohn-muted", paste("Up to", p$width, "by", p$height, "pixels at", p$frame_rate, "frames per second;", p$max_duration_s, "seconds maximum.")),
-    brohn_command("Set up camera recording", "edit_camera_policy", design$id))
+    shiny::p(if (is.null(design$participant_equipment)) "Participant equipment preflight is not enabled for this design." else
+      "Equipment checks follow the frozen camera and task requirements. They check transport and input, not physical timing, image, speech or gaze quality."),
+    brohn_command("Set up camera recording", "edit_camera_policy", design$id),
+    brohn_command("Set up participant equipment checks", "edit_camera_policy", design$id))
 }
 brohn_install_camera_plan_ui <- function(input, output, session, current, state, capture, attempt, update_study, message) {
   draft <- new.env(parent = emptyenv()); draft$active <- NULL
@@ -19,6 +22,10 @@ brohn_install_camera_plan_ui <- function(input, output, session, current, state,
     shiny::showModal(shiny::modalDialog(title = "Set up session recording", size = "l", easyClose = FALSE,
       shiny::tags$input(id = "camera_policy_form", type = "text", class = "shiny-input-text", value = id, style = "display:none", `aria-hidden` = "true", tabindex = "-1"),
       shiny::checkboxInput("camera_policy_enabled", "Request camera recording in this study", !is.null(d$camera)),
+      shiny::checkboxInput("participant_equipment_enabled", "Check requested camera recording and required task keys before the study", !is.null(d$participant_equipment)),
+      shiny::conditionalPanel("input.participant_equipment_enabled", shiny::checkboxInput("participant_equipment_controls", "Also offer a practice response control for questionnaires and choices", isTRUE(d$participant_equipment$controls))),
+      shiny::p(class = "brohn-muted", "Only requested equipment is checked. The consented camera recording includes its setup lead-in. Checks do not establish scientific signal quality."),
+      shiny::tags$details(shiny::tags$summary("Check details"), shiny::p("Microphone input is checked only when requested below. Current observations use a 2-second freshness window; the first recording-write check waits 15 seconds before offering retry. These are engineering settings, not scientific signal thresholds. Required task keys are checked once per browser page; existing timed focus guards remain active.")),
       shiny::conditionalPanel("input.camera_policy_enabled",
         shiny::checkboxInput("camera_policy_required", "Recording is required to complete this study", p$required),
         shiny::checkboxInput("camera_policy_audio", "Include the microphone", p$audio),
@@ -54,13 +61,35 @@ brohn_install_camera_plan_ui <- function(input, output, session, current, state,
         max_duration_s = input$camera_policy_duration, max_bytes = input$camera_policy_size*1024^2, analysis_profile = input$camera_policy_analysis)
       brohn_validate_camera_policy(p); d$camera <- p
     } else d$camera <- NULL
-    update_study(d); draft$active <- NULL; shiny::removeModal(); message("Recording settings saved with this design revision.")
+    brohn_require(.brohn_camera_flag(input$participant_equipment_enabled) && .brohn_camera_flag(input$participant_equipment_controls), "Wait for the participant equipment fields to finish loading.")
+    d$participant_equipment <- if (isTRUE(input$participant_equipment_enabled)) brohn_participant_equipment_policy(isTRUE(input$participant_equipment_controls)) else NULL
+    update_study(d); draft$active <- NULL; shiny::removeModal(); message("Recording and equipment settings saved with this design revision.")
   }))
   shiny::observeEvent(input$cancel_camera_policy, attempt(function() {
     brohn_require(!is.null(draft$active) && is.list(input$cancel_camera_policy) && identical(input$cancel_camera_policy$editor_id, draft$active$id), "Choose the current recording setup's Cancel button.")
     draft$active <- NULL; shiny::removeModal(); message("Recording setup changes discarded.")
   }))
   invisible(list(context = function() draft$active))
+}
+
+brohn_participant_equipment_evidence_ui <- function(model) {
+  required <- if (is.null(model$requirements)) character() else c(if (isTRUE(model$requirements$camera)) "camera recording", if (length(model$requirements$required_codes)) "required task keys", if (isTRUE(model$requirements$controls)) "native response control")
+  shiny::tags$details(shiny::tags$summary("Participant equipment check evidence"),
+    shiny::p(model$interpretation),
+    if (is.null(model$policy)) shiny::p("Not collected by this release.") else shiny::tagList(
+      shiny::p(if (!length(required)) "This release has no applicable equipment checks." else paste("Required checks:", paste(required, collapse = ", "), ".")),
+      shiny::p(if (length(required) && !length(model$checks)) "No equipment check receipt has been collected for this session." else paste(length(model$checks), "saved check results. These are historical observations, not current device approval.")),
+      lapply(model$checks, function(e) shiny::div(class = "brohn-card",
+        shiny::h3(switch(e$payload$kind, camera = "Camera recording check", camera_declined = "Optional camera declined", keyboard = "Required task keys checked", controls = "Practice response control checked")),
+        shiny::p(paste("Journal sequence", e$sequence, "\u00b7 browser time", e$clock$value, "ms \u00b7 page", e$clock$instance_id)),
+        if (e$payload$kind == "camera") shiny::p(paste(e$payload$evidence$video$frames, "observed frame callbacks;",
+          e$payload$evidence$recording$browser_bytes, "browser-committed bytes;", e$payload$evidence$recording$acked_bytes, "receiver-acknowledged bytes. Image, speech and gaze quality unknown.")),
+        if (e$payload$kind == "camera") shiny::p(if (!isTRUE(e$payload$evidence$audio$requested)) "Microphone was not requested." else paste("Microphone:", e$payload$evidence$audio$blocks,
+          "observed input blocks;", e$payload$evidence$audio$samples, "channel samples;", e$payload$evidence$audio$sample_rate, "Hz processing context. Speech quality unknown.")),
+        if (e$payload$kind == "keyboard") shiny::p(paste("Observed and released:", paste(unlist(e$payload$evidence$codes), collapse = ", "), ". Physical input latency unknown.")),
+        if (e$payload$kind == "controls") shiny::p(paste("Observed activation:", gsub("_", " ", e$payload$evidence$activation, fixed = TRUE), ". This does not establish input latency or physical device identity.")),
+        shiny::tags$details(shiny::tags$summary("Exact saved check"), shiny::tags$pre(style = "white-space:pre-wrap;overflow-wrap:anywhere", brohn_json(e, TRUE)))))),
+    shiny::downloadButton("run_equipment_download", "Download equipment evidence JSON", icon = NULL))
 }
 
 brohn_camera_session_ui <- function(store, run) {

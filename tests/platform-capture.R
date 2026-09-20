@@ -27,7 +27,8 @@ local({
   uuid <- function() {counter <<- counter+1L; paste0("00000000-0000-4000-8000-", sprintf("%012d", counter))}
   clock <- function(value = 1000, instance = "original-page") list(id = "browser-monotonic", unit = "ms", value = as.character(value), instance_id = instance, time_origin_ms = "1700000000000")
   new_run <- function(p = policy) {
-    d <- brohn_new_design("Original generated camera fixture", "survey"); info <- brohn_question("Original information screen", "information", "before"); info$required <- FALSE
+    d <- brohn_new_design("Original generated camera fixture", "survey"); d$participant_equipment <- NULL # Historical camera receipt regression.
+    info <- brohn_question("Original information screen", "information", "before"); info$required <- FALSE
     d$questions <- list(info); d$camera <- p
     d$consent$required <- FALSE; brohn_validate_design(d)
     s <- brohn_put_entity(store, "study", d$id, d, project_id = "default")

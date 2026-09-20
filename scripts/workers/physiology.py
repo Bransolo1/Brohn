@@ -623,7 +623,8 @@ def finish_artifacts(result, prepared):
     if prepared is not None:
         result["artifacts"] = prepared[1].finish()
         result["quality"]["complete_processed_artifacts"] = True
-        result["quality"]["raw_source_duplicated"] = False
+        result["quality"]["raw_source_duplicated"] = result.get("modality") in {"ecg", "ppg"} and any(
+            artifact["kind"] == "physiology-series" for artifact in result["artifacts"])
 
 
 def declared_group(metadata):

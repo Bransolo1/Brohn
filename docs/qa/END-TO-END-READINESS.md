@@ -11,10 +11,10 @@ installed, a polished menu or a component assertion is not an enabled capability
 | Gate | Required evidence | Current position |
 |---|---|---|
 | Competitive workflow coverage | Dated primary release/video evidence mapped to Brohn journeys and explicit differences | Official historical release/video matrix saved; parity gaps remain explicit |
-| Study authoring and delivery | Blank/template/sample/clone/import through frozen participant sequence, questions/tasks, collection and recovery | Guided overview/welcome plus pinned passive/IAT/BIAT/AAT material editing accepted; questionnaire/choice illustrations and broader journeys open |
-| Recording and synchronization | Named input profiles, truthful clocks/markers/gaps, usable quality checks, restart and immutable preservation | Local/replay publication,15-family monitoring, five-second previews, reviewed criteria and reusable setups accepted; native participant preflight and actual device qualification pending |
+| Study authoring and delivery | Blank/template/sample/clone/import through frozen participant sequence, questions/tasks, collection and recovery | Guided overview/welcome and pinned passive/IAT/BIAT/AAT, questionnaire and MaxDiff image authoring have scoped participant/saved-report acceptance; broader whole-study journeys remain open |
+| Recording and synchronization | Named input profiles, truthful clocks/markers/gaps, usable quality checks, restart and immutable preservation | Local/replay publication,15-family monitoring, five-second previews, reviewed criteria, reusable setups and native participant camera/requested-audio/task-input preflight have scoped acceptance; wider device/protocol and physical qualification remain open |
 | Review and annotations | Linked replay, reusable event/interval/AOI annotations, exact source and clock identities, no invented synchronization | Existing signal/gaze explorers, versioned intervals/full-data comparisons and explicitly translated cross-recording reuse accepted; synchronized review and broader annotation workflows open |
-| Analysis and exports | Complete source support, declared method windows/baselines, cohort comparisons, reproducible reports and data exports for enabled packs | Existing modality/task/report slices accepted; remaining methods and connected review-derived summaries open |
+| Analysis and exports | Complete source support, declared method windows/baselines, cohort comparisons, reproducible reports and data exports for enabled packs | Existing modality/task/report slices, ECG/PPG input review and independently checked recorded EEG arithmetic accepted within named scopes; source-bound cardiac exclusions and separate-run recalculation also have saved-job/browser acceptance; remaining methods/visual gaps stay open |
 | Research operations | Enrollment, consent, participant endings, history/reuse, archive, retention, consistent backup/restore and controlled sharing | Local lifecycle slices accepted; complete operations and hosted profile open |
 | Premium interaction | One coherent setup-to-report path, clear next action and recovery, responsive accessible views, meaningful reported outcomes | Shared Brohn system exists; guided Home/Overview/welcome journeys accepted; broader user/accessibility evaluation open |
 | Installation and release | Declared supported configuration, clean setup, exact dependency checks, launch/stop/restart, readable failure recovery | Runtime restore evidence exists; saved checked installation added; clean-machine release gate still open |
@@ -24,3 +24,10 @@ limits. Physical-device and human-usability results require actual observations.
 Unavailable physical rigs or hosted infrastructure block the named route while
 other implementation continues. No external publication or recruitment is implied
 by this build instruction.
+
+The [measurement visual audit](MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) distinguishes
+enabled, tested, connected-but-unverified and missing views across all 50 intended
+capabilities. It identifies complete numerical signal browsing/export, saved
+vision geometry and pupil/blink timelines as concrete next visual gaps. The
+[native equipment acceptance](PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md) keeps
+current observations, recording receipts and scientific signal quality separate.

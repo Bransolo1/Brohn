@@ -1,0 +1,15 @@
+# Exact values must survive the shared table renderer's numeric formatting.
+source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=TRUE)
+run<-list(start_sample=1234567,end_sample=2345678,samples=1111111,first_time_s=1.23456789012345,
+  last_time_s=9.87654321012345,predicted_retained_samples=1000001,status="ready_to_attempt",reason=NULL)
+rows<-.brohn_cardiac_runs(list(run));stopifnot(rows[[1]]$start_sample=="1234567",rows[[1]]$end_sample=="2345678",rows[[1]]$predicted_retained_samples=="1000001")
+cat("PASS Seven-digit source bounds and complete counts remain exact strings\n")
+stopifnot(identical(rows[[1]]$first_time_s,brohn_signal_exact_number(run$first_time_s)),identical(rows[[1]]$last_time_s,brohn_signal_exact_number(run$last_time_s)))
+cat("PASS Observed times preserve the source number formatter's full precision\n")
+stopifnot(rows[[1]]$status=="Ready to calculate",rows[[1]]$reason=="\u2014")
+cat("PASS Readable status and absent restriction do not invent a support failure\n")
+html<-as.character(.brohn_cardiac_table(rows,label="Exact cardiac format regression"))
+stopifnot(grepl("1234567",html,fixed=TRUE),grepl("2345678",html,fixed=TRUE),grepl(rows[[1]]$first_time_s,html,fixed=TRUE))
+cat("PASS Shared semantic table renders complete exact source values\n")
+stopifnot(grepl('tabindex="0"',html,fixed=TRUE),grepl('role="region"',html,fixed=TRUE),grepl("Keyboard: focus the table",html,fixed=TRUE))
+cat("PASS Exact table exposes a named keyboard scroll region and visible guidance\n")

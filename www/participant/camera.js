@@ -12,12 +12,46 @@
     return btoa(text);
   };
   class BrohnCamera {
-    constructor({policy, runId, api, instanceId, timeOrigin, getStep = () => null, onFailure = () => {}}) {
-      Object.assign(this, {policy, runId, api, instanceId, timeOrigin, getStep, onFailure});
+    constructor({policy, runId, api, instanceId, timeOrigin, getStep = () => null, onFailure = () => {}, monitor = false}) {
+      Object.assign(this, {policy, runId, api, instanceId, timeOrigin, getStep, onFailure, monitor});
       this.stream = null; this.recorder = null; this.segment = null; this.video = null; this.db = null;
       this.writeChain = Promise.resolve(); this.uploading = null; this.stopPromise = null;
       this.frames = []; this.unretainedFrames = 0; this.damaged = false; this.stopping = false;
       this.prepareGeneration = 0;
+      this.previewFrames = 0; this.lastFrame = null; this.previewTimes = [];
+      this.audioObservation = null; this.audioHistory = []; this.listeners = new Set();
+    }
+    subscribe(fn) {this.listeners.add(fn); fn(this.snapshot()); return () => this.listeners.delete(fn);}
+    notify() {for (const fn of this.listeners) {try {fn(this.snapshot());} catch (_) {}}}
+    snapshot() {
+      const video = this.stream?.getVideoTracks()[0], audio = this.stream?.getAudioTracks()[0], a = this.audioObservation;
+      return {capture_id: this.segment?.capture_id || null, track_generation: this.prepareGeneration,
+        video: {live: video?.readyState === "live", enabled: video?.enabled === true, muted: video?.muted ?? true,
+          frames: this.previewFrames, last_frame_ms: this.lastFrame?.now_ms ?? null, width: this.lastFrame?.width ?? this.settings?.width ?? null, height: this.lastFrame?.height ?? this.settings?.height ?? null},
+        audio: {requested: this.policy.audio === true, live: audio?.readyState === "live", enabled: audio?.enabled === true, muted: audio?.muted ?? true,
+          state: this.audioContext?.state || "unavailable", blocks: a?.blocks || 0, samples: a?.samples || 0, last_block_ms: a?.last_block_ms ?? null,
+          sample_rate: this.audioContext?.sampleRate ?? null, channels: a?.channels || 0, rms: a?.rms ?? null, peak: a?.peak ?? null},
+        recording: {browser_sequence: (this.segment?.next_sequence || 1)-1, browser_bytes: this.segment?.total_bytes || 0,
+          acked_sequence: this.segment?.acked_sequence || 0, acked_bytes: this.segment?.acked_bytes || 0}};
+    }
+    async monitorAudio(generation) {
+      if (!this.monitor || !this.policy.audio) return;
+      const Context = window.AudioContext || window.webkitAudioContext;
+      if (!Context) return;
+      const context = new Context(); this.audioContext = context;
+      try {
+        await context.audioWorklet.addModule("audio-worklet.js");
+        if (generation !== this.prepareGeneration) {await context.close(); return;}
+        const source = context.createMediaStreamSource(this.stream), meter = new AudioWorkletNode(context, "brohn-input-meter", {outputChannelCount: [1]});
+        this.audioSource = source; this.audioMeter = meter;
+        meter.port.onmessage = ({data}) => {
+          if (generation !== this.prepareGeneration || !this.stream) return;
+          // Preserve processing-clock age when main-thread message delivery is delayed.
+          this.audioObservation = {...data, last_block_ms: Math.max(0,performance.now()-Math.max(0,context.currentTime-data.context_time_s)*1000)};
+          this.audioHistory.push(this.audioObservation); if (this.audioHistory.length > 50) this.audioHistory.shift(); this.notify();
+        };
+        source.connect(meter); meter.connect(context.destination); await context.resume();
+      } catch (_) {if (context.state !== "closed") await context.close();}
     }
     clock() {return {id: "browser-monotonic", unit: "ms", value: decimal(performance.now()), instance_id: this.instanceId, time_origin_ms: Number(this.timeOrigin).toFixed(3)};}
     async open() {
@@ -66,6 +100,12 @@
         if (!this.settings.width || !this.settings.height || !this.settings.frame_rate || this.settings.audio !== this.policy.audio) throw new Error("The camera did not provide the study's requested channel configuration.");
         this.video = video; video.muted = true; video.playsInline = true; video.srcObject = this.stream; await video.play();
         if (generation !== this.prepareGeneration) throw cancelled();
+        if (this.monitor) {
+          this.previewFrames = 0; this.previewTimes = []; this.lastFrame = null; this.audioObservation = null; this.audioHistory = [];
+          this.stopping = false; this.collectFrames();
+          for (const t of this.stream.getTracks()) for (const name of ["mute", "unmute", "ended"]) t.addEventListener(name, () => this.notify());
+          await this.monitorAudio(generation); if (generation !== this.prepareGeneration) throw cancelled(); this.notify();
+        }
       } catch (error) {if (generation === this.prepareGeneration) this.releaseTracks(); throw error;}
     }
     async acknowledgeStart() {
@@ -101,7 +141,9 @@
           expected_display_time_ms: finite(metadata.expectedDisplayTime), capture_time_ms: finite(metadata.captureTime),
           presented_frames: finite(metadata.presentedFrames), width: finite(metadata.width), height: finite(metadata.height),
           step_id: step?.id || null, phase: step?.phase || null};
-        if (this.frames.length < 500) this.frames.push(frame); else this.unretainedFrames++;
+        this.previewFrames++; this.lastFrame = frame; this.previewTimes.push(now);
+        while (this.previewTimes.length > 300 || this.previewTimes[0] < now-5000) this.previewTimes.shift();
+        if (this.recorder?.state === "recording") {if (this.frames.length < 500) this.frames.push(frame); else this.unretainedFrames++;}
         this.collectFrames();
       });
     }
@@ -119,7 +161,8 @@
         const started = new Promise((resolve, reject) => {
           this.recorder.addEventListener("start", resolve, {once: true}); this.recorder.addEventListener("error", reject, {once: true});
         });
-        this.recorder.start(1000); this.collectFrames();
+        this.frames = []; this.unretainedFrames = 0;
+        this.recorder.start(1000); if (!this.monitor) this.collectFrames();
         this.durationTimer = setTimeout(() => this.fail(new Error("The recording reached the study's camera duration limit.")), this.policy.max_duration_s * 1000);
         await started;
       } catch (error) {this.releaseTracks(); throw error;}
@@ -145,7 +188,7 @@
           for (const chunk of chunks) tx.objectStore("chunks").add(chunk);
           tx.objectStore("segments").put(next);
         });
-        this.segment = next;
+        this.segment = next; this.notify();
       });
       this.writeChain = work.catch(error => {this.fail(error);});
       void work.then(() => this.flush()).catch(error => {if (error.permanent) this.fail(error);});
@@ -164,6 +207,9 @@
       this.frameHandle = undefined;
       if (this.stream) for (const track of this.stream.getTracks()) track.stop();
       this.stream = null;
+      this.audioSource?.disconnect(); this.audioMeter?.disconnect();
+      if (this.audioContext && this.audioContext.state !== "closed") void this.audioContext.close();
+      this.notify();
     }
     async stop(outcome = "completed", reason = null) {
       if (this.stopPromise) return this.stopPromise;
@@ -206,11 +252,15 @@
           const body = {capture_id: chunk.capture_id, sequence, sha256: chunk.sha256, data_base64: base64(await chunk.blob.arrayBuffer()), observation: chunk.observation, operation_id: chunk.operation_id};
           const receipt = await this.api(`/api/camera_chunk/${encodeURIComponent(this.runId)}`, body);
           if (!Number.isSafeInteger(receipt.acked_sequence) || receipt.acked_sequence < sequence) throw new Error("The service did not acknowledge this camera chunk.");
+          if (this.monitor && (receipt.capture_id !== this.segment.capture_id || receipt.status !== "saved" ||
+              receipt.acked_sequence >= this.segment.next_sequence || !Number.isSafeInteger(receipt.total_bytes) ||
+              receipt.total_bytes < this.segment.acked_bytes + chunk.size || receipt.total_bytes > this.segment.total_bytes))
+            throw new Error("The recording receipt has inconsistent identity or byte totals. Local bytes remain saved.");
           // Serialize metadata updates with incoming recorder blobs to avoid losing a counter.
           const update = this.writeChain.then(async () => {
             const next = {...this.segment, acked_sequence: sequence, acked_bytes: this.segment.acked_bytes + chunk.size};
             await this.transaction(["segments", "chunks"], "readwrite", tx => {tx.objectStore("chunks").delete(chunk.key); tx.objectStore("segments").put(next);});
-            this.segment = next;
+            this.segment = next; this.notify();
           });
           this.writeChain = update.catch(error => {this.fail(error);}); await update;
         }

@@ -1,6 +1,6 @@
 """Stream complete typed processed physiology tables into verified local artifacts.
 
-No numerical processing, coordinate inference, raw duplication or model selection
+No numerical processing, coordinate inference or model selection
 occurs here. Callers supply explicit table types, units, identities and provenance.
 """
 from __future__ import annotations
@@ -241,39 +241,44 @@ def verify_artifact(manifest,directory=None,on_table=None,on_rows=None):
     resolved=path.resolve(strict=True)
     if directory is not None: require(resolved.parent==Path(directory).resolve(strict=True), "Artifact leaves its declared attempt directory.")
     require(isinstance(manifest.get("bytes"),int) and 1<=manifest["bytes"]<=MAX_BYTES and resolved.stat().st_size==manifest["bytes"] and digest_file(resolved)==sha, "Artifact size or SHA-256 mismatch.")
-    records=iter(_read_records(resolved));header=next(records,None)
-    require(isinstance(header,dict) and set(header)=={"type","schema","kind","provenance","provenance_sha256"} and header["type"]=="header" and header["schema"]==SCHEMA and header["kind"]==manifest["kind"], "Artifact header does not match its manifest.")
-    p=provenance(header["provenance"]);ph=hashlib.sha256(encode(p)).hexdigest()
-    require(ph==header["provenance_sha256"]==manifest.get("provenance_sha256"), "Artifact provenance hash mismatch.")
-    active=None;offset=0;row_total=0;table_total=0;ids=set();complete=False
-    for record in records:
-        require(not complete, "Records occur after the completion receipt.")
-        kind=record.get("type")
-        if kind=="table":
-            require(active is None and set(record)=={"type","table_id","identity","columns","coordinates","support","expected_rows"}, "Invalid or nested table declaration.")
-            active=table_spec(record["table_id"],record["identity"],record["columns"],record["coordinates"],record["support"],record["expected_rows"])
-            require(active["table_id"] not in ids and table_total<MAX_TABLES, "Duplicate table ID or too many tables.")
-            offset=0
-            if on_table: on_table(copy.deepcopy(active))
-        elif kind=="rows":
-            require(active is not None and set(record)=={"type","table_id","offset","rows"} and record["table_id"]==active["table_id"] and record["offset"]==offset, "Artifact chunk is out of sequence or belongs to another table.")
-            rows=record["rows"]
-            require(isinstance(rows,list) and 1<=len(rows)<=4096 and offset+len(rows)<=active["expected_rows"], "Chunk rows violate the declared table count.")
-            for row in rows:
-                require(isinstance(row,list) and len(row)==len(active["columns"]), "Artifact row has the wrong width.")
-                for value,column in zip(row,active["columns"]): scalar(value,column)
-            if on_rows: on_rows(active["table_id"],offset,rows)
-            offset+=len(rows)
-        elif kind=="table_end":
-            require(active is not None and set(record)=={"type","table_id","rows"} and record["table_id"]==active["table_id"] and record["rows"]==offset==active["expected_rows"], "Incomplete table receipt.")
-            ids.add(active["table_id"]);table_total+=1;row_total+=offset;active=None
-            require(row_total<=MAX_ROWS,"Artifact row bound exceeded.")
-        elif kind=="complete":
-            require(active is None and set(record)=={"type","tables","rows","provenance_sha256"} and record["tables"]==table_total==manifest.get("tables") and
-                    record["rows"]==row_total==manifest.get("rows") and record["provenance_sha256"]==ph, "Final artifact receipt does not match its tables/counts/provenance.")
-            complete=True
-        else: raise ArtifactError("Unknown artifact record type.")
-    require(complete and active is None, "Artifact ended before its complete receipt.")
+    records=iter(_read_records(resolved))
+    try:
+        header=next(records,None)
+        require(isinstance(header,dict) and set(header)=={"type","schema","kind","provenance","provenance_sha256"} and header["type"]=="header" and header["schema"]==SCHEMA and header["kind"]==manifest["kind"], "Artifact header does not match its manifest.")
+        p=provenance(header["provenance"]);ph=hashlib.sha256(encode(p)).hexdigest()
+        require(ph==header["provenance_sha256"]==manifest.get("provenance_sha256"), "Artifact provenance hash mismatch.")
+        active=None;offset=0;row_total=0;table_total=0;ids=set();complete=False
+        for record in records:
+            require(not complete, "Records occur after the completion receipt.")
+            kind=record.get("type")
+            if kind=="table":
+                require(active is None and set(record)=={"type","table_id","identity","columns","coordinates","support","expected_rows"}, "Invalid or nested table declaration.")
+                active=table_spec(record["table_id"],record["identity"],record["columns"],record["coordinates"],record["support"],record["expected_rows"])
+                require(active["table_id"] not in ids and table_total<MAX_TABLES, "Duplicate table ID or too many tables.")
+                offset=0
+                if on_table: on_table(copy.deepcopy(active))
+            elif kind=="rows":
+                require(active is not None and set(record)=={"type","table_id","offset","rows"} and record["table_id"]==active["table_id"] and record["offset"]==offset, "Artifact chunk is out of sequence or belongs to another table.")
+                rows=record["rows"]
+                require(isinstance(rows,list) and 1<=len(rows)<=4096 and offset+len(rows)<=active["expected_rows"], "Chunk rows violate the declared table count.")
+                for row in rows:
+                    require(isinstance(row,list) and len(row)==len(active["columns"]), "Artifact row has the wrong width.")
+                    for value,column in zip(row,active["columns"]): scalar(value,column)
+                if on_rows: on_rows(active["table_id"],offset,rows)
+                offset+=len(rows)
+            elif kind=="table_end":
+                require(active is not None and set(record)=={"type","table_id","rows"} and record["table_id"]==active["table_id"] and record["rows"]==offset==active["expected_rows"], "Incomplete table receipt.")
+                ids.add(active["table_id"]);table_total+=1;row_total+=offset;active=None
+                require(row_total<=MAX_ROWS,"Artifact row bound exceeded.")
+            elif kind=="complete":
+                require(active is None and set(record)=={"type","tables","rows","provenance_sha256"} and record["tables"]==table_total==manifest.get("tables") and
+                        record["rows"]==row_total==manifest.get("rows") and record["provenance_sha256"]==ph, "Final artifact receipt does not match its tables/counts/provenance.")
+                complete=True
+            else: raise ArtifactError("Unknown artifact record type.")
+        require(complete and active is None, "Artifact ended before its complete receipt.")
+    finally:
+        # Retained callback/validation tracebacks must not retain an open file.
+        records.close()
     # Hash again after callbacks/streaming to detect replacement during reading.
     require(resolved.stat().st_size==manifest["bytes"] and digest_file(resolved)==sha,"Artifact changed during verification.")
     return {"schema":SCHEMA,"kind":manifest["kind"],"rows":row_total,"tables":table_total,"provenance":p,"verified":True}
@@ -308,7 +313,14 @@ def write_physiology_bundle(series_writer,event_writer,modality,identity,bundle,
     retained=_column("retained","boolean",None,role="support")
     if modality=="eda": selected=[time,index,*[_column(k,"float64","uS") for k in ("clean_us","tonic_us","phasic_us")],retained]
     elif modality=="emg": selected=[time,index,*[_column(k,"float64","uV") for k in ("clean_uv","rms_uv")],retained]
-    elif modality in {"ecg","ppg","respiration"}: selected=[time,index,_column("clean","float64",source_support["unit"]),retained]
+    elif modality in {"ecg","ppg"}:
+        # Keep the exact unit-converted detector input for artifact inspection.
+        # These values are not the source file bytes or a second detection pass.
+        selected=[time,index,_column("raw","float64",source_support["unit"]),_column("clean","float64",source_support["unit"]),retained]
+        support={**support,"raw_source_omitted":False,
+                 "input_waveform":{"column":"raw","definition":"unit-converted source samples before cleaning; original source bytes remain authoritative",
+                                   "unit":source_support["unit"],"detection_basis":"clean"}}
+    elif modality=="respiration": selected=[time,index,_column("clean","float64",source_support["unit"]),retained]
     else: selected=[] # Welch's only time-domain values are raw source voltage.
     output=[]
     if selected:

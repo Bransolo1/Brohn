@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 .libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/", mustWork = FALSE), .libPaths()))
 for (module in c("platform-core", "platform-analysis", "platform-gaze")) source(paste0("R/", module, ".R"))
 local({

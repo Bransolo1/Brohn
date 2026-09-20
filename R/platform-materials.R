@@ -1,6 +1,16 @@
 # Exact saved materials; authoring does not change a registered task procedure.
 brohn_material_target <- function(design, kind, material_id, task_id = NULL) {
-  brohn_require(kind %in% c("stimulus", "exemplar") && brohn_valid_id(material_id), "Choose an existing study material.")
+  brohn_require(kind %in% c("stimulus", "exemplar", "question", "maxdiff_item") && brohn_valid_id(material_id), "Choose an existing study material.")
+  if(kind=="maxdiff_item") {
+    brohn_require(brohn_valid_id(task_id),"Choose the exercise that owns this item.");i<-match(task_id,brohn_ids(design$maxdiff));brohn_require(!is.na(i),"This best-worst exercise no longer exists.")
+    exercise<-design$maxdiff[[i]];j<-match(material_id,brohn_ids(exercise$items));brohn_require(!is.na(j),"This best-worst item no longer exists.")
+    return(list(kind=kind,task_index=i,index=j,material=brohn_maxdiff_material(exercise$items[[j]]),owner=exercise,title=paste(exercise$title,"- item",j,"illustration"),stage="Tasks"))
+  }
+  if(kind=="question") {
+    i<-match(material_id,brohn_ids(design$questions));brohn_require(!is.na(i),"This question no longer exists.")
+    q<-design$questions[[i]]
+    return(list(kind=kind,index=i,material=brohn_question_material(q),owner=q,title=paste("question",i,"illustration"),stage="Questions"))
+  }
   if (kind == "stimulus") {
     i <- match(material_id, brohn_ids(design$stimuli)); brohn_require(!is.na(i), "This study material no longer exists.")
     return(list(kind = kind, index = i, material = design$stimuli[[i]], title = design$stimuli[[i]]$title, stage = "Plan"))
@@ -14,7 +24,10 @@ brohn_material_target <- function(design, kind, material_id, task_id = NULL) {
 }
 
 .brohn_material_set <- function(design, target, material) {
-  if (target$kind == "stimulus") design$stimuli[[target$index]] <- material else design$blocks[[target$task_index]]$materials[[target$index]] <- material
+  if(target$kind=="question") design$questions[[target$index]]$illustration<-list(asset=material$asset,image_alt=material$image_alt)
+  else if(target$kind=="maxdiff_item") design$maxdiff[[target$task_index]]$items[[target$index]]$illustration<-list(asset=material$asset,image_alt=material$image_alt)
+  else if (target$kind == "stimulus") design$stimuli[[target$index]] <- material else design$blocks[[target$task_index]]$materials[[target$index]] <- material
+  if(target$kind %in% c("question","maxdiff_item"))brohn_illustration_profile(design)
   brohn_validate_design(design); design
 }
 
@@ -42,6 +55,7 @@ brohn_material_describe <- function(design, kind, material_id, task_id = NULL, i
 }
 
 brohn_material_use_text <- function(design, kind, material_id, task_id = NULL, text) {
+  brohn_require(!kind %in% c("question","maxdiff_item"),"Remove the illustration without changing its question or item text.")
   brohn_validate_design(design); target <- brohn_material_target(design, kind, material_id, task_id); material <- target$material
   brohn_require(brohn_text(text, if (kind == "stimulus") 20000 else 4000, kind == "stimulus"), "Write the participant text before removing this task image.")
   material$type <- "text"; material$content <- text; material["asset"] <- list(NULL); material$image_alt <- NULL

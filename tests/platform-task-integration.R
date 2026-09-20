@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Receiver consistency checks using original deterministic evidence, independent
 # of browser-generated latencies. This is software validation, not rig timing.
 .libPaths(c(normalizePath("../../work/r-library-brohn",winslash="/",mustWork=FALSE),.libPaths()))
@@ -7,6 +8,7 @@ local({
   check<-function(name,ok){if(!isTRUE(ok))stop("FAIL: ",name);n<<-n+1L}
   rejects<-function(expr)inherits(try(force(expr),silent=TRUE),"try-error")
   design<-brohn_new_design("Synthetic receiver procedure","blank",id="task-receiver")
+  design$participant_equipment<-NULL # Historical absent-policy receiver evidence.
   design$instructions<-"";design$blocks<-list(brohn_task_new("rt-deary-liewald-simple/1.0",id="simple-receiver"))
   protocol<-brohn_compile(design);main<-protocol$timeline[[1]];task<-main$task
   clock<-function(time,instance="page-clock")list(id="browser-monotonic",unit="ms",value=sprintf("%.6f",time),instance_id=instance,time_origin_ms="1700000000000.000")

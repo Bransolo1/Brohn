@@ -1,4 +1,9 @@
 # Derived visual views preserve a complete processed artifact and its source report.
+brohn_signal_marker_schema <- function(m, column) {
+  is.list(m) && isTRUE(column %in% c("raw","clean")) && (
+    identical(m$schema,"brohn-cardiac-marker-overlay/1.0") && identical(column,"clean") ||
+    identical(m$schema,"brohn-cardiac-marker-overlay/1.1") && identical(m$waveform_column,column) && identical(m$detection_basis,"saved_cleaned_waveform"))
+}
 brohn_signal_artifact <- function(report, kind) {
   items <- Filter(function(a) identical(a$kind, kind) && a$kind %in% c("physiology-series", "physiology-events"), report$body$analysis$artifacts)
   brohn_require(length(items) == 1L && isTRUE(items[[1L]]$complete), "Choose a complete processed artifact from this report.")
@@ -27,12 +32,12 @@ brohn_queue_signal_view <- function(store, report_id, kind, selection = NULL, of
     bounds <- selection$range
     brohn_require(is.null(bounds) || (brohn_array(bounds) && length(bounds) == 2L && all(vapply(bounds, brohn_number, logical(1))) && bounds[[1L]] < bounds[[2L]]), "Enter two increasing finite coordinates or choose the full recording.")
     request$selection <- selection; request$parameters <- list(max_bins = as.integer(max_bins))
-    if (identical(kind,"physiology-series") && identical(selection$value_column,"clean") && isTRUE(report$body$analysis$kind %in% c("ecg","ppg"))) {
+    if (identical(kind,"physiology-series") && isTRUE(selection$value_column %in% c("raw","clean")) && isTRUE(report$body$analysis$kind %in% c("ecg","ppg"))) {
       events <- brohn_signal_artifact(report,"physiology-events")
       brohn_require(identical(events$provenance_sha256,artifact$provenance_sha256),"Saved cardiac detections and waveform belong to different processing sources.")
       brohn_object_path(store,events$sha256)
       request$marker_overlay <- list(event_artifact=events,event_type=if(report$body$analysis$kind=="ecg")"r_peak"else"systolic_pulse_peak")
-      request$recipe <- "processed-signal-view/1.1.0"
+      request$recipe <- "processed-signal-view/1.2.0"
     }
   }
   brohn_enqueue_job(store, operation, request, paste0(operation, ":", brohn_hash(request)))
@@ -49,7 +54,7 @@ brohn_signal_input <- function(store, job) {
     page = r$page, selection = r$selection, parameters = r$parameters)
   if (!is.null(r$marker_overlay)) {
     brohn_require(identical(job$operation,"signal_preview") && identical(r$artifact$kind,"physiology-series") &&
-      identical(r$selection$value_column,"clean") && isTRUE(report$body$analysis$kind %in% c("ecg","ppg")),"Cardiac markers require their saved cleaned ECG or PPG waveform.")
+      isTRUE(r$selection$value_column %in% c("raw","clean")) && isTRUE(report$body$analysis$kind %in% c("ecg","ppg")),"Cardiac markers require their saved input or cleaned ECG or PPG waveform.")
     events <- brohn_signal_artifact(report,"physiology-events")
     expected <- list(event_artifact=events,event_type=if(report$body$analysis$kind=="ecg")"r_peak"else"systolic_pulse_peak")
     brohn_require(identical(brohn_hash(expected),brohn_hash(r$marker_overlay)) && identical(events$provenance_sha256,artifact$provenance_sha256),
@@ -79,7 +84,8 @@ brohn_validate_signal_result <- function(result, input) {
   }
   if (is.null(input$marker_overlay)) brohn_require(is.null(result$marker_overlay),"This view unexpectedly supplied cardiac markers.") else {
     m <- result$marker_overlay
-    brohn_require(is.list(m) && identical(m$schema,"brohn-cardiac-marker-overlay/1.0") && m$status %in% c("available","empty","too_many_markers") &&
+    schema_ok <- brohn_signal_marker_schema(m,input$selection$value_column) && identical(result$axis$value_column,input$selection$value_column)
+    brohn_require(schema_ok && m$status %in% c("available","empty","too_many_markers") &&
       identical(m$review_status,"unreviewed_algorithm_detections") && identical(m$event_type,input$marker_overlay$event_type) &&
       identical(m$alignment,if(identical(m$status,"too_many_markers"))"not_checked_display_limit_exceeded"else"exact_source_sample_and_recorded_time") &&
       identical(m$time_unit,"s") && identical(m$value_unit,result$axis$value_unit),

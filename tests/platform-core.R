@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Independent researcher-QA assertions; no actual participant/device evidence.
 # Run from the repository root with the prepared Brohn R library.
 source("R/platform-core.R", encoding = "UTF-8")

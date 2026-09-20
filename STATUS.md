@@ -2,6 +2,25 @@
 
 ## Active full-build authorization — 20 September 2026
 
+Latest accepted slices: questionnaire illustrations; native participant camera,
+requested-audio and required-key preflight; recorded EEG Welch arithmetic; and
+ECG/PPG pre-cleaning input review. Native checks retain permission, current input,
+recorder state, local bytes and receiver receipts separately. Their full journey
+passes24 browser assertions/two scans/nine jobs with independent recovery and
+receiver evidence. Cardiac input review passes21 browser assertions/four scans
+and22 recorded-reference checks/eight jobs, with unchanged original features.
+MaxDiff item illustrations also have a completed authoring-to-report journey.
+Source-bound cardiac artifact exclusions/recalculation now pass38 direct R checks
+across10 jobs,24 independent curated-source checks across8 jobs, and17 researcher
+browser assertions/two scans/four jobs. Original inputs/reports remain unchanged;
+exclusions are versioned and surviving runs are analysed independently. Read
+docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md for the precise scope and retained failures.
+The combined welcome/equipment/camera/question/passive/task/image-choice study
+passes11 browser assertions/four scans/two actual jobs; all28 task trials remain
+in the receiver. Read docs/qa/MIXED-STUDY-JOURNEY.md for this sample-only scope.
+Current implementation: complete signal-value paging/CSV, saved video geometry
+and pupil/blink traces.
+
 The owner explicitly requested continued implementation until Brohn is a finished,
 premium, end-to-end competitor to iMotions. The owner also requires historical
 iMotions release posts and official YouTube content to inform the benchmark before
@@ -29,10 +48,10 @@ source-code/range/finite/cadence criteria, and unknown stale/interrupted states.
 Reusable equipment setups pass5 metadata,25 storage,53 actual manager and10
 full-browser checks/4 scans, including complete channel-container metadata and
 two-study/source-restart/fresh-review behavior. Native participant camera/input
-preflight remains separate work. Pinned passive
+preflight has its separate accepted evidence described above. Pinned passive
 and IAT/BIAT/AAT material editing now passes30 domain,19 Shiny,12 browser checks
 and6 scans, including actual passive and IAT frozen automatic reports. Optional
-questionnaire/choice illustrations remain separate work. Import now rechecks receipt arrival after process inspection; the
+questionnaire illustrations now pass35 domain,13 Shiny,21 helper,9 browser checks/6 scans and three saved reports. MaxDiff item images now pass21 domain,12 Shiny,27 helper and7 connected-browser assertions/3 scans/one saved report. Import now rechecks receipt arrival after process inspection; the
 actual guarded intake regression passes40 checks.
 Exact saved ECG/PPG detections now overlay cleaned waveforms with full interval
 tables and SVG/JSON downloads. The recorded108 display preserves the same failed
@@ -46,7 +65,7 @@ interval errors remain. Eight preselected CapnoBase PPG recordings matched all
 5,400 artifact-free annotated pulses within50 ms, but timing and artifact effects
 still materially changed PRV endpoints. Read docs/qa/PPG-RECORDED-REFERENCE.md;
 this is bounded agreement, not whole-record automatic PRV qualification.
-Physical-device qualification remains unavailable.
+Six recorded EEG files match independent EDF calibration and an explicit DFT oracle:175,200 exact samples,2,898 PSD bins and252 features. This qualifies the tested arithmetic, not artifact-free neural interpretation. Physical-device qualification remains unavailable.
 The owner confirmed no physical hardware is available. Use academic guidance,
 independent numerical checks and recorded/replay evidence while keeping actual
 hardware performance unverified. The owner additionally requires tested automatic

@@ -19,7 +19,10 @@
     assert(Number.isInteger(value.position) && value.position >= 1 && value.position <= 200 && typeof value.required === "boolean", "The saved best-worst position or answer requirement is invalid.");
     assert(text(value.prompt, 4000) && text(value.best_label, 100) && text(value.worst_label, 100) && value.best_label !== value.worst_label, "The best-worst question needs its saved question and distinct choice labels.");
     assert(Array.isArray(value.item_order) && value.item_order.length >= 3 && value.item_order.length <= 8 && value.item_order.every(id => text(id, 96)) && new Set(value.item_order).size === value.item_order.length, "A choice set must contain 3 to 8 distinct saved item identities.");
-    assert(Array.isArray(value.items) && value.items.length === value.item_order.length && value.items.every((item, i) => object(item) && Object.keys(item).length === 2 && text(item.label, 1000) && item.id === value.item_order[i]), "The offered item labels must match the exact saved item order.");
+    assert(Array.isArray(value.items) && value.items.length === value.item_order.length && value.items.every((item, i) => object(item) && ["id","label"].every(k=>Object.hasOwn(item,k)) && Object.keys(item).every(k=>["id","label","illustration"].includes(k)) && text(item.label, 1000) && item.id === value.item_order[i]), "The offered item labels must match the exact saved item order.");
+    for(const item of value.items)if(Object.hasOwn(item,"illustration")) {
+      assert(window.BrohnIllustrations?.validate,"This illustrated choice requires its registered image validator.");window.BrohnIllustrations.validate(item.illustration);
+    }
     return Object.freeze({...value, item_order: Object.freeze([...value.item_order]), items: Object.freeze(value.items.map(item => Object.freeze({...item})))});
   }
   function validatedDraft(value, ids) {
@@ -29,7 +32,7 @@
     assert(value.best_id === null || value.worst_id === null || value.best_id !== value.worst_id, "The saved best and worst cannot be the same item.");
     return {...value};
   }
-  function create({container, choice: supplied, draft, onDraft, onSubmit, onError}) {
+  function create({container, choice: supplied, draft, onDraft, onSubmit, onError,illustration}) {
     assert(container instanceof Element && typeof onDraft === "function" && typeof onSubmit === "function" && typeof onError === "function", "Best-worst choices need a container and the caller's draft, submit and error handlers.");
     const choice = validatedChoice(supplied), uid = `brohn-maxdiff-${++instance}`;
     let value = validatedDraft(draft, choice.item_order), alive = true, pending = false, accepted = false;
@@ -106,7 +109,13 @@
         const wrapper = node("label", null, {class: "choice maxdiff-choice"});
         const input = node("input", null, {type: "radio", name: `${uid}-${key}`, value: item.id, "aria-describedby": `${uid}-instruction`});
         input.addEventListener("change", () => {if (input.checked) change(key, item.id);}, {signal: abort.signal});
-        wrapper.append(input, node("span", item.label)); fieldset.append(wrapper); radio[key].push(input); controls.push(input);
+        const caption=node("span",item.label);
+        if(item.illustration) {
+          assert(typeof illustration==="function","Prepare the saved choice illustrations before responding.");
+          const image=illustration(item);assert(image instanceof Element&&image.tagName==="IMG"&&image.alt===item.illustration.image_alt,"The prepared choice illustration does not match its authored description.");
+          image.id=`${uid}-${key}-${item.id}-image`;input.setAttribute("aria-label",item.label);input.setAttribute("aria-describedby",`${uid}-instruction ${image.id}`);caption.append(image);
+        }
+        wrapper.append(input, caption); fieldset.append(wrapper); radio[key].push(input); controls.push(input);
       }
       groups.append(fieldset);
     }

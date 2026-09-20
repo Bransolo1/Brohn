@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Actual Shiny observers and real saved-study revision CAS; no browser claim.
 for (module in c("platform-core", "platform-store", "platform-library", "platform-scales", "platform-question-sections", "platform-question-sections-views", "platform-app")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
 source("tests/fixtures/question-sections-original.R")

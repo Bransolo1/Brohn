@@ -71,7 +71,9 @@ brohn_new_design <- function(title = "Untitled study", template = "comparison", 
     debrief = "Thank you for taking part. Contact your researcher if you have questions about the study.",
     appearance = list(background = "#FFFFFF", foreground = "#111111"),
     measures = if (comparison) list("gaze", "questionnaire") else list("questionnaire"),
-    methods = list(), blocks = list(), lineage = NULL)
+    methods = list(), blocks = list(), lineage = NULL,
+    participant_equipment = list(schema = "brohn-participant-equipment-policy/1.0", camera = TRUE, keyboard = TRUE,
+      controls = FALSE, freshness_ms = 2000L, first_write_wait_ms = 15000L))
 }
 
 brohn_validate_rule <- function(rule, question_ids, depth = 0L) {
@@ -125,8 +127,14 @@ brohn_rule <- function(rule, answers) {
     less = brohn_number(value) && brohn_number(rule$value) && value < rule$value,
     FALSE)
 }
+brohn_has_question_illustrations <- function(design) any(vapply(design$questions,function(q)"illustration" %in% names(q),logical(1)))
+brohn_has_illustrations <- function(design) brohn_has_question_illustrations(design) || any(vapply(design$maxdiff,function(e)any(vapply(e$items,function(i)"illustration" %in% names(i),logical(1))),logical(1)))
 brohn_validate_question <- function(q, earlier_ids) {
-  brohn_fields(q, c("id", "type", "prompt", "required", "scope", "options", "rows", "min", "max", "step", "show_if", "randomize_options"), optional = "option_assignment", label = "Question")
+  brohn_fields(q, c("id", "type", "prompt", "required", "scope", "options", "rows", "min", "max", "step", "show_if", "randomize_options"), optional = c("option_assignment", "illustration"), label = "Question")
+  if ("illustration" %in% names(q)) {
+    brohn_require(exists("brohn_validate_illustration",mode="function"),"This design requires its question illustration validator.")
+    brohn_validate_illustration(q$illustration)
+  }
   brohn_require(brohn_valid_id(q$id) && brohn_text(q$prompt, 12000), "Each question needs an ID and prompt.")
   brohn_require(q$type %in% c("rating", "single_choice", "multiple_choice", "dropdown", "text", "long_text", "number", "slider", "matrix", "ranking", "allocation", "information"), "Unsupported question type.")
   brohn_require(q$scope %in% c("before", "after_each", "end"), "Unsupported question placement.")
@@ -154,7 +162,8 @@ brohn_validate_question <- function(q, earlier_ids) {
   brohn_validate_rule(q$show_if, earlier_ids)
 }
 brohn_validate_design <- function(x, publish = FALSE) {
-  brohn_fields(x, c("schema_version", "id", "project_id", "title", "description", "template", "archived", "tags", "conditions", "stimuli", "questions", "order", "seed", "baseline_ms", "fixation_ms", "instructions", "consent", "debrief", "appearance", "measures", "methods", "blocks", "lineage"), optional = c("analysis_plan", "camera", "scales", "maxdiff", "questionnaire_sections", "questionnaire_navigation", "welcome"), label = "Design")
+  brohn_fields(x, c("schema_version", "id", "project_id", "title", "description", "template", "archived", "tags", "conditions", "stimuli", "questions", "order", "seed", "baseline_ms", "fixation_ms", "instructions", "consent", "debrief", "appearance", "measures", "methods", "blocks", "lineage"), optional = c("analysis_plan", "camera", "scales", "maxdiff", "questionnaire_sections", "questionnaire_navigation", "welcome", "participant_equipment"), label = "Design")
+  if (!is.null(x$participant_equipment)) brohn_validate_participant_equipment(x$participant_equipment)
   if ("welcome" %in% names(x)) {
     brohn_require(exists("brohn_validate_welcome", mode = "function"), "This design requires its registered welcome-page module.")
     brohn_validate_welcome(x$welcome)
@@ -221,6 +230,7 @@ brohn_validate_design <- function(x, publish = FALSE) {
     brohn_validate_question(q, ids); earlier[[length(earlier)+1L]] <- q
     if (publish && q$scope == "after_each") brohn_require(length(x$stimuli) > 0, "After-each questions need at least one stimulus.")
   }
+  if(brohn_has_illustrations(x))brohn_illustration_profile(x)
   brohn_require(x$order %in% c("fixed", "counterbalanced", "randomized"), "Unsupported stimulus order.")
   if (!is.null(x$scales)) {
     brohn_require(exists("brohn_validate_scales", mode = "function"), "This design requires its registered questionnaire-scale validator.")
@@ -354,6 +364,7 @@ brohn_compile <- function(design, allocation_index = 1L) {
     timeline = timeline, timing_evidence = "browser_observation_not_physical_qualification")
   if (sectioned) protocol$questionnaire_assignments <- questionnaire_assignments
   if ("questionnaire_navigation" %in% names(design)) protocol <- brohn_questionnaire_revision_decorate(protocol)
+  if (!is.null(design$participant_equipment)) protocol$equipment <- brohn_equipment_requirements(protocol)
   protocol
 }
 

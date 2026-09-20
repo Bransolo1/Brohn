@@ -2,6 +2,24 @@
 
 ## Connected research workflows — 2026-09-20 (in progress)
 
+- Added a combined participant-study journey with actual receiver events, decoded camera recording and automatic report;11 browser assertions/four scans/two jobs pass.
+- Added versioned ECG/PPG source exclusions, exact time-to-sample previews,
+  complete support review and new reports from separately filtered surviving
+  runs, preserving original reports, bytes and acquisition crosswalks.
+- Fixed processed-artifact readers retaining open files after validation,
+  callback or cancellation exceptions; sources now close deterministically.
+- Added native participant equipment policy, actual camera/audio previews, required
+  key practice, browser/receiver recording evidence and recovery after delayed
+  receipts or reload; successful transport remains separate from signal quality.
+- Preserved complete pre-cleaning ECG/PPG inputs with explicit input/cleaned
+  views, unchanged saved detections and source-bound exports.
+
+- Added saved MaxDiff item images with exact best/worst choice rendering,
+  recoverable preload, frozen material identity and unchanged utility scoring.
+- Added optional questionnaire illustrations with exact PNG/description ownership,
+  branch-aware participant review, recoverable preload and immutable release/reuse.
+- Verified six original EEG files against an independent binary EDF calibration
+  and explicit-DFT spectral oracle, retaining artifact/interpretation limitations.
 - Added pinned image/material editing, exact previews and descriptions, replacement
   and text recovery across passive and IAT/BIAT/AAT routes, preserving frozen releases.
 - Added declared interval reuse across recordings with explicit preview, exact

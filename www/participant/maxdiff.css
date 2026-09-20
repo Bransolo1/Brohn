@@ -6,6 +6,7 @@
 .brohn-maxdiff .maxdiff-choice { min-height: 48px; white-space: pre-wrap; }
 .brohn-maxdiff .maxdiff-choice:has(input:disabled):not(:has(input:checked)) { border-style: dashed; cursor: default; }
 .brohn-maxdiff .maxdiff-choice span { min-width: 0; }
+.brohn-maxdiff .maxdiff-illustration { display:block;max-width:100%;width:auto;height:auto;max-height:180px;object-fit:contain;margin-top:12px; }
 .brohn-maxdiff .maxdiff-error { border: 2px solid currentColor; border-radius: 8px; padding: 14px; }
 .brohn-maxdiff .actions > button { min-height: 48px; min-width: 48px; max-width: 100%; }
 @media (max-width: 600px) { .brohn-maxdiff .maxdiff-groups { grid-template-columns: minmax(0, 1fr); gap: 0; } }

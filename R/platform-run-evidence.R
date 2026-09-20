@@ -50,7 +50,7 @@
     "Retained event sequence or identity is invalid.")
   brohn_require(!exists(event$id, ids, inherits = FALSE), "Retained journal contains a duplicate event identity.")
   assign(event$id, TRUE, ids)
-  brohn_require(brohn_text(event$type, 64) && event$type %in% c("step_started", "step_finished", "response", "task_event", "questionnaire_event", "visibility", "run_finished", "withdrawal") &&
+  brohn_require(brohn_text(event$type, 64) && event$type %in% c("step_started", "step_finished", "response", "task_event", "questionnaire_event", "equipment_event", "visibility", "run_finished", "withdrawal") &&
     brohn_text(event$phase, 96) && is.list(event$payload) && !is.null(names(event$payload)) && is.list(event$clock), "Retained event has an invalid envelope.")
   if (!is.null(event$step_id)) {
     brohn_require(brohn_text(event$step_id, 128), "Retained event step identity is invalid.")

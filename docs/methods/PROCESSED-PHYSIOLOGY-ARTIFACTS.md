@@ -2,7 +2,7 @@
 
 `scripts/workers/physiology_artifacts.py` preserves complete processed tables separately from the bounded report/chart previews. Its two artifact kinds are `physiology-series` and `physiology-events`; the format is typed NDJSON, `brohn-physiology-tables/1.0`, with media type `application/x-ndjson`.
 
-The source recording already has an immutable object hash. Full raw sample arrays are deliberately omitted from these processed artifacts; the original source remains authoritative. Original row/sample indices, clock origin strings, coordinate references, units, method settings, source header/calibration evidence and source identities are retained.
+The source recording already has an immutable object hash. New ECG/PPG artifacts retain complete unit-converted input samples alongside the cleaned waveform for artifact review; these are preprocessing input values, not original file bytes or acquisition-filter-free measurements. Other adapters continue to omit full raw arrays. The original source remains authoritative. Historical cardiac artifacts remain unchanged and need a new analysis to gain this input column. Original row/sample indices, clock origin strings, coordinate references, units, method settings, source header/calibration evidence and source identities are retained.
 
 ## Current adapters
 
@@ -12,7 +12,7 @@ An optional `artifact_directory` in a `brohn-worker-request/1.0` request enables
 | --- | --- |
 | Standard EDA | Clean, tonic and phasic samples with retention flags; all detected SCR morphology candidates. |
 | Event-related EDA | Continuous clean/tonic/phasic samples with source indices and retention flags; all SCR candidates with onset/recovery support. Measured stimulus/nuisance onset logs and event eligibility remain complete in the main result. |
-| ECG / PPG | Clean waveform, retention support, every detected peak and its preceding interval/plausibility. |
+| ECG / PPG | Input values before cleaning (after declared unit conversion), cleaned waveform, retention support, every detected peak and its preceding interval/plausibility. The input column and conversion are explicit in table support. |
 | Respiration | Clean waveform, retention support, every complete detected cycle with timing/amplitude. |
 | EMG | Clean waveform and RMS envelope, retention support, every configured threshold burst. |
 | EEG Welch | All calculated PSD frequency bins and densities. Its time-domain arrays contain only raw voltage, so no duplicate full time-domain artifact is created. |

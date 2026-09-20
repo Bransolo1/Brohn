@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Read-only current-behaviour probe. No SQLite store, receiver service, job or
 # scientific subprocess is created. Original synthetic answers only.
 for (module in c("platform-core", "platform-store", "platform-delivery", "platform-analysis", "platform-scales", "platform-jobs"))

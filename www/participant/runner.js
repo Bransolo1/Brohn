@@ -10,11 +10,39 @@
   let taskController = null, taskExecution = null, taskStop = null;
   let choiceController = null;
   let cameraController = null, cameraReady = false, endingRequested = false;
+  let equipmentAbort = null, equipmentInputsReady = false, equipmentPanelStop = null, equipmentTimer = null;
+  const equipmentPending = new Map();
   let activeStep = null, onset = null, resumedStep = false, frameHandle = null, activeMedia = null;
   let writeChain = Promise.resolve(), timer = null, releaseLock = null;
   let syncTask = null, revisionController = null, revisionBusy = false, revisionView = null;
   let revisionNotice = "";
   const preparedMedia = new Map();
+  let questionIllustrations = null, illustrationLoading = false, illustrationAbort = null;
+  const hasChoiceIllustrations = () => record?.protocol?.design?.maxdiff?.some(e=>e.items.some(i=>Object.hasOwn(i,"illustration")));
+  const hasQuestionIllustrations = () => record?.protocol?.design?.questions?.some(q => Object.hasOwn(q, "illustration")) || hasChoiceIllustrations();
+  function appendQuestionIllustration(parent, step, compact = false) {
+    if (!step.question?.illustration) return;
+    if (!questionIllustrations) throw new Error("Prepare the saved question images before continuing.");
+    const image = questionIllustrations.node(step, compact);
+    if (!image) throw new Error("The exact question image is unavailable.");
+    parent.append(image);
+  }
+  async function prepareQuestionIllustrations(retry) {
+    if (!hasQuestionIllustrations() || questionIllustrations) return true;
+    if (illustrationLoading || endingRequested || record.finish || finished) return false;
+    illustrationLoading = true; illustrationAbort = new AbortController();
+    screen(hasChoiceIllustrations()?"Preparing study images":"Preparing question images", "Your saved illustrations are being checked before the study continues.");
+    try {
+      if (!window.BrohnIllustrations) throw new Error("The study image helper is unavailable. Reload this page to try again.");
+      const prepared = await BrohnIllustrations.prepare(record.protocol, {signal: illustrationAbort.signal});
+      if (endingRequested || record.finish || finished) return false;
+      questionIllustrations = prepared; return true;
+    } catch (error) {
+      if (endingRequested || record.finish || finished) return false;
+      screen(hasChoiceIllustrations()?"A study image needs another try":"A question image needs another try", "Your existing session and saved answers are retained. No response has been started by this image check.");
+      showError(error); content.append(button(hasChoiceIllustrations()?"Retry study images":"Retry question images", retry, true)); return false;
+    } finally {illustrationLoading = false;}
+  }
   const node = (tag, text, attrs = {}) => {
     const element = document.createElement(tag);
     if (text !== null && text !== undefined) element.textContent = text;
@@ -170,17 +198,41 @@
     void sync();
   }
   function pendingCount() { return record?.events?.filter(item => item.sequence > record.acked_sequence).length || 0; }
+  async function emitEquipment(kind, evidence) {
+    const requirements=record.protocol.equipment;
+    let sequence=equipmentPending.get(kind);
+    if(!sequence){
+      await persist(()=>{const item=makeEvent("equipment_event",{},null);item.phase="equipment_setup";
+        item.payload={schema:"brohn-participant-equipment-check/1.0",policy_hash:requirements.policy_hash,kind,attempt_id:uid(),evidence};
+        record.events.push(item);sequence=item.sequence;});equipmentPending.set(kind,sequence);
+    }
+    await sync();
+    if(!record || record.acked_sequence<sequence)throw new Error("The equipment check is saved in this browser. Retry when the study service can confirm receipt.");
+  }
   function camera() {
     if (!record?.protocol?.design?.camera) return null;
     if (!window.BrohnCamera) throw new Error("The study's camera module is unavailable. Contact your researcher before starting.");
     if (!cameraController || cameraController.runId !== record.run_id) cameraController = new BrohnCamera({
       policy: record.protocol.design.camera, runId: record.run_id, api, instanceId: segmentId, timeOrigin: performance.timeOrigin,
-      getStep: () => activeStep,
+      getStep: () => activeStep, monitor: record.protocol.equipment?.camera === true,
       onFailure: error => {showError(error); void finish("interrupted", error.message).catch(showError);}
     });
     return cameraController;
   }
   async function enterStudy(resumed = false) {
+    if (!await prepareQuestionIllustrations(() => enterStudy(resumed))) return;
+    if (endingRequested || record.finish || finished) return;
+    const requirements=record.protocol.equipment;
+    if(requirements){
+      if(!window.BrohnEquipment)throw new Error("This release's equipment checks are unavailable.");
+      equipmentAbort ||= new AbortController(); $("withdraw").hidden=false;
+      if(!equipmentInputsReady){
+        try{await BrohnEquipment.inputs({container:content,requirements,emit:emitEquipment,signal:equipmentAbort.signal});equipmentInputsReady=true;}
+        catch(error){if(!endingRequested&&!record.finish){showError(error);content.append(button("Retry equipment checks",()=>enterStudy(resumed),true));}return;}
+      }
+      if(cameraReady&&requirements.camera&&cameraController?.segment?.start_request.consented===false)
+        await emitEquipment("camera_declined",{capture_id:cameraController.segment.capture_id});
+    }
     const recorder = camera();
     if (!recorder || cameraReady) {await present(resumed); return;}
     const policy = record.protocol.design.camera;
@@ -199,21 +251,41 @@
         await recorder.prepare(video);
         if (!setupActive() || decision) {recorder.releaseTracks(); return;}
         content.append(video);
-        content.append(node("p", "Position yourself comfortably. Recording begins when you choose Begin study."));
-        const begin = button("Begin study", async () => {
-          if (!setupActive() || decision) return;
+        const recordingHint=node("p", requirements?.camera ? "Position yourself comfortably. Recording has not started. Start recording and continue saves this setup lead-in as part of the same study recording." : "Position yourself comfortably. Recording begins when you choose Begin study.");content.append(recordingHint);
+        if(requirements?.camera)equipmentPanelStop=BrohnEquipment.panel(content,recorder,requirements);
+        let checking=false;
+        const begin = button(requirements?.camera?"Start recording and continue":"Begin study", async () => {
+          if (!setupActive() || checking || decision === "decline") return;
+          checking=true;
           decision = "record"; begin.disabled = true; if (declineButton) declineButton.disabled = true;
           try {
-            await recorder.start();
+            if(!recorder.recorder)await recorder.start();
+            if(requirements?.camera)recordingHint.textContent="Recording has started. This setup lead-in is retained in the same study recording. Checking current input and saved-byte receipts before continuing.";
+            if(requirements?.camera){
+              const evidence=await BrohnEquipment.firstWrite({controller:recorder,requirements,signal:equipmentAbort.signal});
+              await emitEquipment("camera",evidence);
+              const current=BrohnEquipment.cameraCheck(recorder.snapshot(),requirements);
+              if(!current.video||!current.audio||recorder.recorder?.state!=="recording")
+                throw new Error("The saved equipment check is historical. Current camera or microphone input changed while waiting for its receipt. Restore the input and retry the check, or stop.");
+            }
             if (!setupActive()) {await recorder.stop("interrupted", "study_ended_during_camera_setup"); return;}
-            cameraReady = true;
+            cameraReady = true; equipmentPanelStop?.();equipmentPanelStop=null;
             // Keep the muted preview decoder available for observed frame metadata.
             // The participant's face is not displayed alongside research stimuli.
             const probe = node("div", null, {id: "camera-frame-probe", "aria-hidden": "true", style: "position:fixed;left:0;top:0;width:1px;height:1px;opacity:0.01;overflow:hidden;pointer-events:none"});
             video.setAttribute("tabindex", "-1"); probe.append(video); document.body.append(probe);
             const indicator = $("camera-status"); if (indicator) {indicator.hidden = false; indicator.textContent = policy.audio ? "Camera and microphone recording" : "Camera recording";}
+            if(requirements?.camera&&indicator){
+              const update=()=>{const s=recorder.snapshot(),c=BrohnEquipment.cameraCheck(s,requirements);
+                const receipt=s.recording.browser_bytes>s.recording.acked_bytes?"newer committed bytes waiting for receipt":c.receiver?"all browser-committed bytes acknowledged":"waiting for first saved bytes";
+                const text=`${c.video?"Camera frames observed":"Current camera frame support unavailable"}${requirements.audio?(c.audio?"; audio buffers observed":"; current audio support unavailable"):""}; recorder ${recorder.recorder?.state||"not started"}; ${receipt}.`;
+                if(indicator.textContent!==text)indicator.textContent=text;};update();equipmentTimer=setInterval(update,1000);
+            }
             await present(resumed);
-          } catch (error) {await finish("interrupted", error.message); showError(error);}
+          } catch (error) {
+            if(requirements?.camera&&setupActive()&&!recorder.damaged){showError(error);begin.textContent="Retry recording check";begin.disabled=false;}
+            else if(!endingRequested&&!record.finish){await finish("interrupted", error.message);showError(error);}
+          } finally {checking=false;}
         }, true);
         content.append(begin); begin.focus();
       } catch (error) {if (setupActive() && !decision) {showError(error); enable.disabled = false;}}
@@ -227,7 +299,8 @@
         try {
           await recorder.decline("participant_declined");
           if (!setupActive()) return;
-          cameraReady = true; await present(resumed);
+          if(requirements?.camera)await emitEquipment("camera_declined",{capture_id:recorder.segment.capture_id});
+          cameraReady = true; equipmentPanelStop?.();equipmentPanelStop=null;await present(resumed);
         } finally {if (setupActive()) declineButton.disabled = false;}
       });
       content.append(declineButton);
@@ -293,7 +366,7 @@
       else timer = setTimeout(() => void sync(), 4000);
     } finally {
       syncing = false;
-      if (record?.revision?.pending && record.acked_sequence >= record.revision.pending.sequence && !revisionBusy && !endingRequested)
+      if (record?.revision?.pending && record.acked_sequence >= record.revision.pending.sequence && !revisionBusy && !endingRequested && (!hasQuestionIllustrations() || questionIllustrations))
         setTimeout(() => void continueRevision().catch(showError), 0);
     }
   }
@@ -310,7 +383,8 @@
       // Let the task retain its partial trial/interruption before the run ending.
       taskStop = {outcome, reason}; taskController?.abort(); return;
     }
-    endingRequested = true; interrupted = outcome !== "completed"; stopPresentation();
+    endingRequested = true; interrupted = outcome !== "completed"; illustrationAbort?.abort(); equipmentAbort?.abort();
+    equipmentPanelStop?.(); equipmentPanelStop=null;clearInterval(equipmentTimer);stopPresentation();
     try {
       if (cameraController) await cameraController.stop(outcome, reason);
       if (cameraController?.damaged && outcome === "completed") {outcome = "interrupted"; interrupted = true; reason = reason || "camera_recording_incomplete";}
@@ -529,7 +603,8 @@
       const list = node("ol", null, {id: "questionnaire-answer-review"});
       for (const row of rows) {
         const source = revision().step(row.step_id), item = node("li", null, {class: "matrix-row"});
-        item.append(node("h2", source.question.prompt), node("p", readableAnswer(source.question, row)));
+        item.append(node("h2", source.question.prompt)); appendQuestionIllustration(item, source, true);
+        item.append(node("p", readableAnswer(source.question, row)));
         if (model.packet.actions.editable_step_ids.includes(row.step_id)) {
           const edit = button(row.information ? "Review information" : "Edit answer", () => revisionAction("edit", {target: row.step_id}));
           edit.setAttribute("aria-label", `${row.information ? "Review information" : "Edit"}: ${source.question.prompt}`); item.append(edit);
@@ -548,6 +623,7 @@
       if (step.questionnaire?.section_label) content.querySelector("h1").setAttribute("aria-describedby", "question-section");
       content.append(node("p", step.question.type === "information" ? "Study information" : step.question.required ? "Required" : "Optional", {class: "question-meta"}));
       const value = revision().draftValue(model, step, record.revision.drafts[step.id]);
+      appendQuestionIllustration(content, step);
       const form = node("form", null, {novalidate: "novalidate", id: "questionnaire-answer"});
       const fields = questionFields(step, {value, onDraft: value => revisionDraft(step, value)}); form.append(fields.box);
       const actions = node("div", null, {class: "actions"});
@@ -703,6 +779,7 @@
     content.querySelector("h1").id = "question-prompt";
     if (step.questionnaire?.section_label) content.querySelector("h1").setAttribute("aria-describedby", "question-section");
     content.append(node("p", step.question.type === "information" ? "Study information" : step.question.required ? "Required" : "Optional", {class: "question-meta"}));
+    appendQuestionIllustration(content, step);
     const form = node("form", null, {novalidate: "novalidate"});
     const fields = questionFields(step); form.append(fields.box);
     const next = node("button", "Continue", {type: "submit", class: "primary"}); form.append(next);
@@ -725,6 +802,7 @@
     await event("step_started", {resumed: resume}, step, onset);
     if (interrupted || record.finish || endingRequested) return;
     choiceController = window.BrohnMaxDiff.create({container, choice: step.choice, draft: currentValue(step),
+      illustration:item=>questionIllustrations?.itemNode(step,item),
       onDraft: value => persist(() => {record.drafts[step.id] = value;}), onSubmit: async value => {
         clearError(); if (interrupted || record.finish || endingRequested || activeStep?.id !== step.id) throw new Error("This choice set is no longer active.");
         await advance(step, value);

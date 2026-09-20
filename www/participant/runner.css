@@ -37,6 +37,8 @@ legend { font-weight: 600; margin-bottom: 16px; padding: 0; font-size: 1.12rem; 
 .field > label { margin-bottom: 8px; font-weight: 600; }
 .field input:not([type="checkbox"]):not([type="radio"]), .field textarea, .field select { width: 100%; max-width: 620px; }
 textarea { min-height: 180px; resize: vertical; }
+.question-illustration { display:block; max-width:100%; width:auto; height:auto; max-height:400px; object-fit:contain; margin:16px 0 24px; }
+.question-illustration-review { max-height:200px; }
 .hint { font-size: .85rem; margin: 8px 0 16px; }
 .question-meta { font-size: .85rem; margin: -12px 0 24px; }
 .matrix-row { padding: 18px 0; border-bottom: 1px solid currentColor; }

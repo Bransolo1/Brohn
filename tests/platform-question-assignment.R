@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Exact independent oracle + real catalog/API/portable-release compatibility.
 for (module in c("platform-core", "platform-store", "platform-delivery", "platform-portability")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
 source("tests/fixtures/question-assignment-original.R")

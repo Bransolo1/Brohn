@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Independent researcher arithmetic and identity/phase validation fixtures.
 for (module in c("platform-core", "platform-store", "platform-delivery", "platform-analysis", "platform-jobs")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
 source("tests/fixtures/platform-analysis-fixture.R")

@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Original synthetic task studies; CLI fixture creates/inspects actual persistence.
 args<-commandArgs(trailingOnly=TRUE);stopifnot(length(args)==3L)
 for(module in c("platform-core","platform-methods","platform-store","platform-delivery","platform-task-delivery"))source(paste0("R/",module,".R"))
@@ -8,6 +9,7 @@ local({
     profiles<-c(simple="rt-deary-liewald-simple/1.0",iat="iat-gnb2003-d1/1.0",interruption="rt-deary-liewald-simple/1.0")
     for(name in names(profiles)) {
       design<-brohn_new_design(paste("Original synthetic",name,"integration"),"blank",id=paste0("task-integration-",name))
+      design$participant_equipment<-NULL # Historical task renderer/receiver regression; modern checks have their own journey.
       design$instructions<-"";design$blocks<-list(brohn_task_new(profiles[[name]],paste("Synthetic",name),id=paste0("task-",name)))
       design$blocks[[1]]$settings$intertrial_ms<-100L
       if(name=="iat") {

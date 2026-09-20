@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Independent library durability and legacy migration failure-recovery checks.
 .libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/", mustWork = FALSE), .libPaths()))
 for (module in c("study", "comparison", "presentation", "records", "json", "storage", "assets", "aois", "drafts",

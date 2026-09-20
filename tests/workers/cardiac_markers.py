@@ -12,7 +12,7 @@ spec=importlib.util.spec_from_file_location("cardiac_view",ROOT/"scripts/workers
 worker=importlib.util.module_from_spec(spec);spec.loader.exec_module(worker)
 
 
-def fixture(root,modality="ecg",n=9,indices=None,change=None):
+def fixture(root,modality="ecg",n=9,indices=None,change=None,include_input=False):
     values=[0.,-2.,0.,3.,0.,2.,0.,-1.,0.] if n==9 else [float(i%7-3) for i in range(n)]
     indices=[1,3,5,7] if indices is None else indices
     event_type="r_peak" if modality=="ecg" else "systolic_pulse_peak"
@@ -35,6 +35,9 @@ def fixture(root,modality="ecg",n=9,indices=None,change=None):
             column("source_sample_index","integer","sample_index",role="index"),column("previous_interval_ms","float64","ms",True),
             column("previous_interval_plausible","boolean",None,True,role="support")],
         coordinates={**coordinates,"axis":"event"},support=copy.deepcopy(support),rows=event_rows,row_count=len(event_rows))
+    if include_input:
+        series["specification"].append(column("raw","float64","uV" if modality=="ecg" else "a.u.",True))
+        series["arrays"]["raw"]=[10.+2*x for x in values]
     if change:change(series,events,provenance)
     with worker.artifacts.TableWriter(root,"physiology-series",provenance,chunk_rows=17) as writer:
         writer.write_arrays(**series);a=writer.finish()
@@ -62,6 +65,34 @@ class Markers(unittest.TestCase):
     def test_ppg_keeps_pulse_identity_and_native_unit(self):
         m=self.run_fixture(modality="ppg")["marker_overlay"]
         self.assertEqual(m["event_type"],"systolic_pulse_peak");self.assertEqual(m["value_unit"],"a.u.")
+    def test_input_overlay_retains_detections_but_uses_exact_input_values(self):
+        for modality in ("ecg","ppg"):
+            request=fixture(self.root,modality=modality,include_input=True)
+            clean=worker.run(request)["marker_overlay"]
+            request["selection"]["value_column"]="raw"
+            raw=worker.run(request)["marker_overlay"]
+            self.assertEqual(raw["schema"],"brohn-cardiac-marker-overlay/1.1")
+            self.assertEqual(raw["waveform_column"],"raw")
+            self.assertEqual(raw["detection_basis"],"saved_cleaned_waveform")
+            self.assertEqual([p["value"] for p in raw["markers"]],[6,16,14,8])
+            for a,b in zip(clean["markers"],raw["markers"]):
+                self.assertEqual({k:v for k,v in a.items() if k!="value"},{k:v for k,v in b.items() if k!="value"})
+    def test_input_cannot_be_invented_for_a_legacy_clean_only_artifact(self):
+        request=fixture(self.root);request["selection"]["value_column"]="raw"
+        with self.assertRaises(worker.InputError):worker.run(request)
+    def test_input_missing_or_excluded_sample_is_not_interpolated(self):
+        for field,value in (("raw",None),("retained",False)):
+            request=fixture(self.root,include_input=True,change=lambda s,e,p:s["arrays"][field].__setitem__(1,value))
+            request["selection"]["value_column"]="raw"
+            with self.assertRaisesRegex(worker.InputError,"exact retained"):worker.run(request)
+    def test_input_overlay_keeps_range_and_overlimit_policy(self):
+        request=fixture(self.root,include_input=True);request["selection"].update(value_column="raw",range=[13,15])
+        view=worker.run(request)
+        self.assertEqual([p["value"] for p in view["marker_overlay"]["markers"]],[16,14])
+        self.assertEqual(view["marker_overlay"]["markers"][0]["previous_interval_ms"],2000)
+        request=fixture(self.root,include_input=True,n=5005,indices=list(range(1,5005,2)));request["selection"]["value_column"]="raw"
+        m=worker.run(request)["marker_overlay"]
+        self.assertEqual(m["alignment"],"not_checked_display_limit_exceeded");self.assertEqual(m["markers"],[])
     def test_inclusive_range_preserves_previous_interval_and_false(self):
         request=fixture(self.root);request["selection"]["range"]=[13,15]
         markers=worker.run(request)["marker_overlay"]["markers"]
@@ -135,6 +166,6 @@ if __name__=="__main__":
         parser=argparse.ArgumentParser();parser.add_argument("--fixture",type=Path,required=True);args=parser.parse_args()
         args.fixture.mkdir(parents=True,exist_ok=True)
         for modality in ("ecg","ppg"):
-            request=fixture(args.fixture,modality=modality)
+            request=fixture(args.fixture,modality=modality,include_input=True)
             (args.fixture/f"{modality}-request.json").write_text(json.dumps(request,allow_nan=False),encoding="utf-8")
     else:unittest.main()

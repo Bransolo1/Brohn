@@ -24,6 +24,7 @@ brohn_python_profile <- function(modality) {
   normalizePath(candidate, winslash = "/", mustWork = TRUE)
 }
 brohn_job_input <- function(store, job) {
+  if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_cardiac_review_input(store, job))
   if (identical(job$operation, "summarize_signal_windows")) return(brohn_signal_windows_input(store, job))
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   request <- job$request
@@ -81,7 +82,8 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "summarize_signal_windows", "assemble_capture", "extract_stream"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac"), "Use the operation's setup screen to choose a new destination or source.")
+  if(job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac"))brohn_cardiac_review_input(store,job)
   if(identical(job$operation,"summarize_signal_windows"))brohn_signal_windows_input(store,job)
   brohn_store_batch(store, function() {
     retried <- brohn_enqueue_job(store, job$operation, job$request, paste0("retry:", id, ":", brohn_id("request")))
@@ -161,6 +163,7 @@ brohn_analyse_runs <- function(input) {
   report
 }
 brohn_analyse_input_unplanned <- function(input, scratch) {
+  if (input$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_analyse_cardiac_review(input, scratch))
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
@@ -279,7 +282,7 @@ brohn_analyse_input <- function(input, scratch) {
     list(key = item$key, kind = item$kind, hash = item$sha256, size = as.numeric(item$bytes), media_type = get(item$sha256, envir = media, inherits = FALSE))
   })
 }
-brohn_publish_analysis_report <- function(store, job, input, result, scratch, result_path, timeout_seconds = 1900) {
+brohn_publish_analysis_report <- function(store, job, input, result, scratch, result_path, timeout_seconds = 1900, before_commit = NULL) {
   report <- result$report; id <- paste0("report-", sub("^job-", "", job$id))
   report$schema_version <- "brohn-report/1.0.0"; report$id <- id; report$created_at <- brohn_now()
   report$status <- if (isTRUE(report$analysis$status %in% c("insufficient_support", "needs_review", "no_proposal"))) "Needs review" else "Available"
@@ -293,6 +296,7 @@ brohn_publish_analysis_report <- function(store, job, input, result, scratch, re
     # seal on POSIX. Its writer transaction can still include bulk file I/O.
     report$processing$publication <- list(mode = "legacy-transactional-copy", native_seal = FALSE)
     return(brohn_store_batch(store, function() {
+      if(!is.null(before_commit))before_commit()
       brohn_renew_job(store, job$id, job$worker, job$token, 60)
       publication_path <- result_path
       if (artifacts) {
@@ -336,6 +340,7 @@ brohn_publish_analysis_report <- function(store, job, input, result, scratch, re
   committed <- FALSE
   on.exit(brohn_close_publication(prepared, committed = committed), add = TRUE)
   receipt <- brohn_store_batch(store, function() {
+    if(!is.null(before_commit))before_commit()
     observed <- brohn_commit_prepared_objects(store, prepared)
     brohn_require(identical(brohn_hash(observed), brohn_hash(predicted)), "Concurrent object registration changed the frozen report handles. Retry this analysis.")
     report$result_object <- tail(observed, 1L)[[1]][c("hash", "size", "media_type")]
@@ -347,7 +352,7 @@ brohn_publish_analysis_report <- function(store, job, input, result, scratch, re
   committed <- TRUE
   receipt
 }
-brohn_publish_entity_result <- function(store,job,input,output,kind,body,publication_path,receipt) {
+brohn_publish_entity_result <- function(store,job,input,output,kind,body,publication_path,receipt,before_commit=NULL) {
   # Typed callers construct and validate their bounded JSON before this point.
   # Only immutable descriptors, the entity and job receipt enter the writer TX.
   brohn_require(!RSQLite::sqliteIsTransacting(store$con),"Prepare the derived result before opening its publication transaction.")
@@ -363,6 +368,7 @@ brohn_publish_entity_result <- function(store,job,input,output,kind,body,publica
     on.exit(brohn_close_publication(prepared,committed=committed),add=TRUE)
   }
   result<-brohn_store_batch(store,function() {
+    if(!is.null(before_commit))before_commit()
     brohn_renew_job(store,job$id,job$worker,job$token,60)
     body$result_object<-if(is.null(prepared))brohn_store_object(store,path=publication_path,media_type="application/json") else
       brohn_commit_prepared_objects(store,prepared)[[1]][c("hash","size","media_type")]
@@ -406,6 +412,11 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   tryCatch({
     if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "The saved-answer view requires process memory monitoring.")
     input <- if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
+    if(job$operation %in% c("preview_cardiac_review","reanalyse_cardiac")) {
+      cardiac_source_guards<-.brohn_hold_cardiac_sources(store,input)
+      on.exit(for(g in cardiac_source_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_cardiac_review_input(store,job))),"Cardiac source changed before its processing read guard was established.")
+    }
     request_path <- file.path(scratch, "request.json"); result_path <- file.path(scratch, "result.json")
     brohn_write_json_file(input, request_path)
     executable <- brohn_rscript()
@@ -449,6 +460,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
     if (explorer) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "summarize_signal_windows")) return(brohn_publish_signal_windows(store, result, scratch, job, input, result_path))
+    if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_publish_cardiac_review(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("normalise_dataset", "import_multistream"))
       return(brohn_publish_stream_import(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("signal_catalog", "signal_preview"))

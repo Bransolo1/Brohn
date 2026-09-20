@@ -1,4 +1,5 @@
 brohn_material_card_ui <- function(design, kind, material, task_id = NULL) {
+  illustration<-kind %in% c("question","maxdiff_item")
   command <- list(study_id = design$id, kind = kind, material_id = material$id, task_id = task_id)
   open <- function(label, mode) brohn_command(label, "material_open", c(command, list(mode = mode)))
   shiny::div(class = "brohn-material-card",
@@ -7,7 +8,8 @@ brohn_material_card_ui <- function(design, kind, material, task_id = NULL) {
       shiny::p(class = "brohn-muted", paste(material$asset$media_type, "\u00b7", format(material$asset$size/1024, digits = 4), "KiB",
         if (!is.null(material$asset$width)) paste0(" \u00b7 ", material$asset$width, " \u00d7 ", material$asset$height, " px") else "")),
       if (material$type == "image") shiny::p(if ("image_alt" %in% names(material)) material$image_alt else "Open Edit material to review the participant image description.")),
-    shiny::div(class = "brohn-toolbar", open("Preview material", "preview"), open(if (is.null(material$asset)) "Add image" else "Edit material", "edit")))
+    shiny::div(class = "brohn-toolbar", if(!illustration||!is.null(material$asset))open(if(illustration)"Preview illustration" else "Preview material", "preview"),
+      open(if(illustration) {if(is.null(material$asset))"Add illustration" else "Edit image"} else if (is.null(material$asset)) "Add image" else "Edit material", "edit")))
 }
 
 .brohn_material_response <- function(status, type = "text/plain; charset=utf-8", content = "Material preview is unavailable.") {
@@ -16,7 +18,7 @@ brohn_material_card_ui <- function(design, kind, material, task_id = NULL) {
 }
 
 brohn_install_materials <- function(input, output, session, store, current, state, attempt, capture, update_study,
-    register_resource = function(name, data, filter) session$registerDataObj(name, data, filter)) {
+    register_resource = function(name, data, filter) session$registerDataObj(name, data, filter),can_open=function(kind)TRUE) {
   dialog <- shiny::reactiveVal(NULL); error <- shiny::reactiveVal(NULL); blocked <- shiny::reactiveVal(NULL)
   resource <- shiny::reactiveVal(NULL); reload <- shiny::reactiveVal(0L)
   close <- function() {dialog(NULL); resource(NULL); blocked(NULL); error(NULL); shiny::removeModal()}
@@ -31,7 +33,7 @@ brohn_install_materials <- function(input, output, session, store, current, stat
       identical(current$study$revision, pin$revision) && identical(brohn_hash(current$study$body), pin$design_hash),
       "This saved study changed. Close the dialog and reopen the material before saving.")
     target <- brohn_material_target(saved$body, pin$kind, pin$material_id, pin$task_id)
-    brohn_require(identical(brohn_hash(target$material), pin$target_hash), "This material changed. Reopen its current revision.")
+    brohn_require(identical(brohn_hash(brohn_default(target$owner,target$material)), pin$target_hash), "This material changed. Reopen its current revision.")
     saved
   }
   apply <- function(command, fn) attempt(function() tryCatch({
@@ -64,13 +66,14 @@ brohn_install_materials <- function(input, output, session, store, current, stat
     command <- input$material_open
     brohn_require(is.list(command) && command$mode %in% c("preview", "edit") && !is.null(current$study) &&
       identical(command$study_id, current$study$id) && identical(state$page, "study"), "Open the material from its current study.")
+    brohn_require(isTRUE(can_open(command$kind)),"Save or cancel the current best-worst exercise before editing its saved item images.")
     target <- brohn_material_target(current$study$body, command$kind, command$material_id, command$task_id)
     brohn_require(identical(state$stage, target$stage) && identical(input$study_form_identity, paste(current$study$id, target$stage, sep = ":")), "Wait for this study's current material controls.")
     capture(); saved <- brohn_study(store, current$study$id); brohn_project(store, saved$project_id)
     brohn_require(!isTRUE(saved$body$archived) && identical(current$study$revision, saved$revision) && identical(brohn_hash(current$study$body), brohn_hash(saved$body)), "Reopen the current saved study before preparing its materials.")
     target <- brohn_material_target(saved$body, command$kind, command$material_id, command$task_id); m <- target$material
     pin <- c(command, list(id = saved$id, revision = saved$revision, design_hash = brohn_hash(saved$body), project_id = saved$project_id,
-      target_hash = brohn_hash(m), stage = target$stage, token = brohn_token(), previous_path = input$material_file$datapath))
+      target_hash = brohn_hash(brohn_default(target$owner,m)), stage = target$stage, token = brohn_token(), previous_path = input$material_file$datapath))
     dialog(pin); error(NULL); blocked(NULL); reload(0L)
     uri <- register_resource("brohn-material", list(token = pin$token), function(data, req) {
       shiny::isolate(tryCatch({
@@ -100,7 +103,9 @@ brohn_install_materials <- function(input, output, session, store, current, stat
             shiny::p("PNG up to 5 MiB; at most 4096 pixels per side and 8 million pixels. The original bytes are retained."),
             if (pin$kind == "stimulus" && length(m$aois)) shiny::p(class = "brohn-alert brohn-alert-warning", "Replacing this image with different bytes clears its current areas. Earlier revisions keep their image and areas."),
             cmd("Attach selected PNG", "material_attach", class = "btn btn-primary", id = "material_attach_button", disabled = "disabled")),
-          if (!is.null(m$asset)) shiny::tags$details(shiny::tags$summary("Remove media and use text"),
+          if(pin$kind %in% c("question","maxdiff_item")&&!is.null(m$asset))shiny::tags$details(shiny::tags$summary("Remove illustration"),
+            shiny::p(if(pin$kind=="question")"Keep this question's wording, answers and display rules. Earlier releases retain their illustration." else "Keep this item's label and all choice sets. Earlier releases retain their illustration."),cmd("Remove this illustration","material_remove_illustration")),
+          if (!pin$kind %in% c("question","maxdiff_item")&&!is.null(m$asset)) shiny::tags$details(shiny::tags$summary("Remove media and use text"),
             shiny::textAreaInput("material_text", "Replacement participant text", m$content, rows = 3, width = "100%"),
             shiny::p(if (pin$kind == "exemplar") "The exemplar stays in its category. Supply its replacement text before removing the image." else "The current image and its areas will be removed. Add participant text before releasing this study."),
             cmd("Remove media and use this text", "material_use_text")))),
@@ -113,6 +118,7 @@ brohn_install_materials <- function(input, output, session, store, current, stat
   }))
   shiny::observeEvent(input$material_describe, apply(input$material_describe, function(d, pin) brohn_material_describe(d, pin$kind, pin$material_id, pin$task_id, input$material_alt)))
   shiny::observeEvent(input$material_use_text, apply(input$material_use_text, function(d, pin) brohn_material_use_text(d, pin$kind, pin$material_id, pin$task_id, input$material_text)))
+  shiny::observeEvent(input$material_remove_illustration,apply(input$material_remove_illustration,function(d,pin){brohn_require(pin$kind %in% c("question","maxdiff_item"),"Choose a question or choice illustration.");if(pin$kind=="question")brohn_remove_question_illustration(d,pin$material_id)else brohn_remove_maxdiff_illustration(d,pin$task_id,pin$material_id)}))
   shiny::observeEvent(input$material_retry, attempt(function() tryCatch({record(input$material_retry); blocked(NULL); error(NULL); reload(reload()+1L)}, error = function(e) {error(conditionMessage(e)); stop(e)})))
   shiny::observeEvent(input$material_close, if (!is.null(dialog()) && identical(input$material_close$token, dialog()$token)) close())
   shiny::observeEvent(input$material_cancel, if (!is.null(dialog()) && identical(input$material_cancel$token, dialog()$token)) close())

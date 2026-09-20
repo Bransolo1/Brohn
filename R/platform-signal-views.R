@@ -1,5 +1,5 @@
 brohn_signal_label <- function(value) {
-  labels <- c(clean = "Saved cleaned waveform", density_uv2_hz = "Power spectral density", density_ms2_hz = "Detected interval power spectrum", tonic_us = "Tonic conductance", phasic_us = "Phasic conductance",
+  labels <- c(raw = "Saved input waveform (before cleaning)", clean = "Saved cleaned waveform", density_uv2_hz = "Power spectral density", density_ms2_hz = "Detected interval power spectrum", tonic_us = "Tonic conductance", phasic_us = "Phasic conductance",
     raw_us = "Recorded skin conductance", clean_us = "Cleaned skin conductance", cleaned_us = "Cleaned skin conductance",
     time_s = "Time", frequency_hz = "Frequency", amplitude_us = "Response amplitude", onset_time_s = "Response onset",
     temperature_c = "Temperature", acceleration_x_ms2 = "X-axis acceleration", acceleration_y_ms2 = "Y-axis acceleration",
@@ -13,12 +13,12 @@ brohn_signal_exact_number <- function(value) if (is.null(value)) "Unavailable" e
 brohn_signal_markers <- function(view) {
   m <- view$marker_overlay
   if (is.null(m)) return(NULL)
-  brohn_require(identical(m$schema, "brohn-cardiac-marker-overlay/1.0") &&
+  brohn_require(brohn_signal_marker_schema(m, view$axis$value_column) &&
     identical(m$review_status, "unreviewed_algorithm_detections") && m$status %in% c("available", "empty", "too_many_markers") &&
-    m$event_type %in% c("r_peak", "systolic_pulse_peak") && identical(view$axis$value_column, "clean") &&
+    m$event_type %in% c("r_peak", "systolic_pulse_peak") && isTRUE(view$axis$value_column %in% c("raw", "clean")) &&
     identical(m$time_unit, "s") && identical(m$value_unit, view$axis$value_unit) &&
     identical(m$alignment, if (identical(m$status, "too_many_markers")) "not_checked_display_limit_exceeded" else "exact_source_sample_and_recorded_time"),
-    "Reopen the verified cleaned-waveform view before inspecting its detections.")
+    "Reopen the verified waveform view before inspecting its detections.")
   brohn_require(brohn_number(m$selected_marker_count, 0, 1e8, TRUE) && identical(as.numeric(m$limit), 2000) && brohn_array(m$markers) &&
     switch(m$status, available = length(m$markers) > 0 && length(m$markers) <= 2000L && length(m$markers) == m$selected_marker_count,
       empty = m$selected_marker_count == 0 && !length(m$markers), too_many_markers = m$selected_marker_count > 2000 && !length(m$markers)),
@@ -29,7 +29,7 @@ brohn_signal_marker_description <- function(view) {
   m <- brohn_signal_markers(view)
   if (is.null(m)) return(NULL)
   paste(brohn_signal_exact_number(m$selected_marker_count), "unreviewed algorithm detections in the selected window.",
-    if (m$status == "available") "Hollow circles mark exact saved detections on the cleaned waveform; their positions are not interpolated from the display line."
+    if (m$status == "available") paste("Hollow circles mark exact saved detections on the", if (identical(view$axis$value_column,"raw")) "input waveform before cleaning; detections were calculated from the cleaned signal." else "cleaned waveform.", "Their positions are not interpolated from the display line.")
     else if (m$status == "empty") "No saved detections fall in this window; this does not imply absent heartbeats or usable signal quality."
     else "No markers are drawn because the window exceeds the 2000-marker display limit. This counts saved event records; their waveform positions have not been checked. Narrow the time range to check each source sample.",
     if (m$event_type == "r_peak") "Detected R peaks and RR intervals have not been confirmed as normal-to-normal intervals."
@@ -39,22 +39,22 @@ brohn_signal_marker_ui <- function(view) {
   m <- brohn_signal_markers(view)
   if (is.null(m)) return(NULL)
   rows <- lapply(m$markers, function(p) list(source_sample = brohn_signal_exact_number(p$source_sample_index),
-    time_s = brohn_signal_exact_number(p$time_s), cleaned_value = brohn_signal_exact_number(p$value),
+    time_s = brohn_signal_exact_number(p$time_s), waveform_value = brohn_signal_exact_number(p$value),
     previous_interval_ms = brohn_signal_exact_number(p$previous_interval_ms),
     interval_screen = if (is.null(p$previous_interval_plausible)) "Not available" else if (isTRUE(p$previous_interval_plausible)) "Within declared bounds" else "Outside declared bounds",
     series_table = p$series_table_id, event_table = p$event_table_id, event_row = brohn_signal_exact_number(p$event_row_index)))
   shiny::div(class = "brohn-cardiac-markers", `data-marker-status` = m$status,
     shiny::h3(if (m$event_type == "r_peak") "Unreviewed R-peak detections" else "Unreviewed pulse-peak detections"),
-    shiny::p(if (m$status == "available") paste(length(rows), "saved detections. Hollow circles mark their exact cleaned-waveform values.",
+    shiny::p(if (m$status == "available") paste(length(rows), "saved detections. Hollow circles mark their exact", if (identical(view$axis$value_column,"raw")) "input-waveform values before cleaning. Detections were calculated from the cleaned signal." else "cleaned-waveform values.",
       if (m$event_type == "r_peak") "Normal-to-normal intervals are not confirmed." else "These are pulse intervals (PRV), not interchangeable ECG HRV.")
       else if (m$status == "empty") "No saved detections fall in this window. This does not imply absent heartbeats or usable signal quality."
       else paste(brohn_signal_exact_number(m$selected_marker_count), "saved event records exceed the 2000-marker display limit. Their waveform positions have not been checked; no partial overlay is drawn.")),
     if (m$status == "too_many_markers") shiny::p("To check each source sample, clear 'Show the complete recorded range', enter a shorter start and end, then choose 'Show signal'. The complete event output remains downloadable from the report."),
     if (length(rows)) shiny::tags$details(class = "brohn-cardiac-marker-table", shiny::tags$summary(paste("Inspect all", length(rows), "selected detections")),
-      shiny::p("This is the saved cleaned waveform. Opening this view does not review, correct or approve a detection. The original recording and complete processed output remain available from the report."),
+      shiny::p(if (identical(view$axis$value_column,"raw")) "These are the saved input values after declared unit conversion, before cleaning. Acquisition filters may already be present in the source. Both waveform views plot retained samples only; excluded edge samples remain in the complete output. The original source file remains authoritative. Opening this view does not review, correct or approve a detection." else "This is the saved cleaned waveform. Opening this view does not review, correct or approve a detection. The original recording and complete processed output remain available from the report."),
       shiny::p("Sample and event-row indices are zero-based. A saved previous interval may begin before this displayed window. Unavailable means no interval was saved; outside declared bounds is a plausibility flag, not a beat classification. Values below retain full numeric precision; the JSON also retains source and segment identities."),
       brohn_table(rows, maximum = 2000L, label = "Exact saved detection coordinates and intervals", labels = c("Source sample", "Time (s)",
-        paste0("Cleaned value (", m$value_unit, ")"), "Previous interval (ms)", "Interval screen", "Waveform table", "Event table", "Event row"))))
+        paste0(if (identical(view$axis$value_column,"raw")) "Input value (" else "Cleaned value (", m$value_unit, ")"), "Previous interval (ms)", "Interval screen", "Waveform table", "Event table", "Event row"))))
 }
 brohn_signal_interval_spectra <- function(view) {
   if (!identical(view$axis$kind, "frequency") || !identical(view$axis$value_column, "density_ms2_hz")) return(list())
@@ -90,7 +90,7 @@ brohn_signal_explorer_ui <- function(report) {
       list(report_id = report$id, report_hash = brohn_hash(report$body), kind = a$kind))))),
     shiny::uiOutput("signal_progress"), shiny::uiOutput("signal_catalog"), shiny::uiOutput("signal_plot"),
     shiny::uiOutput("signal_annotation_controls"),shiny::uiOutput("signal_annotation_editor"),
-    shiny::uiOutput("signal_annotation_progress"),shiny::uiOutput("signal_annotation_summary"))
+    shiny::uiOutput("signal_annotation_progress"),shiny::uiOutput("signal_annotation_summary"),shiny::uiOutput("signal_cardiac_review"))
 }
 brohn_signal_svg <- function(view, title = NULL, width = 920) {
   brohn_require(identical(view$schema, "brohn-signal-preview/1.0"), "Choose a saved signal preview.")
@@ -147,7 +147,7 @@ brohn_signal_svg <- function(view, title = NULL, width = 920) {
     `data-source-sample` = brohn_signal_exact_number(p$source_sample_index), `data-event-row` = brohn_signal_exact_number(p$event_row_index),
     `data-event-table` = p$event_table_id, `data-series-table` = p$series_table_id,
     shiny::tags$title(paste("Unreviewed algorithm detection; source sample", brohn_signal_exact_number(p$source_sample_index),
-      "at", brohn_signal_exact_number(p$time_s), "s; cleaned value", brohn_signal_exact_number(p$value), overlay$value_unit,
+      "at", brohn_signal_exact_number(p$time_s), paste0("s; ", if (identical(view$axis$value_column,"raw")) "input" else "cleaned", " value"), brohn_signal_exact_number(p$value), overlay$value_unit,
       "; previous interval", brohn_signal_exact_number(p$previous_interval_ms), "ms;", p$event_table_id, "row", brohn_signal_exact_number(p$event_row_index)))))
   shiny::tags$svg(xmlns = "http://www.w3.org/2000/svg", viewBox = paste(0, 0, width, height), width = "100%", role = "img",
     `aria-labelledby` = paste0("brohn-signal-title-", width, " brohn-signal-description-", width), style = "display:block;max-width:100%;background:#131d24;border-radius:12px;font-family:system-ui,sans-serif",
@@ -244,7 +244,7 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
     choices <- stats::setNames(vapply(t$value_columns, `[[`, character(1), "name"), vapply(t$value_columns, function(v) paste(brohn_signal_label(v$name), paste0("(", v$unit, ")")), character(1)))
     if (!length(choices)) return(shiny::p("This table has no numeric measurement columns to plot."))
     shiny::tagList(shiny::tags$input(id = "signal_measure_identity", type = "text", class = "shiny-input-text", value = paste(c$id, t$table_id, sep = ":"), style = "display:none", `aria-hidden` = "true", tabindex = "-1"),
-      shiny::selectInput("signal_measure", "Processed measure", choices),
+      shiny::selectInput("signal_measure", "Processed measure", choices, selected = if ("clean" %in% unname(choices)) "clean" else unname(choices)[[1L]]),
       shiny::checkboxInput("signal_full_range", "Show the complete recorded range", TRUE),
       shiny::conditionalPanel("!input.signal_full_range", shiny::div(class = "brohn-form-grid",
         shiny::numericInput("signal_range_start", paste("Start", paste0("(", t$coordinate_column$unit, ")")), if (length(t$coordinate_range)) t$coordinate_range[[1L]] else NA_real_),
@@ -267,5 +267,6 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
     content = function(file) prepare_download(function() {svg <- brohn_signal_svg(preview()$body$view); brohn_require(!is.null(svg), "This view has no supported chart.")
       writeLines(enc2utf8(as.character(svg)), file, useBytes = TRUE)}), contentType = "image/svg+xml")
   brohn_install_signal_annotations_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
+  brohn_install_cardiac_review_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
   invisible(NULL)
 }

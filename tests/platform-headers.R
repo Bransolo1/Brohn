@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 for(module in c("platform-core","platform-store","platform-publication","platform-methods","platform-library","platform-analysis","platform-jobs","platform-headers",
   "platform-shell","platform-data-views","platform-headers-views","platform-app")) source(paste0("R/",module,".R"),encoding="UTF-8")
 for (module in c("questionnaire-artifacts", "questionnaire-artifact-storage")) source(paste0("R/platform-",module,".R"),encoding="UTF-8")

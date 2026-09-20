@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Local synthetic study preparation and post-browser inspection. No participant
 # HTTP routes are added by this fixture; the real delivery service is used.
 args <- commandArgs(trailingOnly = TRUE)

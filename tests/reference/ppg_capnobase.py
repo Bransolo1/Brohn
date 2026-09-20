@@ -225,7 +225,10 @@ def run(args):
         if args.resume and (work/"agreement.json").exists():
             retained=json.loads((work/"agreement.json").read_text(encoding="utf-8"))
             assert retained["record"]==record and retained["source_sha256"]==digest(original)
-            assert retained["prepared_csv_sha256"]==digest(csv_path) and retained["worker_sha256"]==digest(work/"worker-result.json")
+            # Historical evidence called the result-file digest worker_sha256.
+            # Production source digests live in plan.production_code_sha256.
+            result_hash=retained.get("worker_result_sha256",retained.get("worker_sha256"))
+            assert retained["prepared_csv_sha256"]==digest(csv_path) and result_hash==digest(work/"worker-result.json")
             read_event_artifact(retained["event_artifact"])
             results.append(retained)
             print(json.dumps({"retained_completed_record":record}),flush=True)
@@ -280,7 +283,7 @@ def run(args):
                 "artifact_intervals_samples_zero_based_inclusive":artifacts.tolist(),"artifact_reference_pulses":int(len(ref)-len(ref_good)),"artifact_detections":int(len(detected)-len(det_good)),
                 "primary_artifact_free":primary,"all_events_descriptive":descriptive,"endpoint_comparison":endpoint_comparison,
                 "paired_intervals_50ms":{"count":len(errors),"mean_signed_error_ms":float(errors.mean()) if len(errors) else None,"median_absolute_error_ms":float(np.median(abs(errors))) if len(errors) else None,"p95_absolute_error_ms":float(np.percentile(abs(errors),95)) if len(errors) else None,"maximum_absolute_error_ms":float(abs(errors).max()) if len(errors) else None},
-                "worker_sha256":digest(work/"worker-result.json"),"event_artifact":event_manifest,
+                "worker_result_sha256":digest(work/"worker-result.json"),"event_artifact":event_manifest,
                 "reference_peak_samples":ref.tolist(),"detected_peak_samples":detected.tolist(),"saved_event_tables":tables}
         save(work/"agreement.json",result);results.append(result)
         save(folder/"progress.json",{"completed_records":len(results),"records":[x["record"] for x in results],"plan_sha256":digest(plan_path)})

@@ -250,12 +250,13 @@ def cardiac_markers(request,manifest,view):
     require(isinstance(overlay,dict) and set(overlay)=={"event_artifact","event_type"} and
             overlay["event_type"] in {"r_peak","systolic_pulse_peak"},"Choose the saved ECG or PPG detection type.")
     require(manifest["kind"]=="physiology-series" and view["axis"]["kind"]=="time" and view["axis"]["unit"]=="s" and
-            view["selection"]["value_column"]=="clean","Cardiac markers require their saved cleaned waveform in seconds.")
+            view["selection"]["value_column"] in {"raw","clean"},"Cardiac markers require their saved input or cleaned waveform in seconds.")
     events=bind_receipt({"artifact":overlay["event_artifact"],"verification_receipt":request["verification_receipt"]})
     require(events["kind"]=="physiology-events" and events["provenance_sha256"]==manifest["provenance_sha256"],
             "Waveform and detections must share one exact processing provenance.")
     fields=("kind","sha256","bytes","schema","tables","rows","provenance_sha256")
-    result={"schema":"brohn-cardiac-marker-overlay/1.0","status":"empty","event_artifact":{k:events[k] for k in fields},
+    result={"schema":"brohn-cardiac-marker-overlay/1.1","status":"empty","event_artifact":{k:events[k] for k in fields},
+            "waveform_column":view["selection"]["value_column"],"detection_basis":"saved_cleaned_waveform",
             "review_status":"unreviewed_algorithm_detections","event_type":overlay["event_type"],"markers":[],
             "selected_marker_count":0,"limit":MAX_CARDIAC_MARKERS,"alignment":"exact_source_sample_and_recorded_time",
             "value_unit":view["axis"]["value_unit"],"time_unit":"s"}
@@ -325,7 +326,7 @@ def cardiac_markers(request,manifest,view):
     def waveform(t):
         if t["table_id"] in selected:declarations[t["table_id"]]=t
     artifacts.verify_artifact(manifest,on_table=waveform,on_rows=values)
-    require(matched==set(marker_keys),"A saved detection has no exact sample in the selected cleaned waveform.")
+    require(matched==set(marker_keys),"A saved detection has no exact sample in the selected waveform.")
     if result["selected_marker_count"]:result["status"]="available"
     return result
 
@@ -345,7 +346,7 @@ def run(request):
         result=preview(request,manifest)
         if "marker_overlay" in request:result["marker_overlay"]=cardiac_markers(request,manifest,result)
     result["artifact"]={key:manifest[key] for key in ("kind","sha256","bytes","schema","tables","rows","provenance_sha256")}
-    result["engine"]={"name":"Brohn processed signal view","version":"1.1.0","worker_sha256":artifacts.digest_file(Path(__file__)),"artifact_reader_sha256":artifacts.digest_file(Path(artifacts.__file__))}
+    result["engine"]={"name":"Brohn processed signal view","version":"1.2.0","worker_sha256":artifacts.digest_file(Path(__file__)),"artifact_reader_sha256":artifacts.digest_file(Path(artifacts.__file__))}
     result["limitations"]=["Views preserve observed extrema and support boundaries; they do not recompute physiology features, align independent clocks or create new scientific scores.",
         "Coordinates remain relative to the artifact's declared clock origin. The exact original origin is a string; plotting uses the recorded finite float64 relative coordinates.",
         "Min/max envelopes retain spikes inside each displayed bin but are a bounded visual summary. Full typed source rows remain available in the immutable artifact."]

@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Opt-in large-file comparison of the new stage/commit API. The baseline
 # production publishers stay unchanged until the adapters are reviewed.
 for(module in c("platform-core","platform-store","platform-delivery","platform-publication"))source(paste0("R/",module,".R"),encoding="UTF-8")

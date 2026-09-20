@@ -1,0 +1,32 @@
+# Participant equipment preflight: independent review
+
+Date: 20 September 2026. Scope: the native browser preflight, receiver checks, saved equipment evidence, and their integration with the participant journal. Production changes were made by the equipment owner; this review added only the two focused regression tests below. This is software acceptance using original generated media and Chrome fake devices, not physical camera, microphone, input-latency, image-quality or physiological qualification.
+
+## Findings resolved
+
+| Finding and reproduction | Correction | Independent outcome |
+|---|---|---|
+| `runner.js` awaited the equipment-event receipt after its current-input check. Disabling the video track during a delayed response still exposed the study's Begin control. | Recheck current video/audio support and recorder state after the awaited receipt, immediately before entering the study. | Entry stays blocked. Restoring input and retrying completes with the same recorder; no microphone permission is requested by this camera-only release. |
+| Reload with a locally saved but unreceived camera check finalized the camera first. The later equipment event then failed the receiver's current `recording` status requirement, preventing the final session receipt. | Accept an owned historical observation against its original page, clock, capture, dimensions and exact acknowledged chunk prefix; keep recovery interrupted. | Actual Chrome and the R receiver reach a saved interrupted-session receipt. The one retained equipment event is exactly equal by field/value to the original request, without a regenerated observation. |
+| New-policy controls evidence and entry both accepted missing `instance_id` and `time_origin_ms`, because legacy optional clock fields made `NULL` equal `NULL`. | Require explicit page identity and finite decimal origin for new equipment checks and gated entry. | Missing fields, invalid origins and another page reject. Historical releases without the policy retain their previous gate behavior. |
+| The first historical-receipt correction recognized the reload sentinel from reason text alone. An observed final clock of 1500 ms could therefore accept a purported equipment observation at 2000 ms. | Match the actual camera-finish sentinel: interrupted, incomplete container and the exact original start clock. | The real unobserved-end sentinel accepts its retained observation. Both reason-only observed-end variants reject. |
+| Accumulating constant Float32 audio samples could round RMS slightly above peak, causing the receiver's strict mathematical bound to reject finite observed input. For 38 blocks of 128 samples at 48 kHz and constant 0.3, RMS was `0.3000000119209431`, peak `0.30000001192092896`. | Clamp finite computed RMS to its observed peak; this enforces a mathematical invariant, not a physiological threshold. | Equipment owner added constant ±0.3/±0.7 worklet cases and actual receiver acceptance. Owner reports 18 model/worklet and 27 domain checks passing. |
+
+## Final focused evidence
+
+- `tests/participant-equipment-races.mjs`: **9 assertions passed**, covering the two actual browser/receiver races, recovery, exact original event identity, same-recorder retry, camera-only permission scope, runtime errors and unchanged source hashes.
+- `tests/platform-participant-equipment-races.R`: **16 checks passed**: three actual receiver historical-end cases and thirteen page-clock/legacy-policy checks. Synthetic receipt bytes intentionally do not claim a decodable camera recording. No scientific workers run in either peer suite.
+- Final browser evidence: `C:/Users/User/Documents/Codex/2026-09-20/oka/work/brohn-participant-equipment-DaLNje/peer-findings.json`. The same directory contains `source-hashes-at-start.json`, receiver inspection, server log, generated media, and `delayed-receipt.png` / `reload-pending.png`. The delayed-input screenshot was visually inspected as diagnostic evidence: setup remains visible with disabled input, historical-receipt explanation and Retry.
+- Final R evidence: `C:/Users/User/Documents/Codex/2026-09-20/oka/work/equipment-peer-historical-final02/results.json`.
+- Original failing browser evidence remains at `.../work/brohn-participant-equipment-t8SVYH/peer-findings.json`; original historical-end cases at `.../work/equipment-peer-historical-before02/results.json`.
+- Intermediate reruns are retained. One test assertion originally compared JSON property order rather than field/value equality; it was corrected to deep equality. Another run passed its behavior checks but failed the source-hash fence during a coordinated shared-source edit. The final run passed that fence. No original failure evidence was deleted.
+
+The owned browser and receiver processes were closed after the final run. These focused checks supplement, rather than replace or recount, the equipment owner's wider browser, accessibility, camera-controller and automatic-report suites.
+
+## Reviewed boundaries and remaining scope
+
+Source inspection confirms that setup events are unscoped `equipment_event` observations and do not advance the study cursor or enter task-trial/answer denominators. The worklet consumes actual input blocks, outputs silence and treats zero-amplitude input as observed; microphone setup is skipped when frozen audio is false. Late permission results are guarded by the camera preparation generation. Optional decline uses its saved capture decision. Researcher evidence labels checks as historical observations, separates committed and acknowledged byte counts, retains the exact saved event and exposes a source-bound JSON download. One key check applies per browser page; later focus changes are still handled by the existing timed-task guards.
+
+No additional correctness blocker was found in this bounded scope after the corrections above. It is not blanket device or study qualification. A separate scaling follow-up remains: `brohn_equipment_evidence()` currently verifies/decodes the full session journal before filtering equipment events, and the protocol modal renders every check. A bounded retrieval/disclosure path would avoid this extra cost on large journals; this review did not measure or qualify large-journal performance.
+
+The governing scope remains [the preflight contract](PARTICIPANT-EQUIPMENT-PREFLIGHT-CONTRACT.md) and [the per-measurement academic audit](MEASUREMENT-ACADEMIC-ACCEPTANCE.md).

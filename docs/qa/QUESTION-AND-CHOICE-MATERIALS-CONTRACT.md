@@ -1,12 +1,12 @@
 # Question illustrations and MaxDiff item images
 
-20 September 2026. Read-only integration audit and proposed implementation
-contract. No production changes or new test runs were made for this document.
-Implement questionnaire illustrations first, after the coordinator's checkpoint;
-qualify MaxDiff item images as a separate subsequent slice. These are additions
+20 September 2026. Implemented integration contract. Questionnaire illustrations
+and MaxDiff item illustrations are accepted in their separate focused records,
+`QUESTION-ILLUSTRATIONS-ACCEPTANCE.md` and
+`MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md`. These are additions
 to enabled participant procedures, not completion of the 50-capability register.
 
-## What the current source requires
+## Integration baseline before these additions
 
 | Route | Current behavior and exact integration point |
 |---|---|
@@ -21,7 +21,7 @@ to enabled participant procedures, not completion of the 50-capability register.
 
 ## Common immutable image shape
 
-Add optional `illustration` to a question and, in phase two, to a MaxDiff item:
+The optional `illustration` field is shared by questions and MaxDiff items:
 
 ```text
 illustration = {
@@ -94,14 +94,17 @@ edit: MaxDiff trial IDs expressly include the exercise design hash.
    the exact original asset, then enter or resume normally. Cancellation must
    prevent a late load callback from reopening a finished run. Preserve the
    existing behavior for failed timed passive/task media; do not replay them.
-7. Bound preparation explicitly. Proposed new-illustration profile: at most
-   64 million unique declared pixels (about 256 MiB raw RGBA), with their unique
-   compressed bytes also counted inside the existing 512 MiB browser media
-   budget. Check metadata against decoded natural dimensions. Repeated
+7. Bound preparation explicitly. The implemented illustration profile permits
+   at most 64 million unique declared pixels across question and MaxDiff item
+   illustrations (about 256 MiB raw RGBA), with their unique compressed bytes
+   and passive stimulus media sharing a 512 MiB budget.
+   This combined question/choice/passive bound does not include task-image or welcome
+   preloads, which retain their separate existing limits. Check metadata against
+   decoded natural dimensions. Repeated
    after-each occurrences must not multiply that budget. Enforce the same
    preflight server-side and browser-side, with a smaller-image recovery message.
-   This is an engineering resource bound, not a timing/performance qualification;
-   settle it with the coordinator before implementation.
+   This is an engineering resource bound, not a timing/performance qualification.
+   The coordinator approved the bound before implementation.
 
 The optional image changes the visual material, not branch truth, response
 codes, dependency invalidation, visit idempotency or the meaning of omission.
@@ -168,7 +171,7 @@ exercise. Native results retain full image-bearing design; counts/utilities for
 an equivalent response fixture remain numerically identical after deliberately
 rebinding that fixture to its new source hash. No new implicit/emotion claim.
 
-## Proposed ownership and acceptance gates
+## Ownership and acceptance gates
 
 Experience worker: new pure `R/platform-question-materials.R` (metadata validator,
 collector and new-image adapters), scoped `platform-materials.R` /
@@ -180,6 +183,12 @@ illustration collection/transport/import-validation additions in
 `platform-delivery.R` / `platform-portability.R`. Keep scientific scoring and
 revision state-machine files unchanged unless a concrete failing invariant
 requires a separately reviewed change.
+
+The second slice also extends the MaxDiff item validator and saved exercise
+view, the shared material target adapter, and `www/participant/maxdiff.js` /
+`maxdiff.css`. Its saved-material guard uses the existing MaxDiff editor context;
+opening item materials while that draft is active requires saving or cancelling
+it first. The complete owning exercise is pinned for every image write.
 
 Coordinator: app/load/worker dependency order and shared registration. A pure
 validator referenced by core or worker replay must be available in every source

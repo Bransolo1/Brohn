@@ -25,7 +25,7 @@ local({
     catalog<-run_job(brohn_queue_signal_view(store,id,"physiology-series"))
     check(paste(modality,"catalog retains separate segment identity"),catalog$body$view$tables[[1L]]$identity$segment_id=="segment-1")
     queued<-brohn_queue_signal_view(store,id,"physiology-series",fixture$selection,max_bins=1L)
-    check(paste(modality,"queue freezes both exact artifacts and named view recipe"),queued$request$recipe=="processed-signal-view/1.1.0"&&
+    check(paste(modality,"queue freezes both exact artifacts and named view recipe"),queued$request$recipe=="processed-signal-view/1.2.0"&&
       queued$request$marker_overlay$event_artifact$sha256==fixture$marker_overlay$event_artifact$sha256)
     check(paste(modality,"exact overlay request deduplicates"),brohn_queue_signal_view(store,id,"physiology-series",fixture$selection,max_bins=1L)$id==queued$id)
     input<-brohn_signal_input(store,queued);view<-run_job(queued);m<-view$body$view$marker_overlay
@@ -33,6 +33,24 @@ local({
     check(paste(modality,"exact values survive waveform decimation"),identical(as.numeric(vapply(m$markers,`[[`,numeric(1),"value")),c(-2,3,2,-1)))
     check(paste(modality,"missing and rejected interval evidence remains distinct"),is.null(m$markers[[1L]]$previous_interval_ms)&&is.null(m$markers[[1L]]$previous_interval_plausible)&&identical(m$markers[[3L]]$previous_interval_plausible,FALSE))
     check(paste(modality,"detections stay unreviewed"),m$review_status=="unreviewed_algorithm_detections"&&m$event_type==fixture$marker_overlay$event_type)
+    raw_selection<-fixture$selection;raw_selection$value_column<-"raw"
+    raw_job<-brohn_queue_signal_view(store,id,"physiology-series",raw_selection,max_bins=1L)
+    raw_input<-brohn_signal_input(store,raw_job);raw_view<-run_job(raw_job);raw<-raw_view$body$view
+    check(paste(modality,"input values from actual second saved view use exact samples"),identical(as.numeric(vapply(raw$marker_overlay$markers,`[[`,numeric(1),"value")),c(6,16,14,8)))
+    clean_events<-lapply(m$markers,function(x){x$value<-NULL;x})
+    input_events<-lapply(raw$marker_overlay$markers,function(x){x$value<-NULL;x})
+    check(paste(modality,"waveform choice never relocates or reclassifies a saved detection"),identical(brohn_hash(clean_events),brohn_hash(input_events))&&raw$marker_overlay$waveform_column=="raw"&&raw$marker_overlay$detection_basis=="saved_cleaned_waveform")
+    changed<-raw;changed$marker_overlay$waveform_column<-"clean"
+    check(paste(modality,"substituted waveform declaration rejected"),rejects(brohn_validate_signal_result(changed,raw_input)))
+    changed<-raw;changed$marker_overlay$detection_basis<-"raw"
+    check(paste(modality,"new detection basis cannot be invented by display"),rejects(brohn_validate_signal_result(changed,raw_input)))
+    changed<-raw;changed$marker_overlay$schema<-"brohn-cardiac-marker-overlay/1.0";changed$marker_overlay$waveform_column<-NULL;changed$marker_overlay$detection_basis<-NULL
+    check(paste(modality,"legacy cleaned marker cannot be relabelled as input"),rejects(brohn_validate_signal_result(changed,raw_input)))
+    legacy<-view$body$view;legacy$marker_overlay$schema<-"brohn-cardiac-marker-overlay/1.0";legacy$marker_overlay$waveform_column<-NULL;legacy$marker_overlay$detection_basis<-NULL
+    check(paste(modality,"old exact cleaned view remains readable"),!rejects(brohn_validate_signal_result(legacy,input))&&!is.null(brohn_signal_markers(legacy)))
+    raw_html<-as.character(brohn_signal_plot_ui(raw_view));raw_svg<-as.character(brohn_signal_svg(raw))
+    check(paste(modality,"input labels and detector basis remain explicit in table and SVG"),grepl("Input value (",raw_html,fixed=TRUE)&&grepl("unit conversion",raw_html,fixed=TRUE)&&grepl("detections were calculated from the cleaned signal",raw_svg,fixed=TRUE)&&!grepl("cleaned value",raw_svg,fixed=TRUE))
+    brohn_write_json_file(raw,file.path(root,paste0(modality,"-input-view.json")))
     check(paste(modality,"source report unchanged and both private paths absent"),identical(brohn_hash(brohn_get_entity(store,"report",id)$body),before)&&
       !grepl(root,brohn_json(view$body),fixed=TRUE)&&!grepl('"path"',brohn_json(view$body),fixed=TRUE))
     altered<-view$body$view;altered$marker_overlay$event_artifact$sha256<-paste(rep("f",64),collapse="")

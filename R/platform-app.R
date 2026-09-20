@@ -164,10 +164,11 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_question_revision_ui(input, output, session, current, state, capture, update_study, attempt, message)
   brohn_install_camera_plan_ui(input, output, session, current, state, capture, attempt, update_study, message)
   brohn_install_scale_ui(input, output, session, current, state, attempt, capture, update_study)
-  brohn_install_maxdiff_ui(input, output, session, current, state, attempt, capture, update_study)
+  maxdiff_editor <- brohn_install_maxdiff_ui(input, output, session, current, state, attempt, capture, update_study)
   brohn_install_guidance_ui(input, output, session, store, state, current, attempt, capture, refresh)
   brohn_install_welcome_ui(input, output, session, store, state, current, attempt, capture, update_study)
-  brohn_install_materials(input, output, session, store, current, state, attempt, capture, update_study)
+  brohn_install_materials(input, output, session, store, current, state, attempt, capture, update_study,
+    can_open=function(kind)kind!="maxdiff_item"||is.null(maxdiff_editor$context()))
   shiny::observeEvent(input$brohn_open_study, attempt(function() {capture(); select_study(input$brohn_open_study, "Overview")}))
   shiny::observeEvent(input$new_study, shiny::showModal(brohn_start_study_ui()))
   shiny::observeEvent(input$create_study, attempt(function() {s <- brohn_create_study(store, input$new_title, input$new_template); shiny::removeModal(); select_study(s$id)}))

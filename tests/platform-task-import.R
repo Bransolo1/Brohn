@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 source("R/platform-core.R");source("R/platform-methods.R");source("R/platform-analysis.R");source("R/platform-task-import.R")
 local({
   checks<-0L

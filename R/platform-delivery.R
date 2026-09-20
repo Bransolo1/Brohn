@@ -79,6 +79,7 @@ brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_
     .brohn_delivery_require(!is.null(entity), "Study was not found.", 404, "not_found")
     design <- entity$body
     brohn_validate_design(design, publish = TRUE)
+    if(brohn_has_illustrations(design))brohn_verify_study_illustrations(store,design)
     .brohn_delivery_require(origin=="sample" || !any(vapply(design$maxdiff,function(exercise) identical(exercise$origin,"synthetic"),logical(1))),
       "Replace the example best-worst materials and declare their research source before pilot or live collection.",422,"sample_materials")
     .brohn_delivery_require(!isTRUE(design$archived), "Restore the study before creating a release.", 409, "archived")
@@ -88,6 +89,7 @@ brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_
     .brohn_delivery_require(compiled_steps <= 20000L, "Compiled study exceeds the supported 20,000-step delivery limit, including task trials.", 422, "study_limit")
     materials <- c(design$stimuli, unlist(lapply(design$blocks, function(block) block$materials), recursive = FALSE))
     if (!is.null(design$welcome$asset)) materials <- c(materials, list(list(type = "image", asset = design$welcome$asset)))
+    if(brohn_has_illustrations(design))materials <- c(materials,brohn_study_illustrations(design))
     for (stimulus in materials) {
       .brohn_delivery_require(stimulus$type %in% c("text", "image", "audio", "video"),
         "This local delivery profile supports text, raster images, audio and video stimuli.", 422, "unsupported_stimulus")
@@ -173,6 +175,11 @@ brohn_run_events <- function(store, run_id) {
   # Keep protocol.design byte-semantically unchanged so design_hash remains
   # meaningful. Transport URLs belong only on renderer timeline copies.
   protocol$timeline <- lapply(protocol$timeline, function(step) {
+    if(identical(step$type,"question")&&!is.null(step$question$illustration))step$question_image_url<-paste0("/api/assets/",token,"/",step$question$illustration$asset$hash)
+    if(identical(step$type,"maxdiff")) {
+      images<-Filter(function(i)!is.null(i$illustration),step$choice$items)
+      if(length(images))step$item_image_urls<-setNames(lapply(images,function(i)paste0("/api/assets/",token,"/",i$illustration$asset$hash)),brohn_ids(images))
+    }
     if (!is.null(step[["stimulus", exact = TRUE]])) step$stimulus <- augment(step[["stimulus", exact = TRUE]])
     if (identical(step$type, "task")) step$task$timeline <- lapply(step$task$timeline, function(trial) {
       if (!is.null(trial$material)) trial$material <- augment(trial$material)
@@ -343,7 +350,7 @@ brohn_run_events <- function(store, run_id) {
 .brohn_delivery_apply <- function(state, event, protocol, revision_context = NULL) {
   brohn_fields(event, c("sequence", "id", "type", "step_id", "stimulus_id", "condition_id", "question_id", "phase", "clock", "payload"), label = "Event")
   .brohn_delivery_require(brohn_number(event$sequence, 1, 10000000, TRUE) && brohn_text(event$id, 128), "Event sequence or identity is invalid.")
-  .brohn_delivery_require(event$type %in% c("step_started", "step_finished", "response", "task_event", "questionnaire_event", "visibility", "run_finished", "withdrawal") && length(event$type) == 1L,
+  .brohn_delivery_require(event$type %in% c("step_started", "step_finished", "response", "task_event", "questionnaire_event", "equipment_event", "visibility", "run_finished", "withdrawal") && length(event$type) == 1L,
     "Unsupported event type.")
   .brohn_delivery_require(brohn_text(event$phase, 96) && is.list(event$payload) && !is.null(names(event$payload)), "Event phase and payload object are required.")
   brohn_fields(event$clock, c("id", "unit", "value"), c("instance_id", "time_origin_ms"), "Event clock")
@@ -369,6 +376,8 @@ brohn_run_events <- function(store, run_id) {
     "Unscoped events cannot claim stimulus or question identities.", 422, "foreign_reference")
   if (event$type == "visibility") return(state)
   .brohn_delivery_require(!state$withdrawn && !state$run_finished, "The run has already reached its ending event.", 409, "ended")
+  if (identical(event$type, "equipment_event")) return(.brohn_equipment_apply(state, event, protocol))
+  if (!is.null(protocol$design$participant_equipment)) .brohn_equipment_gate(state, event, protocol)
   if (identical(event$type, "questionnaire_event")) return(.brohn_delivery_revision_apply(state, event, protocol, revision_context))
   if (!is.null(step$questionnaire_occurrence_id) && event$type %in% c("step_started", "step_finished", "response", "task_event"))
     .brohn_delivery_error("Use the current questionnaire visit, answer and review controls for this assessment.", 422, "questionnaire_bypass")
@@ -493,6 +502,7 @@ brohn_run_events <- function(store, run_id) {
       duplicate <- DBI::dbGetQuery(store$con, "SELECT sequence FROM delivery_events WHERE run_id=? AND event_id=?", params = list(run_id, event$id))
       .brohn_delivery_require(nrow(duplicate) == 0L, "Event identity was already used at another sequence.", 409, "event_id_conflict")
       state <- .brohn_delivery_apply(state, event, run$protocol, context)
+      if (identical(event$type, "equipment_event")) .brohn_equipment_receive(store, run, event)
       DBI::dbExecute(store$con, "INSERT INTO delivery_events VALUES (?,?,?,?,?,?)",
         params = list(run_id, event$sequence, event$id, json, event_hash, brohn_now()))
       acknowledged <- as.integer(event$sequence)
@@ -594,11 +604,12 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       if (method == "GET" && identical(path, "/api/health")) return(.brohn_delivery_response(value =
         list(service = "brohn-participant", schema = "brohn-delivery/1.0", workspace_id = store$workspace_id)))
       routes <- c("/participant" = "index.html", "/participant/" = "index.html", "/participant/runner.js" = "runner.js", "/participant/tasks.js" = "tasks.js", "/participant/camera.js" = "camera.js", "/participant/runner.css" = "runner.css", "/participant/maxdiff.js" = "maxdiff.js", "/participant/maxdiff.css" = "maxdiff.css",
-        "/participant/question-revision.js" = "question-revision.js", "/participant/welcome.js" = "welcome.js", "/participant/welcome.css" = "welcome.css", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
+        "/participant/equipment.js" = "equipment.js", "/participant/audio-worklet.js" = "audio-worklet.js",
+        "/participant/question-revision.js" = "question-revision.js", "/participant/illustrations.js" = "illustrations.js", "/participant/welcome.js" = "welcome.js", "/participant/welcome.css" = "welcome.css", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
       if (method == "GET" && path %in% names(routes)) {
         filename <- routes[[path]]; file <- file.path(static_root, filename)
         .brohn_delivery_require(file.exists(file) && !dir.exists(file), "Participant interface is unavailable.", 503, "interface_unavailable")
-        type <- if (filename %in% c("runner.js", "tasks.js", "camera.js", "maxdiff.js", "question-revision.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
+        type <- if (filename %in% c("runner.js", "tasks.js", "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "question-revision.js", "illustrations.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
         return(.brohn_delivery_response(body = readBin(file, "raw", n = file.info(file)$size), type = type))
       }
       parts <- strsplit(sub("^/", "", path), "/", fixed = TRUE)[[1]]
@@ -610,6 +621,7 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
         hash <- parts[[4]]; design <- .brohn_delivery_design(row)
         materials <- c(design$stimuli, unlist(lapply(design$blocks, function(block) block$materials), recursive = FALSE))
         if (!is.null(design$welcome$asset)) materials <- c(materials, list(design$welcome))
+        if(brohn_has_illustrations(design))materials <- c(materials,brohn_study_illustrations(design))
         assets <- Filter(function(s) !is.null(s$asset) && identical(s$asset$hash, hash), materials)
         .brohn_delivery_require(length(assets) > 0L && .brohn_delivery_media_allowed(assets[[1]]$asset$media_type), "Asset is not part of this release.", 404, "not_found")
         file <- brohn_object_path(store, hash, verify = TRUE)

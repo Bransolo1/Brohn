@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 for (module in c("platform-core", "platform-store", "platform-methods", "platform-library", "platform-analysis", "platform-gaze", "platform-shell", "platform-data-views", "platform-gaze-report-views"))
   source(paste0("R/", module, ".R"), encoding = "UTF-8")
 local({

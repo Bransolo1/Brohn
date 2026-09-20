@@ -5,7 +5,9 @@ brohn_maxdiff_summary_ui <- function(design) {
   brohn_card(title = "Best-worst choices (MaxDiff)", subtitle = "Ask an explicit question about which items matter most and least.",
     shiny::p("Each exercise uses your exact choice sets and framing. Review item coverage and replace original example materials before research use."),
     if (!length(exercises)) shiny::p("No best-worst exercise is configured.") else shiny::tags$ul(lapply(exercises, function(d)
-      shiny::tags$li(shiny::strong(d$title), paste0(" - ", length(d$items), " items, ", length(d$sets), " sets "), brohn_command("Edit exercise", "maxdiff_edit", d$id)))),
+      shiny::tags$li(shiny::strong(d$title), paste0(" - ", length(d$items), " items, ", length(d$sets), " sets "), brohn_command("Edit exercise", "maxdiff_edit", d$id),
+        shiny::tags$details(shiny::tags$summary(paste("Item illustrations:",d$title)),shiny::p("Add optional images to saved items. Save or cancel the exercise editor before changing images; item labels and choice sets stay the same."),
+          lapply(seq_along(d$items),function(i)shiny::div(class="brohn-card",shiny::h3(paste("Item",i,":",d$items[[i]]$label)),brohn_material_card_ui(design,"maxdiff_item",brohn_maxdiff_material(d$items[[i]]),d$id))))))),
     shiny::actionButton("maxdiff_add", "Add best-worst exercise"))
 }
 brohn_maxdiff_review_ui <- function(design,region_context=design$title) {
@@ -35,6 +37,7 @@ brohn_maxdiff_structure_ui <- function(design, token, version) {
     shiny::div(hidden = NA, shiny::textInput("maxdiff_structure_identity", NULL, paste(token, version, sep = ":"))),
     shiny::tags$details(open = NA, shiny::tags$summary(paste("Items (", length(design$items), ")", sep = "")),
       shiny::p("Item identities stay the same when you edit a label. Remove an item from every set before deleting it."),
+      shiny::p(class="brohn-muted","To attach or replace an item image, save or cancel this editor, then open Item illustrations on Tasks."),
       shiny::tags$ol(lapply(seq_along(design$items), function(i) {item <- design$items[[i]]
         shiny::tags$li(shiny::textInput(field("label", item$id), paste("Item", i, "label"), item$label, width = "100%"),
           command(paste("Remove item", i), "remove_item", list(id = item$id)))})),

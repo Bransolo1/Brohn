@@ -51,7 +51,7 @@ brohn_install_run_protocol_ui <- function(input, output, session, store, current
     snapshot
   }
   show <- function(snapshot) shiny::showModal(shiny::modalDialog(title = "Assigned participant protocol", size = "l", easyClose = FALSE,
-    brohn_run_protocol_ui(snapshot, review$offset), footer = shiny::tagList(
+    brohn_run_protocol_ui(snapshot, review$offset), brohn_participant_equipment_evidence_ui(brohn_equipment_evidence(store, snapshot$run$id)), footer = shiny::tagList(
       shiny::downloadButton("run_protocol_download", "Download assigned protocol JSON", icon = NULL),
       shiny::actionButton("close_run_protocol", "Close protocol"))))
   shiny::observeEvent(input$view_run_protocol, attempt(function() {
@@ -73,6 +73,8 @@ brohn_install_run_protocol_ui <- function(input, output, session, store, current
   shiny::observeEvent(input$close_run_protocol, {review$selection <- NULL; shiny::removeModal()})
   output$run_protocol_download <- shiny::downloadHandler(filename = function() paste0(selected()$run$id, "-assigned-protocol.json"),
     contentType = "application/json", content = function(file) prepare_download(function() brohn_export_run_protocol(selected(), file)))
+  output$run_equipment_download <- shiny::downloadHandler(filename = function() paste0(selected()$run$id, "-equipment-evidence.json"),
+    contentType = "application/json", content = function(file) prepare_download(function() brohn_write_json_file(brohn_equipment_evidence(store, selected()$run$id), file)))
   task_evidence <- function() {
     snapshot <- selected()
     brohn_require(brohn_text(input$run_task_selection,2000), "Choose a completed task from this assigned protocol.")

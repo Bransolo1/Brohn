@@ -61,6 +61,7 @@
   "video/mp4" = ".mp4", "video/webm" = ".webm")
 .brohn_port_validate <- function(design) {
   brohn_validate_design(design)
+  if(brohn_has_illustrations(design))brohn_illustration_profile(design)
   if (length(design$blocks)) {
     brohn_require(exists("brohn_task_validate", mode = "function") && exists("brohn_task_clone", mode = "function"), "Task designs require their registered validator and identity mapper.")
     lapply(design$blocks, brohn_task_validate)
@@ -121,6 +122,7 @@
   assets <- Filter(Negate(is.null), lapply(design$stimuli, function(s) s$asset))
   if (!is.null(design$welcome$asset)) assets <- c(assets, list(design$welcome$asset))
   for (block in design$blocks) assets <- c(assets, Filter(Negate(is.null), lapply(block$materials, function(m) m$asset)))
+  if(brohn_has_illustrations(design))assets <- c(assets,lapply(brohn_study_illustrations(design),function(image)image$asset))
   unique <- list()
   for (asset in assets) {
     old <- unique[[asset$hash]]
@@ -200,6 +202,11 @@ brohn_import_design <- function(store, path, title = NULL, project_id = "default
   for (file in packaged_assets) {
     asset <- assets[[file$sha256]]
     brohn_require(!is.null(asset) && asset$size == file$size && identical(asset$media_type, file$media_type), "Packaged asset is not an exact referenced design asset.")
+  }
+  if(brohn_has_illustrations(design))for(a in brohn_illustration_profile(design)$assets) {
+    included<-Filter(function(f)identical(f$sha256,a$hash),packaged_assets)
+    brohn_require(length(included)==1L,"A question illustration is missing from this package.")
+    brohn_verify_illustration_file(a,file.path(quarantine,included[[1L]]$path))
   }
   result <- brohn_clone_design(design, brohn_default(title, paste(design$title, "imported")), project_id)
   result$lineage <- list(operation = "import_design", study_id = manifest$source$study_id,

@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Actual Python-in-R supervised vision jobs, durable artifact downloads and review.
 for (module in c("platform-core", "platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-library", "platform-analysis", "platform-vision", "platform-jobs"))
   source(paste0("R/", module, ".R"), encoding = "UTF-8")

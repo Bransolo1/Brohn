@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Original synthetic exact-number and mixed-type display-logic regression.
 args <- commandArgs(trailingOnly = TRUE)
 stopifnot(length(args) == 3L)

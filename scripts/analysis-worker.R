@@ -1,8 +1,9 @@
 args <- commandArgs(trailingOnly = TRUE)
 arg <- function(name) {i <- match(name, args); if (is.na(i) || i == length(args)) stop("Missing ", name); args[[i+1L]]}
-sources <- paste0("R/", c("platform-core", "platform-welcome", "platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-analysis", "platform-gaze", "platform-vision", "platform-neural", "platform-multimodal", "platform-jobs"), ".R")
+sources <- paste0("R/", c("platform-core", "platform-question-materials", "platform-welcome", "platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-analysis", "platform-gaze", "platform-vision", "platform-neural", "platform-multimodal", "platform-jobs"), ".R")
 for (optional in c("R/platform-analysis-plan.R", "R/platform-eda-events.R", "R/platform-headers.R", "R/platform-physiology-artifacts.R", "R/platform-signal.R", "R/platform-task-delivery.R", "R/platform-backup.R", "R/platform-interchange.R")) if (file.exists(optional)) sources <- c(sources, optional)
 if (file.exists("R/platform-capture.R")) sources <- c(sources, "R/platform-capture.R")
+sources <- c(sources, "R/platform-participant-equipment.R")
 sources <- c(sources, "R/platform-peripheral.R", "R/platform-peripheral-synthesis.R")
 sources <- c(sources, "R/platform-ingestion.R")
 if (file.exists("R/platform-scales.R")) sources <- c(sources, "R/platform-scales.R")
@@ -10,7 +11,7 @@ sources <- c(sources, "R/platform-question-sections.R")
 sources <- c(sources, "R/platform-question-revision.R", "R/platform-question-revision-delivery.R")
 sources <- c(sources, "R/platform-run-evidence.R", "R/platform-questionnaire-artifacts.R", "R/platform-questionnaire-artifact-storage.R")
 sources <- c(sources, "R/platform-questionnaire-index.R", "R/platform-questionnaire-explorer.R")
-sources <- c(sources, "R/platform-signal-annotations.R", "R/platform-signal-reuse.R")
+sources <- c(sources, "R/platform-signal-annotations.R", "R/platform-signal-reuse.R", "R/platform-cardiac-review.R")
 sources <- c(sources, "R/platform-task-import.R", "R/platform-task-import-storage.R")
 sources <- c(sources, "R/platform-task-cohort.R", "R/platform-task-cohort-storage.R")
 if (file.exists("R/platform-scale-comparisons.R")) sources <- c(sources, "R/platform-scale-comparisons.R")
@@ -30,6 +31,7 @@ native_sources <- if (identical(input$operation, "segment_aoi") || identical(inp
   if (input$operation %in% c("normalise_dataset", "import_multistream")) "scripts/workers/interchange.py" else
   if (input$operation %in% c("signal_catalog", "signal_preview")) c("scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "summarize_signal_windows")) c("scripts/workers/signal_windows.py", "scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
+  if (input$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) c("scripts/workers/cardiac_review.py", "scripts/workers/physiology.py", "scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "inspect_header")) "scripts/workers/headers.py" else
   if (identical(input$operation, "analyse_dataset") && input$dataset$modality %in% c("temperature", "movement")) c("scripts/workers/peripheral.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "analyse_dataset") && !input$dataset$modality %in% c("gaze", "prepared_gaze", "questionnaire", "maxdiff", "implicit")) {

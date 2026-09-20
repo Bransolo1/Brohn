@@ -13,6 +13,24 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
+- **Complete measurement review:** the enabled-profile
+  [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies
+  the actual plots, complete numerical routes and browser evidence for each
+  modality. Exact processed-value paging/CSV export is under implementation;
+  saved video geometry and pupil/blink traces follow. Preserve unavailable
+  support, original units, source identities and gaps in every view.
+- **Cardiac artifact review:** original ECG/PPG input-versus-cleaned waveform
+  review has [scoped acceptance](qa/CARDIAC-INPUT-WAVEFORM-ACCEPTANCE.md).
+  Auditable source exclusions and separate-run recalculation now have
+  [saved-job and browser acceptance](qa/CARDIAC-EXCLUSION-ACCEPTANCE.md).
+  Neither manual exclusion nor a
+  successful rerun qualifies beat detection or converts RR/PRV into NN intervals.
+- **Study materials and equipment:** welcome, passive/task, questionnaire and
+  MaxDiff illustrations now have authoring-to-report evidence. Native requested
+  camera/audio and task-key preflight has its own
+  [acceptance](qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md), in addition to
+  15-family source monitoring and reusable setups. Wider device/protocol
+  qualification and required material-route reconciliation remain open.
 - **Complete-answer explorer follow-ons:** the connected source-bound workflow
   now has component, storage, actual-worker and browser acceptance; evidence and
   exact profile limitations are in [the acceptance record](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).

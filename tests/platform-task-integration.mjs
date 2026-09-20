@@ -11,7 +11,7 @@ import {chromium} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const root=path.resolve(import.meta.dirname,'..'),work=path.resolve(root,'../../work');
 const rscript=process.env.BROHN_RSCRIPT||path.join(work,'native-r/bin/Rscript.exe');
-const env={...process.env,R_LIBS_USER:path.join(work,'r-library-brohn'),R_USER:work,LC_ALL:'C',LANG:'C'};
+const env={...process.env,R_LIBS_USER:process.env.R_LIBS_USER||path.join(work,'r-library-brohn-restore'),R_USER:work,LC_ALL:'C',LANG:'C'};
 const temporary=await fs.mkdtemp(path.join(os.tmpdir(),'brohn-task-integration-')),workspace=path.join(temporary,'workspace');
 const output=path.join(root,'test-results/platform-task-integration');await fs.mkdir(output,{recursive:true});
 const checks=[],errors=[],failures=[];let server,browser,logs='';

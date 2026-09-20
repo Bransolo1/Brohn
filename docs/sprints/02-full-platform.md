@@ -1,5 +1,21 @@
 # Full platform build — Brohn continuation
 
+## Current connected acceptance — 20 September 2026
+
+- [x] Combined frozen sample study: welcome/images, three equipment checks, camera, questions, passive images,28 task trials and four choice sets;11 browser assertions/four scans/two actual jobs (docs/qa/MIXED-STUDY-JOURNEY.md).
+- [x] Native participant camera/requested-audio/task-key checks with current
+  observations, exact writing receipts and independent delayed/reload recovery.
+  See docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md for executed scope.
+- [x] Pre-cleaning ECG/PPG input visualization and exact saved detection overlay
+  with recorded-reference, actual-worker and browser preservation evidence.
+- [x] MaxDiff item illustrations: exact item authoring, complete participant
+  preload/retry/reload and unchanged automatic scoring passed the saved-report
+  journey; see docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md.
+- [x] Source-bound cardiac exclusion review and separate per-run recalculation:
+  direct/curated saved-job and actual researcher-browser acceptance passed;
+  detector, artifact-label and physiological qualification remain separate.
+- [ ] Exact processed values/complete CSV, video geometry and pupil/blink traces.
+
 Resumed by the owner on 20 September 2026 after the public source handoff.
 The current connected slice is recorded in [explorer acceptance](../qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
 The broader unchecked roadmap remains open; this is not a full release claim.
@@ -17,15 +33,17 @@ The broader unchecked roadmap remains open; this is not a full release claim.
 - [x] Respiration quantity/polarity correction and conservative explicit Morlet baseline support.
 - [x] Longer live waveform previews and selected measurement-specific preflight criteria.
 - [x] Reusable equipment setups with fresh exact source/criteria review for each recording.
-- [ ] Native participant camera/input checks that distinguish capture, receipt and task readiness.
+- [x] Native participant camera/input checks that distinguish capture, receipt and task readiness.
 - [x] Pinned material upload/preview/description/replacement across existing passive and IAT/BIAT/AAT routes.
-- [ ] Optional questionnaire illustrations and image choice items with frozen asset identity.
+- [x] Optional questionnaire illustrations with frozen asset identity, participant recovery and saved-report provenance.
+- [x] MaxDiff image choice items with frozen asset identity.
 - [x] Explicit cross-recording interval reuse, exact boundaries and target-data-only summaries.
 - [x] Complete task/person, cardiac-spectrum and full time-frequency visual journeys.
 - [x] Run the first preselected annotated ECG reference subset; preserve failed agreement.
 - [x] Evaluate a frozen offline ECG candidate on declared diagnostic and held-out records; retain the no-promotion outcome.
 - [x] Execute a predeclared annotated PPG reference comparison without substituting ECG timing for pulse peaks; retain the artifact/timing limitations.
-- [ ] Source-bound cardiac artifact review and recalculation without bridging excluded spans.
+- [x] Independent recorded EEG native calibration and Welch numerical comparison.
+- [x] Source-bound cardiac artifact review and recalculation without bridging excluded spans.
 - [ ] Resolve cardiac polarity/morphology review and broader independent detector validation.
 - [ ] Whole-platform reference validation, synchronized replay, research operations and hosted profile.
 

@@ -1,0 +1,33 @@
+source("R/platform-load.R");brohn_load(ui=FALSE)
+args<-commandArgs(TRUE);out<-if(length(args))args[[1L]] else tempfile("brohn-equipment-races-");dir.create(out,recursive=TRUE,showWarnings=FALSE)
+stopifnot(!file.exists(file.path(out,"workspace")));store<-brohn_open_store(file.path(out,"workspace"))
+checks<-list();check<-function(name,value){stopifnot(isTRUE(value));checks[[name]]<<-TRUE;cat("PASS",name,"\n")}
+rejects<-function(x)inherits(try(force(x),silent=TRUE),"try-error")
+d<-brohn_new_design("Independent historical camera boundary probe","survey");d$questions<-list(brohn_question(scope="end"));d$camera<-list(schema="brohn-camera-policy/1.0",required=TRUE,audio=FALSE,consent_text="Original software receipt probe.",retention_text="Synthetic bytes in isolated temporary reference workspace.",width=320L,height=240L,frame_rate=15,max_duration_s=30,max_bytes=1024*1024,analysis_profile="none")
+invisible(brohn_put_entity(store,"study",d$id,d));deployment<-brohn_publish(store,d$id,origin="sample",quota=10,alias_required=FALSE)
+clock<-function(n)list(id="browser-monotonic",unit="ms",value=as.character(n),instance_id="original-boundary-page",time_origin_ms="1700000000000")
+index<-0L;case<-function(name,unobserved=FALSE,container=FALSE){
+ start<-.brohn_delivery_start(store,deployment$token,list(consented=TRUE,client_id=brohn_id("client"),operation_id=brohn_id("operation"),participant_alias=""));run<-brohn_run(store,start$run_id);index<<-index+1L;id<-paste0("camera-00000000-0000-4000-8000-",sprintf("%012d",index))
+ .brohn_camera_start(store,run$id,start$access_token,list(capture_id=id,consented=TRUE,clock=clock(100),mime_type="video/webm",settings=list(width=320L,height=240L,frame_rate=15,audio=FALSE),reason=NULL,operation_id=brohn_id("operation")))
+ bytes<-charToRaw("Original nondecodable byte-prefix receipt fixture")
+ .brohn_camera_chunk(store,run$id,start$access_token,list(capture_id=id,sequence=1L,sha256=digest::digest(bytes,algo="sha256",serialize=FALSE),data_base64=gsub("[\r\n]","",jsonlite::base64_enc(bytes)),observation=list(callback_ms="500",event_timecode_ms=NULL,frames=list(),unretained_frame_callbacks=0L),operation_id=brohn_id("operation")))
+ final<-list(capture_id=id,final_sequence=1L,total_bytes=length(bytes),outcome="interrupted",container_complete=container,clock=clock(if(unobserved)100 else 1500),reason="page_reload_recording_end_unobserved",operation_id=brohn_id("operation"))
+ .brohn_camera_finish(store,run$id,start$access_token,final)
+ evidence<-list(capture_id=id,track_generation=1L,video=list(live=TRUE,enabled=TRUE,muted=FALSE,frames=2L,last_frame_ms=1800,width=320L,height=240L),audio=list(requested=FALSE,live=FALSE,enabled=FALSE,muted=TRUE,state="unavailable",blocks=0L,samples=0L,last_block_ms=NULL,sample_rate=NULL,channels=0L,rms=NULL,peak=NULL),recording=list(browser_sequence=1L,browser_bytes=length(bytes),acked_sequence=1L,acked_bytes=length(bytes)))
+ event<-list(sequence=1L,id=brohn_id("event"),type="equipment_event",step_id=NULL,stimulus_id=NULL,condition_id=NULL,question_id=NULL,phase="equipment_setup",clock=clock(2000),payload=list(schema="brohn-participant-equipment-check/1.0",policy_hash=run$protocol$equipment$policy_hash,kind="camera",attempt_id=brohn_id("attempt"),evidence=evidence))
+ r<-tryCatch(.brohn_delivery_receive(store,run$id,start$access_token,list(events=list(event),operation_id=brohn_id("operation"))),error=function(e)list(error=conditionMessage(e)))
+ list(name=name,accepted=is.null(r$error),response=r,run_id=run$id,final=final,event=event)
+}
+cases<-list(case("actual_unobserved_end",TRUE,FALSE),case("reason_only_with_observed_end",FALSE,FALSE),case("reason_with_observed_end_and_complete_flag",FALSE,TRUE))
+check("Exact unobserved reload sentinel permits retained old-page observation",cases[[1]]$accepted)
+check("Reason string with real observed end does not bypass final bound",!cases[[2]]$accepted)
+check("Complete-container flag cannot claim unobserved reload sentinel",!cases[[3]]$accepted)
+d<-brohn_new_design("Original independent missing-clock probe","survey");d$questions<-list(brohn_question(scope="end"));d$participant_equipment<-brohn_participant_equipment_policy(TRUE);p<-brohn_compile(d)
+e<-list(sequence=1L,id="page-controls",type="equipment_event",step_id=NULL,stimulus_id=NULL,condition_id=NULL,question_id=NULL,phase="equipment_setup",clock=list(id="browser-monotonic",unit="ms",value="1000",instance_id="independent-page",time_origin_ms="1700000000000.001"),payload=list(schema="brohn-participant-equipment-check/1.0",policy_hash=p$equipment$policy_hash,kind="controls",attempt_id="page-attempt",evidence=list(activation="keyboard_or_assistive",trusted=TRUE,last_input_ms=1000)))
+s<-.brohn_delivery_replay(p,list(e));checks$valid_page_check<-!is.null(s$equipment$controls)
+entry<-e;entry$type<-"step_started";entry$clock$value<-"2000";entry$payload<-list();checks$valid_page_gate<-isTRUE(.brohn_equipment_gate(s,entry,p))
+for(field in c("instance_id","time_origin_ms")){bad<-e;bad$clock[[field]]<-NULL;checks[[paste0("check_requires_",field)]]<-rejects(.brohn_delivery_replay(p,list(bad)));bad<-entry;bad$clock[[field]]<-NULL;checks[[paste0("gate_requires_",field)]]<-rejects(.brohn_equipment_gate(s,bad,p))}
+for(value in c("NaN","Inf","-1","1e10","9999999999999999999999999999999999999999999999999999999999999999")){bad<-e;bad$clock$time_origin_ms<-value;checks[[paste0("reject_origin_",value)]]<-rejects(.brohn_delivery_replay(p,list(bad)))}
+bad<-entry;bad$clock$instance_id<-"another-page";checks$different_page_cannot_reuse<-rejects(.brohn_equipment_gate(s,bad,p))
+d$participant_equipment<-NULL;old<-brohn_compile(d);entry$clock$instance_id<-NULL;entry$clock$time_origin_ms<-NULL;checks$absent_policy_legacy_gate_preserved<-isTRUE(.brohn_equipment_gate(.brohn_delivery_initial_state(),entry,old))
+stopifnot(all(unlist(checks)));brohn_write_json_file(list(check_count=length(checks),checks=checks,cases=cases),file.path(out,"results.json"));cat("Independent equipment race and page-clock checks:",length(checks),"\nEvidence:",normalizePath(out,winslash="/"),"\n");brohn_close_store(store)

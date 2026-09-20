@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Actual SQLite writer contention and participant error classification. No busy
 # function or storage statement is mocked, and the 5-second timeout is retained.
 for(module in c("platform-core","platform-store","platform-delivery")) source(paste0("R/",module,".R"),encoding="UTF-8")

@@ -248,8 +248,32 @@ class Artifacts(unittest.TestCase):
                     else: self.assertEqual(manifests["physiology-series"]["rows"],len(x))
                     for manifest in result["artifacts"]:
                         tables=[];worker.verify_artifact(manifest,on_table=tables.append)
-                        self.assertTrue(all(not c["name"].startswith("raw") for table in tables for c in table["columns"]))
+                        if modality in {"ecg","ppg"} and manifest["kind"]=="physiology-series":
+                            self.assertTrue(all([c["name"] for c in t["columns"]]==["time_s","source_sample_index","raw","clean","retained"] for t in tables))
+                            self.assertTrue(all(t["support"]["raw_source_omitted"] is False and t["support"]["input_waveform"]["detection_basis"]=="clean" for t in tables))
+                            rows=[];worker.verify_artifact(manifest,on_rows=lambda t,o,r:rows.extend(r))
+                            # Independent declared conversion: ECG fixture mV -> uV;
+                            # PPG arbitrary units remain unchanged, with every sample.
+                            np.testing.assert_array_equal([row[2] for row in rows],x*(1000 if modality=="ecg" else 1))
+                            self.assertTrue(result["quality"]["raw_source_duplicated"])
+                            before=fixture.worker.run({k:v for k,v in request.items() if k!="artifact_directory"})
+                            self.assertEqual(before["features"],result["features"])
+                            self.assertEqual(before["events"],result["events"])
+                        else:
+                            self.assertTrue(all(not c["name"].startswith("raw") for table in tables for c in table["columns"]))
         finally: case.tearDown()
+
+    def test_short_cardiac_input_cannot_claim_a_missing_full_input_artifact(self):
+        ps=importlib.util.spec_from_file_location("short_cardiac_fixture",ROOT/"tests/workers/physiology.py")
+        fixture=importlib.util.module_from_spec(ps);ps.loader.exec_module(fixture)
+        case=fixture.PhysiologyTests();case.setUp()
+        try:
+            request=case.request("ppg",np.ones(300),100);request["artifact_directory"]=str(self.root)
+            result=fixture.worker.run(request)
+            self.assertEqual(result["status"],"insufficient_support")
+            self.assertEqual(result["artifacts"],[])
+            self.assertIs(result["quality"]["raw_source_duplicated"],False)
+        finally:case.tearDown()
 
     def test_actual_event_worker_preserves_full_series_and_source_indices(self):
         ps=importlib.util.spec_from_file_location("event_artifact_fixture",ROOT/"tests/workers/eda_events.py")

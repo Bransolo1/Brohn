@@ -76,6 +76,7 @@ brohn_questions_ui <- function(d) {
         actions = shiny::div(class = "brohn-toolbar", if (i > 1 && !"questionnaire_sections" %in% names(d)) brohn_command("Move up", "question_move", list(id = q$id, direction = -1)),
           if (i < length(d$questions) && !"questionnaire_sections" %in% names(d)) brohn_command("Move down", "question_move", list(id = q$id, direction = 1)), brohn_command("Remove", "remove_question", q$id)),
         shiny::textAreaInput(paste0("q_prompt_", i), paste("Question", i, "wording"), q$prompt, rows = 2),
+        brohn_material_card_ui(d,"question",brohn_question_material(q)),
         if (!"questionnaire_sections" %in% names(d)) shiny::selectInput(paste0("q_scope_", i), paste("Question", i, "placement"), c("Before stimuli" = "before", "After each stimulus" = "after_each", "End of study" = "end"), q$scope) else
           shiny::p(paste(.brohn_sections_label(q$scope), "\u00b7 Move this question with its group in Questionnaire sections.")),
         shiny::checkboxInput(paste0("q_required_", i), paste("Require an answer to question", i), q$required),

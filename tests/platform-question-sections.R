@@ -1,3 +1,4 @@
+source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Pure-domain evidence; shared compiler/browser hooks are intentionally separate.
 for (module in c("platform-core", "platform-scales", "platform-question-sections")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
 source("tests/fixtures/question-sections-original.R")

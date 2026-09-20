@@ -29,7 +29,7 @@ local({
     session$setInputs(edit_camera_policy = initial$id)
     context <- api$context()
     check("Plan opens an identified editable camera draft", !is.null(context$id) && identical(context$study_id, initial$id))
-    session$setInputs(camera_policy_form = context$id, camera_policy_enabled = TRUE,
+    session$setInputs(camera_policy_form = context$id, camera_policy_enabled = TRUE, participant_equipment_enabled = TRUE, participant_equipment_controls = FALSE,
       camera_policy_required = TRUE, camera_policy_audio = TRUE, camera_policy_consent = policy$consent_text,
       camera_policy_retention = "", camera_policy_width = 320, camera_policy_height = 240,
       camera_policy_rate = 12, camera_policy_duration = 120, camera_policy_size = 8, camera_policy_analysis = "none")
@@ -72,6 +72,16 @@ local({
       camera_policy_analysis = "face_geometry_v1", camera_policy_size = 1025/1024^2)
     session$setInputs(save_camera_policy = list(editor_id = context$id))
     check("optional geometry policy and exact imported byte limits survive UI units", is.null(state$error) && identical(current$study$body$camera$required, FALSE) && identical(current$study$body$camera$audio, FALSE) && current$study$body$camera$analysis_profile == "face_geometry_v1" && current$study$body$camera$max_bytes == 1025)
+    check("new recording setup retains the versioned equipment engineering policy", identical(current$study$body$participant_equipment$schema, "brohn-participant-equipment-policy/1.0") && current$study$body$participant_equipment$freshness_ms == 2000 && current$study$body$participant_equipment$first_write_wait_ms == 15000)
+    session$setInputs(edit_camera_policy = initial$id); equipment_context <- api$context()
+    session$setInputs(camera_policy_form = equipment_context$id, participant_equipment_controls = TRUE, save_camera_policy = list(editor_id = equipment_context$id))
+    check("researcher can explicitly include native control practice", is.null(state$error) && isTRUE(current$study$body$participant_equipment$controls))
+    equipment_revision <- current$study$revision
+    session$setInputs(edit_camera_policy = initial$id); equipment_context <- api$context()
+    session$setInputs(camera_policy_form = equipment_context$id, participant_equipment_enabled = "false", save_camera_policy = list(editor_id = equipment_context$id))
+    check("untyped equipment switch cannot save", !is.null(state$error) && current$study$revision == equipment_revision)
+    session$setInputs(participant_equipment_enabled = FALSE, save_camera_policy = list(editor_id = equipment_context$id))
+    check("explicit opt out affects only new draft revision", is.null(state$error) && is.null(current$study$body$participant_equipment) && isTRUE(brohn_study(store, initial$id, equipment_revision)$body$participant_equipment$controls))
     session$setInputs(edit_camera_policy = initial$id); context <- api$context()
     session$setInputs(camera_policy_form = context$id, camera_policy_enabled = FALSE)
     current$study <- brohn_archive_study(store, initial$id, TRUE, current$study$revision)

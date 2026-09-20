@@ -96,6 +96,10 @@ Reader environment: Python 3.12, NumPy 2.2.6, SciPy 1.15.3, WFDB 4.3.0, h5py 3.1
 - `scripts/workers/physiology.py`: `959aa9a3f7b2c701bd37706ff04ddbe7f71d60f5d777bce11240c5b76a424cc6`
 - `scripts/workers/physiology_artifacts.py`: `a5e8a8f6ef4a1f6eba7a25cfce15864284020b3c8409b725ccad3d09e9c8d457`
 
+Hash naming clarification: in the original `agreement.json` and per-record `results.json` entries, `worker_sha256` is the SHA-256 of **`worker-result.json`**, not the Python source. For example, 0123's result-file hash is `d4b3cd08b9f60e90a01d75d21da76df83bb76421be625abee9e5e290efee3d40`. The production source hashes above are retained separately in `plan.production_code_sha256`, the final results' `production_code_sha256`, every worker result's `engine`, and the complete artifact headers. Future harness output uses the clearer key `worker_result_sha256`; reading old evidence remains supported.
+
+A read-only audit of all eight original and eight replay records verified the frozen plan/metadata, deposited source checksums, prepared CSV/request association, result-file hashes, source-code identities, complete artifact hashes/headers/counts, and numerical replay agreement. Its receipt is `../brohn-ppg-preserved-evidence-audit.json`, with `../audit_ppg_evidence.py` beside it. The replay adds a textual `tolerance_rule` explaining the unchanged strict WFDB boundary; output paths and result-file hashes differ by run. Event arrays, endpoint comparisons, interval errors, saved event-table declarations and pooled numerical scores agree. The audit did not rerun a worker or alter either evidence folder.
+
 From the repository, with a new output folder outside it:
 
 ```powershell
