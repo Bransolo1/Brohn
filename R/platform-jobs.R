@@ -23,7 +23,17 @@ brohn_python_profile <- function(modality) {
   brohn_require(file.exists(candidate), paste("The", profile, "analysis environment is unavailable. Configure its Python executable in workspace setup."))
   normalizePath(candidate, winslash = "/", mustWork = TRUE)
 }
+brohn_gaze_retention_enabled <- function(input) {
+  d<-input$dataset;m<-d$metadata
+  identical(input$operation,"analyse_dataset")&&isTRUE(d$modality %in% c("gaze","prepared_gaze"))&&
+    identical(m$gaze_representation,"samples")&&
+    (brohn_text(m$pupil_column,500)||brohn_text(m$blink_column,500))
+}
 brohn_job_input <- function(store, job) {
+  if (identical(job$operation, "vision_index")) return(brohn_vision_index_input(store, job))
+  if (identical(job$operation, "vision_frame")) return(brohn_vision_frame_input(store, job))
+  if (job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview")) return(brohn_gaze_trace_job_input(store, job))
+  if (job$operation %in% c("signal_values_page", "signal_values_export")) return(brohn_signal_values_input(store, job))
   if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_cardiac_review_input(store, job))
   if (identical(job$operation, "summarize_signal_windows")) return(brohn_signal_windows_input(store, job))
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
@@ -82,7 +92,11 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac"), "Use the operation's setup screen to choose a new destination or source.")
+  if(identical(job$operation,"vision_index"))brohn_vision_index_input(store,job)
+  if(identical(job$operation,"vision_frame"))brohn_vision_frame_input(store,job)
+  if(job$operation %in% c("signal_values_page", "signal_values_export"))brohn_signal_values_input(store,job)
+  if(job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview"))brohn_gaze_trace_job_input(store,job)
   if(job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac"))brohn_cardiac_review_input(store,job)
   if(identical(job$operation,"summarize_signal_windows"))brohn_signal_windows_input(store,job)
   brohn_store_batch(store, function() {
@@ -163,6 +177,10 @@ brohn_analyse_runs <- function(input) {
   report
 }
 brohn_analyse_input_unplanned <- function(input, scratch) {
+  if (identical(input$operation, "vision_index")) return(brohn_analyse_vision_index(input, scratch))
+  if (identical(input$operation, "vision_frame")) return(brohn_analyse_vision_frame(input, scratch))
+  if (input$operation %in% c("gaze_trace_catalog", "gaze_trace_preview")) return(brohn_analyse_gaze_trace(input, scratch))
+  if (input$operation %in% c("signal_values_page", "signal_values_export")) return(brohn_analyse_signal_values(input, scratch))
   if (input$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_analyse_cardiac_review(input, scratch))
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
@@ -200,7 +218,8 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   } else if (d$modality %in% c("gaze", "prepared_gaze", "questionnaire")) {
     data <- brohn_read_table(input$source_path, d$source$format)
     analysis <- if (d$modality %in% c("gaze", "prepared_gaze")) {
-      if (identical(m$gaze_representation, "samples")) brohn_raw_gaze_analysis(data, m, design) else brohn_gaze_analysis(data, m, design)
+      if (brohn_gaze_retention_enabled(input)) brohn_analyse_gaze_retained(data, m, design, input, scratch) else
+        if (identical(m$gaze_representation, "samples")) brohn_raw_gaze_analysis(data, m, design) else brohn_gaze_analysis(data, m, design)
     } else {
       responses <- brohn_import_responses(data, m, design)
       result <- brohn_questionnaire_analysis(responses, design)
@@ -283,6 +302,17 @@ brohn_analyse_input <- function(input, scratch) {
   })
 }
 brohn_publish_analysis_report <- function(store, job, input, result, scratch, result_path, timeout_seconds = 1900, before_commit = NULL) {
+  if (brohn_gaze_retention_enabled(input)) {
+    brohn_require(identical(result$report$analysis$parameters$trace_profile,"gaze-pupil-source-trace/1.0"),"This pupil/blink analysis did not retain its complete source trace.")
+    gaze_source_guard<-brohn_hold_gaze_analysis_source(store,input)
+    on.exit(.brohn_qexplorer_release(gaze_source_guard),add=TRUE)
+    prior_before_commit<-before_commit
+    before_commit<-function() {
+      if(!is.null(prior_before_commit))prior_before_commit()
+      brohn_check_gaze_analysis_source(store,input,verify_bytes=FALSE)
+      .Call(gaze_source_guard$native$check,gaze_source_guard$pointer)
+    }
+  }
   report <- result$report; id <- paste0("report-", sub("^job-", "", job$id))
   report$schema_version <- "brohn-report/1.0.0"; report$id <- id; report$created_at <- brohn_now()
   report$status <- if (isTRUE(report$analysis$status %in% c("insufficient_support", "needs_review", "no_proposal"))) "Needs review" else "Available"
@@ -412,10 +442,34 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   tryCatch({
     if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "The saved-answer view requires process memory monitoring.")
     input <- if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
+    if(identical(job$operation,"vision_index")) {
+      vision_source_guards<-.brohn_vexplorer_guards(store,job$request)
+      on.exit(for(g in vision_source_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_vision_index_input(store,job))),"Saved video sources changed before their processing read guards were established.")
+    }
+    if(identical(job$operation,"vision_frame")) {
+      vision_frame_guards<-.brohn_vframe_guards(store,job$request)
+      on.exit(for(g in vision_frame_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_vision_frame_input(store,job))),"Recorded frame sources changed before their processing read guards were established.")
+    }
+    if(brohn_gaze_retention_enabled(input)) {
+      gaze_analysis_guard<-brohn_hold_gaze_analysis_source(store,input)
+      on.exit(.brohn_qexplorer_release(gaze_analysis_guard),add=TRUE)
+    }
+    if(job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview")) {
+      gaze_trace_guards<-brohn_hold_gaze_trace_sources(store,input)
+      on.exit(for(g in gaze_trace_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_gaze_trace_job_input(store,job))),"Pupil/blink source changed before its processing read guard was established.")
+    }
     if(job$operation %in% c("preview_cardiac_review","reanalyse_cardiac")) {
       cardiac_source_guards<-.brohn_hold_cardiac_sources(store,input)
       on.exit(for(g in cardiac_source_guards).brohn_qexplorer_release(g),add=TRUE)
       brohn_require(identical(brohn_hash(input),brohn_hash(brohn_cardiac_review_input(store,job))),"Cardiac source changed before its processing read guard was established.")
+    }
+    if(job$operation %in% c("signal_values_page", "signal_values_export")) {
+      value_source_guards<-brohn_hold_signal_value_sources(store,input)
+      on.exit(for(g in value_source_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_signal_values_input(store,job))),"Exact-value source changed before its processing read guard was established.")
     }
     request_path <- file.path(scratch, "request.json"); result_path <- file.path(scratch, "result.json")
     brohn_write_json_file(input, request_path)
@@ -459,10 +513,16 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation, "ingest_source"))
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
     if (explorer) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
+    if (identical(job$operation, "vision_index")) return(brohn_publish_vision_index(store, result, scratch, job, input, result_path))
+    if (identical(job$operation, "vision_frame")) return(brohn_publish_vision_frame(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "summarize_signal_windows")) return(brohn_publish_signal_windows(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_publish_cardiac_review(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("normalise_dataset", "import_multistream"))
       return(brohn_publish_stream_import(store, result, scratch, job, input, result_path))
+    if (job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview"))
+      return(brohn_publish_gaze_trace(store, result, scratch, job, input, result_path))
+    if (job$operation %in% c("signal_values_page", "signal_values_export"))
+      return(brohn_publish_signal_values(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("signal_catalog", "signal_preview"))
       return(brohn_publish_signal_view(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "assemble_capture"))

@@ -149,6 +149,7 @@ def preview(request,manifest):
     chosen={};table_stats={};full=blank_stats();selected_stats=blank_stats();previous_coordinates={}
     def table(t):
         if t["table_id"] not in ids: return
+        require(t["support"].get("trace_profile") != "gaze-pupil-source-trace/1.0", "Pupil/blink traces require the dedicated gaze adapter with separate source and interval masks. Exact source values remain available.")
         require(t["identity"]["recording_id"]==selection["recording_id"] and t["identity"]["channel"]==selection["channel"],"A selected table belongs to a different recording or channel.")
         require(selection["value_column"] in [c["name"] for c in numeric_fields(t)],"The selected column is not a declared numeric measure in every table.")
         descriptor(t);chosen[t["table_id"]]=t;table_stats[t["table_id"]]=blank_stats()

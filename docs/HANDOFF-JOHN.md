@@ -1,5 +1,13 @@
 # John: historical 8 September handoff
 
+**Latest source handoff, 21 September 2026:** read the
+[publication checkpoint](qa/PUBLICATION-CHECKPOINT-20260921.md),
+[current status](../STATUS.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
+The questionnaire explorer is now connected. Latest work covers complete signal
+values, pupil/blink traces, fNIRS review and saved-video exploration; their
+remaining acceptance is recorded in the checkpoint. The old next-step list
+below describes September 8 and must not be used as the current backlog.
+
 **Update, 20 September 2026:** the owner resumed work and reconfirmed the name Brohn.
 Use [current status](../STATUS.md) and [explorer acceptance](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
 for the latest implementation. The stopped-state notes below remain historical evidence.

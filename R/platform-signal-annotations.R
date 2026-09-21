@@ -30,6 +30,7 @@ brohn_create_signal_annotations <- function(store, catalog_id, table_id, title) 
   tables <- Filter(function(t) identical(t$table_id, table_id), catalog$body$view$tables)
   brohn_require(length(tables) == 1L && identical(tables[[1L]]$coordinates$axis, "time") && identical(tables[[1L]]$coordinate_column$unit, "s"),
     "Choose a time-series table in seconds; spectra and detected-event tables use different analyses.")
+  brohn_require(!identical(tables[[1L]]$support$trace_profile,"gaze-pupil-source-trace/1.0"),"Pupil/blink summaries require their separate validity, interval and baseline policies. Use the saved gaze analysis and dedicated trace view.")
   id <- brohn_id("intervals")
   body <- list(schema_version = "brohn-signal-annotations/1.0", id = id, title = title,
     report_id = source$report$id, report_revision = source$report$revision, report_hash = brohn_hash(source$report$body),

@@ -45,6 +45,7 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
   }
   output$signal_annotation_controls <- shiny::renderUI({
     r<-context();c<-catalog();t<-table();revision_tick()
+    if(identical(t$support$trace_profile,"gaze-pupil-source-trace/1.0"))return(NULL)
     if(!identical(t$coordinates$axis,"time")||!identical(t$coordinate_column$unit,"s")||!identical(c$body$view$artifact$kind,"physiology-series"))return(NULL)
     sets<-brohn_list_entities(store,"signal_annotations",r$project_id,limit=100L,filters=list(report_id=r$id,"table.table_id"=t$table_id))
     choices<-c("Choose a saved set"="",setNames(vapply(sets,`[[`,character(1),"id"),vapply(sets,function(s)s$body$title,character(1))))

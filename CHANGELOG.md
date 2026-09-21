@@ -1,5 +1,14 @@
 # Changes
 
+## Source checkpoint — 2026-09-21
+
+- Included exact processed-value paging/CSV, retained pupil/blink traces and
+  saved-video geometry/frame exploration components with their tests.
+- Added independent fNIRS phantom and saved-output review evidence.
+- Updated the GitHub handoff and documentation map for the resumed platform.
+  Outstanding browser/export acceptance remains explicit in
+  `docs/qa/PUBLICATION-CHECKPOINT-20260921.md`; this is not a completed release.
+
 ## Connected research workflows — 2026-09-20 (in progress)
 
 - Added a combined participant-study journey with actual receiver events, decoded camera recording and automatic report;11 browser assertions/four scans/two jobs pass.

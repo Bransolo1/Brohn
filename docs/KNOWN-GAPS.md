@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **20 September 2026** after the owner resumed implementation.
+Updated **21 September 2026** for the latest source publication checkpoint.
 Read [current status](../STATUS.md), the [master architecture](MASTER-ARCHITECTURE.md)
 and [17-package manifest](preparation/build-manifest.json). The 50-capability
 register remains the complete intended scope, not an enabled-feature claim.
@@ -16,8 +16,10 @@ records describing only the 01A–01L prototype are historical.
 - **Complete measurement review:** the enabled-profile
   [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies
   the actual plots, complete numerical routes and browser evidence for each
-  modality. Exact processed-value paging/CSV export is under implementation;
-  saved video geometry and pupil/blink traces follow. Preserve unavailable
+  modality. Exact processed-value paging/CSV export, pupil/blink traces and
+  saved-video exploration now have implementation and scoped evidence, with
+  remaining acceptance listed in the [publication checkpoint](qa/PUBLICATION-CHECKPOINT-20260921.md).
+  Preserve unavailable
   support, original units, source identities and gaps in every view.
 - **Cardiac artifact review:** original ECG/PPG input-versus-cleaned waveform
   review has [scoped acceptance](qa/CARDIAC-INPUT-WAVEFORM-ACCEPTANCE.md).

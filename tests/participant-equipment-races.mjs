@@ -67,5 +67,3 @@ try{
  check(!errors.length,'No browser runtime errors during either recovery');
  check((await Promise.all(Object.entries(sourceHashes).map(async([f,hash])=>hash===createHash('sha256').update(await fs.readFile(path.join(root,f))).digest('hex')))).every(Boolean),'Sources unchanged during narrow browser acceptance');await fs.writeFile(path.join(folder,'peer-findings.json'),JSON.stringify({folder,origin:'original_fake_camera_software_observations',sourceHashes,findings,errors,checks},null,2));console.log(JSON.stringify({folder}));
 }catch(e){await active?.screenshot({path:path.join(folder,'failure.png'),fullPage:true}).catch(()=>{});await fs.writeFile(path.join(folder,'failure.json'),JSON.stringify({error:e.stack,findings,errors,checks,sourceHashes},null,2));throw e;}finally{await browser?.close();if(server&&server.exitCode===null){await fs.writeFile(path.join(folder,'stop.request'),'Stop owned independent peer equipment service.');await expect.poll(()=>server.exitCode!==null,{timeout:15000}).toBe(true);}await fs.writeFile(path.join(folder,'server.log'),log);}
-
-

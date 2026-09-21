@@ -12,6 +12,10 @@ a working local application and an unfinished broader roadmap. Start with
 [John's handoff](docs/HANDOFF-JOHN.md) and [STATUS.md](STATUS.md) for what was
 completed, what remains, and where to resume.
 
+The [21 September source checkpoint](docs/qa/PUBLICATION-CHECKPOINT-20260921.md)
+includes the resumed study/equipment workflows and latest measurement-review
+work, with outstanding browser acceptance identified for each new slice.
+
 ## What is connected
 
 | Workflow | Current local application |

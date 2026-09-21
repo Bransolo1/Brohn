@@ -11,6 +11,9 @@ sources <- c(sources, "R/platform-question-sections.R")
 sources <- c(sources, "R/platform-question-revision.R", "R/platform-question-revision-delivery.R")
 sources <- c(sources, "R/platform-run-evidence.R", "R/platform-questionnaire-artifacts.R", "R/platform-questionnaire-artifact-storage.R")
 sources <- c(sources, "R/platform-questionnaire-index.R", "R/platform-questionnaire-explorer.R")
+sources <- c(sources, "R/platform-vision-explorer.R", "R/platform-vision-frame.R")
+sources <- c(sources, "R/platform-signal-values.R")
+sources <- c(sources, "R/platform-gaze-traces.R", "R/platform-gaze-retention.R", "R/platform-gaze-trace-views.R", "R/platform-gaze-trace-jobs.R")
 sources <- c(sources, "R/platform-signal-annotations.R", "R/platform-signal-reuse.R", "R/platform-cardiac-review.R")
 sources <- c(sources, "R/platform-task-import.R", "R/platform-task-import-storage.R")
 sources <- c(sources, "R/platform-task-cohort.R", "R/platform-task-cohort-storage.R")
@@ -26,9 +29,13 @@ if (identical(input$operation, "extract_stream")) {
   source("R/platform-stream-curation.R", encoding = "UTF-8")
 }
 native_sources <- if (identical(input$operation, "segment_aoi") || identical(input$dataset$modality, "video")) "scripts/workers/vision.py" else
+  if (identical(input$operation, "vision_index")) "scripts/workers/vision_explorer.py" else
+  if (identical(input$operation, "vision_frame")) c("scripts/workers/vision_frame.py", "scripts/workers/vision.py", "scripts/workers/vision_explorer.py") else
+  if (brohn_gaze_retention_enabled(input) || input$operation %in% c("gaze_trace_catalog", "gaze_trace_preview")) c("scripts/workers/gaze_trace.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "ingest_source")) "scripts/workers/ingestion_snapshot.py" else
   if (identical(input$operation, "extract_stream")) "scripts/workers/stream_extract.py" else
   if (input$operation %in% c("normalise_dataset", "import_multistream")) "scripts/workers/interchange.py" else
+  if (input$operation %in% c("signal_values_page", "signal_values_export")) c("scripts/workers/signal_values.py", "scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
   if (input$operation %in% c("signal_catalog", "signal_preview")) c("scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "summarize_signal_windows")) c("scripts/workers/signal_windows.py", "scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else
   if (input$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) c("scripts/workers/cardiac_review.py", "scripts/workers/physiology.py", "scripts/workers/signal_preview.py", "scripts/workers/physiology_artifacts.py") else

@@ -51,6 +51,20 @@ class Windows(unittest.TestCase):
         self.assertEqual((before["last_time_s"], during["first_time_s"]), (2, 3))
         self.assertEqual(result["table"]["coordinates"]["source_time_origin"], "99999999999999999")
 
+    def test_pupil_trace_cannot_inherit_generic_sample_mean_policy(self):
+        table = self.builder.table([4, -1, 6])
+        table["support"]["trace_profile"] = "gaze-pupil-source-trace/1.0"
+        original = self.builder.artifact([table])
+        request = {"schema": "brohn-signal-window-request/1.0", "artifact": original["artifact"],
+                   "verification_receipt": original["verification_receipt"],
+                   "annotation_source": {"id": "fixture", "revision": 1, "hash": "c"*64},
+                   "selection": {"table_id": table["table_id"], "identity": table["identity"],
+                                 "coordinates": table["coordinates"], "value_columns": ["measure"]},
+                   "intervals": [{"id": "whole", "label": "Whole", "category": "task",
+                                  "start_s": 0, "end_s": 3, "note": ""}]}
+        with self.assertRaisesRegex(worker.artifacts.ArtifactError, "separate validity and baseline policies"):
+            worker.run(request)
+
     def test_missing_excluded_and_real_zero_remain_distinct(self):
         request = self.request([0, None, 100, 2, 4, 6], retained=[True, True, False, True, True, True])
         row = worker.run(request)["summaries"][0]

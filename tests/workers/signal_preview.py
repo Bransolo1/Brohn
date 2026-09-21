@@ -40,6 +40,18 @@ class Preview(unittest.TestCase):
                     selection=dict(table_ids=[(tables or [self.table()])[0]["table_id"]],recording_id="recording-1",channel="eda",value_column="measure",range=None),parameters=dict(max_bins=1))
     def points(self,result): return [p for b in result["envelopes"] for p in b["points"]]
 
+    def test_pupil_trace_requires_dedicated_masks_but_keeps_catalog(self):
+        table = self.table([4, -1, 6], retained=[True, True, True])
+        table["support"]["trace_profile"] = "gaze-pupil-source-trace/1.0"
+        request = self.artifact([table])
+        with self.assertRaisesRegex(worker.InputError, "dedicated gaze adapter"):
+            worker.run(request)
+        catalog_request = {k: v for k, v in request.items() if k not in {"selection", "parameters"}}
+        catalog_request["operation"] = "signal_catalog"
+        catalog = worker.run(catalog_request)
+        self.assertEqual(catalog["tables"][0]["rows"], 3)
+        self.assertEqual(catalog["tables"][0]["support"]["trace_profile"], "gaze-pupil-source-trace/1.0")
+
     def test_hand_envelope_keeps_first_min_max_last_in_source_order(self):
         result=worker.run(self.artifact())
         self.assertEqual([p["y"] for p in self.points(result)],[5,1,8,4])

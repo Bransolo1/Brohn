@@ -330,7 +330,7 @@ brohn_report_detail_ui <- function(store, id) {
     if (length(r$body$analysis$artifacts)) brohn_card(title = "Complete processing artifacts", subtitle = "Download the full retained output, including observations beyond the on-screen preview.",
       shiny::selectInput("report_artifact_kind", "Saved artifact", stats::setNames(vapply(r$body$analysis$artifacts, `[[`, character(1), "kind"), gsub("-", " ", vapply(r$body$analysis$artifacts, `[[`, character(1), "kind")))),
       shiny::downloadButton("report_artifact", "Download complete artifact", icon = NULL)),
-    brohn_questionnaire_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body))
+    brohn_questionnaire_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body))
 }
 brohn_export_report_html <- function(report, path, store = NULL) {
   # All user text is escaped by htmltools. No external content or executable

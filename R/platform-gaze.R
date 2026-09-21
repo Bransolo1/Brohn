@@ -66,7 +66,9 @@ brohn_validate_raw_gaze_mapping <- function(metadata, columns = NULL) {
   invisible(TRUE)
 }
 
-brohn_raw_gaze_analysis <- function(data, metadata, design) {
+brohn_raw_gaze_analysis <- function(data, metadata, design, trace_sink = NULL) {
+  brohn_require(is.null(trace_sink) || is.list(trace_sink) && is.function(trace_sink$emit),
+    "The internal trace sink must supply its bounded emit function.")
   brohn_validate_design(design)
   brohn_require(is.data.frame(data) && nrow(data) >= 2L && nrow(data) <= 2000000L && !anyDuplicated(names(data)),
     "Raw gaze requires 2 to 2,000,000 samples with unique columns.")
@@ -120,8 +122,14 @@ brohn_raw_gaze_analysis <- function(data, metadata, design) {
     brohn_require(nrow(z) >= 2L && all(diff(z$time) > 0), "Sample clocks must strictly increase within each exposure. Duplicate/reversed samples cannot be silently sorted or merged.")
     stimulus <- brohn_find(design$stimuli, z$stimulus_id[[1]])
     brohn_require(all(!nzchar(z$condition_id) | z$condition_id == stimulus$condition_id), "Imported condition IDs disagree with the pinned stimulus.")
-    if (!any(z$passive)) next
     common <- common_for(z, stimulus)
+    if (!any(z$passive)) {
+      if (!is.null(trace_sink)) trace_sink$emit(z, common, list(exposure = NULL,
+        pupil_ok = rep(FALSE, nrow(z)-1L), duration = rep(0, nrow(z)-1L),
+        baseline_good = rep(FALSE, nrow(z)-1L), baseline_weights = rep(0, nrow(z)-1L), baseline_window = NULL,
+        baseline_mean = NA_real_, baseline_ms = 0, baseline_coverage = NA_real_, baseline_status = "no_passive_phase"))
+      next
+    }
     brohn_require(!anyDuplicated(vapply(stimulus$aois, `[[`, character(1), "label")), "AOI labels must be distinct within a stimulus for comparisons.")
     n <- nrow(z); dt <- diff(z$time); left <- seq_len(n-1L); right <- left+1L
     declared <- brohn_text(m$exposure_start_column, 500)
@@ -232,11 +240,25 @@ brohn_raw_gaze_analysis <- function(data, metadata, design) {
     if (brohn_text(m$blink_column, 500)) for (segment in .brohn_gaze_runs(which(z$blink & z$passive))) {
       # Split an externally labelled run again at unsupported timestamp gaps.
       cuts <- split(segment, cumsum(c(TRUE, diff(z$time[segment]) > p$max_gap_ms)))
-      for (block in cuts) emit(c(common, list(record_type = "source_labelled_blink", start_ms = z$time[min(block)],
-        end_ms = z$time[max(block)], observed_duration_ms = z$time[max(block)]-z$time[min(block)],
-        sample_count = length(block), onset_unobserved = min(block) == 1L || dt[min(block)-1L] > p$max_gap_ms,
-        offset_unobserved = max(block) == n || dt[max(block)] > p$max_gap_ms, source = m$blink_source)))
+      for (block in cuts) {
+        first <- min(block); last <- max(block)
+        onset <- list(record_boundary = first == 1L,
+          unsupported_gap = first > 1L && dt[first-1L] > p$max_gap_ms,
+          label_continues_outside_passive_phase = first > 1L && z$blink[first-1L] && !z$passive[first-1L])
+        offset <- list(record_boundary = last == n,
+          unsupported_gap = last < n && dt[last] > p$max_gap_ms,
+          label_continues_outside_passive_phase = last < n && z$blink[last+1L] && !z$passive[last+1L])
+        emit(c(common, list(record_type = "source_labelled_blink", start_ms = z$time[first],
+          end_ms = z$time[last], observed_duration_ms = z$time[last]-z$time[first],
+          sample_count = length(block), onset_unobserved = any(unlist(onset)), offset_unobserved = any(unlist(offset)),
+          onset_unobserved_reasons = onset, offset_unobserved_reasons = offset,
+          source_first_row = z$source_row[first], source_last_row = z$source_row[last],
+          boundary_policy = "source-labelled-blink-boundaries/1.1", source = m$blink_source)))
+      }
     }
+    trace_baseline_good <- rep(FALSE, n-1L); trace_baseline_weights <- rep(0, n-1L); trace_baseline_window <- NULL
+    pupil_ok <- rep(FALSE, n-1L)
+    baseline_mean <- NA_real_; baseline_coverage <- NA_real_; baseline_ms <- 0; baseline_status <- "unavailable_no_pupil"
     if (pupil_present) {
       pupil_ok <- observed & z$pupil_valid[left] & z$pupil_valid[right]
       weight <- duration[pupil_ok]; means <- (z$pupil[left][pupil_ok]+z$pupil[right][pupil_ok])/2
@@ -254,6 +276,7 @@ brohn_raw_gaze_analysis <- function(data, metadata, design) {
         eligible <- baseline_ms >= b$minimum_duration_ms && baseline_coverage + 1e-8 >= b$minimum_coverage
         if (eligible) baseline_mean <- sum((z$pupil[left][good]+z$pupil[right][good])/2*weights[good])/baseline_ms
         baseline_status <- if (eligible) "eligible" else "excluded_insufficient_valid_baseline"
+        trace_baseline_good <- good; trace_baseline_weights <- weights; trace_baseline_window <- window
       }
       emit(c(common, list(record_type = "pupil_summary", unit = m$pupil_unit, source = m$pupil_source,
         valid_pupil_ms = pupil_ms, valid_pupil_coverage = pupil_ms/exposure_ms,
@@ -262,6 +285,9 @@ brohn_raw_gaze_analysis <- function(data, metadata, design) {
         baseline_corrected_mean = .brohn_gaze_nullable(mean_pupil-baseline_mean),
         integration = "trapezoid mean over adjacent valid samples wholly inside their window; no boundary/gap/blink interpolation")))
     }
+    if (!is.null(trace_sink)) trace_sink$emit(z, common, list(exposure = exposure, pupil_ok = pupil_ok, duration = duration,
+      baseline_good = trace_baseline_good, baseline_weights = trace_baseline_weights, baseline_window = trace_baseline_window,
+      baseline_mean = baseline_mean, baseline_ms = baseline_ms, baseline_coverage = baseline_coverage, baseline_status = baseline_status))
     emit(c(common, list(record_type = "exposure_summary", sample_count = nrow(z), passive_sample_count = sum(z$passive),
       invalid_passive_sample_count = sum(z$passive & !z$valid), valid_interval_ms = valid_ms,
       unobserved_interval_ms = exposure_ms-valid_ms, complete_observation = complete,
@@ -280,6 +306,7 @@ brohn_raw_gaze_analysis <- function(data, metadata, design) {
     parameters = list(method = "brohn-adjacent-ray-ivt/0.1.0-draft", input = "raw_gaze_samples", thresholds = p,
       geometry = g, geometry_source = m$geometry_source, coordinate_space = "stimulus_normalized",
       time_unit = "ms", interpolation = "none", smoothing = "none", merging = "none",
+      blink_boundary_policy = "source-labelled-blink-boundaries/1.1",
       terminal_sample = "no inferred tail", edge_policy = "left/top included; right/bottom excluded",
       pupil_baseline = if (pupil_present) m$pupil_baseline else NULL),
     limitations = list("Fixed adjacent-ray I-VT candidates are not Tobii I-VT and are not device/annotation-qualified fixations or saccades.",

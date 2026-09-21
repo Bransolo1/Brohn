@@ -86,9 +86,11 @@ brohn_signal_explorer_ui <- function(report) {
   if (!length(items)) return(NULL)
   shiny::tagList(brohn_card(title = "Explore processed signals", subtitle = "Inspect the saved recording, then choose a channel, measure and time window. Views preserve peaks and gaps in the complete output.",
     shiny::div(class = "brohn-toolbar", lapply(items, function(a) brohn_command(
-      if (a$kind == "physiology-series") "Explore signal traces and spectra" else if (identical(report$body$analysis$kind, "eeg")) "Explore frequency spectra" else "Explore events and spectral features", "open_signal_catalog",
+      if (identical(report$body$analysis$parameters$trace_profile,"gaze-pupil-source-trace/1.0")) "Inspect complete pupil source values" else if (a$kind == "physiology-series") "Explore signal traces and spectra" else if (identical(report$body$analysis$kind, "eeg")) "Explore frequency spectra" else "Explore events and spectral features", "open_signal_catalog",
       list(report_id = report$id, report_hash = brohn_hash(report$body), kind = a$kind))))),
     shiny::uiOutput("signal_progress"), shiny::uiOutput("signal_catalog"), shiny::uiOutput("signal_plot"),
+    shiny::uiOutput("signal_values_controls"), shiny::uiOutput("signal_values_progress"), shiny::uiOutput("signal_values_download"),
+    shiny::uiOutput("signal_values_table"), shiny::uiOutput("signal_values_detail"),
     shiny::uiOutput("signal_annotation_controls"),shiny::uiOutput("signal_annotation_editor"),
     shiny::uiOutput("signal_annotation_progress"),shiny::uiOutput("signal_annotation_summary"),shiny::uiOutput("signal_cardiac_review"))
 }
@@ -249,7 +251,8 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
       shiny::conditionalPanel("!input.signal_full_range", shiny::div(class = "brohn-form-grid",
         shiny::numericInput("signal_range_start", paste("Start", paste0("(", t$coordinate_column$unit, ")")), if (length(t$coordinate_range)) t$coordinate_range[[1L]] else NA_real_),
         shiny::numericInput("signal_range_end", paste("End", paste0("(", t$coordinate_column$unit, ")")), if (length(t$coordinate_range)) t$coordinate_range[[2L]] else NA_real_))),
-      shiny::actionButton("create_signal_preview", "Show signal", class = "btn-primary"))
+      if(identical(t$support$trace_profile,"gaze-pupil-source-trace/1.0")) shiny::p("Use Explore pupil and blink traces for graphs with the saved validity and baseline masks. Exact source values and complete CSV remain available below.") else
+        shiny::actionButton("create_signal_preview", "Show signal", class = "btn-primary"))
   })
   shiny::observeEvent(input$create_signal_preview, attempt(function() {
     r <- context(); c <- current_catalog(); t <- table()
@@ -268,5 +271,6 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
       writeLines(enc2utf8(as.character(svg)), file, useBytes = TRUE)}), contentType = "image/svg+xml")
   brohn_install_signal_annotations_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
   brohn_install_cardiac_review_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
+  brohn_install_signal_values(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
   invisible(NULL)
 }

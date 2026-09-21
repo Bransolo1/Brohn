@@ -1,5 +1,13 @@
 # Full platform build — Brohn continuation
 
+## Publication checkpoint — 21 September 2026
+
+- Latest source and test files are included in the GitHub handoff described in
+  [the publication record](../qa/PUBLICATION-CHECKPOINT-20260921.md).
+- [ ] Complete processed-value and fNIRS connected-browser acceptance.
+- [ ] Finish pupil-trace SVG export and keyboard-scroll acceptance.
+- [ ] Complete saved-video explorer image/overlay/browser/export acceptance.
+
 ## Current connected acceptance — 20 September 2026
 
 - [x] Combined frozen sample study: welcome/images, three equipment checks, camera, questions, passive images,28 task trials and four choice sets;11 browser assertions/four scans/two actual jobs (docs/qa/MIXED-STUDY-JOURNEY.md).

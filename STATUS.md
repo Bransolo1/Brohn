@@ -1,5 +1,14 @@
 # Resume here — Brohn
 
+## Source publication checkpoint — 21 September 2026
+
+The latest source handoff to Bransolo1/Brohn includes the resumed commits and
+measurement-review work described in
+[the publication record](docs/qa/PUBLICATION-CHECKPOINT-20260921.md).
+Processed-value and fNIRS browser acceptance, final pupil-trace SVG/keyboard
+checks and complete saved-video explorer acceptance remain unfinished.
+Publication preserves this development state; it does not close those gates.
+
 ## Active full-build authorization — 20 September 2026
 
 Latest accepted slices: questionnaire illustrations; native participant camera,

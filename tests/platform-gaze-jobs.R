@@ -33,7 +33,14 @@ local({
   check("original AOI geometry is pinned", report$provenance$design$stimuli[[1]]$aois[[1]]$width == .5 && abs(aoi$valid_share_percent - 100*200/410) < 1e-8)
   check("fixations remain candidate evidence", identical(report$analysis$quality$qualified, FALSE))
   check("source hash remains exact", identical(digest::digest(file = brohn_object_path(store, dataset$body$source$hash), algo = "sha256"), dataset$body$source$hash))
-  check("immutable output stored after scratch removed", file.exists(brohn_object_path(store, report$result_object$hash)) && !length(list.files(file.path(store$root, "scratch"))))
+  scratch <- file.path(store$root, "scratch")
+  # Native publication intentionally retains bounded receipts/control logs.
+  # Scientific job scratch and temporary bulk copies must still be removed.
+  publication_files <- list.files(file.path(scratch, "publication"), recursive = TRUE, full.names = TRUE)
+  check("immutable output stored after scientific scratch and bulk copies removed", file.exists(brohn_object_path(store, report$result_object$hash)) &&
+    !length(setdiff(list.files(scratch), "publication")) &&
+    all(basename(publication_files) %in% c("request.json", "receipt.json", "status.json", "stdout.txt", "stderr.txt")) &&
+    all(file.info(publication_files)$size <= 4*1024^2))
   destination <- file.path(root, "backup")
   backup_job <- brohn_enqueue_job(store, "backup_workspace", list(destination = destination), "gaze-qa-backup")
   brohn_process_job(store, brohn_claim_job(store, "backup-qa", 60), timeout_seconds = 60)

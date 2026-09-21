@@ -4,7 +4,8 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-20",
+    "date": "2026-09-21",
+    "publication_handoff": "docs/qa/PUBLICATION-CHECKPOINT-20260921.md",
     "handoff": "docs/PRODUCT-COMPLETION-BACKLOG.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
@@ -327,7 +328,8 @@
         "docs/methods/NEURAL-PLOTS.md",
         "docs/qa/NEURAL-BASELINE-ACCEPTANCE.md",
         "docs/qa/NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md",
-        "docs/qa/EEG-WELCH-RECORDED-REFERENCE.md"
+        "docs/qa/EEG-WELCH-RECORDED-REFERENCE.md",
+        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md"
       ],
       "acceptance": [
         "EEG reference/filter/epoch/PSD/TFR recipes run import to report with retained-trial counts.",
@@ -539,7 +541,8 @@
         "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
-        "docs/qa/MIXED-STUDY-JOURNEY.md"
+        "docs/qa/MIXED-STUDY-JOURNEY.md",
+        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",

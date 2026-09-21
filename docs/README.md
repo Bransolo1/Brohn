@@ -1,8 +1,9 @@
 # Brohn documentation map
 
-This is the map for John and future contributors at the **8 September 2026
-paused checkpoint**. The intended platform is broader than the working local
-application. Read current status and evidence alongside the architecture.
+This is the map for John and future contributors, updated for the
+[21 September 2026 source checkpoint](qa/PUBLICATION-CHECKPOINT-20260921.md).
+Development resumed on September 20. The intended platform is broader than the
+working local application. Read current status and evidence alongside the architecture.
 
 | What you need | Start here |
 | --- | --- |

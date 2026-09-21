@@ -81,6 +81,7 @@ def run(request):
         if t["table_id"] != selection["table_id"]:
             return
         require(not selected, "The selected table occurs more than once.")
+        require(t["support"].get("trace_profile") != "gaze-pupil-source-trace/1.0", "Pupil/blink interval summaries require their separate validity and baseline policies; generic sample means are unavailable.")
         descriptor = preview.descriptor(t)
         require(t["coordinates"]["axis"] == "time" and descriptor["coordinate_column"]["unit"] == "s", "Intervals apply only to declared time coordinates in seconds, never frequency bins.")
         for field in ("identity", "coordinates"):
