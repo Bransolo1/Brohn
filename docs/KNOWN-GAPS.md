@@ -24,6 +24,16 @@ records describing only the 01A–01L prototype are historical.
   [connected evidence](qa/INTEGRATED-WORKFLOWS-20260924.md). Common declared
   clocks do not establish physical synchronization accuracy; broader linked
   media replay and drift correction remain open.
+  Audio waveform/spectrogram and event-EDA review have scoped connected
+  acceptance. Saved-video audio extraction now passes its actual imported-video
+  and consented-camera derivation, mapping, acoustic analysis and reopening
+  journey, with original consent/source lineage retained. Respiration phase
+  review also passes connected acceptance. Complete EMG input/envelope/burst
+  review now passes its import-to-reopen journey and final axis/history checks;
+  see [EMG acceptance](qa/EMG-REVIEW-ACCEPTANCE.md). Whole-recording EDA overlays
+  now pass [connected review and bounded responsiveness](qa/EDA-CONTINUOUS-REVIEW-ACCEPTANCE.md),
+  including5,000 candidates at50,201 selected samples. Its500,000-sample ceiling
+  and wider concurrent workload remain separate performance qualifications.
   Preserve unavailable
   support, original units, source identities and gaps in every view.
 - **Review responsiveness:** bounded canonical-hash reuse now removes repeated
@@ -45,7 +55,9 @@ records describing only the 01A–01L prototype are historical.
 - **Complete-answer explorer follow-ons:** the connected source-bound workflow
   now has component, storage, actual-worker and browser acceptance; evidence and
   exact profile limitations are in [the acceptance record](qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md).
-  Safe saved-session navigation needs exact local protocol/event authorization.
+  Exact saved-session navigation now passes source/export and connected visible
+  table checks with bounded background preparation; read
+  [its acceptance](qa/ANSWER-SESSION-ACCEPTANCE.md).
   Cross-platform publication, shared aggregate cache budgets, larger bounded
   streaming readers and human comprehension remain separate qualifications.
 - **Participant review wording:** completed in the current slice, with branching,
@@ -79,10 +91,13 @@ records describing only the 01A–01L prototype are historical.
   their own implementation and reference evidence. Geometry is not an enabled
   or validated universal emotion/attention score. Model/provider versions and
   redistribution rights remain specific to the chosen route.
-- **Hosted collection and collaboration:** local participant links bind to
-  loopback. Remote recruitment needs a configured HTTPS host, researcher
-  authentication, project isolation, access/expiry/revocation policies,
-  invitation/wave handling, monitoring and restore qualification. Controlled
+- **Hosted collection and collaboration:** the isolated-team profile now has
+  [actual local OIDC, browser, revocation/expiry and restore evidence](qa/HOSTED-PROFILE-ACCEPTANCE.md).
+  Its separate researcher/participant HTTPS origins retain one trusted team and
+  default project per workspace. Public recruitment still needs the configured
+  host and identity tenant, capacity/rate controls, monitoring, retention and
+  operator restore qualification. Shared-database roles and invitation/wave
+  management remain broader work. Controlled
   report sharing and full research-operations journeys remain separate from
   publishing source to GitHub. See the [study lifecycle](product/STUDY-LIFECYCLE.md).
 - **Installation and repeatable QA:** the exercised setup is a particular

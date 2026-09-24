@@ -123,7 +123,7 @@ brohn_questionnaire_explorer_ui <- function(report_record) {
     shiny::p(class = "brohn-muted", paste("Full value SHA-256:", chunk$value_hash)))
 }
 
-brohn_install_questionnaire_explorer <- function(input, output, session, store, state, attempt, message, prepare_download) {
+brohn_install_questionnaire_explorer <- function(input, output, session, store, state, attempt, message, prepare_download, open_session = NULL) {
   owned <- new.env(parent = emptyenv()); owned$opened <- NULL; owned$last_used <- Sys.time()
   selected <- shiny::reactiveVal(NULL); ready <- shiny::reactiveVal(NULL); progress <- shiny::reactiveVal(NULL); problem <- shiny::reactiveVal(NULL)
   pages <- shiny::reactiveValues(questions = NULL, answers = NULL, distribution = NULL, history = NULL, invalidations = NULL)
@@ -241,7 +241,7 @@ brohn_install_questionnaire_explorer <- function(input, output, session, store, 
     command <- input$qx_action; h <- guard(command$form_identity)
     brohn_require(is.null(command$identity) || identical(command$identity, ready()$identity), "This row belongs to an earlier answer view.")
     action <- command$action; collection <- command$collection
-    if (action %in% c("close", "parent", "answers", "changes", "source", "value", "chunk_next", "chunk_previous"))
+    if (action %in% c("close", "parent", "answers", "changes", "source", "value", "session", "chunk_next", "chunk_previous"))
       brohn_require(!is.null(detail$record) && identical(command$detail_key, detail$record$record$record_key), "This detail changed. Use the current record's controls.")
     if (!is.null(collection) && collection %in% c("questions", "answers")) {
       query <- .brohn_qx_filters(command$form, collection); old <- configurations[[collection]]
@@ -278,6 +278,17 @@ brohn_install_questionnaire_explorer <- function(input, output, session, store, 
           shiny::updateTextInput(session, paste0("qx_answers_", field), value = brohn_default(filters[[field]], ""))}
       fetch("answers", filters, configurations$answers$limit); shiny::updateTabsetPanel(session, "qx_tab", selected = "Answers")
       detail$record <- NULL; detail$value <- NULL; detail$source <- NULL
+    } else if (action == "session") {
+      brohn_require(is.function(open_session), "Exact participant-session review is unavailable in this installation.")
+      local({
+        row <- detail$record$record
+        open_session(owned$opened,row$record_key,row$source_hash,validate_selection=function(){
+          guard()
+          brohn_require(!is.null(detail$record)&&identical(detail$record$record$record_key,row$record_key)&&
+            identical(detail$record$record$source_hash,row$source_hash),"Reopen the selected saved answer.")
+          invisible(TRUE)
+        })
+      })
     } else if (action == "changes") {
       row <- detail$record$record; brohn_require(identical(row$collection, "answers"), "Open a final answer before inspecting its changes.")
       detail$mode <- "changes"; fetch("history", list(parent_key = row$record_key)); fetch("invalidations", list(parent_key = row$record_key))
@@ -310,6 +321,9 @@ brohn_install_questionnaire_explorer <- function(input, output, session, store, 
         button("See answers", "answers"), shiny::h4("Complete saved distribution"), pages_ui("distribution")),
       shiny::div(class = "brohn-toolbar", if (!is.null(row$value_hash)) button("Value", "value"),
         if (row$collection == "answers") button("Changes", "changes"), button("Complete source record", "source")),
+      if (is.function(open_session) && identical(row$collection,"answers") && identical(d$answer_source,"revision_effective_records") &&
+          identical(d$links$run_source$support,"retained_run_identity") && r$binding$origin %in% c("sample","pilot","live"))
+        button("Review participant session", "session"),
       if (detail$mode == "value") if (is.null(row$value_hash)) shiny::p("No native value was retained for this record.") else
         .brohn_qx_chunk_ui(detail$value, r$identity, previous = length(detail$value_offsets) > 1L),
       if (detail$mode == "source") .brohn_qx_chunk_ui(detail$source, r$identity, source = TRUE, previous = length(detail$source_offsets) > 1L),
@@ -322,7 +336,9 @@ brohn_install_questionnaire_explorer <- function(input, output, session, store, 
         shiny::p(paste("Report SHA-256:", r$binding$report_hash)), shiny::p(paste("Analysis SHA-256:", r$binding$analysis_sha256)),
         shiny::p(paste("Source ordinal:", row$ordinal)), shiny::tags$pre(brohn_json(d$source_path)), shiny::p(paste("Source row SHA-256:", row$source_hash)),
         if (length(d$links)) shiny::tags$pre(brohn_json(d$links)),
-        shiny::p("Saved session link unavailable: an exact local protocol and event match has not been established by this view. Complete retained source records remain inspectable.")))
+        if (!is.function(open_session) || !identical(row$collection,"answers") || !identical(d$answer_source,"revision_effective_records") ||
+            !identical(d$links$run_source$support,"retained_run_identity") || !r$binding$origin %in% c("sample","pilot","live"))
+          shiny::p("No exact local session link is retained for this source. Complete saved source records remain inspectable.")))
   })
   # Expose only bounded inspection state to component tests and owning modules.
   invisible(list(ready = ready, pages = pages, detail = detail, progress = progress, selected = selected, close = close))

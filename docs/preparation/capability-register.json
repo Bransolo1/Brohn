@@ -9,7 +9,7 @@
     "extension": "Explicit supported expansion route using shared contracts; each named recipe must be completed before activation.",
     "needs_named_device_or_provider": "Adapter requires a selected device/export/model/provider and its concrete data contract; generic imports can precede live acquisition."
   },
-  "status_note": "Current status describes product scope and integration. Separate preparation_evidence records bounded reference probes, model smoke checks or artifacts; these do not enable a capability, qualify a physical device or establish construct validity.",
+  "status_note": "The current_status fields preserve the preparation snapshot dated 2026-09-08; they are not live implementation statuses. Use docs/preparation/build-manifest.json, STATUS.md and docs/PRODUCT-COMPLETION-BACKLOG.md for current delivery and per-profile acceptance. Separate preparation_evidence records bounded reference probes, model smoke checks or artifacts; these do not enable a capability, qualify a physical device or establish construct validity.",
   "taxonomy": {
     "modality": "What is recorded, including sensor, response or media streams.",
     "paradigm": "What participants do and how stimuli/control conditions are scheduled.",

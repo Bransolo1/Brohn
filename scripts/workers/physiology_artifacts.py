@@ -185,10 +185,14 @@ class TableWriter:
             require(not self.closed and not self.failed, "Cannot publish an incomplete or failed artifact.")
             self._write({"type":"complete","tables":self.tables,"rows":self.rows,"provenance_sha256":self.provenance_sha256})
             self.stream.flush();os.fsync(self.stream.fileno());self.stream.close();self.closed=True
-            sha=digest_file(self.temporary);target=self.directory/(self.kind+"-"+sha+".ndjson")
+            # Attempt directories already identify ownership. Keep the local
+            # basename shorter than mkstemp's name so a valid Windows scratch
+            # path cannot fail only at publication. Full SHA-256 and kind remain
+            # in the manifest/header; a prefix collision is checked, never trusted.
+            sha=digest_file(self.temporary);target=self.directory/(sha[:16]+".ndjson")
             require(target.parent.resolve()==self.directory, "Artifact destination escaped its attempt directory.")
             if os.path.lexists(target):
-                require(target.is_file() and not target.is_symlink() and target.stat().st_size==self.bytes and digest_file(target)==sha, "Existing hash-named artifact is corrupt or not an ordinary file.")
+                require(target.is_file() and not target.is_symlink() and target.stat().st_size==self.bytes and digest_file(target)==sha, "Existing artifact prefix collides, is corrupt or is not an ordinary file.")
                 self.temporary.unlink()
             else: os.replace(self.temporary,target)
             self.manifest={"kind":self.kind,"path":str(target),"sha256":sha,"bytes":self.bytes,"schema":SCHEMA,
@@ -312,7 +316,11 @@ def write_physiology_bundle(series_writer,event_writer,modality,identity,bundle,
     index=_column("source_sample_index","integer","sample_index",role="index")
     retained=_column("retained","boolean",None,role="support")
     if modality=="eda": selected=[time,index,*[_column(k,"float64","uS") for k in ("clean_us","tonic_us","phasic_us")],retained]
-    elif modality=="emg": selected=[time,index,*[_column(k,"float64","uV") for k in ("clean_uv","rms_uv")],retained]
+    elif modality=="emg":
+        selected=[time,index,*[_column(k,"float64","uV") for k in ("raw_uv","clean_uv","rms_uv")],retained]
+        support={**support,"raw_source_omitted":False,
+                 "input_waveform":{"column":"raw_uv","definition":"unit-converted source samples before cleaning; original source bytes remain authoritative",
+                                   "unit":"uV","detection_basis":"rms_uv"}}
     elif modality in {"ecg","ppg"}:
         # Keep the exact unit-converted detector input for artifact inspection.
         # These values are not the source file bytes or a second detection pass.

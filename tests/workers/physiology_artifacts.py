@@ -1,4 +1,4 @@
-"""Complete typed artifact evidence beyond the preview budget, without raw copies."""
+"""Complete typed artifact evidence beyond the preview budget and explicit input support."""
 import copy
 import hashlib
 import importlib.util
@@ -259,9 +259,39 @@ class Artifacts(unittest.TestCase):
                             before=fixture.worker.run({k:v for k,v in request.items() if k!="artifact_directory"})
                             self.assertEqual(before["features"],result["features"])
                             self.assertEqual(before["events"],result["events"])
+                        elif modality=="emg" and manifest["kind"]=="physiology-series":
+                            self.assertTrue(all([c["name"] for c in t["columns"]]==["time_s","source_sample_index","raw_uv","clean_uv","rms_uv","retained"] for t in tables))
+                            rows=[];worker.verify_artifact(manifest,on_rows=lambda t,o,r:rows.extend(r))
+                            np.testing.assert_array_equal([row[2] for row in rows],x)
+                            self.assertTrue(result["quality"]["raw_source_duplicated"])
                         else:
                             self.assertTrue(all(not c["name"].startswith("raw") for table in tables for c in table["columns"]))
         finally: case.tearDown()
+
+    def test_complete_emg_input_keeps_declared_conversion_and_unchanged_scoring(self):
+        ps=importlib.util.spec_from_file_location("emg_input_fixture",ROOT/"tests/workers/physiology.py")
+        fixture=importlib.util.module_from_spec(ps);ps.loader.exec_module(fixture)
+        case=fixture.PhysiologyTests();case.setUp()
+        try:
+            fs=1000;t=np.arange(10000)/fs
+            values=1+np.where((t>=2)&(t<4),.2,.01)*np.sin(2*np.pi*80*t)
+            request=case.request("emg",values,fs,unit="mV",parameters={"burst_threshold_uv":50})
+            original=fixture.worker.run(request)
+            result=fixture.worker.run({**request,"artifact_directory":str(self.root)})
+            self.assertEqual(result["features"],original["features"])
+            self.assertEqual(result["events"],original["events"])
+            self.assertTrue(any(e["type"]=="emg_threshold_burst" for e in result["events"]))
+            saved=next(a for a in result["artifacts"] if a["kind"]=="physiology-series")
+            tables=[];rows=[]
+            worker.verify_artifact(saved,on_table=tables.append,on_rows=lambda t,o,r:rows.extend(r))
+            np.testing.assert_array_equal([row[2] for row in rows],values*1000)
+            self.assertEqual(len(rows),10000)
+            self.assertEqual(tables[0]["support"]["input_waveform"],{
+                "column":"raw_uv","definition":"unit-converted source samples before cleaning; original source bytes remain authoritative",
+                "unit":"uV","detection_basis":"rms_uv"})
+            self.assertFalse(tables[0]["support"]["raw_source_omitted"])
+            self.assertTrue(result["quality"]["raw_source_duplicated"])
+        finally:case.tearDown()
 
     def test_short_cardiac_input_cannot_claim_a_missing_full_input_artifact(self):
         ps=importlib.util.spec_from_file_location("short_cardiac_fixture",ROOT/"tests/workers/physiology.py")

@@ -23,8 +23,23 @@ clean accessibility scans. Abandoned-session recovery now passes40 domain,
 eight browser and19 independent checks/seven scans, with an actual separately
 confirmed-completion report and retained original receipts. Paired aggregation
 retains exact output while its1,000-person direct benchmark falls191.23→2.36s.
-Audio waveform/spectrogram review, event-EDA review and protected hosted setup
-are the next active slices. The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md)
+Audio waveform/spectrogram review and event-EDA review now have scoped connected
+acceptance, including complete original-value exports and saved reopening.
+The isolated-team hosted profile now passes joined local OIDC, browser,
+revocation and expiry acceptance; public deployment and wider operations stay
+open. Source-bound video-to-audio derivation now passes its imported-video and
+consented-camera journey, including exact exports and source-revocation checks.
+Respiration cycle/phase review passes its actual import-to-review and restart
+journey. Exact saved-answer/session navigation now passes its connected and
+independent source/export checks. Derived-source permissions now pass focused
+signal/interval and actual HTTP download checks. EMG input/clean/RMS and saved
+burst review now passes its connected journey; final respiration/EMG axes and
+saved-window history pass their separate current-source checks. Report coverage
+is now readable with full original details available. Whole-recording EDA now
+passes its full import/review/export/restart journey and bounded background
+verification checks. The dedicated SC-IAT route and optional native facial-output
+provider remain active integrations.
+The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md)
 links evidence; wider package and release work remains active.
 
 Each route must pass an actual researcher journey before its acceptance closes;

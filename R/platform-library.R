@@ -191,6 +191,12 @@ brohn_ingest_dataset <- function(store, path, title, modality = "gaze", study_id
     brohn_put_entity(store, "dataset", id, body, project_id = project_id)
   })
 }
+brohn_report_for_review <- function(store,id,revision=NULL) {
+  record <- brohn_get_entity(store,"report",id,revision)
+  brohn_require(!is.null(record),"This saved report is unavailable.")
+  brohn_signal_audio_lineage(store,record,verify=FALSE)
+  record
+}
 brohn_curate_dataset <- function(store, id, metadata, expected_revision, study_id = NULL, study_revision = NULL) {
   record <- brohn_get_entity(store, "dataset", id)
   brohn_require(!is.null(record), "This dataset is unavailable.")
@@ -215,6 +221,11 @@ brohn_curate_dataset <- function(store, id, metadata, expected_revision, study_i
   else brohn_stop("The data mapping validator must be available before accepting data.")
   if (identical(record$body$modality,"maxdiff")) brohn_validate_maxdiff_mapping(record$body,brohn_study(store,record$body$study_id,record$body$study_revision)$body)
   if (identical(record$body$modality,"implicit")) brohn_read_task_registry(store,record$body,brohn_study(store,record$body$study_id,record$body$study_revision)$body)
+  # Validate the proposed mapping before it becomes a saved revision. A failed
+  # analysis queue must not leave extracted audio attached to a different study.
+  if (exists("brohn_audio_extraction_lineage",mode="function")) brohn_audio_extraction_lineage(store,record)
+  else brohn_require(!identical(record$body$source_provenance$acquisition,"video_audio_extraction") &&
+    !startsWith(record$id,"dataset-audio-extraction-"),"Derived-audio source authorization is unavailable.")
   brohn_put_entity(store, "dataset", id, record$body, expected_revision, record$project_id)
 }
 
@@ -229,6 +240,7 @@ brohn_curate_dataset <- function(store, id, metadata, expected_revision, study_i
     hash = digest::digest(bytes, algo = "sha256", serialize = FALSE))
 }
 brohn_import_legacy <- function(store, directory) {
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_action(store, "server_folder_import")
   brohn_require(dir.exists(directory), "The legacy draft folder is unavailable.")
   paths <- list.files(directory, pattern = "\\.json$", full.names = TRUE, recursive = FALSE)
   brohn_require(length(paths) <= 10000, "Legacy folder exceeds the supported migration batch.")

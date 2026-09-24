@@ -10,9 +10,18 @@
 - [x] Add linked stream/event review using explicit saved clock support and full-source window exports; 13 worker/13 authority/11 browser groups and five scans.
 - [x] One-command setup: exact separate library/native build, failed preparation/retry and actual researcher/service restart; 19 setup and ten browser/service checks.
 - [x] Resolve abandoned sessions with explicit operator provenance and source-bound eligible received-completion analysis;40 domain/eight browser/19 independent checks, seven scans and actual native publication.
-- [ ] Add source-bound audio waveform/spectrogram with complete numerical exports;34 direct worker checks pass, R/browser integration active.
-- [ ] Add event-EDA baseline/response overlays from complete saved source evidence.
-- [ ] Prepare protected isolated-team hosted configuration and actual local OIDC acceptance before external deployment.
+- [x] Add source-bound audio waveform/spectrogram with complete numerical exports;34 worker/28 domain checks,21 browser checks plus separate restart and live label-bound receipts. Cold reopening measured8.23s; see exact scoped evidence.
+- [x] Add event-EDA baseline/response overlays from complete saved source evidence;27 R/11 reader/22 browser/38 independent checks and six clean inspected visual scans.
+- [x] Connect exact saved-video audio track inspection, consent-bound derivation, channel mapping, acoustic analysis and original-source review;32 native,26 original domain,22 browser/four scans and seven actual publication-revocation checks. Later pre-save curation correction passes29 domain checks.
+- [x] Connect selected saved answers to exact local received participant-session evidence:30 domain,6 connected,32 independent checks and five current scans; final reopen creates no jobs.
+- [x] Enforce original-video authority across derived reports, plots, values, intervals and WAV downloads:21 signal,14 interval and8 actual HTTP/browser checks.
+- [x] Simplify report spacing/coverage and recoverable download errors:24 metadata cases,6 current browser checks/four scans,22 existing comprehension and10 HTML checks.
+- [x] Prepare protected isolated-team hosted configuration and actual local OIDC acceptance;12 joined browser groups/five scans,31 policy/26 wired/13 installed-dispatcher checks. Public deployment remains separate.
+- [x] Add complete saved respiration waveform/cycle phase review;16 independent reader,27 R,21 uninterrupted browser checks/five scans and seven actual jobs, with original reports preserved.
+- [x] Add complete EMG input/clean/RMS and saved optional burst review:13 reader,31 domain,4 artifact groups and24 joined browser checks/six scans. Final both-axis/history proof adds28 direct and12 actual checks/two scans, without new jobs.
+- [x] Complete whole-recording EDA review:14 native,35 domain,21 browser checks/five scans, actual5,000-candidate publication,11 background-verification and4 authority checks. The500,000-sample maximum has not been benchmarked; preserve the documented scope.
+- [ ] Connect the dedicated named Brohn response-window SC-IAT from authoring through complete192-trial collection, replay, scoring, import and cohorts.
+- [ ] Integrate an explicitly pinned compatible local AU/native-expression provider with consent, source PTS, no-face/multi-face support and full saved-result review.
 - [ ] Exercise these routes through actual researcher/participant interfaces, then continue remaining packages.
 
 The owner reconfirmed full-build continuation after the GitHub checkpoint.

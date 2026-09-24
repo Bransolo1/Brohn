@@ -106,15 +106,16 @@ brohn_collect_ui <- function(store, record) {
     shiny::p(class = "brohn-muted", "Without participant codes, results describe sessions. Codes must follow your study's pseudonymous identity scheme."),
     shiny::p(class = "brohn-muted", "Example walkthroughs retain a sample label in sessions and reports. Use them to learn the software; choose pilot or live only after reviewing your research materials."),
     shiny::actionButton("publish_study", "Release participant study", class = "btn-primary"),
-    shiny::p(class = "brohn-muted", "Local lab delivery. Browser onset observations are recorded; physical timing and named sensor support require their own evidence.")),
+    shiny::p(class = "brohn-muted", if (is.null(store$hosted_profile)) "Local lab delivery. Browser onset observations are recorded; physical timing and named sensor support require their own evidence." else "The configured participant origin serves this released study. Browser onset observations remain distinct from physical presentation timing.")),
     brohn_collection_routes_ui(record$body),
     if (length(deployments)) lapply(deployments, function(d) {
-      url <- paste0("http://127.0.0.1:", port, "/participant/?token=", d$token)
+      url <- paste0(brohn_participant_origin(store, port), "/participant/?token=", d$token)
       brohn_card(title = paste("Release", substr(d$id, 1, 18)), subtitle = paste(d$origin, "\u00b7", "design revision", d$design_revision),
         brohn_badge(d$status, if (d$status == "open") "success" else "neutral"),
         shiny::div(class = "brohn-toolbar", shiny::tags$a(href = url, target = "_blank", rel = "noopener", class = "btn btn-primary", "Open participant study"),
           shiny::tags$button(type = "button", class = "btn btn-outline-secondary", `data-brohn-copy` = url, "Copy participant link")),
-        shiny::p(class = "brohn-muted", "This loopback link works on this computer. It is not an internet recruitment link."),
+        if (is.null(store$hosted_profile)) shiny::p(class = "brohn-muted", "This loopback link works on this computer. It is not an internet recruitment link."),
+        brohn_hosted_release_ui(store, d),
         shiny::div(class = "brohn-toolbar", if (d$status == "open") brohn_command("Pause new starts", "deployment_command", list(id = d$id, state = "paused")),
           if (d$status == "paused") brohn_command("Resume new starts", "deployment_command", list(id = d$id, state = "open")),
           if (d$status %in% c("open", "paused")) brohn_command("Close recruitment", "deployment_command", list(id = d$id, state = "closed"))))
@@ -127,7 +128,7 @@ brohn_sessions_ui <- function(store, study_id, state = NULL) {
     shiny::div(class = "brohn-table", shiny::tags$table(shiny::tags$thead(shiny::tags$tr(lapply(c("Participant", "Origin", "Status", "Received", "Camera", "Assigned protocol"), function(label) shiny::tags$th(scope = "col", label)))),
       shiny::tags$tbody(lapply(runs, function(r) shiny::tags$tr(shiny::tags$td(brohn_default(r$participant_alias, r$id)), shiny::tags$td(r$origin),
         shiny::tags$td(paste(r$completion_status, r$transfer_status, sep = " / "),
-          brohn_session_resolution_command(store, r, study_id, page$project_id)), shiny::tags$td(brohn_default(r$acked_sequence, 0)), shiny::tags$td(brohn_camera_session_ui(store, r)),
+          brohn_session_resolution_command(store, r, study_id, page$project_id), brohn_hosted_run_ui(store, r)), shiny::tags$td(brohn_default(r$acked_sequence, 0)), shiny::tags$td(brohn_camera_session_ui(store, r)),
         shiny::tags$td(brohn_command("View assigned protocol", "view_run_protocol", list(run_id = r$id, study_id = study_id)))))))))
 }
 brohn_import_ui <- function(store, study_id = NULL) {

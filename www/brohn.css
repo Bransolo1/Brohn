@@ -82,6 +82,11 @@
 .brohn-app .brohn-main { width: 100%; max-width: 1620px; margin: 0 auto; padding: 36px 40px 64px; }
 .brohn-app .brohn-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .brohn-app .brohn-page > * { min-width: 0; max-width: 100%; }
+/* Empty dynamic report outputs must stay bound and able to render. Give space
+   only to populated siblings instead of reserving a grid gap for every output. */
+.brohn-app .brohn-page.brohn-report-page { gap: 0; --brohn-report-gap: 24px; }
+.brohn-app .brohn-report-page > .shiny-html-output { display: block; }
+.brohn-app .brohn-report-page > :not(:empty) ~ :not(:empty) { margin-block-start: var(--brohn-report-gap); }
 .brohn-app .brohn-page-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 8px; }
 .brohn-app .brohn-page-intro { min-width: 0; }
 .brohn-app .brohn-page-subtitle { max-width: 70ch; margin: 12px 0 0; color: var(--brohn-secondary); font-size: .95rem; }
@@ -219,6 +224,7 @@
   .brohn-app .brohn-status { text-align: left; }
   .brohn-app .brohn-main { padding: 28px 20px 48px; }
   .brohn-app .brohn-page { gap: 20px; }
+  .brohn-app .brohn-page.brohn-report-page { --brohn-report-gap: 20px; }
   .brohn-app .brohn-page-heading { gap: 20px; margin: 0; }
   .brohn-app .brohn-page-actions { width: 100%; }
   .brohn-app .brohn-card { padding: 20px; }
@@ -242,6 +248,22 @@
 }
 #dataset_reports.recalculating, #aoi_proposals.recalculating,
 #collection_sessions.recalculating { opacity: 1; }
+#shiny-notification-panel .shiny-notification {
+  background: var(--brohn-raised); color: var(--brohn-text); opacity: 1;
+  border: 1px solid var(--brohn-control-border); border-left-width: 3px;
+  border-radius: var(--brohn-radius-control); font-family: var(--brohn-font);
+  box-shadow: 0 8px 28px #0006; max-width: calc(100vw - 24px);
+}
+#shiny-notification-panel .shiny-notification-error { border-left-color: var(--brohn-rose); }
+#shiny-notification-panel .shiny-notification-warning { border-left-color: var(--brohn-amber); }
+#shiny-notification-panel .shiny-notification-close {
+  display: grid; place-items: center; min-width: 44px; min-height: 44px;
+  color: var(--brohn-text); opacity: 1;
+  cursor: pointer; border-radius: 4px;
+}
+#shiny-notification-panel .shiny-notification-close:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px;
+}
 #multistream_progress.recalculating, #multistream_history.recalculating,
 #multistream_catalog.recalculating, #multistream_stream_detail.recalculating { opacity: 1; }
 #native_header_progress.recalculating, #native_header_review.recalculating { opacity: 1; }

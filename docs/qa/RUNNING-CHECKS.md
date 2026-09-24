@@ -8,7 +8,7 @@ Rscript --vanilla scripts/run-checks.R --list
 Rscript --vanilla scripts/run-checks.R --test core --output C:/Brohn-QA/core-run-001
 ```
 
-At the 8 September 2026 handoff, **full catalog suites are not a fresh-clone
+At the 24 September 2026 continuation, **full catalog suites are not a fresh-clone
 portability guarantee**. Some `domain` checks reference external methods/gaze
 libraries, generated fixtures and `../../work`; scientific and operations
 checks can reference the original development Python or TinyCC paths. Inspect
@@ -37,7 +37,13 @@ and are scoped to the documented Windows runtime. Consult each script and the
 installation doctor before selecting those suites. No test selection installs
 dependencies or uses a physical participant or device.
 
-This is an explicit initial catalog, not every project test. Native-worker Python
+The catalog now includes named hosted, answer/session, audio, respiration, EMG
+and source-guard checks. Inspect each script's runtime requirements before
+selection. Derived-audio lineage and interval tests require specific accepted
+external fixtures and are deliberately documented separately; the catalog does
+not manufacture their prerequisites or count an unavailable fixture as a pass.
+
+This is an explicit selected catalog, not every project test. Native-worker Python
 checks and the saved-workspace researcher browser journeys are documented in
 [RESEARCHER-QA.md](RESEARCHER-QA.md) and their method specifications. Those browser
 journeys have their own fixture/deployment order and must run against the dedicated

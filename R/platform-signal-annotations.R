@@ -6,9 +6,18 @@
   brohn_require(!is.null(current) && !is.null(report) && identical(current$project_id, project_id) &&
     identical(report$project_id, project_id) && identical(brohn_hash(report$body), body$report_hash),
     "Reopen the original saved report; this annotation source is unavailable or changed project.")
+  lineage <- brohn_signal_audio_lineage(store,report,verify)
   artifact <- brohn_signal_artifact(report, "physiology-series")
   brohn_require(identical(artifact$sha256, body$artifact_hash), "The annotations belong to another processed recording.")
-  list(report = report, artifact = artifact, path = brohn_object_path(store, artifact$sha256, verify = verify))
+  result <- list(report = report, artifact = artifact, path = brohn_object_path(store, artifact$sha256, verify = verify),
+    source_objects=list(list(hash=artifact$sha256,bytes=artifact$bytes)))
+  retained <- .brohn_sv_retained(store,report,"report",FALSE)
+  if(!is.null(retained))result$source_objects<-c(result$source_objects,list(retained))
+  if(!is.null(lineage)){
+    result$derived_audio_lineage<-lineage
+    result$source_objects<-c(result$source_objects,lineage$source_refs)
+  }
+  result
 }
 brohn_validate_signal_intervals <- function(intervals, allow_empty = TRUE) {
   brohn_require(brohn_array(intervals) && length(intervals) <= 64L && (allow_empty || length(intervals) > 0L), "Save between 1 and 64 intervals before calculating summaries.")
@@ -97,13 +106,16 @@ brohn_signal_windows_input <- function(store, job) {
   brohn_require(identical(record$project_id, r$project_id) && identical(r$recipe, "saved-signal-intervals/1.0.0"), "The interval job belongs to another project or recipe.")
   source <- .brohn_annotations_source(store, record$body, record$project_id, verify = TRUE)
   brohn_validate_signal_intervals(record$body$intervals, FALSE)
-  list(schema = "brohn-analysis-input/1.0", operation = job$operation, project_id = record$project_id,
+  input <- list(schema = "brohn-analysis-input/1.0", operation = job$operation, project_id = record$project_id,
     annotation_source = list(id = record$id, revision = record$revision, hash = brohn_hash(record$body)),
     report_id = source$report$id, report_revision = source$report$revision, report_hash = brohn_hash(source$report$body),
     origin = source$report$body$origin, artifact = source$artifact, source_path = source$path,
     verification_receipt = source$report$body$analysis$artifact_verification,
     selection = list(table_id = record$body$table$table_id, identity = record$body$table$identity,
-      coordinates = record$body$table$coordinates, value_columns = r$value_columns), intervals = record$body$intervals)
+      coordinates = record$body$table$coordinates, value_columns = r$value_columns), intervals = record$body$intervals,
+    source_objects=source$source_objects)
+  if(!is.null(source$derived_audio_lineage))input$derived_audio_lineage<-source$derived_audio_lineage
+  input
 }
 brohn_validate_signal_windows_result <- function(result, input) {
   brohn_require(identical(result$schema, "brohn-signal-window-summary/1.0") && identical(result$status, "completed"), "The saved interval summary is unavailable.")
@@ -130,6 +142,9 @@ brohn_analyse_signal_windows <- function(input, scratch) {
 }
 brohn_publish_signal_windows <- function(store, output, scratch, job, input, output_path) {
   .brohn_publication_job(store, job)
+  guards<-if(!is.null(input$derived_audio_lineage))brohn_hold_signal_value_sources(store,input)else list()
+  on.exit(for(g in guards).brohn_qexplorer_release(g),add=TRUE)
+  if(!is.null(input$derived_audio_lineage)).brohn_publication_output_identity(output,.brohn_audio_extraction_loaded["R/platform-audio-extraction.R"])
   brohn_require(identical(brohn_hash(input), brohn_hash(brohn_signal_windows_input(store, job))), "Interval publication substituted its saved source or annotation revision.")
   result <- output$report$signal_window_summary; brohn_validate_signal_windows_result(result, input)
   id <- paste0("signal-windows-", sub("^job[-_]", "", job$id))
@@ -140,5 +155,12 @@ brohn_publish_signal_windows <- function(store, output, scratch, job, input, out
       worker_output_hash = digest::digest(file = output_path, algo = "sha256"), code_hashes = output$code_identity))
   path <- file.path(scratch, "published-signal-windows.json"); brohn_write_json_file(body, path)
   brohn_publish_entity_result(store, job, input, output, "signal_windows", body, path,
-    list(signal_windows_id = id, report_id = input$report_id, annotation_id = input$annotation_source$id))
+    list(signal_windows_id = id, report_id = input$report_id, annotation_id = input$annotation_source$id),
+    before_commit=if(is.null(input$derived_audio_lineage))NULL else function(){
+      a<-brohn_signal_annotations(store,input$annotation_source$id,input$annotation_source$revision,input$annotation_source$hash)
+      current<-.brohn_annotations_source(store,a$body,input$project_id,FALSE)
+      brohn_require(identical(.brohn_sv_hash(current$report$body),input$report_hash)&&
+        .brohn_sv_same(current$derived_audio_lineage,input$derived_audio_lineage),"Derived audio parent authority changed before interval publication.")
+      for(g in guards).Call(g$native$check,g$pointer)
+    })
 }

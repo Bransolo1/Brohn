@@ -122,7 +122,10 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
   shiny::observeEvent(input$restore_signal_intervals,protect(function(){cmd<-input$restore_signal_intervals;r<-command_record(cmd)
     active(brohn_restore_signal_intervals(store,r$id,r$revision,cmd$revision,cmd$hash));editing(NULL);message("Earlier intervals restored as a new saved version.")
   }))
-  job<-shiny::reactive({if(is.null(job_id()))return(NULL);selected();shiny::invalidateLater(1000,session);brohn_get_job(store,job_id())})
+  job<-shiny::reactive({if(is.null(job_id()))return(NULL)
+    checked<-tryCatch(selected(),error=function(e){issue(conditionMessage(e));NULL})
+    if(is.null(checked))return(NULL)
+    shiny::invalidateLater(1000,session);brohn_get_job(store,job_id())})
   shiny::observe({j<-job();if(!is.null(j)&&identical(j$status,"succeeded")) {r<-brohn_get_entity(store,"signal_windows",j$result$signal_windows_id);if(!identical(summary(),r))summary(r)}})
   output$signal_annotation_progress <- shiny::renderUI({j<-job();error<-issue()
     shiny::tagList(if(!is.null(error))shiny::div(class="brohn-alert brohn-alert-error",role="alert",error),
@@ -134,6 +137,8 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
     brohn_require(identical(r$project_id,a$project_id)&&identical(r$body$report_id,a$body$report_id)&&identical(r$body$annotation_source$id,a$id),"Reopen the saved summary for this recording.")
     brohn_signal_annotations(store,a$id,r$body$annotation_source$revision,r$body$annotation_source$hash);r
   })
+  authorized_result<-function(){r<-result();a<-brohn_signal_annotations(store,r$body$annotation_source$id,r$body$annotation_source$revision,r$body$annotation_source$hash)
+    brohn_require(identical(r$project_id,a$project_id)&&identical(r$body$report_id,a$body$report_id)&&identical(r$body$report_hash,a$body$report_hash),"Reopen this interval result in its original source project.");r}
   output$signal_annotation_summary <- shiny::renderUI({r<-summary();if(is.null(r))return(NULL);r<-result();v<-r$body$summary
     choices<-setNames(unlist(v$selection$value_columns),vapply(v$selection$value_columns,brohn_signal_label,character(1)))
     brohn_card(title="Saved interval comparison",subtitle=paste("Calculated from interval version",r$body$annotation_source$revision,"and the complete processed source."),
@@ -151,9 +156,9 @@ brohn_install_signal_annotations_ui <- function(input, output, session, store, s
       shiny::div(class="brohn-signal-wide",svg),shiny::div(class="brohn-signal-compact",brohn_signal_windows_svg(v,chosen_measure(),320)))
   })
   output$signal_intervals_json<-shiny::downloadHandler(filename=function()paste0(selected()$id,"-v",selected()$revision,".json"),content=function(file)prepare_download(function()brohn_write_json_file(selected()$body,file)),contentType="application/json")
-  output$signal_windows_json<-shiny::downloadHandler(filename=function()paste0(result()$id,".json"),content=function(file)prepare_download(function()brohn_copy_object_download(store,result()$body$result_object$hash,file)),contentType="application/json")
-  output$signal_windows_csv<-shiny::downloadHandler(filename=function()paste0(result()$id,".csv"),content=function(file)prepare_download(function(){r<-result();rows<-lapply(r$body$summary$summaries,function(row)c(list(report_id=r$body$report_id,annotation_id=r$body$annotation_source$id,annotation_revision=r$body$annotation_source$revision,annotation_hash=r$body$annotation_source$hash,source_artifact_hash=r$body$summary$artifact$sha256),row));brohn_export_report_csv(list(analysis=list(observations=rows)),file)}),contentType="text/csv")
-  output$signal_windows_svg<-shiny::downloadHandler(filename=function()paste0(result()$id,".svg"),content=function(file)prepare_download(function(){svg<-brohn_signal_windows_svg(result()$body$summary,chosen_measure());brohn_require(!is.null(svg),"This measure has no eligible comparison chart.");writeLines(enc2utf8(as.character(svg)),file,useBytes=TRUE)}),contentType="image/svg+xml")
+  output$signal_windows_json<-shiny::downloadHandler(filename=function()paste0(authorized_result()$id,".json"),content=function(file)prepare_download(function()brohn_copy_object_download(store,authorized_result()$body$result_object$hash,file)),contentType="application/json")
+  output$signal_windows_csv<-shiny::downloadHandler(filename=function()paste0(authorized_result()$id,".csv"),content=function(file)prepare_download(function(){r<-authorized_result();rows<-lapply(r$body$summary$summaries,function(row)c(list(report_id=r$body$report_id,annotation_id=r$body$annotation_source$id,annotation_revision=r$body$annotation_source$revision,annotation_hash=r$body$annotation_source$hash,source_artifact_hash=r$body$summary$artifact$sha256),row));brohn_export_report_csv(list(analysis=list(observations=rows)),file)}),contentType="text/csv")
+  output$signal_windows_svg<-shiny::downloadHandler(filename=function()paste0(authorized_result()$id,".svg"),content=function(file)prepare_download(function(){svg<-brohn_signal_windows_svg(authorized_result()$body$summary,chosen_measure());brohn_require(!is.null(svg),"This measure has no eligible comparison chart.");writeLines(enc2utf8(as.character(svg)),file,useBytes=TRUE)}),contentType="image/svg+xml")
   reuse<-brohn_install_signal_interval_reuse_ui(input,output,session,store,state,protect,message,context,catalog,table,
     function(value){active(value);editing(NULL);summary(NULL);job_id(NULL);revision_tick(revision_tick()+1L)})
   invisible(list(active=active,editing=editing,summary=summary,job_id=job_id,history=history,reuse=reuse))

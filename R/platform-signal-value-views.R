@@ -148,9 +148,11 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
     }),error=function(e){clear();issue(conditionMessage(e))})
   })
   output$signal_values_progress<-shiny::renderUI({
+    jobs<-Filter(function(j)!is.null(j)&&j$status!="succeeded",list(page=page_job(),export=export_job()))
+    if(is.null(issue())&&!checking()&&!length(jobs))return(NULL)
     shiny::div(class="brohn-exact-values",if(!is.null(issue()))shiny::div(class="brohn-alert brohn-alert-error",role="alert",issue()),
       if(checking())shiny::tagList(shiny::p(role="status","Verifying saved source bytes in the background before opening exact values."),.brohn_sv_action("Close exact values","close",list(source=active()$source))),
-      lapply(list(page=page_job(),export=export_job()),function(j){if(is.null(j)||j$status=="succeeded")return(NULL)
+      lapply(jobs,function(j){
         shiny::div(class="brohn-stack",role="status",shiny::strong(if(j$operation=="signal_values_page")"Exact values"else"Complete selected CSV"),
           shiny::p(switch(j$status,queued="Queued. Your report remains available.",running="Reading and verifying the complete saved source.",cancelled="Cancelled. The original report and source are unchanged.",failed=paste("Could not prepare these values:",j$error$message),j$status)),
           if(j$status %in% c("queued","running"))brohn_command("Cancel exact-value processing","cancel_processing",j$id),

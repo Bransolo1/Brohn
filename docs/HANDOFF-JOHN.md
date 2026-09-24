@@ -13,6 +13,19 @@ machine-local receipt paths in the evidence documents will not exist in a clone.
 Start a branch from current `main`; preserve original reports and run the checks
 for the feature you change. The dated September 8 instructions below are history.
 
+Protected isolated-team hosting, saved-video audio derivation and respiration
+cycle/phase review now have scoped connected acceptance. Exact navigation from a
+saved answer to its participant session also passes its original-source, visible
+tables and export journey. Derived-audio reports, plots, intervals and complete
+WAV downloads now enforce original-source authority. EMG review and the final
+respiration/EMG axes and saved-history fixes now have connected evidence.
+Whole-recording EDA now has connected source/export/restart and bounded
+responsiveness evidence. Dedicated SC-IAT and optional native facial outputs
+remain active; read their exact status before enabling or changing a procedure.
+Audio waveform/spectrogram and event-EDA review also have connected evidence
+in the workflow ledger. Follow that ledger's separate source versions and
+retained failures; publication or passing one journey does not close the roadmap.
+
 **Historical source handoff, 21 September 2026:** read the
 [publication checkpoint](qa/PUBLICATION-CHECKPOINT-20260921.md),
 [current status](../STATUS.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).

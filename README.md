@@ -19,7 +19,10 @@ records state the tested scope and remaining work.
 
 The [subsequent workflow build](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) adds
 collection finalization/history, complete response and scale distributions,
-responsive measurement review and a checked one-command local setup. Broader
+responsive measurement review, source audio waveform/spectrogram, event and
+continuous EDA, respiration cycles, EMG input/envelope/bursts, exact answer-session
+navigation and a checked one-command local setup. Protected isolated-team hosting
+has scoped local acceptance. Broader
 implementation continues against the full roadmap.
 
 ## What is connected
@@ -73,8 +76,9 @@ The [setup evidence](docs/qa/LOCAL-SETUP-ACCEPTANCE.md) covers a fresh separate
 library, failure/retry and service restart on the exercised Windows host.
 
 This profile binds to **loopback only**. Its participant links cannot recruit
-people on other computers. A production or remote deployment still requires
-its own authentication, HTTPS, access controls and operational qualification.
+people on other computers. The separate [protected hosted profile](docs/operations/HOSTED-PROFILE.md)
+has local OIDC and access-control evidence for one trusted team. Public
+recruitment still needs a configured host, identity tenant and operational checks.
 
 ## Evidence and current limits
 
@@ -82,6 +86,13 @@ The [researcher QA record](docs/qa/RESEARCHER-QA.md) separates executed journeys
 from planned capabilities. Recent completed work includes answer review through
 saved scale analysis, and descriptive task cohorts with explicit person/session
 linkage and repeat weighting.
+
+The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) also covers
+collection history and recovery, complete response distributions, paired-person
+figures, linked signals/events, video-to-audio preparation, audio/EDA/respiration
+review and exact answer-to-session navigation. Derived results retain the
+original source's access rules. Each linked record states its tested scope;
+the broader platform remains in active development.
 
 Large questionnaire reports retain all final answers and edit history behind
 bounded previews. Their [native worker continuation](docs/qa/QUESTIONNAIRE-ARTIFACT-WORKER.md)

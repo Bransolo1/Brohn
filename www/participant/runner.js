@@ -143,6 +143,7 @@
         error.code = data.error?.code;
         error.permanent = response.status >= 400 && response.status < 500 && response.status !== 408 && response.status !== 429;
         if (error.code === "researcher_resolved" && record?.run_id) await researcherResolved(null);
+        if (["upload_expired", "run_revoked", "run_access"].includes(error.code) && record?.run_id) await hostedAccessEnded(error.code, message);
         throw error;
       }
       return data;
@@ -171,6 +172,20 @@
     content.append(node("p", "Contact your researcher before clearing browser storage. This session cannot collect further responses."));
     if (summary?.participant_ending) content.append(node("p", `Received participant ending: ${summary.participant_ending}. The original receipt and researcher decision remain separate.`));
     status.textContent = "Session resolved by the researcher; local data retained.";
+  }
+  async function hostedAccessEnded(code, message) {
+    finished = true; endingRequested = true;
+    clearTimeout(timer); clearInterval(equipmentTimer);
+    illustrationAbort?.abort(); equipmentAbort?.abort(); taskController?.abort();
+    equipmentPanelStop?.(); equipmentPanelStop = null;
+    stopPresentation(); cameraController?.closeDelivery();
+    await persist(() => {record.delivery_blocked = true; record.hosted_access = {code, message};});
+    $("withdraw").hidden = true;
+    const cameraStatus = $("camera-status");
+    if (cameraStatus && !cameraStatus.hidden) cameraStatus.textContent = "Recording stopped. Unsent local recording data are retained.";
+    screen("This session can no longer send data", message);
+    content.append(node("p", "Your saved responses and recordings remain in this browser. This does not confirm delivery. Contact your researcher before clearing browser storage."));
+    status.textContent = "Session access ended; local data retained.";
   }
   const equal = (a, b) => {
     if (typeof a === "number" && typeof b === "number") return a === b;
@@ -379,7 +394,7 @@
         content.append(button("Start a new participant session", () => location.reload()));
       }
     } catch (error) {
-      if (record?.researcher_resolution) return;
+      if (record?.researcher_resolution || record?.hosted_access) return;
       status.textContent = "Saved in this browser. Delivery to the study service is still pending.";
       if (error.permanent) { await persist(() => { record.delivery_blocked = true; }); showError(error); }
       else timer = setTimeout(() => void sync(), 4000);
@@ -1046,6 +1061,7 @@
     if (!token || !/^[A-Za-z0-9_-]{16,256}$/.test(token)) throw new Error("This study link is incomplete. Open the full participant link supplied by your researcher.");
     if (!await acquireLock()) throw new Error("This study is already open in another tab. Continue there, or close that tab and reload this one.");
     await openDatabase();
+    if (record?.hosted_access) {await hostedAccessEnded(record.hosted_access.code, record.hosted_access.message); return;}
     try { entry = await api(`/api/entry/${encodeURIComponent(token)}`, undefined, false); }
     catch (error) {
       if (!record?.run_id) throw error;
@@ -1077,6 +1093,7 @@
       if (savedStatus.run_id !== record.run_id) throw new Error("The session status identity does not match this browser.");
       if (savedStatus.researcher_resolution?.resolved) {await researcherResolved(savedStatus.researcher_resolution); return;}
     } catch (error) {
+      if (record?.hosted_access) return;
       if (error.permanent) throw error;
     }
     if (record.protocol?.design?.camera) {

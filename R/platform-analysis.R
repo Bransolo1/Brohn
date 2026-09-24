@@ -136,6 +136,10 @@ brohn_queue_dataset <- function(store, id, revision = NULL, force = FALSE, prepa
     dataset_hash = brohn_hash(record$body), study_id = if (is.null(study)) NULL else study$id,
     study_revision = if (is.null(study)) NULL else study$revision,
     study_hash = if (is.null(study)) NULL else brohn_hash(study$body), recipe = "brohn-analysis/1.0.0-draft")
+  if (exists("brohn_audio_extraction_lineage", mode = "function")) {
+    lineage <- brohn_audio_extraction_lineage(store, record, verify = FALSE)
+    if (!is.null(lineage)) request$derived_audio_lineage <- lineage
+  } else brohn_require(!identical(record$body$source_provenance$acquisition,"video_audio_extraction"), "Load the video audio source module before analysing this derived recording.")
   key <- paste0("dataset:", brohn_hash(request), if (force) paste0(":", brohn_id("rerun")) else "")
   brohn_enqueue_job(store, "analyse_dataset", request, key, prepared_id = prepared_id)
 }

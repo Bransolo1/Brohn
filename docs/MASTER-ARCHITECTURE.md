@@ -32,8 +32,34 @@ or partial records remain distinct. Late new uploads cannot rewrite a resolution
 and unsent browser data remain retained. Closed collection inventories preserve
 both original outcomes and researcher decisions through history/backup.
 See [the recovery acceptance](qa/SESSION-RESOLUTION-ACCEPTANCE.md).
-Audio source review, event-EDA review and the remaining research/hosted/release
-scope continue; this connected wave does not complete all capabilities.
+Audio source waveform/spectrogram and event-EDA baseline/response review now
+have scoped connected acceptance. They expose complete original samples and
+saved analysis events without rescoring a selected display window. Video audio
+derivation is connected through explicit stream selection, a complete
+decoder-frame timestamp ledger, immutable parent/consent references and ordinary
+channel mapping. Container timestamp precision is not physical synchronization.
+The isolated-team hosted profile now has local actual-OIDC acceptance. Each
+session HTTP dispatch checks current authority before returning cached data,
+files or downloads; a separate timer closes revoked/expired WebSockets.
+Enrollment, material access and admitted uploads have distinct expiry policies.
+This is one trusted team/default project per workspace, with public operator
+deployment and broader sharing/roles still open. Respiration review now exposes
+saved normalized waveform, complete cycle phases and exact numerical exports,
+including unchanged cycles intersecting a selected view. A view does not trigger
+new scientific scoring. Exact saved-answer/session navigation now has connected
+acceptance, with received events separate from the assigned protocol and later
+researcher resolutions. Derived-audio source authority spans general reports,
+original WAV downloads, plots and both ends of interval reuse. Complete EMG
+input/clean/RMS and saved-burst review now has connected acceptance. Final
+respiration/EMG axes retain distinct labels and exact saved-window identities.
+Whole-recording EDA review now has connected source/export/restart acceptance,
+with first full numerical verification moved to a supervised process and fresh
+source authority retained. This wave does not complete all capabilities.
+Dedicated Brohn response-window SC-IAT and a separately pinned
+local facial-output route are the next method integrations. Their candidate
+probes alone do not enable participant collection or scientific interpretation. New EMG artifacts preserve the unit-converted pre-cleaning
+input separately from cleaned voltage and the RMS envelope; historical artifacts
+without that input must display its absence rather than reconstruct it.
 
 **Measurement-review integration, 24 September 2026:** saved video reports now
 open the complete source-bound frame/metric explorer through the shared report

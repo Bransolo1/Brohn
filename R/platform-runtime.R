@@ -10,9 +10,13 @@ brohn_participant_ready <- function(workspace_id, port = Sys.getenv("BROHN_PARTI
 }
 brohn_start_services <- function(root, participant_port = 3840L) {
   brohn_require(brohn_number(participant_port, 1024, 65535, TRUE), "Choose a participant port between 1024 and 65535.")
+  profile <- brohn_hosted_profile()
+  if (!is.null(profile)) brohn_require(identical(normalizePath(root, winslash="/", mustWork=TRUE), profile$workspace_root) &&
+    participant_port == profile$participant_port, "Service startup must match the configured hosted workspace and internal participant port.")
   publication<-brohn_publication_readiness()
   brohn_require(isTRUE(publication$ready),paste("Report publication is not ready.",publication$message,publication$action))
   store <- brohn_open_store(root); on.exit(brohn_close_store(store), add = TRUE)
+  store <- brohn_hosted_bind_store(store, profile, participant=TRUE)
   brohn_initialise_library(store)
   state <- new.env(parent = emptyenv()); state$owned <- list(); state$root <- store$root
   state$stopped <- FALSE; state$scheduled <- FALSE; state$participant_port <- participant_port

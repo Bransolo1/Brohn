@@ -1,5 +1,51 @@
 # Changes
 
+## Connected review and collection continuation — 2026-09-24
+
+- Added complete explicit distributions, paired-person plots, linked saved
+  signals/events, collection finalization and abandoned-session recovery.
+- Reduced repeated large-cohort grouping and saved-value hashing while retaining
+  exact results and fresh source/authority checks.
+- Connected source audio waveform/spectrum review, event-EDA review and an
+  isolated-team OIDC profile; their current acceptance remains recorded in the
+  integrated workflow ledger while final browser work proceeds.
+- Applied researcher session checks to storage, commands and downloads; separated
+  hosted enrollment, material and admitted-upload policies. Expired or revoked
+  participant access retains local browser data without inventing a completion.
+- Shortened temporary processed-artifact filenames to prevent Windows path
+  failures; complete hashes, contents, duplicate checks and object-store identity
+  remain intact. The27 existing artifact tests pass in their appropriate profiles,
+  alongside a215-character-directory regression.
+- Added bounded saved-video audio extraction with explicit stream/channel choice,
+  consented-camera lineage and complete WAV/timestamp exports; its connected
+  journey passes22 browser checks/four scans and seven publication-revocation checks.
+- Completed scoped audio source and event-EDA browser/export/restart evidence;
+  the ledger retains separate source versions and failed attempts.
+- Corrected scientific worker error handling to expose the actual failure reason
+  before requiring success-only fields; four actual error-envelope checks pass.
+- Completed isolated-team hosted local acceptance, including immediate cached
+  data/download denial, researcher leases and separate admitted-upload expiry.
+- Connected background saved-answer/session evidence;30 domain,6 connected and
+  32 independent checks now pass, with five current accessibility/layout scans.
+  Respiration cycle review passes21 connected checks/five scans. Corrected blank Shiny
+  numeric mappings without removing legitimate zero/false values.
+- Reject invalid derived-audio study relinking before saving; keep source read
+  guards through child processing. Preserve EMG pre-cleaning input in new complete
+  artifacts without changing features or burst detection.
+- Enforced original-video authority across derived reports, exact values, plots,
+  intervals and complete WAV downloads, including already-issued URLs.
+- Made researcher error notifications keyboard-dismissible with a named region.
+- Replaced empty report gaps with consistent populated-card spacing; repeat
+  download errors update one dark notification with a44-pixel close target.
+- Added plain-language saved measurement coverage and expandable complete fields,
+  retaining distinct sample, event, channel and participant denominators.
+- Completed saved EMG input/clean/RMS and optional burst review, including exact
+  exports and reopening. Corrected distinct numerical axes and saved-window
+  labels for both EMG and respiration.
+- Completed continuous EDA clean/tonic/phasic review with exact candidate markers,
+  exports and restart. Verify large saved results in a supervised process while
+  checking current source authority before exposing values and downloads.
+
 ## Connected measurement review — 2026-09-24
 
 - Connected the complete saved-video explorer to report navigation, exact native

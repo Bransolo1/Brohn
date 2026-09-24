@@ -183,6 +183,7 @@ brohn_verify_backup <- function(path) {
     total_bytes = manifest$catalog$size + sum(vapply(inventory, `[[`, numeric(1), "size")))
 }
 brohn_backup_workspace <- function(store, destination) {
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_action(store, "backup")
   .brohn_store_ready(store)
   .brohn_backup_require(!RSQLite::sqliteIsTransacting(store$con), "Start backup outside an active application transaction.")
   target <- .brohn_backup_destination(destination, store$root)
@@ -237,6 +238,7 @@ brohn_workspace_execution_status <- function(store) {
     source_workspace_id = data$restore_source_workspace_id, backup_id = data$restore_backup_id)
 }
 brohn_resume_workspace <- function(store) {
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_action(store, "resume_workspace")
   .brohn_store_tx(store, function() {
     status <- brohn_workspace_execution_status(store)
     if (isTRUE(status$paused)) {

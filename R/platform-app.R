@@ -1,16 +1,22 @@
 # Researcher commands and views. The participant application is served separately.
 brohn_server <- function(input, output, session, store_root = brohn_workspace_path()) {
-  store <- brohn_open_store(store_root); brohn_initialise_library(store)
+  profile <- brohn_hosted_profile()
+  context <- brohn_hosted_context(session$request, profile)
+  store <- brohn_open_store(store_root)
   session$onSessionEnded(function() brohn_close_store(store))
+  store <- brohn_hosted_bind_store(store, profile, context)
+  brohn_initialise_library(store)
+  brohn_install_hosted_session(session, store)
   state <- shiny::reactiveValues(page = "home", stage = "Plan", refresh = 0L,
     error = NULL, status = "Workspace ready", study_id = NULL, dataset_id = NULL, report_id = NULL)
   current <- new.env(parent = emptyenv()); current$study <- NULL
   for (kind in c("study", "dataset", "template")) state[[paste0(kind, "_offset")]] <- 0L
   refresh <- function() state$refresh <- state$refresh + 1L
-  attempt <- function(fn, clear_error = TRUE) { if (isTRUE(clear_error)) state$error <- NULL; tryCatch(fn(), error = function(e) {state$error <- conditionMessage(e); state$status <- "Needs attention"; NULL}) }
-  prepare_download <- function(fn) tryCatch(fn(), error = function(e) {
+  attempt <- function(fn, clear_error = TRUE) { if (isTRUE(clear_error)) state$error <- NULL; tryCatch({brohn_hosted_require_session(store); fn()}, error = function(e) {state$error <- conditionMessage(e); state$status <- "Needs attention"; NULL}) }
+  prepare_download <- function(fn) tryCatch({brohn_hosted_require_session(store); fn()}, error = function(e) {
     state$error <- conditionMessage(e); state$status <- "Download needs attention"
-    shiny::showNotification(conditionMessage(e), type = "error", duration = NULL, session = session)
+    shiny::showNotification(conditionMessage(e), type = "error", duration = NULL,
+      id = "brohn-download-error", session = session)
     stop(e)
   })
   output$platform_status <- shiny::renderText(state$status)
@@ -27,6 +33,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   })
   output$platform_error <- shiny::renderUI(if (!is.null(state$error)) shiny::div(class = "brohn-alert brohn-alert-error", role = "alert", shiny::strong("Please check this"), shiny::p(state$error)))
   message <- function(text) {state$status <- text; invisible(text)}
+  brohn_install_hosted_controls(input, output, session, store, state, attempt, message, refresh)
   brohn_install_multimodal_ui(input, output, session, store, state, current, attempt, message, refresh)
   brohn_install_task_cohort_ui(input, output, session, store, state, current, attempt, message, refresh)
   collection_history <- brohn_install_collection_history(input, output, session, store, state, current, attempt, message, refresh, prepare_download)
@@ -36,10 +43,17 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_interchange_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_header_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_signal_server(input, output, session, store, state, attempt, message, prepare_download)
-  brohn_install_questionnaire_explorer(input, output, session, store, state, attempt, message, prepare_download)
+  answer_session <- brohn_install_answer_session(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_questionnaire_explorer(input, output, session, store, state, attempt, message, prepare_download, open_session = answer_session$open)
   brohn_install_explicit_distribution_server(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_paired_plots(input, output, session, store, state, attempt, prepare_download)
   brohn_install_linked_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
+  brohn_install_audio_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
+  brohn_install_audio_extraction(input, output, session, store, state, attempt, message, refresh, prepare_download)
+  brohn_install_eda_review(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_respiration_review(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_emg_review(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_eda_continuous_review(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_neural_plots(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_gaze_report_server(input, output, session, store, state)
   brohn_install_gaze_trace_server(input, output, session, store, state, attempt, message, prepare_download)
@@ -56,6 +70,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     record <- brohn_get_entity(store, "dataset", state$dataset_id)
     brohn_require(!is.null(record) && identical(input$dataset_form_identity, paste(record$id, record$revision, sep = ":")),
       "The source dataset changed. Reopen its current record before downloading.")
+    brohn_audio_extraction_lineage(store,record)
     record$body
   }
   output$dataset_original_download <- shiny::downloadHandler(filename = function() basename(original_dataset()$source$filename),
@@ -207,6 +222,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   }))
   output$export_history_design <- shiny::downloadHandler(filename = function() paste0(current$history$id, "-revision-", current$history$revision, ".brohn-study.zip"),
     content = function(file) {
+      brohn_hosted_require_session(store)
       h <- current$history; artifact <- tempfile(fileext = ".brohn-study.zip"); on.exit(unlink(artifact), add = TRUE)
       brohn_export_design(store, h$id, artifact, revision = h$revision)
       brohn_require(file.copy(artifact, file, overwrite = TRUE), "The historical design download could not be prepared.")
@@ -416,25 +432,28 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     refresh()
   }))
   shiny::observeEvent(input$open_report, attempt(function() {
-    report <- brohn_get_entity(store, "report", input$open_report)
+    report <- brohn_report_for_review(store, input$open_report)
     brohn_require(!is.null(report), "Choose an available saved report.")
     state$report_id <- report$id; state$page <- "report"; message("Saved report ready for review"); refresh()
   }))
   shiny::observeEvent(input$analyse_cohort, attempt(function() {brohn_queue_cohort(store, input$analyse_cohort); message("A report for this release's completed sessions is queued."); refresh()}))
   output$report_html <- shiny::downloadHandler(filename = function() paste0(state$report_id, ".html"), content = function(file) {
-    brohn_export_report_html(brohn_get_entity(store, "report", state$report_id)$body, file, store)
+    prepare_download(function() {
+      brohn_require(identical(state$page,"report"),"Open the saved report before downloading it.")
+      brohn_export_report_html(brohn_report_for_review(store,state$report_id)$body, file, store)
+    })
   }, contentType = "text/html")
   output$report_csv <- shiny::downloadHandler(filename = function() paste0(state$report_id, "-observations.csv"), content = function(file) {
     prepare_download(function() {
       brohn_require(identical(state$page, "report") && brohn_valid_id(state$report_id), "Open the saved report before downloading its observations.")
-      report <- brohn_get_entity(store, "report", state$report_id)
+      report <- brohn_report_for_review(store, state$report_id)
       brohn_require(!is.null(report), "This saved report is unavailable.")
       if (identical(report$body$analysis$schema, "brohn-task-cohort/1.0")) brohn_export_task_cohort_csv(report$body, file) else brohn_export_report_csv(brohn_complete_questionnaire_report(store, report$body), file)
     })
   }, contentType = "text/csv")
   output$report_scale_csv <- shiny::downloadHandler(filename = function() paste0(state$report_id, "-scale-scores.csv"), content = function(file) {
     prepare_download(function() {
-      report <- brohn_get_entity(store, "report", state$report_id)
+      report <- brohn_report_for_review(store, state$report_id)
       brohn_require(!is.null(report), "The selected report is unavailable.")
       report$body <- brohn_complete_questionnaire_report(store, report$body)
       brohn_require(identical(state$page, "report") && !is.null(report$body$analysis$scales), "Choose a saved report containing questionnaire scale scores.")
@@ -443,7 +462,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   }, contentType = "text/csv")
   output$report_maxdiff_csv <- shiny::downloadHandler(filename = function() paste0(state$report_id,"-best-worst-choices.csv"),content=function(file) {
     prepare_download(function() {
-      report<-brohn_get_entity(store,"report",state$report_id)
+      report<-brohn_report_for_review(store,state$report_id)
       brohn_require(!is.null(report), "The selected report is unavailable.")
       report$body <- brohn_complete_questionnaire_report(store, report$body)
       brohn_require(identical(state$page,"report") && length(report$body$analysis$choice_tasks)>0L,"Choose a saved report containing best-worst choices.")
@@ -453,13 +472,14 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   output$report_task_csv <- shiny::downloadHandler(filename = function() paste0(state$report_id, "-task-scores.csv"), content = function(file) {
     prepare_download(function() {
       brohn_require(identical(state$page, "report"), "Choose a saved report containing task scores.")
-      report <- brohn_get_entity(store, "report", state$report_id)
+      report <- brohn_report_for_review(store, state$report_id)
       brohn_require(!is.null(report), "The selected report is unavailable.")
       brohn_export_task_scores_csv(brohn_complete_questionnaire_report(store, report$body), file)
     })
   }, contentType = "text/csv")
   report_artifact <- function() {
-    report <- brohn_get_entity(store, "report", state$report_id)
+    brohn_require(identical(state$page,"report"),"Open the saved report before downloading its artifact.")
+    report <- brohn_report_for_review(store, state$report_id)
     brohn_require(!is.null(report), "Choose a saved report.")
     artifacts <- Filter(function(a) identical(a$kind, input$report_artifact_kind), report$body$analysis$artifacts)
     brohn_require(length(artifacts) == 1L, "Choose a complete artifact from this report.")
@@ -473,7 +493,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   output$report_download <- shiny::downloadHandler(filename = function() paste0(state$report_id, ".json"), content = function(file) {
     prepare_download(function() {
       brohn_require(identical(state$page, "report"), "Open the saved report before downloading it.")
-      report <- brohn_get_entity(store, "report", state$report_id)
+      report <- brohn_report_for_review(store, state$report_id)
       brohn_require(!is.null(report), "Report is unavailable.")
       brohn_export_complete_questionnaire_report(store, report$body, file)
     })
@@ -486,6 +506,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     refresh()
   }))
   shiny::observeEvent(input$backup_workspace, attempt(function() {
+    brohn_hosted_require_action(store, "backup")
     destination <- input$backup_destination
     brohn_require(brohn_text(destination, 4000), "Choose a new backup folder with an existing parent directory.")
     destination <- normalizePath(destination, winslash = "/", mustWork = FALSE)
@@ -559,6 +580,26 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       if (is.null(current$audit_stamp) || !identical(current$audit_stamp, stamp)) {current$audit_stamp <- stamp; refresh()}
     }
   })
+  shiny::observe({
+    shiny::invalidateLater(2000,session)
+    # Recheck access without rebuilding an unchanged report's controls or
+    # interrupting the researcher's current waveform/answer selection.
+    page <- state$page
+    if (!page %in% c("report","dataset")) return()
+    failure <- tryCatch({
+      if (identical(page,"report")) brohn_report_for_review(store,state$report_id) else {
+        record <- brohn_get_entity(store,"dataset",state$dataset_id)
+        brohn_require(!is.null(record),"This dataset is unavailable.")
+        brohn_audio_extraction_lineage(store,record)
+      }
+      NULL
+    },error=function(e)conditionMessage(e))
+    if (!is.null(failure)) {
+      state$page <- "home"; state$report_id <- NULL; state$dataset_id <- NULL
+      state$error <- failure; state$status <- "Source access changed"
+      session$sendCustomMessage("brohn-navigation",list(page="home",focus=TRUE))
+    }
+  })
   # Inputs are saved after a quiet period without rebuilding their DOM or stealing focus.
   edits <- shiny::reactive({
     names <- names(shiny::reactiveValuesToList(input))
@@ -594,17 +635,18 @@ brohn_render_page <- function(store, state, record) {
       shiny::textInput("template_search", "Search saved designs", placeholder = "Design name"), shiny::uiOutput("template_catalog")))
   }
   if (page == "settings") return(brohn_page("Workspace settings", "Your research has a visible home.",
-    brohn_card(title = "Storage", shiny::p("Workspace: ", shiny::tags$code(store$workspace_id)), shiny::p("Folder: ", shiny::tags$code(store$root)),
+    brohn_hosted_profile_ui(store),
+    brohn_card(title = "Storage", shiny::p("Workspace: ", shiny::tags$code(store$workspace_id)), if (is.null(store$hosted_profile)) shiny::p("Folder: ", shiny::tags$code(store$root)),
       shiny::p("The catalog retains saved versions and content-addressed source files. A source-code repository is separate from this research storage.")),
-    brohn_card(title = "Preserve earlier Brohn drafts", subtitle = "Copies drafts and every neighboring report/protocol into this workspace. Original files are retained.",
+    if (is.null(store$hosted_profile)) brohn_card(title = "Preserve earlier Brohn drafts", subtitle = "Copies drafts and every neighboring report/protocol into this workspace. Original files are retained.",
       shiny::textInput("legacy_path", "Earlier draft folder", normalizePath("data/drafts", winslash = "/", mustWork = FALSE)), shiny::actionButton("import_legacy", "Import earlier research", class = "btn-primary")),
-    brohn_card(title = "Verified local backup", subtitle = "Copies a consistent catalog and every registered source object. The backup includes private participant records and credentials; store it in a protected location.",
+    if (is.null(store$hosted_profile)) brohn_card(title = "Verified local backup", subtitle = "Copies a consistent catalog and every registered source object. The backup includes private participant records and credentials; store it in a protected location.",
       shiny::textInput("backup_destination", "New backup folder", file.path(dirname(store$root), paste0("brohn-backup-", format(Sys.time(), "%Y%m%d-%H%M%S")))),
       shiny::actionButton("backup_workspace", "Create verified backup", class = "btn-primary"),
       shiny::p("Restoring creates a separate workspace, rotates credentials and keeps execution paused. A cancelled backup may leave a verified artifact; Activity retains its requested destination.")),
-    if (exists("brohn_workspace_execution_status", mode = "function") && isTRUE(brohn_workspace_execution_status(store)$paused))
+    if (is.null(store$hosted_profile) && exists("brohn_workspace_execution_status", mode = "function") && isTRUE(brohn_workspace_execution_status(store)$paused))
       brohn_card(title = "Restored workspace is paused", shiny::p("Review this copy before restarting queued processing. Earlier recruitment links remain closed."), shiny::actionButton("resume_workspace", "Resume workspace processing", class = "btn-primary")),
-    brohn_card(title = "Collection profile", shiny::p("Local lab participant service. Public hosting is available only after its authentication, access and deployment requirements are satisfied."))))
+    brohn_card(title = "Collection profile", shiny::p(if (is.null(store$hosted_profile)) "Local lab participant service. Public hosting requires an explicitly configured protected profile." else "Researcher sign-in and participant collection use separate configured HTTPS origins. Releases and admitted uploads have visible access deadlines."))))
   if (page == "activity") {
     jobs <- brohn_list_jobs(store)
     return(brohn_page("Activity", "Processing and recovery are recorded alongside your research.",

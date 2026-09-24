@@ -48,6 +48,7 @@ brohn_signal_values_input <- function(store,job,verify=TRUE) {
   }
   brohn_project(store,r$project_id)
   report<-brohn_get_entity(store,"report",r$report_id,r$report_revision)
+  lineage<-brohn_signal_audio_lineage(store,report,verify)
   catalog<-brohn_get_entity(store,"signal_view",r$catalog_id,r$catalog_revision)
   brohn_require(identical(.brohn_sv_hash(report$body),r$report_hash)&&identical(.brohn_sv_hash(catalog$body),r$catalog_hash)&&
     identical(catalog$body$operation,"signal_catalog")&&identical(catalog$body$report_id,r$report_id)&&
@@ -68,14 +69,17 @@ brohn_signal_values_input <- function(store,job,verify=TRUE) {
     ref<-.brohn_sv_retained(store,pair$record,pair$kind,verify)
     if(!is.null(ref))source_objects[[length(source_objects)+1L]]<-ref
   }
+  if(!is.null(lineage))source_objects<-c(source_objects,lineage$source_refs)
   # The streaming child verifies every artifact byte; parent hashing is optional
   # only for small context checks and final metadata-only transaction checks.
   path<-brohn_object_path(store,artifact$sha256,verify=FALSE)
   binding<-r[c("report_id","report_revision","report_hash","project_id","catalog_id","catalog_revision","catalog_hash")]
   binding$selection_hash<-brohn_hash(r$selection)
-  list(schema="brohn-analysis-input/1.0",operation=job$operation,project_id=r$project_id,origin=report$body$origin,
+  result<-list(schema="brohn-analysis-input/1.0",operation=job$operation,project_id=r$project_id,origin=report$body$origin,
     binding=binding,artifact=artifact,source_path=path,source_objects=source_objects,
     verification_receipt=report$body$analysis$artifact_verification,table=table,selection=r$selection,page=r$page)
+  if(!is.null(lineage))result$derived_audio_lineage<-lineage
+  result
 }
 brohn_queue_signal_values <- function(store,catalog_id,selection,mode="page",offset=0L,limit=50L,catalog_revision=NULL,catalog_hash=NULL,retry=FALSE) {
   brohn_require(mode %in% c("page","export"),"Choose exact values or complete CSV preparation.")
@@ -163,6 +167,7 @@ brohn_analyse_signal_values <- function(input,scratch) {
 brohn_publish_signal_values <- function(store,output,scratch,job,input,output_path) {
   brohn_require(!RSQLite::sqliteIsTransacting(store$con),"Prepare exact-value results outside the writer transaction.")
   .brohn_publication_output_identity(output,.brohn_signal_values_loaded);.brohn_publication_job(store,job)
+  if(!is.null(input$derived_audio_lineage)).brohn_publication_output_identity(output,.brohn_audio_extraction_loaded["R/platform-audio-extraction.R"])
   guards<-brohn_hold_signal_value_sources(store,input)
   on.exit(for(g in guards).brohn_qexplorer_release(g),add=TRUE)
   brohn_require(.brohn_sv_same(input,brohn_signal_values_input(store,job))&&.brohn_sv_same(brohn_read_json_file(output_path),output),"The exact-value publication changed its pinned input or output.")

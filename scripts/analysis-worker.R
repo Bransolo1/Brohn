@@ -24,6 +24,34 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
+if (identical(input$operation,"answer_session")) {
+  identity <- c(identity, hash_sources("R/platform-answer-session.R"))
+  source("R/platform-answer-session.R", encoding="UTF-8")
+}
+if (input$operation %in% c("audio_tracks","audio_extract") || !is.null(input$derived_audio_lineage) || !is.null(input$binding$extraction_lineage)) {
+  identity <- c(identity, hash_sources("R/platform-audio-extraction.R"))
+  source("R/platform-audio-extraction.R", encoding="UTF-8")
+}
+if (identical(input$operation, "audio_review")) {
+  identity <- c(identity, hash_sources("R/platform-audio-review.R"))
+  source("R/platform-audio-review.R", encoding = "UTF-8")
+}
+if (identical(input$operation, "eda_review")) {
+  identity <- c(identity, hash_sources("R/platform-eda-review.R"))
+  source("R/platform-eda-review.R", encoding="UTF-8")
+}
+if (identical(input$operation,"respiration_review")) {
+  identity <- c(identity, hash_sources("R/platform-respiration-review.R"))
+  source("R/platform-respiration-review.R", encoding="UTF-8")
+}
+if (identical(input$operation,"emg_review")) {
+  identity <- c(identity, hash_sources("R/platform-emg-review.R"))
+  source("R/platform-emg-review.R", encoding="UTF-8")
+}
+if (identical(input$operation,"eda_continuous_review")) {
+  identity <- c(identity, hash_sources("R/platform-eda-continuous-review.R"))
+  source("R/platform-eda-continuous-review.R", encoding="UTF-8")
+}
 if (identical(input$operation, "analyse_resolved_run")) {
   identity <- c(identity, hash_sources("R/platform-session-resolution.R"))
   source("R/platform-session-resolution.R", encoding = "UTF-8")
@@ -38,6 +66,12 @@ if (identical(input$operation, "extract_stream")) {
   source("R/platform-stream-curation.R", encoding = "UTF-8")
 }
 native_sources <- if (identical(input$operation, "segment_aoi") || identical(input$dataset$modality, "video")) "scripts/workers/vision.py" else
+  if (input$operation %in% c("audio_tracks","audio_extract")) "scripts/workers/audio_extract.py" else
+  if (identical(input$operation, "audio_review")) "scripts/workers/audio_review.py" else
+  if (identical(input$operation, "eda_review")) c("scripts/workers/eda_review.py", "scripts/workers/physiology_artifacts.py") else
+  if (identical(input$operation, "respiration_review")) c("scripts/workers/respiration_review.py", "scripts/workers/physiology_artifacts.py") else
+  if (identical(input$operation, "emg_review")) c("scripts/workers/emg_review.py", "scripts/workers/physiology_artifacts.py") else
+  if (identical(input$operation, "eda_continuous_review")) c("scripts/workers/eda_continuous_review.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "linked_review")) c("scripts/workers/linked_review.py", "scripts/workers/stream_extract.py") else
   if (identical(input$operation, "vision_index")) "scripts/workers/vision_explorer.py" else
   if (identical(input$operation, "vision_frame")) c("scripts/workers/vision_frame.py", "scripts/workers/vision.py", "scripts/workers/vision_explorer.py") else

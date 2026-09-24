@@ -52,7 +52,10 @@ brohn_dataset_base_mapping <- function(input, dataset) {
   if (gaze && isTRUE(input$map_passive_only)) m$source_phase <- "passive_viewing_only"
   if (identical(dataset$modality, "respiration")) m$parameters <- c(list(recipe = "respiration-displacement-khodadad/1.0",
     edge_exclusion_s = brohn_default(dataset$metadata$parameters$edge_exclusion_s, 5)), brohn_respiration_input(input))
-  Filter(function(v) !(is.null(v) || (is.character(v) && length(v) == 1L && identical(v, "")) || (is.numeric(v) && length(v) == 1L && is.na(v))), m)
+  if (identical(dataset$modality,"emg")) m$parameters <- brohn_emg_input(input)
+  # Empty Shiny numeric controls produce a logical NA, not necessarily NA_real_.
+  # Preserve typed zero/FALSE while omitting any missing scalar before JSON.
+  Filter(function(v) !(is.null(v) || (is.character(v) && length(v) == 1L && identical(v, "")) || (is.atomic(v) && length(v) == 1L && is.na(v))), m)
 }
 brohn_dataset_detail_ui <- function(store, id) {
   r <- brohn_get_entity(store, "dataset", id)
@@ -60,6 +63,7 @@ brohn_dataset_detail_ui <- function(store, id) {
   if (identical(r$body$modality,"maxdiff")) return(brohn_maxdiff_dataset_ui(store,r))
   if (identical(r$body$modality,"implicit")) return(brohn_task_import_dataset_ui(store,r))
   if (identical(r$body$modality, "multimodal")) return(brohn_interchange_dataset_ui(store, r))
+  brohn_audio_extraction_lineage(store,r)
   d <- r$body; m <- d$metadata; columns <- unlist(d$columns, use.names = FALSE)
   selected <- function(field, candidates = character()) {
     if (!is.null(m[[field]])) return(m[[field]])
@@ -79,6 +83,7 @@ brohn_dataset_detail_ui <- function(store, id) {
       shiny::downloadButton("dataset_original_download", "Download original source", icon = NULL),
       if (length(d$preview)) shiny::tags$details(open = NA, shiny::tags$summary("Inspect source columns"), brohn_table(d$preview, maximum = 20))),
     brohn_camera_dataset_ui(store, r),
+    brohn_audio_extraction_dataset_ui(store, r),
     brohn_curated_stream_dataset_ui(store, r),
     if (!tabular && !video) brohn_native_header_ui(store, r),
     brohn_card(title = "Confirm what the columns mean", subtitle = "Suggested matches are a starting point. Confirm identities, units and recording provenance before processing.",
@@ -134,6 +139,7 @@ brohn_dataset_detail_ui <- function(store, id) {
       if (d$modality == "eeg") brohn_neural_settings_ui(m, columns, d$source$format),
       if (d$modality == "eda") brohn_eda_events_settings_ui(m, columns, d$source$format),
       if (d$modality == "respiration") brohn_respiration_settings_ui(m$parameters),
+      if (d$modality == "emg") brohn_emg_settings_ui(m$parameters),
       if (peripheral) brohn_peripheral_settings_ui(m, columns, d$modality),
       shiny::textAreaInput("map_origin", "Recording provenance and collection notes", brohn_default(m$origin_statement, ""), width = "100%", rows = 3,
         placeholder = "Device/export, collection setting, identity scheme, preprocessing already applied and known gaps."),
@@ -292,6 +298,7 @@ brohn_report_content <- function(report) {
       if (identical(a$kind,"implicit")) shiny::p("These counts describe the retained trial source. Each task result has its own completeness and scoring eligibility.") else
         if (length(a$task_scores)) shiny::p("These counts describe explicit questionnaire answers. The task cards above retain their own trial counts and scoring eligibility."),
       if (identical(a$kind, "multimodal")) .brohn_multimodal_coverage_ui(a) else
+        if (brohn_measurement_coverage_supported(a)) brohn_measurement_coverage_ui(a) else
         brohn_table(list(a$quality), label = if (identical(a$kind,"implicit")) "Trial source coverage and eligibility" else if (length(a$task_scores)) "Questionnaire coverage and eligibility" else "Coverage and eligibility")),
     if (length(a$features) && a$kind == "questionnaire") lapply(a$features, function(q) brohn_card(title = q$prompt,
       subtitle = paste(brohn_default(q$condition_label, q$condition_id), "\u00b7", brohn_default(q$scale_description, "Explicit responses")),
@@ -314,8 +321,9 @@ brohn_report_content <- function(report) {
 brohn_report_detail_ui <- function(store, id) {
   r <- brohn_get_entity(store, "report", id)
   if (is.null(r)) return(brohn_empty("Report unavailable", "Choose a saved report from a study or dataset."))
+  brohn_signal_audio_lineage(store,r,verify=FALSE)
   complete_counts <- r$body$analysis$questionnaire_artifact$counts
-  brohn_page(r$body$title, paste("Saved", r$created_at, "\u00b7", "Immutable analysis"),
+  htmltools::tagAppendAttributes(brohn_page(r$body$title, paste("Saved", r$created_at, "\u00b7", "Immutable analysis"),
     actions = shiny::tagList(shiny::downloadButton("report_html", "Download report", icon = NULL),
       shiny::downloadButton("report_csv", if (identical(r$body$analysis$schema, "brohn-task-cohort/1.0")) "Download cohort outcomes" else "Download observations", icon = NULL), shiny::downloadButton("report_download", "JSON + provenance", icon = NULL),
       if (!is.null(r$body$analysis$scales) || isTRUE(complete_counts$scale_observations > 0L)) shiny::downloadButton("report_scale_csv", "Download scale scores CSV", icon = NULL),
@@ -330,7 +338,7 @@ brohn_report_detail_ui <- function(store, id) {
     if (length(r$body$analysis$artifacts)) brohn_card(title = "Complete processing artifacts", subtitle = "Download the full retained output, including observations beyond the on-screen preview.",
       shiny::selectInput("report_artifact_kind", "Saved artifact", stats::setNames(vapply(r$body$analysis$artifacts, `[[`, character(1), "kind"), gsub("-", " ", vapply(r$body$analysis$artifacts, `[[`, character(1), "kind")))),
       shiny::downloadButton("report_artifact", "Download complete artifact", icon = NULL)),
-    brohn_questionnaire_explorer_ui(r), brohn_explicit_distribution_entry_ui(r$body), brohn_paired_plot_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body), brohn_vision_explorer_ui(r), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body))
+    brohn_questionnaire_explorer_ui(r), brohn_explicit_distribution_entry_ui(r$body), brohn_paired_plot_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body), brohn_vision_explorer_ui(r), brohn_audio_review_entry_ui(r), brohn_eda_review_entry_ui(r$body), brohn_respiration_review_panel(r$body), brohn_emg_review_panel(r$body), brohn_eda_continuous_review_panel(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body)), class = "brohn-report-page")
 }
 brohn_export_report_html <- function(report, path, store = NULL) {
   # All user text is escaped by htmltools. No external content or executable

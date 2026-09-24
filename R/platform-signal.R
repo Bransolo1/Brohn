@@ -1,4 +1,39 @@
 # Derived visual views preserve a complete processed artifact and its source report.
+brohn_signal_audio_lineage <- function(store, report, verify = FALSE) {
+  # Ordinary processed reports keep their existing read contract. A derived
+  # audio report also retains the live authority of its immutable parent chain.
+  b <- report$body; p <- b$provenance; retained <- p$derived_audio_lineage
+  id <- brohn_default(p$dataset_id,b$dataset_id); head <- if (brohn_valid_id(id)) brohn_get_entity(store,"dataset",id) else NULL
+  derived <- !is.null(retained) || (brohn_text(id,500) && grepl("^dataset-audio-extraction-job[-_]",id)) ||
+    identical(head$body$source_provenance$acquisition,"video_audio_extraction")
+  if (!derived) return(NULL)
+  brohn_require(exists("brohn_audio_extraction_lineage",mode="function"),"The original audio derivation validator is unavailable.")
+  brohn_project(store,report$project_id)
+  .brohn_qexplorer_catalog(store,"report",report$id,report$revision,report$project_id)
+  brohn_require(identical(b$dataset_id,id) && identical(p$dataset_id,id) && brohn_number(p$dataset_revision,1,1e9,TRUE) && !is.null(retained),
+    "This derived acoustic report lacks its original dataset and extraction lineage.")
+  .brohn_qexplorer_catalog(store,"dataset",id,p$dataset_revision,report$project_id)
+  dataset <- brohn_get_entity(store,"dataset",id,p$dataset_revision)
+  brohn_require(!is.null(head) && identical(dataset$body$modality,"audio") &&
+    identical(.brohn_sv_hash(dataset$body),p$dataset_hash) && identical(dataset$body$source$hash,p$source$hash) &&
+    identical(dataset$body$origin,b$origin) && identical(dataset$body$study_id,b$study_id) &&
+    .brohn_sv_same(dataset$body$metadata,p$mapping),"The derived acoustic report changed its original source, mapping or study.")
+  lineage <- brohn_audio_extraction_lineage(store,dataset,verify)
+  live <- brohn_audio_extraction_lineage(store,head,verify=FALSE)
+  brohn_require(!is.null(lineage) && .brohn_sv_same(lineage,retained) && .brohn_sv_same(live,lineage),
+    "The derived acoustic report no longer matches its original parent authority and extraction.")
+  brohn_require(!is.null(b$result_object),"This derived acoustic report lacks its retained original worker envelope.")
+  .brohn_sv_retained(store,report,"report",verify)
+  lineage
+}
+brohn_signal_view_source <- function(store, record) {
+  brohn_require(!is.null(record) && record$body$operation %in% c("signal_catalog","signal_preview"),"This saved signal view is unavailable.")
+  report <- brohn_get_entity(store,"report",record$body$report_id,record$body$report_revision)
+  brohn_require(!is.null(report) && identical(report$project_id,record$project_id) &&
+    identical(.brohn_sv_hash(report$body),record$body$report_hash),"The saved signal view no longer belongs to its exact source report.")
+  brohn_signal_audio_lineage(store,report,verify=FALSE)
+  invisible(report)
+}
 brohn_signal_marker_schema <- function(m, column) {
   is.list(m) && isTRUE(column %in% c("raw","clean")) && (
     identical(m$schema,"brohn-cardiac-marker-overlay/1.0") && identical(column,"clean") ||
@@ -18,6 +53,7 @@ brohn_queue_signal_view <- function(store, report_id, kind, selection = NULL, of
   report <- brohn_get_entity(store, "report", report_id)
   brohn_require(!is.null(report), "Choose a saved report before exploring its signals.")
   brohn_project(store, report$project_id)
+  brohn_signal_audio_lineage(store, report, verify=FALSE)
   artifact <- brohn_signal_artifact(report, kind)
   brohn_object_path(store, artifact$sha256)
   operation <- if (is.null(selection)) "signal_catalog" else "signal_preview"
@@ -45,6 +81,7 @@ brohn_queue_signal_view <- function(store, report_id, kind, selection = NULL, of
 brohn_signal_input <- function(store, job) {
   r <- job$request; report <- brohn_get_entity(store, "report", r$report_id, r$report_revision)
   brohn_require(!is.null(report) && identical(report$project_id, r$project_id) && identical(brohn_hash(report$body), r$report_hash), "The frozen source report failed its integrity check.")
+  lineage <- brohn_signal_audio_lineage(store, report, verify=TRUE)
   artifact <- brohn_signal_artifact(report, r$artifact$kind)
   brohn_require(identical(brohn_hash(artifact), brohn_hash(r$artifact)), "The selected processed artifact changed.")
   input <- list(schema = "brohn-analysis-input/1.0", operation = job$operation, project_id = report$project_id,
@@ -52,6 +89,13 @@ brohn_signal_input <- function(store, job) {
     artifact = artifact, source_path = brohn_object_path(store, artifact$sha256),
     verification_receipt = report$body$analysis$artifact_verification,
     page = r$page, selection = r$selection, parameters = r$parameters)
+  input$source_objects <- list(list(hash=artifact$sha256,bytes=artifact$bytes))
+  retained <- .brohn_sv_retained(store,report,"report",FALSE)
+  if (!is.null(retained)) input$source_objects <- c(input$source_objects,list(retained))
+  if (!is.null(lineage)) {
+    input$derived_audio_lineage <- lineage
+    input$source_objects <- c(input$source_objects,lineage$source_refs)
+  }
   if (!is.null(r$marker_overlay)) {
     brohn_require(identical(job$operation,"signal_preview") && identical(r$artifact$kind,"physiology-series") &&
       isTRUE(r$selection$value_column %in% c("raw","clean")) && isTRUE(report$body$analysis$kind %in% c("ecg","ppg")),"Cardiac markers require their saved input or cleaned ECG or PPG waveform.")
@@ -60,6 +104,7 @@ brohn_signal_input <- function(store, job) {
     brohn_require(identical(brohn_hash(expected),brohn_hash(r$marker_overlay)) && identical(events$provenance_sha256,artifact$provenance_sha256),
       "Cardiac marker source identity changed.")
     input$marker_overlay <- expected; input$event_source_path <- brohn_object_path(store,events$sha256)
+    input$source_objects <- c(input$source_objects,list(list(hash=events$sha256,bytes=events$bytes)))
   }
   input
 }
@@ -135,6 +180,9 @@ brohn_analyse_signal <- function(input, scratch) {
 brohn_publish_signal_view <- function(store, output, scratch, job, input, output_path) {
   brohn_require(!RSQLite::sqliteIsTransacting(store$con), "Prepare processed views outside the publication transaction.")
   .brohn_publication_job(store,job)
+  guards <- if (!is.null(input$derived_audio_lineage)) brohn_hold_signal_value_sources(store,input) else list()
+  on.exit(for (g in guards) .brohn_qexplorer_release(g),add=TRUE)
+  if (!is.null(input$derived_audio_lineage)) .brohn_publication_output_identity(output,.brohn_audio_extraction_loaded["R/platform-audio-extraction.R"])
   brohn_require(identical(brohn_hash(input), brohn_hash(brohn_signal_input(store, job))), "Signal view publication substituted different saved inputs.")
   result <- output$report$signal_view; brohn_validate_signal_result(result, input)
   id <- paste0("signal-view-", sub("^job-", "", job$id))
@@ -146,5 +194,11 @@ brohn_publish_signal_view <- function(store, output, scratch, job, input, output
   body$processing$publication <- list(mode=if(.Platform$OS.type=="windows")"staged-windows-parent-read-seal/1.0"else"legacy-transactional-copy",
     native_seal=.Platform$OS.type=="windows",native_build=if(.Platform$OS.type=="windows").brohn_publication_native()$identity else NULL)
   publication <- file.path(scratch, "published-signal-view.json"); brohn_write_json_file(body, publication)
-  brohn_publish_entity_result(store,job,input,output,"signal_view",body,publication,list(signal_view_id=id,report_id=input$report_id))
+  brohn_publish_entity_result(store,job,input,output,"signal_view",body,publication,list(signal_view_id=id,report_id=input$report_id),
+    before_commit=if(is.null(input$derived_audio_lineage))NULL else function(){
+      report <- brohn_get_entity(store,"report",input$report_id,input$report_revision)
+      brohn_require(identical(report$project_id,input$project_id) && identical(.brohn_sv_hash(report$body),input$report_hash) &&
+        .brohn_sv_same(brohn_signal_audio_lineage(store,report,FALSE),input$derived_audio_lineage),"Derived audio parent authority changed before signal publication.")
+      for(g in guards).Call(g$native$check,g$pointer)
+    })
 }

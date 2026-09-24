@@ -1,0 +1,11 @@
+{
+  "schema": "brohn-hosted-vendors/1.0",
+  "platform": "windows-amd64",
+  "verified_release_metadata_date": "2026-09-24",
+  "vendors": [
+    {"id":"caddy","version":"2.11.4","archive":"caddy_2.11.4_windows_amd64.zip","url":"https://github.com/caddyserver/caddy/releases/download/v2.11.4/caddy_2.11.4_windows_amd64.zip","sha256":"1708333f79e274c7697285afe6d592ab39314e0b131e9ec6bea08ad27df62ebf","executable":"caddy.exe"},
+    {"id":"oauth2-proxy","version":"7.15.4","archive":"oauth2-proxy-v7.15.4.windows-amd64.tar.gz","url":"https://github.com/oauth2-proxy/oauth2-proxy/releases/download/v7.15.4/oauth2-proxy-v7.15.4.windows-amd64.tar.gz","sha256":"d0ed9e5c55f837e234d1beee140df8d0168fa9ee021065226cf97a46557a3a5b","executable":"oauth2-proxy-v7.15.4.windows-amd64/oauth2-proxy.exe"},
+    {"id":"keycloak","version":"26.7.4","archive":"keycloak-26.7.4.zip","url":"https://github.com/keycloak/keycloak/releases/download/26.7.4/keycloak-26.7.4.zip","sha256":"a286e98b4296d4e75ee88d8527c7cd463b307caa022f088c9f22cffccc741fa1","executable":"keycloak-26.7.4/bin/kc.bat"},
+    {"id":"temurin","version":"25.0.4.1+1","archive":"OpenJDK25U-jdk_x64_windows_hotspot_25.0.4.1_1.zip","url":"https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jdk_x64_windows_hotspot_25.0.4.1_1.zip","sha256":"00c847d804f4a78e9f04f2683faf14fed898535b177b7fc704486cb0284e9283","executable":"jdk-25.0.4.1+1/bin/java.exe"}
+  ]
+}

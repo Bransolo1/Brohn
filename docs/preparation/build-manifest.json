@@ -9,7 +9,7 @@
     "handoff": "docs/PRODUCT-COMPLETION-BACKLOG.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "Ongoing end-to-end delivery. Connected collection finalization/history, session recovery with separate received-completion analysis, complete explicit distributions, paired-person plots and faster exact aggregation, linked signal/event review, responsive exact values and local setup have scoped evidence. Audio/EDA review and protected hosted preparation continue; remaining package/release gates stay open."
+    "note": "Ongoing end-to-end delivery. Connected collection history, session recovery, explicit distributions, paired-person plots, linked signals/events, audio waveform/spectrogram, event-EDA overlays, responsive exact values and local setup have scoped evidence. Video audio derivation, exact answer/session navigation, original-source access and isolated-team local hosted acceptance now have scoped evidence. Respiration cycle and EMG input/envelope/burst review are connected, with subsequent current-source axis/history checks. Continuous EDA has connected review and bounded background-verification evidence. Dedicated SC-IAT, optional facial native outputs and remaining package/release gates stay open."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",

@@ -200,6 +200,7 @@ brohn_signal_plot_ui <- function(saved) {
 }
 brohn_install_signal_server <- function(input, output, session, store, state, attempt, message, prepare_download) {
   selection <- shiny::reactiveValues(report_id = NULL, kind = NULL, catalog_job = NULL, preview_job = NULL)
+  source_issues <- shiny::reactiveValues(catalog=NULL,preview=NULL)
   report <- shiny::reactive({shiny::req(identical(state$page, "report"), state$report_id); brohn_get_entity(store, "report", state$report_id)})
   context <- shiny::reactive({r <- report(); shiny::req(identical(r$id, selection$report_id)); r})
   jobs <- shiny::reactive({context(); shiny::invalidateLater(1000, session)
@@ -207,9 +208,12 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
   saved <- function(which) {
     value <- shiny::reactiveVal(NULL)
     shiny::observe({job <- jobs()[[which]]
-      if (is.null(job) || !identical(job$status, "succeeded") || is.null(job$result$signal_view_id)) {value(NULL); return()}
+      if (is.null(job) || !identical(job$status, "succeeded") || is.null(job$result$signal_view_id)) {value(NULL); source_issues[[which]]<-NULL; return()}
       record <- brohn_get_entity(store, "signal_view", job$result$signal_view_id)
-      if (!identical(record$body$report_id, context()$id)) value(NULL) else value(record)
+      tryCatch({brohn_signal_view_source(store,record)
+        if (!identical(record$body$report_id, context()$id)) value(NULL) else value(record)
+        source_issues[[which]]<-NULL
+      },error=function(e){value(NULL);source_issues[[which]]<-conditionMessage(e)})
     })
     # reactiveVal ignores identical snapshots. Progress polls must not recreate a
     # completed catalog's inputs, reset a typed range, or erase an error correction.
@@ -233,7 +237,10 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
     job <- brohn_queue_signal_view(store, context()$id, selection$kind, offset = offset)
     selection$catalog_job <- job$id; selection$preview_job <- NULL
   }))})
-  output$signal_progress <- shiny::renderUI({j <- Filter(Negate(is.null), jobs()); if (!length(j)) return(NULL)
+  output$signal_progress <- shiny::renderUI({
+    problems<-Filter(Negate(is.null),list(source_issues$catalog,source_issues$preview))
+    if(length(problems))return(shiny::p(role="status",class="brohn-alert",paste(unique(unlist(problems)),collapse=" ")))
+    j <- Filter(Negate(is.null), jobs()); if (!length(j)) return(NULL)
     active <- Filter(function(x) x$status != "succeeded", j); if (!length(active)) return(NULL)
     brohn_card(title = "Signal view progress", lapply(active, function(job) shiny::div(class = "brohn-stack",
       brohn_badge(switch(job$status, running = "Reading verified output", queued = "Queued", job$status)),
@@ -273,10 +280,11 @@ brohn_install_signal_server <- function(input, output, session, store, state, at
     selection$preview_job <- job$id; message("Building the view from the complete processed output.")
   }))
   output$signal_plot <- shiny::renderUI(brohn_signal_plot_ui(preview()))
-  output$signal_json_download <- shiny::downloadHandler(filename = function() paste0(preview()$id, ".json"),
-    content = function(file) prepare_download(function() brohn_copy_object_download(store, preview()$body$result_object$hash, file)), contentType = "application/json")
-  output$signal_svg_download <- shiny::downloadHandler(filename = function() paste0(preview()$id, ".svg"),
-    content = function(file) prepare_download(function() {svg <- brohn_signal_svg(preview()$body$view); brohn_require(!is.null(svg), "This view has no supported chart.")
+  authorized_preview <- function(){r<-preview();brohn_signal_view_source(store,r);r}
+  output$signal_json_download <- shiny::downloadHandler(filename = function() paste0(authorized_preview()$id, ".json"),
+    content = function(file) prepare_download(function() brohn_copy_object_download(store, authorized_preview()$body$result_object$hash, file)), contentType = "application/json")
+  output$signal_svg_download <- shiny::downloadHandler(filename = function() paste0(authorized_preview()$id, ".svg"),
+    content = function(file) prepare_download(function() {svg <- brohn_signal_svg(authorized_preview()$body$view); brohn_require(!is.null(svg), "This view has no supported chart.")
       writeLines(enc2utf8(as.character(svg)), file, useBytes = TRUE)}), contentType = "image/svg+xml")
   brohn_install_signal_annotations_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)
   brohn_install_cardiac_review_ui(input,output,session,store,state,attempt,message,prepare_download,context,catalog,table)

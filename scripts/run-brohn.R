@@ -6,6 +6,9 @@ options(shiny.maxRequestSize = 512*1024^2)
 port <- suppressWarnings(as.integer(Sys.getenv("RESEARCH_PLATFORM_PORT", "3838")))
 participant_port <- suppressWarnings(as.integer(Sys.getenv("BROHN_PARTICIPANT_PORT", "3840")))
 brohn_require(brohn_number(port, 1024, 65535, TRUE) && port != participant_port, "Researcher and participant ports must be distinct and between 1024 and 65535.")
+profile <- brohn_hosted_profile()
+if (!is.null(profile)) brohn_require(port == profile$researcher_port && participant_port == profile$participant_port,
+  "The launcher ports must match the configured hosted profile.")
 local({
   services <- brohn_start_services(brohn_workspace_path(), participant_port)
   on.exit(brohn_stop_services(services), add = TRUE)

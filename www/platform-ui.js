@@ -57,3 +57,27 @@ new MutationObserver(brohnRepairComboboxControls).observe(document.body, {
   childList: true, subtree: true, attributes: true, attributeFilter: ['aria-owns', 'aria-expanded', 'role', 'id']
 });
 brohnRepairComboboxControls();
+
+// Shiny appends notifications outside the main landmark and uses a plain div
+// for its close control. Keep the installed click handler while exposing the
+// same dismissal to keyboard and assistive-technology users.
+function brohnRepairNotifications() {
+  const panel = document.getElementById('shiny-notification-panel');
+  if (!panel) return;
+  panel.setAttribute('role', 'region');
+  panel.setAttribute('aria-label', 'Workspace notifications');
+  panel.querySelectorAll('.shiny-notification-close').forEach(close => {
+    close.setAttribute('role', 'button');
+    close.setAttribute('aria-label', 'Dismiss notification');
+    close.tabIndex = 0;
+  });
+}
+new MutationObserver(brohnRepairNotifications).observe(document.body, {childList:true, subtree:true});
+document.addEventListener('keydown', event => {
+  const close = event.target.closest('#shiny-notification-panel .shiny-notification-close');
+  if (!close || !['Enter', ' '].includes(event.key) || event.repeat) return;
+  event.preventDefault();
+  close.click();
+  document.getElementById('brohn-main')?.focus({preventScroll:true});
+});
+brohnRepairNotifications();

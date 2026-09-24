@@ -82,6 +82,7 @@
 .brohn_store_ready <- function(store) {
   .brohn_store_assert(is.list(store) && inherits(store$con, "DBIConnection") &&
     DBI::dbIsValid(store$con) && dir.exists(store$root), "Workspace is not open.", "closed")
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_session(store)
   invisible(TRUE)
 }
 .brohn_store_execution_paused <- function(store) {
@@ -121,6 +122,7 @@ brohn_store_batch <- function(store, fn) {
   .brohn_store_tx(store, fn)
 }
 .brohn_store_audit <- function(store, action, target, detail = list()) {
+  if (!is.null(store$hosted_context)) detail$actor <- brohn_hosted_actor(store)
   DBI::dbExecute(store$con,
     "INSERT INTO audit_log (occurred_at, action, target, detail_json) VALUES (?, ?, ?, ?)",
     params = list(.brohn_store_stamp(), action, target, .brohn_store_json(detail)))
@@ -213,6 +215,7 @@ brohn_get_entity <- function(store, kind, id, revision = NULL) {
     row <- DBI::dbGetQuery(store$con, "SELECT * FROM entity_versions WHERE kind=? AND id=? AND revision=?",
       params = list(kind, id, revision))
   }
+  if (nrow(row) && !is.null(store$hosted_profile)) brohn_hosted_require_project(store, row$project_id[[1L]])
   .brohn_store_entity(row)
 }
 # Fixed-column, parameterized JSON selection. Filter values and JSON paths never
@@ -238,6 +241,10 @@ brohn_get_entity <- function(store, kind, id, revision = NULL) {
 }
 brohn_list_entities <- function(store, kind, project_id = NULL, limit = 500, filters = list(), offset = 0L) {
   .brohn_store_ready(store)
+  if (!is.null(store$hosted_profile)) {
+    if (is.null(project_id)) project_id <- store$hosted_profile$project_id
+    brohn_hosted_require_project(store, project_id)
+  }
   kind <- .brohn_store_text(kind, "Entity kind")
   limit <- .brohn_store_integer(limit, "Result limit", 1L, 10000L)
   offset <- .brohn_store_integer(offset, "Result offset", 0L, 100000000L)
@@ -258,10 +265,13 @@ brohn_entity_history <- function(store, kind, id) {
   rows <- DBI::dbGetQuery(store$con,
     "SELECT * FROM entity_versions WHERE kind=? AND id=? ORDER BY revision DESC",
     params = list(.brohn_store_text(kind, "Entity kind"), .brohn_store_text(id, "Entity identity")))
+  if (!is.null(store$hosted_profile)) for (project in unique(rows$project_id)) brohn_hosted_require_project(store, project)
   lapply(seq_len(nrow(rows)), function(i) .brohn_store_entity(rows[i, , drop = FALSE]))
 }
 brohn_put_entity <- function(store, kind, id, body, expected_revision = 0L,
                              project_id = "default", operation_id = NULL) {
+  .brohn_store_ready(store)
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_project(store, project_id)
   kind <- .brohn_store_text(kind, "Entity kind")
   id <- .brohn_store_text(id, "Entity identity")
   project_id <- .brohn_store_text(project_id, "Project identity")
@@ -304,6 +314,7 @@ brohn_put_entity <- function(store, kind, id, body, expected_revision = 0L,
     }
     .brohn_store_assert(nchar(json,type="bytes")<=json_limit,"JSON payload exceeds the catalog limit; store bulk data as objects.","too_large")
     head <- DBI::dbGetQuery(store$con, "SELECT * FROM entities WHERE kind=? AND id=?", params = list(kind, id))
+    if (nrow(head) && !is.null(store$hosted_profile)) brohn_hosted_require_project(store, head$project_id[[1L]])
     current <- if (nrow(head)) head$revision[[1]] else 0L
     .brohn_store_assert(current == expected_revision,
       "This record changed since it was opened. Reload it before saving.", "revision_conflict")
@@ -440,6 +451,8 @@ brohn_list_jobs <- function(store, limit = 100, request_filters = list(), operat
   lapply(seq_len(nrow(rows)), function(i) .brohn_store_job(rows[i, , drop = FALSE]))
 }
 brohn_enqueue_job <- function(store, operation, request, idempotency_key, prepared_id = NULL) {
+  .brohn_store_ready(store)
+  if (!is.null(store$hosted_profile) && identical(operation, "backup_workspace")) brohn_hosted_require_action(store, "backup")
   operation <- .brohn_store_text(operation, "Job operation")
   idempotency_key <- .brohn_store_text(idempotency_key, "Idempotency key", 512L)
   if(!is.null(prepared_id)) {

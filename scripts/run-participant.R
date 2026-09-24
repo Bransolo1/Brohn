@@ -17,9 +17,15 @@ if (is.na(port) || port < 1024L || port > 65535L) stop("Participant port must be
 # Loading domain functions does not expose researcher routes in the HTTP app.
 source("R/platform-load.R", encoding = "UTF-8")
 brohn_load(ui = FALSE)
+profile <- brohn_hosted_profile()
+if (!is.null(profile)) {
+  brohn_require(identical(normalizePath(root, winslash="/", mustWork=TRUE), profile$workspace_root) &&
+    port == profile$participant_port, "The participant launcher must match the exact hosted workspace and internal port.")
+}
 local({
   store <- brohn_open_store(root)
   on.exit(brohn_close_store(store), add = TRUE)
+  store <- brohn_hosted_bind_store(store, profile, participant=TRUE)
   app <- brohn_delivery_app(store, static_root = argument("--static-root", "www/participant"))
   cat(sprintf("Brohn participant service: http://127.0.0.1:%d/participant/\n", port))
   flush.console()

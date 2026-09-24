@@ -106,6 +106,7 @@ brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_
       origin, as.integer(quota), as.integer(alias_required), entity$revision, .brohn_store_json(design), brohn_hash(design), stamp, stamp))
     DBI::dbExecute(store$con, "INSERT INTO delivery_deployment_credentials VALUES (?,?,?)",
       params = list(id, token, .brohn_delivery_hash(token)))
+    if (!is.null(store$hosted_profile)) brohn_hosted_register_release(store, id)
     .brohn_store_audit(store, "deployment.published", id, list(study_id = study_id, origin = origin, design_revision = entity$revision))
     .brohn_delivery_deployment(store, .brohn_delivery_deployment_row(store, id = id), TRUE)
   })
@@ -194,10 +195,12 @@ brohn_run_events <- function(store, run_id) {
   row <- DBI::dbGetQuery(store$con, paste("SELECT r.* FROM delivery_runs r JOIN delivery_run_credentials c ON c.run_id=r.id",
     "WHERE r.id=? AND c.token_hash=?"), params = list(run_id, .brohn_delivery_hash(token)))
   .brohn_delivery_require(nrow(row) == 1L, "Run access was not accepted.", 401, "unauthorized")
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_run(store, run_id)
   row
 }
 .brohn_delivery_start_result <- function(store, row, token) {
   run <- .brohn_delivery_run(row)
+  if (!is.null(store$hosted_profile)) brohn_hosted_require_run(store, run$id)
   events <- .brohn_delivery_events(store, run$id)
   context <- if (!is.null(run$protocol$design$questionnaire_navigation)) .brohn_delivery_revision_context(run$protocol, row$protocol_hash[[1L]]) else NULL
   state <- .brohn_delivery_replay(run$protocol, events, context)
@@ -234,6 +237,7 @@ brohn_run_events <- function(store, run_id) {
       return(.brohn_delivery_start_result(store, old, token))
     }
     .brohn_delivery_require(deployment$status[[1]] == "open", "This study is not accepting new participants.", 409, deployment$status[[1]])
+    if (!is.null(store$hosted_profile)) brohn_hosted_require_release(store, id, "enroll")
     .brohn_delivery_require(!as.logical(deployment$alias_required[[1]]) || nzchar(trimws(alias)), "Your researcher requires a participant alias.", 422, "alias_required")
     count <- DBI::dbGetQuery(store$con, "SELECT count(*) AS n FROM delivery_runs WHERE deployment_id=?", params = list(id))$n[[1]]
     .brohn_delivery_require(count < deployment$quota[[1]], "All places in this study have been allocated.", 409, "quota_full")
@@ -248,6 +252,7 @@ brohn_run_events <- function(store, run_id) {
       request$client_id, start_hash, json, .brohn_delivery_hash(json), count + 1L, stamp, stamp, as.integer(alias_supplied)))
     DBI::dbExecute(store$con, "INSERT INTO delivery_run_credentials VALUES (?,?,?)",
       params = list(run_id, secret, .brohn_delivery_hash(secret)))
+    if (!is.null(store$hosted_profile)) brohn_hosted_register_run(store, run_id, id)
     .brohn_store_audit(store, "participant.started", run_id, list(deployment_id = id, allocation_index = count + 1L,
       origin = deployment$origin[[1]], consented = request$consented, consent_required = design$consent$required,
       participant_alias_supplied = alias_supplied))
@@ -600,7 +605,7 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
   static_root <- normalizePath(static_root, winslash = "/", mustWork = FALSE)
   list(call = function(req) {
     tryCatch({
-      .brohn_delivery_origin(req)
+      if (is.null(store$hosted_profile) || !brohn_hosted_participant_request(store, req)) .brohn_delivery_origin(req)
       path <- brohn_default(req$PATH_INFO, "/")
       method <- toupper(brohn_default(req$REQUEST_METHOD, "GET"))
       .brohn_delivery_require(method %in% c("GET", "POST"), "HTTP method is not supported.", 405, "method")
@@ -621,6 +626,7 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       if (method == "GET" && operation == "assets" && length(parts) == 4L) {
         row <- .brohn_delivery_deployment_row(store, token = identity)
         .brohn_delivery_require(nrow(row) == 1L, "Asset was not found.", 404, "not_found")
+        if (!is.null(store$hosted_profile)) brohn_hosted_require_release(store, row$id[[1L]], "resource")
         hash <- parts[[4]]; design <- .brohn_delivery_design(row)
         materials <- c(design$stimuli, unlist(lapply(design$blocks, function(block) block$materials), recursive = FALSE))
         if (!is.null(design$welcome$asset)) materials <- c(materials, list(design$welcome))
@@ -641,6 +647,7 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       if (method == "GET" && operation == "entry") {
         row <- .brohn_delivery_deployment_row(store, token = identity)
         .brohn_delivery_require(nrow(row) == 1L, "Study link was not found.", 404, "not_found")
+        if (!is.null(store$hosted_profile)) brohn_hosted_require_release(store, row$id[[1L]], "entry")
         design <- .brohn_delivery_design(row)
         value <- list(deployment = list(id = row$id[[1]], title = row$title[[1]], origin = row$origin[[1]], status = row$status[[1]]),
           consent = design$consent, appearance = design$appearance, supported = TRUE,
