@@ -6,6 +6,7 @@
   const fields = () => ({channel:value('vision_channel'), metric:value('vision_metric'), start:value('vision_start'),
     end:value('vision_end'), limit:value('vision_limit'), frame:value('vision_frame_index')});
   const dispatch = (button) => {
+    if (button.getAttribute('aria-disabled') === 'true') return;
     const root = button.closest('#vision-explorer');
     if (!root || !window.Shiny) return;
     let payload;
@@ -33,6 +34,18 @@
   });
   const attach = () => {
     const root = document.getElementById('vision-explorer');
+    const pointPage = root?.querySelector('[data-vision-point-start]');
+    // Keep boundary controls focusable, but expose and enforce their state.
+    // These buttons survive table updates, including the final landmark page.
+    for (const action of ['point_previous','point_next']) {
+      const button = root?.querySelector(`[data-vision-action="${action}"]`);
+      if (button) {
+        const start = Number(pointPage?.dataset.visionPointStart), total = Number(pointPage?.dataset.visionPointTotal);
+        const unavailable = !pointPage || (action === 'point_previous' ? start === 0 : start + 100 >= total);
+        button.setAttribute('aria-disabled', String(unavailable));
+        button.classList.toggle('disabled', unavailable);
+      }
+    }
     if (root === observed) return;
     if (observed) resize.unobserve(observed);
     observed = root;

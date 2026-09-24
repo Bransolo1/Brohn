@@ -1,5 +1,21 @@
 # Changes
 
+## Connected measurement review — 2026-09-24
+
+- Connected the complete saved-video explorer to report navigation, exact native
+  landmark tables, recorded-frame extraction and source-bound exports.
+- Corrected mixed-validity timeline colors and heading hierarchy; retained open
+  landmark disclosures and keyboard focus across pagination and image readiness.
+- Follow replacement job identities on index/frame retry and use the existing
+  Windows-safe, hash-checked download copy for immutable recorded PNGs.
+- Reserve enough chart space for tick labels and units, including compact fNIRS
+  optical-density views; scientific values and support remain unchanged.
+- Completed exact processed-value and pupil/blink browser/export/restart checks;
+  independently checked all downloaded values and the current video index resource
+  boundary. See `docs/qa/PUBLICATION-CHECKPOINT-20260924.md` for scoped results.
+- Reconciled the shared local checkout, architecture, remaining work and John's
+  setup/handoff guidance. Brohn remains under development.
+
 ## Source checkpoint — 2026-09-21
 
 - Included exact processed-value paging/CSV, retained pupil/blink traces and

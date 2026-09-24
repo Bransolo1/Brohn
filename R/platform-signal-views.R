@@ -114,8 +114,18 @@ brohn_signal_svg <- function(view, title = NULL, width = 920) {
   if (length(spectra) && view$selected_range$eligible_value_range[[1L]] >= 0) ylim[1L] <- 0
   brohn_require(brohn_number(width, 300, 1600, TRUE), "Choose a supported chart width.")
   compact <- width < 560
-  height <- if (compact) 300 else 360; left <- if (compact && length(spectra)) 80 else if (compact) 68 else 94; right <- if (compact) 20 else 28; top <- 22; bottom <- 66
-  tick_label <- function(value) if (compact) format(signif(value, 3), trim = TRUE) else brohn_signal_number(value)
+  height <- if (compact) 300 else 360; right <- if (compact) 20 else 28; top <- 22; bottom <- 66
+  tick_label <- function(value) {
+    label <- if (compact) format(signif(value, 3), trim = TRUE) else brohn_signal_number(value)
+    if (nchar(label, type = "width") > if (compact) 9L else 13L)
+      label <- formatC(value, format = "e", digits = if (compact) 2L else 5L)
+    label
+  }
+  ticks_x <- seq(xlim[1L], xlim[2L], length.out = if (compact) 3 else 5); ticks_y <- seq(ylim[1L], ylim[2L], length.out = 5)
+  # Reserve a separate gutter for the rotated unit and the displayed tick text.
+  # Fixed compact padding lets small decimal ticks overlap a long unit label.
+  left <- max(if (compact && length(spectra)) 80 else if (compact) 68 else 94,
+    38 + 8 * max(nchar(vapply(ticks_y, tick_label, character(1)), type = "width")))
   sx <- function(x) left + (x-xlim[1L])/diff(xlim)*(width-left-right)
   sy <- function(y) height-bottom - (y-ylim[1L])/diff(ylim)*(height-top-bottom)
   n <- function(x) formatC(x, digits = 3, format = "f", decimal.mark = ".")
@@ -126,7 +136,6 @@ brohn_signal_svg <- function(view, title = NULL, width = 920) {
       fill = if (identical(b$name, "LF")) "#6682c4" else "#4ebaa6", `fill-opacity` = 0.16,
       shiny::tags$title(paste(b$name, "band", b$lower_hz, "to", b$upper_hz, "Hz; full band power is listed below")))
   })) else NULL
-  ticks_x <- seq(xlim[1L], xlim[2L], length.out = if (compact) 3 else 5); ticks_y <- seq(ylim[1L], ylim[2L], length.out = 5)
   grid <- shiny::tagList(lapply(ticks_y, function(y) shiny::tagList(
     shiny::tags$line(x1 = left, x2 = width-right, y1 = n(sy(y)), y2 = n(sy(y)), stroke = "#3f5058", `stroke-width` = 1),
     shiny::tags$text(x = left-10, y = n(sy(y)+4), `text-anchor` = "end", fill = "#d2dedd", `font-size` = 12, tick_label(y)))),

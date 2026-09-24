@@ -37,6 +37,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_neural_plots(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_gaze_report_server(input, output, session, store, state)
   brohn_install_gaze_trace_server(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_vision_explorer(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_acquisition_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_camera_artifact_ui(input, output, session, store, state, prepare_download)
   brohn_install_stream_curation_ui(input, output, session, store, state, attempt, message, refresh, prepare_download)

@@ -1,5 +1,23 @@
 # Full platform build — Brohn continuation
 
+## Measurement-review continuation — 24 September 2026
+
+- [x] Reconcile the shared local checkout with the September 21 GitHub baseline.
+- [x] Complete exact processed-value browser/CSV fidelity checks, including all
+  108,414 downloaded rows and retained historical reports.
+- [x] Complete pupil/blink SVG, keyboard scrolling, cancel/retry and restart checks.
+- [x] Connect saved-video explorer loading, report entry and server handlers.
+- [x] Verify the current complete-index worker against the unchanged 2.14 GB
+  artifact and independently inspect native values/resource bounds.
+- [x] Finish fNIRS narrow-screen label and complete-browser acceptance: 33
+  assertions/five scans, six selections with 3,580 exact rows and unchanged reports.
+- [x] Finish video landmark pagination, cancelled-job retry and exact PNG/CSV
+  export: 39 retained browser checks/seven scans plus 11 separate inspections.
+- [ ] Profile saved-context verification and navigation latency with authority preserved.
+
+The [current checkpoint](../qa/PUBLICATION-CHECKPOINT-20260924.md) links exact
+counts, failures and scope. The older checklist below describes its dated snapshot.
+
 ## Publication checkpoint — 21 September 2026
 
 - Latest source and test files are included in the GitHub handoff described in

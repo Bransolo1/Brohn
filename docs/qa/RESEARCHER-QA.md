@@ -13,6 +13,17 @@ in the ledger and below rather than overstating those original bundles.
 
 ## The study the evaluator must actually complete
 
+The [24 September continuation](PUBLICATION-CHECKPOINT-20260924.md) adds scoped
+saved-report journeys alongside the original whole-study scenarios. Exact-value
+review passes 22 browser assertions/five scans, with all 108,414 downloaded rows
+independently checked. Pupil/blink review passes 28 assertions/five scans and
+eight additional source-bound SVG checks, including complete service restart.
+fNIRS passes 33 assertions/five scans and all 3,580 selected rows. Video completes
+39 retained browser checks/seven scans plus 11 separate post-browser inspections;
+the inspector correction and missing browser-start hash snapshot remain explicit.
+Retained failures and final scope are in the linked records. These checks do not mark the original
+whole-study scenario bundles executed or qualify physical devices/human usability.
+
 Research question: does the revised package B attract more valid gaze to its
 logo than current package A, and is its explicit liking different? A is the
 experimental control. A neutral, protocol-controlled screen supplies a separate

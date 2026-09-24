@@ -1,7 +1,7 @@
 # Exact processed-value reader acceptance
 
-20 September 2026. **Qualification in progress: the connected browser journey
-is still running.** Read with [the source and export contract](PROCESSED-VALUES-CONTRACT.md).
+24 September 2026. **Connected browser acceptance passed for the scoped Windows
+fixtures below.** Read with [the source and export contract](PROCESSED-VALUES-CONTRACT.md).
 This is output-reader/workflow evidence. It does not qualify a measurement
 device, detector, physiological interpretation or scientific recipe.
 
@@ -86,7 +86,54 @@ text, Unicode and signed zero. It must not be described as live or measured.
 
 ## Connected browser and visual evidence
 
-Pending completion of `tests/researcher-signal-values.mjs`. Initial desktop and
-390-pixel screenshots have been inspected: numeric strings remain horizontal,
-and the narrow table has a labelled keyboard-scroll region. Final accepted
-evidence, job counts and source hashes will be recorded here after completion.
+`tests/researcher-signal-values.mjs` completed **22 assertions and five clean
+accessibility/reflow scans**, using an isolated copy of the retained cardiac
+workspace plus the explicitly artificial 137-row schema fixture. The actual
+worker processed **14 new exact-value jobs**: seven successful pages, six
+successful complete exports and one explicitly cancelled page request. Retry
+preserved its exact inclusive range. This count excludes the copied historical
+analysis/catalog jobs; no physiological analysis was rerun.
+
+The journey covers typed null, signed zero, unknown/excluded retention, literal
+Unicode/markup row detail, next/previous paging, cancellation/retry, inclusive
+and empty ranges, absent coordinates, time/frequency/event units, immutable
+download receipts and report reopening. The recorded ECG input export contains
+**108,000 rows / 113,505,185 bytes**, beyond the plot preview. The original schema
+fixture, ECG and PPG report body hashes remain unchanged; PPG was preserved in
+the copied workspace and was not a separate browser selection in this journey.
+
+An additional independent Python standard-library audit reads the original
+native NDJSON and the six actual browser downloads directly, without invoking
+the production artifact parser or exporter. **All 108,414 selected rows** match:
+every coordinate and measure round-trips to the original binary64 (including
+signed zero), every original typed row matches, and row indices, null/retention
+state, units, table declarations, report binding and byte hashes agree. The
+zero-row export is included in the six downloads and contributes no rows.
+
+All five retained screenshots were visually inspected: desktop exact values;
+390-pixel exact values, support/detail, frequency values and recorded ECG input.
+Numeric strings remain horizontal, essential actions reflow, and the labelled
+horizontal table can be scrolled with the keyboard. Automated scans report no
+axe violations, document overflow or actions below the checked 44px target.
+These checks do not replace participant or assistive-technology usability work.
+
+Retained evidence (outside the source repository):
+
+- `make/work/test-runs/brohn-signal-values-browser-resume-20260924-01/browser-1790214475079/results.json`
+  — assertions, scans, source-code hashes, jobs and immutable report identities.
+  SHA-256: `6250bc5bcb54f2d97566a9dd5a1d0c25ec4fe26938046ec1d7a2349b663d02e6`.
+- The same directory contains the six CSV/schema pairs, screenshots and
+  `independent-download-audit.json`; its reproducible audit script is retained
+  in the parent test directory.
+- Recorded ECG CSV SHA-256:
+  `04a6caf3a6663e9703026f9bcb09e75a38912e18644ff5ef9bcd5b7f3b57c038`.
+
+The September 20 `oka/work/brohn-signal-values-browser-01` through `-04` runs
+remain retained failures. They exposed selector assumptions, keyboard timing,
+reflow and stale-selection issues during development. The latest historical
+run completed 18 assertions/five scans but timed out reopening Data library at
+30 seconds. The resumed harness waits for the actual library control within
+the existing 120-second readiness bound; reopening now passes without a
+production-code change. This proves the completed route, not a production
+latency target. The fixture accepts `BROHN_QA_PORT` for isolated runs; this run
+used port 3881 and terminated its own services after inspection.

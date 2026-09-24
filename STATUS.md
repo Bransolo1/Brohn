@@ -1,5 +1,15 @@
 # Resume here — Brohn
 
+## Current measurement-review checkpoint — 24 September 2026
+
+The [latest checkpoint](docs/qa/PUBLICATION-CHECKPOINT-20260924.md) consolidates
+the work shared with the other local development task. Complete processed-value
+downloads and pupil/blink export/restart journeys now pass their scoped checks.
+Saved-video review is connected to actual reports, with mixed-validity states
+and persistent keyboard landmark paging. The linked records distinguish each
+completed check from remaining acceptance and broader platform work.
+The September 21 notes below describe the earlier snapshot.
+
 ## Source publication checkpoint — 21 September 2026
 
 The latest source handoff to Bransolo1/Brohn includes the resumed commits and
@@ -27,8 +37,7 @@ docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md for the precise scope and retained failu
 The combined welcome/equipment/camera/question/passive/task/image-choice study
 passes11 browser assertions/four scans/two actual jobs; all28 task trials remain
 in the receiver. Read docs/qa/MIXED-STUDY-JOURNEY.md for this sample-only scope.
-Current implementation: complete signal-value paging/CSV, saved video geometry
-and pupil/blink traces.
+Latest measurement-review evidence is recorded in the September 24 checkpoint above.
 
 The owner explicitly requested continued implementation until Brohn is a finished,
 premium, end-to-end competitor to iMotions. The owner also requires historical

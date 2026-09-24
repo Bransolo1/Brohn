@@ -1,7 +1,8 @@
 # Measurement visual coverage audit
 
-20 September 2026. Read-only source and evidence reconciliation for PC05. No
-test suite or browser journey was rerun for this audit. **Recorded evidence**
+24 September 2026 update to the 20 September source audit for PC05.
+New scoped evidence is linked below; the original whole-profile audit was not
+rerun as a complete suite. **Recorded evidence**
 below means an executed result documented in the named acceptance record;
 **source path** means current code is connected, without a claim that its
 measurement-specific browser journey has passed.
@@ -21,7 +22,7 @@ All saved reports enter through `brohn_report_detail_ui()` in
 | Path | Actual content, numerical alternative and export |
 |---|---|
 | **Report** | Origin/status, coverage, features (first 100), observations (first 50), recording support (first 100), settings and provenance. Generic CSV chooses observations when present, otherwise features, then choice/task rows; it is **not every result collection combined**. Full JSON retains the saved result; externally packed output requires its complete-artifact route. HTML includes report content and explicitly connected static gaze/neural plots, not every interactive explorer. |
-| **Signal** | `R/platform-signal-views.R` plus the verified streaming `signal_preview.py` worker. Only complete `physiology-series`/`physiology-events` artifacts enable it. Select recording/channel/table/measure and complete or inclusive range. Extrema-preserving envelopes retain source support fragments; cadence/reset/missing boundaries are disconnected. Units and original clock origin are explicit. Empty ranges show a reason and counts. Cancel/retry and corrupt-source refusal preserve the report. SVG and view/provenance JSON are downloadable; full typed artifacts download separately. **The ordinary on-screen numerical alternative contains support counts/extrema/fragments, not a paged exact x/y sample table. There is no generic complete selected-measure CSV action.** Cardiac marker tables are a separate exception. |
+| **Signal** | Complete source-bound signal plots keep gaps, units and coverage; exact selected values now have bounded paging, original typed fields and complete CSV plus schema/provenance. Numeric exports read the full chosen table/range, not its envelope. [Processed-value acceptance](PROCESSED-VALUES-ACCEPTANCE.md) records 22 browser assertions/five scans and an independent audit of all 108,414 rows across six downloads. This shared route does not qualify every modality-specific interpretation or navigation latency. |
 | **Neural** | `R/platform-neural-views-plots.R` reads complete bounded saved arrays, selects recording/condition/channel and exact sample window, and exposes up to 50 plotted values plus saved features. All channel values/frequencies export as CSV and typed JSON; the current chart exports as SVG. Static HTML defaults to a supported cell and states remaining coverage. Source/trial/grid/unit mismatch visibly refuses a plot. |
 | **Gaze** | `R/platform-gaze-report-views.R` selects an exact exposure, pins original stimulus bytes/geometry, and displays candidate/AOI graphics and numerical tables. Default candidate display is capped at 200; static HTML defaults to 12 exposures. Counts explicitly disclose limits. Missing/corrupt images leave a labelled frame and numerical evidence; missing valid gaze never becomes a zero share. Full JSON retains all result records; generic CSV is the AOI observation collection, not every pupil/blink feature. |
 | **Task** | `R/platform-task-plots.R` and `platform-task-plot-views.R` read the complete selected imported administration audit or exact native journal/protocol. Chronology and latency histogram use all selected rows, independently of 50-row table pages. First response/final correct and all/scored positions are explicit. SVG, all selected rows CSV and complete typed source/provenance JSON are separate downloads. Missing retained source fails visibly. Cohort dots use saved person-level values, not pooled trials. |
@@ -39,12 +40,12 @@ same artifact schema.
 |---|---|---|
 | Prepared AOI gaze, `aoi-valid-gaze-time-share/0.1.0-draft` (`gaze.aoi`) | **Gaze** pinned stimulus/AOI rectangles and 0–100% valid-time-share bars. Prepared intervals do not contain fixation coordinates; no reconstructed scanpath is drawn. | AOI inside/valid/unobserved milliseconds and exact denominator accompany bars. Missing support remains unavailable; overlapping AOI shares may sum above 100%. Gaze/Report exports. Recorded 30 component checks and 23 researcher checks/three scans cover sampled/prepared views, exact assets and unavailable exposure. See [gaze views](../methods/GAZE-REPORT-VIEWS.md), [researcher QA](RESEARCHER-QA.md). |
 | Sampled gaze, `brohn-adjacent-ray-ivt/0.1.0-draft` (`gaze.events`, `gaze.aoi`) | **Gaze** numbered equal-size fixation-candidate centroids, saved direct transition links, AOI shares and candidate timing. Coordinates use the declared rendered stimulus frame; off-stimulus values remain in the table. | Candidate source rows, duration, valid coverage, TTFF/censoring and gap masks remain separate. A candidate map is not continuous gaze replay. Recorded evidence is the same scoped gaze journey; dynamic geometry, synchronized stimulus replay and an independently annotated detector validation remain absent. |
-| Pupil and externally labelled blinks within sampled-gaze (`gaze.pupil_blink`) | Current gaze analysis saves `pupil_summary` and `source_labelled_blink` feature records. The dedicated **Gaze** graphic does not render pupil diameter/correction or blink-time traces. | Native mm/mm²/pixels/pixels²/device units, valid pupil milliseconds, baseline mean/coverage and corrected mean remain saved; invalid baseline is missing. Full JSON preserves them, generic feature preview may show them, while AOI CSV does not export all feature records. **Missing visual path:** raw/corrected pupil and blink/invalid masks. Complete pupil samples are not retained in this result schema; do not plot a synthetic trace from its mean. Arithmetic evidence exists in `tests/platform-gaze.R`, not a pupil visual-browser receipt. |
+| Pupil and externally labelled blinks within sampled-gaze (`gaze.pupil_blink`) | Complete retained pupil samples support original/corrected traces, baseline context, validity/blink masks, exact values, complete artifact/CSV and source-bound SVG. Unsupported correction stays absent; labels retain original units and separate exposures. | [Trace acceptance](PUPIL-BLINK-TRACE-ACCEPTANCE.md): 28 browser assertions/five scans plus eight independent SVG checks, cancellation/retry and full service restart with byte-identical saved exports. Calibration, luminance confounds, source blink-label accuracy and baseline appropriateness remain separate. |
 | EEG channel Welch, `eeg-welch-channel/1.0` (`eeg.spectrum`) | **Signal** complete frequency-bin density in µV²/Hz; **Report** band powers in µV², relative-power denominators and RMS. Axis stays Hz. | Full frequency artifact, exact observed bins/support, empty/invalid range handling and Signal exports. No raw-voltage sample table is emitted by the current Welch artifact adapter, so its report does not acquire a raw EEG waveform through this path. Recorded 45 native-header/EDA checks plus 34 Signal checks exercise actual EDF spectrum and exports. [Recorded EDF agreement](EEG-WELCH-RECORDED-REFERENCE.md) is numerical reference evidence, not another browser walkthrough. |
 | EEG ERP, `eeg-erp-epochs/1.0` (`eeg.erp`) | **Neural** mean voltage ± saved pointwise trial SEM, µV versus seconds, positive upward; saved baseline and component settings are visible. | Retained/requested/excluded trials, event/source declarations, null SEM for one trial and unavailable conditions remain explicit. CSV/JSON/SVG/HTML available. Recorded 66 Chrome checks/seven scans across ERP/Morlet/tagging include independent 10/20-µV pulses and exports ([neural plots](../methods/NEURAL-PLOTS.md)). A dedicated individual-trial waveform/rejection-raster display is not implemented by this adapter. |
 | EEG Morlet, current `eeg-morlet-epochs/1.1`, historical `/1.0` (`eeg.time_frequency`) | **Neural** complete time-frequency map plus exact frequency slice. Raw power µV², frozen transform units or ITC 0–1; native pixels retain all saved cells, with discrete actual-frequency rows. | Missing and unsupported masks differ from zero; baseline duration/kernel support and trial counts remain visible. Complete CSV/JSON and map/slice SVG/HTML. Recorded 67 component checks and fresh 21 browser checks/six scans in [map acceptance](NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md), including missing/zero/unavailable and reopened versions. Source-label Unicode under the separate neural CSV writer was not independently re-audited here. |
 | EEG tagging, `eeg-frequency-tagging/1.0` (`eeg.frequency_tagging`) | **Neural** trial-mean PSD µV²/Hz with saved target-bin markers; neighboring noise and SNR remain saved features. | Exact FFT/bin/window and trial support, zero-noise unavailable SNR and no invented target selection. Same CSV/JSON/SVG/HTML path. The recorded 66-check neural journey tests a known 400-density target, noise 4 and SNR 100. No physical flicker-output qualification is implied. |
-| fNIRS, `fnirs-od-beer-lambert/1.0` (`fnirs.hemodynamics`, descriptive subset) | **Signal source path** exposes complete optical-density (dimensionless) and haemoglobin-change (µM) columns per channel/segment. **Report** includes HbO/HbR channel identity, geometry and SCI screening feature. | Full typed series preserves original sample indices, wavelength/pathlength settings and source hash. Missing/bad spans remain split. Artifact tests ran separately in the prepared fNIRS environment ([artifact contract](../methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md)); **no fNIRS-specific researcher plot/browser/export receipt was located**. No joint HbO/HbR comparison, event GLM, motion correction or short-channel model is supplied. |
+| fNIRS, `fnirs-od-beer-lambert/1.0` (`fnirs.hemodynamics`, descriptive subset) | Complete optical density and HbO/HbR-change columns retain native indices, original clock, wavelength/pathlength factors and disconnected source segments. Exact point/CSV/typed-source exports are connected. | [Independent phantom](FNIRS-INDEPENDENT-PHANTOM.md) and [visual/export record](FNIRS-VISUAL-ACCEPTANCE.md) distinguish saved-output checks from current browser acceptance. Final browser acceptance passes 33 assertions/five scans and all 3,580 selected source rows; narrow-screen label collisions are corrected and tested. Joint HbO/HbR comparison, event GLM, motion correction and short-channel models remain open. |
 | Whole-recording EDA, `eda-neurokit-highpass/1.0` (`eda.activity`) | **Signal source path** exposes cleaned, tonic and phasic µS traces and separate candidate-event scatter values; **Report** has tonic/SCR summaries. | Retained/filter-edge support and candidate amplitude/rise/recovery units remain in artifacts. Generic trace does not overlay the candidate onset/peak/recovery on its waveform. Existing worker/domain tests establish arithmetic/artifacts; the documented connected EDA browser fixtures exercise the event recipe below, so whole-recording visual parity is **not independently closed**. |
 | Event EDA, `eda-event-highpass/1.0` (`eda.activity`) | **Signal** continuous cleaned/tonic/phasic µS plus candidate-event artifact; **Report** adds readable baseline/response/SCR support tables and exact eligible event/channel denominators. | Baseline=5, response=5, change=0 and supported nonresponse=0 remain distinct from missing responder amplitude, overlap and late boundary exclusions. Recorded 45 native-header/EDA checks/seven scans and 34 Signal checks/six scans. HTML/CSV and complete artifacts checked. **Missing:** an event-centred overlay showing authored baseline/response/latency/recovery windows with the trace. |
 | Event EDA, `eda-event-cvxeda-defaults/1.0` (`eda.activity`) | Same connected output/UI schema as event highpass; decomposition recipe remains explicit. | [Event-EDA contract](../methods/EVENT-RELATED-EDA.md) records 28 Python/65 R checks, including actual worker and artifact publication. This audit found no separate actual cvxEDA researcher plot browser receipt. Do not borrow the highpass numerical oracle or describe decomposition as resolving overlapping-event attribution. |
@@ -55,8 +56,8 @@ same artifact schema.
 | Temperature, `temperature-calibrated-descriptive/1.0` (`temperature.peripheral`) | **Signal source path** for calibrated °C; **Report** adds source/calibration/context, segment means/slopes and explicitly defined excursion evidence. | Complete typed series/events and report CSV/JSON/HTML available; support does not bridge gaps. [Peripheral browser journey](PERIPHERAL-RESEARCHER-JOURNEY.md) records 48 checks/eight scans and exact temperature reports/exports. Its plotted full/range assertions target acceleration; independent saved-job checks exercise temperature/event previews. A separate Chrome temperature-curve/threshold-overlay receipt is not established. |
 | Acceleration, `acceleration-calibrated-triaxial/1.0` (`movement.sensors`, acceleration subset) | **Signal** ordered calibrated axes and derived magnitude in m/s²; optional ENMO g/derivative quantities retain their exact column unit. **Report** has declared gravity policy and operational excursion support. | Recorded 48-check/eight-scan peripheral journey plots actual four-sample g→9.80665 m/s² data and disconnected selected points, exports/reopens unchanged sources. Numeric support/artifact route is generic Signal. No orientation reconstruction, force, GPS or biomechanical inference is enabled by that plot. |
 | Audio, `audio-praat-acoustics/1.0` (`audio.acoustics`, acoustic subset) | **Signal source path** exposes frame RMS in FS and spectral centroid in Hz; separate pitch-frame events in Hz. **Report** has pitch/periodicity and source summaries. | Pitch null/unvoiced versus zero-energy centroid support remains typed; frame centre/hop/rate and original audio bytes are retained. Dedicated-environment artifact tests are documented, **not an actual audio-analysis visual browser journey**. No saved waveform/spectrogram/speech transcript view is connected. Native microphone RMS preflight is a separate acquisition check, not this analysis display. |
-| `face_geometry_v1` (`webcam.facial`, geometry/native blendshape subset) | **Report only**: features and first compact per-frame observations; complete `vision-observations` JSONL download. `platform-vision-views.R` is the AOI-proposal UI, not a face-result explorer. | Units include image-width ratios, degrees and model-native blendshape values; per-channel valid-frame/time support is retained. Recorded camera journeys process generated non-face video and correctly show insufficient support; they do **not** qualify a successful face-geometry plot. **No dedicated temporal/landmark plot or complete frame table is connected.** |
-| `face_pose_hands_v1`, `custom_v1` (`webcam.pose` and selected geometry channels) | Same **Report-only** path; frame artifact retains face/pose/hand landmarks and explicit model states. Custom mode chooses distinct face/pose/hands channels. | Invalid/absent/multiple/border/handedness support stays in saved data; image-plane ratios/angles are not calibrated 3-D motion. Complete JSONL is available, but generic CSV uses the bounded observation preview. **No successful per-channel researcher visual/export acceptance was located; no skeleton/time view or video-linked replay exists in these result hooks.** |
+| `face_geometry_v1` (`webcam.facial`, geometry/native blendshape subset) | Complete source-bound frame/metric explorer is connected to reports: validity timeline, selected measure/time range, exact original frame JSON, native landmark pages, genuine decoded PNG overlay and complete numeric CSV/manifest. | [Researcher journey](VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md) records current face/pose/hand browser evidence and retained failures; [resource acceptance](VIDEO-GEOMETRY-RESOURCE-ACCEPTANCE.md) covers a separate 36,000-frame synthetic native-width index. Four-frame model/browser cases do not qualify browser paging beyond the old 2000-frame preview. Geometry/blendshapes are not validated emotion or attention. |
+| `face_pose_hands_v1`, `custom_v1` (`webcam.pose` and selected geometry channels) | Same complete explorer, with native pose/hand points, explicit handedness and saved validity states; mixed-validity buckets remain visibly mixed. | Same scoped [journey](VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md). Original encoded dimensions and PTS bind recorded pixels; image-plane geometry is not calibrated 3-D motion. Synchronized multimodal/media replay and wider browser capacity remain separate. |
 
 ## Enabled response, questionnaire and cross-measure profiles
 
@@ -110,45 +111,22 @@ not every EEG asymmetry recipe, descriptive fNIRS is not a GLM, keyboard AAT is
 not a physical movement task, and the five registered tasks do not activate the
 rest of the cognitive-task catalog. Preserve the complete 50-entry scope.
 
-## Three prioritized implementation gaps
+## Implemented priorities and remaining review work
 
-1. **Give every processed trace a complete accessible value route.** Extend the
-   existing verified Signal reader with bounded paged selected-table values and
-   a streaming complete selected-measure CSV export. Keep original row/sample
-   index, coordinate/unit, retained/missing reason, fragment/identity and source
-   hashes; do not export the extrema envelope as if it were all samples.
-   This immediately benefits the already enabled EDA, cardiac, respiration,
-   EMG, temperature, movement, fNIRS and audio paths. Qualify real saved output
-   from each family, including empty/invalid range and keyboard/narrow use.
-   Then add measurement-specific event overlays; the first useful bounded one
-   is event-EDA baseline/response/candidate windows against complete phasic data.
-   Current support-count tables and a downloadable typed artifact alone do not
-   fulfill point-level accessible inspection.
+The original three priorities (complete processed values, saved video geometry,
+and retained pupil/blink traces) now have connected implementations. The
+[September 24 checkpoint](PUBLICATION-CHECKPOINT-20260924.md) and linked records
+state their executed browser, export, restart and resource boundaries.
 
-2. **Add a source-bound saved video-geometry explorer.** Read complete immutable
-   `vision-observations` through a bounded frame/time/channel catalog; provide
-   frame-state/validity timeline, exact numerical frame detail and a selected
-   landmark/geometry view with units. Retain absent/multiple/border/ambiguous
-   states and model-native handedness. Download exact selected data and a
-   labelled figure. A video overlay must require an explicit decoded-frame
-   binding; browser callback time is not automatically encoded-frame time.
-   Test successful face/pose/hand fixtures as well as absent/invalid cases. Do
-   not count the existing absent-face automatic report or preflight preview as
-   acceptance of this missing result view.
+Remaining work includes complete saved-output journeys for every enabled family,
+event-EDA baseline/response overlays, respiration/EMG/audio-specific views,
+questionnaire/scale distributions, paired-person comparisons and synchronized
+multimodal replay. Exact values and an accessible generic chart do not replace
+those modality-specific requirements. Video also needs a connected browser case
+beyond the legacy 2000-frame preview; the independent 36,000-frame index test is
+separate evidence. Large-report navigation and repeated synchronous context reads
+need profiling with original source authority preserved.
 
-3. **Complete pupil and source-labelled blink visual evidence.** Introduce a
-   complete source-bound pupil sample view/artifact before drawing traces; the
-   current saved mean cannot supply it. Show original and subtractively corrected
-   measurements, the declared baseline window, pupil validity and externally
-   labelled blink masks in original units, with gaps and failed-baseline states.
-   Keep each exposure/session separate and support an exact numeric/CSV/JSON
-   alternative. Qualify known baseline arithmetic and missing/zero/blink
-   boundaries through an actual saved-report browser journey. Do not relabel
-   tracking loss as a blink or the trace as an attention measure.
-
-These are proposed next slices, not implemented changes from this audit.
-Questionnaire/scale charts, paired-comparison plots and modality-specific
-overlays remain explicit secondary gaps in the matrix. Cardiac exclusion/reanalysis now has separate direct, curated-source and
-researcher-browser evidence in [its acceptance record](CARDIAC-EXCLUSION-ACCEPTANCE.md);
-existing input/clean/spectrum views are not re-counted as proof of that workflow. No physical-device, participant usability or broader scientific
-qualification is asserted.
+Cardiac exclusion/reanalysis retains separate direct, curated-source and
+[researcher-browser evidence](CARDIAC-EXCLUSION-ACCEPTANCE.md). Physical devices,
+participant/human comprehension and broader scientific qualification remain open.

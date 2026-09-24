@@ -2,6 +2,7 @@
   "schema": "brohn-qa-catalog/1.0",
   "scope": "Isolated local component and integration checks. Browser researcher journeys, human usability and physical-device qualification have separate evidence.",
   "tests": [
+    {"id":"vision-plot-states","suite":"domain","path":"tests/platform-vision-plot.R","timeout_s":120},
     {"id":"gaze-traces","suite":"scientific","path":"tests/platform-gaze-traces.R","timeout_s":300},
     {"id":"gaze-trace-server","suite":"domain","path":"tests/platform-gaze-trace-server.R","timeout_s":180},
     {"id":"signal-values","suite":"scientific","path":"tests/platform-signal-values.R","timeout_s":600},

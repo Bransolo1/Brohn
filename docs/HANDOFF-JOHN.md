@@ -1,6 +1,17 @@
-# John: historical 8 September handoff
+# John: Brohn development handoff
 
-**Latest source handoff, 21 September 2026:** read the
+**Start here — 24 September 2026:** read the
+[latest checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md),
+[current status](../STATUS.md), [master architecture](MASTER-ARCHITECTURE.md),
+[remaining work](KNOWN-GAPS.md) and [build manifest](preparation/build-manifest.json).
+Use the [local installation guide](operations/LOCAL-INSTALLATION.md) to set up
+your own runtime. Source from the other local development task is consolidated
+in this repository. Its saved QA data and runtime dependencies are external;
+machine-local receipt paths in the evidence documents will not exist in a clone.
+Start a branch from current `main`; preserve original reports and run the checks
+for the feature you change. The dated September 8 instructions below are history.
+
+**Historical source handoff, 21 September 2026:** read the
 [publication checkpoint](qa/PUBLICATION-CHECKPOINT-20260921.md),
 [current status](../STATUS.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
 The questionnaire explorer is now connected. Latest work covers complete signal

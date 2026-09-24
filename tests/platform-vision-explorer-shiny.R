@@ -12,11 +12,12 @@ local({
   shiny::testServer(server,{
     serial<-0L;fields<-list(channel="face",metric="face.blendshape._neutral",start="",end="",limit="25",frame="0")
     command<-function(action,changes=list(),source=NULL,epoch=NULL,extra=list()){
-      h<-output$vision_explorer$html;attribute<-function(name)sub(paste0('.*data-',name,'="([^"]*)".*'),'\\1',h)
+      h<-output$vision_explorer$html;attribute<-function(name){matched<-regmatches(h,regexec(paste0('data-',name,'="([^"]*)"'),h))[[1L]];stopifnot(length(matched)==2L);matched[[2L]]}
       serial<<-serial+1L;f<-fields;for(n in names(changes))f[[n]]<-changes[[n]]
       session$setInputs(vision_action=c(list(action=action,fields=f,source=brohn_default(source,attribute("source")),epoch=brohn_default(epoch,attribute("epoch")),serial=serial),extra));session$flushReact()}
     session$flushReact();command("open")
     for(i in seq_len(100L)){session$elapse(650);session$flushReact();if(!is.null(ui$active()))break;Sys.sleep(.1)}
+    if(is.null(ui$active())||!is.null(state$error))brohn_write_json_file(list(error=state$error,progress=output$vision_progress$html,jobs=brohn_list_jobs(store)),file.path(folder,"open-failure.json"))
     check(!is.null(ui$active())&&is.null(state$error),"Actual UI opens the existing complete index through asynchronous verification")
     session$setInputs(vision_channel="face",vision_metric="face.blendshape._neutral",vision_start="",vision_end="",vision_limit="25",vision_frame_index="0",vision_landmarks=TRUE,vision_width=300)
     check(grepl("Frame states only",output$vision_controls$html,fixed=TRUE)&&grepl("Source PTS origin: 2.000000",output$vision_controls$html,fixed=TRUE),"Controls expose frame-state-only view and original source clock")

@@ -4,8 +4,8 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-21",
-    "publication_handoff": "docs/qa/PUBLICATION-CHECKPOINT-20260921.md",
+    "date": "2026-09-24",
+    "publication_handoff": "docs/qa/PUBLICATION-CHECKPOINT-20260924.md",
     "handoff": "docs/PRODUCT-COMPLETION-BACKLOG.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
@@ -293,7 +293,8 @@
       "status": "implementing",
       "implementation_evidence": [
         "docs/sprints/02-full-platform.md",
-        "docs/qa/RESEARCHER-QA.md"
+        "docs/qa/RESEARCHER-QA.md",
+        "docs/qa/PUPIL-BLINK-TRACE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "One documented raw importer yields checked fixations/AOI metrics and linked liking.",
@@ -329,7 +330,8 @@
         "docs/qa/NEURAL-BASELINE-ACCEPTANCE.md",
         "docs/qa/NEURAL-TIME-FREQUENCY-MAP-ACCEPTANCE.md",
         "docs/qa/EEG-WELCH-RECORDED-REFERENCE.md",
-        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md"
+        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md",
+        "docs/qa/FNIRS-VISUAL-ACCEPTANCE.md"
       ],
       "acceptance": [
         "EEG reference/filter/epoch/PSD/TFR recipes run import to report with retained-trial counts.",
@@ -384,7 +386,8 @@
         "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
         "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
-        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md"
+        "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
+        "docs/qa/PROCESSED-VALUES-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
@@ -478,7 +481,10 @@
       "implementation_evidence": [
         "scripts/workers/README-vision.md",
         "tests/platform-vision.R",
-        "docs/qa/RESEARCHER-QA.md"
+        "docs/qa/RESEARCHER-QA.md",
+        "docs/qa/VIDEO-GEOMETRY-SAVED-REFERENCE.md",
+        "docs/qa/VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md",
+        "docs/qa/VIDEO-GEOMETRY-RESOURCE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Frame timestamps, no-face/occlusion/multi-face states and model hashes survive import to report.",
@@ -542,7 +548,11 @@
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
         "docs/qa/MIXED-STUDY-JOURNEY.md",
-        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md"
+        "docs/qa/FNIRS-INDEPENDENT-PHANTOM.md",
+        "docs/qa/PROCESSED-VALUES-ACCEPTANCE.md",
+        "docs/qa/PUPIL-BLINK-TRACE-ACCEPTANCE.md",
+        "docs/qa/FNIRS-VISUAL-ACCEPTANCE.md",
+        "docs/qa/VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -626,7 +636,8 @@
         "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
-        "docs/qa/MIXED-STUDY-JOURNEY.md"
+        "docs/qa/MIXED-STUDY-JOURNEY.md",
+        "docs/qa/PUBLICATION-CHECKPOINT-20260924.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",

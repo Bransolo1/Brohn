@@ -34,6 +34,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (ui) source("R/platform-cardiac-review-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-value-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-gaze-trace-server.R", local = envir, encoding = "UTF-8")
+  if (ui) source("R/platform-vision-explorer-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-equipment-setup-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-material-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-guidance-views.R", local = envir, encoding = "UTF-8")

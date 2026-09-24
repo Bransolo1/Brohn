@@ -6,13 +6,25 @@ Brohn name. [Current status](../STATUS.md) and the
 record the latest connected work and its scoped acceptance. [John's handoff](HANDOFF-JOHN.md) preserves the
 8 September stopped checkpoint. This plan remains incomplete.
 
-Revision 2026-09-08. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
+Revision 2026-09-24, retaining the September 8 full-scope contract. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
 
 The destination is a premium, accessible R-first workspace for undergraduate and commercial researchers: design controlled studies, combine implicit/explicit/physiological measures, collect or import once, and receive traceable analysis with minimal intervention. Breadth is part of the architecture from the start. Features become available when their complete study-to-report route works, rather than from the presence of a package or an empty screen.
 
 The [unified experience](product/UNIFIED-EXPERIENCE.md) connects all 50 capabilities through 13 shared measure-card families and [34 planned whole-journey evaluations](product/journey-acceptance.json). The [brand system](brand/BRAND-SYSTEM.md), [editable visual assets](../www/brand/asset-manifest.json) and [design preview](brand/preview.html) define the premium soft-dark direction. The [introduction and launch plan](product/INTRODUCTION-AND-LAUNCH.md) defines onboarding and evidence-appropriate release claims; the [Astra build brief](preparation/ASTRA-BUILD-BRIEF.md) turns this contract into focused implementation packets. These specifications are cross-cutting requirements, not separate products or achieved usability claims.
 
 ## 1. Full product surface
+
+**Measurement-review integration, 24 September 2026:** saved video reports now
+open the complete source-bound frame/metric explorer through the shared report
+screen. R owns report/selection authority, supervised workers index complete
+observations and extract exact recorded pixels, and the interface keeps native
+landmarks, validity states and complete numeric exports distinct from sampled
+plots. Landmark paging updates only the value region so disclosure and keyboard
+focus survive; image readiness does not replace that region. See the
+[current checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md) for exact processed-value,
+pupil/blink, fNIRS and video evidence. Repeated synchronous source-context reads
+need profiling without weakening authority checks. These additions preserve the
+remaining package, scientific, device and release requirements below.
 
 Implementation resumed at the owner's request on 20 September 2026. Progress and
 remaining gates are tracked in [the build log](sprints/02-full-platform.md) and

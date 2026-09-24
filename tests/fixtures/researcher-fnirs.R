@@ -12,7 +12,10 @@ if(mode=="setup")local({
     a<-Filter(function(a)identical(a$kind,"physiology-series"),saved$body$analysis$artifacts)[[1L]]
     c(r,list(artifact=a,artifact_path=brohn_object_path(store,a$hash),tables=catalog$body$view$tables))
   })
-  brohn_write_json_file(list(workspace=store$root,port=httpuv::randomPort(min=21000L,max=49000L),reports=reports,reference=reference$reference),config_path)
+  port<-as.integer(Sys.getenv("BROHN_QA_PORT",unset=as.character(httpuv::randomPort(min=21000L,max=49000L))))
+  stopifnot(!is.na(port),port>=1024L,port<=65535L)
+  brohn_write_json_file(list(workspace=store$root,port=port,reports=reports,reference=reference$reference,
+    baseline_jobs=lapply(brohn_list_jobs(store,limit=500L),function(j)j$id)),config_path)
 })else if(mode=="serve"){
   config<-brohn_read_json_file(config_path);Sys.setenv(BROHN_WORKSPACE=config$workspace,BROHN_APP_MODE="platform")
   stop_owned<-function()if(file.exists(file.path(folder,"stop.request")))shiny::stopApp()else later::later(stop_owned,.2)

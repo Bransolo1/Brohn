@@ -15,7 +15,10 @@ if(mode=="setup")local({
     quality=list(scientifically_qualified=FALSE),features=list(),observations=list(),limitations=list("Original schema-shaped fixture; no measured or inferred physiology.")))
   path<-file.path(folder,"fixture-report.json");brohn_write_json_file(list(schema="brohn-analysis-output/1.0",report=body),path);body$result_object<-brohn_store_object(store,path=path,media_type="application/json")
   brohn_put_entity(store,"report",id,body,expected_revision=0L,project_id="default")
-  config<-list(workspace=store$root,port=httpuv::randomPort(min=21000L,max=49000L),reports=c(list(fixture=list(report_id=id,dataset_id=dataset$id,title=body$title)),reference$reports),oracle=proof$oracle)
+  port<-as.integer(Sys.getenv("BROHN_QA_PORT",unset=as.character(httpuv::randomPort(min=21000L,max=49000L))))
+  stopifnot(!is.na(port),port>=1024L,port<=65535L)
+  config<-list(workspace=store$root,port=port,reports=c(list(fixture=list(report_id=id,dataset_id=dataset$id,title=body$title,report_hash=brohn_hash(body))),reference$reports),oracle=proof$oracle,
+    baseline_jobs=lapply(brohn_list_jobs(store,limit=500L),function(j)j$id))
   brohn_write_json_file(config,config_path)
 })else if(mode=="serve"){
   config<-brohn_read_json_file(config_path);Sys.setenv(BROHN_WORKSPACE=config$workspace,BROHN_APP_MODE="platform")
@@ -28,5 +31,6 @@ if(mode=="setup")local({
     job<-brohn_claim_job(store,"exact-values-browser",300);if(is.null(job))Sys.sleep(.2)else brohn_process_job(store,job,timeout_seconds=300)}
 })else if(mode=="inspect")local({
   config<-brohn_read_json_file(config_path);store<-brohn_open_store(config$workspace);on.exit(brohn_close_store(store))
-  brohn_write_json_file(list(values=brohn_list_entities(store,"signal_values",limit=100L),catalogs=brohn_list_entities(store,"signal_view",limit=100L),jobs=brohn_list_jobs(store,limit=500L),reports=brohn_list_entities(store,"report",limit=100L)),file.path(folder,"inspection.json"))
+  brohn_write_json_file(list(values=brohn_list_entities(store,"signal_values",limit=100L),catalogs=brohn_list_entities(store,"signal_view",limit=100L),jobs=brohn_list_jobs(store,limit=500L),
+    reports=lapply(config$reports,function(r){s<-brohn_get_entity(store,"report",r$report_id);list(id=s$id,hash=brohn_hash(s$body))})),file.path(folder,"inspection.json"))
 })else stop("Unknown fixture mode")

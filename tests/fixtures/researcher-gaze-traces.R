@@ -10,7 +10,10 @@ if (mode == "setup") local({
   report <- brohn_get_entity(store, "report", reference$report_id)
   artifact <- brohn_signal_artifact(report, "physiology-series")
   candidates <- Filter(function(r) !identical(r$id, report$id) && identical(r$body$analysis$kind, "gaze"), brohn_list_entities(store, "report", limit = 100L))
-  config <- list(workspace = store$root, port = httpuv::randomPort(min = 21000L, max = 49000L),
+  port <- suppressWarnings(as.integer(Sys.getenv("BROHN_GAZE_TEST_PORT", unset = NA_character_)))
+  if (is.na(port)) port <- httpuv::randomPort(min = 21000L, max = 49000L)
+  stopifnot(port >= 1024L, port <= 65535L)
+  config <- list(workspace = store$root, port = port,
     report_id = report$id, report_hash = brohn_hash(report$body), study_id = reference$study_id, artifact = artifact,
     second_report_id = if (length(candidates)) candidates[[1L]]$id else NULL)
   brohn_write_json_file(config, config_path)

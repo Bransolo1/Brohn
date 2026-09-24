@@ -1,4 +1,8 @@
 # Saved video measurements: bounded complete-index access and genuine recorded pixels.
+brohn_vision_explorer_ui<-function(report) {
+  if(!identical(report$body$analysis$kind,"video"))return(NULL)
+  shiny::uiOutput("vision_explorer")
+}
 .brohn_vui_family<-function(x)switch(x,face="Face geometry",pose="Body pose",hands="Hand geometry",x)
 .brohn_vui_label<-function(x)gsub("_"," ",gsub("([a-z])([A-Z])","\\1 \\2",x))
 .brohn_vui_action<-function(label,action,payload=list(),primary=FALSE)shiny::tags$button(type="button",class=if(primary)"btn btn-primary"else"btn btn-outline-secondary",
@@ -28,12 +32,12 @@ brohn_vision_plot_svg<-function(plot,width=820) {
     shiny::tags$text(x=(left+right)/2,y=254,`text-anchor`="middle",fill="#edf5f3",`font-size`=12,"Recording-relative time (s)"))else shiny::p("No values pass this metric's saved rules in the selected range. The observed frame states remain available.")
   timeline<-shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",viewBox=paste(0,0,width,100),width="100%",role="img",`aria-label`="Observed frame states over recording-relative time",class="vision-chart",
     shiny::tags$desc("Each mark represents observed frames in a time bucket; empty intervals are left blank. Mixed buckets are distinct. Counts, not filled duration, define this timeline."),
-    lapply(plot$states,function(s){mixed<-length(s$states)>1L;good<-s$valid_frames==s$frames;color<-if(mixed)"#b8b0ea"else if(good)"#a7e9d3"else"#e8c87a"
+    lapply(plot$states,function(s){mixed<-length(s$states)>1L||(s$valid_frames>0L&&s$valid_frames<s$frames);good<-s$valid_frames==s$frames;color<-if(mixed)"#b8b0ea"else if(good)"#a7e9d3"else"#e8c87a"
       shiny::tags$rect(x=sx(as.numeric(s$first_time_text))-1.5,y=15,width=max(3,sx(as.numeric(s$last_time_text))-sx(as.numeric(s$first_time_text))),height=35,fill=color,
-        shiny::tags$title(paste(s$frames,"frames;",paste(paste(names(s$states),unlist(s$states)),collapse=", "),";",s$first_time_text,"to",s$last_time_text,"seconds")))}),
+        shiny::tags$title(paste(s$valid_frames,"of",s$frames,"pass saved channel rules;",paste(paste(names(s$states),unlist(s$states)),collapse=", "),";",s$first_time_text,"to",s$last_time_text,"seconds")))}),
     lapply(seq(xr[[1]],xr[[2]],length.out=if(width<500)2 else 5),function(x)shiny::tags$text(x=sx(x),y=69,`text-anchor`="middle",fill="#d2dedd",`font-size`=11,.brohn_vui_number(x))),
     shiny::tags$text(x=(left+right)/2,y=92,`text-anchor`="middle",fill="#edf5f3",`font-size`=12,"Recording-relative time (s)"))
-  shiny::tagList(numeric,shiny::h4("Observed frame states"),timeline,shiny::p("Mint: every observed frame passes saved geometry rules. Amber: other saved states. Purple: mixed states. Blank space carries no invented duration."))
+  shiny::tagList(numeric,shiny::h3("Observed frame states"),timeline,shiny::p("Mint: every observed frame passes saved geometry rules. Amber: other saved states. Purple: mixed states or mixed validity. Blank space carries no invented duration."))
 }
 brohn_vision_native_points<-function(detail,channel) {
   row<-detail$observation[[channel]];if(is.null(row))return(list())
@@ -177,7 +181,10 @@ brohn_install_vision_explorer<-function(input,output,session,store,state,attempt
     if(action%in%c("open","rebuild")){r<-current_report();clear();j<-brohn_queue_vision_index(store,r$id,r$revision,brohn_hash(r$body),r$project_id,rebuild=action=="rebuild")
       if(j$status%in%c("failed","cancelled"))j<-brohn_retry_processing(store,j$id);job(list(id=j$id,source=source_key(),epoch=epoch()));return()}
     if(action=="cancel"){j<-if(cmd$kind=="frame")frame_job()else job();brohn_require(!is.null(j),"No current video job.");brohn_cancel_job(store,j$id);return()}
-    if(action=="retry"){j<-if(cmd$kind=="frame")frame_job()else job();brohn_require(!is.null(j),"No current video job.");brohn_retry_processing(store,j$id);return()}
+    if(action=="retry"){brohn_require(cmd$kind%in%c("frame","index"),"Choose the current frame or index job.")
+      j<-if(cmd$kind=="frame")frame_job()else job();brohn_require(!is.null(j),"No current video job.")
+      replacement<-brohn_retry_processing(store,j$id);j$id<-replacement$id
+      if(cmd$kind=="frame")frame_job(j)else job(j);return()}
     if(action=="apply"){apply_selection(parse_selection(cmd$fields));return()}
     s<-unchanged(cmd$fields)
     if(action=="export"){clear_csv();checks$csv<-brohn_begin_vision_csv(store,guard(),list(metric=s$metric,range=s$range));csv_ready(list(status="preparing"));return()}
@@ -185,7 +192,7 @@ brohn_install_vision_explorer<-function(input,output,session,store,state,attempt
     if(action=="next"){p<-page();brohn_require(!is.null(p$next_cursor),"This is the final exact frame page.");history<-page_history();history[[length(history)+1L]]<-list(cursor=current_cursor());page_history(history);read_page(p$next_cursor);return()}
     if(action=="previous"){history<-page_history();brohn_require(length(history)>0L,"This is the first exact frame page.");old<-history[[length(history)]];page_history(head(history,-1L));read_page(old$cursor);return()}
     if(action=="frame"){text<-brohn_default(cmd$frame_index,cmd$fields$frame);brohn_require(grepl("^[0-9]{1,5}$",text),"Enter the original zero-based frame number.");show_frame(as.integer(text));return()}
-    if(action%in%c("point_next","point_previous")){n<-length(brohn_vision_native_points(detail(),s$channel));point_offset(max(0L,min(max(0L,n-1L),point_offset()+if(action=="point_next")100L else -100L)));return()}
+    if(action%in%c("point_next","point_previous")){n<-length(brohn_vision_native_points(detail(),s$channel));point_offset(max(0L,min(100L*floor(max(0L,n-1L)/100L),point_offset()+if(action=="point_next")100L else -100L)));return()}
     if(action=="extract"){d<-detail();brohn_require(!is.null(d)&&identical(as.character(d$frame$frame_index),cmd$fields$frame),"Show the exact visible frame number before preparing its image.")
       clear_image();j<-brohn_queue_vision_frame(store,guard(),d$frame$frame_index);if(j$status%in%c("failed","cancelled"))j<-brohn_retry_processing(store,j$id)
       frame_job(list(id=j$id,source=source_key(),epoch=epoch(),frame_index=d$frame$frame_index));return()}
@@ -238,19 +245,28 @@ brohn_install_vision_explorer<-function(input,output,session,store,state,attempt
       shiny::div(class="brohn-form-grid",shiny::textInput("vision_frame_index","Original frame number (zero-based)",if(length(p$rows))as.character(p$rows[[1L]]$frame_index)else""),.brohn_vui_action("Show exact frame","frame",primary=TRUE)),
       shiny::p("Choose a frame from the complete analysed recording. Its saved timestamp and native values are shown below; no frame is interpolated from a plot."))
   })
-  output$vision_detail<-shiny::renderUI({d<-detail();if(is.null(d))return(NULL);s<-selection();points<-brohn_vision_native_points(d,s$channel);start<-point_offset();shown<-head(if(start<length(points))points[seq.int(start+1L,length(points))]else list(),100L)
-    rows<-lapply(shown,function(p)list(Group=p$group,"Point index"=p$point,"x (normalized)"=brohn_default(p$x,"Not supplied"),"y (normalized)"=brohn_default(p$y,"Not supplied"),
-      "z (native model)"=brohn_default(p$z,"Not supplied"),Visibility=brohn_default(p$visibility,"Not supplied"),Presence=brohn_default(p$presence,"Not supplied"),"Passes saved point rule"=p$passes_saved_point_rule))
+  output$vision_detail<-shiny::renderUI({d<-detail();if(is.null(d))return(NULL);s<-selection();points<-brohn_vision_native_points(d,s$channel)
     brohn_card(title=paste("Original frame",d$frame$frame_index),subtitle=paste("Source PTS",d$frame$source_pts_s,"s | recording-relative",d$frame$relative_exact_text,"s | model",d$frame$model_timestamp_ms,"ms"),
       shiny::p(paste("Saved state:",brohn_json(d$frame$states[[s$channel]]))),
       shiny::div(class="brohn-toolbar",.brohn_vui_action("Prepare exact recorded frame","extract",primary=TRUE),shiny::downloadButton("vision_frame_json","Download exact original frame JSON",icon=NULL),
-        if(!is.null(image_url()))shiny::downloadButton("vision_png","Download original frame PNG",icon=NULL)),
+        shiny::uiOutput("vision_png_link",inline=TRUE)),
       shiny::checkboxInput("vision_landmarks","Show saved native landmarks",shiny::isolate(brohn_default(input$vision_landmarks,TRUE))),shiny::uiOutput("vision_geometry"),
       shiny::tags$details(shiny::tags$summary(paste("Exact native landmark values:",length(points),"saved points")),
-        shiny::p(paste("Showing",length(shown),"points beginning at",start,"in this display. Point indices are native to each saved face, pose or hand.")),
-        .brohn_vui_table(rows,"Exact native video landmark tokens"),shiny::div(class="brohn-toolbar",if(start>0L).brohn_vui_action("Previous landmark page","point_previous"),if(start+length(shown)<length(points)).brohn_vui_action("Next landmark page","point_next"))),
+        shiny::uiOutput("vision_point_page"),if(length(points)>100L)shiny::div(class="brohn-toolbar",
+          .brohn_vui_action("Previous landmark page","point_previous"),.brohn_vui_action("Next landmark page","point_next"))),
       shiny::tags$details(shiny::tags$summary("Exact original frame record"),shiny::tags$pre(tabindex="0",`aria-label`="Exact original video observation JSON",d$original_json)))
   })
+  # Keep the disclosure and paging buttons mounted: replacing them on every page
+  # closes the disclosure and drops the keyboard user's focus.
+  output$vision_point_page<-shiny::renderUI({d<-detail();if(is.null(d))return(NULL);points<-brohn_vision_native_points(d,selection()$channel);start<-point_offset()
+    shown<-head(if(start<length(points))points[seq.int(start+1L,length(points))]else list(),100L)
+    rows<-lapply(shown,function(p)list(Group=p$group,"Point index"=p$point,"x (normalized)"=brohn_default(p$x,"Not supplied"),"y (normalized)"=brohn_default(p$y,"Not supplied"),
+      "z (native model)"=brohn_default(p$z,"Not supplied"),Visibility=brohn_default(p$visibility,"Not supplied"),Presence=brohn_default(p$presence,"Not supplied"),"Passes saved point rule"=p$passes_saved_point_rule))
+    shiny::div(`data-vision-point-start`=start,`data-vision-point-total`=length(points),
+      shiny::p(role="status",paste("Showing",length(shown),"points beginning at",start,"in this display. Point indices are native to each saved face, pose or hand.")),
+      .brohn_vui_table(rows,"Exact native video landmark tokens"))
+  })
+  output$vision_png_link<-shiny::renderUI({if(!is.null(image_url()))shiny::downloadButton("vision_png","Download original frame PNG",icon=NULL)})
   output$vision_geometry<-shiny::renderUI({d<-detail();if(is.null(d))return(NULL);brohn_vision_geometry_svg(d,selection()$channel,image_url(),brohn_default(input$vision_landmarks,TRUE))})
   download_guard<-function(){v<-guard();fields<-list(channel=input$vision_channel,metric=input$vision_metric,start=input$vision_start,end=input$vision_end,limit=input$vision_limit)
     unchanged(fields);v}
@@ -273,7 +289,8 @@ brohn_install_vision_explorer<-function(input,output,session,store,state,attempt
     brohn_require(!is.null(d)&&identical(as.character(d$frame$frame_index),input$vision_frame_index),"Show the visible frame number before downloading it.");writeBin(charToRaw(enc2utf8(d$original_json)),file)}))
   output$vision_png<-shiny::downloadHandler(filename=function()paste0("original-frame-",detail()$frame$frame_index,".png"),content=function(file)prepare_download(function(){v<-download_guard()
     brohn_require(identical(as.character(detail()$frame$frame_index),input$vision_frame_index),"Show the visible frame before downloading its image.")
-    brohn_check_vision_frame_context(store,image(),v,detail()$frame$frame_index);brohn_require(file.copy(image()$authority$path,file,overwrite=TRUE),"Cannot deliver this exact image.")}))
+    brohn_check_vision_frame_context(store,image(),v,detail()$frame$frame_index)
+    brohn_copy_object_download(store,image()$record$body$frame$image$hash,file)}))
   output$vision_figure<-shiny::downloadHandler(filename=function()paste0("saved-video-view-",active()$context$report_id,".html"),content=function(file)prepare_download(function(){v<-download_guard();p<-plotted()
     html<-shiny::tags$html(shiny::tags$head(shiny::tags$meta(charset="utf-8"),shiny::tags$title("Saved video measurement figure")),shiny::tags$body(style="max-width:900px;margin:2rem auto;font-family:system-ui;background:#131d24;color:#edf5f3",shiny::h1("Saved video measurement figure"),
       shiny::p(paste(v$context$report_id,"|",.brohn_vui_family(p$channel),"|",brohn_default(p$metric$id,"Frame states only"))),brohn_vision_plot_svg(p,820),shiny::p(p$sampling),

@@ -1,5 +1,11 @@
 # Saved video geometry explorer: proposed bounded contract
 
+**Implementation update, 24 September 2026:** the proposed route below is now
+connected. Current executed scope and remaining gates are in the
+[researcher journey](VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md) and
+[resource acceptance](VIDEO-GEOMETRY-RESOURCE-ACCEPTANCE.md).
+The following audit describes the historical starting point.
+
 20 September 2026. Read-only audit and implementation proposal. No explorer
 production code or successful-person/pose/hand fixture has been implemented or
 qualified by this document. The preceding cardiac review interface is accepted

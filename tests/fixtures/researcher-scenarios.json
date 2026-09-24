@@ -1619,6 +1619,64 @@
       "evidence": "../../work/test-runs/brohn-questionnaire-artifact-ui-TKsPwT/evidence-1788865953753/results.json",
       "evidence_sha256": "8be8b9d9a12d3052ce532871af0355d0807c07e3278ddf2dbe38420459319c4c",
       "scope_and_limit_document": "docs/qa/QUESTIONNAIRE-ARTIFACT-RESEARCHER-JOURNEY.md"
+    },
+    {
+      "harness": "tests/researcher-signal-values.mjs",
+      "execution_type": "actual_researcher_complete_values_and_downloads_with_independent_native_artifact_audit",
+      "origin": "schema_edge_fixture_and_recorded_cardiac_references",
+      "passed_assertions": 22,
+      "accessibility_scans": 5,
+      "new_jobs": 14,
+      "successful_new_jobs": 13,
+      "cancelled_new_jobs": 1,
+      "independently_verified_download_rows": 108414,
+      "evidence": "../../work/test-runs/brohn-signal-values-browser-resume-20260924-01/browser-1790214475079/results.json",
+      "evidence_sha256": "6250bc5bcb54f2d97566a9dd5a1d0c25ec4fe26938046ec1d7a2349b663d02e6",
+      "scope_and_limit_document": "docs/qa/PROCESSED-VALUES-ACCEPTANCE.md"
+    },
+    {
+      "harness": "tests/researcher-gaze-traces.mjs",
+      "execution_type": "actual_researcher_saved_trace_svg_keyboard_and_service_restart",
+      "origin": "original_synthetic",
+      "passed_assertions": 28,
+      "accessibility_scans": 5,
+      "new_jobs": 7,
+      "successful_new_jobs": 6,
+      "cancelled_new_jobs": 1,
+      "independent_svg_checks": 8,
+      "evidence": "C:/Users/User/Documents/Codex/2026-09-20/oka/work/brohn-gaze-browser-20260924-01/browser-1790214505973/acceptance.json",
+      "evidence_sha256": "ad70c7664fb0dd6f92a6a4a9a3da9ae76e61ae27f4ac9d767ad35a6ad5004022",
+      "scope_and_limit_document": "docs/qa/PUPIL-BLINK-TRACE-ACCEPTANCE.md"
+    },
+    {
+      "harness": "tests/researcher-fnirs.mjs",
+      "execution_type": "actual_researcher_saved_phantom_visualization_and_complete_exports",
+      "origin": "original_software_phantom",
+      "passed_assertions": 33,
+      "accessibility_scans": 5,
+      "selections": 6,
+      "independently_verified_download_rows": 3580,
+      "new_jobs_in_initial_journey": 17,
+      "new_jobs_in_final_renderer_rerun": 0,
+      "evidence": "../../work/test-runs/brohn-fnirs-browser-resume-20260924-01/browser-1790215716928/results.json",
+      "evidence_sha256": "9ad5e4fbc75faa569dd6cb1891786510bd5151aae376ace59f70e5d8aa2c6954",
+      "scope_and_limit_document": "docs/qa/FNIRS-VISUAL-ACCEPTANCE.md"
+    },
+    {
+      "harness": "tests/researcher-vision-explorer.mjs",
+      "execution_type": "completed_browser_traversal_with_separate_corrected_closed_store_inspection",
+      "origin": "saved_model_reference_frames",
+      "passed_browser_assertions": 39,
+      "accessibility_scans": 7,
+      "separate_inspection_assertions": 11,
+      "new_jobs_during_completed_traversal": 6,
+      "successful_new_jobs": 4,
+      "cancelled_new_jobs": 2,
+      "additional_aborted_repeat_jobs": 2,
+      "browser_start_source_hash_snapshot_retained": false,
+      "evidence": "../../work/test-runs/brohn-vision-browser-20260924-03/browser-1790215987687/continuation-inspection.json",
+      "evidence_sha256": "3bb525f2b12c133efb7797fd450183354c58b27b0abac29616cbd0ca503b4e15",
+      "scope_and_limit_document": "docs/qa/VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md"
     }
   ]
 }
