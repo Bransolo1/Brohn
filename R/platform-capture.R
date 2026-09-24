@@ -87,6 +87,7 @@ brohn_capture <- function(store, capture_id = NULL, run_id = NULL) {
         list(capture_id = request$capture_id, status = old$status[[1L]], next_sequence = old$acked_sequence[[1L]]+1L)))
     }
     .brohn_delivery_require(identical(run$completion_status, "in_progress"), "A finalized run cannot start camera recording.", 409, "run_ended")
+    if (exists("brohn_require_session_receiving", mode = "function")) brohn_require_session_receiving(store, run_id)
     status <- if (!request$consented) "declined" else if (is.null(request$mime_type) && is.null(request$settings)) "unavailable" else "recording"
     if (status != "recording") .brohn_delivery_require(is.null(request$mime_type) && is.null(request$settings) && brohn_text(request$reason, 4000), "Declined/unavailable capture must retain its reason and cannot contain recording settings.") else {
       .brohn_delivery_require(brohn_text(request$mime_type, 160) && grepl('^video/webm(?:;\\s*codecs=(?:"?[A-Za-z0-9., -]+"?))?$', request$mime_type, perl = TRUE), "This recorder profile accepts WebM video only.")
@@ -156,6 +157,7 @@ brohn_capture <- function(store, capture_id = NULL, run_id = NULL) {
         list(capture_id = capture$id, acked_sequence = capture$acked_sequence, total_bytes = capture$total_bytes, status = "saved")))
     }
     .brohn_delivery_require(identical(capture$status, "recording"), "This camera recording already has its final receipt.", 409, "capture_ended")
+    if (exists("brohn_require_session_receiving", mode = "function")) brohn_require_session_receiving(store, run_id)
     .brohn_delivery_require(request$sequence == capture$acked_sequence+1L, "An earlier camera chunk is missing. Retry the next unacknowledged sequence.", 409, "chunk_gap")
     .brohn_delivery_require(capture$total_bytes + length(bytes) <= capture$start$policy$max_bytes, "Measured recording bytes exceed the frozen collection limit.", 413, "capture_byte_limit")
     observed <- .brohn_camera_observation(request$observation, capture, row, authorized$run$protocol)
@@ -193,6 +195,7 @@ brohn_capture <- function(store, capture_id = NULL, run_id = NULL) {
         list(capture_id = capture$id, status = "saved", outcome = capture$status, decoding = "separate_processing")))
     }
     .brohn_delivery_require(identical(capture$status, "recording"), "This camera start did not create a recording.", 409, "capture_not_recording")
+    if (exists("brohn_require_session_receiving", mode = "function")) brohn_require_session_receiving(store, run_id)
     .brohn_delivery_require(request$final_sequence == capture$acked_sequence && request$total_bytes == capture$total_bytes, "Final camera totals must match all durable chunk receipts.", 409, "pending_camera_chunks")
     initial <- capture$start$request$clock
     .brohn_delivery_require(identical(request$clock$instance_id, initial$instance_id) && identical(request$clock$time_origin_ms, initial$time_origin_ms), "A new page or recorder cannot finish this camera container.", 409, "camera_clock_conflict")

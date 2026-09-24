@@ -418,10 +418,17 @@ class ArtifactWriter:
         return file
 
     def promote(self, path, stream_id, kind, suffix):
+        require(path in self.temporary and path.suffix == ".tmp", "Promote only this writer's temporary artifact.")
         size = path.stat().st_size
         self.total_bytes += size
         require(self.total_bytes <= MAX_ARTIFACT_BYTES, "Generated artifacts exceed 4 GiB; split the source recording explicitly.")
-        sha = digest(path); target = self.directory / (kind + "-" + sha + suffix)
+        sha = digest(path)
+        # Scratch names are temporary transport locations, not content identity.
+        # Reuse the already-created unique name without its .tmp extension: a
+        # successful temporary write must not fail because promotion adds a long
+        # kind plus SHA filename on Windows. The full hash remains in the pinned
+        # manifest and the manager's immutable object store.
+        target = path.with_suffix("")
         if target.exists():
             require(digest(target) == sha, "Existing artifact hash mismatch.")
             path.unlink()

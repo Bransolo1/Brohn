@@ -16,7 +16,42 @@ the explicitly selected optional profiles below. Device support remains specific
 to an implemented and tested adapter; installing an acquisition library does not
 qualify a physical device.
 
-## Restore the core R application
+## Prepare a local installation with one command
+
+With the pinned R version, 64-bit Python 3.10+ and the TinyCC toolchain described
+below already installed, run this from the repository root:
+
+```powershell
+./scripts/setup-local.ps1 -InstallationRoot 'C:/Brohn/local' `
+  -RscriptPath 'C:/Program Files/R/R-4.6.1/bin/Rscript.exe' `
+  -PythonPath 'C:/Python312/python.exe' `
+  -CompilerPath 'C:/Brohn/tooling/tcc/tcc.exe'
+./run-local.ps1 -ConfigurationPath 'C:/Brohn/local/local-installation.json'
+```
+
+Setup bootstraps the exact locked `renv` version, restores the 46-package R lock
+into a separate application library, checks every namespace, builds the protected
+report-storage component and saves a checked local configuration. Dependencies
+may be downloaded from CRAN. R, Python and the compiler are explicit prerequisites;
+the command does not change global packages, start services or create participant
+data. The installation directory must be outside the checkout and either empty
+or already owned by this setup. Keep the complete TinyCC distribution together.
+
+Run the same command to recover from a failed setup. Existing completed
+configurations require `-ReplaceConfiguration`; failed preparation preserves the
+old configuration and native manifest. Setup keeps per-attempt logs and a ready
+receipt in `setup-logs`. A lock prevents two setups writing the same installation.
+After a forcibly terminated setup, ensure it is no longer running before removing
+only its `.setup.lock` file and retrying. Do not delete the installation to retry.
+
+Optional `-Workspace`, `-Port`, `-ParticipantPort` and `-CacheRoot` select explicit
+local locations and distinct service ports. `-ScientificProfiles` accepts the
+same prepared interpreter map as `configure-local.ps1` below; it checks those
+profiles and does not silently install models or enable devices. The default
+workspace is `workspaces/default` inside the installation directory. Manual setup
+remains available below. See [executed setup and recovery evidence](../qa/LOCAL-SETUP-ACCEPTANCE.md).
+
+## Restore the core R application manually
 
 Install the R version recorded in `renv.lock`. Use a separate bootstrap library
 containing `renv`, and a separate application library. The explicit restore does

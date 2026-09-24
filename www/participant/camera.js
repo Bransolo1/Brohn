@@ -236,7 +236,14 @@
       })();
       return this.stopPromise;
     }
+    closeDelivery() {
+      // Keep the journal and any final recorder blob. A researcher decision is
+      // neither a participant finish receipt nor permission to purge local data.
+      this.deliveryClosed = true;
+      this.releaseTracks();
+    }
     async flush() {
+      if (this.deliveryClosed) return;
       if (!this.segment || this.segment.receipt) return this.segment?.receipt;
       if (this.segment.status === "declined" && this.segment.start_receipt) return this.segment.start_receipt;
       if (this.uploading) return this.uploading;
@@ -245,7 +252,7 @@
           await this.acknowledgeStart();
         }
         if (this.segment.start_request.consented === false) return this.segment.start_receipt;
-        while (this.segment.acked_sequence < this.segment.next_sequence-1) {
+        while (!this.deliveryClosed && this.segment.acked_sequence < this.segment.next_sequence-1) {
           const sequence = this.segment.acked_sequence + 1;
           const chunk = await this.transaction(["chunks"], "readonly", tx => tx.objectStore("chunks").get(`${this.segment.capture_id}:${sequence}`));
           if (!chunk) throw new Error("A camera chunk is missing from this browser's journal. The study cannot claim complete recording.");
@@ -264,7 +271,7 @@
           });
           this.writeChain = update.catch(error => {this.fail(error);}); await update;
         }
-        if (this.segment.finish_request && !this.segment.receipt) {
+        if (!this.deliveryClosed && this.segment.finish_request && !this.segment.receipt) {
           this.segment.receipt = await this.api(`/api/camera_finish/${encodeURIComponent(this.runId)}`, this.segment.finish_request);
           await this.saveSegment();
         }

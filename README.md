@@ -17,6 +17,11 @@ consolidates local development, connects saved video measurement review and
 records completed exact-value and pupil/blink export/restart checks. Its linked
 records state the tested scope and remaining work.
 
+The [subsequent workflow build](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) adds
+collection finalization/history, complete response and scale distributions,
+responsive measurement review and a checked one-command local setup. Broader
+implementation continues against the full roadmap.
+
 ## What is connected
 
 | Workflow | Current local application |
@@ -43,27 +48,16 @@ repository root. A fresh clone does **not** include the development `../../work`
 directories, R libraries, Python environments, model weights or external raw
 test evidence.
 
-The guide covers three required setup steps: restore the 46-package R lock into
-an explicit application library; configure a 64-bit Python interpreter for the
-Windows publication helper; and build the small native publication guard using
-the verified TinyCC toolchain. Keep dependencies, caches and research workspaces
-outside the repository. Scientific Python profiles and models are installed
-separately for the capabilities you need.
-
-After completing those steps, adapt these example paths to your installation:
+After installing R, 64-bit Python and the TinyCC toolchain described in the guide,
+one setup command restores the pinned packages, builds protected report storage
+and saves a checked configuration. Adapt these paths to your installation:
 
 ```powershell
-$rscript = 'C:/Program Files/R/R-4.6.1/bin/Rscript.exe'
-$applicationLibrary = 'C:/Brohn/r-library'
-$env:R_LIBS_USER = $applicationLibrary
-$env:BROHN_PYTHON = 'C:/Python312/python.exe'
-$env:BROHN_PUBLICATION_PYTHON = 'C:/Python312/python.exe'
-$env:BROHN_PUBLICATION_NATIVE_MANIFEST = 'C:/Brohn/tooling/native/publication-guard.json'
-
-& $rscript --vanilla scripts/doctor.R --library $applicationLibrary --profiles none
-if ($LASTEXITCODE -ne 0) { throw 'Brohn runtime is not ready; inspect the doctor report.' }
-./run-local.ps1 -RscriptPath $rscript -LibraryPath $applicationLibrary `
-  -Workspace 'C:/Brohn/workspaces/default' -Port 3838 -ParticipantPort 3840
+./scripts/setup-local.ps1 -InstallationRoot 'C:/Brohn/local' `
+  -RscriptPath 'C:/Program Files/R/R-4.6.1/bin/Rscript.exe' `
+  -PythonPath 'C:/Python312/python.exe' `
+  -CompilerPath 'C:/Brohn/tooling/tcc/tcc.exe'
+./run-local.ps1 -ConfigurationPath 'C:/Brohn/local/local-installation.json'
 ```
 
 Open [Brohn locally](http://127.0.0.1:3838/). The launcher supervises collection
@@ -72,6 +66,11 @@ questionnaire, task and supported R gaze workflows do not require scientific
 Python packages. The doctor can check optional profiles, models and codecs as
 described in the installation guide. The historical prototype is available only
 through the explicit `-Legacy` option.
+
+Keep dependencies, caches and research workspaces outside the repository.
+Scientific Python profiles and models remain separate optional installations.
+The [setup evidence](docs/qa/LOCAL-SETUP-ACCEPTANCE.md) covers a fresh separate
+library, failure/retry and service restart on the exercised Windows host.
 
 This profile binds to **loopback only**. Its participant links cannot recruit
 people on other computers. A production or remote deployment still requires

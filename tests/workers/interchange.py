@@ -97,6 +97,28 @@ class InterchangeTests(unittest.TestCase):
         path = next(x["path"] for x in stream["artifacts"] if x["kind"] == "stream_samples_jsonl")
         return [json.loads(x) for x in Path(path).read_text().splitlines()]
 
+    def test_promotion_near_windows_path_limit_keeps_complete_identity(self):
+        ordinary, request = self.run_source(bundle_fixture(), "brohn_stream_bundle")
+        # The earlier kind+hash target exceeded MAX_PATH although temporary
+        # source writing succeeded. Exercise actual I/O at that boundary.
+        directory = self.root / ("nested-" + "x" * max(1, 215-len(str(self.root))-8))
+        self.assertGreaterEqual(len(str(directory / ("stream_samples_jsonl-" + "0"*64 + ".jsonl"))), 260)
+        request["output_directory"] = str(directory)
+        long_result = worker.run(request)
+        self.assertEqual(long_result["quality"], ordinary["quality"])
+        self.assertEqual(len(long_result["artifacts"]), len(ordinary["artifacts"]))
+        for actual, expected in zip(long_result["artifacts"], ordinary["artifacts"]):
+            self.assertEqual({k:v for k,v in actual.items() if k!="path"}, {k:v for k,v in expected.items() if k!="path"})
+            self.assertEqual(worker.digest(Path(actual["path"])), actual["sha256"])
+            self.assertEqual(Path(actual["path"]).read_bytes(), Path(expected["path"]).read_bytes())
+            self.assertLess(len(Path(actual["path"]).name), 32)
+        self.assertFalse(list(directory.glob("*.tmp")))
+        # A repeat preserves prior outputs, even when the same directory is used.
+        repeated = worker.run(request)
+        self.assertEqual([a["sha256"] for a in repeated["artifacts"]], [a["sha256"] for a in long_result["artifacts"]])
+        for artifact in long_result["artifacts"]:
+            self.assertEqual(worker.digest(Path(artifact["path"])), artifact["sha256"])
+
     def test_xdf_multistream_raw_values_clocks_offsets_markers(self):
         result, _ = self.run_source(xdf_fixture())
         self.assertEqual([x["id"] for x in result["streams"]], ["xdf-7", "xdf-2", "xdf-9"])

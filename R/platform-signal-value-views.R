@@ -2,7 +2,7 @@
 .brohn_sv_action <- function(label,action,payload,primary=FALSE) shiny::tags$button(type="button",
   class=if(primary)"btn btn-primary"else"btn btn-outline-secondary",`data-signal-values-action`=action,
   `data-signal-values-payload`=brohn_json(payload),label)
-.brohn_sv_identity <- function(r)paste(r$id,r$revision,brohn_hash(r$body),sep=":")
+.brohn_sv_identity <- function(r)paste(r$id,r$revision,.brohn_sv_hash(r$body),sep=":")
 .brohn_sv_retention_label <- function(x)switch(x,retained="Retained",excluded="Excluded",unknown="Unknown",not_declared="Not declared",x)
 .brohn_sv_count <- function(x)format(x,digits=17,scientific=FALSE,trim=TRUE,big.mark=",")
 .brohn_sv_selection_text <- function(v) {
@@ -14,7 +14,7 @@ brohn_signal_values_page_ui <- function(record,source) {
   v<-record$body$result;p<-v$page;t<-v$table
   coordinate<-Filter(function(c)identical(c$role,"coordinate"),t$columns)[[1L]]
   measure<-Filter(function(c)identical(c$name,v$selection$value_column),t$columns)[[1L]]
-  pin<-list(source=source,result=record$id,result_hash=brohn_hash(record$body))
+  pin<-list(source=source,result=record$id,result_hash=.brohn_sv_hash(record$body))
   shiny::div(class="brohn-exact-values",id="signal-exact-values",`data-values-id`=record$id,
     shiny::h3("Exact processed values"),shiny::p(class="brohn-exact-selection",.brohn_sv_selection_text(v)),
     shiny::p(shiny::strong(paste(.brohn_sv_count(p$total_rows),"selected source rows."))," Missing measurements and excluded or unknown retention remain included. No plot filtering is applied."),
@@ -68,7 +68,7 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
     checks[[which]]<-list(process=process,guards=guards,record=record,started=Sys.time());success<-TRUE;checking(TRUE)
   }
   shiny::observeEvent(list(state$page,state$report_id,input$signal_table),{clear();issue(NULL)},ignoreInit=FALSE,priority=110)
-  source_key<-shiny::reactive({paste(.brohn_sv_identity(context()),.brohn_sv_identity(catalog()),brohn_hash(table()),sep="|")})
+  source_key<-shiny::reactive({paste(.brohn_sv_identity(context()),.brohn_sv_identity(catalog()),.brohn_sv_hash(table()),sep="|")})
   shiny::observeEvent(source_key(),{p<-active();if(!is.null(p)&&!identical(p$source,source_key()))clear()},ignoreInit=TRUE,priority=105)
   guard<-function(pin)tryCatch({
     brohn_require(!is.null(pin)&&identical(state$page,"report")&&identical(state$report_id,pin$report_id)&&identical(source_key(),pin$source),"Reopen the exact values for this recording.")
@@ -100,7 +100,7 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
     brohn_require(is.list(cmd)&&identical(cmd$source,source_key()),"Use the current recording's exact-value controls.")
     if(identical(cmd$action,"open")) {
       f<-cmd$fields;r<-context();c<-catalog();t<-table()
-      brohn_require(identical(c$body$report_id,r$id)&&.brohn_sv_same(c$body$report_revision,r$revision)&&identical(c$body$report_hash,brohn_hash(r$body)),
+      brohn_require(identical(c$body$report_id,r$id)&&.brohn_sv_same(c$body$report_revision,r$revision)&&identical(c$body$report_hash,.brohn_sv_hash(r$body)),
         "Reopen the processed-table catalog for this current report before inspecting exact values.")
       brohn_require(is.list(f)&&identical(f$form,paste(r$id,c$id,sep=":"))&&identical(f$measure_form,paste(c$id,t$table_id,sep=":")),"Wait for the current recording and measure controls.")
       brohn_require(brohn_text(f$measure,500)&&f$measure %in% vapply(t$value_columns,`[[`,character(1),"name")&&f$limit %in% c("25","50","100")&&is.logical(f$full_range)&&length(f$full_range)==1L,"Choose one measure and 25, 50 or 100 rows.")
@@ -108,7 +108,7 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
       selection<-list(table_id=t$table_id,recording_id=t$identity$recording_id,channel=t$identity$channel,value_column=f$measure,
         range=if(isTRUE(f$full_range))NULL else list(number(f$start),number(f$end)),row_policy="all_source_rows")
       brohn_validate_signal_value_selection(selection)
-      j<-brohn_queue_signal_values(store,c$id,selection,"page",limit=as.numeric(f$limit),catalog_revision=c$revision,catalog_hash=brohn_hash(c$body))
+      j<-brohn_queue_signal_values(store,c$id,selection,"page",limit=as.numeric(f$limit),catalog_revision=c$revision,catalog_hash=.brohn_sv_hash(c$body))
       clear();active(list(source=cmd$source,report_id=r$id,report_identity=.brohn_sv_identity(r),catalog_id=c$id,
         catalog_identity=.brohn_sv_identity(c),project_id=r$project_id,request=j$request));page_job(j)
       message("Reading exact values from the complete saved table.");return(invisible(NULL))
@@ -116,7 +116,7 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
     pin<-active();guard(pin)
     if(identical(cmd$action,"close")){clear();return(invisible(NULL))}
     if(cmd$action %in% c("retry_page","retry_export")){queue(if(cmd$action=="retry_page")"page"else"export",offset=if(cmd$action=="retry_page")brohn_default(page_job()$request$page$offset,0)else 0,retry=TRUE);return(invisible(NULL))}
-    record<-ready();brohn_require(!is.null(record)&&identical(cmd$result,record$id)&&identical(cmd$result_hash,brohn_hash(record$body)),"This value page changed. Use its current controls.")
+    record<-ready();brohn_require(!is.null(record)&&identical(cmd$result,record$id)&&identical(cmd$result_hash,.brohn_sv_hash(record$body)),"This value page changed. Use its current controls.")
     brohn_signal_values_record(store,record$id,cmd$result_hash)
     if(cmd$action=="page"){
       p<-record$body$result$page;allowed<-unlist(list(p$previous_offset,p$next_offset),use.names=FALSE)
@@ -164,7 +164,7 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
   shiny::observeEvent(exported(),{r<-exported();if(is.null(r))return();download(NULL)
     # This route streams the immutable file through httpuv; no multi-GiB R copy,
     # parse or reserialization blocks active collection in the researcher session.
-    token<-brohn_token();uri<-register_resource("brohn-exact-values",list(token=token,id=r$id,hash=brohn_hash(r$body)),function(data,req)shiny::isolate(tryCatch({
+    token<-brohn_token();uri<-register_resource("brohn-exact-values",list(token=token,id=r$id,hash=.brohn_sv_hash(r$body)),function(data,req)shiny::isolate(tryCatch({
       brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$values_key,data$token),"This download link is no longer active.")
       guard(active());saved<-brohn_signal_values_record(store,data$id,data$hash)
       brohn_require(!is.null(exported())&&identical(exported()$id,saved$id),"Reopen the current prepared CSV.")
@@ -182,6 +182,6 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
       shiny::a(class="btn btn-primary",href=url,download=paste0(r$id,".csv"),"Download complete selected CSV"),
       shiny::downloadButton("signal_values_manifest","Download CSV source and schema",icon=NULL))})
   output$signal_values_manifest<-shiny::downloadHandler(filename=function()paste0(exported()$id,".json"),contentType="application/json",
-    content=function(file)prepare_download(function(){guard(active());r<-brohn_signal_values_record(store,exported()$id,brohn_hash(exported()$body),verify=TRUE);brohn_copy_object_download(store,r$body$result_object$hash,file)}))
+    content=function(file)prepare_download(function(){guard(active());r<-brohn_signal_values_record(store,exported()$id,.brohn_sv_hash(exported()$body),verify=TRUE);brohn_copy_object_download(store,r$body$result_object$hash,file)}))
   invisible(list(clear=clear,active=active,ready=ready,exported=exported,detail=detail))
 }

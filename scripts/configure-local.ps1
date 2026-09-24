@@ -62,7 +62,7 @@ try {
         $null = Read-BrohnLocalConfiguration $temporary
         if (Test-Path -LiteralPath $ConfigurationPath) {
             if (-not $Replace) { throw 'A configuration appeared while checking. It was not replaced.' }
-            [IO.File]::Replace($temporary, $ConfigurationPath, $null)
+            [IO.File]::Replace($temporary, $ConfigurationPath, [NullString]::Value)
         } else { [IO.File]::Move($temporary, $ConfigurationPath) }
     } finally { if (Test-Path -LiteralPath $temporary) { Remove-Item -LiteralPath $temporary } }
     Write-Output "Brohn installation verified and saved: $ConfigurationPath"

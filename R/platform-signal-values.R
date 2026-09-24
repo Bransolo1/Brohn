@@ -1,7 +1,21 @@
 # Exact processed-row views and immutable complete CSVs; no scientific scoring.
 .brohn_signal_values_recipe <- "processed-exact-values/1.0"
 .brohn_signal_values_loaded <- setNames(list(digest::digest(file="R/platform-signal-values.R",algo="sha256")),"R/platform-signal-values.R")
-.brohn_sv_same <- function(a,b) identical(brohn_hash(a),brohn_hash(b))
+# Cache canonical hash computation, never source records or permission decisions.
+# The fingerprint includes the current complete R value, so in-place edits,
+# nested mutations and same-revision catalog corruption still get fresh checks.
+# Only 128 digest pairs are retained; no report body or artifact bytes are cached.
+.brohn_sv_hash <- local({
+  values<-new.env(hash=TRUE,parent=emptyenv());order<-character()
+  function(value) {
+    key<-digest::digest(value,algo="sha256",serialize=TRUE,serializeVersion=2)
+    if(exists(key,envir=values,inherits=FALSE))return(values[[key]])
+    result<-brohn_hash(value)
+    if(length(order)>=128L){rm(list=order[[1L]],envir=values);order<<-order[-1L]}
+    values[[key]]<-result;order<<-c(order,key);result
+  }
+})
+.brohn_sv_same <- function(a,b) identical(.brohn_sv_hash(a),.brohn_sv_hash(b))
 brohn_validate_signal_value_selection <- function(selection) {
   brohn_fields(selection,c("table_id","recording_id","channel","value_column","range","row_policy"),label="Exact processed-value selection")
   brohn_require(all(vapply(selection[c("table_id","recording_id","channel","value_column")],brohn_text,logical(1),max=500))&&
@@ -35,7 +49,7 @@ brohn_signal_values_input <- function(store,job,verify=TRUE) {
   brohn_project(store,r$project_id)
   report<-brohn_get_entity(store,"report",r$report_id,r$report_revision)
   catalog<-brohn_get_entity(store,"signal_view",r$catalog_id,r$catalog_revision)
-  brohn_require(identical(brohn_hash(report$body),r$report_hash)&&identical(brohn_hash(catalog$body),r$catalog_hash)&&
+  brohn_require(identical(.brohn_sv_hash(report$body),r$report_hash)&&identical(.brohn_sv_hash(catalog$body),r$catalog_hash)&&
     identical(catalog$body$operation,"signal_catalog")&&identical(catalog$body$report_id,r$report_id)&&
     .brohn_sv_same(catalog$body$report_revision,r$report_revision)&&identical(catalog$body$report_hash,r$report_hash),
     "The saved table catalog belongs to another report or revision. Reopen its exact source.")
@@ -67,9 +81,9 @@ brohn_queue_signal_values <- function(store,catalog_id,selection,mode="page",off
   brohn_require(mode %in% c("page","export"),"Choose exact values or complete CSV preparation.")
   catalog<-brohn_get_entity(store,"signal_view",catalog_id,catalog_revision)
   brohn_require(!is.null(catalog)&&identical(catalog$body$operation,"signal_catalog"),"Open a saved processed-table catalog first.")
-  if(!is.null(catalog_hash))brohn_require(identical(brohn_hash(catalog$body),catalog_hash),"This catalog changed. Reopen its current saved source.")
+  if(!is.null(catalog_hash))brohn_require(identical(.brohn_sv_hash(catalog$body),catalog_hash),"This catalog changed. Reopen its current saved source.")
   r<-list(report_id=catalog$body$report_id,report_revision=catalog$body$report_revision,report_hash=catalog$body$report_hash,
-    project_id=catalog$project_id,catalog_id=catalog$id,catalog_revision=catalog$revision,catalog_hash=brohn_hash(catalog$body),
+    project_id=catalog$project_id,catalog_id=catalog$id,catalog_revision=catalog$revision,catalog_hash=.brohn_sv_hash(catalog$body),
     artifact=c(catalog$body$view$artifact,list(complete=TRUE)),selection=selection,recipe=.brohn_signal_values_recipe,
     page=if(mode=="page")list(offset=offset,limit=limit)else NULL)
   operation<-paste0("signal_values_",mode)
@@ -179,7 +193,7 @@ brohn_publish_signal_values <- function(store,output,scratch,job,input,output_pa
 brohn_signal_values_record <- function(store,id,expected_hash=NULL,verify=FALSE) {
   record<-brohn_get_entity(store,"signal_values",id)
   brohn_require(!is.null(record)&&identical(record$body$schema,"brohn-saved-signal-values/1.0"),"The saved exact-value result is unavailable.")
-  if(!is.null(expected_hash))brohn_require(identical(brohn_hash(record$body),expected_hash),"This exact-value result changed. Reopen it.")
+  if(!is.null(expected_hash))brohn_require(identical(.brohn_sv_hash(record$body),expected_hash),"This exact-value result changed. Reopen it.")
   input<-brohn_signal_values_input(store,list(operation=record$body$operation,request=record$body$request),verify=verify)
   brohn_require(identical(record$project_id,input$project_id),"The exact-value result belongs to another project.")
   if(verify) {

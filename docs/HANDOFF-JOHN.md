@@ -1,11 +1,13 @@
 # John: Brohn development handoff
 
 **Start here — 24 September 2026:** read the
+[current workflow continuation](qa/INTEGRATED-WORKFLOWS-20260924.md),
 [latest checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md),
 [current status](../STATUS.md), [master architecture](MASTER-ARCHITECTURE.md),
 [remaining work](KNOWN-GAPS.md) and [build manifest](preparation/build-manifest.json).
 Use the [local installation guide](operations/LOCAL-INSTALLATION.md) to set up
-your own runtime. Source from the other local development task is consolidated
+your own runtime; the new `setup-local.ps1` joins exact restore, native storage
+preparation and configuration in one checked command. Source from the other local development task is consolidated
 in this repository. Its saved QA data and runtime dependencies are external;
 machine-local receipt paths in the evidence documents will not exist in a clone.
 Start a branch from current `main`; preserve original reports and run the checks

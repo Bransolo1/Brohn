@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **24 September 2026** for the latest source publication checkpoint.
+Updated **24 September 2026** for the ongoing end-to-end implementation.
 Read [current status](../STATUS.md), the [master architecture](MASTER-ARCHITECTURE.md)
 and [17-package manifest](preparation/build-manifest.json). The 50-capability
 register remains the complete intended scope, not an enabled-feature claim.
@@ -19,12 +19,17 @@ records describing only the 01A–01L prototype are historical.
   modality. Exact processed-value paging/CSV export, pupil/blink traces and
   saved-video exploration now have implementation and scoped evidence, with
   current acceptance listed in the [publication checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md).
+  Complete explicit distributions, paired-person comparisons and linked
+  same-source signal/event review now have additional
+  [connected evidence](qa/INTEGRATED-WORKFLOWS-20260924.md). Common declared
+  clocks do not establish physical synchronization accuracy; broader linked
+  media replay and drift correction remain open.
   Preserve unavailable
   support, original units, source identities and gaps in every view.
-- **Review responsiveness:** profile repeated synchronous report/source-context
-  verification and Data library navigation on large saved results. The exact-value
-  journey passes correctness with an explicit readiness wait; it does not qualify
-  a production latency target. Preserve source authority and byte verification.
+- **Review responsiveness:** bounded canonical-hash reuse now removes repeated
+  traversal while retaining fresh authority checks. The recorded ECG browser
+  journey has [scoped timing evidence](qa/SIGNAL-REVIEW-RESPONSIVENESS.md).
+  Wider large reports and concurrent workloads still need their own measurements.
 - **Cardiac artifact review:** original ECG/PPG input-versus-cleaned waveform
   review has [scoped acceptance](qa/CARDIAC-INPUT-WAVEFORM-ACCEPTANCE.md).
   Auditable source exclusions and separate-run recalculation now have
@@ -81,7 +86,10 @@ records describing only the 01A–01L prototype are historical.
   report sharing and full research-operations journeys remain separate from
   publishing source to GitHub. See the [study lifecycle](product/STUDY-LIFECYCLE.md).
 - **Installation and repeatable QA:** the exercised setup is a particular
-  Windows environment. A supported clean-machine installer and portable execution
+  Windows environment. The [one-command setup](qa/LOCAL-SETUP-ACCEPTANCE.md) now
+  restores a separate library, prepares native storage and survives failed setup
+  and retry; its actual researcher services restart with saved data. A supported
+  clean-machine installer and portable execution
   of the full test catalog remain work. The checkout excludes development tools,
   research workspaces, model weights and large external fixtures. Follow
   [local installation](operations/LOCAL-INSTALLATION.md), including the required

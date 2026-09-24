@@ -1,5 +1,23 @@
 # Full platform build — Brohn continuation
 
+## Active integrated product wave — 24 September 2026
+
+- [x] Questionnaire and scale distributions from complete saved evidence, with exact exports; 29 focused/14 worker/11 browser checks, six scans and independent export audit.
+- [x] Paired-person comparison figures and complete numerical alternatives; 32 domain/28 browser checks, five scans and 13 independent export checks.
+- [x] Remove repeated full grouping from existing large-cohort paired scoring, retaining exact outputs and provenance; direct1,000-person scorer191.23→2.36s and four exact actual saved-report comparisons.
+- [x] Close recruitment, review resolved sessions, freeze a versioned inventory, reopen history and clone a fresh design; scoped 19 domain/10 browser checks and four scans.
+- [x] Remove repeated canonical traversal from large-result polling without caching permissions or source records; nine focused/27 existing checks and 11 browser checks.
+- [x] Add linked stream/event review using explicit saved clock support and full-source window exports; 13 worker/13 authority/11 browser groups and five scans.
+- [x] One-command setup: exact separate library/native build, failed preparation/retry and actual researcher/service restart; 19 setup and ten browser/service checks.
+- [x] Resolve abandoned sessions with explicit operator provenance and source-bound eligible received-completion analysis;40 domain/eight browser/19 independent checks, seven scans and actual native publication.
+- [ ] Add source-bound audio waveform/spectrogram with complete numerical exports;34 direct worker checks pass, R/browser integration active.
+- [ ] Add event-EDA baseline/response overlays from complete saved source evidence.
+- [ ] Prepare protected isolated-team hosted configuration and actual local OIDC acceptance before external deployment.
+- [ ] Exercise these routes through actual researcher/participant interfaces, then continue remaining packages.
+
+The owner reconfirmed full-build continuation after the GitHub checkpoint.
+Checkpoint publication is not the product acceptance boundary.
+
 ## Measurement-review continuation — 24 September 2026
 
 - [x] Reconcile the shared local checkout with the September 21 GitHub baseline.
@@ -13,7 +31,7 @@
   assertions/five scans, six selections with 3,580 exact rows and unchanged reports.
 - [x] Finish video landmark pagination, cancelled-job retry and exact PNG/CSV
   export: 39 retained browser checks/seven scans plus 11 separate inspections.
-- [ ] Profile saved-context verification and navigation latency with authority preserved.
+- [x] Profile saved-context verification and navigation latency with authority preserved; see [scoped evidence](../qa/SIGNAL-REVIEW-RESPONSIVENESS.md).
 
 The [current checkpoint](../qa/PUBLICATION-CHECKPOINT-20260924.md) links exact
 counts, failures and scope. The older checklist below describes its dated snapshot.

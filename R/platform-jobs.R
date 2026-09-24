@@ -37,6 +37,9 @@ brohn_job_input <- function(store, job) {
   if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_cardiac_review_input(store, job))
   if (identical(job$operation, "summarize_signal_windows")) return(brohn_signal_windows_input(store, job))
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
+  if (identical(job$operation, "explicit_distributions")) return(brohn_explicit_distribution_input(store, job))
+  if (identical(job$operation, "linked_review")) return(brohn_linked_review_input(store, job))
+  if (identical(job$operation, "analyse_resolved_run")) return(brohn_resolved_session_input(store, job))
   request <- job$request
   if (identical(job$operation, "analyse_task_cohort")) return(list(schema = "brohn-analysis-input/1.0", operation = job$operation,
     task_cohort = brohn_task_cohort_input(store, request), project_id = request$project_id))
@@ -92,7 +95,10 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "linked_review", "analyse_resolved_run"), "Use the operation's setup screen to choose a new destination or source.")
+  if(identical(job$operation,"linked_review"))brohn_linked_review_input(store,job)
+  if(identical(job$operation,"analyse_resolved_run"))brohn_resolved_session_input(store,job)
+  if(identical(job$operation,"explicit_distributions"))brohn_explicit_distribution_input(store,job)
   if(identical(job$operation,"vision_index"))brohn_vision_index_input(store,job)
   if(identical(job$operation,"vision_frame"))brohn_vision_frame_input(store,job)
   if(job$operation %in% c("signal_values_page", "signal_values_export"))brohn_signal_values_input(store,job)
@@ -185,6 +191,9 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
+  if (identical(input$operation, "explicit_distributions")) return(brohn_analyse_explicit_distributions(input, scratch))
+  if (identical(input$operation, "linked_review")) return(brohn_analyse_linked_review(input, scratch))
+  if (identical(input$operation, "analyse_resolved_run")) return(brohn_analyse_resolved_session(input, scratch))
   if (identical(input$operation, "analyse_task_cohort")) return(brohn_analyse_task_cohort(input$task_cohort))
   if (identical(input$operation, "ingest_source")) return(brohn_analyse_ingestion(input, scratch))
   if (identical(input$operation, "extract_stream")) return(brohn_analyse_stream_curation(input, scratch))
@@ -432,15 +441,15 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- identical(job$operation, "questionnaire_index")
+  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "linked_review", "analyse_resolved_run")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
-  if (explorer) on.exit(tryCatch(.brohn_store_audit(store, "questionnaire_index.resources", job$id,
+  if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
     list(profile = profile, elapsed_seconds = as.numeric(Sys.time())-started,
       sampled_peak_rss_bytes = peak_rss, sampled_peak_scratch_bytes = peak_scratch,
       operation = job$operation, attempt = job$attempt)), error = function(e) NULL), add = TRUE)
   tryCatch({
-    if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "The saved-answer view requires process memory monitoring.")
+    if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "Complete-source review requires process memory monitoring.")
     input <- if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
     if(identical(job$operation,"vision_index")) {
       vision_source_guards<-.brohn_vexplorer_guards(store,job$request)
@@ -512,7 +521,10 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       all(vapply(result$code_identity, function(hash) brohn_text(hash, 64) && grepl("^[a-f0-9]{64}$", hash), logical(1))), "Analysis returned no verifiable implementation identity.")
     if (identical(job$operation, "ingest_source"))
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
-    if (explorer) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"questionnaire_index")) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"explicit_distributions")) return(brohn_publish_explicit_distributions(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"linked_review")) return(brohn_publish_linked_review(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"analyse_resolved_run")) return(brohn_publish_resolved_session(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "vision_index")) return(brohn_publish_vision_index(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "vision_frame")) return(brohn_publish_vision_frame(store, result, scratch, job, input, result_path))
     if (identical(job$operation, "summarize_signal_windows")) return(brohn_publish_signal_windows(store, result, scratch, job, input, result_path))

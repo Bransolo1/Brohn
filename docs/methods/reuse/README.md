@@ -1,5 +1,12 @@
 # Brohn method reuse and implementation register
 
+This register preserves the **8 September preparation snapshot**. Its phrases
+such as “planned” and “no product adapter” describe that date, not the current
+application. Use the [master architecture](../../MASTER-ARCHITECTURE.md),
+[current status](../../../STATUS.md) and [workflow evidence](../../qa/INTEGRATED-WORKFLOWS-20260924.md)
+for enabled routes and remaining work. The method references below still inform
+their implementation; installed engines alone do not establish feature support.
+
 **Scope extension:** this register documents the first reference packs, not a
 definitive list of Brohn measures. The [holistic capability register](../../preparation/capability-register.json)
 and [master architecture](../../MASTER-ARCHITECTURE.md) cover 50 capabilities across

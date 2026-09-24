@@ -29,11 +29,17 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   message <- function(text) {state$status <- text; invisible(text)}
   brohn_install_multimodal_ui(input, output, session, store, state, current, attempt, message, refresh)
   brohn_install_task_cohort_ui(input, output, session, store, state, current, attempt, message, refresh)
+  collection_history <- brohn_install_collection_history(input, output, session, store, state, current, attempt, message, refresh, prepare_download)
+  brohn_install_session_resolution(input, output, session, store, state, current, attempt, message, refresh, prepare_download,
+    return_to_collection = function(command) collection_history$open(command, FALSE))
   brohn_install_task_plots(input,output,session,store,state,attempt,prepare_download)
   brohn_install_interchange_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_header_server(input, output, session, store, state, attempt, refresh, message, prepare_download)
   brohn_install_signal_server(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_questionnaire_explorer(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_explicit_distribution_server(input, output, session, store, state, attempt, message, prepare_download)
+  brohn_install_paired_plots(input, output, session, store, state, attempt, prepare_download)
+  brohn_install_linked_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
   brohn_install_neural_plots(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_gaze_report_server(input, output, session, store, state)
   brohn_install_gaze_trace_server(input, output, session, store, state, attempt, message, prepare_download)

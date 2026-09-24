@@ -118,7 +118,7 @@ brohn_collect_ui <- function(store, record) {
         shiny::div(class = "brohn-toolbar", if (d$status == "open") brohn_command("Pause new starts", "deployment_command", list(id = d$id, state = "paused")),
           if (d$status == "paused") brohn_command("Resume new starts", "deployment_command", list(id = d$id, state = "open")),
           if (d$status %in% c("open", "paused")) brohn_command("Close recruitment", "deployment_command", list(id = d$id, state = "closed"))))
-    }), brohn_acquisition_ui(store, record), brohn_import_ui(store, record$id), shiny::uiOutput("collection_sessions"))
+    }), shiny::uiOutput("collection_close"), brohn_acquisition_ui(store, record), brohn_import_ui(store, record$id), shiny::uiOutput("collection_sessions"))
 }
 brohn_sessions_ui <- function(store, study_id, state = NULL) {
   page <- brohn_search_runs(store, study_id, offset = brohn_related_offset(state, "study_runs", study_id))
@@ -126,7 +126,8 @@ brohn_sessions_ui <- function(store, study_id, state = NULL) {
   brohn_card(title = "Participant sessions", brohn_related_page_ui(page), if (!length(runs)) shiny::p("Sessions will appear after participants enter a released study.") else
     shiny::div(class = "brohn-table", shiny::tags$table(shiny::tags$thead(shiny::tags$tr(lapply(c("Participant", "Origin", "Status", "Received", "Camera", "Assigned protocol"), function(label) shiny::tags$th(scope = "col", label)))),
       shiny::tags$tbody(lapply(runs, function(r) shiny::tags$tr(shiny::tags$td(brohn_default(r$participant_alias, r$id)), shiny::tags$td(r$origin),
-        shiny::tags$td(paste(r$completion_status, r$transfer_status, sep = " / ")), shiny::tags$td(brohn_default(r$acked_sequence, 0)), shiny::tags$td(brohn_camera_session_ui(store, r)),
+        shiny::tags$td(paste(r$completion_status, r$transfer_status, sep = " / "),
+          brohn_session_resolution_command(store, r, study_id, page$project_id)), shiny::tags$td(brohn_default(r$acked_sequence, 0)), shiny::tags$td(brohn_camera_session_ui(store, r)),
         shiny::tags$td(brohn_command("View assigned protocol", "view_run_protocol", list(run_id = r$id, study_id = study_id)))))))))
 }
 brohn_import_ui <- function(store, study_id = NULL) {
@@ -171,7 +172,7 @@ brohn_history_ui <- function(store, record, state = NULL) {
   history <- brohn_entity_history(store, "study", record$id)
   migration_page <- brohn_search_related(store,"study_migrations",record$id,offset=brohn_related_offset(state,"study_migrations",record$id))
   migration <- migration_page$records
-  shiny::tagList(brohn_card(title = "A study with a memory", subtitle = "Each saved design revision remains available. Archiving changes library organization, not your evidence.",
+  shiny::tagList(shiny::uiOutput("collection_history"), brohn_card(title = "A study with a memory", subtitle = "Each saved design revision remains available. Archiving changes library organization, not your evidence.",
     shiny::actionButton("archive_study", if (isTRUE(record$body$archived)) "Restore to active studies" else "Archive study"),
     shiny::tags$ul(lapply(history, function(h) shiny::tags$li(paste("Revision", h$revision, "\u00b7", h$updated_at, "\u00b7", h$body$title),
       brohn_command(paste("Inspect revision", h$revision), "view_design_revision", list(id = h$id, revision = h$revision)))))),

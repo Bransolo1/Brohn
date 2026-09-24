@@ -140,7 +140,9 @@
           typeof data.error === "string" ? data.error : typeof data.message === "string" ? data.message :
           `Study service returned ${response.status}. Please contact your researcher.`;
         const error = new Error(message.slice(0, 400));
+        error.code = data.error?.code;
         error.permanent = response.status >= 400 && response.status < 500 && response.status !== 408 && response.status !== 429;
+        if (error.code === "researcher_resolved" && record?.run_id) await researcherResolved(null);
         throw error;
       }
       return data;
@@ -154,6 +156,22 @@
     (typeof value !== "object" || Array.isArray(value) || Object.keys(value).length > 0) &&
     (typeof value !== "string" || value.length > 0) &&
     (!Array.isArray(value) || !value.every(item => typeof item === "string" && item.length === 0));
+  async function researcherResolved(summary) {
+    finished = true; endingRequested = true;
+    clearTimeout(timer); clearInterval(equipmentTimer);
+    illustrationAbort?.abort(); equipmentAbort?.abort(); taskController?.abort();
+    equipmentPanelStop?.(); equipmentPanelStop = null;
+    stopPresentation(); cameraController?.closeDelivery();
+    await persist(() => {record.delivery_blocked = true; record.researcher_resolution = summary || {resolved: true};});
+    $("withdraw").hidden = true;
+    const cameraStatus = $("camera-status");
+    if (cameraStatus && !cameraStatus.hidden) cameraStatus.textContent = "Recording stopped. Unsent local recording data are retained.";
+    screen("The researcher has closed this session",
+      "The decision uses evidence already received by the study service. It does not confirm receipt of unsent responses or recordings. Your local saved data remain in this browser.");
+    content.append(node("p", "Contact your researcher before clearing browser storage. This session cannot collect further responses."));
+    if (summary?.participant_ending) content.append(node("p", `Received participant ending: ${summary.participant_ending}. The original receipt and researcher decision remain separate.`));
+    status.textContent = "Session resolved by the researcher; local data retained.";
+  }
   const equal = (a, b) => {
     if (typeof a === "number" && typeof b === "number") return a === b;
     if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((value, index) => equal(value, b[index]));
@@ -361,6 +379,7 @@
         content.append(button("Start a new participant session", () => location.reload()));
       }
     } catch (error) {
+      if (record?.researcher_resolution) return;
       status.textContent = "Saved in this browser. Delivery to the study service is still pending.";
       if (error.permanent) { await persist(() => { record.delivery_blocked = true; }); showError(error); }
       else timer = setTimeout(() => void sync(), 4000);
@@ -972,6 +991,7 @@
         else await fetchRevisionState();
       }
       applyAppearance(record.protocol.design.appearance);
+      if (session.researcher_resolution?.resolved) {await researcherResolved(session.researcher_resolution); return;}
       try { await preloadTimeline(); } catch (error) { await finish("interrupted", error.message); return; }
       const recoveringActive = recovery?.active_step_id && record.protocol.timeline.find(step => step.id === recovery.active_step_id);
       if (recoveringActive && ["stimulus", "baseline", "fixation", "task"].includes(recoveringActive.type)) {
@@ -1048,6 +1068,16 @@
     if (record.pending_start) {
       screen("Your session setup is unfinished", "Continue the same setup request to avoid creating a duplicate participant session.");
       content.append(button("Continue session setup", () => start(record.pending_start.consented), true)); return;
+    }
+    if (record.researcher_resolution?.resolved) {await researcherResolved(record.researcher_resolution); return;}
+    // Check the authenticated session before changing a saved camera journal or
+    // creating recovery events. Offline continuation retains its existing rules.
+    try {
+      const savedStatus = await api(`/api/session_status/${encodeURIComponent(record.run_id)}`);
+      if (savedStatus.run_id !== record.run_id) throw new Error("The session status identity does not match this browser.");
+      if (savedStatus.researcher_resolution?.resolved) {await researcherResolved(savedStatus.researcher_resolution); return;}
+    } catch (error) {
+      if (error.permanent) throw error;
     }
     if (record.protocol?.design?.camera) {
       try {

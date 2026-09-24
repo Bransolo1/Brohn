@@ -14,6 +14,27 @@ The [unified experience](product/UNIFIED-EXPERIENCE.md) connects all 50 capabili
 
 ## 1. Full product surface
 
+**Connected workflow continuation, 24 September 2026:** complete question/scale
+distributions and paired-person figures now read verified complete saved evidence
+through bounded supervised preparation. R retains item types, scoring-key versions,
+condition identities and the original inferential results; figure paging and exact
+exports use the same selected source. The one-command local setup prepares the
+pinned runtime and checked configuration while preserving earlier configurations
+on failure. The [integrated workflow ledger](qa/INTEGRATED-WORKFLOWS-20260924.md)
+records connected acceptance. Linked event/signal review now uses two to four
+channels from one immutable import with exactly matching declared clock metadata,
+a shared cursor/window, explicit gap breaks and complete selected-value exports.
+Clock agreement is not measured synchronization accuracy. Session recovery now
+records an immutable source-bound researcher decision separately from original
+participant and camera receipts. Only an actually received complete ending with
+supported source can enter its separate confirmed-completion report; abandoned
+or partial records remain distinct. Late new uploads cannot rewrite a resolution,
+and unsent browser data remain retained. Closed collection inventories preserve
+both original outcomes and researcher decisions through history/backup.
+See [the recovery acceptance](qa/SESSION-RESOLUTION-ACCEPTANCE.md).
+Audio source review, event-EDA review and the remaining research/hosted/release
+scope continue; this connected wave does not complete all capabilities.
+
 **Measurement-review integration, 24 September 2026:** saved video reports now
 open the complete source-bound frame/metric explorer through the shared report
 screen. R owns report/selection authority, supervised workers index complete
@@ -23,7 +44,14 @@ plots. Landmark paging updates only the value region so disclosure and keyboard
 focus survive; image readiness does not replace that region. See the
 [current checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md) for exact processed-value,
 pupil/blink, fNIRS and video evidence. Repeated synchronous source-context reads
-need profiling without weakening authority checks. These additions preserve the
+now use bounded canonical-hash computation reuse while retaining fresh authority
+and source checks; [recorded interface timings](qa/SIGNAL-REVIEW-RESPONSIVENESS.md)
+cover the exercised ECG report. Closed releases now have a versioned immutable
+collection inventory: resolve pending receipts/processing, finalize, reopen saved
+reports and clone the exact released design in History. This inventory counts
+sessions and retains source identities; it does not decide scientific eligibility
+or imply that separately imported recordings are linked. See
+[collection acceptance](qa/COLLECTION-HISTORY-JOURNEY.md). These additions preserve the
 remaining package, scientific, device and release requirements below.
 
 Implementation resumed at the owner's request on 20 September 2026. Progress and

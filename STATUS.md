@@ -1,5 +1,35 @@
 # Resume here — Brohn
 
+## Active end-to-end delivery — 24 September 2026
+
+The owner explicitly reconfirmed that the platform must be built end to end.
+Publishing a checkpoint is not a stopping condition. The full 50-capability,
+17-package roadmap remains active; do not treat the GitHub handoff as completion.
+Current connected implementation wave:
+
+- Complete questionnaire/scale distributions with typed denominators and exports.
+- Paired comparison plots from exact saved person/session evidence.
+- Closed collection review, immutable finalization and historical reuse.
+- Responsive large-result inspection with unchanged source and permission checks.
+
+Collection finalization now has [connected acceptance](docs/qa/COLLECTION-HISTORY-JOURNEY.md),
+including actual participant completion, retry, historical cloning and restart.
+The [signal responsiveness regression](docs/qa/SIGNAL-REVIEW-RESPONSIVENESS.md)
+passes with fresh authority checks retained. Explicit distributions and the new
+local setup have connected acceptance. Paired comparisons now pass their full
+source/export/restart journey. Linked stream/event review now passes its actual
+import, exact-value export, cancellation, paging and restart journey with five
+clean accessibility scans. Abandoned-session recovery now passes40 domain,
+eight browser and19 independent checks/seven scans, with an actual separately
+confirmed-completion report and retained original receipts. Paired aggregation
+retains exact output while its1,000-person direct benchmark falls191.23→2.36s.
+Audio waveform/spectrogram review, event-EDA review and protected hosted setup
+are the next active slices. The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md)
+links evidence; wider package and release work remains active.
+
+Each route must pass an actual researcher journey before its acceptance closes;
+after integration, continue through the remaining product and release work.
+
 ## Current measurement-review checkpoint — 24 September 2026
 
 The [latest checkpoint](docs/qa/PUBLICATION-CHECKPOINT-20260924.md) consolidates

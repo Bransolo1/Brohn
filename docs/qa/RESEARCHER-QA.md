@@ -13,6 +13,11 @@ in the ledger and below rather than overstating those original bundles.
 
 ## The study the evaluator must actually complete
 
+The later [integrated workflow ledger](INTEGRATED-WORKFLOWS-20260924.md) records
+collection finalization/history, response/scale distributions, signal navigation
+and fresh-library setup/restart evidence. Paired review, linked replay and session
+resolution remain separately tracked until their complete journeys pass.
+
 The [24 September continuation](PUBLICATION-CHECKPOINT-20260924.md) adds scoped
 saved-report journeys alongside the original whole-study scenarios. Exact-value
 review passes 22 browser assertions/five scans, with all 108,414 downloaded rows

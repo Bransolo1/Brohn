@@ -206,6 +206,7 @@ brohn_run_events <- function(store, run_id) {
     expected_sequence = run$acked_sequence + 1L, completion_status = run$completion_status,
     resume = .brohn_delivery_resume(state, run$protocol, context, run$acked_sequence))
   if (!is.null(context)) result$protocol_hash <- context$protocol_hash
+  if (exists("brohn_session_resolution_participant", mode = "function")) result$researcher_resolution <- brohn_session_resolution_participant(store, run$id)
   result
 }
 .brohn_delivery_start <- function(store, token, request) {
@@ -498,6 +499,7 @@ brohn_run_events <- function(store, run_id) {
         next
       }
       .brohn_delivery_require(run$completion_status == "in_progress", "This run has been finalized.", 409, "finalized")
+      if (exists("brohn_require_session_receiving", mode = "function")) brohn_require_session_receiving(store, run_id)
       .brohn_delivery_require(event$sequence == acknowledged + 1L, "An earlier event is missing. Retry from the acknowledged sequence.", 409, "sequence_gap")
       duplicate <- DBI::dbGetQuery(store$con, "SELECT sequence FROM delivery_events WHERE run_id=? AND event_id=?", params = list(run_id, event$id))
       .brohn_delivery_require(nrow(duplicate) == 0L, "Event identity was already used at another sequence.", 409, "event_id_conflict")
@@ -532,6 +534,7 @@ brohn_run_events <- function(store, run_id) {
     }
     run <- .brohn_delivery_run(row)
     .brohn_delivery_require(run$completion_status == "in_progress", "This run already has an immutable final outcome.", 409, "finalized")
+    if (exists("brohn_require_session_receiving", mode = "function")) brohn_require_session_receiving(store, run_id)
     .brohn_delivery_require(request$final_sequence == run$acked_sequence, "All final events must have durable receipts before finishing.", 409, "pending_events")
     state <- .brohn_delivery_replay(run$protocol, .brohn_delivery_events(store, run_id))
     if (request$outcome == "completed" && !is.null(run$protocol$design$camera)) {
@@ -628,6 +631,13 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
         return(.brohn_delivery_response(body = list(file = file, owned = FALSE), type = assets[[1]]$asset$media_type))
       }
       .brohn_delivery_require(length(parts) == 3L, "Route was not found.", 404, "not_found")
+      if (method == "GET" && operation == "session_status") {
+        authorization <- brohn_default(req$HTTP_AUTHORIZATION, "")
+        .brohn_delivery_require(grepl("^Bearer [a-f0-9]{64}$", authorization), "Run access is required.", 401, "unauthorized")
+        row <- .brohn_delivery_authorize(store, identity, substring(authorization, 8L))
+        return(.brohn_delivery_response(value = list(run_id = identity, completion_status = row$completion_status[[1L]],
+          researcher_resolution = if (exists("brohn_session_resolution_participant", mode = "function")) brohn_session_resolution_participant(store, identity) else NULL)))
+      }
       if (method == "GET" && operation == "entry") {
         row <- .brohn_delivery_deployment_row(store, token = identity)
         .brohn_delivery_require(nrow(row) == 1L, "Study link was not found.", 404, "not_found")

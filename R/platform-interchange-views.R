@@ -20,6 +20,7 @@ brohn_interchange_dataset_ui <- function(store, record) {
       shiny::p(class = "brohn-muted", "Source-declared sample or pilot data stays labelled as such. Unknown units, missing samples and timing boundaries remain visible."),
       shiny::actionButton("accept_multistream", if (d$status %in% c("accepted", "analysed")) "Save notes and preserve streams" else "Preserve streams", class = "btn-primary")),
     shiny::uiOutput("multistream_progress"), shiny::uiOutput("multistream_history"),
+    shiny::uiOutput("linked_review_entry"),
     shiny::uiOutput("multistream_catalog"), shiny::uiOutput("multistream_stream_detail"))
 }
 
