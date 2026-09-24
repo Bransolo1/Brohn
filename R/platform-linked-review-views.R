@@ -38,6 +38,8 @@ brohn_linked_review_svg <- function(result,width=900L) {
 brohn_install_linked_review <- function(input,output,session,store,state,attempt,message,refresh,prepare_download) {
   opened<-shiny::reactiveVal(NULL);pending<-shiny::reactiveVal(NULL);offset<-shiny::reactiveVal(0L);issue<-shiny::reactiveVal(NULL);csv_url<-shiny::reactiveVal(NULL)
   native<-new.env(parent=emptyenv());native$guard<-NULL
+  restoration<-new.env(parent=emptyenv());restoration$value<-NULL
+  draft_state<-new.env(parent=emptyenv());draft_state$context<-NULL
   release<-function(){if(!is.null(native$guard)).brohn_qexplorer_release(native$guard);native$guard<-NULL;csv_url(NULL)}
   session$onSessionEnded(release)
   dataset<-function(){brohn_require(identical(state$page,"dataset"),"Open the original multistream recording before linked review.")
@@ -45,34 +47,66 @@ brohn_install_linked_review <- function(input,output,session,store,state,attempt
   catalogs<-shiny::reactivePoll(1200,session,checkFunc=function(){if(!identical(state$page,"dataset")||is.null(state$dataset_id))return(NULL)
     d<-brohn_get_entity(store,"dataset",state$dataset_id);if(is.null(d)||!identical(d$body$modality,"multimodal"))return(NULL)
     brohn_hash(list(d$id,lapply(brohn_stream_imports(store,d$id,d$project_id,100),.brohn_linked_ref)))},valueFunc=function(){d<-dataset();brohn_linked_choices(store,d$id,d$project_id)})
-  output$linked_review_entry<-shiny::renderUI({shiny::req(identical(state$page,"dataset"));c<-catalogs();if(!length(c$imports))return(NULL)
-    brohn_card(title="Review measurements with recorded events",subtitle="Inspect source-declared shared clocks with one time window and cursor. Synchronization accuracy remains unverified.",
-      shiny::selectInput("linked_import","Preserved recording version",stats::setNames(vapply(c$imports,`[[`,character(1),"id"),vapply(c$imports,function(r)paste(r$body$created_at,substr(r$id,nchar(r$id)-7,nchar(r$id))),character(1))),selectize=FALSE),
-      shiny::uiOutput("linked_track_choices"),shiny::textAreaInput("linked_clock_rationale","Evidence that the selected tracks share this recording clock",rows=2),
-      shiny::checkboxInput("linked_confirm","I reviewed the source clock and identity declarations; this does not establish physical synchronization accuracy.",FALSE),
-      shiny::div(class="brohn-form-grid",shiny::textInput("linked_start","Window start (relative seconds)","0"),
-        shiny::textInput("linked_end","Window end (exclusive, relative seconds)","10"),shiny::textInput("linked_cursor","Shared cursor (relative seconds)","0")),
-      shiny::p("The first selected track supplies the exact original timestamp anchor. Different clock IDs, participant/session identities or ambiguous reset epochs require alignment; close timestamps do not qualify."),
-      shiny::actionButton("linked_apply","Apply linked window",class="btn-primary"),shiny::uiOutput("linked_review_status"),shiny::uiOutput("linked_review_result"),shiny::uiOutput("linked_review_history"))})
-  output$linked_track_choices<-shiny::renderUI({c<-catalogs();shiny::req(input$linked_import);brohn_require(input$linked_import %in% vapply(c$imports,`[[`,character(1),"id"),"Choose a preserved recording version.")
-    streams<-brohn_streams(store,import_id=input$linked_import,project_id=c$dataset$project_id)
+  track_choices<-function(c,import_id){
+    streams<-brohn_streams(store,import_id=import_id,project_id=c$dataset$project_id)
     choices<-character();for(s in streams)if(s$body$manifest$kind %in% c("signal","markers"))for(ch in s$body$manifest$channels){
       value<-brohn_json(list(stream_id=s$id,channel_id=ch$id));label<-paste(s$body$title,"/",ch$label,"\u00b7",brohn_default(ch$unit,"event/unlabelled unit"),"\u00b7 clock",s$body$manifest$clock$id)
       choices<-c(choices,stats::setNames(value,label))}
-    shiny::checkboxGroupInput("linked_tracks","Signal and event tracks (choose 2 to 4)",choices,selected=character())})
+    choices}
+  # Read the current draft only when its catalogue/context genuinely changes.
+  # Typing and checking a track must not recreate the enclosing input controls.
+  draft_snapshot<-shiny::reactive({shiny::req(identical(state$page,"dataset"));c<-catalogs()
+    shiny::req(identical(c$dataset$id,state$dataset_id));if(!length(c$imports))return(NULL)
+    ids<-vapply(c$imports,`[[`,character(1),"id");context<-list(dataset_id=c$dataset$id,project_id=c$dataset$project_id)
+    current<-shiny::isolate(list(import=input$linked_import,tracks=brohn_default(input$linked_tracks,character()),
+      start=brohn_default(input$linked_start,"0"),end=brohn_default(input$linked_end,"10"),cursor=brohn_default(input$linked_cursor,"0"),
+      rationale=brohn_default(input$linked_clock_rationale,""),confirmed=isTRUE(input$linked_confirm)))
+    preserve<-identical(draft_state$context,context)&&length(current$import)==1L&&current$import %in% ids&&
+      all(current$tracks %in% unname(track_choices(c,current$import)))
+    draft_state$context<-context
+    if(!preserve){restoration$value<-NULL;opened(NULL);pending(NULL);offset(0L);issue(NULL);release()}
+    values<-if(preserve)current else list(import=ids[[1L]],tracks=character(),start="0",end="10",cursor="0",rationale="",confirmed=FALSE)
+    list(catalog=c,values=values,reset=!preserve,previous_import=current$import)})
+  output$linked_review_entry<-shiny::renderUI({draft<-draft_snapshot();if(is.null(draft))return(NULL);c<-draft$catalog;v<-draft$values
+    brohn_card(title="Review measurements with recorded events",subtitle="Inspect source-declared shared clocks with one time window and cursor. Synchronization accuracy remains unverified.",
+      shiny::selectInput("linked_import","Preserved recording version",stats::setNames(vapply(c$imports,`[[`,character(1),"id"),vapply(c$imports,function(r)paste(r$body$created_at,substr(r$id,nchar(r$id)-7,nchar(r$id))),character(1))),selected=v$import,selectize=FALSE),
+      shiny::uiOutput("linked_track_choices"),shiny::textAreaInput("linked_clock_rationale","Evidence that the selected tracks share this recording clock",value=v$rationale,rows=2),
+      shiny::checkboxInput("linked_confirm","I reviewed the source clock and identity declarations; this does not establish physical synchronization accuracy.",v$confirmed),
+      shiny::div(class="brohn-form-grid",shiny::textInput("linked_start","Window start (relative seconds)",v$start),
+        shiny::textInput("linked_end","Window end (exclusive, relative seconds)",v$end),shiny::textInput("linked_cursor","Shared cursor (relative seconds)",v$cursor)),
+      shiny::p("The first selected track supplies the exact original timestamp anchor. Different clock IDs, participant/session identities or ambiguous reset epochs require alignment; close timestamps do not qualify."),
+      shiny::actionButton("linked_apply","Apply linked window",class="btn-primary"),shiny::uiOutput("linked_review_status"),shiny::uiOutput("linked_review_result"),brohn_linked_history_ui())})
+  output$linked_track_choices<-shiny::renderUI({draft<-draft_snapshot();shiny::req(!is.null(draft));c<-draft$catalog
+    reset<-draft$reset&&identical(input$linked_import,draft$previous_import)
+    import_id<-if(reset)draft$values$import else input$linked_import;shiny::req(import_id)
+    brohn_require(import_id %in% vapply(c$imports,`[[`,character(1),"id"),"Choose a preserved recording version.")
+    choices<-track_choices(c,import_id)
+    selected<-if(reset)character()else shiny::isolate(brohn_default(input$linked_tracks,character()));restore<-restoration$value
+    if(!is.null(restore)&&identical(restore$dataset_id,state$dataset_id)&&identical(restore$import_id,input$linked_import)) {
+      brohn_require(all(restore$tracks %in% unname(choices)),"The saved tracks are unavailable in this preserved recording version.")
+      selected<-restore$tracks
+    }
+    shiny::checkboxGroupInput("linked_tracks","Signal and event tracks (choose 2 to 4)",choices,selected=selected[selected %in% unname(choices)])})
+  # Acknowledgement changes no reactive dependency: it must not recreate the
+  # checkbox group and overwrite the researcher's next edit.
+  shiny::observeEvent(input$linked_tracks,{restore<-restoration$value
+    if(!is.null(restore)&&identical(state$dataset_id,restore$dataset_id)&&identical(input$linked_import,restore$import_id)&&
+      identical(as.list(input$linked_tracks),as.list(restore$tracks)))restoration$value<-NULL},ignoreNULL=FALSE)
+  shiny::observeEvent(input$linked_import,{restore<-restoration$value
+    if(!is.null(restore)&&!identical(input$linked_import,restore$import_id))restoration$value<-NULL},ignoreInit=TRUE)
   form<-function(){list(start_s=brohn_default(input$linked_start,""),end_s=brohn_default(input$linked_end,""),cursor_s=brohn_default(input$linked_cursor,""),offset=offset(),
     clock_rationale=brohn_default(input$linked_clock_rationale,""),confirmed=isTRUE(input$linked_confirm))}
   same<-function(record){isTRUE(identical(state$page,"dataset")&&identical(state$dataset_id,record$body$dataset_id)&&
     identical(input$linked_import,record$body$request$imported$id)&&identical(brohn_hash(form()),brohn_hash(record$body$request$selection))&&
     identical(brohn_hash(as.list(brohn_default(input$linked_tracks,character()))),brohn_hash(lapply(record$body$request$tracks,function(t)brohn_json(list(stream_id=t$stream$id,channel_id=t$channel_id))))))}
   active<-function(){r<-opened();brohn_require(!is.null(r)&&same(r),"Apply the current linked window or reopen its saved view before exporting.")
-    d<-dataset();brohn_linked_review_record(store,r$id,d$id,d$project_id)}
+    d<-dataset();brohn_linked_history_open(store,.brohn_linked_ref(r),.brohn_linked_ref(d),d$project_id)}
   submit<-function(){d<-dataset();shiny::req(input$linked_import);tracks<-lapply(as.list(input$linked_tracks),brohn_parse)
     job<-brohn_queue_linked_review(store,d$id,input$linked_import,tracks,form(),d$project_id);pending(list(id=job$id,dataset_id=d$id));opened(NULL);release();issue(NULL)}
   shiny::observeEvent(input$linked_apply,attempt(function(){offset(0L);submit()}))
   shiny::observeEvent(input$linked_exact_page,attempt(function(){r<-active();next_offset<-input$linked_exact_page
     brohn_require(brohn_number(next_offset,0,max(0,r$body$result$selected_rows-1),TRUE)&&next_offset%%100==0,"Choose a current exact-value page.");offset(next_offset);submit()}))
-  shiny::observeEvent(list(state$page,state$dataset_id),{opened(NULL);pending(NULL);offset(0L);issue(NULL);release()},ignoreInit=FALSE,priority=110)
+  shiny::observeEvent(list(state$page,state$dataset_id),{opened(NULL);pending(NULL);offset(0L);issue(NULL);restoration$value<-NULL;draft_state$context<-NULL;release()},ignoreInit=FALSE,priority=110)
   shiny::observe({shiny::invalidateLater(1000,session);p<-pending();if(is.null(p)||!identical(state$page,"dataset")||!identical(state$dataset_id,p$dataset_id))return()
     j<-brohn_get_job(store,p$id);if(j$status=="succeeded"){d<-dataset();opened(brohn_linked_review_record(store,j$result$linked_review_id,d$id,d$project_id));pending(NULL)}
   })
@@ -117,17 +151,20 @@ brohn_install_linked_review <- function(input,output,session,store,state,attempt
         if(!is.null(csv_url()))shiny::tags$a(href=csv_url(),download="linked-window.csv",class="btn btn-primary","Download complete linked CSV"),
         shiny::downloadButton("linked_manifest","Download linked source manifest",icon=NULL)))})
   output$linked_manifest<-shiny::downloadHandler(filename=function()paste0(active()$id,".json"),contentType="application/json",content=function(file)prepare_download(function()brohn_write_json_file(active()$body,file)))
-  history_records<-function(){if(!identical(state$page,"dataset")||is.null(state$dataset_id))return(list())
-    d<-brohn_get_entity(store,"dataset",state$dataset_id);if(is.null(d)||!identical(d$body$modality,"multimodal"))return(list())
-    brohn_list_entities(store,"linked_review",d$project_id,limit=40L,filters=list(dataset_id=d$id))}
-  history<-shiny::reactivePoll(1200,session,checkFunc=function()brohn_hash(lapply(history_records(),.brohn_linked_ref)),valueFunc=history_records)
-  output$linked_review_history<-shiny::renderUI({shiny::req(identical(state$page,"dataset"));records<-history();if(!length(records))return(NULL)
-    shiny::tags$details(shiny::tags$summary("Saved linked reviews"),shiny::p("Most recent 40 saved views for this recording. Each retains its exact source selection and window."),
-      lapply(records,function(r)shiny::div(class="brohn-toolbar",shiny::span(paste(r$created_at,"\u00b7",r$body$result$status,"\u00b7",r$body$request$selection$start_s,"to",r$body$request$selection$end_s,"s")),brohn_command("Open linked review","linked_open",r$id))))})
-  shiny::observeEvent(input$linked_open,attempt(function(){d<-dataset();r<-brohn_linked_review_record(store,input$linked_open,d$id,d$project_id);s<-r$body$request$selection
+  restore_saved<-function(r){s<-r$body$request$selection
+    tracks<-vapply(r$body$request$tracks,function(t)brohn_json(list(stream_id=t$stream$id,channel_id=t$channel_id)),character(1))
+    same_import<-identical(input$linked_import,r$body$request$imported$id)
+    restoration$value<-if(same_import&&identical(as.list(input$linked_tracks),as.list(tracks)))NULL else
+      list(dataset_id=r$body$dataset_id,import_id=r$body$request$imported$id,tracks=tracks)
     shiny::updateSelectInput(session,"linked_import",selected=r$body$request$imported$id)
-    shiny::updateCheckboxGroupInput(session,"linked_tracks",selected=vapply(r$body$request$tracks,function(t)brohn_json(list(stream_id=t$stream$id,channel_id=t$channel_id)),character(1)))
+    # When the import changes its newly rendered checkbox group receives the
+    # selected values directly. Do not race an update against that replacement.
+    if(same_import)shiny::updateCheckboxGroupInput(session,"linked_tracks",selected=tracks)
     shiny::updateTextInput(session,"linked_start",value=s$start_s);shiny::updateTextInput(session,"linked_end",value=s$end_s);shiny::updateTextInput(session,"linked_cursor",value=s$cursor_s)
-    shiny::updateTextAreaInput(session,"linked_clock_rationale",value=s$clock_rationale);shiny::updateCheckboxInput(session,"linked_confirm",value=TRUE);offset(s$offset);pending(NULL);opened(r)}))
-  invisible(list(active=active))
+    shiny::updateTextAreaInput(session,"linked_clock_rationale",value=s$clock_rationale);shiny::updateCheckboxInput(session,"linked_confirm",value=TRUE);offset(s$offset);pending(NULL);opened(r)}
+  history_scope<-shiny::reactive({if(!identical(state$page,"dataset")||is.null(state$dataset_id))return(NULL)
+    d<-brohn_get_entity(store,"dataset",state$dataset_id);if(is.null(d)||!identical(d$body$modality,"multimodal"))return(NULL)
+    list(dataset_ref=.brohn_linked_ref(d),project_id=d$project_id,import_ref=NULL)})
+  history<-brohn_install_linked_history(input,output,session,store,history_scope,restore_saved,attempt)
+  invisible(list(active=active,history=history))
 }

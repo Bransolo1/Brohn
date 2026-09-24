@@ -5,11 +5,11 @@
   "checkpoint": {
     "status": "implementing",
     "date": "2026-09-25",
-    "publication_handoff": "docs/qa/PUBLICATION-GNAT-20260924.md",
+    "publication_handoff": "docs/qa/PUBLICATION-RESULTS-HISTORY-20260925.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability/17-package build remains active and unfinished. Brohn single-target GNAT is the seventh named task profile: two full 384-trial administrations, two actual imports, one reviewed cohort, complete exports and restart preserve five reports and seven successful jobs. The configured seven-check QA subset passes 408 component assertions and 19 launcher checks. Next: paged media/linked review history, reliable restoration and results-first reports; reviewed cross-recording clock alignment remains planned. See docs/WORKSTREAM.md and the publication handoff for exact evidence and broader gaps."
+    "note": "The full 50-capability/17-package build remains active and unfinished. Results-first reports and paged media/linked history now have source-phased browser/export/restart acceptance. Exact restoration preserves drafts and original sources. Measured17–18s media/complete GNAT source opening remains active performance work. Reviewed cross-recording clock components are under isolated integration, not enabled. See the current workstream and publication handoff for scope and remaining requirements."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -592,7 +592,9 @@
         "docs/qa/SIGNAL-REVIEW-RESPONSIVENESS.md",
         "docs/qa/PAIRED-RESULTS-ACCEPTANCE.md",
         "docs/qa/LINKED-REVIEW-ACCEPTANCE.md",
-        "docs/qa/PAIRED-AGGREGATION-PERFORMANCE.md"
+        "docs/qa/PAIRED-AGGREGATION-PERFORMANCE.md",
+        "docs/architecture/RESULTS-AND-SAVED-HISTORY.md",
+        "docs/qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -683,7 +685,11 @@
         "docs/qa/INTEGRATED-WORKFLOWS-20260924.md",
         "docs/qa/PAIRED-RESULTS-ACCEPTANCE.md",
         "docs/qa/SESSION-RESOLUTION-ACCEPTANCE.md",
-        "docs/qa/PARTICIPANT-CODE-PROVENANCE-ACCEPTANCE.md"
+        "docs/qa/PARTICIPANT-CODE-PROVENANCE-ACCEPTANCE.md",
+        "docs/architecture/RESULTS-AND-SAVED-HISTORY.md",
+        "docs/qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md",
+        "docs/qa/MEDIA-HISTORY-ACCEPTANCE.md",
+        "docs/qa/LINKED-HISTORY-BROWSER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",

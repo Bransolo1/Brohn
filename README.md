@@ -16,6 +16,8 @@ actual researcher journeys, method checks, exports and restart evidence for
 enabled features. Each acceptance record states its tested scope and remaining
 limits. For inspecting complete saved observations and original frames, use the
 [facial and video/audio review guide](docs/operations/REVIEW-SAVED-MEDIA.md).
+The [saved-results guide](docs/operations/REVIEW-SAVED-RESULTS.md) covers
+Results/Explore/Evidence, paged histories and reopening original views.
 
 ## What is connected
 

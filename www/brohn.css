@@ -87,6 +87,11 @@
 .brohn-app .brohn-page.brohn-report-page { gap: 0; --brohn-report-gap: 24px; }
 .brohn-app .brohn-report-page > .shiny-html-output { display: block; }
 .brohn-app .brohn-report-page > :not(:empty) ~ :not(:empty) { margin-block-start: var(--brohn-report-gap); }
+.brohn-app .brohn-report-section { min-width: 0; scroll-margin-block-start: 16px; }
+.brohn-app .brohn-report-section > * { min-width: 0; max-width: 100%; }
+.brohn-app .brohn-report-section > .shiny-html-output { display: block; }
+.brohn-app .brohn-report-section > :not(:empty) ~ :not(:empty) { margin-block-start: var(--brohn-report-gap); }
+.brohn-app .brohn-report-section > h2:first-child { margin-block-start: 0; }
 .brohn-app .brohn-page-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 8px; }
 .brohn-app .brohn-page-intro { min-width: 0; }
 .brohn-app .brohn-page-subtitle { max-width: 70ch; margin: 12px 0 0; color: var(--brohn-secondary); font-size: .95rem; }

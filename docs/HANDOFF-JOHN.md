@@ -1,20 +1,19 @@
 # John: Brohn development handoff
 
 **Current checkpoint, 25 September 2026:** development is active. Continuing
-from `d2889f4`, this checkpoint adds the seventh task profile, Brohn's
-named single-target GNAT, and the configured seven-check contributor QA subset.
-The [GNAT checkpoint](qa/PUBLICATION-GNAT-20260924.md) records two complete
-384-trial administrations, automatic reports, actual summary reimports,
-reviewed two-person comparison, exact exports and restart. Its five reports and
-seven successful jobs remain unchanged during reopening. Read the separate
-source phases and retained harness failures before interpreting check counts.
-The configured subset has
-[scoped acceptance](qa/PORTABLE-CATALOG-ACCEPTANCE.md).
-Next are complete saved-review history navigation and results-first report
-layout, followed by the remaining [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
-The [reviewed clock-alignment contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
-is preparation for another slice, not an enabled feature. Use the latest
-[workstream](WORKSTREAM.md) rather than the historical next-step lists below.
+from `935d221`, the [saved-results/history checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md)
+adds results-first report sections, visible saved GNAT/acoustic measurements,
+paged original-media and linked-review histories, exact restoration and draft
+preservation. Read its source phases and retained failures; the scope is
+functional navigation, exact exports and restart, not whole-platform sign-off.
+
+The [review guide](operations/REVIEW-SAVED-RESULTS.md) describes the normal flow.
+Media source reopening and complete GNAT plot loading have measured delays
+around 18 seconds; performance/progress feedback is the immediate UX follow-up.
+Reviewed cross-recording alignment has external component and isolated
+integration work, but is not enabled in this checkpoint. Follow the current
+[workstream](WORKSTREAM.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
+The full 50-capability/17-package scope remains unchanged.
 
 **Resumed after checkpoint `2b3b31a`, 24 September 2026:** the owner explicitly
 requested continued development. The [workstream](WORKSTREAM.md) now tracks

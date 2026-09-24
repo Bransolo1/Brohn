@@ -1,5 +1,21 @@
 # Full platform build — Brohn continuation
 
+## Results and history wave — scoped acceptance 25 September 2026
+
+- [x] Paged media history: 42 genuine supervised cursor preparations,
+  13 independent source groups, 12 browser checks/three scans; exact original
+  sources/exports/restart and zero navigation jobs.
+- [x] Linked history/restoration: 14 browser groups/four scans; preserved draft
+  during one real incoming import, exact old-import/channel/offset restoration,
+  exports and restart. The paging rows include labelled metadata fixtures.
+- [x] Results/Explore/Evidence, visible saved GNAT/acoustic outcomes and long-title
+  phone layout: joined report acceptance retains failed attempts and exact exports.
+- [ ] Improve measured 17–18-second media reopening and GNAT source/plot loading;
+  preserve native guards and fresh authority, add useful progress feedback.
+- [ ] Connect reviewed original-event selection, supervised clock preview,
+  explicit versioned save and exact review/export/restart journey.
+- [ ] Complete remaining PC01–PC16 and the full package/capability scope.
+
 ## GNAT and configured QA wave — completed 25 September 2026
 
 - [x] Configured core subset: seven existing tests, 408 component assertions,
@@ -16,9 +32,9 @@
   exact exports, reviewed cohort, accessible researcher views and restart:
   five reports and seven successful jobs. Failed harness attempts are retained;
   see `docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md` for the explicit joined phases.
-- [ ] Integrate paged saved-media review history, exact reopening and gap copy;
+- [x] Integrate paged saved-media review history, exact reopening and gap copy;
   qualify the actual history journey before claiming broader discoverability.
-- [ ] Integrate linked-review history/restoration and results-first report layout;
+- [x] Integrate linked-review history/restoration and results-first report layout;
   verify actual desktop/mobile/keyboard, exact exports and zero-job reopening.
 - [ ] Implement reviewed cross-recording clock alignment under its explicit
   source/identity/epoch contract; current arithmetic/source candidates are external.

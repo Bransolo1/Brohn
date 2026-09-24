@@ -23,8 +23,10 @@ GNAT, has [connected acceptance](qa/GNAT-RESEARCHER-ACCEPTANCE.md) for two full
 administrations, imports, cohort, exports and restart (PC02/PC05/PC06). The
 [configured seven-check QA subset](qa/PORTABLE-CATALOG-ACCEPTANCE.md) has scoped
 acceptance (PC14/PC16). These slices do not close those broader requirements.
-Next: paged saved-review history, reliable restoration and results-first reports,
-then explicit reviewed cross-recording clock alignment; see the workstream.
+Saved-review paging, restoration and results-first reports now have
+[scoped connected acceptance](qa/PUBLICATION-RESULTS-HISTORY-20260925.md).
+Next: measured source-open responsiveness/progress feedback and the connected
+reviewed cross-recording clock workflow; broader requirements remain open.
 
 | ID | Required outcome | Acceptance before closing | Status |
 |---|---|---|---|

@@ -16,19 +16,20 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
-- **Saved-result usability:** the seventh task profile now passes its connected
-  GNAT journey; see the [current checkpoint](qa/PUBLICATION-GNAT-20260924.md).
-  Configured core checks have [scoped acceptance](qa/PORTABLE-CATALOG-ACCEPTANCE.md).
-  Saved media and linked-review histories still have a latest-40 UI boundary
-  in the application. Paged candidates and a report layout that leads with
-  results have been checked as external candidates. Their component
-  evidence is not yet installed-browser acceptance.
+- **Saved-result responsiveness:** paged media/linked history, exact restoration
+  and results-first report navigation now have [scoped acceptance](qa/PUBLICATION-RESULTS-HISTORY-20260925.md).
+  The tested source reopen still takes about 17–18 seconds for media; complete
+  GNAT source/plot preparation took about 18 seconds and its status feedback
+  remained too generic. Profile and improve these paths without weakening
+  current source authority or native object guards. Larger/concurrent loads
+  remain unqualified.
 - **Reviewed cross-recording alignment:** the
-  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) defines exact
-  bounded affine arithmetic, explicit original anchors, shared participant and
-  session identity, clock epochs, retained gaps and no extrapolation. It is
-  not enabled; domain authority, worker publication and the full researcher
-  review/export/restart journey remain to implement and qualify.
+  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) now has external
+  arithmetic, source inspection, bounded original-event paging, exact window
+  exports and map-versioning components. Supervised publication is under
+  isolated qualification. The connected researcher selection/save/review/export
+  workflow remains to implement and qualify; no alignment is enabled here.
+
 - **Complete measurement review:** the enabled-profile
   [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies
   the actual plots, complete numerical routes and browser evidence for each

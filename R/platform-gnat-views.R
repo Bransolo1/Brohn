@@ -76,3 +76,22 @@ brohn_gnat_score_ui <- function(task) {
       shiny::p("Criterion describes response tendency: negative favors responding and positive favors withholding. Training and practice do not enter these test summaries."),
       shiny::tags$pre(tabindex = "0", brohn_json(audit, TRUE))))
 }
+
+# In-app presentation only. The default report/export keeps its original card.
+# Read exact saved metric values; this helper never recomputes a score.
+brohn_gnat_results_first_card_ui <- function(task, complete_card) {
+  if (is.null(task$scoring_audit)) return(complete_card)
+  names <- c("GNAT_r1_target_positive_contrast", "GNAT_r2_target_positive_contrast")
+  target <- brohn_default(task$scoring_audit$target$label, "Saved target")
+  brohn_card(title = task$title,
+    if (!isTRUE(task$eligible)) shiny::p(role = "status", brohn_default(task$reason,
+      "This administration does not have an eligible GNAT score.")),
+    shiny::div(class = "brohn-grid", lapply(names, function(name) {
+      saved <- Filter(function(m) identical(m$name, name), task$metrics)
+      value <- if (isTRUE(task$eligible) && length(saved) == 1L) saved[[1L]]$value else NULL
+      shiny::div(shiny::h3(paste0(target, ": ", .brohn_gnat_metric_label(name))),
+        shiny::p(class = "brohn-result-number", .brohn_gnat_display(value)))
+    })),
+    shiny::p("Positive values mean greater sensitivity separating Go words from distractors in the target-positive pairing. The two deadlines remain separate."),
+    shiny::tags$details(shiny::tags$summary("Study context, full outcomes and scoring evidence"), complete_card))
+}

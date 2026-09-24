@@ -2,11 +2,10 @@
 
 **Explicitly resumed by the owner on 24 September 2026** with "keep going",
 after checkpoint `2b3b31a` was published to `Bransolo1/Brohn`, branch `main`.
-The saved-media and portable connected verification slices now have scoped
-acceptance. The configured seven-check QA subset also has scoped acceptance.
-The distinct GNAT procedure and its complete researcher journey now have scoped
-acceptance (completed 25 September); saved-review history navigation and
-results-first report layout are the next implementation.
+The saved-media, configured contributor QA and distinct GNAT slices have scoped
+acceptance. Paged media/linked histories, reliable restoration and results-first
+reports now also have connected acceptance. The immediate work is measured
+source-open responsiveness and the reviewed cross-recording clock workflow.
 The full build continues across these checkpoints.
 
 The platform is unfinished. The [master architecture](MASTER-ARCHITECTURE.md),
@@ -18,6 +17,8 @@ This file orders the immediate continuation; it does not replace that scope.
 
 | Workstream | Delivered and checked | Remaining work |
 | --- | --- | --- |
+| Saved-result reports | Results/Explore/Evidence, first-screen saved GNAT/acoustic measurements, long-title phone layout, exact exports and joined restart evidence. | Measured source/plot readiness delays and clearer progress feedback; wider report families/load qualification. |
+| Media and linked history | Bounded Older/Newer/Show latest; exact old views beyond 40, media inventory lookup, cross-import restoration and draft preservation; scoped browser/export/restart acceptance. | Media reopening 17–18s; arbitrary large-catalog/concurrent workload qualification. |
 | Brohn single-target GNAT | Seventh named task profile; two full 384-trial administrations, two real imported summaries, reviewed two-person cohort, complete exports and restart. Five reports and seven successful jobs remain exact. | Other procedures, physical timing and construct/reliability qualification remain separate. |
 | Configured core QA | Seven configured checks: 408 component assertions and 19 launcher checks from a separate checkout/caller, preserving the original workspace. | Remaining catalog, clean-machine and wider platform qualification. |
 | Response-window SC-IAT | Six-profile task integration; four full administrations, native and imported summaries, reviewed two-person cohort, exports and restart; 102 independent source/scoring checks, 13 successful jobs. | Other implicit/cognitive procedures remain separate named profiles. Physical timing and construct qualification are not established. |
@@ -25,10 +26,11 @@ This file orders the immediate continuation; it does not replace that scope.
 | Automatic camera analysis | Original named camera-processing permission, exact settings and guarded automatic analysis connected to saved recordings; 17 joined browser groups including seven scans, six independent native-reference checks and five successful jobs with exactly one platform facial inference. | Broader camera/model accuracy and stimulus alignment remain unqualified. The reference browser recording uses a declared synthetic camera feed. |
 | Participant delivery | Smaller new upload batches preserve uncertain operations; pinned release code, run assignments, recovery after lost receipts, restart and backup/restore. | Accumulated-history performance and concurrent workloads; preserving browser files is not a complete server/scientific environment archive. |
 | Code provenance | Collect, assigned protocols, historical collections and native reports expose the same preserved identity and exact downloads; legacy history remains explicitly unknown. | Future server/compiler compatibility and reproducible release packaging. |
-| Original-container video/audio review | Exact frames beside the saved waveform; full timestamp/sample exports, explicit gaps, cancel/retry, saved history and zero-job restart. | Continuous playback, unrelated-sensor clock maps and broader history navigation. |
+| Original-container video/audio review | Exact frames beside the saved waveform; full timestamp/sample exports, explicit gaps, cancel/retry, saved history and zero-job restart. | Continuous playback, unrelated-sensor clock maps and broader history workload qualification. |
 | Installation and operations | Checked Windows setup plus final integrated-source connected smoke from a separate checkout: actual participant, one automatic report, exports and restart. | Configured broader QA catalog, clean-machine installation, public hosting operations and broader roles. |
 
-Authoritative evidence: [current checkpoint](qa/PUBLICATION-GNAT-20260924.md),
+Authoritative evidence: [current checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md),
+[GNAT checkpoint](qa/PUBLICATION-GNAT-20260924.md),
 [saved-media checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md),
 [previous checkpoint](qa/PUBLICATION-SCIAT-FACIAL-20260924.md),
 [workflow ledger](qa/INTEGRATED-WORKFLOWS-20260924.md),
@@ -40,19 +42,20 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Saved-review history (PC02/PC05/PC12).** Integrate prepared paged media
-   and linked-stream history; reopen exact original views beyond the latest 40,
-   restore the selected import/tracks without discarding researcher edits and
-   retain fresh source authority on every download. Qualify real browser,
-   keyboard/mobile, exports and restart before claiming connected acceptance.
-2. **Results-first reports (PC02/PC05/PC07).** Put numerical results before
-   exploration tools, retain accessible section navigation and exact existing
-   exports, and verify real GNAT, acoustic and combined reports after integration.
-3. **Reviewed cross-recording clocks (PC12).** Implement the
-   [explicit two-event alignment contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md).
-   Exact arithmetic and complete-source inspection candidates are external;
-   no new alignment feature is enabled. Preserve original timestamps, gaps,
-   participant/session identity and current access throughout review/export.
+1. **Source-open responsiveness (PC02/PC05/PC07).** Profile the measured 17–18s
+   media reopening and complete GNAT plot loading. Preserve fresh authority,
+   native source guards and exact output; improve progress feedback and qualify
+   the affected real journey after the change.
+2. **Reviewed cross-recording clocks (PC12).** Connect original-event selection,
+   supervised preview, explicit versioned map save and exact original-row
+   window/export under the [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md).
+   Prepared components and isolated job qualification are not an enabled UI.
+   Complete actual source/authority/cancel/retry/history/mobile/restart checks.
+3. **Broader saved-result coverage (PC02/PC05).** Reconcile every enabled
+   measurement's visible results, full numerical route, source support and
+   explanatory copy. The three report fixtures and two history journeys are
+   scoped acceptance, not whole-platform UX sign-off.
+
 4. **Broader completion gates.** Reconcile enabled measurement views,
    method/reference coverage, research operations, workload bounds and remaining
    capabilities against [PC01–PC16](PRODUCT-COMPLETION-BACKLOG.md),

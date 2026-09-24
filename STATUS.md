@@ -1,23 +1,25 @@
 # Resume here — Brohn
 
-## Current GNAT and contributor QA checkpoint — 25 September 2026
+## Current saved-results and history checkpoint — 25 September 2026
 
-Continuing from `d2889f4`, this checkpoint adds the named Brohn
-GNAT procedure as its seventh task profile, with category word lists, original
-trial evidence, dedicated import, four-outcome plots and cohort support.
-Its connected journey now passes two complete 384-trial administrations,
-native reports, actual summary reimports, a reviewed two-person cohort,
-complete exports and restart. The five reports and seven successful jobs remain
-unchanged during reopening. Earlier harness failures and partial administrations
-are retained separately. See the [checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md)
-for exact source phases and scoped evidence. The configured seven-check
-core QA subset has [scoped acceptance](docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md).
-Next are paged saved-media and linked-signal histories and results-first report
-navigation. Their external candidates have component evidence; installed browser
-acceptance remains to complete. Reviewed cross-recording clock alignment follows
-its separate contract and is not yet enabled.
-The full [workstream](docs/WORKSTREAM.md) and all 50 capabilities/17 packages
-remain active; this is neither a pause nor whole-platform completion.
+Continuing from `935d221`, reports now lead with Results, followed by Explore
+and Evidence. GNAT and acoustic results are visible on the first tested phone
+screen; long titles retain room for the initial comparison value. Existing
+standalone reports and exact downloads are preserved. Paged media and linked
+histories reach views beyond the former latest-40 boundary. Linked reopening
+restores the original import/channels/window and preserves an edited draft when
+another import arrives.
+
+Read the [checkpoint](docs/qa/PUBLICATION-RESULTS-HISTORY-20260925.md) for separate
+component, browser, source/export and restart phases. Functional navigation is
+qualified for those fixtures; media reopening still took about 17–18 seconds,
+and complete GNAT source/plot preparation about 18 seconds. Responsiveness and
+clear progress feedback remain active work. The reviewed cross-recording clock
+components are being connected in an isolated qualification checkout; no clock
+alignment feature is enabled by this source checkpoint.
+
+The [workstream](docs/WORKSTREAM.md), all 50 capabilities and all 17 packages
+remain active and unfinished. Publication does not pause or complete the build.
 
 ## Resumed after publication — 24 September 2026
 

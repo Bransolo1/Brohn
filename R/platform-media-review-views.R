@@ -11,9 +11,10 @@ brohn_media_review_waveform_svg<-function(audio,result,width=920L) {
 brohn_install_media_review<-function(input,output,session,store,state,attempt,message,refresh,prepare_download) {
   selection<-shiny::reactiveVal(NULL);catalog<-shiny::reactiveVal(NULL);opened<-shiny::reactiveVal(NULL);pending<-shiny::reactiveVal(NULL);issue<-shiny::reactiveVal(NULL)
   resources<-shiny::reactiveVal(NULL);identity<-shiny::reactiveVal(NULL);preparing<-shiny::reactiveVal(NULL)
+  history_page<-shiny::reactiveVal(NULL);history_stack<-shiny::reactiveVal(list());history_issue<-shiny::reactiveVal(NULL);history_added<-shiny::reactiveVal(FALSE)
   native<-new.env(parent=emptyenv());native$view<-NULL;native$ready<-FALSE
   release<-function(){if(!is.null(native$view))brohn_close_media_review(native$view);native$view<-NULL;native$ready<-FALSE;resources(NULL)}
-  close<-function(){release();selection(NULL);catalog(NULL);opened(NULL);pending(NULL);identity(NULL);preparing(NULL)}
+  close<-function(){release();selection(NULL);catalog(NULL);opened(NULL);pending(NULL);identity(NULL);preparing(NULL);history_page(NULL);history_stack(list());history_issue(NULL);history_added(FALSE)}
   session$onSessionEnded(close)
   current<-function(){s<-selection();brohn_require(!is.null(s)&&identical(state$page,"report")&&identical(state$report_id,s$report_id),"Reopen the saved acoustic report and audio window.")
     fresh<-s$callback();brohn_require(.brohn_mr_same(.brohn_mr_ref(fresh),s$ref),"The original audio window changed. Reopen its media review.")
@@ -28,7 +29,8 @@ brohn_install_media_review<-function(input,output,session,store,state,attempt,me
     brohn_media_review_record(store,r$id,s$review$id,s$review$project_id,FALSE)}
   show<-function(){shiny::showModal(shiny::modalDialog(title="Video and original audio",size="l",easyClose=FALSE,
     shiny::p("Inspect recorded pixels beside the saved waveform using original container timestamps. This does not establish physical synchronization or link external sensors."),
-    shiny::uiOutput("media_review_controls"),shiny::uiOutput("media_review_status"),shiny::uiOutput("media_review_result"),shiny::uiOutput("media_review_history"),
+    shiny::uiOutput("media_review_controls"),shiny::uiOutput("media_review_status"),shiny::uiOutput("media_review_result"),
+    shiny::tags$details(shiny::tags$summary("Saved media reviews"),shiny::uiOutput("media_review_history")),
     footer=shiny::actionButton("media_review_close","Back to audio review")))}
   open<-function(reference,callback){brohn_require(is.function(callback),"Keep the original audio-window selection attached to media review.")
     fresh<-callback();brohn_require(.brohn_mr_same(.brohn_mr_ref(fresh),reference)&&identical(state$page,"report")&&identical(state$report_id,fresh$body$report_id),"Open media from the exact saved acoustic window.")
@@ -39,9 +41,11 @@ brohn_install_media_review<-function(input,output,session,store,state,attempt,me
       audio_catalog=.brohn_qexplorer_catalog(store,"audio_review",fresh$id,fresh$revision,fresh$project_id),
       report_catalog=.brohn_qexplorer_catalog(store,"report",fresh$body$request$report$id,fresh$body$request$report$revision,fresh$project_id)));identity(brohn_hash(reference));show()
     session$onFlushed(function()shiny::isolate({if(is.null(selection())||!identical(identity(),brohn_hash(reference)))return()
-      tryCatch({brohn_hosted_require_session(store);existing<-brohn_list_entities(store,"media_review",fresh$project_id,limit=40L,filters=list(audio_review_id=fresh$id))
-        inventories<-Filter(function(x)identical(x$body$request$operation,"media_tracks"),existing)
-        if(length(inventories)){current();catalog(brohn_media_review_record(store,inventories[[1L]]$id,fresh$id,fresh$project_id,FALSE))}else submit("media_tracks")
+      tryCatch({brohn_hosted_require_session(store);load_history()
+        inventory<-brohn_media_history_inventory(store,reference,fresh$body$request$report,fresh$project_id)
+        if(!is.null(inventory)){current();saved<-brohn_media_review_record(store,inventory$id,fresh$id,fresh$project_id,FALSE)
+          brohn_require(.brohn_mr_same(.brohn_mr_ref(saved),inventory),"The saved video inventory changed. Reopen it.");catalog(saved)
+        }else submit("media_tracks")
       },error=function(e){issue(conditionMessage(e));pending(NULL);release()})
     }),once=TRUE)
   }
@@ -93,7 +97,7 @@ brohn_install_media_review<-function(input,output,session,store,state,attempt,me
   shiny::observe({shiny::invalidateLater(750,session);p<-pending();if(is.null(p)||is.null(selection()))return()
     tryCatch({j<-pending_job();if(j$status=="succeeded"){s<-current()
       r<-brohn_media_review_record(store,j$result$media_review_id,s$review$id,s$review$project_id,FALSE)
-      if(p$operation=="media_tracks")catalog(r)else opened(r);pending(NULL)
+      if(p$operation=="media_tracks")catalog(r)else opened(r);pending(NULL);history_added(TRUE)
     }},error=function(e){issue(conditionMessage(e));release();pending(NULL)})})
   output$media_review_status<-shiny::renderUI({shiny::invalidateLater(750,session);if(!is.null(issue()))return(shiny::tagList(shiny::p(role="status",class="brohn-alert",issue()),if(is.null(catalog()))shiny::actionButton("media_review_inspect","Try media inspection again")))
     if(!is.null(preparing()))return(shiny::p(role="status","Preparing source review. Checking the selected window, original recording and current access before queueing."))
@@ -129,7 +133,7 @@ brohn_install_media_review<-function(input,output,session,store,state,attempt,me
     if(!same(r))return(shiny::p(role="status","The cursor or track changed. Apply the selection before reviewing or exporting it."))
     links<-resources();if(is.null(links))return(shiny::p(role="status","Verifying complete original media and saved source exports."))
     s<-current();b<-r$body$result;m<-b$mapping;c<-b$coverage;f<-c$frame
-    shiny::tagList(shiny::h3("Saved media cursor"),shiny::p(paste("Audio position:",format(signif(m$selected_sample/m$sampling_rate,7),trim=TRUE),"seconds. The frame below follows the original container timing for this saved audio position.")),
+    shiny::tagList(shiny::h3("Saved media cursor"),shiny::p(paste("Audio position:",format(signif(m$selected_sample/m$sampling_rate,7),trim=TRUE),"seconds. The saved cursor uses original container timing.")),
       if(is.null(f))shiny::p(role="status",class="brohn-alert",paste("No source frame is supported at this cursor:",gsub("_"," ",c$status),". No image is held across missing or ambiguous coverage."))else shiny::tagList(
         shiny::tags$img(src=links[["recorded-video-frame"]],alt=paste("Original encoded video frame",f$frame_index,"at PTS",f$pts_ticks,"ticks. No inference or autorotation."),style="max-width:100%;height:auto"),
         shiny::p(paste("Original video frame",f$frame_index,"at container time",f$pts_s,"seconds.",if(is.null(f$duration_ticks))"Duration is unknown; only this exact timestamp is supported."else"Frame duration is recorded in the timing details.")),
@@ -152,10 +156,42 @@ brohn_install_media_review<-function(input,output,session,store,state,attempt,me
         shiny::p(paste("Showing",length(b$rows),"of",c$frame_count,"frames. Complete CSV retains every frame including missing timestamps and unknown duration."))))})
   output$media_review_manifest<-shiny::downloadHandler(filename=function()shiny::isolate(paste0(active()$id,".json")),contentType="application/json",content=function(file)prepare_download(function()shiny::isolate(brohn_write_json_file(active()$body,file))))
   output$media_review_svg<-shiny::downloadHandler(filename=function()shiny::isolate(paste0(active()$id,".svg")),contentType="image/svg+xml",content=function(file)prepare_download(function()shiny::isolate({r<-active();s<-current();writeLines(brohn_media_review_waveform_svg(s$review$body$result,r$body$result),file,useBytes=TRUE)})))
-  records<-function(){s<-selection();if(is.null(s))return(list());brohn_list_entities(store,"media_review",s$project_id,limit=40L,filters=list(audio_review_id=s$ref$id))}
-  history<-shiny::reactivePoll(1200,session,checkFunc=function()brohn_hash(lapply(records(),.brohn_mr_ref)),valueFunc=records)
-  output$media_review_history<-shiny::renderUI({rs<-history();if(!length(rs))return(NULL);shiny::tags$details(shiny::tags$summary("Saved media reviews"),lapply(rs,function(r)
-    shiny::div(class="brohn-toolbar",shiny::span(paste(r$created_at,"|",if(r$body$request$operation=="media_tracks")"Video inventory"else paste("Sample",r$body$request$selection$cursor_sample))),brohn_command("Reopen saved media review","media_review_reopen",.brohn_mr_ref(r)))))})
+  history_scope<-function(){s<-selection();brohn_require(!is.null(s)&&identical(state$page,"report")&&identical(state$report_id,s$report_id),"Reopen the saved acoustic report and audio window.");s}
+  load_history<-function(cursor=NULL,stack=list(),focus=FALSE){
+    history_issue(NULL)
+    tryCatch({s<-history_scope();page<-brohn_media_history_page(store,s$ref,s$report_ref,s$project_id,cursor)
+      history_page(page);history_stack(stack)
+    },error=function(e){history_page(NULL);history_stack(list());history_issue(conditionMessage(e))})
+    if(focus)session$onFlushed(function()session$sendCustomMessage("brohn-focus","media_review_history_summary"),once=TRUE)
+  }
+  shiny::observeEvent(input$media_review_history_latest,attempt(function(){load_history(focus=TRUE);history_added(FALSE)}))
+  shiny::observeEvent(input$media_review_history_older,attempt(function(){p<-history_page();brohn_require(!is.null(p)&&p$has_next,"There are no older saved reviews on this page.")
+    load_history(p$next_cursor,c(history_stack(),list(p$cursor)),TRUE)}))
+  shiny::observeEvent(input$media_review_history_newer,attempt(function(){stack<-history_stack();brohn_require(length(stack)>0L,"This is the newest page in this snapshot.")
+    load_history(stack[[length(stack)]],head(stack,-1L),TRUE)}))
+  output$media_review_history<-shiny::renderUI({p<-history_page();problem<-history_issue()
+    button<-function(id,label,disabled=FALSE){x<-shiny::actionButton(id,label);if(disabled)x<-htmltools::tagAppendAttributes(x,disabled="disabled",`aria-disabled`="true");x}
+    number<-function(x)if(is.null(x))"unavailable"else format(x,trim=TRUE,scientific=FALSE,digits=10)
+    shiny::tagList(
+      shiny::p(id="media_review_history_summary",tabindex="-1",role="status",`aria-live`="polite",
+        if(!is.null(problem))problem else if(is.null(p))"Loading saved reviews." else if(!p$total)"No saved reviews are currently available."else if(!length(p$records))paste("No older reviews remain here;",p$total,"saved reviews are available. Choose Newer or Show latest.")else paste("Showing",p$first,"to",p$last,"of",p$total,"saved reviews. Latest first.")),
+      shiny::div(class="brohn-toolbar",button("media_review_history_newer","Newer",!length(history_stack())),
+        button("media_review_history_older","Older",is.null(p)||!isTRUE(p$has_next)),button("media_review_history_latest","Show latest")),
+      if(isTRUE(history_added()))shiny::p(role="status","A review was saved. Choose Show latest to include it; your current page is preserved."),
+      shiny::p("Show latest includes newly saved reviews. Reviews you can no longer access are hidden."),
+      if(!is.null(p))shiny::tags$ul(lapply(p$records,function(r){
+        inventory<-identical(r$operation,"media_tracks")
+        seconds<-if(!is.null(r$cursor_sample)&&!is.null(r$sampling_rate)&&is.numeric(r$sampling_rate)&&r$sampling_rate>0)r$cursor_sample/r$sampling_rate else NULL
+        available<-identical(r$coverage,"available")&&!is.null(r$frame_index)
+        status<-if(available)"Frame available"else "No supported frame"
+        title<-if(inventory)paste("Video tracks |",number(r$tracks),"recorded")else paste("Audio",number(seconds),"seconds |",status)
+        support<-if(inventory)"Original track metadata; no frame selected."else paste("Saved coverage:",if(is.null(r$coverage))"unavailable"else gsub("_"," ",r$coverage),"| sample",number(r$cursor_sample),
+          if(is.null(r$frame_index))"| No supported source frame."else paste("| Frame",number(r$frame_index),"| PTS",number(r$pts_ticks),"ticks | container",number(r$pts_s),"seconds."),
+          if(isTRUE(r$boundary==1))"Near a frame boundary within stored precision."else"",if(is.null(r$gaps))""else paste("Declared gaps:",number(r$gaps)))
+        shiny::tags$li(style="margin-bottom:1rem;overflow-wrap:anywhere",shiny::strong(title),shiny::p(paste("Saved",r$created_at,"(UTC)",if(inventory)""else paste("| Original video stream",number(r$video_stream_index)))),
+          brohn_command("Reopen saved media review","media_review_reopen",r$reference),
+          shiny::tags$details(shiny::tags$summary("Saved timing and support"),shiny::p(support)))
+      })))})
   shiny::observeEvent(input$media_review_reopen,attempt(function(){s<-current();ref<-input$media_review_reopen;r<-brohn_media_review_record(store,ref$id,s$review$id,s$review$project_id,FALSE)
     brohn_require(.brohn_mr_same(.brohn_mr_ref(r),ref),"Reopen the exact saved media review.");release();pending(NULL);issue(NULL)
     if(r$body$request$operation=="media_tracks"){catalog(r);opened(NULL)}else {

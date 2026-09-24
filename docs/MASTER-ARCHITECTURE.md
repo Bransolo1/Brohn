@@ -1,19 +1,21 @@
 # Brohn master architecture and large-build contract
 
-**Current checkpoint, 25 September 2026:** the named
-[GNAT procedure](methods/GNAT-BROHN-PROCEDURE.md) now has its dedicated R
-compiler/replay/scoring, browser state machine, summary adapter and researcher
-views. Its connected researcher journey now passes two full administrations,
-native/imported reports, reviewed cohort, exports and restart; see the
-[checkpoint record](qa/PUBLICATION-GNAT-20260924.md). A configured seven-check
-core QA subset has separate portability evidence. Saved media and linked-signal
-history paging and results-first report navigation follow. Their external
-candidates preserve old exports and address cross-import restoration and draft
-preservation; they still need installed browser qualification. The proposed
-[two-event clock-alignment contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
-defines a later review/export extension across recordings, with original clocks
-and physical uncertainty retained; it does not enable alignment or change
-existing scientific recipes. The full scope below is retained.
+**Current checkpoint, 25 September 2026:** the shared
+[results and history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
+now connects Results/Explore/Evidence sections, first-screen saved outcomes,
+bounded media/linked history and exact cross-import restoration. Browser,
+source/export and restart evidence are recorded in the
+[checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md). Existing scores and
+standalone exports remain unchanged. Source opening still has measured
+multi-second delays; functional acceptance does not close responsiveness.
+
+The [reviewed two-event clock contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
+now has separately prepared arithmetic, complete-source inspection, event
+paging, exact window export and versioned-map components. Supervised preview
+publication is being integrated in an isolated checkout. The normal event
+selection/save/review/export UI and its actual researcher qualification remain
+unfinished; this checkpoint enables no new cross-recording clock alignment or
+scientific recipe. The full scope below is retained.
 
 **Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
 [workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)
@@ -30,7 +32,7 @@ Brohn name. [Current status](../STATUS.md) and the
 record the latest connected work and its scoped acceptance. [John's handoff](HANDOFF-JOHN.md) preserves the
 8 September stopped checkpoint. This plan remains incomplete.
 
-Revision 2026-09-24, retaining the September 8 full-scope contract. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
+Revision 2026-09-25, retaining the September 8 full-scope contract. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
 
 The destination is a premium, accessible R-first workspace for undergraduate and commercial researchers: design controlled studies, combine implicit/explicit/physiological measures, collect or import once, and receive traceable analysis with minimal intervention. Breadth is part of the architecture from the start. Features become available when their complete study-to-report route works, rather than from the presence of a package or an empty screen.
 

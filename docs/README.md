@@ -1,7 +1,7 @@
 # Brohn documentation map
 
 This is the map for John and future contributors, updated for the
-[25 September 2026 GNAT and configured QA checkpoint](qa/PUBLICATION-GNAT-20260924.md).
+[25 September 2026 results and history checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md).
 Development resumed at the owner's request after the September 24 checkpoint; see the
 [current workstream and next steps](WORKSTREAM.md). The intended platform is broader than the
 working local application. Read current status and evidence alongside the architecture.
@@ -17,6 +17,7 @@ working local application. Read current status and evidence alongside the archit
 | Questionnaire and experimental design | [Question flow](methods/QUESTION-FLOW-BUILDER.md), [sections](methods/QUESTIONNAIRE-SECTIONS.md), [scales](methods/QUESTIONNAIRE-SCALES.md), [controls](methods/CONTROL-DESIGN.md) and [protocol snapshots](methods/PROTOCOL-SNAPSHOTS.md). |
 | Scientific methods and reusable implementations | [Method references](methods/reuse/README.md), [analysis plans](methods/DECLARATIVE-ANALYSIS-PLANS.md) and [multimodal reports](methods/MULTIMODAL-REPORTS.md). |
 | Design and run the named Brohn Go/No-Go procedure | [GNAT researcher guide](operations/RUN-GNAT.md), [frozen procedure](methods/GNAT-BROHN-PROCEDURE.md) and [connected qualification](qa/GNAT-RESEARCHER-ACCEPTANCE.md). |
+| Review saved results and history | [Results, exploration and history guide](operations/REVIEW-SAVED-RESULTS.md), [architecture](architecture/RESULTS-AND-SAVED-HISTORY.md) and [joined checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md). |
 | Inspect the original evidence behind media results | [Saved facial and video/audio review](operations/REVIEW-SAVED-MEDIA.md), including exact frames, full numerical exports and saved reopening. |
 | Brand, onboarding and launch | [Brand system](brand/BRAND-SYSTEM.md) and [introduction plan](product/INTRODUCTION-AND-LAUNCH.md). |
 | Installation and contribution | [Installation](operations/LOCAL-INSTALLATION.md), [dependencies](../DEPENDENCIES.md), [contribution guide](../CONTRIBUTING.md) and [agent instructions](../AGENTS.md). |

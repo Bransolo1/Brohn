@@ -263,10 +263,37 @@ brohn_contrast_ui <- function(c, design = NULL) {
             support$eligible_count, "retained correct test responses;", support$minimum_count, "needed for this measure.")),
       shiny::tags$details(shiny::tags$summary("Inspect this measure's support"), shiny::tags$pre(brohn_json(support, TRUE)))))
 }
-brohn_report_content <- function(report) {
+.brohn_audio_results_first_ui <- function(a) {
+  if (!identical(a$kind, "audio") || !length(a$features)) return(NULL)
+  labels <- c(audio_rms = "Signal amplitude (RMS)", audio_absolute_peak = "Largest absolute amplitude",
+    audio_zero_crossing_rate = "Zero-crossing rate", pitch_median = "Median pitch", pitch_mean = "Mean pitch",
+    pitch_sd = "Pitch variability (standard deviation)", periodic_frame_fraction = "Fraction of periodic frames",
+    spectral_centroid_mean = "Mean spectral centroid")
+  rows <- head(a$features, 8L)
+  brohn_card(title = "Saved acoustic measurements",
+    lapply(rows, function(f) {
+      matches <- Filter(function(r) identical(r$recording_id, f$recording_id) && identical(r$segment_id, f$segment_id) &&
+        identical(r$channel, f$channel), a$recordings)
+      identified <- all(vapply(c("recording_id", "segment_id", "channel"), function(key)
+        is.character(f[[key]]) && length(f[[key]]) == 1L && !is.na(f[[key]]) && nzchar(f[[key]]), logical(1)))
+      available <- isTRUE(a$status %in% c("completed", "partial")) && identified && identical(f$scope, "recording") &&
+        length(matches) == 1L && identical(matches[[1L]]$status, "computed") &&
+        is.numeric(f$value) && length(f$value) == 1L && !is.na(f$value) && is.finite(f$value)
+      label <- if (is.character(f$name) && length(f$name) == 1L && f$name %in% names(labels)) unname(labels[[f$name]]) else paste("Recorded measure:", f$name)
+      shiny::div(shiny::h3(label), shiny::p(class = "brohn-result-number", if (isTRUE(available))
+        paste(format(f$value, digits = 8L, trim = TRUE), brohn_default(f$unit, "")) else "Unavailable"),
+        if (identical(f$unit, "FS")) shiny::p("Digital amplitude relative to full scale (FS); not calibrated loudness."),
+        shiny::p(class = "brohn-muted", paste("Recording:", f$recording_id, "\u00b7", "Channel:", f$channel, "\u00b7", "Segment:", f$segment_id)),
+        if (!isTRUE(available)) shiny::p("The saved recording support does not establish an available value for this measurement."))
+    }),
+    shiny::p(class = "brohn-muted", paste("Showing", length(rows), "of", length(a$features),
+      "saved measurements in their original order. These describe the recorded signal. Full precision and support remain in the recording tables below.")))
+}
+brohn_report_content <- function(report, results_first = FALSE) {
   a <- report$analysis
   shiny::tagList(shiny::div(class = "brohn-toolbar", brohn_badge(report$origin, if (report$origin == "live") "neutral" else "warning"),
     brohn_badge(report$status)),
+    if (isTRUE(results_first)) .brohn_audio_results_first_ui(a),
     brohn_scale_results_ui(a$scales),
     brohn_facial_report_ui(a),
     if(length(a$choice_tasks)) lapply(seq_along(a$choice_tasks),function(i)brohn_maxdiff_result_ui(a$choice_tasks[[i]],exercise_number=i)),
@@ -274,7 +301,7 @@ brohn_report_content <- function(report) {
     brohn_questionnaire_artifact_preview_ui(a),
     brohn_question_revision_report_ui(a),
     brohn_task_cohort_report_ui(a),
-    if (length(a$task_scores)) lapply(a$task_scores, function(task) brohn_card(title = task$title, subtitle = task$profile,
+    if (length(a$task_scores)) lapply(a$task_scores, function(task) { card <- brohn_card(title = task$title, subtitle = task$profile,
       brohn_badge(if (identical(task$status, "partial")) "Some measures unavailable" else task$status,
         if (isTRUE(task$eligible) && !identical(task$status, "partial")) "success" else "warning"),
       shiny::p(paste("Materials:", task$origin, "\u00b7", "Session:", task$session_id)),
@@ -295,7 +322,9 @@ brohn_report_content <- function(report) {
         if (!is.null(task$cells)) shiny::tagList(shiny::h3("Target and response support"), shiny::tags$pre(brohn_json(task$cells, TRUE))),
         if (!is.null(task$scoring_recipe)) shiny::p(paste("Scoring recipe:", task$scoring_recipe)),
         if (!is.null(task$support_policy)) shiny::tags$pre(brohn_json(task$support_policy, TRUE)),
-        shiny::tags$ul(lapply(task$limitations, shiny::tags$li))))),
+        shiny::tags$ul(lapply(task$limitations, shiny::tags$li))))
+      if (isTRUE(results_first) && identical(task$profile, "gnat-brohn-single-target/1.0")) brohn_gnat_results_first_card_ui(task, card) else card
+    }),
     if (length(a$contrasts)) shiny::div(class = "brohn-grid", lapply(a$contrasts, function(contrast) brohn_contrast_ui(contrast, report$provenance$design))),
     if (!is.null(a$parameters$analysis_plan)) brohn_card(title = "The saved analysis plan",
       shiny::p(a$parameters$analysis_plan$plan$rationale),
@@ -333,8 +362,27 @@ brohn_report_detail_ui <- function(store, id) {
   brohn_signal_audio_lineage(store,r,verify=FALSE)
   camera_authority<-brohn_camera_analysis_report_source(store,r,verify=FALSE)
   complete_counts <- r$body$analysis$questionnaire_artifact$counts
-  htmltools::tagAppendAttributes(brohn_page(r$body$title, paste("Saved", r$created_at, "\u00b7", "Immutable analysis"),
-    actions = shiny::tagList(shiny::downloadButton("report_html", "Download report", icon = NULL),
+  section_id <- function(name) paste0("brohn-report-", brohn_hash(r$id), "-", name)
+  section <- function(name, label, ...) shiny::tags$section(id = section_id(name), tabindex = "-1",
+    class = "brohn-report-section", `aria-labelledby` = paste0(section_id(name), "-heading"),
+    shiny::h2(id = paste0(section_id(name), "-heading"), label), ...)
+  back_to_results <- function() shiny::tags$a(href = paste0("#", section_id("results")), class = "btn btn-default", "Back to results")
+  explorers <- shiny::tagList(brohn_questionnaire_explorer_ui(r), brohn_explicit_distribution_entry_ui(r$body),
+    brohn_paired_plot_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body),
+    brohn_vision_explorer_ui(r), brohn_facial_review_entry_ui(r), brohn_audio_review_entry_ui(r), brohn_eda_review_entry_ui(r$body),
+    brohn_respiration_review_panel(r$body), brohn_emg_review_panel(r$body), brohn_eda_continuous_review_panel(r$body),
+    brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body))
+  htmltools::tagAppendAttributes(brohn_page(r$body$title, subtitle = NULL,
+    actions = shiny::downloadButton("report_html", "Download report", icon = NULL),
+    shiny::tags$nav(class = "brohn-toolbar", `aria-label` = "Report sections",
+      shiny::tags$a(href = paste0("#", section_id("results")), class = "btn btn-default", "Results"),
+      shiny::tags$a(href = paste0("#", section_id("explore")), class = "btn btn-default", "Explore"),
+      shiny::tags$a(href = paste0("#", section_id("evidence")), class = "btn btn-default", "Evidence")),
+    section("results", "Results", brohn_report_content(r$body, results_first = TRUE)),
+    section("explore", "Explore", explorers, back_to_results()),
+    section("evidence", "Evidence",
+      shiny::p(class = "brohn-muted", paste("Saved", r$created_at, "\u00b7", "Immutable analysis")),
+      shiny::div(class = "brohn-toolbar",
       shiny::downloadButton("report_csv", if (identical(r$body$analysis$schema, "brohn-task-cohort/1.0")) "Download cohort outcomes" else if (brohn_facial_supported(r$body$analysis)) "Download summary CSV" else "Download observations", icon = NULL), shiny::downloadButton("report_download", "JSON + provenance", icon = NULL),
       if (!is.null(r$body$analysis$scales) || isTRUE(complete_counts$scale_observations > 0L)) shiny::downloadButton("report_scale_csv", "Download scale scores CSV", icon = NULL),
       if (length(r$body$analysis$task_scores) || isTRUE(complete_counts$task_scores > 0L)) shiny::downloadButton("report_task_csv", "Download task scores CSV", icon = NULL),
@@ -350,7 +398,7 @@ brohn_report_detail_ui <- function(store, id) {
       shiny::downloadButton("report_artifact", "Download complete artifact", icon = NULL)),
     if(!is.null(camera_authority))brohn_camera_authority_ui(camera_authority),
     if(exists("brohn_runner_report_entry_ui",mode="function"))brohn_runner_report_entry_ui(r),
-    brohn_questionnaire_explorer_ui(r), brohn_explicit_distribution_entry_ui(r$body), brohn_paired_plot_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body), brohn_vision_explorer_ui(r), brohn_facial_review_entry_ui(r), brohn_audio_review_entry_ui(r), brohn_eda_review_entry_ui(r$body), brohn_respiration_review_panel(r$body), brohn_emg_review_panel(r$body), brohn_eda_continuous_review_panel(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body)), class = "brohn-report-page")
+    back_to_results())), class = "brohn-report-page")
 }
 brohn_export_report_html <- function(report, path, store = NULL) {
   # All user text is escaped by htmltools. No external content or executable
