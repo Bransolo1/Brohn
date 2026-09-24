@@ -1,7 +1,7 @@
 # Brohn single-target GNAT procedure
 
-24 September 2026. **Procedure decision adopted; implementation and activation
-remain pending.** Profile `gnat-brohn-single-target/1.0` is an original Brohn
+24 September 2026. **Procedure implemented as the seventh named task profile;
+its connected acceptance is recorded separately.** Profile `gnat-brohn-single-target/1.0` is an original Brohn
 adaptation. It supersedes the unresolved GNAT draft in
 [PROTOCOL-TEMPLATES](../preparation/PROTOCOL-TEMPLATES.md#gnat-gnat-configured-sensitivity01-draft)
 for this first implementation. It is neither an exact historical replication nor
@@ -113,6 +113,13 @@ visible. Category meaning must not depend on color. The participant presses
 Space for either Go category and does nothing otherwise. No error correction is
 requested. Wait for Space release before presenting the next stimulus; a held
 instruction key cannot become a trial response. Retain the extra release wait.
+Every successful onset includes `release_wait={start_ms,end_ms,held_codes,keys,
+visibility}` from the pre-onset guard through its actual animation frame. Raw
+wait keys retain type, code, event/observation times and trusted/repeat/modifier
+flags; no response is assigned before onset. Its final held snapshot must match
+the onset and Space must be released. A failed pre-onset guard may instead retain
+the same typed wait on `task_interrupted`, ending at the interruption clock,
+without inventing a stimulus onset or outcome.
 
 An eligible first trusted, unmodified, nonrepeat Space keydown has a timestamp in the
 half-open interval **`[requested_onset, requested_onset + deadline)`**. Exactly at
@@ -121,6 +128,11 @@ separately. On the first eligible Space, request stimulus removal and close the
 response window; otherwise request removal when the deadline expires. Preserve
 requested deadline and actual removal observation separately. A scheduling delay
 does not extend the accepted response window.
+Native page observations serialize milliseconds to six decimal places. Derived
+deadline, response latency and phase-minimum arithmetic use that same precision
+to avoid cross-language binary64 representation differences. Raw event-window
+and monotonic comparisons remain exact: rounding never moves a deadline-equal
+key inside the accepted interval or makes an early observed phase end valid.
 
 Start 100 ms of correct/error symbol **and text** feedback at the observed
 stimulus-removal transition, followed by at least 400 ms blank. The next requested
@@ -151,6 +163,10 @@ observed key whose timestamp contradicts that sealed outcome **interrupts the
 task**. Preserve both receipts; do not revise history or keep a manufactured
 correct rejection. Event dispatch has no guaranteed maximum delay, so this is
 explicit software evidence, not proof of physical visual timing or attention.
+The later interruption carries `contradiction={trial_id,key}` identifying the
+sealed trial and the complete original key observation. This also covers a key
+earlier than the already accepted first response. The earlier finished receipt
+is retained unchanged; the task is ineligible after the contradiction.
 
 Hidden tab, lost focus, page restart, clock change, failed durable event write,
 missing required phase evidence or duplicate/conflicting trial receipt interrupts
@@ -185,6 +201,12 @@ are visible support flags. No extra RT trimming, quality-based person exclusion,
 preference bands or diagnostic interpretation is part of this profile. Actual
 response RT can be described separately, split by hit/false alarm, with its own
 denominator; it does not define the GNAT score.
+Imported summaries with explicitly unknown timing retain their declared finite,
+nonnegative latencies, including values outside a nominal deadline, and observed
+four-outcome counts/raw rates. They receive no cell sensitivity, criterion,
+contrast or cohort eligibility. The scorer's explicit `timing_known=FALSE`
+path does not invoke normal-quantile scoring or fabricate missing values. Known
+timing and native delivery continue to require the exclusive response deadline.
 
 Lead reports with the target/context, two deadline-specific contrasts and the
 plain-language meaning: positive values mean better discrimination in the
@@ -233,10 +255,12 @@ compiler retains that block and its canonical design hash.
 }
 ```
 
-## Activation evidence still required
+## Required implementation and acceptance evidence
 
-The [implementation packet](../qa/GNAT-NEXT-IMPLEMENTATION-PACKET.md) owns shared
-hooks and connected acceptance. Before registration, independently verify exact
+The [implementation packet](../qa/GNAT-NEXT-IMPLEMENTATION-PACKET.md) records shared
+hooks, and the [researcher acceptance](../qa/GNAT-RESEARCHER-ACCEPTANCE.md) records
+executed evidence and remaining gates. This section retains the required checks:
+independently verify exact
 384-trial quotas, all category/Go mappings, order/deck replay and arithmetic,
 including 8/10 hits and 2/10 false alarms (`d_prime = 1.6832424671458286`,
 criterion zero), exact endpoints, reversed rates, missing denominators,

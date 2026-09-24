@@ -1,7 +1,24 @@
 {
   "schema": "brohn-qa-catalog/1.0",
   "scope": "Isolated local component and integration checks. Browser researcher journeys, human usability and physical-device qualification have separate evidence.",
+  "configured_profiles": {
+    "portable-core": {
+      "schema": "brohn-configured-check-profile/1.0",
+      "test_ids": ["core", "store", "delivery", "run-evidence", "backup", "task-portability", "task-import-platform"],
+      "prerequisites": ["core_r_lockfile", "source_bound_publication_python_and_native_guard"],
+      "additional_prerequisites": {"task-portability": ["portability_python"]},
+      "evidence": "Fresh external per-test directories supplied by run-checks; configured research workspace is never opened.",
+      "reviewed_scope": "Seven explicitly selected core checks. Other catalog entries, optional scientific profiles and external method comparators are unreviewed by this configured subset."
+    }
+  },
   "tests": [
+    {"id":"gnat","suite":"domain","path":"tests/platform-gnat.R","timeout_s":300},
+    {"id":"gnat-replay","suite":"domain","path":"tests/platform-gnat-replay.R","timeout_s":360},
+    {"id":"gnat-import","suite":"domain","path":"tests/platform-gnat-import.R","timeout_s":300},
+    {"id":"gnat-authoring","suite":"domain","path":"tests/platform-gnat-authoring.R","timeout_s":120},
+    {"id":"gnat-plots","suite":"domain","path":"tests/platform-gnat-plots.R","timeout_s":300},
+    {"id":"task-plot-timing","suite":"domain","path":"tests/platform-task-plot-timing.R","timeout_s":180},
+    {"id":"gnat-integration","suite":"domain","path":"tests/platform-gnat-integration.R","timeout_s":600},
     {"id":"media-cursor","suite":"domain","path":"tests/platform-media-cursor.R","timeout_s":120},
     {"id":"runner-assets","suite":"operations","path":"tests/platform-runner-assets.R","timeout_s":180},
     {"id":"runner-delivery","suite":"operations","path":"tests/platform-runner-delivery.R","timeout_s":180},

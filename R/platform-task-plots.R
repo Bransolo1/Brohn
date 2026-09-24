@@ -2,7 +2,14 @@
 # here. A native source is opened lazily; questionnaire preview rows are unused.
 .brohn_tp_supported <- function(r) identical(r$analysis$schema,"brohn-task-cohort/1.0") ||
   length(r$analysis$task_attempts)>0L || (length(r$provenance$runs)>0L && length(r$provenance$design$blocks)>0L)
-.brohn_tp_label <- function(metric) switch(metric,correct_test_rt_mean="Individual mean test response time",
+.brohn_tp_gnat_label <- function(metric) {
+  if(!grepl("^GNAT_r[12]_(positive_d_prime|negative_d_prime|positive_criterion|negative_criterion|target_positive_contrast)$",metric))return(metric)
+  round<-if(startsWith(metric,"GNAT_r1_"))"750 ms"else"600 ms"
+  if(endsWith(metric,"target_positive_contrast"))return(paste(round,"target-positive contrast"))
+  paste0(round,": target + ",if(grepl("_positive_",metric,fixed=TRUE))"positive"else"negative"," ",
+    if(endsWith(metric,"d_prime"))"sensitivity"else"response criterion")
+}
+.brohn_tp_label <- function(metric) if(startsWith(metric,"GNAT_")) .brohn_tp_gnat_label(metric) else switch(metric,correct_test_rt_mean="Individual mean test response time",
   correct_test_rt_median="Individual median test response time",correct_test_rt_sd="Individual response-time standard deviation",
   test_first_response_error_rate="Individual first-response error proportion",test_omission_rate="Individual no-response proportion",
   keyboard_aat_relative_approach_advantage="Relative keyboard approach advantage",IAT_D1="IAT D1 score",BIAT_D="Brief IAT D score",SCIAT_target_positive_D="SC-IAT target-positive D score",metric)
@@ -56,22 +63,31 @@ brohn_task_plot_check <- function(store,opened,model=NULL) {
   lapply(seq_along(audits),function(i){a<-audits[[i]];j<-match(a$trial_id,rids);r<-if(is.na(j))NULL else responses[[j]]
     for(f in c("first_response_ms","final_correct_ms"))brohn_require(is.null(r[[f]])||brohn_number(r[[f]],0),"A recorded latency must be finite, nonnegative or unavailable.")
     brohn_require(isTRUE(a$derived)==is.null(r),"Missing source positions disagree with their retained response evidence.")
-    list(position=i,trial_id=a$trial_id,source_row=a$source_row,derived_missing=isTRUE(a$derived),block_id=a$block_id,
+    result<-list(position=i,trial_id=a$trial_id,source_row=a$source_row,derived_missing=isTRUE(a$derived),block_id=a$block_id,
       profile_scored=isTRUE(a$profile_scored),score_block=a$score_block,category_id=a$category_id,action=a$action,
       presented=r$presented,outcome=r$outcome,first_correct=r$first_correct,response_code=r$response_code,final_code=r$final_code,
       first_response_ms=r$first_response_ms,final_correct_ms=r$final_correct_ms,
       first_response_ms_source=r$first_response_ms_source,final_correct_ms_source=r$final_correct_ms_source,
       disposition=a$disposition,missing_reason=brohn_default(a$missing_reason,r$missing_reason),
       scoring_latency_ms=a$scoring_latency_ms,original_fast_below_300=a$original_fast_below_300)
+    if(!is.null(a$expected_action))result<-c(result,list(phase=a$phase,round_id=a$round_id,cell_id=a$cell_id,
+      expected_action=a$expected_action,correct=r$correct,response_outcome=r$response_outcome,
+      response_ms=r$response_ms,response_ms_source=r$first_response_ms_source,
+      outcome_state=if(isTRUE(a$derived))"absent_source"else if(!isTRUE(r$presented))"not_presented"else r$outcome,
+      withholding_observed=isTRUE(r$presented)&&r$outcome %in% c("miss","correct_rejection")))
+    result
   })
 }
 brohn_task_plot_attempt <- function(a) {
   .brohn_task_cohort_attempt(a)
   brohn_require(length(a$trial_audit)==a$score$counts$expected,"The saved trial audit does not contain every expected position. A bounded preview cannot become a complete plot.")
+  # Canonical imports retain the plural source declaration. The common plot
+  # model also supplies the singular display flag used by native models.
+  timing<-a$timing_quality;timing$definition_known<-isTRUE(timing$definitions_known)
   list(schema="brohn-task-trial-plot/1.0",kind="trials",id=a$id,label=paste(a$participant_id,a$session_id,a$profile,sep=" | "),
     profile=a$profile,origin=a$collection_origin,material_origin=a$material_origin,completion=a$completion_status,
     rows=.brohn_tp_trial_rows(a$trial_audit,a$responses),source=a$source,source_hash=brohn_hash(a),
-    timing=a$timing_quality,evidence_level=a$evidence_level,saved_score=a$score,
+    timing=timing,evidence_level=a$evidence_level,saved_score=a$score,
     identity=a[c("id","task_id","task_definition_hash","compiled_hash","participant_id","participant_linkage","session_id","attempt_id")])
 }
 brohn_task_plot_native <- function(evidence,report,reference) {
@@ -82,7 +98,12 @@ brohn_task_plot_native <- function(evidence,report,reference) {
   compiled<-evidence$registry$protocols[[1L]]$compiled;trials<-Filter(function(t)identical(t$type,"task_trial"),compiled$timeline)
   brohn_require(length(trials)==length(evidence$rows)&&identical(brohn_ids(trials),vapply(evidence$rows,`[[`,character(1),"trial_id")),"Every native terminal row must match the exact original trial order.")
   nullable<-function(x)if(is.null(x)||identical(x,""))NULL else x
-  responses<-lapply(evidence$rows,function(r)list(trial_id=r$trial_id,presented=identical(r$presented,"true"),outcome=r$outcome,
+  responses<-if(identical(task$profile,"gnat-brohn-single-target/1.0"))lapply(seq_along(evidence$rows),function(i){
+    r<-evidence$rows[[i]];names<-sub("_column$","",.brohn_gnat_import_columns())
+    fields<-c(participant="participant_id",session="session_id",attempt="attempt_id",protocol="protocol_id",trial="trial_id")
+    cells<-stats::setNames(lapply(names,function(name)r[[if(name %in% names(fields))fields[[name]]else name]]),names)
+    .brohn_gnat_import_response(cells,trials[[i]],i,TRUE)
+  })else lapply(evidence$rows,function(r)list(trial_id=r$trial_id,presented=identical(r$presented,"true"),outcome=r$outcome,
     response_code=nullable(r$first_code),final_code=nullable(r$final_code),first_correct=identical(r$first_correct,"true"),
     first_response_ms=if(is.null(nullable(r$first_response_ms)))NULL else as.numeric(r$first_response_ms),
     final_correct_ms=if(is.null(nullable(r$final_correct_ms)))NULL else as.numeric(r$final_correct_ms),
@@ -133,6 +154,8 @@ brohn_task_plot_load <- function(store,opened,selector) {
 }
 brohn_task_plot_selection <- function(model,measure="first_response_ms",scope="all") {
   brohn_require(measure %in% c("first_response_ms","final_correct_ms")&&scope %in% c("all","scored"),"Choose a labelled recorded latency and trial scope.")
+  gnat<-identical(model$profile,"gnat-brohn-single-target/1.0")&&identical(model$kind,"trials")
+  brohn_require(!gnat||identical(measure,"first_response_ms"),"GNAT records one actual Space-response latency; withholding has no response time or final-correct latency.")
   rows<-if(model$kind=="people")model$rows else Filter(function(r)scope=="all"||isTRUE(r$profile_scored),model$rows)
   values<-vapply(rows,function(r){v<-if(model$kind=="people")r$value else r[[measure]];if(is.null(v))NA_real_ else v},numeric(1))
   finite<-values[is.finite(values)];bins<-list()
@@ -145,13 +168,18 @@ brohn_task_plot_selection <- function(model,measure="first_response_ms",scope="a
     counts<-tabulate(findInterval(finite,breaks,left.open=TRUE,all.inside=TRUE),nbins=20L)
     bins<-lapply(seq_along(counts),function(i)list(lower_ms=breaks[[i]],upper_ms=breaks[[i+1L]],count=counts[[i]],lower_inclusive=i==1L,upper_inclusive=TRUE))
   }
-  list(model=model,measure=if(model$kind=="people")model$metric else measure,scope=scope,rows=rows,values=values,bins=bins,available=length(finite),missing=sum(!is.finite(values)),
-    label=if(model$kind=="people")model$label else if(measure=="first_response_ms")"First-response latency" else
+  withheld<-if(gnat)sum(vapply(rows,function(r)isTRUE(r$withholding_observed),logical(1)))else 0L
+  outcome_counts<-if(gnat)lapply(c("hit","miss","false_alarm","correct_rejection","interrupted","not_presented","absent_source"),function(outcome)
+    list(outcome=outcome,count=sum(vapply(rows,function(r)identical(r$outcome_state,outcome),logical(1)))))else NULL
+  list(model=model,measure=if(model$kind=="people")model$metric else measure,scope=scope,rows=rows,values=values,bins=bins,available=length(finite),
+    missing=sum(!is.finite(values))-withheld,withheld=withheld,outcome_counts=outcome_counts,
+    label=if(model$kind=="people")model$label else if(gnat)"Actual Space-response latency" else if(measure=="first_response_ms")"First-response latency" else
       if(identical(model$profile,"sciat-brohn-response-window-im100/1.0"))"Correct first-response latency" else "Final-correct latency",
     unit=if(model$kind=="people")model$unit else "ms")
 }
 brohn_task_plot_export <- function(view) list(schema="brohn-task-plot-export/1.0",report_id=view$model$report_id,
   report_revision=view$model$report_revision,report_hash=view$model$report_hash,source_hash=view$model$source_hash,
   selection=list(source_id=view$model$id,measure=view$measure,scope=view$scope),
-  complete_source=view$model,selected_rows=view$rows,distribution_bins=if(view$model$kind=="trials")view$bins else NULL,
+  complete_source=view$model,selected_rows=view$rows,outcome_counts=view$outcome_counts,withholding_without_latency=view$withheld,
+  distribution_bins=if(view$model$kind=="trials")view$bins else NULL,
   interpretation="Plots preserve saved raw values and missing support. They do not rescore a task, pool people and trials, or add inference.")

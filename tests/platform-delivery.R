@@ -1,7 +1,7 @@
 source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # End-to-end researcher/participant delivery contract using isolated synthetic
 # studies, real SQLite persistence and a separate loopback HTTP server process.
-.libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/", mustWork = FALSE), .libPaths()))
+# Use the exact inherited library selected by the configured QA runner.
 for (module in c("platform-core", "platform-store", "platform-delivery")) source(paste0("R/", module, ".R"))
 local({
   directory <- tempfile("brohn-delivery-")

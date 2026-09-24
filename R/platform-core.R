@@ -255,7 +255,7 @@ brohn_validate_design <- function(x, publish = FALSE) {
   brohn_require(brohn_text(x$consent$title, 240) && brohn_text(x$consent$text, 40000) && is.logical(x$consent$required) && length(x$consent$required) == 1 && !is.na(x$consent$required), "Consent text and explicit required state are needed.")
   brohn_fields(x$appearance, c("background", "foreground"), label = "Participant appearance")
   brohn_require(all(vapply(x$appearance, function(v) brohn_text(v, 7) && grepl("^#[a-fA-F0-9]{6}$", v), logical(1))), "Participant colours must be explicit hexadecimal values.")
-  known_measures <- c("gaze", "questionnaire", "eeg", "eda", "ecg", "ppg", "respiration", "emg", "eog", "fnirs", "temperature", "movement", "webcam_gaze", "facial_geometry", "facial_expression", "pose", "voice", "rt", "iat", "biat", "aat", "sciat_window")
+  known_measures <- c("gaze", "questionnaire", "eeg", "eda", "ecg", "ppg", "respiration", "emg", "eog", "fnirs", "temperature", "movement", "webcam_gaze", "facial_geometry", "facial_expression", "pose", "voice", "rt", "iat", "biat", "aat", "sciat_window", "gnat")
   brohn_require(all(vapply(x$measures, function(m) brohn_text(m, 96) && m %in% known_measures, logical(1))) && !anyDuplicated(unlist(x$measures)), "Invalid or duplicate selected measure.")
   brohn_require(length(x$tags) <= 30 && all(vapply(x$tags, brohn_text, logical(1), max = 80)), "Tags must be short text labels.")
   if (publish) brohn_require(length(x$stimuli) + length(x$questions) + length(x$blocks) + length(x$maxdiff) > 0, "Add stimuli, questions or a supported task before releasing the study.")

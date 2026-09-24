@@ -281,7 +281,8 @@ brohn_report_content <- function(report) {
       if (!is.null(task$reason)) shiny::p(task$reason),
       shiny::p(paste(task$counts$received, "recorded trials of", task$counts$expected, "expected")),
       if (!is.null(task$counts$retained_correct)) shiny::p(paste(task$counts$retained_correct, "correct test trials retained for the response-time summary.")),
-      lapply(task$metrics, function(metric) shiny::div(shiny::h3(switch(metric$name,
+      if (identical(task$profile, "gnat-brohn-single-target/1.0")) brohn_gnat_score_ui(task) else
+        lapply(task$metrics, function(metric) shiny::div(shiny::h3(switch(metric$name,
         SCIAT_target_positive_D = "Single-category association score", correct_test_rt_mean = "Mean test response time", correct_test_rt_median = "Median test response time", correct_test_rt_sd = "Response-time variability (standard deviation)",
         test_first_response_error_rate = "Wrong first answers among answered test trials", test_omission_rate = "Missed test responses",
         keyboard_aat_relative_approach_advantage = "Relative keyboard approach advantage", IAT_D1 = "IAT D1 score", BIAT_D = "Brief IAT D score", gsub("_", " ", metric$name))),
@@ -290,7 +291,7 @@ brohn_report_content <- function(report) {
           "Positive scores mean faster responses when the target shares a key with positive attributes." else metric$direction), .brohn_task_metric_support_ui(metric))),
       shiny::tags$details(shiny::tags$summary("Scoring counts and interpretation"), shiny::tags$pre(brohn_json(task$counts, TRUE)),
         if (identical(task$scoring_recipe, "brohn-sciat-response-window-score/1.0")) brohn_sciat_window_score_ui(task) else
-          if (!is.null(task$scoring_audit)) shiny::tagList(shiny::h3("Pair scores and exclusions"), shiny::tags$pre(brohn_json(task$scoring_audit, TRUE))),
+          if (!identical(task$profile, "gnat-brohn-single-target/1.0") && !is.null(task$scoring_audit)) shiny::tagList(shiny::h3("Pair scores and exclusions"), shiny::tags$pre(brohn_json(task$scoring_audit, TRUE))),
         if (!is.null(task$cells)) shiny::tagList(shiny::h3("Target and response support"), shiny::tags$pre(brohn_json(task$cells, TRUE))),
         if (!is.null(task$scoring_recipe)) shiny::p(paste("Scoring recipe:", task$scoring_recipe)),
         if (!is.null(task$support_policy)) shiny::tags$pre(brohn_json(task$support_policy, TRUE)),

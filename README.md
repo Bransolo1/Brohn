@@ -22,7 +22,7 @@ limits. For inspecting complete saved observations and original frames, use the
 | Workflow | Current local application |
 | --- | --- |
 | Design and reuse | Study/data/design libraries, control stimuli, AOIs, questionnaires with typed branching, participant-specific option assignment, sections, scales, MaxDiff, clone, templates and portable design ZIPs. |
-| Collect | A separate participant application serves frozen releases, consent, questionnaires and six implicit/reaction-time profiles, including the named Brohn response-window SC-IAT. Opt-in questionnaire answer review supports Back/Edit within an untimed assessment, dependent-answer invalidation and a final review before continuing. |
+| Collect | A separate participant application serves frozen releases, consent, questionnaires and seven implicit/reaction-time profiles, including the named Brohn response-window SC-IAT and single-target GNAT. Opt-in questionnaire answer review supports Back/Edit within an untimed assessment, dependent-answer invalidation and a final review before continuing. |
 | Import and centralize | Reviewed background source import, native recording inspection, preserved multistream archives, reviewed channel preparation, and an explicit local LSL recording route. |
 | Analyse | Method-specific gaze, EEG, EDA, ECG/PPG, respiration, EMG, fNIRS, audio, calibrated temperature and movement workflows. Supported inputs and prerequisites differ by profile. |
 | Review and export | Pinned signal/gaze views, explicit/physiological comparisons, descriptive task cohorts with reviewed identity and repeat policies, complete artifacts, HTML/CSV/JSON exports, history and backup/restore. |
@@ -33,6 +33,11 @@ participant studies; SQLite and content-addressed files preserve revisions and
 original evidence. Supervised processes handle long-running analysis and local
 recording. Facial geometry is not presented as a validated emotion or attention
 score. Installed libraries do not establish compatibility with a physical device.
+
+For Go/No-Go study design, separate deadline results, genuine withholding and
+source-preserving imports, use the [GNAT guide](docs/operations/RUN-GNAT.md).
+The [current checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md) records this
+implementation's acceptance status and scientific limits.
 
 ## Install and start
 
@@ -113,6 +118,7 @@ unlimited dataset capacity or scientific qualification of every method.
 - [Installation and readiness](docs/operations/LOCAL-INSTALLATION.md), [dependencies](DEPENDENCIES.md) and [backup/restore](docs/operations/BACKUP-AND-RESTORE.md)
 - [Researcher QA](docs/qa/RESEARCHER-QA.md) and [selected check runner](docs/qa/RUNNING-CHECKS.md)
 - [Portable connected smoke](docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md): study creation, participant completion, automatic reporting, exports and restart in an isolated QA workspace
+- [Configured core checks](docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md): seven reviewed component checks using a saved installation configuration and separate evidence directory
 - [Study lifecycle](docs/product/STUDY-LIFECYCLE.md), [design portability](docs/product/DESIGN-PORTABILITY.md) and [method specifications](docs/methods/reuse/README.md)
 - [Contributor workflow](CONTRIBUTING.md), [known gaps](docs/KNOWN-GAPS.md) and [change history](CHANGELOG.md)
 

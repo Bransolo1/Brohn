@@ -1,6 +1,7 @@
 # Original Brohn task construction and arithmetic. No third-party task code or
 # materials are embedded. Published procedures are cited in each named profile.
-brohn_task_profiles <- function() list(
+brohn_task_profiles <- function() {
+  profiles <- list(
   "iat-gnb2003-d1/1.0" = list(label = "Seven-block IAT", kind = "iat", trial_counts = c(20L,20L,20L,40L,20L,20L,40L),
     source = "https://faculty.washington.edu/agg/pdf/GN%26B.JPSP.2003.pdf", scoring = "Final-correct D1; combined practice and test; positive means faster in mapping A"),
   "biat-nosek2014-goodfocal/1.0" = list(label = "Good-focal Brief IAT", kind = "biat", trial_counts = c(16L,20L,20L,20L,20L),
@@ -14,6 +15,12 @@ brohn_task_profiles <- function() list(
   "sciat-brohn-response-window-im100/1.0" = list(label = "Brohn response-window SC-IAT", kind = "sciat_window", trial_counts = c(24L,72L,24L,72L),
     source = "https://myscp.org/wp-content/uploads/2023/03/2007-proceedings.pdf#page=149",
     scoring = "One target with two attributes; first response within 1.5 seconds. Named Brohn procedure with explicit error replacement, omissions and test-only D scoring."))
+  profiles[["gnat-brohn-single-target/1.0"]] <- list(
+    label = "Brohn single-target GNAT", kind = "gnat", trial_counts = c(rep(20L, 4L), rep(c(16L, 60L), 4L)),
+    source = "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf",
+    scoring = "One target with positive and negative attributes; separate 750 ms and 600 ms rounds. Four Go/No-Go outcomes, sensitivity and response criterion; withholding has no response time.")
+  profiles
+}
 
 brohn_task_profile <- function(profile) {
   result <- brohn_task_profiles()[[profile]]
@@ -30,6 +37,7 @@ brohn_task_clone <- function(block) {
 }
 
 brohn_task_new <- function(profile = "iat-gnb2003-d1/1.0", title = NULL, id = brohn_id("task")) {
+  if (identical(profile, "gnat-brohn-single-target/1.0")) return(brohn_gnat_new(brohn_default(title, "Sample Brohn single-target GNAT"), id))
   if (identical(profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_new(brohn_default(title, "Sample Brohn response-window SC-IAT"), id))
   definition <- brohn_task_profile(profile)
   roles <- if (definition$kind %in% c("simple_rt","choice_rt")) character() else
@@ -48,6 +56,7 @@ brohn_task_new <- function(profile = "iat-gnb2003-d1/1.0", title = NULL, id = br
 }
 
 brohn_task_validate <- function(block) {
+  if (identical(block$profile, "gnat-brohn-single-target/1.0")) return(brohn_gnat_validate(block))
   if (identical(block$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_validate(block))
   brohn_fields(block,c("schema_version","id","title","profile","seed","origin","materials_rights","categories","materials","settings"),label="Task block")
   brohn_require(identical(block$schema_version,"brohn-task-block/1.0") && brohn_valid_id(block$id) && nchar(block$id)<=80 && brohn_text(block$title,240),"Invalid task schema, identity or title (task IDs allow 80 characters to preserve trial-ID space).")
@@ -85,6 +94,7 @@ brohn_task_validate <- function(block) {
 }
 
 brohn_task_compile <- function(block, allocation_index=1L) {
+  if (identical(block$profile, "gnat-brohn-single-target/1.0")) return(brohn_gnat_compile(block, allocation_index))
   if (identical(block$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_compile(block, allocation_index))
   brohn_task_validate(block)
   brohn_require(brohn_number(allocation_index,1,1e9,TRUE),"Task allocation index must be a positive whole integer.")
@@ -230,6 +240,7 @@ brohn_iat_d1 <- function(trials, completed=TRUE, biat=FALSE) {
 }
 
 brohn_task_score <- function(compiled,responses,completed=TRUE) {
+  if (identical(compiled$profile, "gnat-brohn-single-target/1.0")) return(brohn_gnat_score(compiled,responses,completed))
   if (identical(compiled$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_score(compiled, responses, completed))
   brohn_require(identical(compiled$schema_version,"brohn-compiled-task/1.0") && brohn_array(responses),"Task scorer needs a compiled task and response-record array.")
   definition<-brohn_task_profile(compiled$profile)

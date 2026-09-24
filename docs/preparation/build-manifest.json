@@ -4,12 +4,12 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-24",
-    "publication_handoff": "docs/qa/PUBLICATION-SAVED-MEDIA-20260924.md",
+    "date": "2026-09-25",
+    "publication_handoff": "docs/qa/PUBLICATION-GNAT-20260924.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability/17-package build remains active and unfinished. Saved facial and original-container video/audio review now have scoped source/export/restart acceptance. Final integrated-source portable connected verification passes 22 checks/four scans, with one automatic report and unchanged source/original workspace. Shared exact-frame pixels pass 25 checks. Next: configured core QA catalog and the distinct GNAT vertical journey; GNAT remains disabled at this checkpoint. See docs/WORKSTREAM.md and the publication handoff for exact evidence and broader gaps."
+    "note": "The full 50-capability/17-package build remains active and unfinished. Brohn single-target GNAT is the seventh named task profile: two full 384-trial administrations, two actual imports, one reviewed cohort, complete exports and restart preserve five reports and seven successful jobs. The configured seven-check QA subset passes 408 component assertions and 19 launcher checks. Next: paged media/linked review history, reliable restoration and results-first reports; reviewed cross-recording clock alignment remains planned. See docs/WORKSTREAM.md and the publication handoff for exact evidence and broader gaps."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -460,7 +460,19 @@
         "R/platform-sciat-window.R",
         "R/platform-sciat-window-delivery.R",
         "R/platform-sciat-window-score.R",
-        "docs/qa/SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md"
+        "docs/qa/SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md",
+        "R/platform-gnat.R",
+        "R/platform-gnat-authoring.R",
+        "R/platform-gnat-import.R",
+        "R/platform-gnat-views.R",
+        "www/participant/gnat-core.js",
+        "www/participant/gnat.js",
+        "docs/methods/GNAT-BROHN-PROCEDURE.md",
+        "docs/operations/RUN-GNAT.md",
+        "docs/qa/GNAT-CORE-ACCEPTANCE.md",
+        "docs/qa/GNAT-PARTICIPANT-ACCEPTANCE.md",
+        "docs/qa/GNAT-INTEGRATION-ACCEPTANCE.md",
+        "docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
@@ -740,7 +752,10 @@
         "docs/WORKSTREAM.md",
         "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md",
         "scripts/run-connected-smoke.ps1",
-        "docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md"
+        "docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md",
+        "scripts/run-configured-checks.ps1",
+        "scripts/configured-checks-helpers.ps1",
+        "docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

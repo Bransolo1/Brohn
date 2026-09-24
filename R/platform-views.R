@@ -1,6 +1,6 @@
 brohn_plan_ui <- function(store, d) {
   choices <- stats::setNames(brohn_ids(d$conditions), vapply(d$conditions, function(c) c$label, character(1)))
-  measure_choices <- c("Eye tracking" = "gaze", "Questionnaires" = "questionnaire", "EEG" = "eeg", "EDA" = "eda", "ECG / HRV" = "ecg", "PPG" = "ppg", "Respiration" = "respiration", "Muscle activity" = "emg", "EOG" = "eog", "fNIRS" = "fnirs", "Temperature" = "temperature", "Movement" = "movement", "Webcam gaze" = "webcam_gaze", "Facial geometry" = "facial_geometry", "Facial expression" = "facial_expression", "Body pose" = "pose", "Voice" = "voice", "Reaction time" = "rt", "IAT" = "iat", "Brief IAT" = "biat", "Approach / avoidance" = "aat", "Response-window SC-IAT" = "sciat_window")
+  measure_choices <- c("Eye tracking" = "gaze", "Questionnaires" = "questionnaire", "EEG" = "eeg", "EDA" = "eda", "ECG / HRV" = "ecg", "PPG" = "ppg", "Respiration" = "respiration", "Muscle activity" = "emg", "EOG" = "eog", "fNIRS" = "fnirs", "Temperature" = "temperature", "Movement" = "movement", "Webcam gaze" = "webcam_gaze", "Facial geometry" = "facial_geometry", "Facial expression" = "facial_expression", "Body pose" = "pose", "Voice" = "voice", "Reaction time" = "rt", "IAT" = "iat", "Brief IAT" = "biat", "Approach / avoidance" = "aat", "Response-window SC-IAT" = "sciat_window", "Go/No-Go association" = "gnat")
   shiny::tagList(
     brohn_guidance_plan_intro_ui(d),
     brohn_card(title = "What are you investigating?",

@@ -39,7 +39,7 @@ rscript <- file.path(R.home("bin"), if (.Platform$OS.type == "windows") "Rscript
 implementation_hashes <- function() {
   folders <- c("R", "src", "scripts", "scripts/workers", "scripts/acquisition", "www", "www/participant")
   paths <- unique(c(unlist(lapply(folders, function(folder) file.path(folder,
-    list.files(file.path(project, folder), pattern = "\\.(R|py|js|mjs|css|json|c|h)$", recursive = FALSE))), use.names = FALSE), "renv.lock"))
+    list.files(file.path(project, folder), pattern = "\\.(R|py|js|mjs|css|json|c|h|ps1)$", recursive = FALSE))), use.names = FALSE), "renv.lock"))
   paths <- sort(paths[file.exists(file.path(project, paths)) & !dir.exists(file.path(project, paths))])
   stats::setNames(lapply(paths, function(path) digest::digest(file = file.path(project, path), algo = "sha256")), paths)
 }
@@ -56,14 +56,22 @@ for (test in selected) {
   test_path <- normalizePath(file.path(project, test$path), winslash = "/", mustWork = TRUE)
   stopifnot(startsWith(test_path, paste0(project, "/tests/")), grepl("^[a-z0-9-]+$", test$id))
   source_hash <- digest::digest(file = test_path, algo = "sha256")
+  # Keep retained worker paths short on Windows. The receipt retains the full
+  # test identity; this ordinal is only an address within this unique run.
+  test_index <- match(test$id, vapply(selected, `[[`, character(1), "id"))
+  evidence_parent <- file.path(output, "e", sprintf("%03d", test_index))
+  if (file.exists(evidence_parent)) stop("The selected test evidence directory already exists; choose a fresh run directory.", call. = FALSE)
+  dir.create(evidence_parent, recursive = TRUE, showWarnings = FALSE)
+  evidence_parent <- normalizePath(evidence_parent, winslash = "/", mustWork = TRUE)
+  stopifnot(startsWith(tolower(evidence_parent), paste0(tolower(output), "/")))
   outcome <- tryCatch(processx::run(rscript, c("--vanilla", test$path), wd = project, timeout = test$timeout_s,
     stdout = stdout, stderr = stderr, error_on_status = FALSE, cleanup_tree = TRUE, windows_hide_window = TRUE,
-    env = c("current", R_LIBS_USER = .libPaths()[1L])), error = function(e) list(status = NULL, error = conditionMessage(e)))
+    env = c("current", R_LIBS_USER = .libPaths()[1L], BROHN_QA_EVIDENCE_PARENT = evidence_parent)), error = function(e) list(status = NULL, error = conditionMessage(e)))
   unchanged <- identical(source_hash, digest::digest(file = test_path, algo = "sha256")) && identical(code_identity, implementation_hashes())
   passed <- !is.null(outcome$status) && outcome$status == 0L && unchanged
   result <- list(id = test$id, path = test$path, status = if (passed) "passed" else "failed", exit_code = outcome$status,
     error = if (!unchanged) "The check or application source changed during execution; rerun against a stable checkout." else outcome$error,
-    duration_s = as.numeric(difftime(Sys.time(), started, units = "secs")), source_hash = source_hash,
+    duration_s = as.numeric(difftime(Sys.time(), started, units = "secs")), source_hash = source_hash, evidence_parent = evidence_parent,
     stdout = basename(stdout), stderr = basename(stderr))
   manifest$results[[length(manifest$results) + 1L]] <- result; save_results()
   cat(toupper(result$status), " ", test$id, " (", round(result$duration_s, 1), " s)\n", sep = ""); flush.console()

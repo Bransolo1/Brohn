@@ -1,8 +1,9 @@
 source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
-.libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/", mustWork = FALSE), .libPaths()))
+# Use the exact inherited library selected by the configured QA runner.
 for (module in c("platform-core", "platform-store", "platform-delivery", "platform-backup")) source(paste0("R/", module, ".R"))
 local({
   directory <- tempfile("brohn-backup-test-"); dir.create(directory)
+  directory <- normalizePath(directory, winslash = "/", mustWork = TRUE)
   cleanup_root <- normalizePath(directory, winslash = "/")
   source <- brohn_open_store(file.path(directory, "source")); restored <- NULL
   original_copy <- .brohn_backup_copy; original_online <- .brohn_backup_online_copy

@@ -170,12 +170,22 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       task$settings$control_rationale <- value(paste0("task_control_", i), task$settings$control_rationale)
       if (identical(task$profile, "sciat-brohn-response-window-im100/1.0")) {
         task$settings$language <- value(paste0("task_sciat_language_", i), task$settings$language)
+      } else if (identical(task$profile, "gnat-brohn-single-target/1.0")) {
+        task$settings$language <- value(paste0("task_gnat_language_", i), task$settings$language)
+        task$settings$context_kind <- value(paste0("task_gnat_context_kind_", i), task$settings$context_kind)
+        task$settings$context_rationale <- value(paste0("task_gnat_context_rationale_", i), task$settings$context_rationale)
       } else {
         task$settings$intertrial_ms <- value(paste0("task_interval_", i), task$settings$intertrial_ms)
         task$settings$trial_timeout_ms <- value(paste0("task_timeout_", i), task$settings$trial_timeout_ms)
       }
-      for (j in seq_along(task$categories)) task$categories[[j]]$label <- value(paste0("task_category_", i, "_", j), task$categories[[j]]$label)
-      for (j in seq_along(task$materials)) if (task$materials[[j]]$type == "text") task$materials[[j]]$content <- value(paste0("task_material_", i, "_", j), task$materials[[j]]$content)
+      for (j in seq_along(task$categories)) {
+        task$categories[[j]]$label <- value(paste0("task_category_", i, "_", j), task$categories[[j]]$label)
+        if(identical(task$profile,"gnat-brohn-single-target/1.0")) {
+          words <- input[[paste0("task_gnat_words_",i,"_",j)]]
+          if(!is.null(words))task <- brohn_gnat_update_words(task,task$categories[[j]]$id,words)
+        }
+      }
+      if(!identical(task$profile,"gnat-brohn-single-target/1.0"))for (j in seq_along(task$materials)) if (task$materials[[j]]$type == "text") task$materials[[j]]$content <- value(paste0("task_material_", i, "_", j), task$materials[[j]]$content)
       d$blocks[[i]] <- task
     }
     if (!identical(brohn_hash(d), brohn_hash(current$study$body))) update_study(d, FALSE)

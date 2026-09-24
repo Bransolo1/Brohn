@@ -1,5 +1,10 @@
 # Portable QA catalog: next steps
 
+**Update:** the selected seven-check configured core profile is now implemented
+with [scoped acceptance](PORTABLE-CATALOG-ACCEPTANCE.md). The audit below is the
+original planning record; its developer-path findings for those selected checks
+are superseded by that implementation. Wider catalog dependencies remain open.
+
 24 September 2026. Read-only prioritization after the [portable connected smoke](CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md). No catalog suite was run for this audit, and no existing QA/runtime code was changed. These are source-inspection findings, not fresh execution failures.
 
 [run-checks.R](../../scripts/run-checks.R) already resolves its checkout independently of the caller, runs allowlisted tests in child processes and accepts an external evidence directory. It currently accepts `--suite`, `--test` and `--output`, and requires runtime environment setup before execution. The next shared change should be a configuration-aware launcher using [local-configuration.ps1](../../scripts/local-configuration.ps1), plus explicit prerequisites/evidence metadata in [qa-catalog.json](../../scripts/qa-catalog.json). Reuse the connected smoke's runtime isolation and protected-workspace rules; do not open the configuration's research workspace.

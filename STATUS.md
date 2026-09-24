@@ -1,5 +1,24 @@
 # Resume here — Brohn
 
+## Current GNAT and contributor QA checkpoint — 25 September 2026
+
+Continuing from `d2889f4`, this checkpoint adds the named Brohn
+GNAT procedure as its seventh task profile, with category word lists, original
+trial evidence, dedicated import, four-outcome plots and cohort support.
+Its connected journey now passes two complete 384-trial administrations,
+native reports, actual summary reimports, a reviewed two-person cohort,
+complete exports and restart. The five reports and seven successful jobs remain
+unchanged during reopening. Earlier harness failures and partial administrations
+are retained separately. See the [checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md)
+for exact source phases and scoped evidence. The configured seven-check
+core QA subset has [scoped acceptance](docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md).
+Next are paged saved-media and linked-signal histories and results-first report
+navigation. Their external candidates have component evidence; installed browser
+acceptance remains to complete. Reviewed cross-recording clock alignment follows
+its separate contract and is not yet enabled.
+The full [workstream](docs/WORKSTREAM.md) and all 50 capabilities/17 packages
+remain active; this is neither a pause nor whole-platform completion.
+
 ## Resumed after publication — 24 September 2026
 
 The owner explicitly requested "keep going" after checkpoint `2b3b31a`.

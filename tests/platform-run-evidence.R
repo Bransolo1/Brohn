@@ -1,7 +1,7 @@
 # Original storage-level evidence fixtures, not observed participants and not
 # receiver/scientific qualification. The large journal avoids costly replay by
 # seeding explicit retained rows with independently calculated SHA-256 values.
-.libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/"), .libPaths()))
+# Use the exact inherited library selected by the configured QA runner.
 source("R/platform-load.R", encoding = "UTF-8"); brohn_load(ui = FALSE)
 source("R/platform-run-evidence.R", encoding = "UTF-8")
 local({

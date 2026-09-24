@@ -1,6 +1,36 @@
 # Responsive SVGs use complete selected arrays, never a table preview.
+.brohn_tp_gnat <- function(view) identical(view$model$kind,"trials")&&identical(view$model$profile,"gnat-brohn-single-target/1.0")
+.brohn_tp_gnat_outcomes <- function(view,width) {
+  states<-c("hit","miss","false_alarm","correct_rejection","interrupted","not_presented","absent_source")
+  labels<-c("Hit","Miss","False alarm","Correct rejection","Interrupted","Not presented","Absent source")
+  colours<-c("#a7e9d3","#f4c67a","#f4c67a","#a7e9d3","#eaa8c4","#b7c4c9","#b7c4c9")
+  height<-390L;left<-113;right<-width-18;top<-55;bottom<-283
+  sx<-function(p)left+(p-1)/max(1,length(view$model$rows)-1)*(right-left)
+  sy<-function(state)top+(match(state,states)-1)*(bottom-top)/6
+  number<-function(x)formatC(x,format="f",digits=3,decimal.mark=".")
+  text<-function(x,y,label,...)shiny::tags$text(x=number(x),y=number(y),fill="#edf2f2",`font-size`=12,...,label)
+  id<-paste0("tp-gnat-",substr(brohn_hash(list(view$model$source_hash,view$scope,width)),1,18))
+  shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",viewBox=paste(0,0,width,height),role="img",focusable="false",
+    `aria-labelledby`=paste(id,paste0(id,"-desc")),style="display:block;width:100%;height:auto;max-width:100%;background:#11171c;border-radius:8px;font-family:system-ui,sans-serif",
+    shiny::tags$title(id=id,"Go/No-Go outcomes in frozen trial order"),
+    shiny::tags$desc(id=paste0(id,"-desc"),paste(length(view$rows),"selected positions.",paste(vapply(view$outcome_counts,function(c)paste(gsub("_"," ",c$outcome),c$count),character(1)),collapse="; "),
+      "Correct rejections and misses retain observed withholding with no response latency. Interrupted, unpresented and absent source positions occupy separate rows. No score is recalculated.")),
+    text(width/2,22,"Go / No-Go outcomes",`text-anchor`="middle"),
+    lapply(seq_along(states),function(i)shiny::tagList(shiny::tags$line(x1=left,x2=right,y1=number(sy(states[[i]])),y2=number(sy(states[[i]])),stroke="#415057"),
+      text(left-7,sy(states[[i]])+4,labels[[i]],`text-anchor`="end"))),
+    lapply(view$rows,function(r){k<-match(r$outcome_state,states);brohn_require(!is.na(k),"A saved GNAT position needs an explicit outcome or source-support state.")
+      title<-paste("Trial",r$position,r$trial_id,"|",labels[[k]],"|",r$phase,brohn_default(r$cell_id,"training"),"|",r$expected_action,
+        "|",if(isTRUE(r$profile_scored))"Test position"else"Training or practice", "|",r$disposition)
+      shiny::tags$circle(cx=number(sx(r$position)),cy=number(sy(r$outcome_state)),r=2.5,fill=if(isTRUE(r$profile_scored))colours[[k]]else"none",stroke=colours[[k]],shiny::tags$title(title))}),
+    lapply(unique(round(seq(1,max(2,length(view$model$rows)),length.out=3))),function(p)text(sx(p),310,p,`text-anchor`="middle")),
+    text((left+right)/2,333,"Frozen trial position",`text-anchor`="middle"),
+    text(width/2,356,"Filled = test; hollow = training / practice",`text-anchor`="middle"),
+    text(width/2,376,"Withholding is observed, not missing data",`text-anchor`="middle"))
+}
 brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
-  brohn_require(chart %in% c("chronology","distribution")&&width %in% c(320L,680L),"Choose a supported task figure.")
+  brohn_require(chart %in% c("chronology","distribution","outcomes")&&width %in% c(320L,680L),"Choose a supported task figure.")
+  gnat<-.brohn_tp_gnat(view)
+  if(identical(chart,"outcomes")){brohn_require(gnat,"Outcome lanes are available for the saved GNAT procedure.");return(.brohn_tp_gnat_outcomes(view,width))}
   people<-view$model$kind=="people";histogram<-!people&&chart=="distribution"
   height<-390L;left<-65;right<-width-18;top<-38;bottom<-258
   values<-view$values;finite<-values[is.finite(values)]
@@ -20,22 +50,23 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
     shiny::tags$title(paste(.brohn_tp_num(b$lower_ms),"to",.brohn_tp_num(b$upper_ms),"ms:",b$count,"recorded values")))) else
     lapply(seq_along(view$rows),function(i){r<-view$rows[[i]];v<-values[[i]];x<-sx(r$position);y<-if(is.finite(v))sy(v)else bottom+20
       wrong<-!people&&!is.null(r$response_code)&&!isTRUE(r$first_correct);missing<-!is.finite(v)
-      label<-paste(if(people)r$person_id else r$trial_id,"|",view$label,if(missing)"unavailable"else paste(.brohn_tp_num(v),view$unit),
+      withheld<-gnat&&isTRUE(r$withholding_observed)
+      label<-paste(if(people)r$person_id else r$trial_id,"|",view$label,if(withheld)"withheld; no response time"else if(missing)"unavailable"else paste(.brohn_tp_num(v),view$unit),
         if(!people)paste("|",brohn_default(r$outcome,"missing source"),"|",r$disposition))
       colour<-if(!people&&!isTRUE(r$profile_scored))"#b7c4c9"else if(wrong)"#f4c67a"else "#a7e9d3"
-      if(missing)shiny::tags$rect(x=n(x-2.5),y=n(y-2.5),width=5,height=5,fill="none",stroke=colour,shiny::tags$title(label))else if(wrong)
+      if(withheld)shiny::tags$line(x1=n(x-2.5),x2=n(x+2.5),y1=n(y),y2=n(y),stroke=colour,`stroke-width`=2,shiny::tags$title(label))else if(missing)shiny::tags$rect(x=n(x-2.5),y=n(y-2.5),width=5,height=5,fill="none",stroke=colour,shiny::tags$title(label))else if(wrong)
         shiny::tags$path(d=paste("M",n(x),n(y-3.5),"L",n(x+3.5),n(y),n(x),n(y+3.5),n(x-3.5),n(y),"Z"),fill=colour,shiny::tags$title(label))else
         shiny::tags$circle(cx=n(x),cy=n(y),r=2.7,fill=if(!people&&!isTRUE(r$profile_scored))"none"else colour,stroke=colour,shiny::tags$title(label))})
   shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",viewBox=paste(0,0,width,height),role="img",focusable="false",
     `aria-labelledby`=paste(id,paste0(id,"-desc")),style="display:block;width:100%;height:auto;max-width:100%;background:#11171c;border-radius:8px;font-family:system-ui,sans-serif",
-    shiny::tags$title(id=id,title),shiny::tags$desc(id=paste0(id,"-desc"),paste(view$available,"available values;",view$missing,"unavailable out of",length(view$rows),
+    shiny::tags$title(id=id,title),shiny::tags$desc(id=paste0(id,"-desc"),paste(view$available,"available values;",if(gnat)paste(view$withheld,"observed withholding without latency;"),view$missing,"unavailable out of",length(view$rows),
       "selected positions. Every selected finite value is represented. Unavailable values are not zero. Numerical alternatives and complete source download accompany this chart. Report",view$model$report_hash,"source",view$model$source_hash)),
     text(width/2,20,view$label,`text-anchor`="middle"),
     lapply(yt,function(t)shiny::tagList(shiny::tags$line(x1=left,x2=right,y1=n(sy(t)),y2=n(sy(t)),stroke="#415057"),text(left-8,sy(t)+4,.brohn_tp_num(t),`text-anchor`="end"))),
     lapply(xt,function(t)text(sx(t),bottom+44,.brohn_tp_num(t),`text-anchor`="middle")),marks,
     text((left+right)/2,326,if(histogram)"Recorded latency (ms)"else if(people)"Person index (saved order)"else"Frozen trial position",`text-anchor`="middle"),
-    text(width/2,353,if(histogram)paste(view$available,"values in 20 equal-width bins")else if(people)"One dot per person; square = unavailable"else"Circle = correct first; diamond = wrong first",`text-anchor`="middle"),
-    if(!histogram&&!people)text(width/2,373,"Grey = non-scoring position; square = unavailable",`text-anchor`="middle"),
+    text(width/2,353,if(histogram)paste(view$available,"values in 20 equal-width bins")else if(people)"One dot per person; square = unavailable"else if(gnat)"Circle = hit; diamond = false alarm"else"Circle = correct first; diamond = wrong first",`text-anchor`="middle"),
+    if(!histogram&&!people)text(width/2,373,if(gnat)"Dash = withheld; square = unavailable"else"Grey = non-scoring position; square = unavailable",`text-anchor`="middle"),
     shiny::tags$text(x=17,y=(top+bottom)/2,transform=paste0("rotate(-90 17 ",(top+bottom)/2,")"),fill="#edf2f2",`font-size`=12,`text-anchor`="middle",
       if(histogram)"Recorded values"else view$unit))
 }
@@ -43,12 +74,14 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
   shiny::div(class="brohn-signal-wide",brohn_task_plot_svg(view,chart,680L)),
   shiny::div(class="brohn-signal-compact",brohn_task_plot_svg(view,chart,320L)))
 .brohn_tp_view_ui <- function(view,page=1L) {
-  m<-view$model;people<-m$kind=="people";pages<-max(1L,ceiling(length(view$rows)/50L))
+  m<-view$model;people<-m$kind=="people";gnat<-.brohn_tp_gnat(view);pages<-max(1L,ceiling(length(view$rows)/50L))
   brohn_require(brohn_number(page,1,pages,TRUE),"Choose an available numerical page.")
   rows<-if(length(view$rows))view$rows[seq.int((page-1L)*50L+1L,min(length(view$rows),page*50L))]else list()
   brohn_card(title=if(people)"People behind this measure"else"Responses across this administration",subtitle=m$label,
     shiny::p(paste("Collection:",m$origin,"| Materials:",m$material_origin,"| Evidence:",gsub("_"," ",m$evidence_level))),
-    shiny::p(if(people&&is.null(m$summary$selected_person_count))"Person-level values are unavailable because reviewed person/session linkage is incomplete."else
+    shiny::p(if(gnat)paste(view$available,"actual Space-response latencies;",view$withheld,"observed withheld responses with no latency;",view$missing,
+      "unavailable latencies among",length(view$rows),"selected positions of",length(m$rows),"expected. Administration:",m$completion)else
+      if(people&&is.null(m$summary$selected_person_count))"Person-level values are unavailable because reviewed person/session linkage is incomplete."else
       paste(view$available,"available",if(people)"person values"else"recorded latencies","and",view$missing,"unavailable among",length(view$rows),
         if(people)"selected people for this measure."else paste("selected positions of",length(m$rows),"expected. Administration:",m$completion))),
     if(people)shiny::tagList(shiny::p(paste("Saved equal-person mean:",.brohn_tp_num(m$summary$mean),m$unit,".",brohn_default(m$summary$reason,""))),
@@ -57,18 +90,23 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
       shiny::p("Each dot is one saved person-level value. No trials are pooled. People without this measure remain unavailable. No confidence interval or hypothesis test is added."))else
       shiny::tagList(shiny::p(paste("Showing",view$label,"from the original record.",if(view$scope=="scored")"Only profile-scored positions are selected."else"All expected positions, including practice and other unscored positions, are selected.")),
         if(!isTRUE(m$timing$definition_known))shiny::p(class="brohn-alert",role="status","The source timing or terminal-response definition is unknown. These are declared numbers; no qualified response-time interpretation or new score is supplied.")),
-    shiny::h3(if(people)"Individual values"else"Trial chronology"),
+    if(gnat)shiny::tagList(shiny::h3("Go/No-Go outcome chronology"),.brohn_tp_figure(view,"outcomes"),
+      shiny::p("A hit is Space for a Go word; a false alarm is Space for a No-Go word. Withholding for a Go word is a miss, and withholding for a No-Go word is a correct rejection. Neither withholding outcome has a response time."),
+      brohn_table(lapply(view$outcome_counts,function(c)list(Outcome=gsub("_"," ",c$outcome),Positions=c$count)),maximum=7L,label="Complete selected GNAT outcome counts")),
+    shiny::h3(if(people)"Individual values"else if(gnat)"Actual Space responses"else"Trial chronology"),
     if(length(view$rows)).brohn_tp_figure(view,"chronology")else shiny::p(brohn_default(m$summary$reason,"No source positions are available.")),
     if(!people)shiny::tags$details(shiny::tags$summary("Read the trial markers and scoring boundaries"),
-      shiny::p("Circles mark correct first responses; diamonds mark a wrong first response, including later corrections. Grey markers indicate positions outside the scoring plan, such as practice or warm-up. A coloured point can still be excluded from scoring; inspect its disposition below. Squares below the axis mark unavailable latency, including omissions and absent source rows; they are not zero."),
+      shiny::p(if(gnat)"Circles mark hits and diamonds mark false alarms. Dashes below the latency axis mark observed withholding, with no fabricated response time. Squares identify unavailable latency. Interrupted responses retain their original provisional value and separate interruption outcome; they are not completed-trial accuracy. Grey marks are training or practice. The outcome chart keeps interrupted, unpresented and absent evidence separate."else
+        "Circles mark correct first responses; diamonds mark a wrong first response, including later corrections. Grey markers indicate positions outside the scoring plan, such as practice or warm-up. A coloured point can still be excluded from scoring; inspect its disposition below. Squares below the axis mark unavailable latency, including omissions and absent source rows; they are not zero."),
       shiny::p("Plot inclusion does not establish scoring inclusion. Out-of-window values remain visible; the separate disposition and scoring-latency fields retain exclusion, correction and clipping evidence.")),
     if(!people)shiny::tagList(shiny::h3("Latency distribution"),if(view$available).brohn_tp_figure(view,"distribution")else shiny::p("No recorded latency is available for this selection."),
-      shiny::p("Twenty equal-width bins use every selected recorded value. The first bin includes both edges; later bins exclude the lower edge and include the upper edge. Missing values do not enter bins."),
+      shiny::p(paste("Twenty equal-width bins use every selected recorded value. The first bin includes both edges; later bins exclude the lower edge and include the upper edge. Missing values do not enter bins.",if(gnat)"Withheld responses have no latency and do not enter bins.")),
       shiny::tags$details(shiny::tags$summary("Distribution counts and exact bin edges"),brohn_table(view$bins,maximum=20L,label="Exact latency distribution bins"))),
-    shiny::h3("Exact numerical values"),shiny::p(paste("Page",page,"of",pages,"|",length(view$rows),"selected rows. Paging changes this table only; both charts and downloads retain the complete selection.")),
-    brohn_table(rows,columns=if(people)c("position","person_id","value","unit","eligible_attempt_count","eligible_session_count","reason")else
+    shiny::h3("Exact numerical values"),shiny::p(paste("Page",page,"of",pages,"|",length(view$rows),"selected rows. Paging changes this table only; all charts and downloads retain the complete selection.")),
+    brohn_table(rows,columns=if(people)c("position","person_id","value","unit","eligible_attempt_count","eligible_session_count","reason")else if(gnat)
+      c("position","trial_id","phase","round_id","cell_id","expected_action","outcome_state","correct","response_ms","disposition","missing_reason")else
       c("position","trial_id","profile_scored","outcome","first_correct","first_response_ms","final_correct_ms","disposition","missing_reason"),maximum=50L,
-      label=if(people)"Exact person outcomes and metric-specific support"else"Exact trial outcomes and distinct first and final-correct latency"),
+      label=if(people)"Exact person outcomes and metric-specific support"else if(gnat)"Exact GNAT outcomes, withholding and actual Space-response latency"else"Exact trial outcomes and distinct first and final-correct latency"),
     shiny::tags$details(shiny::tags$summary("Source identity and interpretation"),shiny::p(paste("Source SHA-256:",m$source_hash)),shiny::p(paste("Report SHA-256:",m$report_hash)),
       shiny::p("Browser timing and declared import summaries do not qualify physical response timing or psychological constructs. Source aliases do not independently verify people."),
       if(!is.null(m$audit_policy))shiny::p(m$audit_policy),shiny::tags$pre(brohn_json(m$source,TRUE))))
@@ -112,10 +150,12 @@ brohn_install_task_plots <- function(input,output,session,store,state,attempt,pr
   }))
   output$task_plot_controls<-shiny::renderUI({m<-model();shiny::req(m)
     brohn_card(title="Plot controls",shiny::tags$input(id="task_plot_identity",type="text",class="shiny-input-text",value=brohn_hash(list(m$report_hash,m$id,m$source_hash)),style="display:none",tabindex="-1",`aria-hidden`="true"),
-      if(m$kind=="trials")shiny::div(class="brohn-form-grid",shiny::selectInput("task_plot_measure","Recorded latency",c("First response"="first_response_ms","Final correct response"="final_correct_ms"),selectize=FALSE),
+      if(m$kind=="trials")shiny::div(class="brohn-form-grid",shiny::selectInput("task_plot_measure","Recorded latency",
+        if(identical(m$profile,"gnat-brohn-single-target/1.0"))c("Actual Space response"="first_response_ms")else c("First response"="first_response_ms","Final correct response"="final_correct_ms"),selectize=FALSE),
         shiny::selectInput("task_plot_scope","Trial scope",c("All expected positions"="all","Profile-scored positions"="scored"),selectize=FALSE)),
       shiny::numericInput("task_plot_page","Numerical table page (50 rows per page)",1,min=1,step=1),
       shiny::div(class="brohn-toolbar",shiny::downloadButton("task_plot_svg",if(m$kind=="people")"Download person outcomes SVG"else"Download chronology SVG",icon=NULL),
+        if(identical(m$profile,"gnat-brohn-single-target/1.0"))shiny::downloadButton("task_plot_outcomes_svg","Download Go/No-Go outcomes SVG",icon=NULL),
         if(m$kind=="trials")shiny::downloadButton("task_plot_hist_svg","Download distribution SVG",icon=NULL),
         shiny::downloadButton("task_plot_csv","Download every selected row CSV",icon=NULL),shiny::downloadButton("task_plot_json","Download all task values + provenance",icon=NULL)))})
   selected<-shiny::reactive({m<-model();shiny::req(m,identical(input$task_plot_identity,brohn_hash(list(m$report_hash,m$id,m$source_hash))))
@@ -130,5 +170,6 @@ brohn_install_task_plots <- function(input,output,session,store,state,attempt,pr
   output$task_plot_csv<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-task-values.csv"),contentType="text/csv",content=function(file)prepare_download(function()brohn_task_plot_csv(verified_view(),file)))
   output$task_plot_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-task-chronology.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view()))),file,useBytes=TRUE)))
   output$task_plot_hist_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-task-distribution.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view(),"distribution"))),file,useBytes=TRUE)))
+  output$task_plot_outcomes_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-gnat-outcomes.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view(),"outcomes"))),file,useBytes=TRUE)))
   invisible(list(opened=opened,model=model,selected=selected,guard=guard))
 }

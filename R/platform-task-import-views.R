@@ -11,9 +11,11 @@ brohn_task_import_evidence_ui <- function(analysis) {
         maximum=100L,label=paste("Trial support for",a$id)))),
     if(length(analysis$task_attempts)>40L)shiny::p(paste("Showing 40 of",length(analysis$task_attempts),"administrations. JSON + provenance contains every complete source and trial audit.")))
 }
-brohn_task_import_mapping_input <- function(input) {
-  fields <- c("task_id","source_collection_id","origin_statement","source_software","source_rt_definition","terminal_response_rule",.brohn_task_import_columns())
+brohn_task_import_mapping_input <- function(input, profile = NULL) {
+  adapter <- if(identical(profile,"gnat-brohn-single-target/1.0")) .brohn_gnat_import_adapter else NULL
+  fields <- c("task_id","source_collection_id","origin_statement","source_software","source_rt_definition","terminal_response_rule",.brohn_task_import_columns(adapter))
   result <- setNames(lapply(fields,function(f) input[[paste0("map_task_",f)]]),fields)
+  if(!is.null(adapter))result$adapter <- adapter
   if (identical(result$source_software,"")) result["source_software"] <- list(NULL)
   result$evidence_level <- "declared_trial_summary"
   for (f in c("task_column","origin_column")) if(brohn_text(input[[paste0("map_task_",f)]],500))result[[f]] <- input[[paste0("map_task_",f)]]
@@ -71,6 +73,14 @@ brohn_install_task_import_ui <- function(input,output,session,store,state,attemp
         if(!is.null(reference))shiny::tags$details(shiny::tags$summary("Protocol file identity"),shiny::p(reference$hash)))
     },error=function(e)shiny::p(class="brohn-muted",conditionMessage(e)))
   })
+  output$task_mapping_responses <- shiny::renderUI({
+    shiny::req(state$page=="dataset",state$dataset_id)
+    tryCatch({
+      selected <- selection(FALSE)
+      brohn_task_import_response_fields_ui(unlist(selected$dataset$body$columns,use.names=FALSE),
+        selected$dataset$body$metadata,selected$task$profile)
+    },error=function(e)shiny::p(class="brohn-muted",conditionMessage(e)))
+  })
   shiny::observeEvent(input$attach_task_registry,attempt(function() {
     selected <- selection(); file <- input$task_registry_upload
     brohn_require(is.data.frame(file)&&nrow(file)==1L, "Choose one completed protocol JSON upload.")
@@ -79,7 +89,7 @@ brohn_install_task_import_ui <- function(input,output,session,store,state,attemp
     attached(list(identity=selected$identity,reference=reference)); message("Original task protocol checked and retained. Confirm the source definitions and mapping to analyse.")
   }))
   mapping <- function() {
-    selected <- selection(); m <- brohn_task_import_mapping_input(input); m$protocol_registry <- registry(selected)
+    selected <- selection(); m <- brohn_task_import_mapping_input(input,selected$task$profile); m$protocol_registry <- registry(selected)
     d <- selected$dataset$body; d$metadata <- m; d$study_id <- selected$study$id; d$study_revision <- selected$study$revision
     brohn_validate_task_import_mapping(d,selected$study$body)
     list(metadata=m,study=selected$study,dataset=selected$dataset)
@@ -102,16 +112,7 @@ brohn_task_import_dataset_ui <- function(store,record) {
       shiny::textInput("map_task_source_collection_id","Original collection ID or namespace",brohn_default(m$source_collection_id,"")),
       shiny::textAreaInput("map_task_origin_statement","Recording provenance and collection notes",brohn_default(m$origin_statement,""),rows=3),
       shiny::textInput("map_task_source_software","Original collection software and version (leave empty if unknown)",brohn_default(m$source_software,"")),
-      shiny::selectInput("map_task_source_rt_definition","What do the response-time columns measure?",c("Unknown; retain evidence without a score"="unknown",
-        "First and final-correct milliseconds from target onset"="first_and_final_correct_ms_from_target_onset"),brohn_default(m$source_rt_definition,"unknown")),
-      shiny::selectInput("map_task_terminal_response_rule","When did each trial end?",c("Unknown; retain evidence without a score"="unknown",
-        "First response or fixed deadline (RT / keyboard approach-avoidance)"="first_response_or_fixed_deadline",
-        "Final correct response or fixed deadline (IAT / Brief IAT)"="corrected_response_or_fixed_deadline"),brohn_default(m$terminal_response_rule,"unknown")),
-      shiny::tags$details(shiny::tags$summary("Response and timing columns"),shiny::div(class="brohn-form-grid",
-        column("outcome_column","Trial outcome","outcome"),column("first_code_column","First accepted response key","first_code"),
-        column("final_code_column","Final correct response key","final_code"),column("first_correct_column","First response was correct (true/false)","first_correct"),
-        column("first_response_ms_column","First-response milliseconds","first_response_ms"),column("final_correct_ms_column","Final-correct milliseconds","final_correct_ms"),
-        column("presented_column","Trial was presented (true/false)","presented"),column("missing_reason_column","Missing or interrupted response reason","missing_reason"))),
+      shiny::uiOutput("task_mapping_responses"),
       shiny::tags$details(shiny::tags$summary("Participant and original trial identities"),shiny::div(class="brohn-form-grid",
         column("participant_column","Participant code","participant_id"),column("participant_linkage_column","Codes link repeated sessions (true/false)","participant_linkage"),
         column("session_column","Session ID","session_id"),column("attempt_column","Task administration ID","attempt_id"),
@@ -122,4 +123,41 @@ brohn_task_import_dataset_ui <- function(store,record) {
       shiny::p(class="brohn-muted","Supports 20,000 source rows and expected trial positions. Imported summaries retain their declared timing; they do not acquire a replayed browser journal or physical timing qualification."),
       shiny::actionButton("accept_dataset","Confirm mapping and analyse",class="btn-primary"),
       if(d$status %in% c("accepted","analysed"))shiny::actionButton("analyse_dataset","Run a new analysis")),shiny::uiOutput("dataset_reports"))
+}
+
+brohn_task_import_response_fields_ui <- function(columns, metadata, profile) {
+  gnat <- identical(profile,"gnat-brohn-single-target/1.0")
+  m <- if(identical(gnat,identical(metadata$adapter,.brohn_gnat_import_adapter)))metadata else list()
+  column <- function(field,label,candidate)shiny::selectInput(paste0("map_task_",field),label,
+    c("Choose a column"="",stats::setNames(columns,columns)),
+    brohn_default(m[[field]],if(candidate %in% columns)candidate else ""))
+  rt <- c("Unknown; retain evidence without a score"="unknown",
+    if(gnat)c("Space-response milliseconds from word onset; no time for withholding"="space_ms_from_onset_no_rt_for_withholding")else
+      c("First and final-correct milliseconds from target onset"="first_and_final_correct_ms_from_target_onset"))
+  terminal <- c("Unknown; retain evidence without a score"="unknown",
+    if(gnat)c("First eligible Space or visible deadline (GNAT)"="space_or_visible_deadline")else
+      c("First response or fixed deadline (RT / keyboard approach-avoidance / SC-IAT)"="first_response_or_fixed_deadline",
+        "Final correct response or fixed deadline (IAT / Brief IAT)"="corrected_response_or_fixed_deadline"))
+  shiny::tagList(
+    shiny::selectInput("map_task_source_rt_definition","What do the response-time columns measure?",rt,brohn_default(m$source_rt_definition,"unknown")),
+    shiny::selectInput("map_task_terminal_response_rule","When did each trial end?",terminal,brohn_default(m$terminal_response_rule,"unknown")),
+    if(gnat)shiny::p("GNAT keeps hit, miss, false alarm and correct rejection separate. Withholding has an empty response key and time; a correct rejection has true accuracy. Original Brohn exports preselect their matching columns."),
+    shiny::tags$details(shiny::tags$summary("Response and timing columns"),shiny::div(class="brohn-form-grid",
+      column("outcome_column","Trial outcome","outcome"),
+      if(gnat)shiny::tagList(
+        column("phase_column","Training, practice or test","phase"),
+        column("round_id_column","Frozen round ID (empty for training)","round_id"),
+        column("cell_id_column","Frozen pairing cell ID (empty for training)","cell_id"),
+        column("expected_action_column","Expected Go or No-Go action","expected_action"),
+        column("response_outcome_column","Recorded response or withholding outcome","response_outcome"),
+        column("response_code_column","Space key (empty for withholding)","response_code"),
+        column("response_ms_column","Space-response milliseconds (empty for withholding)","response_ms"),
+        column("correct_column","Completed trial accuracy (true/false)","correct"))else shiny::tagList(
+        column("first_code_column","First accepted response key","first_code"),
+        column("final_code_column","Final correct response key","final_code"),
+        column("first_correct_column","First response was correct (true/false)","first_correct"),
+        column("first_response_ms_column","First-response milliseconds","first_response_ms"),
+        column("final_correct_ms_column","Final-correct milliseconds","final_correct_ms")),
+      column("presented_column","Trial was presented (true/false)","presented"),
+      column("missing_reason_column","Missing or interrupted response reason","missing_reason"))))
 }

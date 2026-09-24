@@ -21,7 +21,9 @@ if(mode %in% c("researcher","participant")){
     d<-brohn_new_design("Original material authoring");for(i in seq_along(d$stimuli)){d$stimuli[[i]]$content<-paste("Original comparison",i);d$stimuli[[i]]$duration_ms<-1500}
     d$baseline_ms<-0;d$fixation_ms<-0;d$order<-"fixed";d$instructions<-"Review the original comparison materials.";d$questions<-list(brohn_question("Original material response","text","end"))
     study<-brohn_put_entity(store,"study",d$id,d)
-    profiles<-names(brohn_task_profiles());tasks<-lapply(seq_along(profiles),function(i){
+    # This historical image-editor journey exercises the original five profiles;
+    # later named procedures have their own fixed timing and material journeys.
+    profiles<-names(Filter(function(p)p$kind %in% c("iat","biat","aat","simple_rt","choice_rt"),brohn_task_profiles()));tasks<-lapply(seq_along(profiles),function(i){
       x<-brohn_new_design(paste("Original material task",i),"blank");x$instructions<-"";x$blocks<-list(brohn_task_new(profiles[[i]]));x$blocks[[1]]$settings$intertrial_ms<-100L
       brohn_put_entity(store,"study",x$id,x)
     })

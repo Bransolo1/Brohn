@@ -21,6 +21,9 @@ local({
     identity<-api$selection(FALSE)$identity;session$setInputs(task_registry_identity=identity)
     selected<-api$selection()
     check(identical(selected$study$revision,study$revision)&&identical(selected$task$id,registry$task$id),"Mapping pins the exact saved task and study version")
+    responses_ui<-output$task_mapping_responses$html
+    check(grepl("What do the response-time columns measure?",responses_ui,fixed=TRUE)&&grepl("Unknown; retain evidence without a score",responses_ui,fixed=TRUE),"Selected task renders source timing as a visible explicit decision")
+    check(grepl("Trial was presented",responses_ui,fixed=TRUE)&&grepl("First-response milliseconds",responses_ui,fixed=TRUE)&&grepl("Final-correct milliseconds",responses_ui,fixed=TRUE),"Existing IAT response form keeps presentation and corrections separate")
     inputs<-setNames(lapply(names(m),function(name)m[[name]]),paste0("map_task_",names(m)))
     inputs$map_task_protocol_registry<-NULL;inputs$map_task_evidence_level<-NULL;inputs$map_task_source_software<-""
     do.call(session$setInputs,inputs)
@@ -46,7 +49,6 @@ local({
     check(rejects(api$mapping()),"Concurrent dataset revision invalidates its old attachment context")
   })
   ui<-as.character(brohn_task_import_dataset_ui(store,brohn_get_entity(store,"dataset",dataset$id)))
-  check(grepl("What do the response-time columns measure?",ui,fixed=TRUE)&&grepl("Unknown; retain evidence without a score",ui,fixed=TRUE),"Source timing definitions are a visible explicit research decision")
-  check(grepl("Trial was presented",ui,fixed=TRUE)&&grepl("First-response milliseconds",ui,fixed=TRUE)&&grepl("Final-correct milliseconds",ui,fixed=TRUE),"Form keeps presentation, first response and final correction separate")
+  check(grepl("task_mapping_responses",ui,fixed=TRUE),"Dataset binds response fields to its selected original task")
   cat(sprintf("PASS: %d task-import Shiny selection and mapping checks\n",checks))
 })

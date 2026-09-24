@@ -439,7 +439,8 @@ brohn_run_events <- function(store, run_id) {
     if (identical(step$type, "task")) {
       .brohn_delivery_require(exists(".brohn_task_delivery_new", mode = "function"), "The task receiver is unavailable.", 503, "task_receiver_unavailable")
       state$active$task <- if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0"))
-        .brohn_sciat_window_delivery_new() else .brohn_task_delivery_new()
+        .brohn_sciat_window_delivery_new() else if (identical(step$task$profile, "gnat-brohn-single-target/1.0"))
+          .brohn_gnat_delivery_new() else .brohn_task_delivery_new()
     }
     return(state)
   }
@@ -447,7 +448,8 @@ brohn_run_events <- function(store, run_id) {
   if (event$type == "task_event") {
     .brohn_delivery_require(identical(step$type, "task"), "Task evidence must belong to a frozen task step.", 422, "foreign_reference")
     return(if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0"))
-      .brohn_sciat_window_delivery_apply(state, event, step) else .brohn_task_delivery_apply(state, event, step))
+      .brohn_sciat_window_delivery_apply(state, event, step) else if (identical(step$task$profile, "gnat-brohn-single-target/1.0"))
+        .brohn_gnat_delivery_apply(state, event, step) else .brohn_task_delivery_apply(state, event, step))
   }
   if (event$type == "response") {
     if (step$type=="maxdiff") {
@@ -473,6 +475,7 @@ brohn_run_events <- function(store, run_id) {
     "Finish this choice set with a complete answer or an explicit permitted omission.",422,"required_answer")
   if (identical(step$type, "task")) {
     if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0")) .brohn_sciat_window_delivery_complete(state, step, event)
+    else if (identical(step$task$profile, "gnat-brohn-single-target/1.0")) .brohn_gnat_delivery_complete(state, step, event)
     else .brohn_task_delivery_complete(state, step, event)
   }
   if (step$type %in% c("baseline", "fixation", "stimulus")) {
@@ -640,12 +643,13 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       routes <- c("/participant" = "index.html", "/participant/" = "index.html", "/participant/runner.js" = "runner.js", "/participant/tasks.js" = "tasks.js", "/participant/camera.js" = "camera.js", "/participant/runner.css" = "runner.css", "/participant/maxdiff.js" = "maxdiff.js", "/participant/maxdiff.css" = "maxdiff.css",
         "/participant/equipment.js" = "equipment.js", "/participant/audio-worklet.js" = "audio-worklet.js",
         "/participant/sciat-window-core.js" = "sciat-window-core.js", "/participant/sciat-window.js" = "sciat-window.js",
+        "/participant/gnat-core.js" = "gnat-core.js", "/participant/gnat.js" = "gnat.js",
         "/participant/event-batch.js" = "event-batch.js",
         "/participant/question-revision.js" = "question-revision.js", "/participant/illustrations.js" = "illustrations.js", "/participant/welcome.js" = "welcome.js", "/participant/welcome.css" = "welcome.css", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
       if (method == "GET" && path %in% names(routes)) {
         filename <- routes[[path]]; file <- file.path(static_root, filename)
         .brohn_delivery_require(file.exists(file) && !dir.exists(file), "Participant interface is unavailable.", 503, "interface_unavailable")
-        type <- if (filename %in% c("runner.js", "tasks.js", "sciat-window-core.js", "sciat-window.js", "event-batch.js", "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "question-revision.js", "illustrations.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
+        type <- if (filename %in% c("runner.js", "tasks.js", "sciat-window-core.js", "sciat-window.js", "gnat-core.js", "gnat.js", "event-batch.js", "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "question-revision.js", "illustrations.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
         return(.brohn_delivery_response(body = readBin(file, "raw", n = file.info(file)$size), type = type))
       }
       parts <- strsplit(sub("^/", "", path), "/", fixed = TRUE)[[1]]

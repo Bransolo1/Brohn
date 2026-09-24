@@ -18,15 +18,19 @@ brohn_tasks_ui <- function(design) {
           indices <- which(vapply(task$materials, function(m) identical(m$category_id, category$id), logical(1)))
           shiny::tags$details(open = NA, shiny::tags$summary(paste(gsub("_", " ", category$role), "\u2014", category$label)),
             shiny::textInput(paste0("task_category_", i, "_", j), paste("Task", i, "category", j, "label"), category$label),
-            lapply(indices, function(k) {
+            if(identical(profile$kind,"gnat"))shiny::tagList(
+              shiny::textAreaInput(paste0("task_gnat_words_",i,"_",j),paste("Task",i,"category",j,"exemplars, one per line"),
+                paste(vapply(task$materials[indices],`[[`,character(1),"content"),collapse="\n"),rows=min(8L,max(3L,length(indices)))),
+              shiny::p(class="brohn-muted","Paste 2 to 64 text exemplars, one per line. Review their suitability and distinct category membership."))else lapply(indices, function(k) {
               material <- task$materials[[k]]
               shiny::div(class = "brohn-material-exemplar-card",
                 if (material$type == "text") shiny::textInput(paste0("task_material_", i, "_", k), paste("Task", i, "exemplar", k), material$content) else
                   shiny::h3(paste("Exemplar", k)),
-                brohn_material_card_ui(design, "exemplar", material, task$id))
+                if (!identical(profile$kind, "gnat")) brohn_material_card_ui(design, "exemplar", material, task$id))
             }))
         }),
-        if (identical(profile$kind, "sciat_window")) brohn_sciat_window_settings_ui(task, i) else shiny::tags$details(shiny::tags$summary("Timing and randomization"),
+        if (identical(profile$kind, "gnat")) brohn_gnat_settings_ui(task, i) else
+          if (identical(profile$kind, "sciat_window")) brohn_sciat_window_settings_ui(task, i) else shiny::tags$details(shiny::tags$summary("Timing and randomization"),
           shiny::numericInput(paste0("task_seed_", i), paste("Task", i, "seed"), task$seed, 1, .Machine$integer.max),
           shiny::numericInput(paste0("task_interval_", i), paste("Task", i, "intertrial interval (ms)"), task$settings$intertrial_ms, 100, 2000, 50),
           shiny::numericInput(paste0("task_timeout_", i), paste("Task", i, "timeout (ms)"), task$settings$trial_timeout_ms, 1000, 60000, 100),

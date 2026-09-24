@@ -1,5 +1,20 @@
 # Changes
 
+## GNAT and configured contributor checks — 2026-09-25
+
+- Added Brohn's named single-target Go/No-Go association procedure through text
+  authoring, frozen 384-trial delivery, replay, ten scores, dedicated summary
+  import, outcome figures and cohort comparison. Correct withholding retains
+  no response time. Two complete administrations, native reports, actual summary
+  reimports, reviewed cohort and restart now pass; five reports and seven
+  successful jobs remain unchanged during reopening. See
+  `docs/qa/PUBLICATION-GNAT-20260924.md` for source phases and retained failures.
+- Added a configured seven-check core QA launcher with explicit runtimes and
+  external isolated evidence. Seven accepted receipts total 408 assertions,
+  alongside 19 launcher checks; this is not a full catalog or clean-machine claim.
+- Corrected GNAT imported-plot timing labels and connected its study measure
+  choice while preserving the previously registered task definitions.
+
 ## Saved-media review and portable verification — 2026-09-24
 
 - Resumed the full build after checkpoint `2b3b31a` at the owner's request.

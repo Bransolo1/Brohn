@@ -6,7 +6,9 @@ local({
   check<-function(label,value){if(!isTRUE(value))stop("Task import platform QA: ",label,call.=FALSE);checks<<-checks+1L}
   rejects<-function(expr)inherits(try(force(expr),silent=TRUE),"try-error")
   near<-function(a,b)isTRUE(all.equal(a,b,tolerance=1e-12,check.attributes=FALSE))
-  parent<-normalizePath("../../work/test-runs",winslash="/",mustWork=TRUE)
+  configured_parent<-Sys.getenv("BROHN_QA_EVIDENCE_PARENT","")
+  if(!nzchar(configured_parent)||!dir.exists(configured_parent))stop("Run through scripts/run-checks.R with an external output directory, or explicitly supply BROHN_QA_EVIDENCE_PARENT.",call.=FALSE)
+  parent<-normalizePath(configured_parent,winslash="/",mustWork=TRUE)
   root<-file.path(parent,paste0("brohn-task-import-platform-",format(Sys.time(),"%Y%m%d-%H%M%S"),"-",substr(brohn_id("evidence"),10,17)))
   stopifnot(!file.exists(root));dir.create(root)
   root<-normalizePath(root,winslash="/",mustWork=TRUE)

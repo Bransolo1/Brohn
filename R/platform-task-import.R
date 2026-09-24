@@ -1,10 +1,17 @@
 # Pure source-bound trial-summary import. The coordinator verifies immutable CSV
 # and registry object bytes. This adapter claims no event replay or device timing.
+.brohn_gnat_import_adapter <- "brohn-gnat-trial-summary/1.0"
 .brohn_task_import_profiles <- function() c("iat-gnb2003-d1/1.0","biat-nosek2014-goodfocal/1.0",
-  "aat-keyboard-cue-balanced/1.0","rt-deary-liewald-simple/1.0","rt-deary-liewald-choice/1.0", "sciat-brohn-response-window-im100/1.0")
-.brohn_task_import_columns <- function() paste0(c("participant","participant_linkage","session","attempt","protocol",
+  "aat-keyboard-cue-balanced/1.0","rt-deary-liewald-simple/1.0","rt-deary-liewald-choice/1.0", "sciat-brohn-response-window-im100/1.0", "gnat-brohn-single-target/1.0")
+.brohn_task_import_columns <- function(adapter = NULL) {
+  if (!is.null(adapter)) {
+    brohn_require(identical(adapter, .brohn_gnat_import_adapter), "Unsupported versioned trial-summary adapter.")
+    return(.brohn_gnat_import_columns())
+  }
+  paste0(c("participant","participant_linkage","session","attempt","protocol",
   "presentation_index","trial","presented","outcome","first_code","final_code","first_correct",
   "first_response_ms","final_correct_ms","missing_reason"),"_column")
+}
 .brohn_task_import_hash <- function(x) brohn_text(x,64)&&grepl("^[a-f0-9]{64}$",x)
 .brohn_task_import_registry_ref <- function(ref) {
   brohn_fields(ref,c("hash","bytes","media_type","filename","canonical_hash","task_definition_hash"),label="Immutable protocol registry reference")
@@ -14,16 +21,17 @@
   invisible(ref)
 }
 .brohn_task_import_mapping <- function(metadata,columns) {
-  required<-.brohn_task_import_columns()
+  required<-.brohn_task_import_columns(metadata$adapter)
+  gnat<-identical(metadata$adapter,.brohn_gnat_import_adapter)
   brohn_fields(metadata,c("task_id","source_collection_id","origin_statement","source_software","source_rt_definition",
-    "terminal_response_rule","evidence_level",required),c("task_column","origin_column","protocol_registry"),"Implicit trial import mapping")
+    "terminal_response_rule","evidence_level",required),c("task_column","origin_column","protocol_registry","adapter"),"Implicit trial import mapping")
   if(!is.null(metadata$protocol_registry)).brohn_task_import_registry_ref(metadata$protocol_registry)
   brohn_require(brohn_valid_id(metadata$task_id)&&brohn_text(metadata$source_collection_id,240)&&brohn_text(metadata$origin_statement,4000),
     "Select the saved task and declare the original collection identity and source.")
   brohn_require(is.null(metadata$source_software)||brohn_text(metadata$source_software,1000),"Record the collection software/version, or retain an explicit null when it is unknown.")
-  brohn_require(metadata$source_rt_definition %in% c("first_and_final_correct_ms_from_target_onset","unknown")&&
+  brohn_require(metadata$source_rt_definition %in% c(if(gnat)"space_ms_from_onset_no_rt_for_withholding"else"first_and_final_correct_ms_from_target_onset","unknown")&&
     brohn_text(metadata$source_rt_definition,96)&&brohn_text(metadata$terminal_response_rule,96)&&
-    metadata$terminal_response_rule %in% c("first_response_or_fixed_deadline","corrected_response_or_fixed_deadline","unknown")&&
+    metadata$terminal_response_rule %in% c(if(gnat)"space_or_visible_deadline"else c("first_response_or_fixed_deadline","corrected_response_or_fixed_deadline"),"unknown")&&
     identical(metadata$evidence_level,"declared_trial_summary"),"Choose the declared latency and terminal-response definitions. Trial summaries cannot claim journal replay.")
   brohn_require(is.character(columns)&&length(columns)>0L&&length(columns)<=1024L&&!anyNA(columns)&&!anyDuplicated(columns)&&all(nzchar(columns)),
     "Implicit source columns need distinct nonempty names.")
@@ -58,6 +66,8 @@ brohn_validate_task_import_mapping <- function(dataset,design=NULL) {
   if(!is.null(design)) {
     brohn_require(identical(design$id,dataset$study_id),"The supplied design does not belong to the pinned study.")
     task<-.brohn_task_import_task(design,dataset$metadata$task_id)
+    brohn_require(identical(identical(task$profile,"gnat-brohn-single-target/1.0"),
+      identical(dataset$metadata$adapter,.brohn_gnat_import_adapter)),"The summary adapter must match the frozen task's response and withholding fields.")
     .brohn_task_import_origin(task,dataset$origin)
     brohn_require(identical(brohn_hash(task),dataset$metadata$protocol_registry$task_definition_hash),"The registry reference belongs to a different task definition.")
   }
@@ -138,6 +148,7 @@ brohn_validate_task_protocol_registry <- function(registry,design,task_id) {
     first_response_ms_source=cells$first_response_ms,final_correct_ms_source=cells$final_correct_ms)
 }
 .brohn_task_import_trial_audit <- function(trial,response,source_row,profile,timing_known) {
+  if(identical(profile,"gnat-brohn-single-target/1.0"))return(.brohn_gnat_import_trial_audit(trial,response,source_row,timing_known))
   kind<-brohn_task_profile(profile)$kind
   latency<-if(is.null(response))NULL else if(kind %in% c("iat","biat"))response$final_correct_ms else response$first_response_ms
   disposition<-if(is.null(response))"missing_expected_source_row"else if(!response$presented)"not_presented"else if(response$outcome=="interrupted")"interrupted"else
@@ -168,8 +179,11 @@ brohn_import_task_trials <- function(data,metadata,design,source,protocols) {
     identical(metadata$protocol_registry$canonical_hash,registry$canonical_hash)&&identical(metadata$protocol_registry$task_definition_hash,registry$task_hash),
     "The immutable registry reference does not match the supplied source object, canonical registry or pinned task.")
   .brohn_task_import_origin(registry$task,source$origin)
+  gnat<-identical(registry$task$profile,"gnat-brohn-single-target/1.0")
+  brohn_require(identical(gnat,identical(metadata$adapter,.brohn_gnat_import_adapter)),
+    "The summary adapter must match the frozen task's response and withholding fields.")
   forced<-brohn_task_profile(registry$task$profile)$kind %in% c("iat","biat")
-  expected_rule<-if(forced)"corrected_response_or_fixed_deadline"else"first_response_or_fixed_deadline"
+  expected_rule<-if(gnat)"space_or_visible_deadline"else if(forced)"corrected_response_or_fixed_deadline"else"first_response_or_fixed_deadline"
   brohn_require(metadata$terminal_response_rule %in% c(expected_rule,"unknown"),"The declared terminal-response rule contradicts this frozen task's correction procedure.")
   timing_known<-metadata$source_rt_definition!="unknown"&&metadata$terminal_response_rule!="unknown"
   mapped<-function(field)!is.null(metadata[[field]])&&!identical(metadata[[field]],"")
@@ -187,8 +201,8 @@ brohn_import_task_trials <- function(data,metadata,design,source,protocols) {
       reason=if(selected[[i]])"selected_task"else"different_task",declared_task_id=task_values[[i]],
       declared_origin=if(mapped("origin_column"))origins[[i]]else NULL,original_cells=raw)
     if(!selected[[i]])next
-    cells<-lapply(.brohn_task_import_columns(),function(field)data[[metadata[[field]]]][[i]])
-    names(cells)<-sub("_column$","",.brohn_task_import_columns())
+    cells<-lapply(.brohn_task_import_columns(metadata$adapter),function(field)data[[metadata[[field]]]][[i]])
+    names(cells)<-sub("_column$","",.brohn_task_import_columns(metadata$adapter))
     for(field in c("participant","session","attempt"))brohn_require(brohn_text(cells[[field]],240),paste("Source row",i,"needs an explicit",field,"identity; none is inferred from row or filename."))
     brohn_require(brohn_text(cells$protocol,96)&&cells$protocol %in% names(registry$tables),paste("Source row",i,"refers to an unknown frozen protocol."))
     table<-registry$tables[[cells$protocol]];ids<-brohn_ids(table$trials)
@@ -197,7 +211,8 @@ brohn_import_task_trials <- function(data,metadata,design,source,protocols) {
     brohn_require(grepl("^[1-9][0-9]*$",cells$presentation_index)&&identical(as.numeric(cells$presentation_index),as.numeric(ordinal)),
       paste("Source row",i,"presentation index disagrees with its exact frozen trial order."))
     linkage<-.brohn_task_import_boolean(cells$participant_linkage,"participant linkage",i)
-    response<-.brohn_task_import_response(cells,table$trials[[ordinal]],i,timing_known)
+    response<-if(gnat).brohn_gnat_import_response(cells,table$trials[[ordinal]],i,timing_known)else
+      .brohn_task_import_response(cells,table$trials[[ordinal]],i,timing_known)
     key<-brohn_json(list(collection=metadata$source_collection_id,participant=cells$participant,session=cells$session,attempt=cells$attempt))
     parsed[[length(parsed)+1L]]<-list(source_row=i,row_id=row_id,participant_id=cells$participant,participant_linkage=linkage,
       session_id=cells$session,attempt_id=cells$attempt,protocol_id=cells$protocol,ordinal=ordinal,response=response)
@@ -230,7 +245,9 @@ brohn_import_task_trials <- function(data,metadata,design,source,protocols) {
     scoring_responses<-Filter(function(r)r$outcome!="not_presented",responses)
     if (identical(registry$task$profile,"sciat-brohn-response-window-im100/1.0"))
       scoring_responses<-lapply(scoring_responses,brohn_sciat_window_import_response)
-    score<-brohn_task_score(table$compiled,scoring_responses,completed=complete&&timing_known)
+    score<-if(gnat)brohn_gnat_score(table$compiled,
+      lapply(Filter(function(r)isTRUE(r$presented),scoring_responses),.brohn_gnat_import_scoring_response),
+      completed=complete,timing_known=timing_known)else brohn_task_score(table$compiled,scoring_responses,completed=complete&&timing_known)
     if(!timing_known)score$reason<-"The source latency or terminal-response definition is explicitly unknown; scoring is unavailable."
     score$title<-registry$task$title;score$participant_id<-first$participant_id;score$participant_linkage<-first$participant_linkage
     score$session_id<-first$session_id;score$attempt_id<-id;score$collection_origin<-source$origin;score$evidence_level<-metadata$evidence_level

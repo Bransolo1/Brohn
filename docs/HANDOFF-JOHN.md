@@ -1,5 +1,21 @@
 # John: Brohn development handoff
 
+**Current checkpoint, 25 September 2026:** development is active. Continuing
+from `d2889f4`, this checkpoint adds the seventh task profile, Brohn's
+named single-target GNAT, and the configured seven-check contributor QA subset.
+The [GNAT checkpoint](qa/PUBLICATION-GNAT-20260924.md) records two complete
+384-trial administrations, automatic reports, actual summary reimports,
+reviewed two-person comparison, exact exports and restart. Its five reports and
+seven successful jobs remain unchanged during reopening. Read the separate
+source phases and retained harness failures before interpreting check counts.
+The configured subset has
+[scoped acceptance](qa/PORTABLE-CATALOG-ACCEPTANCE.md).
+Next are complete saved-review history navigation and results-first report
+layout, followed by the remaining [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
+The [reviewed clock-alignment contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
+is preparation for another slice, not an enabled feature. Use the latest
+[workstream](WORKSTREAM.md) rather than the historical next-step lists below.
+
 **Resumed after checkpoint `2b3b31a`, 24 September 2026:** the owner explicitly
 requested continued development. The [workstream](WORKSTREAM.md) now tracks
 portable connected QA, facial temporal review and declared video/audio mapping.

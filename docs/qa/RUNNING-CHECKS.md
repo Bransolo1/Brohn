@@ -8,6 +8,12 @@ The saved installation supplies explicit runtime paths; its research workspace
 is not opened. The acceptance record states exact tested source versions and
 retained failures. This is one connected core route, not the full test catalog.
 
+For seven existing core component checks, use the separate
+[configured core launcher](PORTABLE-CATALOG-ACCEPTANCE.md). It uses the saved
+runtime configuration, creates fresh external evidence and leaves the configured
+research workspace untouched. Its Windows PowerShell 5.1 qualification and
+408 assertions across retained runs are separate from browser smoke acceptance.
+
 Use the exact restored R library described in
 [the installation guide](../operations/LOCAL-INSTALLATION.md). From the repository:
 

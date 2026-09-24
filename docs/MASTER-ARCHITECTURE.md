@@ -1,5 +1,20 @@
 # Brohn master architecture and large-build contract
 
+**Current checkpoint, 25 September 2026:** the named
+[GNAT procedure](methods/GNAT-BROHN-PROCEDURE.md) now has its dedicated R
+compiler/replay/scoring, browser state machine, summary adapter and researcher
+views. Its connected researcher journey now passes two full administrations,
+native/imported reports, reviewed cohort, exports and restart; see the
+[checkpoint record](qa/PUBLICATION-GNAT-20260924.md). A configured seven-check
+core QA subset has separate portability evidence. Saved media and linked-signal
+history paging and results-first report navigation follow. Their external
+candidates preserve old exports and address cross-import restoration and draft
+preservation; they still need installed browser qualification. The proposed
+[two-event clock-alignment contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
+defines a later review/export extension across recordings, with original clocks
+and physical uncertainty retained; it does not enable alignment or change
+existing scientific recipes. The full scope below is retained.
+
 **Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
 [workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)
 record delivered work and ordered continuation. Portable connected verification

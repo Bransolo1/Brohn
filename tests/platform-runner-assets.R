@@ -20,8 +20,9 @@ local({
   for (path in .brohn_runner_paths()) stopifnot(file.copy(file.path("www", path), file.path(site, path)))
   static <- file.path(site, "participant")
   prepared <- brohn_runner_assets_prepare(static)
-  check("all actual entry assets and camera worklet retained", length(prepared$manifest$files) == 17L &&
-    all(c("participant/audio-worklet.js", "brand/brohn-app-icon.svg") %in% names(prepared$bytes)))
+  check("all actual entry assets, GNAT renderer and camera worklet retained", length(prepared$manifest$files) == 19L &&
+    all(c("participant/gnat-core.js", "participant/gnat.js", "participant/audio-worklet.js",
+      "brand/brohn-app-icon.svg") %in% names(prepared$bytes)))
   check("independent per-file digest matches actual source", all(vapply(prepared$manifest$files, function(item)
     identical(digest::digest(file = file.path(site, item$path), algo = "sha256"), item$hash), logical(1))))
   check("stable repeated snapshot", identical(prepared, brohn_runner_assets_prepare(static)))

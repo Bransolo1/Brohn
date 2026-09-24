@@ -4,7 +4,7 @@ brohn_collection_routes <- function(design) {
   labels <- c(gaze="Eye tracking", questionnaire="Questionnaires", eeg="EEG", eda="EDA", ecg="ECG / HRV", ppg="PPG",
     respiration="Respiration", emg="Muscle activity", eog="EOG", fnirs="fNIRS", temperature="Temperature", movement="Movement",
     webcam_gaze="Webcam gaze", facial_geometry="Face geometry", facial_expression="Facial expression", pose="Body and hand geometry",
-    voice="Voice", rt="Reaction time", iat="IAT", biat="Brief IAT", sciat_window="Single-category IAT", aat="Approach / avoidance", maxdiff="Best-worst choices")
+    voice="Voice", rt="Reaction time", iat="IAT", biat="Brief IAT", sciat_window="Single-category IAT", gnat="Go/No-Go association", aat="Approach / avoidance", maxdiff="Best-worst choices")
   kinds <- vapply(design$blocks, function(block) brohn_task_profile(block$profile)$kind, character(1))
   actual_tasks <- unique(ifelse(kinds %in% c("simple_rt", "choice_rt"), "rt", kinds))
   questions <- sum(vapply(design$questions, function(q) q$type != "information", logical(1)))
@@ -17,7 +17,7 @@ brohn_collection_routes <- function(design) {
     if(measure=="questionnaire") return(if(questions) row(measure,"In the participant study",
       paste(questions,if(questions==1L) "response question is" else "response questions are","included at their saved placements. Eligible completed sessions receive an automatic report."),TRUE) else
         row(measure,"Add questions","Open Questions to add the items participants will answer."))
-    if(measure %in% c("rt","iat","biat","sciat_window","aat")) return(if(measure %in% actual_tasks) row(measure,"In the participant study",
+    if(measure %in% c("rt","iat","biat","sciat_window","gnat","aat")) return(if(measure %in% actual_tasks) row(measure,"In the participant study",
       "The configured task uses its saved materials, practice, timing and scoring profile. Eligible completed sessions receive an automatic report.",TRUE) else
         row(measure,"Configure a task","Open Tasks and add a supported procedure before collecting this measure."))
     if(measure=="gaze") return(row(measure,"Separate gaze recording",

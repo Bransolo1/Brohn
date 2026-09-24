@@ -1,7 +1,7 @@
 source("R/platform-participant-equipment.R") # Registered optional new-draft policy.
 # Independent checks of the parent's task clone/package extension. Original
 # synthetic materials only; no downloaded task exemplars or participant data.
-.libPaths(c(normalizePath("../../work/r-library-brohn",winslash="/",mustWork=FALSE),.libPaths()))
+# Use the exact inherited library selected by the configured QA runner.
 for(module in c("platform-core","platform-methods","platform-store","platform-library","platform-portability"))source(paste0("R/",module,".R"))
 local({
   n<-0L;check<-function(name,ok){if(!isTRUE(ok))stop("FAIL: ",name);n<<-n+1L}
@@ -21,7 +21,7 @@ local({
   original_hash<-brohn_hash(design)
   package<-brohn_export_design(a,design$id,file.path(stage,"implicit.brohn-study.zip"))
   imported<-brohn_import_design(b,package)$body
-  check("all registered task profiles survive actual ZIP import",identical(vapply(imported$blocks,`[[`,character(1),"profile"),profiles))
+  check("all five selected original task profiles survive actual ZIP import",identical(vapply(imported$blocks,`[[`,character(1),"profile"),profiles))
   check("new study identity is assigned",imported$id!=design$id&&imported$lineage$operation=="import_design")
   check("source design remains byte-semantically unchanged",identical(original_hash,brohn_hash(brohn_get_entity(a,"study",design$id)$body)))
   check("no participant or result entities cross the package boundary",!length(brohn_list_entities(b,"participant"))&&!length(brohn_list_entities(b,"report")))

@@ -1,0 +1,3 @@
+# These original synthetic import sources have exact byte/size hashes in their
+# manifest. Checkout line-ending conversion must not rewrite their evidence.
+tests/fixtures/task-import/* -text

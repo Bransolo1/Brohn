@@ -954,7 +954,8 @@
     await start();
   }
   async function showTask(step) {
-    const renderer = step.task.profile === "sciat-brohn-response-window-im100/1.0" ? window.BrohnSciatWindow : window.BrohnTasks;
+    const renderer = step.task.profile === "gnat-brohn-single-target/1.0" ? window.BrohnGnat :
+      step.task.profile === "sciat-brohn-response-window-im100/1.0" ? window.BrohnSciatWindow : window.BrohnTasks;
     if (!renderer?.run) return finish("interrupted", "task_renderer_unavailable");
     stopPresentation(); clearError(); onset = performance.now(); resumedStep = false;
     await persist(() => {record.step_state = "task";});

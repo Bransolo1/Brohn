@@ -25,6 +25,10 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
   code <- function(value) if (is.null(value)) "" else if (is.character(value)) value else brohn_json(value)
   rows <- lapply(seq_along(trials), function(i) {
     response <- terminal[[i]]$payload$data
+    if (identical(task$profile, "gnat-brohn-single-target/1.0")) return(.brohn_gnat_native_row(trials[[i]], response,
+      list(participant_id = brohn_default(run$participant_alias, run$id), participant_linkage = isTRUE(run$participant_alias_supplied),
+        session_id = run$id, attempt_id = step$id, protocol_id = registry_id, origin = run$origin,
+        source_collection_id = run$deployment_id), i))
     if (identical(task$profile, "sciat-brohn-response-window-im100/1.0")) {
       # Interchange aliases for the existing explicit first-response contract;
       # no correction key or latency is invented for an error or omission.
@@ -41,7 +45,7 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
       first_response_ms = code(response$first_response_ms), final_correct_ms = code(response$final_correct_ms), missing_reason = "",
       task_id = task_id, origin = run$origin, source_collection_id = run$deployment_id)
   })
-  list(schema = "brohn-native-task-export/1.0", run_id = run$id, task_id = task_id, task_step_id = step$id,
+  result <- list(schema = "brohn-native-task-export/1.0", run_id = run$id, task_id = task_id, task_step_id = step$id,
     collection_origin = run$origin, material_origin = task$origin, source_collection_id = run$deployment_id,
     registry = registry, rows = rows,
     evidence = list(level = "brohn_journal_replayed", run_protocol_hash = brohn_hash(protocol), events_hash = brohn_hash(events),
@@ -54,6 +58,14 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
       note = paste("The original collection renderer code version is not recorded by this protocol. Current validation code is not a collection-time version.",
         if (identical(task$profile, "sciat-brohn-response-window-im100/1.0"))
           "SC-IAT final-correct interchange fields repeat only a correct first response; errors and omissions have no final-correct value. Full native key/feedback observations remain in the original session journal." else "")))
+  if (identical(task$profile, "gnat-brohn-single-target/1.0")) {
+    result$declarations$adapter <- .brohn_gnat_import_adapter
+    result$declarations$source_rt_definition <- "space_ms_from_onset_no_rt_for_withholding"
+    result$declarations$terminal_response_rule <- "space_or_visible_deadline"
+    result$declarations$note <- paste(result$declarations$note,
+      "GNAT retains hit, miss, false alarm and correct rejection. Withholding has no key or response time; completed correct rejections have true accuracy. Original release/key/visibility/feedback evidence remains in the full journal.")
+  }
+  result
 }
 brohn_task_run_evidence <- function(store, run_id, study_id, project_id, task_id) {
   # Exact parent/project gate precedes the full private run read. Only explicitly

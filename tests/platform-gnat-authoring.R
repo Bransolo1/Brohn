@@ -1,0 +1,40 @@
+source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=TRUE)
+local({
+  checks<-character();check<-function(label,x){stopifnot(isTRUE(x));checks<<-c(checks,label)}
+  refuses<-function(x)inherits(try(force(x),silent=TRUE),"try-error")
+  task<-brohn_task_new("gnat-brohn-single-target/1.0",id="gnat-authoring-original")
+  words<-function(t,id)vapply(Filter(function(m)m$category_id==id,t$materials),`[[`,character(1),"content")
+  original<-brohn_hash(task);target<-Filter(function(m)m$category_id=="target",task$materials)
+  same<-brohn_gnat_update_words(task,"target",paste(words(task,"target"),collapse="\n"))
+  check("Reopening unchanged text preserves the exact task identity",brohn_hash(same)==original)
+  added<-brohn_gnat_update_words(task,"target","Pencil\nMarker\nFountain pen\nChalk\nCrayon\nQuill")
+  brohn_task_validate(added)
+  new_target<-Filter(function(m)m$category_id=="target",added$materials)
+  check("Pasted new exemplars retain prior positions and add fresh IDs",length(new_target)==6L&&
+    identical(brohn_ids(new_target[1:4]),brohn_ids(target))&&length(unique(brohn_ids(added$materials)))==length(added$materials))
+  check("Changing one category preserves every other original material",identical(Filter(function(m)m$category_id!="target",added$materials),
+    Filter(function(m)m$category_id!="target",task$materials)))
+  reduced<-brohn_gnat_update_words(added,"target","Pen\nCrayon\n")
+  brohn_task_validate(reduced)
+  check("Two exemplars and a conventional trailing newline are supported",identical(words(reduced,"target"),c("Pen","Crayon")))
+  maximum<-brohn_gnat_update_words(task,"target",paste(paste("Authored word",1:64),collapse="\n"));brohn_task_validate(maximum)
+  check("Sixty-four reviewed exemplars fit the procedure bound",length(words(maximum,"target"))==64L)
+  for(text in c("Single", "First\n\nSecond",paste(paste("Item",1:65),collapse="\n")))
+    check("Empty lines and out-of-bound material counts are refused",refuses(brohn_gnat_update_words(task,"target",text)))
+  duplicated<-brohn_gnat_update_words(task,"target","Pencil\n pencil ")
+  check("Duplicate category membership is still refused by the full task validator",refuses(brohn_task_validate(duplicated)))
+  moved<-brohn_gnat_update_words(task,"target","Marker\nFountain pen\nChalk")
+  moved<-brohn_gnat_update_words(moved,"context",paste(c(words(task,"context"),"Pencil"),collapse="\n"))
+  check("A reviewed cross-category move validates after both edits",identical(brohn_task_validate(moved),moved))
+  check("Edits never mutate the prior draft or its origin",brohn_hash(task)==original&&identical(added$origin,task$origin))
+  design<-brohn_new_design("GNAT authoring view","blank");design$blocks<-list(task)
+  html<-as.character(brohn_tasks_ui(design))
+  check("Four clearly labelled paste lists expose current material counts",all(vapply(1:4,function(i)
+    grepl(paste0("task_gnat_words_1_",i),html,fixed=TRUE),logical(1)))&&grepl("2 to 64",html,fixed=TRUE))
+  check("Text-only procedure offers no unsupported image action",!grepl("Add image",html,fixed=TRUE))
+  args<-commandArgs(TRUE);if(length(args)) {
+    stopifnot(!file.exists(args[[1L]]));brohn_write_json_file(list(passed=TRUE,checks=as.list(checks),
+      source_sha256=digest::digest(file="R/platform-gnat-authoring.R",algo="sha256")),args[[1L]])
+  }
+  cat("GNAT_AUTHORING_PASS",length(checks),"\n")
+})

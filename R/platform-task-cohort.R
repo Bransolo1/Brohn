@@ -5,6 +5,12 @@
 .brohn_task_cohort_bool <- function(x) is.logical(x) && length(x)==1L && !is.na(x)
 .brohn_task_cohort_specs <- function(profile) {
   kind<-brohn_task_profile(profile)$kind
+  if(kind=="gnat") {
+    cells<-c("r1_positive","r1_negative","r2_positive","r2_negative")
+    names<-c(paste0("GNAT_",cells,"_d_prime"),paste0("GNAT_",cells,"_criterion"),
+      "GNAT_r1_target_positive_contrast","GNAT_r2_target_positive_contrast")
+    return(lapply(names,function(name)list(name=name,unit="dimensionless")))
+  }
   names<-switch(kind,iat="IAT_D1",biat="BIAT_D",sciat_window="SCIAT_target_positive_D",aat="keyboard_aat_relative_approach_advantage",
     c("correct_test_rt_mean","correct_test_rt_median","correct_test_rt_sd","test_first_response_error_rate","test_omission_rate"))
   units<-if(kind %in% c("iat","biat","sciat_window"))"D" else if(kind=="aat")"ms" else c("ms","ms","ms","proportion","proportion")
@@ -47,6 +53,8 @@
   allowed<-identical(score$schema_version,"brohn-task-score/1.0") && is.null(score$scoring_recipe)
   if(kind=="sciat_window")allowed<-identical(score$schema_version,"brohn-task-score/1.0") &&
     identical(score$scoring_recipe,"brohn-sciat-response-window-score/1.0")
+  if(kind=="gnat")allowed<-identical(score$schema_version,"brohn-task-score/1.0") &&
+    identical(score$scoring_recipe,"brohn-gnat-single-target-score/1.0")
   if(rt)allowed<-allowed || (identical(score$schema_version,"brohn-task-score/1.1") && identical(score$scoring_recipe,"brohn-rt-metric-support/1.0"))
   brohn_require(allowed && .brohn_task_cohort_bool(score$eligible) && brohn_array(score$metrics),"Use a supported exact score schema and recipe; do not reinterpret another scoring version.")
   brohn_require(brohn_array(a$responses) && brohn_array(a$trial_audit) && brohn_array(a$missing_reasons),"Keep administration response/audit evidence arrays.")

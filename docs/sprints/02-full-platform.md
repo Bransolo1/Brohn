@@ -1,5 +1,29 @@
 # Full platform build — Brohn continuation
 
+## GNAT and configured QA wave — completed 25 September 2026
+
+- [x] Configured core subset: seven existing tests, 408 component assertions,
+  19 launcher checks, separate checkout/caller and unchanged protected workspace.
+  Full catalog and clean-machine installation remain separate.
+- [x] Dedicated GNAT compiler/scorer/replay and participant component; separate
+  four-outcome summaries, nullable withholding latency, source-bound imports,
+  plots and ten descriptive cohort metrics. See the GNAT acceptance records for
+  individual source phases and independent numeric/replay evidence.
+- [x] Pasteable 2–64 category exemplars, protocol/reuse integration and original
+  six-profile regression preservation; method suite passes 330 checks including
+  all 162 upstream IAT examples, with current release assets/routes/materials checked.
+- [x] Two actual full 384-trial GNAT administrations, native/imported reports,
+  exact exports, reviewed cohort, accessible researcher views and restart:
+  five reports and seven successful jobs. Failed harness attempts are retained;
+  see `docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md` for the explicit joined phases.
+- [ ] Integrate paged saved-media review history, exact reopening and gap copy;
+  qualify the actual history journey before claiming broader discoverability.
+- [ ] Integrate linked-review history/restoration and results-first report layout;
+  verify actual desktop/mobile/keyboard, exact exports and zero-job reopening.
+- [ ] Implement reviewed cross-recording clock alignment under its explicit
+  source/identity/epoch contract; current arithmetic/source candidates are external.
+- [ ] Continue PC01–PC16 and the complete 50-capability/17-package scope.
+
 ## Resumed saved-media and contributor wave — 24 September 2026
 
 - [x] Shared exact-index RGB/PNG helper: 25 actual lossless-video, independent
@@ -15,7 +39,7 @@
   scrolling and unchanged report JSON and table values.
 - [x] Complete saved facial temporal/frame review: joined 33 browser groups/12 clean scans, original native values/pixels and full exports, restart, bounded keyboard navigation and responsive standalone figures; see `docs/qa/FACIAL-REVIEW-ACCEPTANCE.md` for the separate source phases and remaining model limits.
 - [x] Explicit original-container video/audio mapping: final 12 browser checks/four dialog scans and 17 independent full-source checks, retained cancel/retry evidence, exact exports, unsupported gap and zero-job restart. See the media acceptance record for all source phases.
-- [ ] Next: portable configured core catalog; GNAT authoring, participant, native/imported evidence, plots, cohort and restart; remaining full-platform gates.
+- [x] Subsequent configured core catalog and GNAT journey accepted above; remaining full-platform gates stay open.
 
 The owner explicitly resumed after the paused source handoff below.
 

@@ -1,7 +1,6 @@
 # Storage contract integration tests: actual SQLite files, two open connections,
 # restart, immutable bytes and deterministic lease time. No participant data.
-.libPaths(c(normalizePath("../../work/r-library-platform", winslash = "/", mustWork = FALSE),
-  normalizePath("../../work/r-library", winslash = "/", mustWork = FALSE), .libPaths()))
+# Use the exact inherited library selected by the configured QA runner.
 source("R/platform-store.R")
 local({
   directory <- tempfile("brohn-platform-store-")

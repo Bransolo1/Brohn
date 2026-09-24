@@ -11,7 +11,7 @@
     css = "text/css; charset=utf-8")[[extension]])
 }
 .brohn_runner_paths <- function() c("brand/brohn-app-icon.svg", paste0("participant/", sort(c(
-  "index.html", "runner.js", "runner.css", "tasks.js", "sciat-window-core.js", "sciat-window.js",
+  "index.html", "runner.js", "runner.css", "tasks.js", "sciat-window-core.js", "sciat-window.js", "gnat-core.js", "gnat.js",
   "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "maxdiff.css", "question-revision.js",
   "illustrations.js", "welcome.js", "welcome.css", "event-batch.js"), method = "radix")))
 .brohn_runner_manifest <- function(manifest, expected_hash = NULL) {

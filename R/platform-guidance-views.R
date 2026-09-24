@@ -3,7 +3,7 @@
 .brohn_guidance_measure_labels <- c(gaze = "Eye tracking", questionnaire = "Questions", eeg = "EEG", eda = "Skin response",
   ecg = "ECG / HRV", ppg = "PPG", respiration = "Breathing", emg = "Muscle activity", eog = "Eye movement signals", fnirs = "fNIRS",
   temperature = "Temperature", movement = "Movement", webcam_gaze = "Webcam gaze", facial_geometry = "Face geometry",
-  facial_expression = "Facial expression", pose = "Body geometry", voice = "Voice", rt = "Reaction time", iat = "IAT", biat = "Brief IAT", aat = "Approach / avoidance", sciat_window = "Response-window SC-IAT")
+  facial_expression = "Facial expression", pose = "Body geometry", voice = "Voice", rt = "Reaction time", iat = "IAT", biat = "Brief IAT", aat = "Approach / avoidance", sciat_window = "Response-window SC-IAT", gnat = "Go/No-Go association")
 .brohn_guidance_stages <- c("Overview", "Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")
 .brohn_guidance_count <- function(n, singular, plural = paste0(singular, "s")) paste(n, if (n == 1) singular else plural)
 .brohn_guidance_binding <- function(record) list(study_id = record$id, revision = record$revision, design_hash = brohn_hash(record$body))

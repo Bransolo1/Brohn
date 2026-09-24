@@ -22,6 +22,12 @@ Choose the **correction-inclusive Inquisit variant**, explicitly distinct from K
 
 ## GNAT: `gnat-configured-sensitivity/0.1-draft`
 
+**Historical preparation profile.** The implemented first GNAT route follows
+[Brohn single-target GNAT](../methods/GNAT-BROHN-PROCEDURE.md),
+`gnat-brohn-single-target/1.0`, with explicit quotas and a complete response
+contract. Use that specification and its linked acceptance records for current
+development; the September 8 notes below remain background research.
+
 Flow: single-category practice, then target-plus-attribute Go versus declared distractor No-Go blocks; compare target+positive against target+negative at each deadline. Fix spacebar Go, no-response No-Go and 500-ms ISI. The official demonstration lists 1000-ms practice and 750/600-ms test deadlines, but inconsistent summary labels say 700/550; **the manifest's explicit signal/noise deadlines govern**. The source author calls the demo minimalist, not a reliability-optimized research protocol. [Author-derived official GNAT manual](https://www.millisecond.com/library/v7/gnat/gnat/gnat/gnatdemo.manual)
 
 **Required:** target/noise context, deadline rounds, signal/noise counts per pairing, practice count/pass rule and pairing order. Compile balanced comparisons within each deadline; do not pool deadlines silently. Source-compatible scorer: `d'=qnorm(hit_rate)-qnorm(false_alarm_rate)`, replacing only exact 0/1 rates with .005/.995; save both original and corrected rates. Report hits/misses/false alarms/correct rejections, d', criterion and positive-minus-negative d' by deadline. Practice and incomplete/unusable cells cannot yield a score. GNAT is accuracy-based; timeout on a No-Go trial is potentially correct.

@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **24 September 2026** for the ongoing end-to-end implementation.
+Updated **25 September 2026** for the ongoing end-to-end implementation.
 The owner resumed development after the published source checkpoint. The
 [workstream](WORKSTREAM.md) orders the active implementation;
 these gaps and the full capability/package scope remain open.
@@ -16,6 +16,19 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
+- **Saved-result usability:** the seventh task profile now passes its connected
+  GNAT journey; see the [current checkpoint](qa/PUBLICATION-GNAT-20260924.md).
+  Configured core checks have [scoped acceptance](qa/PORTABLE-CATALOG-ACCEPTANCE.md).
+  Saved media and linked-review histories still have a latest-40 UI boundary
+  in the application. Paged candidates and a report layout that leads with
+  results have been checked as external candidates. Their component
+  evidence is not yet installed-browser acceptance.
+- **Reviewed cross-recording alignment:** the
+  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) defines exact
+  bounded affine arithmetic, explicit original anchors, shared participant and
+  session identity, clock epochs, retained gaps and no extrapolation. It is
+  not enabled; domain authority, worker publication and the full researcher
+  review/export/restart journey remain to implement and qualify.
 - **Complete measurement review:** the enabled-profile
   [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies
   the actual plots, complete numerical routes and browser evidence for each
@@ -75,9 +88,9 @@ records describing only the 01A–01L prototype are historical.
 
 ## Broader product and research work
 
-- **Method coverage:** six implicit/reaction-time profiles, including the separately
-  named Brohn response-window SC-IAT, and their source-bound import/cohort
-  workflows are connected. Other SC-IAT procedures, GNAT, priming, AMP,
+- **Method coverage:** seven implicit/reaction-time profiles, including the separately
+  named Brohn response-window SC-IAT and single-target GNAT, and their source-bound import/cohort
+  workflows are connected. Other SC-IAT/GNAT procedures, priming, AMP,
   cognitive and movement procedures retain distinct implementation and reference
   requirements. Broader neural, physiology, gaze/AOI, choice and multimodal
   capabilities also retain package-specific acceptance work. MaxDiff does not

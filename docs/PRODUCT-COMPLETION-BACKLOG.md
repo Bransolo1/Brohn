@@ -18,6 +18,14 @@ This limitation does not block building or testing independent software routes.
 
 ## Required product and verification work
 
+Checkpoint 25 September: the seventh named task profile, Brohn single-target
+GNAT, has [connected acceptance](qa/GNAT-RESEARCHER-ACCEPTANCE.md) for two full
+administrations, imports, cohort, exports and restart (PC02/PC05/PC06). The
+[configured seven-check QA subset](qa/PORTABLE-CATALOG-ACCEPTANCE.md) has scoped
+acceptance (PC14/PC16). These slices do not close those broader requirements.
+Next: paged saved-review history, reliable restoration and results-first reports,
+then explicit reviewed cross-recording clock alignment; see the workstream.
+
 | ID | Required outcome | Acceptance before closing | Status |
 |---|---|---|---|
 | PC01 | Historical and current iMotions benchmark | Read official historical release posts and official YouTube demonstration content; map demonstrated workflows to Brohn's observable acceptance; record dates, URLs and whether a transcript/content was actually accessible. Consult this before final sign-off. | Reviewed: official release history and five full official transcripts; docs/qa/IMOTIONS-COMPETITOR-BENCHMARK.md. No parity sign-off. |
