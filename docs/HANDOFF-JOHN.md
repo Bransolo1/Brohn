@@ -1,10 +1,18 @@
 # John: Brohn development handoff
 
+**Resumed after checkpoint `2b3b31a`, 24 September 2026:** the owner explicitly
+requested continued development. The [workstream](WORKSTREAM.md) now tracks
+portable connected QA, facial temporal review and declared video/audio mapping.
+The integrated-source core journey, complete facial review and video/audio
+gap/export/restart journey now have [scoped acceptance](qa/PUBLICATION-SAVED-MEDIA-20260924.md).
+Next: configured core-catalog portability and GNAT's complete distinct journey.
+The pause below is historical.
+
 **Paused checkpoint — 24 September 2026:** the owner requested this source
 handoff to `Bransolo1/Brohn` on `main`. Read [the workstream](WORKSTREAM.md) for
-delivered changes, ordered next steps and restart rules. The broad build goal is
-paused, not complete. Do not automatically continue from historical active-build
-instructions. A later explicit development request can resume scoped work.
+delivered changes, ordered next steps and restart rules. The goal was paused at
+that publication and resumed by the later explicit instruction above; it remains
+unfinished.
 
 **Start here — 24 September 2026:** read the
 [current workflow continuation](qa/INTEGRATED-WORKFLOWS-20260924.md),

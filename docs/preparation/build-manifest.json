@@ -3,13 +3,13 @@
   "prepared_at": "2026-09-08",
   "product": "Brohn",
   "checkpoint": {
-    "status": "paused",
+    "status": "implementing",
     "date": "2026-09-24",
-    "publication_handoff": "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md",
+    "publication_handoff": "docs/qa/PUBLICATION-SAVED-MEDIA-20260924.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "Paused by the owner on 24 September 2026; publish the checkpoint to Bransolo1/Brohn main. Full 50-capability/17-package scope remains unfinished; package implementation statuses below describe technical progress, not permission to continue. Connected study/history, physiology/explicit review, isolated-team local hosting and setup evidence remain recorded. This checkpoint adds named response-window SC-IAT (102 independent checks,13 jobs), optional pinned facial processing/setup, original-permission automatic camera analysis (17 browser groups including7 scans,6 native-reference checks), preferred upload recovery, preserved participant code (74 browser checks plus20 final recovery checks), and source-bound researcher provenance. Next proposed work: portable fresh-clone end-to-end QA, saved facial temporal review and explicitly mapped media review. No new implementation for those proposals began before pause; see docs/WORKSTREAM.md."
+    "note": "The full 50-capability/17-package build remains active and unfinished. Saved facial and original-container video/audio review now have scoped source/export/restart acceptance. Final integrated-source portable connected verification passes 22 checks/four scans, with one automatic report and unchanged source/original workspace. Shared exact-frame pixels pass 25 checks. Next: configured core QA catalog and the distinct GNAT vertical journey; GNAT remains disabled at this checkpoint. See docs/WORKSTREAM.md and the publication handoff for exact evidence and broader gaps."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -498,7 +498,10 @@
         "docs/qa/FACIAL-EXPRESSION-ACCEPTANCE.md",
         "docs/qa/FACIAL-RUNTIME-ACCEPTANCE.md",
         "docs/architecture/CAMERA-ANALYSIS-CONTRACT.md",
-        "docs/qa/CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md"
+        "docs/qa/CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md",
+        "docs/architecture/SAVED-MEDIA-REVIEW.md",
+        "docs/qa/FACIAL-REVIEW-ACCEPTANCE.md",
+        "docs/operations/REVIEW-SAVED-MEDIA.md"
       ],
       "acceptance": [
         "Frame timestamps, no-face/occlusion/multi-face states and model hashes survive import to report.",
@@ -525,7 +528,13 @@
       "status": "implementing",
       "implementation_evidence": [
         "docs/sprints/02-full-platform.md",
-        "docs/qa/RESEARCHER-QA.md"
+        "docs/qa/RESEARCHER-QA.md",
+        "docs/qa/AUDIO-SOURCE-REVIEW-ACCEPTANCE.md",
+        "docs/qa/VIDEO-AUDIO-EXTRACTION-ACCEPTANCE.md",
+        "docs/architecture/SAVED-MEDIA-REVIEW.md",
+        "docs/methods/MEDIA-SOURCE-REVIEW.md",
+        "docs/qa/MEDIA-SOURCE-REVIEW-ACCEPTANCE.md",
+        "docs/operations/REVIEW-SAVED-MEDIA.md"
       ],
       "acceptance": [
         "PCM/sample-rate/channel/gain and speech segmentation are preserved.",
@@ -729,7 +738,9 @@
         "docs/qa/LOCAL-SETUP-ACCEPTANCE.md",
         "docs/qa/FACIAL-RUNTIME-ACCEPTANCE.md",
         "docs/WORKSTREAM.md",
-        "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md"
+        "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md",
+        "scripts/run-connected-smoke.ps1",
+        "docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

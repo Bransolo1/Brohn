@@ -58,7 +58,7 @@ brohn_audio_review_svg <- function(result,kind="waveform",width=920L) {
     first_bin=c$first_bin,stop_bin=c$stop_bin,lowest_hz=.brohn_ar_num(c$lowest_hz),highest_hz=.brohn_ar_num(c$highest_hz),
     source_cells=c$source_cells,mean_power_fs2_per_hz=.brohn_ar_num(c$mean_power_fs2_per_hz)))),recursive=FALSE)
 }
-brohn_install_audio_review <- function(input,output,session,store,state,attempt,message,refresh,prepare_download) {
+brohn_install_audio_review <- function(input,output,session,store,state,attempt,message,refresh,prepare_download,open_media=NULL) {
   source<-shiny::reactiveVal(NULL);opened<-shiny::reactiveVal(NULL);pending<-shiny::reactiveVal(NULL);issue<-shiny::reactiveVal(NULL)
   urls<-shiny::reactiveVal(NULL);wave_page<-shiny::reactiveVal(0L);spectrum_page<-shiny::reactiveVal(0L)
   expanded<-shiny::reactiveValues(waveform=FALSE,spectrum=FALSE)
@@ -76,6 +76,9 @@ brohn_install_audio_review <- function(input,output,session,store,state,attempt,
     brohn_require(identical(native$id,r$id)&&length(native$guards)>0,"The audio source is no longer sealed. Reopen this view.")
     for(g in native$guards).Call(g$native$check,g$pointer)
     brohn_audio_review_record(store,r$id,s$report$id,s$report$project_id,verify=FALSE)}
+  shiny::observeEvent(input$audio_review_media,attempt(function(){r<-active();c<-input$audio_review_media
+    brohn_require(is.function(open_media)&&.brohn_sv_same(c,.brohn_ar_ref(r))&&!is.null(r$body$request$extraction_lineage),"Open media from this exact video-derived audio window.")
+    open_media(c,function()active())}))
   shiny::observeEvent(list(state$page,state$report_id),{source(NULL);opened(NULL);pending(NULL);issue(NULL);release()},ignoreInit=FALSE,priority=110)
   shiny::observeEvent(input$audio_review_open_source,attempt(function(){c<-input$audio_review_open_source
     brohn_require(identical(state$page,"report")&&identical(state$report_id,c$id),"Open the selected audio report first.")
@@ -150,6 +153,7 @@ brohn_install_audio_review <- function(input,output,session,store,state,attempt,
         shiny::downloadButton(paste0("audio_review_svg_",k),paste("Download",k,"SVG"),icon=NULL))),
       shiny::div(class="brohn-toolbar",lapply(urls(),function(u)shiny::tags$a(href=u$url,download=paste0(u$kind,".csv"),class="btn btn-primary",
         if(u$kind=="audio-source-samples")"Download every selected audio sample"else"Download every native spectral cell")),shiny::downloadButton("audio_review_manifest","Download audio review provenance",icon=NULL)),
+      if(is.function(open_media)&&!is.null(r$body$request$extraction_lineage))brohn_command("Review video with this audio window","audio_review_media",.brohn_ar_ref(r)),
       shiny::tags$details(shiny::tags$summary("Source, method and interpretation"),shiny::p(paste("Report",r$body$report_id,"| source SHA-256",b$source_hash,"| origin",r$body$origin)),
         shiny::p(b$parameters$waveform_display),shiny::p(b$parameters$spectrogram_display),shiny::tags$ul(lapply(b$limitations,shiny::tags$li))))})
   output$audio_review_manifest<-shiny::downloadHandler(filename=function()paste0(active()$id,".json"),contentType="application/json",content=function(file)prepare_download(function()brohn_write_json_file(active()$body,file)))

@@ -1,9 +1,13 @@
 # Brohn master architecture and large-build contract
 
-**Paused 24 September 2026 at the owner's request.** The
-[workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SCIAT-FACIAL-20260924.md)
-record delivered work and ordered continuation. The full scope below is retained;
-pause and source publication do not establish completion.
+**Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
+[workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)
+record delivered work and ordered continuation. Portable connected verification
+and complete facial review now have scoped acceptance;
+[declared video/audio mapping](architecture/SAVED-MEDIA-REVIEW.md) passes
+its separate gap/export/restart journey. Next are configured catalog portability
+and the named GNAT procedure's complete vertical integration. The full scope below is retained; publication does not
+establish completion.
 
 **Resumed 20 September 2026:** the owner resumed implementation, keeping the
 Brohn name. [Current status](../STATUS.md) and the
@@ -28,7 +32,7 @@ support survive normal guarded report publication and reopening. Optional setup
 persists the interpreter and both required asset directories. The
 [connected acceptance](qa/FACIAL-EXPRESSION-ACCEPTANCE.md) and
 [runtime acceptance](qa/FACIAL-RUNTIME-ACCEPTANCE.md) distinguish this enabled
-route from automatic camera processing, future temporal review and empirical
+route from automatic camera processing, [complete temporal review](qa/FACIAL-REVIEW-ACCEPTANCE.md) and empirical
 model/construct qualification. No identity tracking or mental-state inference
 is added by displaying the native category labels.
 

@@ -1,8 +1,8 @@
 # Remaining work — Brohn
 
 Updated **24 September 2026** for the ongoing end-to-end implementation.
-The owner has paused development and requested a source checkpoint. The
-[workstream](WORKSTREAM.md) orders the next implementation steps after a resume;
+The owner resumed development after the published source checkpoint. The
+[workstream](WORKSTREAM.md) orders the active implementation;
 these gaps and the full capability/package scope remain open.
 Read [current status](../STATUS.md), the [master architecture](MASTER-ARCHITECTURE.md)
 and [17-package manifest](preparation/build-manifest.json). The 50-capability
@@ -95,8 +95,10 @@ records describing only the 01A–01L prototype are historical.
   with original PTS, complete exports and explicit detection support. Automatic
   facial processing after original named consent now has
   [connected browser, export, restart and native-reference evidence](qa/CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md).
-  Per-frame/temporal review, calibrated webcam gaze and webcam pulse/respiration
-  retain their own implementation and evidence. Geometry is not an enabled
+  Complete [saved per-frame/temporal review](qa/FACIAL-REVIEW-ACCEPTANCE.md)
+  now has scoped connected evidence, including exact original pixels and exports.
+  Calibrated webcam gaze and webcam pulse/respiration retain their own
+  implementation and evidence. Geometry is not an enabled
   or validated universal emotion/attention score. Model/provider versions and
   redistribution rights remain specific to the chosen route.
 - **Hosted collection and collaboration:** the isolated-team profile now has

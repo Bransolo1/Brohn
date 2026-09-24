@@ -1,10 +1,25 @@
 # Resume here — Brohn
 
-## Paused checkpoint — 24 September 2026
+## Resumed after publication — 24 September 2026
+
+The owner explicitly requested "keep going" after checkpoint `2b3b31a`.
+Development is active again. The current parallel work is portable connected
+verification from a separate checkout, complete saved facial temporal/frame
+review, and explicitly mapped video/audio review. These three scopes now have
+[checkpoint acceptance](docs/qa/PUBLICATION-SAVED-MEDIA-20260924.md). The final integrated-source
+core journey passes 22 checks and four scans, with unchanged protected workspace
+and source identities. Complete saved facial review has joined source/export/
+restart acceptance. Video/audio review passes its separate gap/export/restart
+journey without duplicate analysis. Their shared exact-pixel helper passes 25 independent
+generated-video/resource checks; see [saved media architecture](docs/architecture/SAVED-MEDIA-REVIEW.md).
+The [workstream](docs/WORKSTREAM.md) now orders configured catalog portability,
+the separate GNAT procedure and remaining full-platform gates.
+
+## Historical paused checkpoint — 24 September 2026
 
 The owner requested a pause, an updated handoff and publication to GitHub `main`.
-Development is paused; the full platform remains unfinished. Do not continue
-automatically from the earlier active-build instructions below. Start with the
+That pause applied to the published checkpoint and was revoked by the subsequent
+"keep going" instruction above. The full platform remains unfinished. Start with the
 [current workstream and ordered to-do list](docs/WORKSTREAM.md),
 [checkpoint evidence](docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md) and
 [John's handoff](docs/HANDOFF-JOHN.md). The 50-capability, 17-package scope remains.
@@ -16,8 +31,8 @@ preserved participant code and researcher provenance. The runtime journey passes
 has three clean narrow-screen scans. Provenance review passes its connected and
 independent source/export checks, including the final mobile-wrapping correction.
 Read each linked acceptance record for exact scientific and operational limits.
-Fresh-clone verification, facial temporal review and explicitly mapped media
-review are next proposed work; no new implementation was started for them.
+At publication, fresh-clone verification, facial temporal review and explicitly
+mapped media review were proposed follow-ons. They are now the active workstreams.
 
 ## Active end-to-end delivery — 24 September 2026
 

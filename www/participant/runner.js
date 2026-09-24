@@ -848,8 +848,10 @@
       e.preventDefault(); clearError();
       const value = fields.read(), message = validate(step.question, value, fields.fields);
       if (message) { showError(message); errorBox.focus(); return; }
+      const submitted = !step.question.required &&
+        (!answered(value) || typeof value === "string" && !value.trim()) ? null : value;
       next.disabled = true;
-      try { await advance(step, value); } catch (error) { next.disabled = false; showError(error); }
+      try { await advance(step, submitted); } catch (error) { next.disabled = false; showError(error); }
     });
     content.append(form); onset = performance.now(); resumedStep = resume;
     await event("step_started", {resumed: resume}, step, onset);

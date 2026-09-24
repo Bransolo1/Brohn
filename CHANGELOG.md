@@ -1,5 +1,30 @@
 # Changes
 
+## Saved-media review and portable verification — 2026-09-24
+
+- Resumed the full build after checkpoint `2b3b31a` at the owner's request.
+- Added a shared bounded exact-frame pixel helper for saved facial and
+  video/audio review routes; 25 original-video/resource checks pass, including
+  realistic nested Windows paths without overwriting an existing image.
+- Fixed newly submitted optional empty/whitespace answers being counted as
+  answered. The fresh-checkout participant/report/export/restart journey passes
+  22 checks and four accessibility scans; original responses stay unchanged.
+- Added a configured connected QA launcher with isolated workspace and explicit
+  external tools. The final integrated-source journey passes 22 checks and four
+  scans, including one automatic report, complete exports and restart. Original
+  research workspace/configuration bytes remain unchanged.
+- Added complete saved facial review with original native values, exact source
+  frames, missing/multiple-face support, full exports and restart. Rapid keyboard
+  navigation coalesces pending frame work; standalone figures remain readable
+  on narrow screens. Review does not rerun inference or alter original reports.
+- Keep whole words and exact identifiers readable in narrow standalone HTML
+  exports using labelled, keyboard-scrollable table regions. Actual current
+  exports pass 18 checks and two accessibility scans at 320/390px.
+- Added original-container video/audio cursor review with complete timestamp
+  ledgers, exact samples/pixels, explicit unsupported gaps, cancellation/retry,
+  saved-history reopening and restart without duplicate analysis. See
+  `docs/qa/PUBLICATION-SAVED-MEDIA-20260924.md` for scope and retained evidence.
+
 ## Paused source handoff — 2026-09-24
 
 - Paused development at the owner's request and updated the master architecture,

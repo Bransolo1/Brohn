@@ -4,11 +4,15 @@ The owner reconfirmed sustained end-to-end implementation after the source
 publication checkpoint. This record tracks the subsequent connected work;
 publishing a checkpoint does not complete the 50-capability, 17-package plan.
 
-The owner subsequently paused development and requested publication to `main`.
-See the [workstream](../WORKSTREAM.md) for ordered continuation after a resume.
+The owner subsequently paused development and requested publication to `main`,
+then explicitly resumed with "keep going" on 24 September. The
+[workstream](../WORKSTREAM.md) records the active continuation.
 
 | Workflow | Executed scope | Evidence |
 | --- | --- | --- |
+| Portable configured connected smoke | Final integrated-source separate checkout: 22 checks/four scans; actual participant, one automatic report, complete exports and byte-identical restart. All 354 source identities and nine protected original workspace files unchanged. Actual standalone HTML separately passes 18 checks/two scans. | [Portable smoke](CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md) |
+| Original-container video/audio review | Final 12 browser checks/four dialog scans and 17 independent complete-source checks, plus retained regular-source/cancel/retry phases. Sixteen requests: 15 successes and one cancellation; exactly one acoustic analysis per original recording. Saved reopening/restart adds no job. | [Media review](MEDIA-SOURCE-REVIEW-ACCEPTANCE.md) |
+| Complete saved facial review | Complete native observations, exact original pixels, missing/multiple-face states, full exports and restart. Joined browser evidence has 33 successful groups and 12 clean scans across three explicitly recorded UI phases; 17 authored contract, 11 original-native reference, 14 publication and five camera-authority groups remain separate. No model inference or original report scoring is repeated by review. | [Facial review](FACIAL-REVIEW-ACCEPTANCE.md) |
 | Original-permission camera automation | 13 loaded integration checks, 17 joined browser groups including seven clean scans, six independent native-reference checks. Five successful jobs include exactly one platform facial inference; original source, complete artifacts and report survive restart. Synthetic camera feed and model-accuracy limits remain explicit. | [Camera automation](CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md) |
 | Preserved participant delivery and recovery | 57 direct preservation/27 dispatcher checks; 74 actual browser/receiver checks and three scans. Separate final-runner fault injection passes 20 checks/three scans for failed local storage, lost acknowledgement and admitted-session recovery without a duplicate start. | [Runtime preservation](PARTICIPANT-RUNTIME-BROWSER-ACCEPTANCE.md) |
 | Researcher code provenance | 30 domain/Shiny, seven connected/four scans, 21 independent checks; final narrow wrapping/keyboard correction adds two browser/two scans and four independent checks. Exact release/run/report/History links, original manifests, no added jobs during review. | [Code provenance](PARTICIPANT-CODE-PROVENANCE-ACCEPTANCE.md) |
@@ -74,7 +78,13 @@ short cardiac input. Connected EMG review subsequently passed its separately
 recorded whole journey and current-source axis/history checks above.
 
 The core suite also passed 109 assertions after the initial shared integration.
-The current shared source subsequently passed109 core and30 actual supervised
+After the new facial/media domain and shared worker wiring, current core and
+supervised publication checks again pass 109 and 30 assertions in
+`work/test-runs/brohn-shared-review-integration-20260924-01/core/results.json`
+and `jobs/results.json`. The receipts confirm unchanged exercised source. This
+checks the shared domain/worker integration; later media UI-only progress fixes
+retain their separately recorded browser evidence.
+The earlier shared integration passed109 core and30 actual supervised
 job/publication checks in
 `make/work/test-runs/brohn-shared-integration-20260924-01/results.json`.
 The receipt pins the exercised shared files and confirms they stayed unchanged;

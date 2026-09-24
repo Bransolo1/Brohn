@@ -1,0 +1,20 @@
+# Read-only authority checks over a copy of actual named-consent camera evidence.
+args<-commandArgs(trailingOnly=TRUE);stopifnot(length(args)==2L)
+source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=FALSE)
+local({reference<-normalizePath(args[[1L]],winslash="/",mustWork=TRUE);folder<-args[[2L]];stopifnot(startsWith(basename(folder),"brohn-facial-review-authority-"),!dir.exists(folder));dir.create(folder,recursive=TRUE)
+ cfg<-brohn_read_json_file(file.path(reference,"fixture.json"));stopifnot(file.copy(cfg$workspace,folder,recursive=TRUE));store<-brohn_open_store(file.path(folder,"workspace"));on.exit(brohn_close_store(store),add=TRUE)
+ records<-Filter(function(r)brohn_facial_supported(r$body$analysis),brohn_list_entities(store,"report",limit=100L));stopifnot(length(records)==1L);r<-records[[1L]];hash<-brohn_hash(r$body)
+ checks<-character();check<-function(label,ok){stopifnot(isTRUE(ok));checks<<-c(checks,label);cat("PASS",label,"\n")};reject<-function(f)inherits(tryCatch(f(),error=identity),"error")
+ source<-function(verify=FALSE).brohn_freview_source(store,r$id,r$revision,hash,r$project_id,verify)
+ s<-source(TRUE);a<-s$binding$camera_authority
+ check("Saved facial review retains exact original named participant permission authority",identical(a$mode,"automatic")&&identical(a$permission_kind,"original_named_participant")&&identical(brohn_hash(a),brohn_hash(r$body$provenance$camera_analysis_authority)))
+ check("Every original camera source reference remains in review guard list",all(vapply(a$source_refs,function(x)any(vapply(s$source_objects,function(y)identical(x$hash,y$hash)&&identical(as.numeric(x$bytes),as.numeric(y$bytes)),logical(1))),logical(1))))
+ before<-lapply(c("delivery_runs","delivery_events","camera_captures","camera_chunks","entities","entity_versions"),function(t)DBI::dbReadTable(store$con,t))
+ DBI::dbBegin(store$con)
+ failure<-tryCatch({DBI::dbExecute(store$con,"DROP TRIGGER delivery_terminal_run");DBI::dbExecute(store$con,"UPDATE delivery_runs SET completion_status='withdrawn' WHERE id=?",params=list(a$run_id));reject(function()source(FALSE))},finally=DBI::dbRollback(store$con))
+ check("Current original-receipt disagreement is refused before any derived review read",failure)
+ check("Rollback restores all original rows and original immutable terminal trigger",identical(before,lapply(c("delivery_runs","delivery_events","camera_captures","camera_chunks","entities","entity_versions"),function(t)DBI::dbReadTable(store$con,t)))&&nrow(DBI::dbGetQuery(store$con,"SELECT name FROM sqlite_master WHERE type='trigger' AND name='delivery_terminal_run'"))==1L)
+ check("Original named report and all pinned recording/receipt bytes remain unchanged",identical(brohn_hash(brohn_get_entity(store,"report",r$id)$body),hash)&&all(vapply(s$source_objects,function(x){p<-brohn_object_path(store,x$hash,TRUE);identical(digest::digest(file=p,algo="sha256"),x$hash)},logical(1))))
+ brohn_write_json_file(list(status="passed",count=length(checks),checks=checks,source_hashes=.brohn_freview_loaded,original_report_id=r$id,original_report_hash=hash,
+  scope="Actual retained named-consent camera report, copied original SQLite and complete source refs. No jobs or inference. Rollback-only receipt fault injection, not a fabricated participant withdrawal request."),file.path(folder,"results.json"))
+})

@@ -1,5 +1,24 @@
 # Full platform build — Brohn continuation
 
+## Resumed saved-media and contributor wave — 24 September 2026
+
+- [x] Shared exact-index RGB/PNG helper: 25 actual lossless-video, independent
+  pixel, multiple-stream, nested-path and bounded-failure checks. This is component evidence.
+- [x] Portable configured create/release/participant/report/export/restart QA
+  from a separate source checkout, with explicit external runtimes: 22 checks,
+  four scans, 21 helper and 17 launcher checks. Original configuration/workspace unchanged.
+- [x] Standard optional-answer omission repair, verified through actual receiver
+  and automated reporting for blank, whitespace-only, entered and unselected values.
+- [x] Final integrated-source portable smoke: 22 checks/four scans, one automatic report and byte-identical reopening; all 354 source identities, original configuration/native manifest and nine protected workspace files unchanged. The actual downloaded HTML also passes 18 checks/two scans. No owned processes remain.
+- [x] Current-export verification of narrow-screen HTML table word wrapping:
+  18 checks/two scans at 320/390px, intact words/identifiers, actual keyboard
+  scrolling and unchanged report JSON and table values.
+- [x] Complete saved facial temporal/frame review: joined 33 browser groups/12 clean scans, original native values/pixels and full exports, restart, bounded keyboard navigation and responsive standalone figures; see `docs/qa/FACIAL-REVIEW-ACCEPTANCE.md` for the separate source phases and remaining model limits.
+- [x] Explicit original-container video/audio mapping: final 12 browser checks/four dialog scans and 17 independent full-source checks, retained cancel/retry evidence, exact exports, unsupported gap and zero-job restart. See the media acceptance record for all source phases.
+- [ ] Next: portable configured core catalog; GNAT authoring, participant, native/imported evidence, plots, cohort and restart; remaining full-platform gates.
+
+The owner explicitly resumed after the paused source handoff below.
+
 ## Paused source handoff — 24 September 2026
 
 The owner requested a pause and push to `Bransolo1/Brohn` `main`.

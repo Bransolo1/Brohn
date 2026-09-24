@@ -34,13 +34,21 @@ if (identical(input$operation,"answer_session")) {
   identity <- c(identity, hash_sources("R/platform-answer-session.R"))
   source("R/platform-answer-session.R", encoding="UTF-8")
 }
-if (input$operation %in% c("audio_tracks","audio_extract") || !is.null(input$derived_audio_lineage) || !is.null(input$binding$extraction_lineage)) {
+if (input$operation %in% c("audio_tracks","audio_extract","media_tracks","media_review") || !is.null(input$derived_audio_lineage) || !is.null(input$binding$extraction_lineage)) {
   identity <- c(identity, hash_sources("R/platform-audio-extraction.R"))
   source("R/platform-audio-extraction.R", encoding="UTF-8")
 }
-if (identical(input$operation, "audio_review")) {
+if (input$operation %in% c("audio_review", "media_tracks", "media_review")) {
   identity <- c(identity, hash_sources("R/platform-audio-review.R"))
   source("R/platform-audio-review.R", encoding = "UTF-8")
+}
+if (input$operation %in% c("media_tracks", "media_review")) {
+  identity <- c(identity, hash_sources("R/platform-media-review.R"))
+  source("R/platform-media-review.R", encoding = "UTF-8")
+}
+if (input$operation %in% c("facial_review", "facial_frame")) {
+  identity <- c(identity, hash_sources("R/platform-facial-review.R"))
+  source("R/platform-facial-review.R", encoding = "UTF-8")
 }
 if (identical(input$operation, "eda_review")) {
   identity <- c(identity, hash_sources("R/platform-eda-review.R"))
@@ -76,6 +84,8 @@ native_sources <- if (identical(input$operation,"analyse_dataset") && identical(
   if (identical(input$operation, "segment_aoi") || identical(input$dataset$modality, "video")) "scripts/workers/vision.py" else
   if (input$operation %in% c("audio_tracks","audio_extract")) "scripts/workers/audio_extract.py" else
   if (identical(input$operation, "audio_review")) "scripts/workers/audio_review.py" else
+  if (input$operation %in% c("media_tracks", "media_review")) c("scripts/workers/media_review.py", "scripts/workers/media_pixels.py", "scripts/workers/audio_extract.py") else
+  if (input$operation %in% c("facial_review", "facial_frame")) c("scripts/workers/facial_review.py", "scripts/workers/vision_explorer.py", "scripts/workers/vision.py", "scripts/workers/media_pixels.py", "scripts/readiness/facial-runtime.json") else
   if (identical(input$operation, "eda_review")) c("scripts/workers/eda_review.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "respiration_review")) c("scripts/workers/respiration_review.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "emg_review")) c("scripts/workers/emg_review.py", "scripts/workers/physiology_artifacts.py") else

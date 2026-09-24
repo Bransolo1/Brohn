@@ -32,6 +32,8 @@ brohn_gaze_retention_enabled <- function(input) {
 brohn_job_input <- function(store, job) {
   if (identical(job$operation, "vision_index")) return(brohn_vision_index_input(store, job))
   if (identical(job$operation, "vision_frame")) return(brohn_vision_frame_input(store, job))
+  if (identical(job$operation, "facial_review")) return(brohn_facial_review_input(store, job))
+  if (identical(job$operation, "facial_frame")) return(brohn_facial_frame_input(store, job))
   if (job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview")) return(brohn_gaze_trace_job_input(store, job))
   if (job$operation %in% c("signal_values_page", "signal_values_export")) return(brohn_signal_values_input(store, job))
   if (job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac")) return(brohn_cardiac_review_input(store, job))
@@ -43,6 +45,7 @@ brohn_job_input <- function(store, job) {
   if (identical(job$operation, "analyse_resolved_run")) return(brohn_resolved_session_input(store, job))
   if (identical(job$operation, "audio_review")) return(brohn_audio_review_input(store, job))
   if (job$operation %in% c("audio_tracks", "audio_extract")) return(brohn_audio_extraction_input(store, job))
+  if (job$operation %in% c("media_tracks", "media_review")) return(brohn_media_review_input(store, job))
   if (identical(job$operation, "eda_review")) return(brohn_eda_review_input(store, job))
   if (identical(job$operation, "respiration_review")) return(brohn_respiration_review_input(store, job))
   if (identical(job$operation, "emg_review")) return(brohn_emg_review_input(store, job))
@@ -113,10 +116,13 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review"), "Use the operation's setup screen to choose a new destination or source.")
   if(identical(job$operation,"linked_review"))brohn_linked_review_input(store,job)
   if(identical(job$operation,"analyse_resolved_run"))brohn_resolved_session_input(store,job)
   if(identical(job$operation,"audio_review"))brohn_audio_review_input(store,job)
+  if(job$operation %in% c("media_tracks","media_review"))brohn_media_review_input(store,job)
+  if(identical(job$operation,"facial_review"))brohn_facial_review_input(store,job)
+  if(identical(job$operation,"facial_frame"))brohn_facial_frame_input(store,job)
   if(identical(job$operation,"answer_session"))brohn_answer_session_input(store,job)
   if(job$operation %in% c("audio_tracks","audio_extract"))brohn_audio_extraction_input(store,job)
   if(identical(job$operation,"eda_review"))brohn_eda_review_input(store,job)
@@ -223,6 +229,9 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   if (identical(input$operation, "audio_review")) return(brohn_analyse_audio_review(input, scratch))
   if (identical(input$operation, "answer_session")) return(brohn_analyse_answer_session(input, scratch))
   if (input$operation %in% c("audio_tracks", "audio_extract")) return(brohn_analyse_audio_extraction(input, scratch))
+  if (input$operation %in% c("media_tracks", "media_review")) return(brohn_analyse_media_review(input, scratch))
+  if (identical(input$operation, "facial_review")) return(brohn_analyse_facial_review(input, scratch))
+  if (identical(input$operation, "facial_frame")) return(brohn_analyse_facial_frame(input, scratch))
   if (identical(input$operation, "eda_review")) return(brohn_analyse_eda_review(input, scratch))
   if (identical(input$operation, "respiration_review")) return(brohn_analyse_respiration_review(input, scratch))
   if (identical(input$operation, "emg_review")) return(brohn_analyse_emg_review(input, scratch))
@@ -510,7 +519,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
+  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
   if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
@@ -555,7 +564,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       on.exit(for(g in value_source_guards).brohn_qexplorer_release(g),add=TRUE)
       brohn_require(identical(brohn_hash(input),brohn_hash(brohn_signal_values_input(store,job))),"Exact-value source changed before its processing read guard was established.")
     }
-    if(job$operation %in% c("audio_tracks", "audio_extract", "audio_review", "eda_review", "respiration_review", "emg_review", "eda_continuous_review", "answer_session", "signal_catalog", "signal_preview", "summarize_signal_windows") ||
+    if(job$operation %in% c("audio_tracks", "audio_extract", "audio_review", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "respiration_review", "emg_review", "eda_continuous_review", "answer_session", "signal_catalog", "signal_preview", "summarize_signal_windows") ||
         (identical(job$operation,"analyse_dataset") && !is.null(input$derived_audio_lineage))) {
       # Keep every immutable parent readable but unwritable throughout the child
       # read, not only when publishing its output. Re-resolve authority after all
@@ -615,6 +624,9 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation,"analyse_resolved_run")) return(brohn_publish_resolved_session(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"audio_review")) return(brohn_publish_audio_review(store, result, scratch, job, input, result_path))
     if (job$operation %in% c("audio_tracks","audio_extract")) return(brohn_publish_audio_extraction(store, result, scratch, job, input, result_path))
+    if (job$operation %in% c("media_tracks","media_review")) return(brohn_publish_media_review(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"facial_review")) return(brohn_publish_facial_review(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"facial_frame")) return(brohn_publish_facial_frame(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"eda_review")) return(brohn_publish_eda_review(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"respiration_review")) return(brohn_publish_respiration_review(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"emg_review")) return(brohn_publish_emg_review(store, result, scratch, job, input, result_path))

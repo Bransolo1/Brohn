@@ -92,13 +92,15 @@ provide an analysed geometry timeline or acoustic report graph.
 
 ## The remaining register is still in scope
 
-No enabled named analysis/visual recipe was found for the following 19 register
-entries in the inspected current validators/dispatch. They are implementation
+The original audit found no enabled named analysis/visual recipe for 19 register
+entries. Since that audit, `implicit.single_category` has one connected named
+response-window SC-IAT profile; see [its acceptance](SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md).
+Other single-category procedures remain separate work. The following 18 entries retain implementation
 scope, not failures of an already accepted visual profile:
 
 `gaze.naturalistic`, `neural.advanced`, `cardiorespiratory.coupling`,
 `emg.facial_startle`, `eog.ocular`, `hemodynamics.advanced`, `webcam.gaze`,
-`webcam.physiology`, `implicit.single_category`, `implicit.gnat`,
+`webcam.physiology`, `implicit.gnat`,
 `implicit.priming`, `implicit.amp`, `approach.vaast_manikin`,
 `implicit.agile_relational`, `attention.tasks`, `inhibition.interference`,
 `inhibition.stop_signal`, `learning.memory`, `motor.trajectory`.
@@ -108,7 +110,7 @@ The five operational entries (`design.protocols`, `centralization.recordings`,
 cross-cutting acceptance work; the multimodal recipe is listed above because it
 also computes results. Partial register families remain partial: band power is
 not every EEG asymmetry recipe, descriptive fNIRS is not a GLM, keyboard AAT is
-not a physical movement task, and the five registered tasks do not activate the
+not a physical movement task, and the six registered task profiles do not activate the
 rest of the cognitive-task catalog. Preserve the complete 50-entry scope.
 
 ## Implemented priorities and remaining review work

@@ -1,5 +1,13 @@
 # Repeatable Brohn checks
 
+For a connected researcher-to-participant-to-report check, use the
+[configured portable smoke launcher](CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md).
+It creates its own external QA workspace, runs the actual local supervisor,
+checks automatic reporting and exports, and reopens the result after restart.
+The saved installation supplies explicit runtime paths; its research workspace
+is not opened. The acceptance record states exact tested source versions and
+retained failures. This is one connected core route, not the full test catalog.
+
 Use the exact restored R library described in
 [the installation guide](../operations/LOCAL-INSTALLATION.md). From the repository:
 
@@ -13,7 +21,7 @@ portability guarantee**. Some `domain` checks reference external methods/gaze
 libraries, generated fixtures and `../../work`; scientific and operations
 checks can reference the original development Python or TinyCC paths. Inspect
 the chosen script and adapt its isolated test configuration before running it.
-The core check above is the initial smoke test. `npm run test:browser` exercises
+The `core` check above is a component check. `npm run test:browser` exercises
 the legacy prototype, not the connected researcher application. Historical
 evidence paths outside the repository are recorded local artifacts, not files
 included in this source distribution.

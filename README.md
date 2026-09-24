@@ -5,37 +5,17 @@ design controlled studies, collect or import data, review traceable analyses,
 and reuse study designs. It aims to make these workflows approachable for
 undergraduate researchers and useful to commercial research teams.
 
-**Paused on 24 September 2026 at the owner's request.** The current development
-checkpoint is on `main`. Read the [workstream and next steps](docs/WORKSTREAM.md)
-and [John's handoff](docs/HANDOFF-JOHN.md) before resuming. This is a working local
-application with an unfinished broader roadmap.
+**Working local application; active development.** The broader platform remains
+unfinished. Start with [current status](STATUS.md), the
+[ordered workstream](docs/WORKSTREAM.md), [John's handoff](docs/HANDOFF-JOHN.md)
+and the [master architecture](docs/MASTER-ARCHITECTURE.md). The full scope contains
+50 registered capabilities across 17 work packages.
 
-The product remains named Brohn, reconfirmed on 20 September 2026.
-
-**Development resumed on 20 September 2026.** This repository contains
-a working local application and an unfinished broader roadmap. Start with
-[John's handoff](docs/HANDOFF-JOHN.md) and [STATUS.md](STATUS.md) for what was
-completed, what remains, and where to resume.
-
-The [24 September source checkpoint](docs/qa/PUBLICATION-CHECKPOINT-20260924.md)
-consolidates local development, connects saved video measurement review and
-records completed exact-value and pupil/blink export/restart checks. Its linked
-records state the tested scope and remaining work.
-
-The [subsequent workflow build](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) adds
-collection finalization/history, complete response and scale distributions,
-responsive measurement review, source audio waveform/spectrogram, event and
-continuous EDA, respiration cycles, EMG input/envelope/bursts, exact answer-session
-navigation and a checked one-command local setup. Protected isolated-team hosting
-has scoped local acceptance. Broader
-implementation continues against the full roadmap.
-
-The [SC-IAT and facial-analysis checkpoint](docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md)
-adds a complete named response-window SC-IAT journey and optional pinned local
-facial action-unit/native-category processing, including exact exports, reopened
-reports and installation checks. Original-permission automatic camera analysis,
-preserved participant-code delivery and code provenance are now connected;
-their linked acceptance records state the tested scope and remaining work.
+The [workflow evidence ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) links the
+actual researcher journeys, method checks, exports and restart evidence for
+enabled features. Each acceptance record states its tested scope and remaining
+limits. For inspecting complete saved observations and original frames, use the
+[facial and video/audio review guide](docs/operations/REVIEW-SAVED-MEDIA.md).
 
 ## What is connected
 
@@ -132,6 +112,7 @@ unlimited dataset capacity or scientific qualification of every method.
 - [John's handoff](docs/HANDOFF-JOHN.md), [current status](STATUS.md) and [master architecture](docs/MASTER-ARCHITECTURE.md)
 - [Installation and readiness](docs/operations/LOCAL-INSTALLATION.md), [dependencies](DEPENDENCIES.md) and [backup/restore](docs/operations/BACKUP-AND-RESTORE.md)
 - [Researcher QA](docs/qa/RESEARCHER-QA.md) and [selected check runner](docs/qa/RUNNING-CHECKS.md)
+- [Portable connected smoke](docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md): study creation, participant completion, automatic reporting, exports and restart in an isolated QA workspace
 - [Study lifecycle](docs/product/STUDY-LIFECYCLE.md), [design portability](docs/product/DESIGN-PORTABILITY.md) and [method specifications](docs/methods/reuse/README.md)
 - [Contributor workflow](CONTRIBUTING.md), [known gaps](docs/KNOWN-GAPS.md) and [change history](CHANGELOG.md)
 
