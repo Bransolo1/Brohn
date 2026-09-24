@@ -14,6 +14,11 @@ Third-party dependencies and assets retain their own licences.
   providers are references, not materials relicensed by this repository.
   Competitor screenshots, vendor SDKs, model weights, local reference downloads
   and research recordings are not included in this source distribution.
+- **Optional facial processing:** the selected Py-Feat modular models, their
+  pinned upstream revisions, publisher licence declarations and separately
+  installed FFmpeg build are documented in the
+  [facial profile](docs/methods/FACIAL-AU-NATIVE-PROFILE.md). Model and runtime
+  bytes remain external; keep the upstream notices with their installations.
 
 Brohn is an independent project. Product names mentioned in research notes
 identify their respective products and do not imply affiliation or endorsement.

@@ -39,6 +39,7 @@ local({
   helper <- file.path(root, "request.py")
   writeLines(c("import json,sys,urllib.request,urllib.error,urllib.parse", "address,method,body=sys.argv[1:4]",
     "parsed=urllib.parse.urlsplit(address);headers={'Origin':parsed.scheme+'://'+parsed.netloc,'Content-Type':'application/json'}",
+    "if parsed.path.startswith('/api/start/'): headers['X-Brohn-Participant-Runtime']=sys.argv[4]",
     "payload=None if body=='-' else open(body,'rb').read()",
     "request=urllib.request.Request(address,data=payload,method=method,headers=headers)",
     "try:", "    response=urllib.request.urlopen(request,timeout=10)",
@@ -47,7 +48,7 @@ local({
   call <- function(route, payload = NULL, method = if (is.null(payload)) "GET" else "POST") {
     body <- "-"
     if (!is.null(payload)) {body <- file.path(root, "body.json"); brohn_write_json_file(payload, body)}
-    answer <- processx::run(python, c("-B", helper, paste0("http://127.0.0.1:", port, route), method, body),
+    answer <- processx::run(python, c("-B", helper, paste0("http://127.0.0.1:", port, route), method, body, release$participant_runtime$manifest_hash),
       windows_hide_window = TRUE, timeout = 15000, error_on_status = TRUE)
     parsed <- brohn_parse(answer$stdout)
     list(status = parsed$status, value = tryCatch(brohn_parse(parsed$text), error = function(e) NULL), text = parsed$text)

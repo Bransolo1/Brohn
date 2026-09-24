@@ -22,8 +22,10 @@
   else if(!identical(cell("protocol_type"),"object")||!identical(cell("protocol_schema"),"brohn-protocol/1.0.0")||!identical(cell("design_type"),"object"))
     reason<-"This protocol version or design structure has no supported camera metadata projection."
   else if(is.null(cell("camera_type"))||identical(cell("camera_type"),"null"))status<-"not_requested"
-  else if(!identical(cell("camera_type"),"object")||!identical(cell("camera_schema"),"brohn-camera-policy/1.0")||
-    is.null(cell("camera_required"))||is.null(cell("camera_audio"))||is.null(cell("camera_analysis"))||!cell("camera_analysis") %in% c("none","face_geometry_v1"))
+  else if(!identical(cell("camera_type"),"object")||
+    !(identical(cell("camera_schema"),"brohn-camera-policy/1.0")&&isTRUE(cell("camera_analysis")%in%c("none","face_geometry_v1"))||
+      identical(cell("camera_schema"),"brohn-camera-policy/1.1")&&identical(cell("camera_analysis"),"facial_au_expression_pyfeat_v1"))||
+    is.null(cell("camera_required"))||is.null(cell("camera_audio")))
     reason<-"The frozen camera policy version or its displayed fields are unavailable or invalid."
   else status<-"requested"
   list(status=status,schema=if(status=="requested")cell("camera_schema")else NULL,

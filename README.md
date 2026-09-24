@@ -5,6 +5,11 @@ design controlled studies, collect or import data, review traceable analyses,
 and reuse study designs. It aims to make these workflows approachable for
 undergraduate researchers and useful to commercial research teams.
 
+**Paused on 24 September 2026 at the owner's request.** The current development
+checkpoint is on `main`. Read the [workstream and next steps](docs/WORKSTREAM.md)
+and [John's handoff](docs/HANDOFF-JOHN.md) before resuming. This is a working local
+application with an unfinished broader roadmap.
+
 The product remains named Brohn, reconfirmed on 20 September 2026.
 
 **Development resumed on 20 September 2026.** This repository contains
@@ -25,16 +30,23 @@ navigation and a checked one-command local setup. Protected isolated-team hostin
 has scoped local acceptance. Broader
 implementation continues against the full roadmap.
 
+The [SC-IAT and facial-analysis checkpoint](docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md)
+adds a complete named response-window SC-IAT journey and optional pinned local
+facial action-unit/native-category processing, including exact exports, reopened
+reports and installation checks. Original-permission automatic camera analysis,
+preserved participant-code delivery and code provenance are now connected;
+their linked acceptance records state the tested scope and remaining work.
+
 ## What is connected
 
 | Workflow | Current local application |
 | --- | --- |
 | Design and reuse | Study/data/design libraries, control stimuli, AOIs, questionnaires with typed branching, participant-specific option assignment, sections, scales, MaxDiff, clone, templates and portable design ZIPs. |
-| Collect | A separate participant application serves frozen releases, consent, questionnaires and implemented implicit/reaction-time profiles. Opt-in questionnaire answer review supports Back/Edit within an untimed assessment, dependent-answer invalidation and a final review before continuing. |
+| Collect | A separate participant application serves frozen releases, consent, questionnaires and six implicit/reaction-time profiles, including the named Brohn response-window SC-IAT. Opt-in questionnaire answer review supports Back/Edit within an untimed assessment, dependent-answer invalidation and a final review before continuing. |
 | Import and centralize | Reviewed background source import, native recording inspection, preserved multistream archives, reviewed channel preparation, and an explicit local LSL recording route. |
 | Analyse | Method-specific gaze, EEG, EDA, ECG/PPG, respiration, EMG, fNIRS, audio, calibrated temperature and movement workflows. Supported inputs and prerequisites differ by profile. |
 | Review and export | Pinned signal/gaze views, explicit/physiological comparisons, descriptive task cohorts with reviewed identity and repeat policies, complete artifacts, HTML/CSV/JSON exports, history and backup/restore. |
-| Camera and AOIs | Separate camera consent and retention, original recording downloads, optional local face/pose/hand geometry, and assisted AOI proposals that require researcher review. |
+| Camera and AOIs | Separate camera consent and retention, original recording downloads, optional local face/pose/hand geometry, source-bound facial AU/native-category analysis, and assisted AOI proposals that require researcher review. |
 
 R/Shiny provides the researcher interface. A separate browser application runs
 participant studies; SQLite and content-addressed files preserve revisions and

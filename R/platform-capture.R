@@ -1,6 +1,7 @@
 # Authenticated browser camera receipt and isolated one-container assembly.
 # Callback clocks remain observations, never a calibrated encoded-frame clock.
 brohn_validate_camera_policy <- function(policy) {
+  if(identical(policy$schema,"brohn-camera-policy/1.1"))return(brohn_camera_analysis_validate_policy(policy))
   brohn_fields(policy, c("schema", "required", "audio", "consent_text", "retention_text", "width", "height", "frame_rate", "max_duration_s", "max_bytes", "analysis_profile"), label = "Camera policy")
   flag <- function(x) is.logical(x) && length(x) == 1L && !is.na(x)
   brohn_require(identical(policy$schema, "brohn-camera-policy/1.0") && flag(policy$required) && flag(policy$audio), "Camera policy needs its registered schema and explicit required/audio choices.")
@@ -69,13 +70,14 @@ brohn_capture <- function(store, capture_id = NULL, run_id = NULL) {
 }
 
 .brohn_camera_start <- function(store, run_id, token, request) {
-  brohn_fields(request, c("capture_id", "consented", "clock", "mime_type", "settings", "reason", "operation_id"), label = "Camera start")
+  brohn_fields(request, c("capture_id", "consented", "clock", "mime_type", "settings", "reason", "operation_id"), c("analysis_consent","analysis_policy_hash"), label = "Camera start")
   .brohn_delivery_require(brohn_text(request$capture_id, 96) && grepl("^camera-[a-fA-F0-9-]{36}$", request$capture_id) && .brohn_camera_flag(request$consented), "Camera start needs a recorder UUID and an explicit consent choice.")
   .brohn_camera_clock(request$clock)
   .brohn_delivery_require(is.null(request$reason) || brohn_text(request$reason, 4000), "Camera setup reason must be a short description.")
   hash <- .brohn_delivery_hash(.brohn_store_json(request)); .brohn_camera_schema(store)
   brohn_store_batch(store, function() {
     authorized <- .brohn_camera_authorize(store, run_id, token); run <- authorized$run; policy <- authorized$policy
+    brohn_camera_analysis_validate_ack(policy,request)
     receipt <- .brohn_delivery_receipt(store, run_id, "camera_start", request$operation_id, hash)
     if (!is.null(receipt)) return(receipt)
     old <- .brohn_camera_row(store, run_id = run_id)
@@ -350,6 +352,7 @@ brohn_capture_input <- function(store, job) {
 brohn_assemble_capture <- function(input, scratch) {
   capture <- input$capture; brohn_require(identical(input$operation, "assemble_capture") && !is.null(capture$final), "Choose a finalized camera assembly input.")
   brohn_validate_camera_policy(capture$start$policy)
+  brohn_camera_analysis_validate_ack(capture$start$policy,capture$start$request)
   brohn_require(length(input$chunks) == capture$acked_sequence && capture$total_bytes <= capture$start$policy$max_bytes, "Camera assembly counts exceed their frozen policy.")
   directory <- file.path(scratch, "artifacts"); brohn_require(dir.exists(directory) || dir.create(directory), "Cannot create isolated camera artifact space.")
   destination <- file.path(directory, "recording.webm"); observations <- file.path(directory, "chunk-observations.jsonl")
@@ -394,7 +397,15 @@ brohn_assemble_capture <- function(input, scratch) {
 }
 
 .brohn_capture_publication_hash <- digest::digest(file="R/platform-capture.R",algo="sha256")
+.brohn_capture_dataset_metadata <- function(capture) {
+  if(identical(capture$start$policy$schema,"brohn-camera-policy/1.1"))return(brohn_camera_analysis_metadata(capture))
+  list(origin_statement=paste("Browser camera collection for participant run",capture$run_id,"; source origin",capture$start$origin,
+    ". Encoded-frame alignment and physical camera qualification are not established."),profile="face_geometry_v1")
+}
+.brohn_capture_automatic_profile <- function(capture)capture$start$policy$analysis_profile%in%c("face_geometry_v1","facial_au_expression_pyfeat_v1")
 .brohn_publish_capture_legacy <- function(store, output, scratch, job, input, output_path) {
+  if(identical(input$capture$start$policy$schema,"brohn-camera-policy/1.1"))
+    .brohn_publication_output_identity(output,.brohn_camera_analysis_loaded["R/platform-camera-analysis.R"])
   brohn_store_batch(store, function() {
     brohn_renew_job(store, job$id, job$worker, job$token, 60)
     current <- brohn_capture(store, job$request$capture_id)
@@ -432,12 +443,11 @@ brohn_assemble_capture <- function(input, scratch) {
     raw <- pick("camera-recording"); brohn_require(raw$size == current$total_bytes, "The published recording has a different byte count.")
     source <- raw[c("hash", "size", "media_type")]; source$filename <- paste0(current$id, ".webm"); source$format <- "webm"
     dataset_id <- paste0("dataset-", current$id)
-    metadata <- list(origin_statement = paste("Browser camera collection for participant run", current$run_id, "; source origin", current$start$origin,
-      ". Encoded-frame alignment and physical camera qualification are not established."), profile = "face_geometry_v1")
+    metadata <- .brohn_capture_dataset_metadata(current)
     eligible_source <- identical(current$status, "completed") && isTRUE(current$final$container_complete) && isTRUE(a$decoder$supported)
     body <- list(schema_version = "brohn-dataset/1.0.0", id = dataset_id, title = paste("Camera recording", current$start$participant_id), modality = "video",
       origin = current$start$origin, study_id = current$start$study_id, study_revision = current$start$study_revision, source = source,
-      columns = list(), preview = list(), metadata = metadata, status = if (eligible_source && current$start$policy$analysis_profile == "face_geometry_v1") "accepted" else "needs_mapping",
+      columns = list(), preview = list(), metadata = metadata, status = if (eligible_source && .brohn_capture_automatic_profile(current)) "accepted" else "needs_mapping",
       data_revision = 1L, notes = "", source_provenance = list(imported_at = brohn_now(), source_hash = raw$hash, acquisition = "browser_camera",
         capture_id = current$id, run_id = current$run_id, participant_id = current$start$participant_id, participant_alias_supplied = current$start$participant_alias_supplied,
         origin = current$start$origin, design_hash = current$start$design_hash, protocol_hash = current$start$protocol_hash,
@@ -461,6 +471,8 @@ brohn_publish_capture <- function(store, output, scratch, job, input, output_pat
   if(.Platform$OS.type!="windows")return(.brohn_publish_capture_legacy(store,output,scratch,job,input,output_path))
   brohn_require(!RSQLite::sqliteIsTransacting(store$con),"Prepare camera publication outside an enclosing transaction.")
   .brohn_publication_output_identity(output,list("R/platform-capture.R"=.brohn_capture_publication_hash))
+  if(identical(input$capture$start$policy$schema,"brohn-camera-policy/1.1"))
+    .brohn_publication_output_identity(output,.brohn_camera_analysis_loaded["R/platform-camera-analysis.R"])
   .brohn_publication_job(store,job)
   current<-brohn_capture(store,job$request$capture_id)
   validate_pin<-function(observed)brohn_require(identical(brohn_hash(observed),job$request$capture_hash) &&
@@ -501,13 +513,12 @@ brohn_publish_capture <- function(store, output, scratch, job, input, output_pat
   brohn_require(raw$size==current$total_bytes,"The published recording has a different byte count.")
   source<-raw[c("hash","size","media_type")];source$filename<-paste0(current$id,".webm");source$format<-"webm"
   dataset_id<-paste0("dataset-",current$id)
-  metadata<-list(origin_statement=paste("Browser camera collection for participant run",current$run_id,"; source origin",current$start$origin,
-    ". Encoded-frame alignment and physical camera qualification are not established."),profile="face_geometry_v1")
+  metadata<-.brohn_capture_dataset_metadata(current)
   eligible_source<-identical(current$status,"completed") && isTRUE(current$final$container_complete) && isTRUE(a$decoder$supported)
   publication<-.brohn_publication_processing(artifact_context)
   dataset<-list(schema_version="brohn-dataset/1.0.0",id=dataset_id,title=paste("Camera recording",current$start$participant_id),modality="video",
     origin=current$start$origin,study_id=current$start$study_id,study_revision=current$start$study_revision,source=source,
-    columns=list(),preview=list(),metadata=metadata,status=if(eligible_source && current$start$policy$analysis_profile=="face_geometry_v1")"accepted" else "needs_mapping",
+    columns=list(),preview=list(),metadata=metadata,status=if(eligible_source && .brohn_capture_automatic_profile(current))"accepted" else "needs_mapping",
     data_revision=1L,notes="",source_provenance=list(imported_at=brohn_now(),source_hash=raw$hash,acquisition="browser_camera",
       capture_id=current$id,run_id=current$run_id,participant_id=current$start$participant_id,participant_alias_supplied=current$start$participant_alias_supplied,
       origin=current$start$origin,design_hash=current$start$design_hash,protocol_hash=current$start$protocol_hash,
@@ -537,10 +548,15 @@ brohn_queue_capture_analysis <- function(store, run_id) {
   run <- brohn_run(store, run_id)
   if (is.null(run) || !identical(run$completion_status, "completed") || !identical(run$transfer_status, "saved")) return(invisible(NULL))
   capture <- brohn_capture(store, run_id = run_id)
-  if (is.null(capture) || !identical(capture$status, "completed") || !identical(capture$start$policy$analysis_profile, "face_geometry_v1")) return(invisible(NULL))
+  if (is.null(capture) || !identical(capture$status, "completed") || !.brohn_capture_automatic_profile(capture)) return(invisible(NULL))
   publication <- brohn_get_entity(store, "camera_capture", capture$id)
   if (is.null(publication) || !isTRUE(publication$body$assembly$decoder$supported)) return(invisible(NULL))
-  brohn_queue_dataset(store, publication$body$dataset_id, revision = 1L)
+  if(identical(capture$start$policy$analysis_profile,"face_geometry_v1"))return(brohn_queue_dataset(store,publication$body$dataset_id,revision=1L))
+  eligible<-brohn_camera_analysis_eligibility(run,capture,publication)
+  if(!isTRUE(eligible$eligible))return(invisible(NULL))
+  # No optional model startup or source-byte hashing occurs in finalization.
+  # The supervised job independently checks its pinned original source and runtime.
+  brohn_queue_dataset(store,publication$body$dataset_id,revision=1L,camera_mode="automatic")
 }
 
 # The backup layer copies every registered object and all SQLite tables/triggers.
@@ -554,6 +570,7 @@ brohn_capture_catalog_integrity <- function(con) {
   for (i in seq_len(nrow(captures))) {
     row <- captures[i, , drop = FALSE]; capture <- .brohn_camera_decode(row); start <- capture$start
     brohn_validate_camera_policy(start$policy)
+    brohn_camera_analysis_validate_ack(start$policy,start$request)
     brohn_require(identical(brohn_hash(start$design), start$design_hash) && identical(brohn_hash(start$policy), brohn_hash(start$design$camera)), "A camera backup changed its frozen design or policy.")
     run <- DBI::dbGetQuery(con, "SELECT protocol_json,protocol_hash FROM delivery_runs WHERE id=?", params = list(capture$run_id))
     brohn_require(nrow(run) == 1L, "A camera backup refers to a missing participant run.")

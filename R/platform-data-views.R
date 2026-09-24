@@ -93,13 +93,15 @@ brohn_dataset_detail_ui <- function(store, id) {
       if (video) shiny::tagList(
         shiny::selectInput("map_video_profile", "Video observations", stats::setNames(vapply(brohn_vision_profiles(), `[[`, character(1), "id"), vapply(brohn_vision_profiles(), `[[`, character(1), "label")), brohn_default(m$profile, "face_geometry_v1")),
         shiny::conditionalPanel("input.map_video_profile === 'custom_v1'", shiny::checkboxGroupInput("map_video_channels", "Geometry channels", c("Face" = "face", "Body pose" = "pose", "Hands" = "hands"), selected = unlist(brohn_default(m$channels, list("face"))))),
+        shiny::conditionalPanel("input.map_video_profile === 'facial_au_expression_pyfeat_v1'", brohn_facial_mapping_ui(m)),
+        shiny::conditionalPanel("input.map_video_profile !== 'facial_au_expression_pyfeat_v1'",
         shiny::p("Face geometry and blendshape scores describe model outputs. They are not calibrated gaze, emotional states or attention scores."),
         shiny::tags$details(shiny::tags$summary("Time interval and support"),
           shiny::div(class = "brohn-form-grid",
             shiny::numericInput("map_video_start", "Start after first video timestamp (seconds; optional)", brohn_default(m$start_s, NA_real_), min = 0, max = 600),
             shiny::numericInput("map_video_end", "End after first video timestamp (seconds; optional)", brohn_default(m$end_s, NA_real_), min = 0, max = 600),
             shiny::numericInput("map_video_gap", "Largest supported frame interval (seconds)", brohn_default(m$max_support_gap_s, .25), min = .001, max = 10)),
-          shiny::p("Frame timing comes from the video presentation timestamps. Larger gaps remain unsupported time in the report."))),
+          shiny::p("Frame timing comes from the video presentation timestamps. Larger gaps remain unsupported time in the report.")))),
       if (gaze) shiny::selectInput("map_gaze_representation", "What does each gaze row describe?", c("An interval already prepared by an exporter" = "intervals", "A timestamped gaze sample" = "samples"), brohn_default(m$gaze_representation, "intervals")),
       if (!tabular && d$modality %in% c("eeg", "fnirs")) shiny::textInput("map_native_values", "Native channel names (comma separated or exact JSON array)", brohn_native_channel_input_text(unlist(m$value_columns))),
       if (!tabular && d$modality == "audio") shiny::numericInput("map_audio_channel", "Audio channel (0 is first)", brohn_default(m$channel_index, 0), min = 0, max = 64, step = 1),
@@ -247,6 +249,9 @@ brohn_contrast_ui <- function(c, design = NULL) {
 }
 .brohn_task_metric_support_ui <- function(metric) {
   support <- metric$support
+  if (identical(metric$name, "SCIAT_target_positive_D")) return(shiny::p(paste(
+    support$retained_responses, "of", support$test_trials, "test responses enter this comparison;",
+    support$pooled_correct_responses, "correct responses support its variability estimate.")))
   shiny::tagList(
     if (!is.null(metric$reason)) shiny::p(class = "brohn-muted", metric$reason),
     if (!is.null(support)) shiny::tagList(
@@ -263,6 +268,7 @@ brohn_report_content <- function(report) {
   shiny::tagList(shiny::div(class = "brohn-toolbar", brohn_badge(report$origin, if (report$origin == "live") "neutral" else "warning"),
     brohn_badge(report$status)),
     brohn_scale_results_ui(a$scales),
+    brohn_facial_report_ui(a),
     if(length(a$choice_tasks)) lapply(seq_along(a$choice_tasks),function(i)brohn_maxdiff_result_ui(a$choice_tasks[[i]],exercise_number=i)),
     brohn_task_import_evidence_ui(a),
     brohn_questionnaire_artifact_preview_ui(a),
@@ -276,13 +282,15 @@ brohn_report_content <- function(report) {
       shiny::p(paste(task$counts$received, "recorded trials of", task$counts$expected, "expected")),
       if (!is.null(task$counts$retained_correct)) shiny::p(paste(task$counts$retained_correct, "correct test trials retained for the response-time summary.")),
       lapply(task$metrics, function(metric) shiny::div(shiny::h3(switch(metric$name,
-        correct_test_rt_mean = "Mean test response time", correct_test_rt_median = "Median test response time", correct_test_rt_sd = "Response-time variability (standard deviation)",
+        SCIAT_target_positive_D = "Single-category association score", correct_test_rt_mean = "Mean test response time", correct_test_rt_median = "Median test response time", correct_test_rt_sd = "Response-time variability (standard deviation)",
         test_first_response_error_rate = "Wrong first answers among answered test trials", test_omission_rate = "Missed test responses",
         keyboard_aat_relative_approach_advantage = "Relative keyboard approach advantage", IAT_D1 = "IAT D1 score", BIAT_D = "Brief IAT D score", gsub("_", " ", metric$name))),
         shiny::p(class = "brohn-result-number", if (is.null(metric$value)) "Unavailable" else if (metric$unit == "proportion") paste0(format(signif(metric$value*100, 4), trim = TRUE), "%") else paste(format(signif(metric$value, 5), trim = TRUE), metric$unit)),
-        if (!is.null(metric$direction)) shiny::p(metric$direction), .brohn_task_metric_support_ui(metric))),
+        if (!is.null(metric$direction)) shiny::p(if (identical(metric$name, "SCIAT_target_positive_D"))
+          "Positive scores mean faster responses when the target shares a key with positive attributes." else metric$direction), .brohn_task_metric_support_ui(metric))),
       shiny::tags$details(shiny::tags$summary("Scoring counts and interpretation"), shiny::tags$pre(brohn_json(task$counts, TRUE)),
-        if (!is.null(task$scoring_audit)) shiny::tagList(shiny::h3("Pair scores and exclusions"), shiny::tags$pre(brohn_json(task$scoring_audit, TRUE))),
+        if (identical(task$scoring_recipe, "brohn-sciat-response-window-score/1.0")) brohn_sciat_window_score_ui(task) else
+          if (!is.null(task$scoring_audit)) shiny::tagList(shiny::h3("Pair scores and exclusions"), shiny::tags$pre(brohn_json(task$scoring_audit, TRUE))),
         if (!is.null(task$cells)) shiny::tagList(shiny::h3("Target and response support"), shiny::tags$pre(brohn_json(task$cells, TRUE))),
         if (!is.null(task$scoring_recipe)) shiny::p(paste("Scoring recipe:", task$scoring_recipe)),
         if (!is.null(task$support_policy)) shiny::tags$pre(brohn_json(task$support_policy, TRUE)),
@@ -294,7 +302,7 @@ brohn_report_content <- function(report) {
       shiny::p(if (a$parameters$analysis_plan$timing_evidence == "plan_frozen_before_these_participant_sessions") "This plan was frozen before these participant sessions. It is not external preregistration." else "The plan is saved with the design. Its timing relative to source collection is not established.")),
     if (identical(a$operation, "eda_events")) brohn_eda_events_support_ui(a),
     if (identical(a$operation, "peripheral")) brohn_peripheral_report_ui(a),
-    brohn_card(title = if (identical(a$kind,"implicit")) "Trial source coverage" else if (length(a$task_scores)) "Questionnaire coverage" else "What this result covers",
+    if (!brohn_facial_supported(a)) brohn_card(title = if (identical(a$kind,"implicit")) "Trial source coverage" else if (length(a$task_scores)) "Questionnaire coverage" else "What this result covers",
       if (identical(a$kind,"implicit")) shiny::p("These counts describe the retained trial source. Each task result has its own completeness and scoring eligibility.") else
         if (length(a$task_scores)) shiny::p("These counts describe explicit questionnaire answers. The task cards above retain their own trial counts and scoring eligibility."),
       if (identical(a$kind, "multimodal")) .brohn_multimodal_coverage_ui(a) else
@@ -305,7 +313,7 @@ brohn_report_content <- function(report) {
       shiny::p(paste(q$answered_count, "answered;", q$missing_count, "missing")),
       if (!is.null(q$numeric_response_mean)) shiny::p(paste("Mean response:", format(signif(q$numeric_response_mean, 4), trim = TRUE))),
       shiny::tags$ul(lapply(q$counts, function(option) shiny::tags$li(paste(brohn_default(option$label, brohn_json(option$value)), "\u2014", option$count, "responses")))))),
-    if (length(a$features) && a$kind != "questionnaire") shiny::tags$details(shiny::tags$summary(paste("Inspect recording features", paste0("(", length(a$features), " rows)"))),
+    if (length(a$features) && a$kind != "questionnaire" && !brohn_facial_supported(a)) shiny::tags$details(shiny::tags$summary(paste("Inspect recording features", paste0("(", length(a$features), " rows)"))),
       brohn_table(a$features, maximum = 100, label = "Recording features")),
     if (length(a$observations)) shiny::tags$details(shiny::tags$summary(paste("Inspect retained observations", paste0("(", length(a$observations), " rows)"))),
       brohn_table(a$observations, maximum = 50, label = "Retained observations")),
@@ -322,10 +330,11 @@ brohn_report_detail_ui <- function(store, id) {
   r <- brohn_get_entity(store, "report", id)
   if (is.null(r)) return(brohn_empty("Report unavailable", "Choose a saved report from a study or dataset."))
   brohn_signal_audio_lineage(store,r,verify=FALSE)
+  camera_authority<-brohn_camera_analysis_report_source(store,r,verify=FALSE)
   complete_counts <- r$body$analysis$questionnaire_artifact$counts
   htmltools::tagAppendAttributes(brohn_page(r$body$title, paste("Saved", r$created_at, "\u00b7", "Immutable analysis"),
     actions = shiny::tagList(shiny::downloadButton("report_html", "Download report", icon = NULL),
-      shiny::downloadButton("report_csv", if (identical(r$body$analysis$schema, "brohn-task-cohort/1.0")) "Download cohort outcomes" else "Download observations", icon = NULL), shiny::downloadButton("report_download", "JSON + provenance", icon = NULL),
+      shiny::downloadButton("report_csv", if (identical(r$body$analysis$schema, "brohn-task-cohort/1.0")) "Download cohort outcomes" else if (brohn_facial_supported(r$body$analysis)) "Download summary CSV" else "Download observations", icon = NULL), shiny::downloadButton("report_download", "JSON + provenance", icon = NULL),
       if (!is.null(r$body$analysis$scales) || isTRUE(complete_counts$scale_observations > 0L)) shiny::downloadButton("report_scale_csv", "Download scale scores CSV", icon = NULL),
       if (length(r$body$analysis$task_scores) || isTRUE(complete_counts$task_scores > 0L)) shiny::downloadButton("report_task_csv", "Download task scores CSV", icon = NULL),
       if(length(r$body$analysis$choice_tasks) || isTRUE(complete_counts$choice_tasks > 0L)) shiny::downloadButton("report_maxdiff_csv","Download best-worst choices CSV",icon=NULL)),
@@ -338,6 +347,8 @@ brohn_report_detail_ui <- function(store, id) {
     if (length(r$body$analysis$artifacts)) brohn_card(title = "Complete processing artifacts", subtitle = "Download the full retained output, including observations beyond the on-screen preview.",
       shiny::selectInput("report_artifact_kind", "Saved artifact", stats::setNames(vapply(r$body$analysis$artifacts, `[[`, character(1), "kind"), gsub("-", " ", vapply(r$body$analysis$artifacts, `[[`, character(1), "kind")))),
       shiny::downloadButton("report_artifact", "Download complete artifact", icon = NULL)),
+    if(!is.null(camera_authority))brohn_camera_authority_ui(camera_authority),
+    if(exists("brohn_runner_report_entry_ui",mode="function"))brohn_runner_report_entry_ui(r),
     brohn_questionnaire_explorer_ui(r), brohn_explicit_distribution_entry_ui(r$body), brohn_paired_plot_explorer_ui(r), brohn_task_plot_explorer_ui(r), brohn_gaze_explorer_ui(r$body), brohn_gaze_trace_report_ui(r$body), brohn_vision_explorer_ui(r), brohn_audio_review_entry_ui(r), brohn_eda_review_entry_ui(r$body), brohn_respiration_review_panel(r$body), brohn_emg_review_panel(r$body), brohn_eda_continuous_review_panel(r$body), brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body), brohn_report_content(r$body)), class = "brohn-report-page")
 }
 brohn_export_report_html <- function(report, path, store = NULL) {

@@ -1,5 +1,12 @@
 # Brohn working agreement
 
+The owner paused development on 24 September 2026 and requested wrap-up and
+publication to `Bransolo1/Brohn` on `main`. Read `docs/WORKSTREAM.md`, STATUS and
+John's handoff before resuming. This pause supersedes the earlier autonomous
+full-build continuation below. Merely opening the repository does not resume
+work; a later explicit development request may do so. The product remains
+unfinished, with the complete 50-capability/17-package scope retained.
+
 The platform remains named **Brohn**, reconfirmed by the owner on 20 September
 2026. Use Brohn in product UI and documentation. Preserve its existing identity,
 code identifiers, schemas, environment variables and GitHub destination.

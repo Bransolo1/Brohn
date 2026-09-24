@@ -1,5 +1,10 @@
 # Brohn completion backlog
 
+**Paused 24 September 2026:** the owner requested wrap-up and source publication.
+The [workstream](WORKSTREAM.md) captures current completion and next priorities.
+The authorized product scope below remains the target; its instruction to
+continue is suspended until a later explicit resume.
+
 Owner-authorized scope, 20 September 2026. Continue building until Brohn is a
 finished, premium end-to-end research platform that can credibly compete with
 iMotions. Preserve the Brohn name and established visual identity. The complete

@@ -1,5 +1,12 @@
 # Full platform build — Brohn continuation
 
+## Paused source handoff — 24 September 2026
+
+The owner requested a pause and push to `Bransolo1/Brohn` `main`.
+See the [current workstream](../WORKSTREAM.md) for delivered slices and the
+ordered next to-do list. The full product remains unfinished. No fresh-clone
+smoke, facial temporal explorer or linked-media module was started before pause.
+
 ## Active integrated product wave — 24 September 2026
 
 - [x] Questionnaire and scale distributions from complete saved evidence, with exact exports; 29 focused/14 worker/11 browser checks, six scans and independent export audit.
@@ -20,9 +27,12 @@
 - [x] Add complete saved respiration waveform/cycle phase review;16 independent reader,27 R,21 uninterrupted browser checks/five scans and seven actual jobs, with original reports preserved.
 - [x] Add complete EMG input/clean/RMS and saved optional burst review:13 reader,31 domain,4 artifact groups and24 joined browser checks/six scans. Final both-axis/history proof adds28 direct and12 actual checks/two scans, without new jobs.
 - [x] Complete whole-recording EDA review:14 native,35 domain,21 browser checks/five scans, actual5,000-candidate publication,11 background-verification and4 authority checks. The500,000-sample maximum has not been benchmarked; preserve the documented scope.
-- [ ] Connect the dedicated named Brohn response-window SC-IAT from authoring through complete192-trial collection, replay, scoring, import and cohorts.
-- [ ] Integrate an explicitly pinned compatible local AU/native-expression provider with consent, source PTS, no-face/multi-face support and full saved-result review.
-- [ ] Exercise these routes through actual researcher/participant interfaces, then continue remaining packages.
+- [x] Connect the dedicated named Brohn response-window SC-IAT: four full192-trial administrations, exact native/declared-summary reports, two-person cohort and restart;102 independent checks and13 successful jobs. Joined source/display continuations and actual interrupted session remain separately recorded.
+- [x] Integrate a pinned optional local AU/native-category provider:12 contract,9 independent native,34 R domain,5 actual adapter and7 source-guard checks;16 connected browser groups including5 clean scans,4 actual jobs, exact exports and restart. Separate runtime/configuration acceptance passes; model accuracy and live automatic facial capture remain separate.
+- [x] Connect original named camera permission to automatic facial analysis: 13 loaded checks, 17 joined browser groups including seven scans, six independent native checks and exactly one platform facial inference; original source/export/restart evidence retained.
+- [x] Qualify preferred upload recovery and preserved new-release participant code: 31 helper/31 browser batching checks; 57 preservation/27 dispatcher checks; 74 browser plus 20 final recovery checks, each with three scans.
+- [x] Expose preserved participant code through Collect, assigned protocols, native reports and finalized History: 30 domain/Shiny, seven browser/four scans and 21 independent checks; final wrapping correction separately verified with zero additional jobs.
+- [ ] After an explicit resume, continue fresh-clone QA, facial temporal review, declared media mapping and remaining packages/full-release gates in the workstream.
 
 The owner reconfirmed full-build continuation after the GitHub checkpoint.
 Checkpoint publication is not the product acceptance boundary.

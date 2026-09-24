@@ -128,6 +128,10 @@
       this.segment = {capture_id: captureId, run_id: this.runId, status: "starting", next_sequence: 1, total_bytes: 0, acked_sequence: 0, acked_bytes: 0,
         start_request: {capture_id: captureId, consented, clock: this.clock(), mime_type: consented ? this.mimeType : null,
           settings: consented ? this.settings : null, reason, operation_id: crypto.randomUUID()}, finish_request: null, receipt: null};
+      if (this.policy.schema === "brohn-camera-policy/1.1") {
+        this.segment.start_request.analysis_consent = consented;
+        this.segment.start_request.analysis_policy_hash = this.policy.analysis_policy_hash;
+      }
       await this.saveSegment();
       return this.acknowledgeStart();
     }

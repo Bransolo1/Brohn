@@ -116,6 +116,11 @@
     .brohn_backup_require(exists("brohn_capture_catalog_integrity", mode = "function"), "This backup needs the camera recording integrity module.")
     brohn_capture_catalog_integrity(con)
   }
+  if (any(c("delivery_runtimes", "delivery_run_runtimes") %in% tables) ||
+      DBI::dbGetQuery(con, "SELECT count(*) AS n FROM audit_log WHERE action='deployment.runtime_pinned'")$n[[1L]] > 0L) {
+    .brohn_backup_require(exists("brohn_runner_catalog_integrity", mode = "function"), "This backup needs the participant code integrity module.")
+    brohn_runner_catalog_integrity(con)
+  }
   if ("delivery_events" %in% tables) .brohn_backup_check_rows(con, "delivery_events", "event_json", "event_hash")
   objects <- DBI::dbGetQuery(con, "SELECT hash,size,media_type FROM objects ORDER BY hash")
   .brohn_backup_require(nrow(objects) <= 100000L && !anyDuplicated(objects$hash) &&

@@ -1,6 +1,6 @@
 brohn_plan_ui <- function(store, d) {
   choices <- stats::setNames(brohn_ids(d$conditions), vapply(d$conditions, function(c) c$label, character(1)))
-  measure_choices <- c("Eye tracking" = "gaze", "Questionnaires" = "questionnaire", "EEG" = "eeg", "EDA" = "eda", "ECG / HRV" = "ecg", "PPG" = "ppg", "Respiration" = "respiration", "Muscle activity" = "emg", "EOG" = "eog", "fNIRS" = "fnirs", "Temperature" = "temperature", "Movement" = "movement", "Webcam gaze" = "webcam_gaze", "Facial geometry" = "facial_geometry", "Facial expression" = "facial_expression", "Body pose" = "pose", "Voice" = "voice", "Reaction time" = "rt", "IAT" = "iat", "Brief IAT" = "biat", "Approach / avoidance" = "aat")
+  measure_choices <- c("Eye tracking" = "gaze", "Questionnaires" = "questionnaire", "EEG" = "eeg", "EDA" = "eda", "ECG / HRV" = "ecg", "PPG" = "ppg", "Respiration" = "respiration", "Muscle activity" = "emg", "EOG" = "eog", "fNIRS" = "fnirs", "Temperature" = "temperature", "Movement" = "movement", "Webcam gaze" = "webcam_gaze", "Facial geometry" = "facial_geometry", "Facial expression" = "facial_expression", "Body pose" = "pose", "Voice" = "voice", "Reaction time" = "rt", "IAT" = "iat", "Brief IAT" = "biat", "Approach / avoidance" = "aat", "Response-window SC-IAT" = "sciat_window")
   shiny::tagList(
     brohn_guidance_plan_intro_ui(d),
     brohn_card(title = "What are you investigating?",
@@ -116,6 +116,7 @@ brohn_collect_ui <- function(store, record) {
           shiny::tags$button(type = "button", class = "btn btn-outline-secondary", `data-brohn-copy` = url, "Copy participant link")),
         if (is.null(store$hosted_profile)) shiny::p(class = "brohn-muted", "This loopback link works on this computer. It is not an internet recruitment link."),
         brohn_hosted_release_ui(store, d),
+        brohn_runner_release_entry_ui(d,record$id),
         shiny::div(class = "brohn-toolbar", if (d$status == "open") brohn_command("Pause new starts", "deployment_command", list(id = d$id, state = "paused")),
           if (d$status == "paused") brohn_command("Resume new starts", "deployment_command", list(id = d$id, state = "open")),
           if (d$status %in% c("open", "paused")) brohn_command("Close recruitment", "deployment_command", list(id = d$id, state = "closed"))))

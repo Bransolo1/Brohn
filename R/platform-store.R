@@ -37,6 +37,11 @@
 # JSON null is R NULL. Non-finite/NA values and unsupported R classes are rejected
 # instead of silently becoming missing data. Large clock integers stay strings.
 .brohn_store_json <- function(body, maximum = 16 * 1024 * 1024) {
+  # These are the same primitive formatters used by the pinned jsonlite 2.0.0
+  # toJSON methods. Resolve once per document, avoiding full option/S4 dispatch
+  # for every key and scalar. The frozen-original regression pins exact bytes.
+  escape <- get("deparse_vector", asNamespace("jsonlite"), inherits = FALSE)
+  number <- get("num_to_char", asNamespace("jsonlite"), inherits = FALSE)
   encode <- function(x, depth = 0L) {
     .brohn_store_assert(depth <= 64L, "JSON nesting exceeds 64 levels.")
     if (is.null(x)) return("null")
@@ -46,8 +51,13 @@
         .brohn_store_assert(!anyNA(n) && all(nzchar(n)) && !anyDuplicated(n),
           "JSON object keys must be nonempty and unique.")
         order <- order(enc2utf8(n), method = "radix")
-        entries <- vapply(order, function(i) paste0(encode(enc2utf8(n[[i]]), depth + 1L),
-          ":", encode(x[[i]], depth + 1L)), character(1))
+        if (length(n)) {
+          .brohn_store_assert(depth + 1L <= 64L, "JSON nesting exceeds 64 levels.")
+          .brohn_store_assert(!anyNA(iconv(enc2utf8(n), from = "", to = "UTF-8")),
+            "JSON text must be valid UTF-8.")
+        }
+        entries <- if (length(n)) paste0(escape(enc2utf8(n[order])), ":",
+          vapply(x[order], encode, character(1), depth = depth + 1L)) else character()
         return(paste0("{", paste(entries, collapse = ","), "}"))
       }
       return(paste0("[", paste(vapply(x, encode, character(1), depth = depth + 1L),
@@ -67,7 +77,9 @@
     }
     # Match the protocol/report encoder's binary64 precision. jsonlite's NA
     # setting rounds to about fifteen significant digits in this pinned build.
-    as.character(jsonlite::toJSON(x, auto_unbox = TRUE, null = "null", digits = 17))
+    if (is.character(x)) escape(enc2utf8(x)) else if (is.logical(x)) {
+      if (x) "true" else "false"
+    } else number(x, digits = 17, na_as_string = TRUE, use_signif = FALSE, always_decimal = FALSE)
   }
   value <- encode(body)
   .brohn_store_assert(nchar(value, type = "bytes") <= maximum,

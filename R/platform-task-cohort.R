@@ -5,9 +5,9 @@
 .brohn_task_cohort_bool <- function(x) is.logical(x) && length(x)==1L && !is.na(x)
 .brohn_task_cohort_specs <- function(profile) {
   kind<-brohn_task_profile(profile)$kind
-  names<-switch(kind,iat="IAT_D1",biat="BIAT_D",aat="keyboard_aat_relative_approach_advantage",
+  names<-switch(kind,iat="IAT_D1",biat="BIAT_D",sciat_window="SCIAT_target_positive_D",aat="keyboard_aat_relative_approach_advantage",
     c("correct_test_rt_mean","correct_test_rt_median","correct_test_rt_sd","test_first_response_error_rate","test_omission_rate"))
-  units<-if(kind %in% c("iat","biat"))"D" else if(kind=="aat")"ms" else c("ms","ms","ms","proportion","proportion")
+  units<-if(kind %in% c("iat","biat","sciat_window"))"D" else if(kind=="aat")"ms" else c("ms","ms","ms","proportion","proportion")
   Map(function(name,unit)list(name=name,unit=unit),names,units)
 }
 .brohn_task_cohort_identity <- function(a) list(task_id=a$task_id,task_definition_hash=a$task_definition_hash,
@@ -45,6 +45,8 @@
     identical(score$collection_origin,a$collection_origin)&&identical(score$evidence_level,a$evidence_level),
     "The score's administration/person/session/origin/evidence references disagree with its canonical administration.")
   allowed<-identical(score$schema_version,"brohn-task-score/1.0") && is.null(score$scoring_recipe)
+  if(kind=="sciat_window")allowed<-identical(score$schema_version,"brohn-task-score/1.0") &&
+    identical(score$scoring_recipe,"brohn-sciat-response-window-score/1.0")
   if(rt)allowed<-allowed || (identical(score$schema_version,"brohn-task-score/1.1") && identical(score$scoring_recipe,"brohn-rt-metric-support/1.0"))
   brohn_require(allowed && .brohn_task_cohort_bool(score$eligible) && brohn_array(score$metrics),"Use a supported exact score schema and recipe; do not reinterpret another scoring version.")
   brohn_require(brohn_array(a$responses) && brohn_array(a$trial_audit) && brohn_array(a$missing_reasons),"Keep administration response/audit evidence arrays.")

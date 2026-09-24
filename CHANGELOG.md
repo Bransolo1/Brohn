@@ -1,6 +1,37 @@
 # Changes
 
+## Paused source handoff — 2026-09-24
+
+- Paused development at the owner's request and updated the master architecture,
+  build manifest, workstream, remaining work and John's handoff for `main`.
+- Completed preserved-code browser and researcher-provenance acceptance,
+  including exact exports, restart, backup and the narrow-screen identity fix.
+- Fixed failed session setup: persist the same request before every retry and
+  recover an already admitted session without creating another start operation.
+  The final-runner fault-injection journey passes 20 checks and three scans.
+- Completed original-permission automatic camera analysis, exact exports,
+  interruption and restart, with one platform facial inference and independent
+  native agreement on the recorded source. Broader product gates remain open.
+
 ## Connected review and collection continuation — 2026-09-24
+
+- Added the named Brohn response-window SC-IAT from authoring and full participant
+  collection through saved scoring, source-bound reimport, cohort comparison and
+  restart. Fixed explicit missing audit serialization and clarified chart markers
+  without changing original scores or recorded values. Its independent audit
+  passes 102 checks across 13 actual jobs.
+- Added optional pinned local facial AU/native-category processing with reviewed
+  permission, exact source timing, complete frame/face exports and saved reports;
+  its actual researcher journey and isolated setup checks pass.
+- Reduced canonical transport overhead while preserving exact prior JSON bytes,
+  hashes and rejection rules. A complete maximum-key HTTP session and receipt
+  retry pass; its tight timeout headroom remains a tracked performance limit.
+- Added preferred upload batches with exact uncertain-operation recovery, backed
+  by 31 helper and 31 browser checks plus two narrow-screen scans.
+- Connected preserved participant-code publication, assignment, recovery routes
+  and backup integrity; 27 dispatcher/storage checks and joined browser/researcher
+  provenance acceptance pass. New camera policy 1.1 connects named processing
+  permission to automatic facial jobs with joined source/export/restart evidence.
 
 - Added complete explicit distributions, paired-person plots, linked saved
   signals/events, collection finalization and abandoned-session recovery.

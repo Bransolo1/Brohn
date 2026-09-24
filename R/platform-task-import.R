@@ -1,7 +1,7 @@
 # Pure source-bound trial-summary import. The coordinator verifies immutable CSV
 # and registry object bytes. This adapter claims no event replay or device timing.
 .brohn_task_import_profiles <- function() c("iat-gnb2003-d1/1.0","biat-nosek2014-goodfocal/1.0",
-  "aat-keyboard-cue-balanced/1.0","rt-deary-liewald-simple/1.0","rt-deary-liewald-choice/1.0")
+  "aat-keyboard-cue-balanced/1.0","rt-deary-liewald-simple/1.0","rt-deary-liewald-choice/1.0", "sciat-brohn-response-window-im100/1.0")
 .brohn_task_import_columns <- function() paste0(c("participant","participant_linkage","session","attempt","protocol",
   "presentation_index","trial","presented","outcome","first_code","final_code","first_correct",
   "first_response_ms","final_correct_ms","missing_reason"),"_column")
@@ -40,7 +40,7 @@
 .brohn_task_import_task <- function(design,task_id) {
   brohn_require(is.list(design)&&brohn_array(design$blocks)&&!anyDuplicated(brohn_ids(design$blocks)),"Link the exact study revision containing the original task.")
   task<-brohn_find(design$blocks,task_id)
-  brohn_require(!is.null(task)&&task$profile %in% .brohn_task_import_profiles(),"The selected task is absent or outside the five registered trial-import profiles.")
+  brohn_require(!is.null(task)&&task$profile %in% .brohn_task_import_profiles(),"The selected task is absent or outside the registered trial-import profiles.")
   brohn_task_validate(task);task
 }
 .brohn_task_import_origin <- function(task,origin) {
@@ -121,7 +121,7 @@ brohn_validate_task_protocol_registry <- function(registry,design,task_id) {
   require(identical(first_correct,!is.null(first)&&identical(first,trial$correct_code)),"first-response correctness contradicts the frozen key.")
   if(!is.null(final_ms))require(!is.null(first_ms)&&final_ms>=first_ms,"has a final-correct latency before its first response.")
   if(first_correct)require(!is.null(final_ms)&&abs(final_ms-first_ms)<.000001,"needs equal first/final latencies for a correct first response under this scoring profile.")
-  if(timing_known)for(value in list(first_ms,final_ms))if(!is.null(value))require(value<=trial$timeout_ms+.002,"accepts a response after the frozen deadline.")
+  if(timing_known)for(value in list(first_ms,final_ms))if(!is.null(value))require(value<=trial$timeout_ms+if(identical(trial$mode,"sciat_window"))0 else .002,"accepts a response after the frozen deadline.")
   if(!presented)require(outcome %in% c("not_presented","interrupted")&&is.null(first)&&is.null(final)&&!first_correct&&!is.null(reason),
     "cannot record an accepted response or completed outcome without presentation; retain its explicit reason.")
   if(outcome=="not_presented")require(!presented&&!is.null(reason),"marks an actually presented trial as not presented.")
@@ -142,6 +142,8 @@ brohn_validate_task_protocol_registry <- function(registry,design,task_id) {
   latency<-if(is.null(response))NULL else if(kind %in% c("iat","biat"))response$final_correct_ms else response$first_response_ms
   disposition<-if(is.null(response))"missing_expected_source_row"else if(!response$presented)"not_presented"else if(response$outcome=="interrupted")"interrupted"else
     if(!isTRUE(trial$scored))"unscored_by_profile"else if(!timing_known)"timing_definition_unavailable"else if(response$outcome=="timeout")"timeout"else
+    if(kind=="sciat_window"&&!is.null(latency)&&latency<350)"below_350_ms"else
+    if(kind=="sciat_window"&&!response$first_correct)"error_replacement_in_saved_score"else
     if(!kind %in% c("iat","biat")&&!response$first_correct)"first_response_error"else if(is.null(latency))"missing_latency"else
     if(kind %in% c("iat","biat")&&latency>10000)"slow_final_correct_excluded"else if(!kind %in% c("iat","biat")&&
       (latency<if(kind=="aat")200 else 0||latency>if(kind=="aat")2000 else 5000))"outside_rt_window"else"candidate_for_task_scoring"
@@ -225,7 +227,10 @@ brohn_import_task_trials <- function(data,metadata,design,source,protocols) {
     logical_key<-brohn_hash(list(source_collection_id=metadata$source_collection_id,participant_id=first$participant_id,
       session_id=first$session_id,attempt_id=first$attempt_id,task_definition_hash=registry$task_hash))
     id<-paste0("task-attempt-",brohn_hash(list(original_source_hash=source$hash,logical_evidence_key=logical_key)))
-    score<-brohn_task_score(table$compiled,Filter(function(r)r$outcome!="not_presented",responses),completed=complete&&timing_known)
+    scoring_responses<-Filter(function(r)r$outcome!="not_presented",responses)
+    if (identical(registry$task$profile,"sciat-brohn-response-window-im100/1.0"))
+      scoring_responses<-lapply(scoring_responses,brohn_sciat_window_import_response)
+    score<-brohn_task_score(table$compiled,scoring_responses,completed=complete&&timing_known)
     if(!timing_known)score$reason<-"The source latency or terminal-response definition is explicitly unknown; scoring is unavailable."
     score$title<-registry$task$title;score$participant_id<-first$participant_id;score$participant_linkage<-first$participant_linkage
     score$session_id<-first$session_id;score$attempt_id<-id;score$collection_origin<-source$origin;score$evidence_level<-metadata$evidence_level

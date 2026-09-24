@@ -36,7 +36,8 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_hosted_controls(input, output, session, store, state, attempt, message, refresh)
   brohn_install_multimodal_ui(input, output, session, store, state, current, attempt, message, refresh)
   brohn_install_task_cohort_ui(input, output, session, store, state, current, attempt, message, refresh)
-  collection_history <- brohn_install_collection_history(input, output, session, store, state, current, attempt, message, refresh, prepare_download)
+  runner_provenance <- brohn_install_runner_provenance(input, output, session, store, state, current, attempt, prepare_download)
+  collection_history <- brohn_install_collection_history(input, output, session, store, state, current, attempt, message, refresh, prepare_download, open_runtime = runner_provenance$open)
   brohn_install_session_resolution(input, output, session, store, state, current, attempt, message, refresh, prepare_download,
     return_to_collection = function(command) collection_history$open(command, FALSE))
   brohn_install_task_plots(input,output,session,store,state,attempt,prepare_download)
@@ -64,7 +65,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_maxdiff_import_ui(input,output,session,store,state)
   task_import_ui <- brohn_install_task_import_ui(input,output,session,store,state,attempt,message)
   brohn_install_ingestion_ui(input, output, session, store, state, current, attempt, refresh, message)
-  brohn_install_run_protocol_ui(input, output, session, store, current, state, attempt, prepare_download)
+  brohn_install_run_protocol_ui(input, output, session, store, current, state, attempt, prepare_download, open_runtime = runner_provenance$open)
   original_dataset <- function() {
     brohn_require(identical(state$page, "dataset"), "Open the source dataset before downloading its original file.")
     record <- brohn_get_entity(store, "dataset", state$dataset_id)
@@ -165,8 +166,12 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       task$materials_rights <- value(paste0("task_rights_", i), task$materials_rights)
       task$seed <- value(paste0("task_seed_", i), task$seed)
       task$settings$control_rationale <- value(paste0("task_control_", i), task$settings$control_rationale)
-      task$settings$intertrial_ms <- value(paste0("task_interval_", i), task$settings$intertrial_ms)
-      task$settings$trial_timeout_ms <- value(paste0("task_timeout_", i), task$settings$trial_timeout_ms)
+      if (identical(task$profile, "sciat-brohn-response-window-im100/1.0")) {
+        task$settings$language <- value(paste0("task_sciat_language_", i), task$settings$language)
+      } else {
+        task$settings$intertrial_ms <- value(paste0("task_interval_", i), task$settings$intertrial_ms)
+        task$settings$trial_timeout_ms <- value(paste0("task_timeout_", i), task$settings$trial_timeout_ms)
+      }
       for (j in seq_along(task$categories)) task$categories[[j]]$label <- value(paste0("task_category_", i, "_", j), task$categories[[j]]$label)
       for (j in seq_along(task$materials)) if (task$materials[[j]]$type == "text") task$materials[[j]]$content <- value(paste0("task_material_", i, "_", j), task$materials[[j]]$content)
       d$blocks[[i]] <- task
@@ -391,11 +396,13 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
       if (dataset$body$modality == "fnirs") metadata$parameters <- list(ppf = list(input$map_ppf_1, input$map_ppf_2))
     }
     if (dataset$body$modality == "video") {
+      if (identical(input$map_video_profile, .brohn_facial_profile)) metadata <- brohn_facial_mapping_input(input, input$map_origin) else {
       metadata <- list(origin_statement = input$map_origin, profile = input$map_video_profile,
         max_support_gap_s = input$map_video_gap)
       if (identical(metadata$profile, "custom_v1")) metadata$channels <- as.list(input$map_video_channels)
       if (brohn_number(input$map_video_start, 0, 600)) metadata$start_s <- input$map_video_start
       if (brohn_number(input$map_video_end, 0, 600)) metadata$end_s <- input$map_video_end
+      }
     }
     if (dataset$body$modality == "eeg") metadata <- brohn_neural_input(input, metadata, dataset$body$source$format)
     if (dataset$body$modality == "eda") metadata <- brohn_eda_events_input(input, metadata, dataset$body$source$format)
@@ -486,7 +493,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
     artifacts[[1]]
   }
   output$report_artifact <- shiny::downloadHandler(filename = function() {
-    a <- report_artifact(); paste0(a$kind, "-", substr(a$hash, 1, 12), if (a$media_type == "image/png") ".png" else ".jsonl")
+    a <- report_artifact(); paste0(a$kind, "-", substr(a$hash, 1, 12), if (a$media_type == "image/png") ".png" else if (a$media_type == "text/csv") ".csv" else ".jsonl")
   }, content = function(file) {
     prepare_download(function() {a <- report_artifact(); brohn_copy_object_download(store, a$hash, file)})
   })

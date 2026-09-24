@@ -1,5 +1,24 @@
 # Resume here — Brohn
 
+## Paused checkpoint — 24 September 2026
+
+The owner requested a pause, an updated handoff and publication to GitHub `main`.
+Development is paused; the full platform remains unfinished. Do not continue
+automatically from the earlier active-build instructions below. Start with the
+[current workstream and ordered to-do list](docs/WORKSTREAM.md),
+[checkpoint evidence](docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md) and
+[John's handoff](docs/HANDOFF-JOHN.md). The 50-capability, 17-package scope remains.
+
+This checkpoint includes connected response-window SC-IAT, optional facial
+processing and original-permission camera automation, preferred upload batches,
+preserved participant code and researcher provenance. The runtime journey passes
+74 browser/receiver checks, followed by 20 focused setup-recovery checks; each
+has three clean narrow-screen scans. Provenance review passes its connected and
+independent source/export checks, including the final mobile-wrapping correction.
+Read each linked acceptance record for exact scientific and operational limits.
+Fresh-clone verification, facial temporal review and explicitly mapped media
+review are next proposed work; no new implementation was started for them.
+
 ## Active end-to-end delivery — 24 September 2026
 
 The owner explicitly reconfirmed that the platform must be built end to end.
@@ -37,8 +56,15 @@ burst review now passes its connected journey; final respiration/EMG axes and
 saved-window history pass their separate current-source checks. Report coverage
 is now readable with full original details available. Whole-recording EDA now
 passes its full import/review/export/restart journey and bounded background
-verification checks. The dedicated SC-IAT route and optional native facial-output
-provider remain active integrations.
+verification checks. The optional local facial-output profile now passes its
+import/permission/analysis/export/restart journey, with separate native agreement
+and installation checks. The dedicated Brohn response-window SC-IAT now passes
+four complete192-trial administrations, native and declared-summary reports,
+reviewed two-person comparison and restart, with102 independent source/scoring
+checks and13 successful jobs. Scored omissions and fast responses save correctly.
+Its [joined acceptance](docs/qa/SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md) retains the
+separate interrupted run and every corrected harness failure. Automatic facial
+capture, preserved participant-code delivery and remaining release work continue.
 The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md)
 links evidence; wider package and release work remains active.
 

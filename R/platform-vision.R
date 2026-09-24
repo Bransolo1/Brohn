@@ -2,9 +2,11 @@
 brohn_vision_profiles <- function() list(
   list(id = "face_geometry_v1", label = "Face geometry and native blendshapes", channels = list("face")),
   list(id = "face_pose_hands_v1", label = "Face, body and hand geometry", channels = list("face", "pose", "hands")),
-  list(id = "custom_v1", label = "Selected geometry channels", channels = list("face", "pose", "hands")))
+  list(id = "custom_v1", label = "Selected geometry channels", channels = list("face", "pose", "hands")),
+  list(id = "facial_au_expression_pyfeat_v1", label = "Native facial action units and expression categories", channels = list()))
 
 brohn_validate_vision_mapping <- function(dataset) {
+  if (identical(dataset$metadata$profile,"facial_au_expression_pyfeat_v1")) return(brohn_validate_facial_mapping(dataset))
   brohn_require(identical(dataset$modality, "video") && dataset$source$format %in% c("mp4", "mov", "mkv", "webm", "avi"),
     "Imported video geometry needs an MP4/MOV, Matroska/WebM or AVI recording.")
   m <- dataset$metadata
@@ -40,6 +42,7 @@ brohn_vision_request <- function(input, scratch) {
 }
 
 brohn_run_vision <- function(input, scratch) {
+  if (identical(input$operation,"analyse_dataset") && identical(input$dataset$metadata$profile,"facial_au_expression_pyfeat_v1")) return(brohn_run_facial_expression(input,scratch))
   request <- brohn_vision_request(input, scratch)
   request_path <- file.path(scratch, "vision-request.json"); result_path <- file.path(scratch, "vision-result.json")
   brohn_write_json_file(request, request_path)
@@ -105,13 +108,15 @@ brohn_checked_artifact_path <- function(store, path, scratch) {
     items <- brohn_default(analysis$artifacts, list())
     brohn_require(brohn_array(items) && length(items) <= 8L, "Worker artifact manifest is too large.")
     if (any(vapply(items, function(a) a$kind %in% c("physiology-series", "physiology-events"), logical(1)))) brohn_validate_physiology_artifact_receipt(analysis)
+    if (any(vapply(items, function(a) a$kind %in% c("facial-observations", "facial-values"), logical(1)))) brohn_validate_facial_artifact_manifest(analysis)
     checked <- lapply(items, function(item) {
-      brohn_require(item$kind %in% c("aoi-mask", "vision-observations", "physiology-series", "physiology-events", "questionnaire-analysis") && brohn_text(item$sha256, 64) &&
+      brohn_require(item$kind %in% c("aoi-mask", "vision-observations", "facial-observations", "facial-values", "physiology-series", "physiology-events", "questionnaire-analysis") && brohn_text(item$sha256, 64) &&
         grepl("^[a-f0-9]{64}$", item$sha256) && brohn_number(item$bytes, 1, 2*1024^3, TRUE), "Worker artifact manifest is invalid.")
       path <- brohn_checked_artifact_path(store, item$path, scratch)
       brohn_require(identical(as.numeric(file.info(path)$size), as.numeric(item$bytes)) &&
         (!verify_hashes || identical(digest::digest(file = path, algo = "sha256"), item$sha256)), "Worker artifact failed its size or SHA-256 check.")
       metadata <- list()
+      if (item$kind %in% c("facial-observations", "facial-values")) metadata <- item[c("schema", "complete")]
       if (identical(item$kind, "questionnaire-analysis")) {
         brohn_require(brohn_questionnaire_is_artifact(analysis), "Questionnaire evidence requires its complete verified report preview schema.")
         normalized <- .brohn_questionnaire_reference(item, .brohn_questionnaire_artifact_bytes)
@@ -160,7 +165,7 @@ brohn_promote_worker_artifacts <- function(store, analysis, scratch, job, report
     # Validate the full manifest before copying any bytes into the object store.
     promoted <- lapply(checked, function(item) {
       object <- brohn_store_object(store, path = item$path,
-        media_type = if (item$kind == "aoi-mask") "image/png" else "application/x-ndjson")
+        media_type = if (item$kind == "aoi-mask") "image/png" else if (item$kind == "facial-values") "text/csv" else "application/x-ndjson")
       brohn_require(identical(object$hash, item$hash) && identical(as.numeric(object$size), as.numeric(item$size)), "Artifact changed while publishing immutable bytes.")
       c(list(kind = item$kind), object, item$metadata)
     })

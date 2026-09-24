@@ -1,5 +1,6 @@
 source("R/platform-core.R")
 source("R/platform-methods.R")
+source("R/platform-sciat-window.R")
 checks<-0L
 check<-function(value,label){checks<<-checks+1L;if(!isTRUE(value))stop(label,call.=FALSE)}
 near<-function(x,y,tolerance=1e-10)isTRUE(all.equal(x,y,tolerance=tolerance,check.attributes=FALSE))
@@ -9,7 +10,7 @@ responses<-function(compiled,fn=function(trial)if(identical(trial$mapping,"B"))1
   outcome="correct",response_code=trial$correct_code,final_code=trial$correct_code,first_correct=TRUE,first_response_ms=rt,final_correct_ms=rt)})
 
 profiles<-brohn_task_profiles()
-expected_counts<-c(180L,96L,96L,28L,48L)
+expected_counts<-c(180L,96L,96L,28L,48L,192L)
 compiled<-list()
 for(i in seq_along(profiles)) {
   name<-names(profiles)[i];block<-brohn_task_new(name,id=paste0("task-",i))

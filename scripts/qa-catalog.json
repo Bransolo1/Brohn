@@ -2,6 +2,13 @@
   "schema": "brohn-qa-catalog/1.0",
   "scope": "Isolated local component and integration checks. Browser researcher journeys, human usability and physical-device qualification have separate evidence.",
   "tests": [
+    {"id":"runner-assets","suite":"operations","path":"tests/platform-runner-assets.R","timeout_s":180},
+    {"id":"runner-delivery","suite":"operations","path":"tests/platform-runner-delivery.R","timeout_s":180},
+    {"id":"runner-provenance-views","suite":"domain","path":"tests/platform-runner-provenance-views.R","timeout_s":180},
+    {"id":"camera-analysis","suite":"domain","path":"tests/platform-camera-analysis.R","timeout_s":180},
+    {"id":"sciat-window","suite":"domain","path":"tests/platform-sciat-window.R","timeout_s":240},
+    {"id":"sciat-window-score","suite":"domain","path":"tests/platform-sciat-window-score.R","timeout_s":240},
+    {"id":"facial-expression","suite":"domain","path":"tests/platform-facial-expression.R","timeout_s":180},
     {"id":"processing-source-guards","suite":"operations","path":"tests/platform-processing-source-guards.R","timeout_s":180},
     {"id":"audio-extraction","suite":"domain","path":"tests/platform-audio-extraction.R","timeout_s":240},
     {"id":"respiration-review","suite":"domain","path":"tests/platform-respiration-review.R","timeout_s":240},

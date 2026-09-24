@@ -195,6 +195,7 @@ brohn_report_for_review <- function(store,id,revision=NULL) {
   record <- brohn_get_entity(store,"report",id,revision)
   brohn_require(!is.null(record),"This saved report is unavailable.")
   brohn_signal_audio_lineage(store,record,verify=FALSE)
+  brohn_camera_analysis_report_source(store,record,verify=FALSE)
   record
 }
 brohn_curate_dataset <- function(store, id, metadata, expected_revision, study_id = NULL, study_revision = NULL) {

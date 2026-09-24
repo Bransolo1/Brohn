@@ -26,7 +26,7 @@ brohn_tasks_ui <- function(design) {
                 brohn_material_card_ui(design, "exemplar", material, task$id))
             }))
         }),
-        shiny::tags$details(shiny::tags$summary("Timing and randomization"),
+        if (identical(profile$kind, "sciat_window")) brohn_sciat_window_settings_ui(task, i) else shiny::tags$details(shiny::tags$summary("Timing and randomization"),
           shiny::numericInput(paste0("task_seed_", i), paste("Task", i, "seed"), task$seed, 1, .Machine$integer.max),
           shiny::numericInput(paste0("task_interval_", i), paste("Task", i, "intertrial interval (ms)"), task$settings$intertrial_ms, 100, 2000, 50),
           shiny::numericInput(paste0("task_timeout_", i), paste("Task", i, "timeout (ms)"), task$settings$trial_timeout_ms, 1000, 60000, 100),

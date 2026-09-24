@@ -2,7 +2,8 @@
 
 This is the map for John and future contributors, updated for the
 [24 September 2026 source checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md).
-Development resumed on September 20. The intended platform is broader than the
+Development is paused at the owner's request on September 24; see the
+[current workstream and next steps](WORKSTREAM.md). The intended platform is broader than the
 working local application. Read current status and evidence alongside the architecture.
 
 | What you need | Start here |

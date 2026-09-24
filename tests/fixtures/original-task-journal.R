@@ -9,9 +9,22 @@ original_task_journal <- function(protocol, outcome_for = function(trial) list(o
       step_id=if(is.null(step))NULL else step$id, stimulus_id=if(is.null(step))NULL else step$stimulus_id,
       condition_id=if(is.null(step))NULL else step$condition_id,
       question_id=if(!is.null(step)&&step$type=="question")step$question$id else NULL,
-      phase=if(is.null(step))"completion"else step$phase, clock=clock(at), payload=payload)
+      phase=if(type=="equipment_event")"equipment_setup"else if(is.null(step))"completion"else step$phase, clock=clock(at), payload=payload)
     state <<- .brohn_delivery_apply(state,event,protocol)
     events[[length(events)+1L]] <<- event; time <<- at
+  }
+  # Synthetic protocol evidence, not an observation of a physical keyboard.
+  # Current designs must exercise the production gate; old absent policies keep
+  # their original behavior. Camera receipts need a separate real capture fixture.
+  equipment <- if (exists("brohn_equipment_requirements", mode="function")) brohn_equipment_requirements(protocol) else NULL
+  if (!is.null(equipment)) {
+    stopifnot(!isTRUE(equipment$camera))
+    emit_equipment <- function(kind, evidence) send("equipment_event", payload=list(
+      schema="brohn-participant-equipment-check/1.0", policy_hash=equipment$policy_hash,
+      kind=kind, attempt_id=paste0("original-equipment-",kind), evidence=evidence), at=time)
+    if (length(equipment$required_codes)) emit_equipment("keyboard", list(codes=equipment$required_codes,
+      released=TRUE,focused=TRUE,visible=TRUE,last_input_ms=time))
+    if (isTRUE(equipment$controls)) emit_equipment("controls", list(activation="keyboard_or_assistive",trusted=TRUE,last_input_ms=time))
   }
   for (step in protocol$timeline) {
     send("step_started",step,at=time+1)

@@ -16,7 +16,7 @@ brohn_rscript <- function() {
   normalizePath(available[1], winslash = "/", mustWork = TRUE)
 }
 brohn_python_profile <- function(modality) {
-  profile <- if (modality %in% c("audio", "video")) "vision-audio" else if (modality == "segmentation") "segmentation" else if (modality %in% c("fnirs", "interchange")) "acquisition" else "methods"
+  profile <- if (modality %in% c("audio", "video")) "vision-audio" else if (modality == "facial-au") "facial-au" else if (modality == "segmentation") "segmentation" else if (modality %in% c("fnirs", "interchange")) "acquisition" else "methods"
   configured <- Sys.getenv(paste0("BROHN_PYTHON_", toupper(gsub("-", "_", profile))), "")
   candidate <- if (nzchar(configured)) configured else file.path("..", "..", "work", "tooling", paste0(profile, "-venv"),
     if (.Platform$OS.type == "windows") "Scripts/python.exe" else "bin/python")
@@ -78,6 +78,11 @@ brohn_job_input <- function(store, job) {
       design_revision = request$study_revision, source_path = brohn_object_path(store, dataset$body$source$hash),
       registry_path = if (identical(dataset$body$modality,"implicit")) brohn_object_path(store,dataset$body$metadata$protocol_registry$hash,verify=TRUE) else NULL)
     if (!is.null(lineage)) input$derived_audio_lineage <- lineage
+    if(brohn_is_facial_profile(dataset$body$metadata)) {
+      authority<-brohn_camera_analysis_resolve(store,dataset,brohn_default(request$camera_analysis_authority$mode,"manual"),verify=TRUE)
+      brohn_require(.brohn_sv_same(authority,request$camera_analysis_authority),"Original camera source or permission changed, or this historical job lacks a pinned camera permission review. Review the saved recording before queuing a new facial analysis.")
+      if(!is.null(authority))input$camera_analysis_authority<-authority
+    }else brohn_require(is.null(request$camera_analysis_authority),"Camera facial authority cannot be attached to another processing profile.")
     input
   } else if (identical(job$operation, "analyse_run")) {
     run <- brohn_run(store, request$run_id)
@@ -122,6 +127,7 @@ brohn_retry_processing <- function(store, id) {
   if(identical(job$operation,"vision_index"))brohn_vision_index_input(store,job)
   if(identical(job$operation,"vision_frame"))brohn_vision_frame_input(store,job)
   if(job$operation %in% c("signal_values_page", "signal_values_export"))brohn_signal_values_input(store,job)
+  if(identical(job$operation,"analyse_dataset")&&!is.null(job$request$camera_analysis_authority))brohn_job_input(store,job)
   if(job$operation %in% c("gaze_trace_catalog", "gaze_trace_preview"))brohn_gaze_trace_job_input(store,job)
   if(job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac"))brohn_cardiac_review_input(store,job)
   if(identical(job$operation,"summarize_signal_windows"))brohn_signal_windows_input(store,job)
@@ -316,6 +322,7 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
 brohn_analyse_input <- function(input, scratch) {
   result <- brohn_analyse_input_unplanned(input, scratch)
   if (!is.null(input$derived_audio_lineage)) result$provenance$derived_audio_lineage <- input$derived_audio_lineage
+  if(!is.null(input$camera_analysis_authority))result$provenance$camera_analysis_authority<-input$camera_analysis_authority
   if (!is.null(input$design$analysis_plan) && !is.null(result$analysis) &&
       input$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort")) {
     browser <- input$operation %in% c("analyse_run", "analyse_cohort")
@@ -340,6 +347,21 @@ brohn_analyse_input <- function(input, scratch) {
   })
 }
 brohn_publish_analysis_report <- function(store, job, input, result, scratch, result_path, timeout_seconds = 1900, before_commit = NULL) {
+  if(!is.null(input$camera_analysis_authority)) {
+    .brohn_publication_output_identity(result,.brohn_camera_analysis_loaded)
+    brohn_require(identical(input$operation,"analyse_dataset")&&brohn_facial_supported(result$report$analysis)&&
+      .brohn_sv_same(result$report$provenance$camera_analysis_authority,input$camera_analysis_authority),"The facial report changed its original camera permission or source authority.")
+    guards<-brohn_hold_signal_value_sources(store,list(source_objects=input$camera_analysis_authority$source_refs))
+    on.exit(for(g in guards).brohn_qexplorer_release(g),add=TRUE)
+    check_camera<-function(verify=FALSE){
+      d<-brohn_get_entity(store,"dataset",input$dataset$id,input$dataset_revision)
+      brohn_require(.brohn_sv_same(d$body,input$dataset)&&.brohn_sv_same(brohn_camera_analysis_resolve(store,d,input$camera_analysis_authority$mode,verify),input$camera_analysis_authority),
+        "Original camera permission, participant ending or source changed before facial publication.")
+      for(g in guards).Call(g$native$check,g$pointer)
+    }
+    check_camera(TRUE);prior_before_commit<-before_commit
+    before_commit<-function(){if(!is.null(prior_before_commit))prior_before_commit();check_camera(FALSE)}
+  }
   if (!is.null(input$derived_audio_lineage)) {
     .brohn_publication_output_identity(result,.brohn_audio_extraction_loaded["R/platform-audio-extraction.R"])
     brohn_require(identical(input$operation,"analyse_dataset") &&
@@ -408,7 +430,7 @@ brohn_publish_analysis_report <- function(store, job, input, result, scratch, re
   # through immutable read handles. Neither stage holds the SQL writer lock.
   checked <- if (artifacts) .brohn_check_worker_artifacts(store, report$analysis, scratch, verify_hashes = FALSE) else list()
   specifications <- lapply(checked, function(item) list(key = item$kind, kind = item$kind, path = item$path,
-    sha256 = item$hash, bytes = item$size, media_type = if (item$kind == "aoi-mask") "image/png" else "application/x-ndjson"))
+    sha256 = item$hash, bytes = item$size, media_type = if (item$kind == "aoi-mask") "image/png" else if (item$kind == "facial-values") "text/csv" else "application/x-ndjson"))
   handles <- .brohn_publication_descriptors(store, specifications)
   if (artifacts) report$analysis <- .brohn_worker_artifact_analysis(report$analysis, lapply(seq_along(checked), function(i)
     c(list(kind = checked[[i]]$kind), handles[[i]][c("hash", "size", "media_type")], checked[[i]]$metadata)))
@@ -507,6 +529,12 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       vision_frame_guards<-.brohn_vframe_guards(store,job$request)
       on.exit(for(g in vision_frame_guards).brohn_qexplorer_release(g),add=TRUE)
       brohn_require(identical(brohn_hash(input),brohn_hash(brohn_vision_frame_input(store,job))),"Recorded frame sources changed before their processing read guards were established.")
+    }
+    if (identical(job$operation,"analyse_dataset") && identical(input$dataset$modality,"video") && brohn_is_facial_profile(input$dataset$metadata)) {
+      refs<-if(!is.null(input$camera_analysis_authority))input$camera_analysis_authority$source_refs else list(list(hash=input$dataset$source$hash,bytes=input$dataset$source$size))
+      facial_source_guards <- brohn_hold_signal_value_sources(store,list(source_objects=refs))
+      on.exit(for(g in facial_source_guards).brohn_qexplorer_release(g),add=TRUE)
+      brohn_require(identical(brohn_hash(input),brohn_hash(brohn_job_input(store,job))),"The facial recording or its authority changed before its processing read guard was established.")
     }
     if(brohn_gaze_retention_enabled(input)) {
       gaze_analysis_guard<-brohn_hold_gaze_analysis_source(store,input)

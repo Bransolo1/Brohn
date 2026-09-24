@@ -1,0 +1,90 @@
+{
+  "schema": "brohn-facial-models/1.0",
+  "profile": "facial_au_expression_pyfeat_v1",
+  "prepared_at": "2026-09-24",
+  "package": {
+    "name": "py-feat",
+    "version": "2.0.0",
+    "wheel_sha256": "47e24b3dfd29c6ec626e7b7339240ec298e2c5d04fb686d015c1d1aa8ed92d98"
+  },
+  "detector": {
+    "face_model": "retinaface",
+    "landmark_model": "mobilefacenet",
+    "au_model": "xgb",
+    "emotion_model": "resmasknet",
+    "identity_model": null,
+    "gaze_model": null,
+    "device": "cpu"
+  },
+  "excluded_assets": [
+    "Detectorv2",
+    "arcface",
+    "facenet",
+    "img2pose",
+    "l2cs",
+    "pose_mlp_v2"
+  ],
+  "files": [
+    {
+      "repo_id": "py-feat/retinaface_r34",
+      "revision": "2e4495d934ed359ae8ddc0946d82f85e1e328e52",
+      "filename": "model.safetensors",
+      "relative_path": "retinaface_r34/model.safetensors",
+      "bytes": 88606408,
+      "sha256": "f339890a869284bb39dc16ed6f52acc21d74a73d6e419088697e46ee0b54eaf2",
+      "url": "https://huggingface.co/py-feat/retinaface_r34/resolve/2e4495d934ed359ae8ddc0946d82f85e1e328e52/model.safetensors",
+      "license": "MIT (selected model, publisher declaration)",
+      "license_source": "https://py-feat.org/pages/models/",
+      "model_card": "https://huggingface.co/py-feat/retinaface_r34/blob/2e4495d934ed359ae8ddc0946d82f85e1e328e52/README.md"
+    },
+    {
+      "repo_id": "py-feat/mobilefacenet",
+      "revision": "dbb61907988fc8f82b0d0316b07fde520f6c7cc4",
+      "filename": "mobilefacenet_model_best.pth.tar",
+      "relative_path": "mobilefacenet/mobilefacenet_model_best.pth.tar",
+      "bytes": 12281146,
+      "sha256": "b994af026bfddbafc507a6f1c8737a9896bab20ed2b0cfb6ae90b81736970313",
+      "url": "https://huggingface.co/py-feat/mobilefacenet/resolve/dbb61907988fc8f82b0d0316b07fde520f6c7cc4/mobilefacenet_model_best.pth.tar",
+      "license": "MIT (selected model, publisher declaration)",
+      "license_source": "https://py-feat.org/pages/models/",
+      "model_card": "https://huggingface.co/py-feat/mobilefacenet/blob/dbb61907988fc8f82b0d0316b07fde520f6c7cc4/README.md"
+    },
+    {
+      "repo_id": "py-feat/xgb_au",
+      "revision": "e81d0d6b0dd2b0d66e89fbf95a635101aae18a9a",
+      "filename": "xgb_au_classifier_v2.skops",
+      "relative_path": "xgb_au/xgb_au_classifier_v2.skops",
+      "bytes": 145542931,
+      "sha256": "d21a2a4977fce0924c557835d17414ac588e30b68248549244313ebfd3864881",
+      "url": "https://huggingface.co/py-feat/xgb_au/resolve/e81d0d6b0dd2b0d66e89fbf95a635101aae18a9a/xgb_au_classifier_v2.skops",
+      "license": "MIT (selected model, publisher declaration)",
+      "license_source": "https://py-feat.org/pages/models/",
+      "model_card": "https://huggingface.co/py-feat/xgb_au/blob/e81d0d6b0dd2b0d66e89fbf95a635101aae18a9a/README.md"
+    },
+    {
+      "repo_id": "py-feat/resmasknet",
+      "revision": "13cf04b102169d7c5fe872adc43b549bf40f67c7",
+      "filename": "config.json",
+      "relative_path": "resmasknet/config.json",
+      "bytes": 423,
+      "sha256": "1e0727d5c9a7b512a42461a1a955f2cf949f967feeefd858532025cf7e54c6e2",
+      "url": "https://huggingface.co/py-feat/resmasknet/resolve/13cf04b102169d7c5fe872adc43b549bf40f67c7/config.json",
+      "license": "MIT (selected model, publisher declaration)",
+      "license_source": "https://py-feat.org/pages/models/",
+      "model_card": "https://huggingface.co/py-feat/resmasknet/blob/13cf04b102169d7c5fe872adc43b549bf40f67c7/README.md"
+    },
+    {
+      "repo_id": "py-feat/resmasknet",
+      "revision": "13cf04b102169d7c5fe872adc43b549bf40f67c7",
+      "filename": "ResMaskNet_Z_resmasking_dropout1_rot30.pth",
+      "relative_path": "resmasknet/ResMaskNet_Z_resmasking_dropout1_rot30.pth",
+      "bytes": 551634217,
+      "sha256": "1aa0454662df6c59ab8bc4db80a25be5a109acfda970d32e7593cde2d3aeae68",
+      "url": "https://huggingface.co/py-feat/resmasknet/resolve/13cf04b102169d7c5fe872adc43b549bf40f67c7/ResMaskNet_Z_resmasking_dropout1_rot30.pth",
+      "license": "MIT (selected model, publisher declaration)",
+      "license_source": "https://py-feat.org/pages/models/",
+      "model_card": "https://huggingface.co/py-feat/resmasknet/blob/13cf04b102169d7c5fe872adc43b549bf40f67c7/README.md"
+    }
+  ],
+  "hash_basis": "Weight SHA-256 from pinned HuggingFace Git-LFS pointers; JSON config hash from the first pinned official HTTPS retrieval. No model bytes are stored in Git."
+}

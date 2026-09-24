@@ -1,5 +1,10 @@
 # Brohn master architecture and large-build contract
 
+**Paused 24 September 2026 at the owner's request.** The
+[workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SCIAT-FACIAL-20260924.md)
+record delivered work and ordered continuation. The full scope below is retained;
+pause and source publication do not establish completion.
+
 **Resumed 20 September 2026:** the owner resumed implementation, keeping the
 Brohn name. [Current status](../STATUS.md) and the
 [completion backlog](PRODUCT-COMPLETION-BACKLOG.md)
@@ -13,6 +18,36 @@ The destination is a premium, accessible R-first workspace for undergraduate and
 The [unified experience](product/UNIFIED-EXPERIENCE.md) connects all 50 capabilities through 13 shared measure-card families and [34 planned whole-journey evaluations](product/journey-acceptance.json). The [brand system](brand/BRAND-SYSTEM.md), [editable visual assets](../www/brand/asset-manifest.json) and [design preview](brand/preview.html) define the premium soft-dark direction. The [introduction and launch plan](product/INTRODUCTION-AND-LAUNCH.md) defines onboarding and evidence-appropriate release claims; the [Astra build brief](preparation/ASTRA-BUILD-BRIEF.md) turns this contract into focused implementation packets. These specifications are cross-cutting requirements, not separate products or achieved usability claims.
 
 ## 1. Full product surface
+
+**Optional facial-output route, 24 September:** reviewed video datasets now use
+one explicit pinned CPU model profile for20 native AU outputs and seven native
+expression-category scores. R owns permission/mapping validation and original-
+source guards; the isolated worker owns inference using pinned local assets.
+Complete frame JSONL/face CSV, exact PTS, selected-window/stride and detection
+support survive normal guarded report publication and reopening. Optional setup
+persists the interpreter and both required asset directories. The
+[connected acceptance](qa/FACIAL-EXPRESSION-ACCEPTANCE.md) and
+[runtime acceptance](qa/FACIAL-RUNTIME-ACCEPTANCE.md) distinguish this enabled
+route from automatic camera processing, future temporal review and empirical
+model/construct qualification. No identity tracking or mental-state inference
+is added by displaying the native category labels.
+
+The automatic-capture integration preserves the original named processing
+decision, frozen settings, source chunks, assembly and any received withdrawal;
+later manual permission remains a separate researcher attestation. Its
+[camera analysis contract](architecture/CAMERA-ANALYSIS-CONTRACT.md) and tested
+new helpers are connected to the production queue. Its
+[joined acceptance](qa/CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md) covers original
+permission, automatic native processing, exact exports, interruption and restart,
+with separate independent native agreement on the encoded synthetic camera feed.
+[Participant code preservation](architecture/PARTICIPANT-RUNTIME-PRESERVATION.md)
+now has connected publication, assignment, routing, browser recovery and backup
+checks, plus [researcher provenance review](qa/PARTICIPANT-CODE-PROVENANCE-ACCEPTANCE.md). It pins
+generic browser code only for new releases, preserves historical unknowns, and
+keeps recovery available
+without relaxing study-data or run authorization. Browser assets alone do not
+preserve the complete server compiler or scientific execution environment.
+
 
 **Connected workflow continuation, 24 September 2026:** complete question/scale
 distributions and paired-person figures now read verified complete saved evidence
@@ -55,9 +90,10 @@ respiration/EMG axes retain distinct labels and exact saved-window identities.
 Whole-recording EDA review now has connected source/export/restart acceptance,
 with first full numerical verification moved to a supervised process and fresh
 source authority retained. This wave does not complete all capabilities.
-Dedicated Brohn response-window SC-IAT and a separately pinned
-local facial-output route are the next method integrations. Their candidate
-probes alone do not enable participant collection or scientific interpretation. New EMG artifacts preserve the unit-converted pre-cleaning
+Dedicated Brohn response-window SC-IAT now has connected source/import/cohort
+and restart acceptance, including an independent102-check source/scoring audit; the
+optional local facial-output route has the scoped acceptance linked above.
+Neither route establishes physical timing or construct validity. New EMG artifacts preserve the unit-converted pre-cleaning
 input separately from cleaned voltage and the RMS envelope; historical artifacts
 without that input must display its absence rather than reconstruct it.
 
@@ -203,7 +239,8 @@ non-RT profiles are unchanged. Future imports/cohorts must consume per-metric
 eligibility and retain these exact denominators; see
 [implicit import/cohort contract](qa/IMPLICIT-IMPORT-COHORT-CONTRACT.md).
 
-The five registered task profiles now have a source-bound trial-summary importer:
+The registered task profiles, now including a separately named response-window
+SC-IAT, have a source-bound trial-summary importer:
 original CSV/TSV, an immutable protocol registry with exact compiled tables, saved
 study revision and explicit first/final-response semantics. Pure compatibility
 checks113 and native complete-journal/export/reimport checks15 pass. Storage,

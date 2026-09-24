@@ -122,7 +122,7 @@ brohn_validate_dataset_mapping <- function(dataset) {
   } else brohn_stop("This recording can be retained in the library, but its analysis adapter is still being integrated. No generic score will be substituted.")
   invisible(dataset)
 }
-brohn_queue_dataset <- function(store, id, revision = NULL, force = FALSE, prepared_id = NULL) {
+brohn_queue_dataset <- function(store, id, revision = NULL, force = FALSE, prepared_id = NULL, camera_mode = "manual") {
   record <- brohn_get_entity(store, "dataset", id, revision)
   brohn_require(!is.null(record), "Dataset revision is unavailable.")
   brohn_require(record$body$status %in% c("accepted", "analysed"), "Inspect and confirm the source mapping before analysis.")
@@ -140,6 +140,10 @@ brohn_queue_dataset <- function(store, id, revision = NULL, force = FALSE, prepa
     lineage <- brohn_audio_extraction_lineage(store, record, verify = FALSE)
     if (!is.null(lineage)) request$derived_audio_lineage <- lineage
   } else brohn_require(!identical(record$body$source_provenance$acquisition,"video_audio_extraction"), "Load the video audio source module before analysing this derived recording.")
+  if(brohn_is_facial_profile(record$body$metadata)) {
+    authority<-brohn_camera_analysis_resolve(store,record,camera_mode,verify=FALSE)
+    if(!is.null(authority))request$camera_analysis_authority<-authority
+  }
   key <- paste0("dataset:", brohn_hash(request), if (force) paste0(":", brohn_id("rerun")) else "")
   brohn_enqueue_job(store, "analyse_dataset", request, key, prepared_id = prepared_id)
 }

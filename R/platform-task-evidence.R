@@ -25,6 +25,15 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
   code <- function(value) if (is.null(value)) "" else if (is.character(value)) value else brohn_json(value)
   rows <- lapply(seq_along(trials), function(i) {
     response <- terminal[[i]]$payload$data
+    if (identical(task$profile, "sciat-brohn-response-window-im100/1.0")) {
+      # Interchange aliases for the existing explicit first-response contract;
+      # no correction key or latency is invented for an error or omission.
+      response <- list(outcome = if (response$outcome == "omission") "timeout" else if (isTRUE(response$correct)) "correct" else "incorrect",
+        response_code = response$response_code, first_correct = isTRUE(response$correct),
+        first_response_ms = response$response_ms,
+        final_code = if (isTRUE(response$correct)) response$response_code else NULL,
+        final_correct_ms = if (isTRUE(response$correct)) response$response_ms else NULL)
+    }
     list(participant_id = brohn_default(run$participant_alias, run$id), participant_linkage = code(isTRUE(run$participant_alias_supplied)),
       session_id = run$id, attempt_id = step$id, protocol_id = registry_id, presentation_index = as.character(i),
       trial_id = trials[[i]]$id, presented = "true", outcome = response$outcome,
@@ -42,7 +51,9 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
     declarations = list(source_software = NULL, source_rt_definition = "first_and_final_correct_ms_from_target_onset",
       terminal_response_rule = if (brohn_task_profile(task$profile)$kind %in% c("iat", "biat"))
         "corrected_response_or_fixed_deadline" else "first_response_or_fixed_deadline",
-      note = "The original collection renderer code version is not recorded by this protocol. Current validation code is not a collection-time version."))
+      note = paste("The original collection renderer code version is not recorded by this protocol. Current validation code is not a collection-time version.",
+        if (identical(task$profile, "sciat-brohn-response-window-im100/1.0"))
+          "SC-IAT final-correct interchange fields repeat only a correct first response; errors and omissions have no final-correct value. Full native key/feedback observations remain in the original session journal." else "")))
 }
 brohn_task_run_evidence <- function(store, run_id, study_id, project_id, task_id) {
   # Exact parent/project gate precedes the full private run read. Only explicitly

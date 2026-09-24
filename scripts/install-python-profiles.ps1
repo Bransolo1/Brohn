@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)][string]$PythonPath,
     [Parameter(Mandatory = $true)][string]$Destination,
-    [Parameter(Mandatory = $true)][ValidateSet('methods','acquisition','vision-audio','segmentation')][string[]]$Profiles
+    [Parameter(Mandatory = $true)][ValidateSet('methods','acquisition','vision-audio','segmentation','facial-au')][string[]]$Profiles
 )
 $ErrorActionPreference = 'Stop'
 $repository = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
@@ -32,6 +32,7 @@ $requirements = @{
     'acquisition' = 'scripts/readiness/requirements-acquisition.txt'
     'vision-audio' = 'scripts/readiness/requirements-media.txt'
     'segmentation' = 'scripts/readiness/requirements-segmentation.txt'
+    'facial-au' = 'scripts/readiness/requirements-facial-au.txt'
 }
 $Profiles = @($Profiles | Select-Object -Unique)
 foreach ($profile in $Profiles) {

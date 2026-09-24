@@ -1,8 +1,14 @@
 # John: Brohn development handoff
 
+**Paused checkpoint — 24 September 2026:** the owner requested this source
+handoff to `Bransolo1/Brohn` on `main`. Read [the workstream](WORKSTREAM.md) for
+delivered changes, ordered next steps and restart rules. The broad build goal is
+paused, not complete. Do not automatically continue from historical active-build
+instructions. A later explicit development request can resume scoped work.
+
 **Start here — 24 September 2026:** read the
 [current workflow continuation](qa/INTEGRATED-WORKFLOWS-20260924.md),
-[latest checkpoint](qa/PUBLICATION-CHECKPOINT-20260924.md),
+[latest checkpoint](qa/PUBLICATION-SCIAT-FACIAL-20260924.md),
 [current status](../STATUS.md), [master architecture](MASTER-ARCHITECTURE.md),
 [remaining work](KNOWN-GAPS.md) and [build manifest](preparation/build-manifest.json).
 Use the [local installation guide](operations/LOCAL-INSTALLATION.md) to set up
@@ -20,8 +26,16 @@ tables and export journey. Derived-audio reports, plots, intervals and complete
 WAV downloads now enforce original-source authority. EMG review and the final
 respiration/EMG axes and saved-history fixes now have connected evidence.
 Whole-recording EDA now has connected source/export/restart and bounded
-responsiveness evidence. Dedicated SC-IAT and optional native facial outputs
-remain active; read their exact status before enabling or changing a procedure.
+responsiveness evidence. Optional local facial AU/native-category processing now
+passes its connected researcher journey; read [the acceptance](qa/FACIAL-EXPRESSION-ACCEPTANCE.md)
+and [runtime setup](qa/FACIAL-RUNTIME-ACCEPTANCE.md) before enabling it. Dedicated
+Brohn response-window SC-IAT now passes its [connected journey](qa/SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md),
+including four complete administrations, omitted/fast responses, exact summary
+reimports, reviewed comparison and restart. The independent source/scoring oracle
+passes 102 checks; 13 jobs succeeded without duplicate rescoring. Automatic camera
+analysis and preserved participant-code delivery are now connected. Their joined
+browser, researcher-review and reference status is recorded in the checkpoint. Read their
+current architecture contracts before changing either route.
 Audio waveform/spectrogram and event-EDA review also have connected evidence
 in the workflow ledger. Follow that ledger's separate source versions and
 retained failures; publication or passing one journey does not close the roadmap.

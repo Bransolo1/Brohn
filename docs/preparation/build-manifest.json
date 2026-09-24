@@ -3,13 +3,13 @@
   "prepared_at": "2026-09-08",
   "product": "Brohn",
   "checkpoint": {
-    "status": "implementing",
+    "status": "paused",
     "date": "2026-09-24",
-    "publication_handoff": "docs/qa/PUBLICATION-CHECKPOINT-20260924.md",
-    "handoff": "docs/PRODUCT-COMPLETION-BACKLOG.md",
+    "publication_handoff": "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md",
+    "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "Ongoing end-to-end delivery. Connected collection history, session recovery, explicit distributions, paired-person plots, linked signals/events, audio waveform/spectrogram, event-EDA overlays, responsive exact values and local setup have scoped evidence. Video audio derivation, exact answer/session navigation, original-source access and isolated-team local hosted acceptance now have scoped evidence. Respiration cycle and EMG input/envelope/burst review are connected, with subsequent current-source axis/history checks. Continuous EDA has connected review and bounded background-verification evidence. Dedicated SC-IAT, optional facial native outputs and remaining package/release gates stay open."
+    "note": "Paused by the owner on 24 September 2026; publish the checkpoint to Bransolo1/Brohn main. Full 50-capability/17-package scope remains unfinished; package implementation statuses below describe technical progress, not permission to continue. Connected study/history, physiology/explicit review, isolated-team local hosting and setup evidence remain recorded. This checkpoint adds named response-window SC-IAT (102 independent checks,13 jobs), optional pinned facial processing/setup, original-permission automatic camera analysis (17 browser groups including7 scans,6 native-reference checks), preferred upload recovery, preserved participant code (74 browser checks plus20 final recovery checks), and source-bound researcher provenance. Next proposed work: portable fresh-clone end-to-end QA, saved facial temporal review and explicitly mapped media review. No new implementation for those proposals began before pause; see docs/WORKSTREAM.md."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -82,7 +82,8 @@
         "tests/platform-ingestion-integration.R",
         "tests/platform-ingestion-views.R",
         "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
-        "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md"
+        "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
+        "docs/qa/CANONICAL-ENCODER-PERFORMANCE.md"
       ],
       "acceptance": [
         "Duplicate allocation/job requests are idempotent; conflicts are explicit.",
@@ -219,7 +220,10 @@
         "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-ACCEPTANCE.md",
         "docs/qa/PARTICIPANT-EQUIPMENT-PREFLIGHT-PEER-REVIEW.md",
         "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md",
-        "docs/qa/MIXED-STUDY-JOURNEY.md"
+        "docs/qa/MIXED-STUDY-JOURNEY.md",
+        "docs/architecture/PARTICIPANT-RUNTIME-PRESERVATION.md",
+        "docs/qa/PARTICIPANT-RUNTIME-BROWSER-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-PREFERRED-BATCH-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Preload, focus loss, failed asset, reload, disconnect and duplicate event delivery have declared outcomes.",
@@ -452,7 +456,11 @@
         "tests/platform-task-cohort-views.R",
         "docs/methods/IMPLICIT-TASK-COHORT.md",
         "docs/qa/TASK-PLOT-ACCEPTANCE.md",
-        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md"
+        "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md",
+        "R/platform-sciat-window.R",
+        "R/platform-sciat-window-delivery.R",
+        "R/platform-sciat-window-score.R",
+        "docs/qa/SCIAT-WINDOW-RESEARCHER-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
@@ -486,7 +494,11 @@
         "docs/qa/RESEARCHER-QA.md",
         "docs/qa/VIDEO-GEOMETRY-SAVED-REFERENCE.md",
         "docs/qa/VIDEO-GEOMETRY-RESEARCHER-JOURNEY.md",
-        "docs/qa/VIDEO-GEOMETRY-RESOURCE-ACCEPTANCE.md"
+        "docs/qa/VIDEO-GEOMETRY-RESOURCE-ACCEPTANCE.md",
+        "docs/qa/FACIAL-EXPRESSION-ACCEPTANCE.md",
+        "docs/qa/FACIAL-RUNTIME-ACCEPTANCE.md",
+        "docs/architecture/CAMERA-ANALYSIS-CONTRACT.md",
+        "docs/qa/CAMERA-FACIAL-AUTOMATION-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Frame timestamps, no-face/occlusion/multi-face states and model hashes survive import to report.",
@@ -649,7 +661,8 @@
         "docs/qa/SIGNAL-REVIEW-RESPONSIVENESS.md",
         "docs/qa/INTEGRATED-WORKFLOWS-20260924.md",
         "docs/qa/PAIRED-RESULTS-ACCEPTANCE.md",
-        "docs/qa/SESSION-RESOLUTION-ACCEPTANCE.md"
+        "docs/qa/SESSION-RESOLUTION-ACCEPTANCE.md",
+        "docs/qa/PARTICIPANT-CODE-PROVENANCE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -713,7 +726,10 @@
         "scripts/qa-catalog.json",
         "docs/qa/RUNNING-CHECKS.md",
         "docs/qa/LOCAL-CONFIGURATION-ACCEPTANCE.md",
-        "docs/qa/LOCAL-SETUP-ACCEPTANCE.md"
+        "docs/qa/LOCAL-SETUP-ACCEPTANCE.md",
+        "docs/qa/FACIAL-RUNTIME-ACCEPTANCE.md",
+        "docs/WORKSTREAM.md",
+        "docs/qa/PUBLICATION-SCIAT-FACIAL-20260924.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

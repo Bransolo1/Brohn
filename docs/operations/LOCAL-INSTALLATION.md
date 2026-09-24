@@ -153,7 +153,7 @@ a failed check preserves its previous bytes.
 
 Optional scientific environments can be saved with
 `-ScientificProfiles @{methods='C:/Brohn/tooling/methods-venv/Scripts/python.exe'}`
-(also `acquisition`, `vision-audio` and `segmentation`). Every supplied profile
+(also `acquisition`, `vision-audio`, `segmentation` and optional `facial-au`). Every supplied profile
 must pass its actual dependency/model check before the configuration is saved.
 The configuration records paths and ports, not participant data or credentials.
 This command connects an installed runtime; it does not install dependencies.
@@ -196,7 +196,18 @@ assume that starting only a Shiny page also started collection and processing.
 | vision-audio | `scripts/readiness/requirements-media.txt` | `BROHN_PYTHON_VISION_AUDIO` | Imported/captured video geometry and audio analysis |
 | segmentation | `scripts/readiness/requirements-segmentation.txt` | `BROHN_PYTHON_SEGMENTATION` | Reviewed point-assisted AOI proposals |
 
-Keep all four environments separate. The working vision and segmentation
+| facial-au | `scripts/readiness/requirements-facial-au.txt` | `BROHN_PYTHON_FACIAL_AU` | Optional local facial AU and native expression-category outputs |
+
+The optional facial profile also needs explicitly prepared model and shared FFmpeg
+assets. Save them using `-RuntimeAssets @{facial_models='C:/Brohn/facial-models';
+facial_ffmpeg='C:/Brohn/shared-ffmpeg/bin'}` with `configure-local.ps1` or
+`setup-local.ps1`. Both directories are required when that profile is selected;
+the launcher restores their scoped environment settings after use. Read the
+[exact facial installation and model contract](../methods/FACIAL-AU-NATIVE-PROFILE.md)
+and [executed configuration checks](../qa/FACIAL-RUNTIME-ACCEPTANCE.md).
+Readiness verifies pinned bytes and library imports without running a model.
+
+Keep all five environments separate. The working vision and segmentation
 profiles deliberately use different MediaPipe and NumPy versions. A newer
 version is not a compatible replacement unless its relevant contracts pass.
 

@@ -1,7 +1,7 @@
 # Read-only setup report. No application store is opened and no packages, model
 # weights, device sessions or network connections are created by these checks.
 .brohn_doctor_source <- tryCatch(sys.frame(1)$ofile, error = function(e) NULL)
-.brohn_doctor_profiles <- c("methods", "acquisition", "vision-audio", "segmentation")
+.brohn_doctor_profiles <- c("methods", "acquisition", "vision-audio", "segmentation", "facial-au")
 
 brohn_doctor_json <- function(x) {
   # A dependency-free fallback must still report a completely missing R library.

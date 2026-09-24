@@ -18,7 +18,7 @@ brohn_material_target <- function(design, kind, material_id, task_id = NULL) {
   brohn_require(brohn_valid_id(task_id), "Choose the task that owns this exemplar.")
   i <- match(task_id, brohn_ids(design$blocks)); brohn_require(!is.na(i), "This task no longer exists.")
   task <- design$blocks[[i]]
-  brohn_require(brohn_task_profile(task$profile)$kind %in% c("iat", "biat", "aat"), "This reaction-time procedure uses its own fixed cues.")
+  brohn_require(brohn_task_profile(task$profile)$kind %in% c("iat", "biat", "aat", "sciat_window"), "This reaction-time procedure uses its own fixed cues.")
   j <- match(material_id, brohn_ids(task$materials)); brohn_require(!is.na(j), "This task exemplar no longer exists.")
   list(kind = kind, task_index = i, index = j, material = task$materials[[j]], title = paste(task$title, "- exemplar", j), stage = "Tasks")
 }

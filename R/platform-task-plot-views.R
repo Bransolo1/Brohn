@@ -35,7 +35,7 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
     lapply(xt,function(t)text(sx(t),bottom+44,.brohn_tp_num(t),`text-anchor`="middle")),marks,
     text((left+right)/2,326,if(histogram)"Recorded latency (ms)"else if(people)"Person index (saved order)"else"Frozen trial position",`text-anchor`="middle"),
     text(width/2,353,if(histogram)paste(view$available,"values in 20 equal-width bins")else if(people)"One dot per person; square = unavailable"else"Circle = correct first; diamond = wrong first",`text-anchor`="middle"),
-    if(!histogram&&!people)text(width/2,373,"Square = unavailable; grey = unscored",`text-anchor`="middle"),
+    if(!histogram&&!people)text(width/2,373,"Grey = non-scoring position; square = unavailable",`text-anchor`="middle"),
     shiny::tags$text(x=17,y=(top+bottom)/2,transform=paste0("rotate(-90 17 ",(top+bottom)/2,")"),fill="#edf2f2",`font-size`=12,`text-anchor`="middle",
       if(histogram)"Recorded values"else view$unit))
 }
@@ -60,7 +60,7 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
     shiny::h3(if(people)"Individual values"else"Trial chronology"),
     if(length(view$rows)).brohn_tp_figure(view,"chronology")else shiny::p(brohn_default(m$summary$reason,"No source positions are available.")),
     if(!people)shiny::tags$details(shiny::tags$summary("Read the trial markers and scoring boundaries"),
-      shiny::p("Circles mark correct first responses; diamonds mark a wrong first response, including later corrections. Grey markers indicate practice or other unscored positions. Squares below the axis mark unavailable latency, including omissions and absent source rows; they are not zero."),
+      shiny::p("Circles mark correct first responses; diamonds mark a wrong first response, including later corrections. Grey markers indicate positions outside the scoring plan, such as practice or warm-up. A coloured point can still be excluded from scoring; inspect its disposition below. Squares below the axis mark unavailable latency, including omissions and absent source rows; they are not zero."),
       shiny::p("Plot inclusion does not establish scoring inclusion. Out-of-window values remain visible; the separate disposition and scoring-latency fields retain exclusion, correction and clipping evidence.")),
     if(!people)shiny::tagList(shiny::h3("Latency distribution"),if(view$available).brohn_tp_figure(view,"distribution")else shiny::p("No recorded latency is available for this selection."),
       shiny::p("Twenty equal-width bins use every selected recorded value. The first bin includes both edges; later bins exclude the lower edge and include the upper edge. Missing values do not enter bins."),

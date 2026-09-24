@@ -10,7 +10,10 @@ brohn_task_profiles <- function() list(
   "rt-deary-liewald-simple/1.0" = list(label = "Simple reaction time", kind = "simple_rt", trial_counts = c(8L,20L),
     source = "https://doi.org/10.3758/s13428-010-0024-1", scoring = "Correct first-response test latencies; no age norms or cognitive labels"),
   "rt-deary-liewald-choice/1.0" = list(label = "Four-choice reaction time", kind = "choice_rt", trial_counts = c(8L,40L),
-    source = "https://doi.org/10.3758/s13428-010-0024-1", scoring = "Correct first-response test latencies and errors; no age norms or cognitive labels"))
+    source = "https://doi.org/10.3758/s13428-010-0024-1", scoring = "Correct first-response test latencies and errors; no age norms or cognitive labels"),
+  "sciat-brohn-response-window-im100/1.0" = list(label = "Brohn response-window SC-IAT", kind = "sciat_window", trial_counts = c(24L,72L,24L,72L),
+    source = "https://myscp.org/wp-content/uploads/2023/03/2007-proceedings.pdf#page=149",
+    scoring = "One target with two attributes; first response within 1.5 seconds. Named Brohn procedure with explicit error replacement, omissions and test-only D scoring."))
 
 brohn_task_profile <- function(profile) {
   result <- brohn_task_profiles()[[profile]]
@@ -27,6 +30,7 @@ brohn_task_clone <- function(block) {
 }
 
 brohn_task_new <- function(profile = "iat-gnb2003-d1/1.0", title = NULL, id = brohn_id("task")) {
+  if (identical(profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_new(brohn_default(title, "Sample Brohn response-window SC-IAT"), id))
   definition <- brohn_task_profile(profile)
   roles <- if (definition$kind %in% c("simple_rt","choice_rt")) character() else
     c("target_a","target_b", if (definition$kind != "aat") c("attribute_positive","attribute_negative"), if (definition$kind == "biat") c("warmup_a","warmup_b"))
@@ -44,6 +48,7 @@ brohn_task_new <- function(profile = "iat-gnb2003-d1/1.0", title = NULL, id = br
 }
 
 brohn_task_validate <- function(block) {
+  if (identical(block$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_validate(block))
   brohn_fields(block,c("schema_version","id","title","profile","seed","origin","materials_rights","categories","materials","settings"),label="Task block")
   brohn_require(identical(block$schema_version,"brohn-task-block/1.0") && brohn_valid_id(block$id) && nchar(block$id)<=80 && brohn_text(block$title,240),"Invalid task schema, identity or title (task IDs allow 80 characters to preserve trial-ID space).")
   definition <- brohn_task_profile(block$profile)
@@ -80,6 +85,7 @@ brohn_task_validate <- function(block) {
 }
 
 brohn_task_compile <- function(block, allocation_index=1L) {
+  if (identical(block$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_compile(block, allocation_index))
   brohn_task_validate(block)
   brohn_require(brohn_number(allocation_index,1,1e9,TRUE),"Task allocation index must be a positive whole integer.")
   definition <- brohn_task_profile(block$profile)
@@ -224,6 +230,7 @@ brohn_iat_d1 <- function(trials, completed=TRUE, biat=FALSE) {
 }
 
 brohn_task_score <- function(compiled,responses,completed=TRUE) {
+  if (identical(compiled$profile, "sciat-brohn-response-window-im100/1.0")) return(brohn_sciat_window_score(compiled, responses, completed))
   brohn_require(identical(compiled$schema_version,"brohn-compiled-task/1.0") && brohn_array(responses),"Task scorer needs a compiled task and response-record array.")
   definition<-brohn_task_profile(compiled$profile)
   trials<-Filter(function(step)step$type=="task_trial",compiled$timeline)

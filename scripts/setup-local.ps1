@@ -10,6 +10,7 @@ param(
     [ValidateRange(1024,65535)][int]$Port=3838,
     [ValidateRange(1024,65535)][int]$ParticipantPort=3840,
     [hashtable]$ScientificProfiles=@{},
+    [hashtable]$RuntimeAssets=@{},
     [switch]$ReplaceConfiguration
 )
 $ErrorActionPreference='Stop'
@@ -39,10 +40,19 @@ if (Test-Path -LiteralPath $InstallationRoot) {
 if ((Test-Path -LiteralPath $configuration) -and -not $ReplaceConfiguration) { throw 'This installation is already configured. Use run-local.ps1, or -ReplaceConfiguration to check and update it.' }
 $validatedProfiles=@{}
 foreach ($profile in $ScientificProfiles.Keys) {
-    if ($profile -cnotin @('methods','acquisition','vision-audio','segmentation')) { throw "Unknown scientific profile: $profile" }
+    if ($profile -cnotin @('methods','acquisition','vision-audio','segmentation','facial-au')) { throw "Unknown scientific profile: $profile" }
     $validatedProfiles[$profile]=Resolve-BrohnConfiguredPath $ScientificProfiles[$profile] $invocation 'Leaf' $profile
 }
 $ScientificProfiles=$validatedProfiles
+$validatedAssets=@{}
+foreach ($asset in $RuntimeAssets.Keys) {
+    if ($asset -cnotin @('facial_models','facial_ffmpeg')) { throw "Unknown runtime asset: $asset" }
+    $validatedAssets[$asset]=Resolve-BrohnConfiguredPath $RuntimeAssets[$asset] $invocation 'Container' $asset
+}
+$RuntimeAssets=$validatedAssets
+if ($ScientificProfiles.ContainsKey('facial-au') -and (-not $RuntimeAssets.ContainsKey('facial_models') -or -not $RuntimeAssets.ContainsKey('facial_ffmpeg'))) {
+    throw 'Supply RuntimeAssets facial_models and facial_ffmpeg when configuring facial-au.'
+}
 $lockfile=Get-Content -LiteralPath (Join-Path $project 'renv.lock') -Raw -Encoding UTF8 | ConvertFrom-Json
 # Validate executable identity before creating the installation directory.
 $previousLocale=[Environment]::GetEnvironmentVariable('LC_ALL','Process')
@@ -86,7 +96,7 @@ try {
         & $RscriptPath --vanilla scripts/build-publication-guard.R $CompilerPath $native
         if ($LASTEXITCODE -ne 0) { throw 'Report storage preparation failed. No configuration was saved.' }
         Write-Output '4/4 Checking and saving this installation...'
-        & (Join-Path $PSScriptRoot 'configure-local.ps1') -RscriptPath $RscriptPath -LibraryPath $library -PublicationPythonPath $PythonPath -PublicationManifestPath $values.BROHN_PUBLICATION_NATIVE_MANIFEST -Workspace $Workspace -ConfigurationPath $configuration -Port $Port -ParticipantPort $ParticipantPort -ScientificProfiles $ScientificProfiles -Replace:$ReplaceConfiguration
+        & (Join-Path $PSScriptRoot 'configure-local.ps1') -RscriptPath $RscriptPath -LibraryPath $library -PublicationPythonPath $PythonPath -PublicationManifestPath $values.BROHN_PUBLICATION_NATIVE_MANIFEST -Workspace $Workspace -ConfigurationPath $configuration -Port $Port -ParticipantPort $ParticipantPort -ScientificProfiles $ScientificProfiles -RuntimeAssets $RuntimeAssets -Replace:$ReplaceConfiguration
         $receipt=@{schema='brohn-setup-result/1.0';status='ready';checked_at=[DateTime]::UtcNow.ToString('o');configuration=$configuration;lock_sha256=(Get-FileHash -LiteralPath 'renv.lock' -Algorithm SHA256).Hash.ToLowerInvariant();r_version=$rVersion;scientific_profiles=@($ScientificProfiles.Keys);scope='Fresh separate dependency library and checked local configuration; not a clean-machine, device or scientific qualification.'}
         [IO.File]::WriteAllText(($attempt+'.json'),($receipt | ConvertTo-Json -Depth 5),[Text.UTF8Encoding]::new($false))
         Write-Output 'Brohn is ready to launch. No research workspace or service was started by setup.'

@@ -9,6 +9,7 @@ param(
     [ValidateRange(1024,65535)][int]$Port = 3838,
     [ValidateRange(1024,65535)][int]$ParticipantPort = 3840,
     [hashtable]$ScientificProfiles = @{},
+    [hashtable]$RuntimeAssets = @{},
     [switch]$Replace
 )
 $ErrorActionPreference = 'Stop'
@@ -23,8 +24,16 @@ if ((Test-Path -LiteralPath $ConfigurationPath) -and -not $Replace) { throw 'Thi
 if (-not $PortabilityPythonPath) { $PortabilityPythonPath = $PublicationPythonPath }
 $profiles = [ordered]@{}
 foreach ($profile in $ScientificProfiles.Keys) {
-    if ($profile -cnotin @('methods','acquisition','vision-audio','segmentation')) { throw "Unknown scientific profile: $profile" }
+    if ($profile -cnotin @('methods','acquisition','vision-audio','segmentation','facial-au')) { throw "Unknown scientific profile: $profile" }
     $profiles[$profile] = Resolve-BrohnConfiguredPath $ScientificProfiles[$profile] $invocationRoot 'Leaf' $profile
+}
+$assets = [ordered]@{}
+foreach ($asset in $RuntimeAssets.Keys) {
+    if ($asset -cnotin @('facial_models','facial_ffmpeg')) { throw "Unknown runtime asset: $asset" }
+    $assets[$asset] = Resolve-BrohnConfiguredPath $RuntimeAssets[$asset] $invocationRoot 'Container' $asset
+}
+if ($profiles.Contains('facial-au') -and (-not $assets.Contains('facial_models') -or -not $assets.Contains('facial_ffmpeg'))) {
+    throw 'Supply RuntimeAssets facial_models and facial_ffmpeg when configuring facial-au.'
 }
 $configuration = [ordered]@{
     schema = 'brohn-local-installation/1.0'
@@ -36,6 +45,7 @@ $configuration = [ordered]@{
     workspace = Resolve-BrohnConfiguredPath $Workspace $invocationRoot '' 'workspace'
     ports = @{researcher = $Port; participant = $ParticipantPort}
     scientific = $profiles
+    assets = $assets
     checked_at = [DateTime]::UtcNow.ToString('o')
 }
 if ($Port -eq $ParticipantPort) { throw 'Researcher and participant ports must be distinct.' }

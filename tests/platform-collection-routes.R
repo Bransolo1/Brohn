@@ -8,7 +8,13 @@ local({
   check("selected gaze needs its separate recording",!get("gaze")$participant_link && get("gaze")$state=="Separate gaze recording")
   check("an empty questionnaire is not advertised as collected",!get("questionnaire")$participant_link && get("questionnaire")$state=="Add questions")
   check("selected IAT without a block needs configuration",!get("iat")$participant_link && get("iat")$state=="Configure a task")
-  check("unimplemented expression and webcam gaze remain explicit",grepl("not enabled",get("facial_expression")$state) && grepl("not enabled",get("webcam_gaze")$state))
+  check("facial processing is reviewed rather than automatic emotion collection",get("facial_expression")$state=="Reviewed video facial processing" && !get("facial_expression")$participant_link && grepl("do not establish feelings",get("facial_expression")$detail))
+  check("calibrated webcam gaze remains separate",grepl("not enabled",get("webcam_gaze")$state))
+  design$measures<-list("sciat_window"); routes<-brohn_collection_routes(design)
+  check("SC-IAT intention requires a configured task",get("sciat_window")$state=="Configure a task" && !get("sciat_window")$participant_link)
+  design$blocks<-list(brohn_task_new("sciat-brohn-response-window-im100/1.0")); routes<-brohn_collection_routes(design)
+  check("saved SC-IAT provides the participant collection route",get("sciat_window")$participant_link)
+  design$blocks<-list(); design$measures<-list("eog"); routes<-brohn_collection_routes(design)
   check("retained EOG does not claim an analysis",get("eog")$state=="Source retention available")
   design$measures<-list("temperature","movement"); routes<-brohn_collection_routes(design)
   check("temperature offers its calibrated import route",get("temperature")$state=="Calibrated temperature import" && !get("temperature")$participant_link)
@@ -26,5 +32,11 @@ local({
   check("geometry automation follows the actual frozen policy",get("facial_geometry")$participant_link)
   html<-htmltools::renderTags(brohn_collection_routes_ui(design))$html
   check("rendered checklist describes sources without claiming hardware readiness",grepl("Collection routes",html,fixed=TRUE) && !grepl("Device connected|Hardware ready",html))
+  for(profile in names(brohn_task_profiles())) {
+    one<-brohn_new_design("Collection registry contract");one$measures<-list();one$questions<-list();one$camera<-NULL
+    one$blocks<-list(brohn_task_new(profile));actual<-brohn_collection_routes(one)
+    check(paste("Every registered procedure has exactly one participant collection route",profile),
+      length(actual)==1L&&isTRUE(actual[[1L]]$participant_link)&&nzchar(actual[[1L]]$label))
+  }
   cat(sprintf("PASS: %d collection route assertions\n",checks))
 })

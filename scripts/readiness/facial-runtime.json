@@ -1,0 +1,373 @@
+{
+  "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-23-14-55/ffmpeg-n8.1.3-win64-lgpl-shared-8.1.zip",
+  "sha256": "60a055792e88524db437a78c2fcd4471536abf3b30d34fae1249591c00e13432",
+  "bytes": 80085041,
+  "license": "LGPL shared build; source and license included in archive",
+  "files": [
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/avcodec-62.dll",
+      "bytes": 90163712,
+      "sha256": "de2b633e3cfe5dc9894ec7a46971c3f42cf98c252cee00b480c5b059893edb2a",
+      "relative_path": "avcodec-62.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/avdevice-62.dll",
+      "bytes": 4047872,
+      "sha256": "dee33782c04f005cab5862d6eadfbae316f499fe3b0a43c8e86bc50721d4341d",
+      "relative_path": "avdevice-62.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/avfilter-11.dll",
+      "bytes": 30822912,
+      "sha256": "4287a5eee4a38e9215387b27cb0673928c26a735d596a4423869d1def82466cf",
+      "relative_path": "avfilter-11.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/avformat-62.dll",
+      "bytes": 22626816,
+      "sha256": "037ab87badf5e46988f4296b5c02a49dc94f1f5a67f0fdacdcf8d09ac09bf909",
+      "relative_path": "avformat-62.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/avutil-60.dll",
+      "bytes": 3011584,
+      "sha256": "deb21d2184fde923040efe76bc7407adeb73b4eabc77520d2bbca686f434197c",
+      "relative_path": "avutil-60.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/ffmpeg.exe",
+      "bytes": 538624,
+      "sha256": "1d95ab0aa371f2e5c6e644085973c9526a0687b419505200c0ad154d28b10f7c",
+      "relative_path": "ffmpeg.exe"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/ffplay.exe",
+      "bytes": 18720768,
+      "sha256": "5ddadadca62c6243f9ad6b3e47079c461728c8b2a277afe1bcf1f581dee0f0bd",
+      "relative_path": "ffplay.exe"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/ffprobe.exe",
+      "bytes": 224768,
+      "sha256": "9a73c199f0b857aaeb6c3706afa80f1d9c089a0c6388b8185db9f72308ea2d2c",
+      "relative_path": "ffprobe.exe"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/swresample-6.dll",
+      "bytes": 733696,
+      "sha256": "fe8289c015b864f35532980e4c1381b9bd503202c91a6edc42196b6f557a8c43",
+      "relative_path": "swresample-6.dll"
+    },
+    {
+      "path": "ffmpeg-n8.1.3-win64-lgpl-shared-8.1/bin/swscale-9.dll",
+      "bytes": 12823040,
+      "sha256": "3ade74b25c8d5c5fc8a6f759a41a30a36ecb44288f69b80d9c06e00ef506efa9",
+      "relative_path": "swscale-9.dll"
+    }
+  ],
+  "schema": "brohn-facial-native-runtime/1.0",
+  "system": "Windows",
+  "python": "3.12",
+  "package_sources": [
+    {
+      "path": "feat/__init__.py",
+      "sha256": "b71cf3a198c539822f3fcb0d475a6027374b6c0db80d9aa599226be1d614ec50"
+    },
+    {
+      "path": "feat/au_detectors/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/au_detectors/MP_Blendshapes/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/au_detectors/MP_Blendshapes/MP_Blendshapes_test.py",
+      "sha256": "64b333c42c63596060402686e9bd4de546b0dc63e322fae9fc062cbd6d3475db"
+    },
+    {
+      "path": "feat/au_detectors/StatLearning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/au_detectors/StatLearning/SL_test.py",
+      "sha256": "40d2cd1b51d4d79ec5a330ecea9a8384c4712e28a314e8362daaa69e9f0ed1ee"
+    },
+    {
+      "path": "feat/data.py",
+      "sha256": "8d6ae66434dae365c90966722eb9bc1708801b8bc3aee7a9c2be036eae80112d"
+    },
+    {
+      "path": "feat/detector.py",
+      "sha256": "8a76fdcdc2e8a5ca9ecbc6cd2f7154f6f8fd20069fa5df083c702709f67d14dc"
+    },
+    {
+      "path": "feat/detector_v2.py",
+      "sha256": "8a3f895d39886701f5a7f51148b8622d6b4bf8716a1937a1c61a1d4b64452345"
+    },
+    {
+      "path": "feat/emo_detectors/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/emo_detectors/ResMaskNet/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/emo_detectors/ResMaskNet/resmasknet_test.py",
+      "sha256": "6a839a0905e5f2120504a9f157aa026b47f4041b45a076282d6e9f928b36dacf"
+    },
+    {
+      "path": "feat/emo_detectors/StatLearning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/emo_detectors/StatLearning/EmoSL_test.py",
+      "sha256": "a3f94dcc7fc7d3ff5839f9ef50108cd9d5185fe6305d2894bec6822e6d957f7a"
+    },
+    {
+      "path": "feat/evaluation/__init__.py",
+      "sha256": "d1f100f2b4a9d39840108fd6c21f2f0adb11d43b86673ae1586b2c1408b24940"
+    },
+    {
+      "path": "feat/evaluation/datasets.py",
+      "sha256": "a39bd7d6d58d31c14154193469be9763c1ade27dfb9b82a29a07951becc0c291"
+    },
+    {
+      "path": "feat/evaluation/metrics.py",
+      "sha256": "2f227cf907d799914a35dbcb1aafb61b070cf547dba0dd82a8e183585a92fc90"
+    },
+    {
+      "path": "feat/evaluation/runner.py",
+      "sha256": "af87db11e214230c1e3f9a628df42a7124fde8a4769baac8be5c8f63b3211559"
+    },
+    {
+      "path": "feat/evaluation/subsets.py",
+      "sha256": "fdf832ebaefd2bb29ecfed240e4e0b2f43d1ca5897608d46226b78198d1588f3"
+    },
+    {
+      "path": "feat/face_detectors/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/face_detectors/FaceBoxes/__init__.py",
+      "sha256": "30f44dd640439df6f673533f0218c4a232fd30cbb6890c32c0a59500bbf1c5df"
+    },
+    {
+      "path": "feat/face_detectors/FaceBoxes/FaceBoxes_model.py",
+      "sha256": "79c3c73f7262224b025e86c44b456d420c856019167c4d79c9fa073a32aad2fe"
+    },
+    {
+      "path": "feat/face_detectors/FaceBoxes/FaceBoxes_test.py",
+      "sha256": "f31b71b84371930fb092d2875890ffc3dcbd89f9ca038da416b443f2c4fee1eb"
+    },
+    {
+      "path": "feat/face_detectors/MTCNN/__init__.py",
+      "sha256": "5a00835d4f43973ae17bf5386456e68c1a90013ffbd0c0515171946ac5ffaa5a"
+    },
+    {
+      "path": "feat/face_detectors/MTCNN/MTCNN_model.py",
+      "sha256": "b023a01f4f6c1fe2b50c64ac15af17fca3be18b28d5e392e067039d1836e8840"
+    },
+    {
+      "path": "feat/face_detectors/MTCNN/MTCNN_test.py",
+      "sha256": "526ba07d023963c807dd8958434fe83aca61aa1b6c8894feee282fb7590c8b9f"
+    },
+    {
+      "path": "feat/face_detectors/MTCNN/MTCNN_utils.py",
+      "sha256": "4c15714ddec11cf0db848e9eb7f6478d197c3edc9f5bc1bd894640ecce82469f"
+    },
+    {
+      "path": "feat/face_detectors/Retinaface/__init__.py",
+      "sha256": "0cfa919385f8a23d5d561fa69bc22472659e5b460df50ea2061f4cc28ddd7be2"
+    },
+    {
+      "path": "feat/face_detectors/Retinaface/Retinaface_model.py",
+      "sha256": "3db3c8bb14c1859654198329b53350adefd32400ef0c6e58c333827d27728a31"
+    },
+    {
+      "path": "feat/face_detectors/Retinaface/Retinaface_test.py",
+      "sha256": "21b8fee3d6abaad898df0d162b3e290e93da945699221f1af114866d5c171da0"
+    },
+    {
+      "path": "feat/facepose_detectors/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/generalized_rcnn.py",
+      "sha256": "b5728afeb7e50e1e33dd247bda9c09984273b8a1281c2863d3b8647e48bb778d"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/image_operations.py",
+      "sha256": "085deaa9390ac410944446b65cd9857a1be5d5f41af4ed8848d0ef2c6e1ba27b"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/models.py",
+      "sha256": "04327ad3fcce3801676e6ec92b166a5d17c32700618076d82d9169eb0709aead"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/pose_operations.py",
+      "sha256": "e4598edb00c99b86af5b6ad0d56d0931f13741c71fb5b02575580327f9c819c4"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/deps/rpn.py",
+      "sha256": "496cf3d01ad0f22cb5f8c670a58839514c01f1359083e283323c6be86485e695"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/img2pose_model.py",
+      "sha256": "c0bf73d49e8ca05f19d3a34a424b535d1659184b532e5a9374b741828ba88aa5"
+    },
+    {
+      "path": "feat/facepose_detectors/img2pose/img2pose_test.py",
+      "sha256": "625e3f2f565445a8bc75d727d2ace2cc4c6fffc3eb19a2bb3a9e37e7a12c14b3"
+    },
+    {
+      "path": "feat/gaze_detectors/__init__.py",
+      "sha256": "480c4950fcf489f38d63ab6e0530894af8ead372068732e7ce104326451475e7"
+    },
+    {
+      "path": "feat/gaze_detectors/l2cs/__init__.py",
+      "sha256": "27f2580d290e3dbc42b27527521d44cf006c18082a55c8246a9f368483c94136"
+    },
+    {
+      "path": "feat/gaze_detectors/l2cs/l2cs_model.py",
+      "sha256": "f0bf9e217379cbfdafa96fa7436531d03142da2d875a2cf727918fb7e4870f90"
+    },
+    {
+      "path": "feat/identity_detectors/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/identity_detectors/arcface/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/identity_detectors/arcface/arcface_model.py",
+      "sha256": "8ece4fbaa2fb3d3cad0997a138095d11b36d87d0e0e5018d1bb2d3b0872d6d53"
+    },
+    {
+      "path": "feat/identity_detectors/arcface/iresnet.py",
+      "sha256": "9c71d7c7eabeb9123093fd820e1b68bcc1c26e71c2597556fe21b4684bf0f650"
+    },
+    {
+      "path": "feat/identity_detectors/facenet/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "feat/identity_detectors/facenet/facenet_model.py",
+      "sha256": "ac63c9c0a160e950b615dda283474a7815b50d54fb5a030a38c828e264fa561a"
+    },
+    {
+      "path": "feat/identity_detectors/facenet/facenet_test.py",
+      "sha256": "151926b0d6a51d418c3ecc4a39b14d8884c5e0a56dd7446b4f31f48a322b612b"
+    },
+    {
+      "path": "feat/landmark_detectors/__init__.py",
+      "sha256": "fea3e4121a9d79323933874dc115905466e4d9d91a484ca2663ccd2206d7672a"
+    },
+    {
+      "path": "feat/landmark_detectors/basenet_test.py",
+      "sha256": "d9f211dde2f3a9079572508ac85d190d439253be9b3f5c245ee8278c22d76c72"
+    },
+    {
+      "path": "feat/landmark_detectors/mobilefacenet_test.py",
+      "sha256": "a53182e0c058e254b68c8917ab5db437406b05fde6026b2c342d7a4c04874904"
+    },
+    {
+      "path": "feat/landmark_detectors/pfld_compressed_test.py",
+      "sha256": "8d537cefeee562c97cecc56ceb049a3f1697e13d31c74a0f5f21c829aefff194"
+    },
+    {
+      "path": "feat/MPDetector.py",
+      "sha256": "cd5bf872663b1e7cb6053c6c8a9fe0ea5392194dde2f7b095ee23816e9117d32"
+    },
+    {
+      "path": "feat/multitask/__init__.py",
+      "sha256": "c45d53108e86137a68ae7fdbb0a9628d32fce6dc23f3fd6f081c5c7613b8f8a3"
+    },
+    {
+      "path": "feat/multitask/heads_v3.py",
+      "sha256": "0279667634bf31943a592b923d563023679376e0245f26fb6994756361908ecd"
+    },
+    {
+      "path": "feat/multitask/inference.py",
+      "sha256": "4e913d6178e5dfe52df5494691a7cfff2c59a8f6da33ce51471fa4e8eef9ae03"
+    },
+    {
+      "path": "feat/multitask/model_v2.py",
+      "sha256": "17e24230eabed0f3d6c3c06d927cfe4e5ceb9d60cbe64a8caa63f5327961bdb5"
+    },
+    {
+      "path": "feat/plotting.py",
+      "sha256": "0225d995abcb7e2e6528d24bdddf6e095868ba18434771993950437cd4462e71"
+    },
+    {
+      "path": "feat/pretrained.py",
+      "sha256": "d05ed24baab7707b8daaf76ee61fa3cd33c11bb7192c8d9f00b11abfd2cfbef0"
+    },
+    {
+      "path": "feat/transforms.py",
+      "sha256": "a8ecca760642be0a163b0ea1b28d36710dcb21d3d3da5e555d9ea44dc712912f"
+    },
+    {
+      "path": "feat/utils/__init__.py",
+      "sha256": "9334d73ee3429e623b1304ef349d210be3ba4450eef549a696371d408335ee57"
+    },
+    {
+      "path": "feat/utils/blendshape_to_au.py",
+      "sha256": "a9d65ccd69c682a45fedef9a60f31b68fcbe2422e7102e230c07694e6fc113c3"
+    },
+    {
+      "path": "feat/utils/face_gaze.py",
+      "sha256": "8d868c76f87157a01d478f3544105da158fe87cc4eee5e263df316bd0765d2b5"
+    },
+    {
+      "path": "feat/utils/face_mask.py",
+      "sha256": "15c51c7132449efda059c21e6158c340c1623c31d74168cc6a83e7b3871579e7"
+    },
+    {
+      "path": "feat/utils/face_pose.py",
+      "sha256": "a4aef93018f24ec76fba9a746d0b3f28676486b787adcd2958de67032301c205"
+    },
+    {
+      "path": "feat/utils/face_pose_mlp.py",
+      "sha256": "68faa52505ae442953a565b5053efcfc8b94737f77de5f6ae61783d2338cf743"
+    },
+    {
+      "path": "feat/utils/geometry.py",
+      "sha256": "826820bf0ee7df2eb89892c864b1133b1107cff241155df9cad96032a467b6b9"
+    },
+    {
+      "path": "feat/utils/image_operations.py",
+      "sha256": "153632b17a63073cee98051715d6c06b959f41b765cc2352a43a4d25f17b501e"
+    },
+    {
+      "path": "feat/utils/io.py",
+      "sha256": "494d2b616f9415e7b20ac03844fd9d7a4be8c13e0a2a30c20a5dd2727bee2e65"
+    },
+    {
+      "path": "feat/utils/mp_plotting.py",
+      "sha256": "644b5171937b7e019970acdb1ce65abc70091380bbb1fda67d5f0b50a7e0eeac"
+    },
+    {
+      "path": "feat/utils/muscle_to_landmark.py",
+      "sha256": "525bc979e3c593486c7339bbcbaed78b65eaffddde1ecec8d5259e91d0b7c669"
+    },
+    {
+      "path": "feat/utils/stats.py",
+      "sha256": "bf9aea1531117aebae0c5ef03d0a8cc1a2263630100877bca76c26cdc47aaedc"
+    },
+    {
+      "path": "feat/version.py",
+      "sha256": "ffb3a541d6d590ae2369dd022dda48d20ad3fb31006feaa01661f9985cc35e20"
+    }
+  ]
+}

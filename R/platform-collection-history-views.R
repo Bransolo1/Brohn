@@ -35,7 +35,7 @@ brohn_collection_inventory_ui <- function(body, offset=0L,store=NULL,project_id=
     shiny::div(class="brohn-toolbar",if(offset>0L)brohn_command("Previous collection sessions","collection_session_page",offset-40L),
       if(offset+40L<total)brohn_command("Next collection sessions","collection_session_page",offset+40L)))
 }
-brohn_install_collection_history <- function(input,output,session,store,state,current,attempt,message,refresh,prepare_download) {
+brohn_install_collection_history <- function(input,output,session,store,state,current,attempt,message,refresh,prepare_download,open_runtime=NULL) {
   selected <- shiny::reactiveVal(NULL); offsets <- new.env(parent=emptyenv())
   valid_study <- function(study_id=NULL) {
     brohn_require(identical(state$page,"study") && state$stage %in% c("Collect","History") && !is.null(current$study) &&
@@ -68,6 +68,9 @@ brohn_install_collection_history <- function(input,output,session,store,state,cu
       shiny::div(id="collection-review-content",
         if(frozen)shiny::p(paste("Finalized",body$finalized_at,"\u00b7 this saved inventory will not change when you collect or analyse again.")),
         brohn_collection_inventory_ui(body,s$offset,store,s$project_id,frozen),
+        if(is.function(open_runtime))shiny::tags$details(shiny::tags$summary("Participant code"),
+          shiny::p("Review the release's separate code-preservation record. This does not change the saved collection inventory."),
+          shiny::actionButton("collection_participant_code","Review collection participant code")),
         if(!frozen && length(s$review$blockers))shiny::div(class="brohn-alert brohn-alert-warning",role="status",
           shiny::h3("Resolve before finalizing"),shiny::tags$ul(lapply(s$review$blockers,function(b)shiny::tags$li(b$text))),
           shiny::div(class="brohn-toolbar",shiny::actionButton("collection_review_sessions","Review participant sessions"),shiny::actionButton("collection_review_jobs","Open processing"))),
@@ -102,6 +105,10 @@ brohn_install_collection_history <- function(input,output,session,store,state,cu
   shiny::observeEvent(input$collection_history_page,attempt(function(){study<-valid_study();brohn_require(brohn_number(input$collection_history_page,0,1e8,TRUE)&&input$collection_history_page%%20==0,"Choose a collection history page.")
     offsets[[paste(study$id,identical(state$stage,"History"),sep=":")]]<-input$collection_history_page;refresh()}))
   shiny::observeEvent(input$collection_close_modal,{selected(NULL);shiny::removeModal()})
+  shiny::observeEvent(input$collection_participant_code,attempt(function(){
+    s<-selection();brohn_require(is.function(open_runtime),"Participant-code review is unavailable.")
+    open_runtime(list(kind="release",id=s$release_id,study_id=s$study_id),return_view=function()show(selection()))
+  }))
   shiny::observeEvent(input$collection_review_sessions,attempt(function(){selection();selected(NULL);shiny::removeModal();state$stage<-"Review";refresh()}))
   shiny::observeEvent(input$collection_review_jobs,attempt(function(){selection();selected(NULL);shiny::removeModal();state$page<-"activity";refresh()}))
   frozen <- function(){s<-selection();brohn_require(!is.null(s$record),"Open a finalized collection first.");record<-brohn_collection_record(store,s$release_id,s$study_id,s$project_id)

@@ -1,9 +1,11 @@
 args <- commandArgs(trailingOnly = TRUE)
 arg <- function(name) {i <- match(name, args); if (is.na(i) || i == length(args)) stop("Missing ", name); args[[i+1L]]}
-sources <- paste0("R/", c("platform-core", "platform-question-materials", "platform-welcome", "platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-analysis", "platform-gaze", "platform-vision", "platform-neural", "platform-multimodal", "platform-jobs"), ".R")
+sources <- paste0("R/", c("platform-core", "platform-question-materials", "platform-welcome", "platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-runner-assets", "platform-analysis", "platform-gaze", "platform-vision", "platform-facial-expression", "platform-neural", "platform-multimodal", "platform-jobs"), ".R")
 for (optional in c("R/platform-analysis-plan.R", "R/platform-eda-events.R", "R/platform-headers.R", "R/platform-physiology-artifacts.R", "R/platform-signal.R", "R/platform-task-delivery.R", "R/platform-backup.R", "R/platform-interchange.R")) if (file.exists(optional)) sources <- c(sources, optional)
 if (file.exists("R/platform-capture.R")) sources <- c(sources, "R/platform-capture.R")
+sources <- c(sources,"R/platform-camera-analysis.R")
 sources <- c(sources, "R/platform-participant-equipment.R")
+sources <- c(sources, "R/platform-sciat-window-candidate.R", "R/platform-sciat-window.R", "R/platform-sciat-window-delivery.R", "R/platform-sciat-window-score.R")
 sources <- c(sources, "R/platform-peripheral.R", "R/platform-peripheral-synthesis.R")
 sources <- c(sources, "R/platform-ingestion.R")
 if (file.exists("R/platform-scales.R")) sources <- c(sources, "R/platform-scales.R")
@@ -24,6 +26,10 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
+if(!is.null(input$camera_analysis_authority)) {
+  identity<-c(identity,hash_sources("R/platform-camera-analysis-store.R"))
+  source("R/platform-camera-analysis-store.R",encoding="UTF-8")
+}
 if (identical(input$operation,"answer_session")) {
   identity <- c(identity, hash_sources("R/platform-answer-session.R"))
   source("R/platform-answer-session.R", encoding="UTF-8")
@@ -65,7 +71,9 @@ if (identical(input$operation, "extract_stream")) {
   identity <- c(identity, hash_sources("R/platform-stream-curation.R"))
   source("R/platform-stream-curation.R", encoding = "UTF-8")
 }
-native_sources <- if (identical(input$operation, "segment_aoi") || identical(input$dataset$modality, "video")) "scripts/workers/vision.py" else
+native_sources <- if (identical(input$operation,"analyse_dataset") && identical(input$dataset$modality,"video") && brohn_is_facial_profile(input$dataset$metadata))
+  c("scripts/workers/facial_expression.py", "scripts/workers/vision.py", "scripts/readiness/facial-models.json", "scripts/readiness/facial-runtime.json", "scripts/readiness/requirements-facial-au.txt") else
+  if (identical(input$operation, "segment_aoi") || identical(input$dataset$modality, "video")) "scripts/workers/vision.py" else
   if (input$operation %in% c("audio_tracks","audio_extract")) "scripts/workers/audio_extract.py" else
   if (identical(input$operation, "audio_review")) "scripts/workers/audio_review.py" else
   if (identical(input$operation, "eda_review")) c("scripts/workers/eda_review.py", "scripts/workers/physiology_artifacts.py") else

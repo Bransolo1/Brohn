@@ -39,7 +39,7 @@ brohn_run_protocol_ui <- function(snapshot, offset = 0L) {
     shiny::div(class = "brohn-toolbar", if (offset > 0L) command("Previous assigned steps", offset-40L),
       if (offset+40L < total) command("Next assigned steps", offset+40L)))
 }
-brohn_install_run_protocol_ui <- function(input, output, session, store, current, state, attempt, prepare_download) {
+brohn_install_run_protocol_ui <- function(input, output, session, store, current, state, attempt, prepare_download, open_runtime = NULL) {
   review <- new.env(parent = emptyenv()); review$selection <- NULL; review$offset <- 0L
   selected <- function(require_bound = TRUE) {
     selection <- review$selection
@@ -51,7 +51,11 @@ brohn_install_run_protocol_ui <- function(input, output, session, store, current
     snapshot
   }
   show <- function(snapshot) shiny::showModal(shiny::modalDialog(title = "Assigned participant protocol", size = "l", easyClose = FALSE,
-    brohn_run_protocol_ui(snapshot, review$offset), brohn_participant_equipment_evidence_ui(brohn_equipment_evidence(store, snapshot$run$id)), footer = shiny::tagList(
+    brohn_run_protocol_ui(snapshot, review$offset),
+    if(is.function(open_runtime))shiny::tags$details(shiny::tags$summary("Participant code"),
+      shiny::p("Inspect the separate record of application code assigned to this session."),
+      shiny::actionButton("run_protocol_code","Review assigned participant code")),
+    brohn_participant_equipment_evidence_ui(brohn_equipment_evidence(store, snapshot$run$id)), footer = shiny::tagList(
       shiny::downloadButton("run_protocol_download", "Download assigned protocol JSON", icon = NULL),
       shiny::actionButton("close_run_protocol", "Close protocol"))))
   shiny::observeEvent(input$view_run_protocol, attempt(function() {
@@ -71,6 +75,10 @@ brohn_install_run_protocol_ui <- function(input, output, session, store, current
     review$offset <- as.integer(command$offset); show(snapshot)
   }))
   shiny::observeEvent(input$close_run_protocol, {review$selection <- NULL; shiny::removeModal()})
+  shiny::observeEvent(input$run_protocol_code, attempt(function() {
+    snapshot<-selected();brohn_require(is.function(open_runtime),"Participant-code review is unavailable.")
+    open_runtime(list(kind="run",id=snapshot$run$id,study_id=snapshot$run$study_id),return_view=function()show(selected(FALSE)))
+  }))
   output$run_protocol_download <- shiny::downloadHandler(filename = function() paste0(selected()$run$id, "-assigned-protocol.json"),
     contentType = "application/json", content = function(file) prepare_download(function() brohn_export_run_protocol(selected(), file)))
   output$run_equipment_download <- shiny::downloadHandler(filename = function() paste0(selected()$run$id, "-equipment-evidence.json"),

@@ -50,6 +50,8 @@
     params = list(out$id))$n[[1]]
   if (include_token) out$token <- DBI::dbGetQuery(store$con,
     "SELECT token FROM delivery_deployment_credentials WHERE deployment_id=?", params = list(out$id))$token[[1]]
+  if (exists("brohn_runner_assets_read", mode = "function"))
+    out$participant_runtime <- brohn_runner_assets_read(store, out$id)[c("status", "manifest_hash")]
   out
 }
 brohn_deployment <- function(store, id, include_token = TRUE) {
@@ -68,7 +70,16 @@ brohn_deployments <- function(store, study_id = NULL) {
   .brohn_delivery_require(identical(brohn_hash(design), row$design_hash[[1]]), "Released design integrity check failed.", 500, "integrity")
   design
 }
-brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_required = FALSE) {
+brohn_publish <- function(store, study_id, origin = "pilot", quota = 100, alias_required = FALSE,
+    participant_static_root = "www/participant") {
+  create <- function() .brohn_publish_release(store, study_id, origin, quota, alias_required)
+  if (!exists("brohn_runner_assets_publish", mode = "function")) return(create())
+  prepared <- brohn_runner_assets_prepare(participant_static_root)
+  brohn_runner_assets_publish(store, prepared, create)
+}
+# Internal legacy publication body; the application always uses brohn_publish
+# to preserve browser dependencies in the same transaction as the new release.
+.brohn_publish_release <- function(store, study_id, origin = "pilot", quota = 100, alias_required = FALSE) {
   .brohn_delivery_schema(store)
   .brohn_delivery_require(origin %in% c("pilot", "live", "sample") && length(origin) == 1L, "Choose pilot, live or sample origin.")
   .brohn_delivery_require(brohn_number(quota, 1, 1000000, TRUE) && is.logical(alias_required) &&
@@ -196,6 +207,7 @@ brohn_run_events <- function(store, run_id) {
     "WHERE r.id=? AND c.token_hash=?"), params = list(run_id, .brohn_delivery_hash(token)))
   .brohn_delivery_require(nrow(row) == 1L, "Run access was not accepted.", 401, "unauthorized")
   if (!is.null(store$hosted_profile)) brohn_hosted_require_run(store, run_id)
+  if (exists("brohn_runner_run_read", mode = "function")) brohn_runner_run_read(store, run_id)
   row
 }
 .brohn_delivery_start_result <- function(store, row, token) {
@@ -206,13 +218,14 @@ brohn_run_events <- function(store, run_id) {
   state <- .brohn_delivery_replay(run$protocol, events, context)
   secret <- DBI::dbGetQuery(store$con, "SELECT token FROM delivery_run_credentials WHERE run_id=?", params = list(run$id))$token[[1]]
   result <- list(run_id = run$id, access_token = secret, protocol = .brohn_delivery_protocol_urls(run$protocol, token),
+    deployment = list(id = run$deployment_id, title = run$protocol$design$title, origin = run$origin),
     expected_sequence = run$acked_sequence + 1L, completion_status = run$completion_status,
     resume = .brohn_delivery_resume(state, run$protocol, context, run$acked_sequence))
   if (!is.null(context)) result$protocol_hash <- context$protocol_hash
   if (exists("brohn_session_resolution_participant", mode = "function")) result$researcher_resolution <- brohn_session_resolution_participant(store, run$id)
   result
 }
-.brohn_delivery_start <- function(store, token, request) {
+.brohn_delivery_start <- function(store, token, request, runtime_hash = NULL, require_runtime = FALSE) {
   brohn_fields(request, c("consented", "client_id", "operation_id"), "participant_alias", "Start request")
   .brohn_delivery_require(is.logical(request$consented) && length(request$consented) == 1L && !is.na(request$consented),
     "The consent choice must be explicit.", 403, "consent_required")
@@ -225,6 +238,8 @@ brohn_run_events <- function(store, run_id) {
     deployment <- .brohn_delivery_deployment_row(store, token = token)
     .brohn_delivery_require(nrow(deployment) == 1L, "Study link was not found.", 404, "not_found")
     id <- deployment$id[[1]]
+    runtime <- if (exists("brohn_runner_start_identity", mode = "function"))
+      brohn_runner_start_identity(store, id, runtime_hash, require_runtime) else NULL
     design <- .brohn_delivery_design(deployment)
     .brohn_delivery_require(!isTRUE(design$consent$required) || identical(request$consented, TRUE),
       "Consent is required before a session can start.", 403, "consent_required")
@@ -234,6 +249,7 @@ brohn_run_events <- function(store, run_id) {
     start_hash <- .brohn_delivery_hash(.brohn_store_json(list(client_id = request$client_id, consented = request$consented, participant_alias = alias)))
     if (nrow(old)) {
       .brohn_delivery_require(identical(old$start_hash[[1]], start_hash), "This client identity belongs to a different start request.", 409, "client_conflict")
+      if (!is.null(runtime)) brohn_runner_run_read(store, old$id[[1L]])
       return(.brohn_delivery_start_result(store, old, token))
     }
     .brohn_delivery_require(deployment$status[[1]] == "open", "This study is not accepting new participants.", 409, deployment$status[[1]])
@@ -252,6 +268,7 @@ brohn_run_events <- function(store, run_id) {
       request$client_id, start_hash, json, .brohn_delivery_hash(json), count + 1L, stamp, stamp, as.integer(alias_supplied)))
     DBI::dbExecute(store$con, "INSERT INTO delivery_run_credentials VALUES (?,?,?)",
       params = list(run_id, secret, .brohn_delivery_hash(secret)))
+    if (!is.null(runtime)) brohn_runner_bind_run(store, run_id, runtime)
     if (!is.null(store$hosted_profile)) brohn_hosted_register_run(store, run_id, id)
     .brohn_store_audit(store, "participant.started", run_id, list(deployment_id = id, allocation_index = count + 1L,
       origin = deployment$origin[[1]], consented = request$consented, consent_required = design$consent$required,
@@ -421,14 +438,16 @@ brohn_run_events <- function(store, run_id) {
     state$active <- list(id = step$id, instance = instance, time = time)
     if (identical(step$type, "task")) {
       .brohn_delivery_require(exists(".brohn_task_delivery_new", mode = "function"), "The task receiver is unavailable.", 503, "task_receiver_unavailable")
-      state$active$task <- .brohn_task_delivery_new()
+      state$active$task <- if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0"))
+        .brohn_sciat_window_delivery_new() else .brohn_task_delivery_new()
     }
     return(state)
   }
   .brohn_delivery_require(!is.null(state$active) && identical(state$active$id, step$id), "This step has not been started.", 409, "step_order")
   if (event$type == "task_event") {
     .brohn_delivery_require(identical(step$type, "task"), "Task evidence must belong to a frozen task step.", 422, "foreign_reference")
-    return(.brohn_task_delivery_apply(state, event, step))
+    return(if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0"))
+      .brohn_sciat_window_delivery_apply(state, event, step) else .brohn_task_delivery_apply(state, event, step))
   }
   if (event$type == "response") {
     if (step$type=="maxdiff") {
@@ -452,7 +471,10 @@ brohn_run_events <- function(store, run_id) {
     .brohn_delivery_require(!is.null(state$responses[[step$id]]), "A required question has not been answered.", 422, "required_answer")
   if (step$type=="maxdiff") .brohn_delivery_require(!is.null(state$responses[[step$id]]),
     "Finish this choice set with a complete answer or an explicit permitted omission.",422,"required_answer")
-  if (identical(step$type, "task")) .brohn_task_delivery_complete(state, step, event)
+  if (identical(step$type, "task")) {
+    if (identical(step$task$profile, "sciat-brohn-response-window-im100/1.0")) .brohn_sciat_window_delivery_complete(state, step, event)
+    else .brohn_task_delivery_complete(state, step, event)
+  }
   if (step$type %in% c("baseline", "fixation", "stimulus")) {
     .brohn_delivery_require(identical(instance, state$active$instance),
       "A timed step was interrupted by a page restart. End this run as interrupted and start a fresh session.", 409, "timed_step_interrupted")
@@ -609,15 +631,21 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       path <- brohn_default(req$PATH_INFO, "/")
       method <- toupper(brohn_default(req$REQUEST_METHOD, "GET"))
       .brohn_delivery_require(method %in% c("GET", "POST"), "HTTP method is not supported.", 405, "method")
+      if (exists("brohn_runner_route", mode = "function")) {
+        preserved <- brohn_runner_route(store, req)
+        if (!is.null(preserved)) return(preserved)
+      }
       if (method == "GET" && identical(path, "/api/health")) return(.brohn_delivery_response(value =
         list(service = "brohn-participant", schema = "brohn-delivery/1.0", workspace_id = store$workspace_id)))
       routes <- c("/participant" = "index.html", "/participant/" = "index.html", "/participant/runner.js" = "runner.js", "/participant/tasks.js" = "tasks.js", "/participant/camera.js" = "camera.js", "/participant/runner.css" = "runner.css", "/participant/maxdiff.js" = "maxdiff.js", "/participant/maxdiff.css" = "maxdiff.css",
         "/participant/equipment.js" = "equipment.js", "/participant/audio-worklet.js" = "audio-worklet.js",
+        "/participant/sciat-window-core.js" = "sciat-window-core.js", "/participant/sciat-window.js" = "sciat-window.js",
+        "/participant/event-batch.js" = "event-batch.js",
         "/participant/question-revision.js" = "question-revision.js", "/participant/illustrations.js" = "illustrations.js", "/participant/welcome.js" = "welcome.js", "/participant/welcome.css" = "welcome.css", "/brand/brohn-app-icon.svg" = "../brand/brohn-app-icon.svg")
       if (method == "GET" && path %in% names(routes)) {
         filename <- routes[[path]]; file <- file.path(static_root, filename)
         .brohn_delivery_require(file.exists(file) && !dir.exists(file), "Participant interface is unavailable.", 503, "interface_unavailable")
-        type <- if (filename %in% c("runner.js", "tasks.js", "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "question-revision.js", "illustrations.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
+        type <- if (filename %in% c("runner.js", "tasks.js", "sciat-window-core.js", "sciat-window.js", "event-batch.js", "camera.js", "equipment.js", "audio-worklet.js", "maxdiff.js", "question-revision.js", "illustrations.js", "welcome.js")) "application/javascript; charset=utf-8" else if (filename %in% c("runner.css", "maxdiff.css", "welcome.css")) "text/css; charset=utf-8" else if (filename == "../brand/brohn-app-icon.svg") "image/svg+xml" else "text/html; charset=utf-8"
         return(.brohn_delivery_response(body = readBin(file, "raw", n = file.info(file)$size), type = type))
       }
       parts <- strsplit(sub("^/", "", path), "/", fixed = TRUE)[[1]]
@@ -662,7 +690,8 @@ brohn_delivery_app <- function(store, static_root = "www/participant") {
       }
       .brohn_delivery_require(method == "POST" && operation %in% c("start", "events", "finish", "questionnaire_state", "camera_start", "camera_chunk", "camera_finish"), "Route was not found.", 404, "not_found")
       request <- .brohn_delivery_request(req)
-      if (operation == "start") value <- .brohn_delivery_start(store, identity, request)
+      if (operation == "start") value <- .brohn_delivery_start(store, identity, request,
+        runtime_hash = req$HTTP_X_BROHN_PARTICIPANT_RUNTIME, require_runtime = TRUE)
       else {
         authorization <- brohn_default(req$HTTP_AUTHORIZATION, "")
         .brohn_delivery_require(grepl("^Bearer [a-f0-9]{64}$", authorization), "Run access is required.", 401, "unauthorized")

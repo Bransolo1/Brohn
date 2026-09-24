@@ -4,6 +4,10 @@
   const $ = id => document.getElementById(id);
   const content = $("content"), status = $("save-status"), errorBox = $("error");
   const token = new URL(location.href).searchParams.get("token") || new URL(location.href).searchParams.get("study");
+  // Preserve pending JSON operations exactly. Code identity travels separately
+  // and comes from the immutable release URL, never the current installation.
+  const runtimePath = location.pathname.match(/^\/api\/runtime\/([a-f0-9]{64})\/([a-f0-9]{64})\/participant\/index\.html$/);
+  const runtimeHash = runtimePath && runtimePath[1] === token ? runtimePath[2] : null;
   const uid = () => crypto.randomUUID ? crypto.randomUUID() : "id-" + Array.from(crypto.getRandomValues(new Uint8Array(16)), n => n.toString(16).padStart(2, "0")).join("");
   const segmentId = uid();
   let db, entry, record, busy = false, syncing = false, finished = false, interrupted = false;
@@ -129,6 +133,7 @@
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
       const headers = {Accept: "application/json"};
+      if (runtimeHash && path === `/api/start/${token}`) headers["X-Brohn-Participant-Runtime"] = runtimeHash;
       if (body !== undefined) headers["Content-Type"] = "application/json";
       if (auth && record?.access_token) headers.Authorization = `Bearer ${record.access_token}`;
       const response = await fetch(path, {method: body === undefined ? "GET" : "POST", headers,
@@ -271,8 +276,13 @@
     const policy = record.protocol.design.camera;
     screen("Camera setup", policy.consent_text);
     content.append(node("p", policy.retention_text), node("p", `This study requests ${policy.audio ? "camera and microphone" : "camera without microphone"} recording, up to ${policy.width} by ${policy.height} pixels and ${policy.frame_rate} frames per second.`, {class: "hint"}));
+    const facialAnalysis = policy.schema === "brohn-camera-policy/1.1";
+    if (facialAnalysis) {
+      const settings = policy.analysis_settings;
+      content.append(node("p", policy.analysis_notice), node("p", `The planned analysis starts at ${settings.start_s} seconds and ends ${settings.end_s === null ? "at the end of the recording" : `at ${settings.end_s} seconds`}, using every ${settings.frame_stride} frame(s).`, {class: "hint"}));
+    }
     const agreement = node("input", null, {type: "checkbox", id: "camera-agreement"}), label = node("label", null, {for: "camera-agreement", class: "choice"});
-    label.append(agreement, node("span", `I agree to the ${policy.audio ? "camera and microphone" : "camera"} recording described above.`)); content.append(label);
+    label.append(agreement, node("span", `I agree to the ${policy.audio ? "camera and microphone" : "camera"} recording${facialAnalysis ? " and local facial analysis" : ""} described above.`)); content.append(label);
     const video = node("video", null, {id: "camera-preview", muted: "", playsinline: "", "aria-label": "Camera positioning preview", style: "display:block;max-width:100%;width:480px;border-radius:12px"});
     let preparing = false, decision = null, declineButton = null;
     const setupActive = () => !cameraReady && !endingRequested && !record.finish && !finished;
@@ -343,6 +353,10 @@
   }
   function setSaveStatus() {
     if (!record?.run_id || finished) return;
+    if (record.delivery_blocked && record.delivery_error?.retained) {
+      status.textContent = "Upload paused. Complete responses remain saved in this browser; contact the researcher for recovery.";
+      return;
+    }
     status.textContent = pendingCount() ? "Responses saved in this browser. Waiting for the study service to confirm receipt." : "Responses received by the study service.";
   }
   function sync() {
@@ -355,22 +369,28 @@
     syncing = true; clearTimeout(timer); setSaveStatus();
     try {
       while (pendingCount()) {
+        if (!window.BrohnEventBatch?.select) {
+          const error = new Error("The complete-response upload helper is unavailable. Reload this page when connected; your saved responses remain in this browser.");
+          Object.assign(error, {code: "event_batcher_unavailable", permanent: true, retained: true}); throw error;
+        }
         if (!record.batch) {
           await persist(() => {
-            const events = record.events.filter(item => item.sequence > record.acked_sequence).slice(0, 100);
-            record.batch = {operation_id: uid(), first: events[0].sequence, last: events.at(-1).sequence};
+            const selected = window.BrohnEventBatch.select({events: record.events, ackedSequence: record.acked_sequence,
+              operationId: uid(), maxBytes: 3 * 1024 * 1024, preferredBytes: 1.5 * 1024 * 1024});
+            if (selected) record.batch = selected.batch;
           });
         }
         const batch = record.batch;
-        const result = await api(`/api/events/${encodeURIComponent(record.run_id)}`, {
-          operation_id: batch.operation_id,
-          events: record.events.filter(item => item.sequence >= batch.first && item.sequence <= batch.last)});
+        // Reconstruct the durably saved operation, including its exact bounds.
+        // An uncertain previous request is never silently split or renamed.
+        const selected = window.BrohnEventBatch.select({events: record.events, ackedSequence: record.acked_sequence, batch});
+        const result = await api(`/api/events/${encodeURIComponent(record.run_id)}`, selected.payload);
         if (!Number.isSafeInteger(result.acked_sequence) || result.acked_sequence < batch.last || result.acked_sequence >= record.next_sequence) {
           throw new Error("The study service returned an inconsistent receipt. Your local responses have been retained.");
         }
         const model = hasRevision() ? await revisionPacket(result.questionnaire, result.acked_sequence) : null;
         await persist(() => {
-          record.acked_sequence = result.acked_sequence; record.batch = null;
+          record.acked_sequence = result.acked_sequence; record.batch = null; record.delivery_error = null;
           if (model) saveRevisionModel(model);
         });
       }
@@ -396,7 +416,13 @@
     } catch (error) {
       if (record?.researcher_resolution || record?.hosted_access) return;
       status.textContent = "Saved in this browser. Delivery to the study service is still pending.";
-      if (error.permanent) { await persist(() => { record.delivery_blocked = true; }); showError(error); }
+      if (error.permanent) {
+        await persist(() => {
+          record.delivery_blocked = true;
+          if (error.retained) record.delivery_error = {code: error.code, message: error.message, retained: true};
+        });
+        showError(error);
+      }
       else timer = setTimeout(() => void sync(), 4000);
     } finally {
       syncing = false;
@@ -434,6 +460,7 @@
     $("withdraw").hidden = true;
     screen(outcome === "completed" ? "Saving your responses" : "Saving your partial session",
       outcome === "interrupted" ? "A timed part of the study was interrupted. It cannot be replayed as though the interruption had not occurred." : "Please keep this page open until the study service confirms receipt.");
+    if (record.delivery_error?.retained) showError(new Error(record.delivery_error.message));
     content.append(button("Retry saving", async () => { if (record) await persist(() => { record.delivery_blocked = false; }); await sync(); }));
     void sync();
   }
@@ -925,13 +952,14 @@
     await start();
   }
   async function showTask(step) {
-    if (!window.BrohnTasks?.run) return finish("interrupted", "task_renderer_unavailable");
+    const renderer = step.task.profile === "sciat-brohn-response-window-im100/1.0" ? window.BrohnSciatWindow : window.BrohnTasks;
+    if (!renderer?.run) return finish("interrupted", "task_renderer_unavailable");
     stopPresentation(); clearError(); onset = performance.now(); resumedStep = false;
     await persist(() => {record.step_state = "task";});
     await event("step_started", {resumed: false, task_id: step.task.id}, step, onset);
     taskController = new AbortController(); taskStop = null;
     try {
-      taskExecution = window.BrohnTasks.run({container: content, compiled: step.task, signal: taskController.signal, clockInstanceId: segmentId,
+      taskExecution = renderer.run({container: content, compiled: step.task, signal: taskController.signal, clockInstanceId: segmentId,
         emit: (kind, data) => event("task_event", {kind, data}, step),
         onCheckpoint: point => persist(() => {record.task_checkpoint = point;})});
       const result = await taskExecution;
@@ -983,8 +1011,10 @@
     try {
       if (!record?.pending_start) {
         record = {token, pending_start: {consented, participant_alias: participantAlias, client_id: uid(), operation_id: uid()}};
-        await persist();
       }
+      // A previous local write may have failed. Persist the same operation
+      // before every attempt so an uncertain response can always be recovered.
+      await persist();
       screen("Preparing your session", "Please wait while the study service creates your session.");
       const session = await api(`/api/start/${encodeURIComponent(token)}`, record.pending_start, false);
       if (!session.run_id || !session.access_token || !Array.isArray(session.protocol?.timeline) || !Number.isSafeInteger(session.expected_sequence) || session.expected_sequence < 1) throw new Error("The study service returned an incomplete session. Please contact your researcher.");
@@ -993,7 +1023,7 @@
       const recoveredIndex = recovery ? (recovery.next_step_id ? session.protocol.timeline.findIndex(step => step.id === recovery.next_step_id) : session.protocol.timeline.length) : 0;
       if (recoveredIndex < 0) throw new Error("The study service returned an unknown recovery point.");
       await persist(() => {
-        record = {token, deployment: entry.deployment, run_id: session.run_id, access_token: session.access_token, protocol: session.protocol,
+        record = {token, deployment: session.deployment || entry.deployment, run_id: session.run_id, access_token: session.access_token, protocol: session.protocol,
           ...(session.protocol.design.questionnaire_navigation ? {protocol_hash: session.protocol_hash, revision: {drafts: {}, pending: null, model: null}} : {}),
           next_sequence: session.expected_sequence, acked_sequence: session.expected_sequence - 1, events: [],
           answers: recovery ? {global: {...recovery.answers?.before, ...recovery.answers?.end}, stimuli: recovery.answers?.after_each || {}} : {global: {}, stimuli: {}},
@@ -1006,6 +1036,8 @@
         else await fetchRevisionState();
       }
       applyAppearance(record.protocol.design.appearance);
+      document.title = `${record.deployment.title} | Brohn study`;
+      $("study-origin").textContent = record.deployment.origin === "live" ? "" : `${record.deployment.origin || "pilot"} session`;
       if (session.researcher_resolution?.resolved) {await researcherResolved(session.researcher_resolution); return;}
       try { await preloadTimeline(); } catch (error) { await finish("interrupted", error.message); return; }
       const recoveringActive = recovery?.active_step_id && record.protocol.timeline.find(step => step.id === recovery.active_step_id);
@@ -1015,7 +1047,17 @@
         screen("Your existing session can be recovered", "Continue from the study service's saved untimed point. Previously received responses will not be submitted again.");
         content.append(button("Resume this session", () => enterStudy(true), true));
       } else { busy = false; await enterStudy(); }
-    } catch (error) { showError(error); content.append(button("Retry session setup", () => start(consented))); }
+    } catch (error) {
+      if (record?.run_id) {
+        screen("Your existing session needs attention", "Recover this session to continue from its saved progress.");
+        showError(error);
+        content.append(button("Recover this session", () => location.reload(), true));
+      } else {
+        screen("Session setup needs attention", "Your setup is unfinished. Review the message below before retrying.");
+        showError(error);
+        content.append(button("Retry session setup", () => start(consented), true));
+      }
+    }
     finally { busy = false; }
   }
   function welcomeScreen() {
@@ -1064,14 +1106,19 @@
     if (record?.hosted_access) {await hostedAccessEnded(record.hosted_access.code, record.hosted_access.message); return;}
     try { entry = await api(`/api/entry/${encodeURIComponent(token)}`, undefined, false); }
     catch (error) {
-      if (!record?.run_id) throw error;
-      entry = {deployment: record.deployment || {title: record.protocol.design.title, origin: "pilot"},
-        appearance: record.protocol.design.appearance, supported: true};
+      if (record?.run_id) {
+        entry = {deployment: record.deployment || {title: record.protocol.design.title, origin: "pilot"},
+          appearance: record.protocol.design.appearance, supported: true};
+      } else if (record?.pending_start) {
+        // Reconcile the exact uncertain request. The receiver allows only an
+        // already admitted run after recruitment closes; this grants no start.
+        entry = {deployment: {title: "Saved study session", origin: null}, supported: true};
+      } else throw error;
     }
     if (!entry.supported && !record?.run_id) throw new Error("This study is not available in this browser delivery profile. Please contact your researcher.");
     document.title = `${entry.deployment.title} | Brohn study`;
-    $("study-origin").textContent = entry.deployment.origin === "live" ? "" : `${entry.deployment.origin || "pilot"} session`;
-    applyAppearance(record?.protocol?.design?.appearance || entry.appearance);
+    $("study-origin").textContent = !entry.deployment.origin || entry.deployment.origin === "live" ? "" : `${entry.deployment.origin} session`;
+    if (record?.protocol?.design?.appearance || entry.appearance) applyAppearance(record?.protocol?.design?.appearance || entry.appearance);
     if (!record?.run_id && !record?.pending_start && entry.deployment.status !== "open") {
       const paused = entry.deployment.status === "paused";
       screen(paused ? "This study is paused" : "This study is closed",
@@ -1107,6 +1154,7 @@
     }
     if (record.finish) {
       screen("Your final receipt is pending", "Your responses remain saved in this browser. Retry delivery to confirm the final receipt.");
+      if (record.delivery_error?.retained) showError(new Error(record.delivery_error.message));
       content.append(button("Retry saving", async () => { await persist(() => { record.delivery_blocked = false; }); await sync(); }, true)); void sync(); return;
     }
     if (["timed", "timed_preparing", "task"].includes(record.step_state)) {
@@ -1114,6 +1162,7 @@
       await finish("interrupted", "reload_during_timed_step"); return;
     }
     screen("An unfinished session is saved", "Continue this participant's session only if you are the same participant. Saved answers can be restored at this untimed point.");
+    if (record.delivery_error?.retained) showError(new Error(record.delivery_error.message));
     content.append(button("Resume this participant session", async () => {
       try { await preloadTimeline(); } catch (error) { await finish("interrupted", error.message); return; }
       void sync(); await enterStudy(true);

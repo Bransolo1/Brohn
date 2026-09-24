@@ -30,6 +30,8 @@ PROFILES = {
                      "mne_connectivity", "pyxdf", "pyarrow", "duckdb", "pylsl", "brainflow.board_shim"]),
     "vision-audio": ("scripts/readiness/requirements-media.txt",
                      ["numpy", "scipy", "cv2", "mediapipe.tasks.python.vision", "librosa", "parselmouth", "soundfile", "onnxruntime"]),
+    "facial-au": ("scripts/readiness/requirements-facial-au.txt",
+                  ["numpy", "torch", "torchvision", "torchcodec", "safetensors", "xgboost", "feat"]),
     "segmentation": ("scripts/readiness/requirements-segmentation.txt",
                      ["numpy", "cv2", "mediapipe.tasks.python.vision.interactive_segmenter"]),
 }
@@ -170,7 +172,19 @@ def check(profile, root=ROOT):
         result["python"]["expected"] = "CPython 3.12 in an isolated environment; Windows AMD64 is the currently exercised profile."
         result["requirements"] = {"path": requirements, "sha256": digest(root / requirements)}
         result["packages"] = package_checks(root / requirements)
-        result["imports"] = import_checks(imports, require_profile=True)
+        if profile == "facial-au":
+            from readiness.facial_runtime_check import assets, import_environment
+            result["models"] = assets(root)
+            if os.name != "nt":
+                result["python"]["status"] = "mismatch"
+            result["python"]["expected"] = "CPython 3.12 in an isolated Windows environment."
+            if all(item["status"] == "ready" for item in result["models"]):
+                with import_environment():
+                    result["imports"] = import_checks(imports, require_profile=True)
+            else:
+                result["imports"] = [{"name": name, "status": "not_checked", "message": "Restore the pinned assets before loading the optional native libraries."} for name in imports]
+        else:
+            result["imports"] = import_checks(imports, require_profile=True)
         if profile in ("vision-audio", "segmentation"):
             result["models"] = models(profile, root)
         if profile == "vision-audio":

@@ -33,6 +33,7 @@ local({
       HTTP_X_FORWARDED_PROTO="https",HTTP_X_BROHN_EDGE=edge,REMOTE_ADDR="127.0.0.1",
       CONTENT_TYPE="application/json",CONTENT_LENGTH=as.character(length(bytes)),rook.input=list(read=function(n=-1L)bytes))
     if(!is.null(bearer))req$HTTP_AUTHORIZATION<-paste("Bearer",bearer)
+    if(identical(path,paste0("/api/start/",release$token)))req$HTTP_X_BROHN_PARTICIPANT_RUNTIME<-release$participant_runtime$manifest_hash
     result<-app$call(req)
     if(is.character(result$body)&&grepl("^application/json",result$headers[["Content-Type"]]))result$value<-brohn_parse(result$body)
     result
