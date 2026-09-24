@@ -48,15 +48,16 @@ local({
     plots<-brohn_install_task_plots(input,output,session,store,state,attempt,function(fn)fn())}
   shiny::testServer(server,{
     r<-f$imported$iat;cmd<-list(report_id=r$id,revision=r$revision,report_hash=brohn_hash(r$body),project_id=r$project_id)
-    session$setInputs(open_task_plots=cmd);check(!is.null(plots$opened()),"Explicit report action opens verified complete-source catalog")
+    session$setInputs(open_task_plots=cmd);session$setInputs(task_plot_prepare_ack=plots$pending()$token);check(!is.null(plots$opened()),"Explicit report action opens verified complete-source catalog")
     session$setInputs(task_plot_catalog_identity=cmd$report_hash,task_plot_source=plots$opened()$catalog[[1L]]$id,task_plot_load=1L)
+    session$setInputs(task_plot_prepare_ack=plots$pending()$token)
     if(!is.null(state$error))stop(state$error)
     m<-plots$model();session$setInputs(task_plot_identity=brohn_hash(list(m$report_hash,m$id,m$source_hash)),task_plot_measure="first_response_ms",task_plot_scope="all",task_plot_page=2L)
     check(length(plots$selected()$rows)==length(m$rows)&&grepl("Page 2",output$task_plot_view$html,fixed=TRUE),"Table paging leaves full chart source intact")
     state$unrelated_refresh<-1L;session$flushReact();check(input$task_plot_page==2L&&identical(plots$model()$source_hash,m$source_hash),"Unrelated refresh preserves source and table state")
     session$setInputs(task_plot_identity="stale");check(inherits(try(plots$selected(),silent=TRUE),"try-error"),"Earlier source controls cannot act on the current model")
     state$page<-"home";session$flushReact();check(is.null(plots$model())&&is.null(plots$opened()),"Leaving report clears its complete source and plot state")
-    state$page<-"report";session$setInputs(open_task_plots=cmd,task_plot_load=2L);session$flushReact()
+    state$page<-"report";session$setInputs(open_task_plots=cmd);session$setInputs(task_plot_prepare_ack=plots$pending()$token);session$flushReact()
     p<-brohn_project(store,r$project_id);p$body$archived<-TRUE;brohn_put_entity(store,"project",p$id,p$body,expected_revision=p$revision,project_id=p$id)
     check(rejects(plots$guard())&&is.null(plots$model())&&is.null(plots$opened()),"Project authority loss clears source and model immediately when checked")
   })

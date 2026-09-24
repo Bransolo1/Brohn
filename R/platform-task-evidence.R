@@ -5,14 +5,14 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
   brohn_require(identical(run$completion_status, "completed") && identical(run$transfer_status, "saved"),
     "Trial export requires a complete, durably saved participant session.")
   protocol <- run$protocol
-  brohn_require(identical(brohn_hash(protocol$design), protocol$design_hash), "The frozen study definition failed its integrity check.")
+  brohn_require(identical(.brohn_sv_hash(protocol$design), protocol$design_hash), "The frozen study definition failed its integrity check.")
   state <- .brohn_delivery_replay(protocol, events)
   brohn_require(isTRUE(state$run_finished) && identical(state$ending_outcome, "completed"),
     "Task export requires the complete original study journal, including its final outcome.")
   task <- brohn_find(protocol$design$blocks, task_id)
   steps <- Filter(function(s) identical(s$type, "task") && identical(s$task$id, task_id), protocol$timeline)
   brohn_require(!is.null(task) && length(steps) == 1L, "Choose one task from this session's original design.")
-  step <- steps[[1L]]; compiled <- step$task; compiled_hash <- brohn_hash(compiled)
+  step <- steps[[1L]]; compiled <- step$task; compiled_hash <- .brohn_sv_hash(compiled)
   registry_id <- paste0("protocol-", compiled_hash)
   registry <- list(schema = "brohn-implicit-protocol-registry/1.0", task = task,
     protocols = list(list(id = registry_id, compiled_hash = compiled_hash, compiled = compiled)))
@@ -48,7 +48,7 @@ brohn_task_evidence_from_run <- function(run, events, task_id) {
   result <- list(schema = "brohn-native-task-export/1.0", run_id = run$id, task_id = task_id, task_step_id = step$id,
     collection_origin = run$origin, material_origin = task$origin, source_collection_id = run$deployment_id,
     registry = registry, rows = rows,
-    evidence = list(level = "brohn_journal_replayed", run_protocol_hash = brohn_hash(protocol), events_hash = brohn_hash(events),
+    evidence = list(level = "brohn_journal_replayed", run_protocol_hash = .brohn_sv_hash(protocol), events_hash = .brohn_sv_hash(events),
       compiled_hash = compiled_hash, validation = "brohn-native-task-export/1.0",
       summary_import_evidence_level = "declared_trial_summary",
       timing = "Observed browser timing; physical display and response timing are not qualified by replay."),
@@ -72,7 +72,7 @@ brohn_task_run_evidence <- function(store, run_id, study_id, project_id, task_id
   # constructed non-credential fields escape in the export document.
   snapshot <- brohn_run_protocol(store, run_id, study_id, project_id)
   run <- brohn_run(store, run_id)
-  brohn_require(!is.null(run) && identical(brohn_hash(run$protocol), brohn_hash(snapshot$protocol)), "The selected session changed unexpectedly.")
+  brohn_require(!is.null(run) && identical(.brohn_sv_hash(run$protocol), .brohn_sv_hash(snapshot$protocol)), "The selected session changed unexpectedly.")
   result <- brohn_task_evidence_from_run(run, brohn_run_events(store, run_id), task_id)
   result$evidence$saved_protocol_bytes_hash <- snapshot$hash
   result

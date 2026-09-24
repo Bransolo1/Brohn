@@ -1,5 +1,12 @@
 # Repeatable Brohn checks
 
+For the saved-review progress and focus components, see
+[task preparation checks](../../tests/TASK-PLOT-REPRODUCE.md) and
+[media feedback qualification](../../tests/media-feedback/REPRODUCE.md).
+The task components create their own synthetic source; the media journey
+requires an explicit verified corpus copied into a fresh workspace. These
+scoped checks are separate from the configured seven-check subset below.
+
 For a connected researcher-to-participant-to-report check, use the
 [configured portable smoke launcher](CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md).
 It creates its own external QA workspace, runs the actual local supervisor,

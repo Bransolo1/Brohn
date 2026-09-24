@@ -1,23 +1,25 @@
 # Resume here — Brohn
 
-## Current saved-results and history checkpoint — 25 September 2026
+## Current saved-review responsiveness checkpoint — 25 September 2026
 
-Continuing from `935d221`, reports now lead with Results, followed by Explore
-and Evidence. GNAT and acoustic results are visible on the first tested phone
-screen; long titles retain room for the initial comparison value. Existing
-standalone reports and exact downloads are preserved. Paged media and linked
-histories reach views beyond the former latest-40 boundary. Linked reopening
-restores the original import/channels/window and preserves an edited draft when
-another import arrives.
+Continuing from `0b7bf38`, saved-media source opening removes repeated complete
+source reconstruction within one immediate call, and task evidence/plots reuse
+bounded exact-value digests. Original authority, file guards, full task replay,
+scientific values and exports remain unchanged. Both routes now show accurate
+focused progress in the phone viewport before expensive source work, respect
+deliberate user focus/scroll changes and expose recoverable failures.
 
-Read the [checkpoint](docs/qa/PUBLICATION-RESULTS-HISTORY-20260925.md) for separate
-component, browser, source/export and restart phases. Functional navigation is
-qualified for those fixtures; media reopening still took about 17–18 seconds,
-and complete GNAT source/plot preparation about 18 seconds. Responsiveness and
-clear progress feedback remain active work. The reviewed cross-recording clock
-components are being connected in an isolated qualification checkout; no clock
-alignment feature is enabled by this source checkpoint.
+Read the [joined checkpoint](docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
+for separate performance, functional and final viewport phases. Media's final
+mobile flow shows progress around one second and a result heading around
+13–14 seconds. Complete task-source readiness remains around 8–12 seconds in
+its final tested routes. These scoped gains do not close broader responsiveness
+or concurrent-load qualification. Saved sources and scientific reports are not
+recomputed to reopen them.
 
+Reviewed cross-recording clock backend and hosted-actor paths have external
+qualification; the normal selection/save/review/export UI and its connected
+researcher journey remain pending. No clock alignment is enabled here.
 The [workstream](docs/WORKSTREAM.md), all 50 capabilities and all 17 packages
 remain active and unfinished. Publication does not pause or complete the build.
 

@@ -30,10 +30,17 @@ Opening a saved view does not rerun scientific analysis. Current source access
 and integrity are checked again, including before downloads. A genuine video
 gap remains a gap; Brohn does not substitute a guessed frame.
 
-Source opening is still being improved. The current synthetic media fixture
-took about 17–18 seconds to reopen, and the complete GNAT source/plot fixture
-took about 18 seconds from opening its controls. These measurements are not
-general performance guarantees. See the [report](../qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md),
-[media history](../qa/MEDIA-HISTORY-ACCEPTANCE.md) and
-[linked history](../qa/LINKED-HISTORY-BROWSER-ACCEPTANCE.md) acceptance records
+When source preparation takes time, Brohn shows an opening message before the
+full read. That message is brought into view and receives keyboard focus. The
+matching result heading receives focus when ready, unless you moved elsewhere
+or deliberately scrolled. Media cursor controls are temporarily unavailable
+during restoration and usable again after completion or a recoverable failure.
+A real later cursor edit still requires opening the newly selected view.
+
+Complete source opening is still being improved. On the latest tested local
+corpus, media progress appeared around one second and the result heading around
+13–14 seconds; complete task-source preparation took around 8–12 seconds. The
+frame image can load separately after its heading and links appear. These are
+scoped observations, not general performance guarantees. See the
+[responsiveness checkpoint](../qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
 for the exact source phases and remaining responsiveness work.

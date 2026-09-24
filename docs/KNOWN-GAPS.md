@@ -16,19 +16,21 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
-- **Saved-result responsiveness:** paged media/linked history, exact restoration
-  and results-first report navigation now have [scoped acceptance](qa/PUBLICATION-RESULTS-HISTORY-20260925.md).
-  The tested source reopen still takes about 17–18 seconds for media; complete
-  GNAT source/plot preparation took about 18 seconds and its status feedback
-  remained too generic. Profile and improve these paths without weakening
-  current source authority or native object guards. Larger/concurrent loads
-  remain unqualified.
+- **Saved-result responsiveness:** [scoped improvements](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
+  now remove repeated media preparation and task digest work while preserving
+  current authority, native guards and exact outputs. Focused progress and
+  completion respect deliberate user movement. Complete source opening remains
+  synchronous and takes several seconds: final media result headings about
+  13–14 s; task source readiness about 8–12 s on the tested local corpus. Media
+  images can still be loading after headings/links appear. Larger/concurrent
+  loads and wider report families remain unqualified.
 - **Reviewed cross-recording alignment:** the
-  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) now has external
-  arithmetic, source inspection, bounded original-event paging, exact window
-  exports and map-versioning components. Supervised publication is under
-  isolated qualification. The connected researcher selection/save/review/export
-  workflow remains to implement and qualify; no alignment is enabled here.
+  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) has externally
+  qualified local backend and hosted-actor paths, alongside exact arithmetic,
+  source inspection, original-event paging, exports and versioned map storage.
+  The normal researcher selection/preview/save/review/export UI is still being
+  built and its full browser journey remains pending. No alignment is enabled
+  by the current source checkpoint; physical synchronization is not established.
 
 - **Complete measurement review:** the enabled-profile
   [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies

@@ -1,5 +1,22 @@
 # Changes
 
+## Saved-review responsiveness and focused progress — 2026-09-25
+
+- Reduced repeated complete source preparation during saved-media opening and
+  reused bounded task digests while retaining original authority, complete
+  journal replay, native file guards and exact exports.
+- Added focused preparation messages before expensive reads, current-ticket
+  completion focus and deliberate keyboard/scroll yielding. Media restoration
+  no longer shows a false manual-edit warning; genuine edits and access loss
+  still refuse stale exports, with usable controls after failure.
+- Qualified final mobile media and task routes on the combined source with
+  restart/export evidence and no new scientific work. Packaged explicit media
+  qualification and self-contained task component checks. See
+  `docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md` for separate source
+  phases, retained failures and remaining multi-second preparation limits.
+- Kept the full build active. Cross-recording clock backend/hosted-actor work
+  is externally qualified; its normal UI and researcher acceptance remain pending.
+
 ## GNAT and configured contributor checks — 2026-09-25
 
 - Added Brohn's named single-target Go/No-Go association procedure through text

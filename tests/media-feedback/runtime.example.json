@@ -1,0 +1,10 @@
+{
+  "app_root": "C:/absolute/path/to/Brohn",
+  "rscript": "C:/absolute/path/to/Rscript.exe",
+  "r_libs": "C:/absolute/path/to/restored-r-library",
+  "publication_python": "C:/absolute/path/to/qualified-python.exe",
+  "publication_manifest": "C:/absolute/path/to/publication-guard.json",
+  "chrome_channel": "chrome",
+  "researcher_port": 3968,
+  "participant_port": 3969
+}

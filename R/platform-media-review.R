@@ -32,9 +32,9 @@ brohn_media_review_source<-function(store,reference,project_id,verify=FALSE) {
   list(review=r,report=s$report,extraction=extraction,parent=parent$dataset,source_path=parent$source_path,
     ledger=ledger[[1L]],ledger_path=brohn_object_path(store,ledger[[1L]]$hash,verify),samples=samples[[1L]],source_objects=refs)
 }
-brohn_prepare_media_review<-function(store,audio_review_id,revision,hash,project_id,operation="media_tracks",catalog=NULL,video_stream_index=NULL,cursor_sample=NULL) {
+.brohn_mr_prepare_context<-function(store,audio_review_id,revision,hash,project_id,operation="media_tracks",catalog=NULL,video_stream_index=NULL,cursor_sample=NULL,verify=FALSE) {
   brohn_require(operation%in%c("media_tracks","media_review"),"Choose video track inspection or an exact media cursor.")
-  s<-brohn_media_review_source(store,list(id=audio_review_id,revision=revision,hash=hash),project_id,FALSE)
+  s<-brohn_media_review_source(store,list(id=audio_review_id,revision=revision,hash=hash),project_id,verify)
   selected<-NULL;ref<-NULL
   if(operation=="media_tracks")brohn_require(is.null(catalog)&&is.null(video_stream_index)&&is.null(cursor_sample),"Track inspection does not select or align frames.")else {
     brohn_require(is.list(catalog)&&brohn_number(video_stream_index,0,63,TRUE),"Inspect the original video tracks before choosing one.")
@@ -46,11 +46,15 @@ brohn_prepare_media_review<-function(store,audio_review_id,revision,hash,project
     brohn_require(length(tracks)==1L&&brohn_number(cursor_sample,support$first_sample,support$stop_sample-1,TRUE),"Choose an original video track and a sample within the exact saved audio interval.")
     ref<-.brohn_mr_ref(c);selected<-list(video_stream_index=as.integer(video_stream_index),cursor_sample=as.integer(cursor_sample))
   }
-  list(schema="brohn-media-review-job/1.0",profile=.brohn_mr_profile,operation=operation,project_id=project_id,
+  request<-list(schema="brohn-media-review-job/1.0",profile=.brohn_mr_profile,operation=operation,project_id=project_id,
     audio_review=.brohn_mr_ref(s$review),report=.brohn_mr_ref(s$report),dataset=.brohn_mr_ref(s$parent),extraction=.brohn_mr_ref(s$extraction),
     report_id=s$report$id,dataset_id=s$parent$id,study_id=s$report$body$study_id,origin=s$report$body$origin,
     source=s$parent$body$source[c("hash","size")],audio_ledger=s$ledger[c("hash","size")],
     recording=s$extraction$body$result$recording,catalog=ref,selection=selected,implementation=.brohn_media_review_loaded)
+  list(request=request,source=s)
+}
+brohn_prepare_media_review<-function(store,audio_review_id,revision,hash,project_id,operation="media_tracks",catalog=NULL,video_stream_index=NULL,cursor_sample=NULL) {
+  .brohn_mr_prepare_context(store,audio_review_id,revision,hash,project_id,operation,catalog,video_stream_index,cursor_sample)$request
 }
 brohn_queue_media_review<-function(store,audio_review_id,revision,hash,project_id,operation="media_tracks",catalog=NULL,video_stream_index=NULL,cursor_sample=NULL,retry=FALSE) {
   r<-brohn_prepare_media_review(store,audio_review_id,revision,hash,project_id,operation,catalog,video_stream_index,cursor_sample)
@@ -60,12 +64,13 @@ brohn_media_review_input<-function(store,job,verify=TRUE,require_current=TRUE) {
   r<-job$request
   brohn_fields(r,c("schema","profile","operation","project_id","audio_review","report","dataset","extraction","report_id","dataset_id","study_id","origin","source","audio_ledger","recording","catalog","selection","implementation"),label="Media review job")
   brohn_require(identical(r$schema,"brohn-media-review-job/1.0")&&identical(r$profile,.brohn_mr_profile)&&identical(job$operation,r$operation),"Use a registered saved media review.")
-  expected<-brohn_prepare_media_review(store,r$audio_review$id,r$audio_review$revision,r$audio_review$hash,r$project_id,r$operation,r$catalog,r$selection$video_stream_index,r$selection$cursor_sample)
+  context<-.brohn_mr_prepare_context(store,r$audio_review$id,r$audio_review$revision,r$audio_review$hash,r$project_id,r$operation,r$catalog,r$selection$video_stream_index,r$selection$cursor_sample,verify)
+  expected<-context$request
   brohn_require(length(r$implementation)==length(.brohn_media_review_loaded)&&!anyDuplicated(names(r$implementation))&&setequal(names(r$implementation),names(.brohn_media_review_loaded))&&all(vapply(r$implementation,.brohn_mr_sha,logical(1))),"Media review implementation identity is incomplete.")
   if(!require_current)expected$implementation<-r$implementation
   if(require_current)brohn_require(all(vapply(names(r$implementation),function(p)identical(digest::digest(file=p,algo="sha256"),r$implementation[[p]]),logical(1))),"Media review implementation changed after queueing.")
   brohn_require(.brohn_mr_same(r,expected),"Media review substituted its waveform, original recording, extraction, clock or selected cursor.")
-  s<-brohn_media_review_source(store,r$audio_review,r$project_id,verify);refs<-s$source_objects
+  s<-context$source;refs<-s$source_objects
   if(!is.null(r$catalog)){c<-brohn_get_entity(store,"media_review",r$catalog$id,r$catalog$revision);refs<-c(refs,list(.brohn_sv_retained(store,c,"media_review",verify)))}
   list(schema="brohn-analysis-input/1.0",operation=r$operation,project_id=r$project_id,origin=r$origin,binding=r,
     source_path=s$source_path,audio_ledger_path=s$ledger_path,source_objects=.brohn_mr_refs(refs))
@@ -134,7 +139,7 @@ brohn_publish_media_review<-function(store,output,scratch,job,input,output_path)
     brohn_complete_job(store,job$id,job$worker,job$token,list(media_review_id=id,audio_review_id=b$audio_review_id,report_id=b$report_id,dataset_id=b$dataset_id,output_hash=b$result_object$hash))
   });committed<-TRUE;receipt
 }
-brohn_media_review_record<-function(store,id,audio_review_id,project_id,verify=FALSE) {
+.brohn_mr_record_context<-function(store,id,audio_review_id,project_id,verify=FALSE) {
   r<-brohn_get_entity(store,"media_review",id)
   brohn_require(!is.null(r)&&identical(r$project_id,project_id)&&identical(r$body$audio_review_id,audio_review_id)&&identical(r$body$schema,"brohn-saved-media-review/1.0"),"Open a saved media cursor belonging to this original audio window.")
   .brohn_qexplorer_catalog(store,"media_review",id,r$revision,project_id)
@@ -149,13 +154,17 @@ brohn_media_review_record<-function(store,id,audio_review_id,project_id,verify=F
   job<-brohn_get_job(store,r$body$processing$job_id)
   brohn_require(identical(job$status,"succeeded")&&identical(job$operation,r$body$request$operation)&&identical(job$result$media_review_id,r$id)&&
     identical(job$result$output_hash,r$body$result_object$hash)&&.brohn_mr_same(job$request,r$body$request),"This media cursor has no matching completed publication.")
-  if(verify).brohn_sv_retained(store,r,"media_review",TRUE);r
+  if(verify).brohn_sv_retained(store,r,"media_review",TRUE)
+  list(record=r,input=input)
+}
+brohn_media_review_record<-function(store,id,audio_review_id,project_id,verify=FALSE) {
+  .brohn_mr_record_context(store,id,audio_review_id,project_id,verify)$record
 }
 
 # Native source seals remain held while complete hashing runs outside Shiny.
 brohn_begin_media_review_open<-function(store,record) {
-  r<-brohn_media_review_record(store,record$id,record$body$audio_review_id,record$project_id,FALSE)
-  input<-brohn_media_review_input(store,list(operation=r$body$request$operation,request=r$body$request),FALSE,FALSE)
+  context<-.brohn_mr_record_context(store,record$id,record$body$audio_review_id,record$project_id,FALSE)
+  r<-context$record;input<-context$input
   refs<-.brohn_mr_refs(c(input$source_objects,lapply(c(r$body$artifacts,list(r$body$result_object)),function(a)list(hash=a$hash,bytes=a$size))))
   guards<-list();ok<-FALSE;on.exit(if(!ok)for(g in guards).brohn_qexplorer_release(g),add=TRUE)
   files<-lapply(refs,function(a){path<-brohn_object_path(store,a$hash,FALSE);guards[[length(guards)+1L]]<<-.brohn_qexplorer_hold(path,a$bytes);list(path=path,hash=a$hash,bytes=a$bytes)})

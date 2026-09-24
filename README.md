@@ -18,6 +18,10 @@ limits. For inspecting complete saved observations and original frames, use the
 [facial and video/audio review guide](docs/operations/REVIEW-SAVED-MEDIA.md).
 The [saved-results guide](docs/operations/REVIEW-SAVED-RESULTS.md) covers
 Results/Explore/Evidence, paged histories and reopening original views.
+The [current responsiveness checkpoint](docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
+records faster saved-source preparation, visible progress and scoped mobile
+keyboard checks. Complete source opening still takes several seconds; wider
+performance and the full platform remain unfinished.
 
 ## What is connected
 
@@ -38,7 +42,7 @@ score. Installed libraries do not establish compatibility with a physical device
 
 For Go/No-Go study design, separate deadline results, genuine withholding and
 source-preserving imports, use the [GNAT guide](docs/operations/RUN-GNAT.md).
-The [current checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md) records this
+The [GNAT checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md) records this
 implementation's acceptance status and scientific limits.
 
 ## Install and start

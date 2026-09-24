@@ -1,21 +1,23 @@
 # Brohn master architecture and large-build contract
 
-**Current checkpoint, 25 September 2026:** the shared
-[results and history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
-now connects Results/Explore/Evidence sections, first-screen saved outcomes,
-bounded media/linked history and exact cross-import restoration. Browser,
-source/export and restart evidence are recorded in the
-[checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md). Existing scores and
-standalone exports remain unchanged. Source opening still has measured
-multi-second delays; functional acceptance does not close responsiveness.
+**Current checkpoint, 25 September 2026:** saved media and task review now have
+[joined responsiveness and progress acceptance](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md).
+Media preparation uses same-call verified contexts; task evidence/plots use
+bounded exact-value digest reuse. Neither caches permissions or skips original
+source verification/full journal replay. Specific status is painted in view
+before expensive synchronous reads. Versioned UI tickets fence stale work,
+control restoration and completion focus; deliberate user movement is respected.
+Scientific values, original artifacts and exports remain unchanged. Complete
+source opening still takes several seconds; wider workload performance is open.
 
-The [reviewed two-event clock contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
-now has separately prepared arithmetic, complete-source inspection, event
-paging, exact window export and versioned-map components. Supervised preview
-publication is being integrated in an isolated checkout. The normal event
-selection/save/review/export UI and its actual researcher qualification remain
-unfinished; this checkpoint enables no new cross-recording clock alignment or
-scientific recipe. The full scope below is retained.
+The [results and history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
+continues to govern Results/Explore/Evidence, metadata paging and exact saved
+view restoration. The [reviewed two-event clock contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
+now has externally qualified local backend and hosted-actor paths. Its normal
+event-selection, preview/save, review/export and history UI is under development;
+connected researcher qualification remains pending. These external components
+enable no new alignment or scientific recipe in the published application.
+The complete 50-capability/17-package scope below is retained and unfinished.
 
 **Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
 [workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)

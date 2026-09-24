@@ -21,7 +21,7 @@
   if(length(a$task_attempts))return(lapply(a$task_attempts,function(x)list(id=x$id,kind="imported",attempt_id=x$id,
     label=paste(x$participant_id,x$session_id,x$attempt_id,x$profile,sep=" | "))))
   unlist(lapply(report$provenance$runs,function(r)lapply(report$provenance$design$blocks,function(t)
-    list(id=brohn_hash(list(r$run_id,t$id)),kind="native",run_id=r$run_id,task_id=t$id,
+    list(id=.brohn_sv_hash(list(r$run_id,t$id)),kind="native",run_id=r$run_id,task_id=t$id,
       label=paste(r$run_id,t$title,t$profile,sep=" | ")))),recursive=FALSE,use.names=FALSE)
 }
 brohn_task_plot_report <- function(store,report_id,revision,report_hash,project_id) {
@@ -29,10 +29,10 @@ brohn_task_plot_report <- function(store,report_id,revision,report_hash,project_
   owner<-DBI::dbGetQuery(store$con,"SELECT project_id FROM entities WHERE kind='report' AND id=?",params=list(report_id))
   brohn_require(nrow(owner)==1L&&identical(owner$project_id[[1L]],project_id),"This saved task report is unavailable in the current project.")
   r<-brohn_get_entity(store,"report",report_id,revision)
-  brohn_require(!is.null(r)&&identical(r$project_id,project_id)&&identical(brohn_hash(r$body),report_hash),"This saved report changed. Reopen its task plots.")
+  brohn_require(!is.null(r)&&identical(r$project_id,project_id)&&identical(.brohn_sv_hash(r$body),report_hash),"This saved report changed. Reopen its task plots.")
   study<-.brohn_tc_study(store,r$body$study_id,project_id)
   verified<-.brohn_tc_report(store,study,report_id)
-  brohn_require(identical(as.numeric(verified$record$revision),as.numeric(revision))&&identical(brohn_hash(verified$record$body),report_hash),"No newer report can replace the opened task source.")
+  brohn_require(identical(as.numeric(verified$record$revision),as.numeric(revision))&&identical(.brohn_sv_hash(verified$record$body),report_hash),"No newer report can replace the opened task source.")
   brohn_require(.brohn_tp_supported(r$body),"This report has no complete supported task evidence.")
   list(record=r,catalog=.brohn_tp_catalog(r$body),reference=verified$reference,
     catalog_hash=.brohn_qexplorer_catalog(store,"report",r$id,r$revision,project_id))
@@ -86,7 +86,7 @@ brohn_task_plot_attempt <- function(a) {
   timing<-a$timing_quality;timing$definition_known<-isTRUE(timing$definitions_known)
   list(schema="brohn-task-trial-plot/1.0",kind="trials",id=a$id,label=paste(a$participant_id,a$session_id,a$profile,sep=" | "),
     profile=a$profile,origin=a$collection_origin,material_origin=a$material_origin,completion=a$completion_status,
-    rows=.brohn_tp_trial_rows(a$trial_audit,a$responses),source=a$source,source_hash=brohn_hash(a),
+    rows=.brohn_tp_trial_rows(a$trial_audit,a$responses),source=a$source,source_hash=.brohn_sv_hash(a),
     timing=timing,evidence_level=a$evidence_level,saved_score=a$score,
     identity=a[c("id","task_id","task_definition_hash","compiled_hash","participant_id","participant_linkage","session_id","attempt_id")])
 }
@@ -94,7 +94,7 @@ brohn_task_plot_native <- function(evidence,report,reference) {
   brohn_require(identical(evidence$schema,"brohn-native-task-export/1.0")&&identical(evidence$run_id,reference$run_id)&&
     identical(evidence$evidence$events_hash,reference$events_hash),"The complete original journal differs from this report's saved session evidence.")
   task<-evidence$registry$task;frozen<-brohn_find(report$provenance$design$blocks,task$id)
-  brohn_require(!is.null(frozen)&&identical(brohn_hash(task),brohn_hash(frozen)),"The native task differs from the report's frozen definition.")
+  brohn_require(!is.null(frozen)&&identical(.brohn_sv_hash(task),.brohn_sv_hash(frozen)),"The native task differs from the report's frozen definition.")
   compiled<-evidence$registry$protocols[[1L]]$compiled;trials<-Filter(function(t)identical(t$type,"task_trial"),compiled$timeline)
   brohn_require(length(trials)==length(evidence$rows)&&identical(brohn_ids(trials),vapply(evidence$rows,`[[`,character(1),"trial_id")),"Every native terminal row must match the exact original trial order.")
   nullable<-function(x)if(is.null(x)||identical(x,""))NULL else x
@@ -109,9 +109,9 @@ brohn_task_plot_native <- function(evidence,report,reference) {
     final_correct_ms=if(is.null(nullable(r$final_correct_ms)))NULL else as.numeric(r$final_correct_ms),
     first_response_ms_source=r$first_response_ms,final_correct_ms_source=r$final_correct_ms,missing_reason=nullable(r$missing_reason)))
   audits<-lapply(seq_along(trials),function(i).brohn_task_import_trial_audit(trials[[i]],responses[[i]],i,task$profile,TRUE))
-  list(schema="brohn-task-trial-plot/1.0",kind="trials",id=brohn_hash(list(evidence$run_id,task$id)),label=paste(evidence$run_id,task$title,sep=" | "),
+  list(schema="brohn-task-trial-plot/1.0",kind="trials",id=.brohn_sv_hash(list(evidence$run_id,task$id)),label=paste(evidence$run_id,task$title,sep=" | "),
     profile=task$profile,origin=evidence$collection_origin,material_origin=evidence$material_origin,completion="completed",
-    rows=.brohn_tp_trial_rows(audits,responses),source=evidence$evidence,source_hash=brohn_hash(evidence),evidence_level=evidence$evidence$level,
+    rows=.brohn_tp_trial_rows(audits,responses),source=evidence$evidence,source_hash=.brohn_sv_hash(evidence),evidence_level=evidence$evidence$level,
     timing=list(definition_known=TRUE,source_rt_definition=evidence$declarations$source_rt_definition,physical_timing_qualified=FALSE),
     identity=list(run_id=evidence$run_id,task_id=task$id,compiled_hash=evidence$evidence$compiled_hash),
     audit_policy="Trial dispositions describe the current registered profile rules, separately from the immutable saved score; no score is recalculated.")
@@ -128,7 +128,7 @@ brohn_task_plot_people <- function(a,metric) {
   brohn_require(if(isTRUE(a$quality$fully_linked))length(rows)==s$selected_person_count&&available==s$contributing_person_count else !length(rows)&&is.null(s$mean),
     "Person rows do not cover this saved measure's complete linkage and support.")
   list(schema="brohn-task-person-plot/1.0",kind="people",id=paste0("metric:",metric),label=.brohn_tp_label(metric),metric=metric,unit=s$unit,
-    rows=lapply(seq_along(rows),function(i)c(list(position=i),rows[[i]])),summary=s,source=a$provenance,source_hash=brohn_hash(a),
+    rows=lapply(seq_along(rows),function(i)c(list(position=i),rows[[i]])),summary=s,source=a$provenance,source_hash=.brohn_sv_hash(a),
     origin=a$provenance$homogeneous$collection_origin,material_origin=a$provenance$homogeneous$material_origin,
     evidence_level=a$provenance$homogeneous$evidence_level,repeat_policy=a$provenance$plan$repeat_policy)
 }
@@ -138,7 +138,7 @@ brohn_task_plot_load <- function(store,opened,selector) {
   if(c$kind=="people")model<-brohn_task_plot_people(b$analysis,c$metric) else if(c$kind=="imported") {
     a<-Filter(function(x)identical(x$id,c$attempt_id),b$analysis$task_attempts)[[1L]]
     task<-brohn_find(b$provenance$design$blocks,a$task_id)
-    brohn_require(!is.null(task)&&identical(brohn_hash(task),a$task_definition_hash)&&identical(a$collection_origin,b$origin),"This administration differs from the report's frozen task or collection origin.")
+    brohn_require(!is.null(task)&&identical(.brohn_sv_hash(task),a$task_definition_hash)&&identical(a$collection_origin,b$origin),"This administration differs from the report's frozen task or collection origin.")
     for(hash in c(a$source$original_hash,a$source$registry_object_hash))brohn_object_path(store,hash,verify=TRUE)
     model<-brohn_task_plot_attempt(a)
   } else {
@@ -150,7 +150,7 @@ brohn_task_plot_load <- function(store,opened,selector) {
     if(length(hashes))brohn_require(length(hashes)==1L&&identical(hashes[[1L]]$protocol_sha256,snapshot$hash),"The retained protocol bytes differ from the report's original evidence.")
     model<-brohn_task_plot_native(brohn_task_run_evidence(store,c$run_id,b$study_id,r$project_id,c$task_id),b,ref)
   }
-  model$report_id<-r$id;model$report_revision<-r$revision;model$report_hash<-brohn_hash(b);model
+  model$report_id<-r$id;model$report_revision<-r$revision;model$report_hash<-.brohn_sv_hash(b);model
 }
 brohn_task_plot_selection <- function(model,measure="first_response_ms",scope="all") {
   brohn_require(measure %in% c("first_response_ms","final_correct_ms")&&scope %in% c("all","scored"),"Choose a labelled recorded latency and trial scope.")

@@ -1,19 +1,23 @@
 # John: Brohn development handoff
 
-**Current checkpoint, 25 September 2026:** development is active. Continuing
-from `935d221`, the [saved-results/history checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md)
-adds results-first report sections, visible saved GNAT/acoustic measurements,
-paged original-media and linked-review histories, exact restoration and draft
-preservation. Read its source phases and retained failures; the scope is
-functional navigation, exact exports and restart, not whole-platform sign-off.
+**Current checkpoint, 25 September 2026:** development remains active after
+`0b7bf38`. Read the [saved-review responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
+for the current changes, distinct source phases and retained failures. Media
+and task-source opening do less repeated work, expose accurate focused progress,
+respect keyboard/scroll focus changes and preserve exact sources and exports.
+They remain several-second synchronous reads, not a completed performance gate.
 
-The [review guide](operations/REVIEW-SAVED-RESULTS.md) describes the normal flow.
-Media source reopening and complete GNAT plot loading have measured delays
-around 18 seconds; performance/progress feedback is the immediate UX follow-up.
-Reviewed cross-recording alignment has external component and isolated
-integration work, but is not enabled in this checkpoint. Follow the current
-[workstream](WORKSTREAM.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
-The full 50-capability/17-package scope remains unchanged.
+The [review guide](operations/REVIEW-SAVED-RESULTS.md) covers the normal flow.
+Portable checks have explicit instructions for [media](../tests/media-feedback/REPRODUCE.md)
+and [task plots](../tests/TASK-PLOT-REPRODUCE.md). Media qualification needs a
+verified retained synthetic corpus copied into a new workspace; task component
+tests create their own fixture. Do not use a real research workspace for tests.
+
+The immediate next feature is reviewed cross-recording clock selection and
+review. Local backend and hosted-actor paths have external qualification; the
+normal UI and full researcher journey are still pending and not enabled here.
+Follow the [workstream](WORKSTREAM.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
+All 50 capabilities and 17 packages remain in scope; publishing is not a pause.
 
 **Resumed after checkpoint `2b3b31a`, 24 September 2026:** the owner explicitly
 requested continued development. The [workstream](WORKSTREAM.md) now tracks

@@ -25,8 +25,12 @@ administrations, imports, cohort, exports and restart (PC02/PC05/PC06). The
 acceptance (PC14/PC16). These slices do not close those broader requirements.
 Saved-review paging, restoration and results-first reports now have
 [scoped connected acceptance](qa/PUBLICATION-RESULTS-HISTORY-20260925.md).
-Next: measured source-open responsiveness/progress feedback and the connected
-reviewed cross-recording clock workflow; broader requirements remain open.
+Saved-media/task preparation and focused progress now have [scoped responsiveness
+acceptance](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md) for PC02/PC05/PC07.
+Several-second synchronous source opening and broader workloads remain open.
+Next: the normal reviewed cross-recording clock UI and researcher journey; its
+local backend and hosted-actor routes are externally qualified only. No broader
+requirement or capability is closed by these slices.
 
 | ID | Required outcome | Acceptance before closing | Status |
 |---|---|---|---|

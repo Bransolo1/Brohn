@@ -5,11 +5,11 @@
   "checkpoint": {
     "status": "implementing",
     "date": "2026-09-25",
-    "publication_handoff": "docs/qa/PUBLICATION-RESULTS-HISTORY-20260925.md",
+    "publication_handoff": "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability/17-package build remains active and unfinished. Results-first reports and paged media/linked history now have source-phased browser/export/restart acceptance. Exact restoration preserves drafts and original sources. Measured17–18s media/complete GNAT source opening remains active performance work. Reviewed cross-recording clock components are under isolated integration, not enabled. See the current workstream and publication handoff for scope and remaining requirements."
+    "note": "The full 50-capability/17-package build remains active and unfinished. Saved media/task preparation now has source-phased responsiveness, focused progress, exact export and restart acceptance. Original guards and scientific results remain unchanged. Multi-second synchronous opening and wider workloads remain open. Reviewed clock local backend and hosted-actor paths are externally qualified; normal researcher UI and connected acceptance remain pending and are not enabled here."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -472,7 +472,8 @@
         "docs/qa/GNAT-CORE-ACCEPTANCE.md",
         "docs/qa/GNAT-PARTICIPANT-ACCEPTANCE.md",
         "docs/qa/GNAT-INTEGRATION-ACCEPTANCE.md",
-        "docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md"
+        "docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md",
+        "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
@@ -546,7 +547,9 @@
         "docs/architecture/SAVED-MEDIA-REVIEW.md",
         "docs/methods/MEDIA-SOURCE-REVIEW.md",
         "docs/qa/MEDIA-SOURCE-REVIEW-ACCEPTANCE.md",
-        "docs/operations/REVIEW-SAVED-MEDIA.md"
+        "docs/operations/REVIEW-SAVED-MEDIA.md",
+        "docs/qa/MEDIA-REOPEN-PERFORMANCE-ACCEPTANCE.md",
+        "docs/qa/MEDIA-REOPEN-FEEDBACK-ACCEPTANCE.md"
       ],
       "acceptance": [
         "PCM/sample-rate/channel/gain and speech segmentation are preserved.",
@@ -594,7 +597,8 @@
         "docs/qa/LINKED-REVIEW-ACCEPTANCE.md",
         "docs/qa/PAIRED-AGGREGATION-PERFORMANCE.md",
         "docs/architecture/RESULTS-AND-SAVED-HISTORY.md",
-        "docs/qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md"
+        "docs/qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md",
+        "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -689,7 +693,11 @@
         "docs/architecture/RESULTS-AND-SAVED-HISTORY.md",
         "docs/qa/REPORT-RESULTS-FIRST-ACCEPTANCE.md",
         "docs/qa/MEDIA-HISTORY-ACCEPTANCE.md",
-        "docs/qa/LINKED-HISTORY-BROWSER-ACCEPTANCE.md"
+        "docs/qa/LINKED-HISTORY-BROWSER-ACCEPTANCE.md",
+        "docs/qa/MEDIA-REOPEN-PERFORMANCE-ACCEPTANCE.md",
+        "docs/qa/MEDIA-REOPEN-FEEDBACK-ACCEPTANCE.md",
+        "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md",
+        "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -761,7 +769,10 @@
         "docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md",
         "scripts/run-configured-checks.ps1",
         "scripts/configured-checks-helpers.ps1",
-        "docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md"
+        "docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md",
+        "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md",
+        "tests/media-feedback/REPRODUCE.md",
+        "tests/TASK-PLOT-REPRODUCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

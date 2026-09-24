@@ -1,5 +1,30 @@
 # Full platform build — Brohn continuation
 
+## Saved-review responsiveness wave — scoped acceptance 25 September 2026
+
+- [x] Remove repeated immediate media source preparation with fresh native and
+  post-guard authority checks retained; 18 direct source/guard groups and
+  source-phased browser/export/restart evidence, with all 58 existing jobs intact.
+- [x] Reuse bounded task digests without caching records, permissions or replay;
+  17 source/output checks, 42 prior regression checks and separate actual
+  original 384-trial/789-event browser comparisons. Discarded stale-control
+  timing is retained and excluded from the speed claim.
+- [x] Paint specific progress before expensive work, restore exact media controls
+  without a false manual-edit warning, fence stale tickets and respect focus
+  yielding. Final media viewport passes eight checks/two scans after the earlier
+  15-check/three-scan functional phase; final task viewport passes 13 checks/one
+  scan. No scientific jobs or original reports are repeated.
+- [x] Package explicit media reproduction plus 17 Shiny/21 Node component checks;
+  task component tests each pass 19 checks and create their own synthetic source.
+- [ ] Reduce remaining several-second synchronous source opening and qualify
+  broader source/report/concurrent workloads without weakening integrity.
+- [ ] Integrate and qualify the normal cross-recording clock researcher UI;
+  local backend/hosted-actor acceptance is external and not an enabled feature.
+- [ ] Continue all 50 capabilities, 17 packages and remaining PC01–PC16 gates.
+
+See [joined evidence](../qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md) for
+exact source phases, receipts, measured scope and remaining limitations.
+
 ## Results and history wave — scoped acceptance 25 September 2026
 
 - [x] Paged media history: 42 genuine supervised cursor preparations,
@@ -10,8 +35,8 @@
   exports and restart. The paging rows include labelled metadata fixtures.
 - [x] Results/Explore/Evidence, visible saved GNAT/acoustic outcomes and long-title
   phone layout: joined report acceptance retains failed attempts and exact exports.
-- [ ] Improve measured 17–18-second media reopening and GNAT source/plot loading;
-  preserve native guards and fresh authority, add useful progress feedback.
+- [x] Complete the bounded source-open/progress follow-up above; broader latency
+  and workload qualification remain open.
 - [ ] Connect reviewed original-event selection, supervised clock preview,
   explicit versioned save and exact review/export/restart journey.
 - [ ] Complete remaining PC01–PC16 and the full package/capability scope.

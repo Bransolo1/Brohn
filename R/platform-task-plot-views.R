@@ -9,7 +9,7 @@
   sy<-function(state)top+(match(state,states)-1)*(bottom-top)/6
   number<-function(x)formatC(x,format="f",digits=3,decimal.mark=".")
   text<-function(x,y,label,...)shiny::tags$text(x=number(x),y=number(y),fill="#edf2f2",`font-size`=12,...,label)
-  id<-paste0("tp-gnat-",substr(brohn_hash(list(view$model$source_hash,view$scope,width)),1,18))
+  id<-paste0("tp-gnat-",substr(.brohn_sv_hash(list(view$model$source_hash,view$scope,width)),1,18))
   shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",viewBox=paste(0,0,width,height),role="img",focusable="false",
     `aria-labelledby`=paste(id,paste0(id,"-desc")),style="display:block;width:100%;height:auto;max-width:100%;background:#11171c;border-radius:8px;font-family:system-ui,sans-serif",
     shiny::tags$title(id=id,"Go/No-Go outcomes in frozen trial order"),
@@ -41,7 +41,7 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
   sx<-function(x)left+(x-xr[[1L]])/diff(xr)*(right-left);sy<-function(y)bottom-(y-yr[[1L]])/diff(yr)*(bottom-top)
   n<-function(x)formatC(x,format="f",digits=3,decimal.mark=".")
   title<-paste(if(histogram)"Latency distribution"else if(people)"Person outcomes"else"Trial chronology",view$label,sep=" | ")
-  id<-paste0("tp-",substr(brohn_hash(list(view$model$source_hash,view$measure,view$scope,chart,width)),1,18))
+  id<-paste0("tp-",substr(.brohn_sv_hash(list(view$model$source_hash,view$measure,view$scope,chart,width)),1,18))
   text<-function(x,y,label,...)shiny::tags$text(x=n(x),y=n(y),fill="#edf2f2",`font-size`=12,...,label)
   yt<-pretty(yr,n=3);yt<-yt[yt>=yr[[1L]]&yt<=yr[[2L]]]
   xt<-if(histogram)seq(xr[[1L]],xr[[2L]],length.out=3)else unique(round(seq(xr[[1L]],xr[[2L]],length.out=3)))
@@ -113,9 +113,9 @@ brohn_task_plot_svg <- function(view,chart="chronology",width=680L) {
 }
 brohn_task_plot_explorer_ui <- function(record) {
   if(!.brohn_tp_supported(record$body))return(NULL)
-  shiny::tagList(brohn_card(title="Explore task responses",subtitle="Follow one complete saved administration, or compare the people supporting a cohort measure.",
-    brohn_command("Open task plots","open_task_plots",list(report_id=record$id,revision=record$revision,report_hash=brohn_hash(record$body),project_id=record$project_id),id="task-plots-open")),
-    shiny::uiOutput("task_plot_error"),shiny::uiOutput("task_plot_catalog"),shiny::uiOutput("task_plot_controls"),shiny::uiOutput("task_plot_view"))
+  shiny::tagList(shiny::tags$script(src="task-plot-ui.js"),brohn_card(title="Explore task responses",subtitle="Follow one complete saved administration, or compare the people supporting a cohort measure.",
+    brohn_command("Open task plots","open_task_plots",list(report_id=record$id,revision=record$revision,report_hash=.brohn_sv_hash(record$body),project_id=record$project_id),id="task-plots-open")),
+    shiny::uiOutput("task_plot_status"),shiny::uiOutput("task_plot_error"),shiny::uiOutput("task_plot_catalog"),shiny::uiOutput("task_plot_controls"),shiny::uiOutput("task_plot_view"))
 }
 brohn_task_plot_csv <- function(view,path) {
   rows<-lapply(view$rows,function(r)c(r,list(report_id=view$model$report_id,report_hash=view$model$report_hash,source_hash=view$model$source_hash,
@@ -130,26 +130,63 @@ brohn_task_plot_csv <- function(view,path) {
 }
 brohn_install_task_plots <- function(input,output,session,store,state,attempt,prepare_download) {
   opened<-shiny::reactiveVal(NULL);model<-shiny::reactiveVal(NULL);problem<-shiny::reactiveVal(NULL)
-  close<-function(){opened(NULL);model(NULL)};session$onSessionEnded(close)
-  shiny::observeEvent(list(state$page,state$report_id),{o<-opened();if(!is.null(o)&&(!identical(state$page,"report")||!identical(state$report_id,o$record$id))){close();problem(NULL)}},priority=100,ignoreInit=FALSE)
+  pending<-shiny::reactiveVal(NULL);status<-shiny::reactiveVal(NULL)
+  close<-function(){opened(NULL);model(NULL);pending(NULL);status(NULL)};session$onSessionEnded(close)
+  shiny::observeEvent(list(state$page,state$report_id),{
+    o<-opened();p<-pending();id<-if(!is.null(p))p$report_id else if(!is.null(o))o$record$id else NULL
+    if(!is.null(id)&&(!identical(state$page,"report")||!identical(state$report_id,id))){close();problem(NULL)}
+  },priority=100,ignoreInit=FALSE)
   guard<-function(){o<-opened();brohn_require(!is.null(o)&&identical(state$page,"report")&&identical(state$report_id,o$record$id),"Reopen the original saved report.")
     tryCatch(brohn_task_plot_check(store,o,model()),error=function(e){close();problem(conditionMessage(e));stop(e)});o}
-  handle<-function(fn)attempt(function(){problem(NULL);tryCatch(fn(),error=function(e){problem(conditionMessage(e));stop(e)})})
+  handle<-function(fn,token=NULL)attempt(function(){problem(NULL);tryCatch(fn(),error=function(e){pending(NULL);status(list(phase="failed",token=token,text="Preparation stopped. The reason and next step are below."));problem(conditionMessage(e));stop(e)})})
+  prepare<-function(kind,report_id,command=NULL,selector=NULL,identity=NULL){
+    token<-brohn_id("task-plot-read")
+    pending(list(token=token,kind=kind,report_id=report_id,command=command,selector=selector,identity=identity))
+    status(list(phase="preparing",token=token,text=if(kind=="catalog")"Preparing saved source choices..."else"Reading and checking the complete saved source. This can take a moment."))
+  }
   shiny::observeEvent(input$open_task_plots,handle(function(){c<-input$open_task_plots
     brohn_require(identical(state$page,"report")&&identical(state$report_id,c$report_id),"Open this saved report before requesting its plots.")
-    close();o<-brohn_task_plot_report(store,c$report_id,c$revision,c$report_hash,c$project_id);opened(o)
+    close();prepare("catalog",c$report_id,command=c)
   }))
+  output$task_plot_status<-shiny::renderUI({s<-status();if(!is.null(s))shiny::div(class="brohn-alert",role="status",`aria-live`="polite",`aria-atomic`="true",
+    `data-task-plot-phase`=s$phase,`data-task-plot-ticket`=s$token,tabindex="-1",
+    `data-task-plot-prepare`=if(identical(s$phase,"preparing"))s$token else NULL,s$text)})
+  complete_card<-function(card,kind){s<-shiny::isolate(status())
+    if(!is.null(s)&&identical(s$phase,"ready")&&identical(s$kind,kind))
+      card<-htmltools::tagQuery(card)$find(".brohn-card-title")$addAttrs(tabindex="-1",`data-task-plot-complete`=s$token)$allTags()
+    card
+  }
+  # The browser acknowledges this exact visible ticket after two animation
+  # frames. Only then begin synchronous work; an R-only state change would
+  # otherwise remain unpainted until the source read had already finished.
+  shiny::observeEvent(input$task_plot_prepare_ack,{
+    p<-pending();if(is.null(p)||!identical(input$task_plot_prepare_ack,p$token))return()
+    handle(function(){
+      brohn_require(identical(state$page,"report")&&identical(state$report_id,p$report_id),"Reopen the original saved report.")
+      pending(NULL)
+      if(p$kind=="catalog"){
+        c<-p$command;opened(brohn_task_plot_report(store,c$report_id,c$revision,c$report_hash,c$project_id))
+        status(list(phase="ready",token=p$token,kind="catalog",text="Saved source choices are ready. Choose an administration or cohort measure below."))
+      }else{
+        o<-guard()
+        brohn_require(identical(p$identity,.brohn_sv_hash(o$record$body))&&identical(input$task_plot_catalog_identity,p$identity)&&identical(input$task_plot_source,p$selector),
+          "The selected source changed while preparing. Choose its current source and try again.")
+        model(brohn_task_plot_load(store,o,p$selector))
+        status(list(phase="ready",token=p$token,kind="source",text="Complete saved source loaded. Plot controls and exact numerical values are below."))
+      }
+    },token=p$token)
+  })
   output$task_plot_error<-shiny::renderUI({if(!is.null(problem()))shiny::div(class="brohn-alert",role="alert",problem(),shiny::p("Choose a retained source and try again. The saved numerical report remains available."))})
   output$task_plot_catalog<-shiny::renderUI({o<-opened();shiny::req(o)
-    brohn_card(title="Choose saved evidence",shiny::selectInput("task_plot_source","Administration or cohort measure",stats::setNames(vapply(o$catalog,`[[`,character(1),"id"),vapply(o$catalog,`[[`,character(1),"label")),selectize=FALSE),
-      shiny::tags$input(id="task_plot_catalog_identity",type="text",class="shiny-input-text",value=brohn_hash(o$record$body),style="display:none",tabindex="-1",`aria-hidden`="true"),
-      shiny::actionButton("task_plot_load","Show complete saved source"),shiny::p("Changing source does not update or recalculate the saved report."))})
-  shiny::observeEvent(input$task_plot_load,handle(function(){o<-guard()
-    brohn_require(identical(input$task_plot_catalog_identity,brohn_hash(o$record$body)),"Wait for this report's current source controls.")
-    model(NULL);model(brohn_task_plot_load(store,o,input$task_plot_source))
+    complete_card(brohn_card(title="Choose saved evidence",shiny::selectInput("task_plot_source","Administration or cohort measure",stats::setNames(vapply(o$catalog,`[[`,character(1),"id"),vapply(o$catalog,`[[`,character(1),"label")),selectize=FALSE),
+      shiny::tags$input(id="task_plot_catalog_identity",type="text",class="shiny-input-text",value=.brohn_sv_hash(o$record$body),style="display:none",tabindex="-1",`aria-hidden`="true"),
+      shiny::actionButton("task_plot_load","Show complete saved source"),shiny::p("Changing source does not update or recalculate the saved report.")),"catalog")})
+  shiny::observeEvent(input$task_plot_load,handle(function(){o<-opened()
+    brohn_require(!is.null(o)&&identical(state$page,"report")&&identical(state$report_id,o$record$id),"Reopen the original saved report.")
+    model(NULL);prepare("source",o$record$id,selector=input$task_plot_source,identity=input$task_plot_catalog_identity)
   }))
   output$task_plot_controls<-shiny::renderUI({m<-model();shiny::req(m)
-    brohn_card(title="Plot controls",shiny::tags$input(id="task_plot_identity",type="text",class="shiny-input-text",value=brohn_hash(list(m$report_hash,m$id,m$source_hash)),style="display:none",tabindex="-1",`aria-hidden`="true"),
+    complete_card(brohn_card(title="Plot controls",shiny::tags$input(id="task_plot_identity",type="text",class="shiny-input-text",value=.brohn_sv_hash(list(m$report_hash,m$id,m$source_hash)),style="display:none",tabindex="-1",`aria-hidden`="true"),
       if(m$kind=="trials")shiny::div(class="brohn-form-grid",shiny::selectInput("task_plot_measure","Recorded latency",
         if(identical(m$profile,"gnat-brohn-single-target/1.0"))c("Actual Space response"="first_response_ms")else c("First response"="first_response_ms","Final correct response"="final_correct_ms"),selectize=FALSE),
         shiny::selectInput("task_plot_scope","Trial scope",c("All expected positions"="all","Profile-scored positions"="scored"),selectize=FALSE)),
@@ -157,8 +194,8 @@ brohn_install_task_plots <- function(input,output,session,store,state,attempt,pr
       shiny::div(class="brohn-toolbar",shiny::downloadButton("task_plot_svg",if(m$kind=="people")"Download person outcomes SVG"else"Download chronology SVG",icon=NULL),
         if(identical(m$profile,"gnat-brohn-single-target/1.0"))shiny::downloadButton("task_plot_outcomes_svg","Download Go/No-Go outcomes SVG",icon=NULL),
         if(m$kind=="trials")shiny::downloadButton("task_plot_hist_svg","Download distribution SVG",icon=NULL),
-        shiny::downloadButton("task_plot_csv","Download every selected row CSV",icon=NULL),shiny::downloadButton("task_plot_json","Download all task values + provenance",icon=NULL)))})
-  selected<-shiny::reactive({m<-model();shiny::req(m,identical(input$task_plot_identity,brohn_hash(list(m$report_hash,m$id,m$source_hash))))
+        shiny::downloadButton("task_plot_csv","Download every selected row CSV",icon=NULL),shiny::downloadButton("task_plot_json","Download all task values + provenance",icon=NULL))),"source")})
+  selected<-shiny::reactive({m<-model();shiny::req(m,identical(input$task_plot_identity,.brohn_sv_hash(list(m$report_hash,m$id,m$source_hash))))
     guard()
     if(m$kind=="trials")shiny::req(input$task_plot_measure,input$task_plot_scope)
     brohn_task_plot_selection(m,if(m$kind=="people")"first_response_ms"else input$task_plot_measure,if(m$kind=="people")"all"else input$task_plot_scope)})
@@ -171,5 +208,5 @@ brohn_install_task_plots <- function(input,output,session,store,state,attempt,pr
   output$task_plot_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-task-chronology.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view()))),file,useBytes=TRUE)))
   output$task_plot_hist_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-task-distribution.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view(),"distribution"))),file,useBytes=TRUE)))
   output$task_plot_outcomes_svg<-shiny::downloadHandler(filename=function()paste0(model()$report_id,"-gnat-outcomes.svg"),contentType="image/svg+xml",content=function(file)prepare_download(function()writeLines(enc2utf8(as.character(brohn_task_plot_svg(verified_view(),"outcomes"))),file,useBytes=TRUE)))
-  invisible(list(opened=opened,model=model,selected=selected,guard=guard))
+  invisible(list(opened=opened,model=model,selected=selected,guard=guard,pending=pending,status=status))
 }
