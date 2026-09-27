@@ -125,8 +125,8 @@ brohn_install_linked_review <- function(input,output,session,store,state,attempt
     token<-brohn_token();uri<-session$registerDataObj("linked-window",list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
       brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired linked download.")
       saved<-active();brohn_require(identical(saved$id,data$id)&&!is.null(native$guard),"The linked window changed.");.Call(native$guard$native$check,native$guard$pointer)
-      structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"='attachment; filename="linked-window.csv"')),class="httpResponse")
-    },error=function(e)structure(list(status=404L,content_type="text/plain",content="This linked-window download is no longer current. Reopen the saved view."),class="httpResponse"))))
+      brohn_http_identity_response(structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"='attachment; filename="linked-window.csv"')),class="httpResponse"))
+    },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="This linked-window download is no longer current. Reopen the saved view."),class="httpResponse")))))
     csv_url(paste0(uri,"&key=",token))},ignoreNULL=TRUE)
   output$linked_review_result<-shiny::renderUI({r<-opened();if(is.null(r))return(NULL);if(!same(r))return(shiny::p(role="status","The selection changed. Apply linked window to inspect or export those inputs."))
     b<-r$body$result

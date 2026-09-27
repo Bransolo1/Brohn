@@ -82,9 +82,9 @@ brohn_install_audio_extraction<-function(input,output,session,store,state,attemp
           uri<-session$registerDataObj(paste0("audio-extraction-",a$kind),list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
             brohn_require(req$REQUEST_METHOD%in%c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired audio derivation download.")
             saved<-active();brohn_require(identical(saved$id,data$id),"The audio derivation changed.")
-            structure(list(status=200L,content_type=a$media_type,content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff",
-              "Content-Disposition"=paste0('attachment; filename="',if(a$kind=="decoded-audio")"decoded-audio.wav"else"audio-frames.csv",'"'))),class="httpResponse")
-          },error=function(e)structure(list(status=404L,content_type="text/plain",content="This source download is no longer current. Reopen its saved derivation."),class="httpResponse"))))
+            brohn_http_identity_response(structure(list(status=200L,content_type=a$media_type,content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff",
+              "Content-Disposition"=paste0('attachment; filename="',if(a$kind=="decoded-audio")"decoded-audio.wav"else"audio-frames.csv",'"'))),class="httpResponse"))
+          },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="This source download is no longer current. Reopen its saved derivation."),class="httpResponse")))))
           list(kind=a$kind,url=paste0(uri,"&key=",token))});urls(links)
       }
       for(g in native$guards).Call(g$native$check,g$pointer)

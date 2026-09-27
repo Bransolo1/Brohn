@@ -1,5 +1,12 @@
 # John: Brohn development handoff
 
+**Saved-download checkpoint, 27 September 2026:** shared HTTP framing now covers
+19 earlier saved callbacks and hosted refusals, preserving exact original
+bytes and current access checks. Read the [scope/evidence](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
+and run the [portable HTTP checks](../tests/HTTP-RESPONSE-REPRODUCE.md) from an
+installed clone with fresh external evidence directories. Task/liking adapters
+are next, followed by MaxDiff, latency and post-collection restrictions.
+
 **Current saved-findings checkpoint, 27 September 2026:** read the
 [guide](operations/SHARE-SAVED-FINDINGS.md),
 [architecture](architecture/SAVED-REPORT-PACKAGES.md) and
@@ -12,9 +19,9 @@ page does not cancel queued work; unfinished continuation requires Resume.
 Use [portable report checks](../tests/REPORT-PACKAGE-REPRODUCE.md) in a new
 external evidence directory. The report profile requires the configured
 CPython 3.12.10/Pillow 12.3.0 methods environment. Raw qualification stores are
-not in Git. Next is shared HTTP-response qualification for other saved explorers
-and hosted refusals, then task/liking and MaxDiff package adapters, remaining
-latency and post-collection restrictions in [WORKSTREAM](WORKSTREAM.md). All 50/17 scope
+not in Git. Its shared HTTP follow-up is recorded above; task/liking and MaxDiff
+package adapters, remaining latency and post-collection restrictions continue
+in [WORKSTREAM](WORKSTREAM.md). All 50/17 scope
 remains active. The dated checkpoints below preserve historical context.
 
 **Earlier reviewed-clock checkpoint, 27 September 2026:** development remains active. Read the

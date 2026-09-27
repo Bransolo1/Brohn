@@ -21,10 +21,10 @@ brohn_install_clock_review_dispatch <- function(input,output,session,store,v,nat
         fresh<-active();brohn_require(.brohn_cm_same(.brohn_cm_ref(fresh$record),data$ref),"The saved measurement window changed.")
         expected<-Filter(function(x)identical(x$kind,a$kind),fresh$artifacts)
         brohn_require(length(expected)==1L&&.brohn_cm_same(expected[[1L]],a),"The original download descriptor changed.")
-        structure(list(status=200L,content_type=a$media_type,content=list(file=a$path,owned=FALSE),
+        brohn_http_identity_response(structure(list(status=200L,content_type=a$media_type,content=list(file=a$path,owned=FALSE),
           headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff",
-            "Content-Disposition"=paste0('attachment; filename="',a$file,'"'))),class="httpResponse")
-      },error=function(e)structure(list(status=404L,content_type="text/plain",content="This download is no longer current. Reopen the saved measurement window."),class="httpResponse"))))
+            "Content-Disposition"=paste0('attachment; filename="',a$file,'"'))),class="httpResponse"))
+      },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="This download is no longer current. Reopen the saved measurement window."),class="httpResponse")))))
       urls[[a$kind]]<<-paste0(uri,"&key=",token)
     })
     v$urls<-urls;invisible(opened$record)}

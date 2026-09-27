@@ -34,10 +34,11 @@ export, retry and restart acceptance (PC12). The first supported
 [saved-findings handoff](qa/PUBLICATION-REPORT-HANDOFF-20260927.md) also has
 scoped acceptance (PC02/PC05/PC13; BWP07/BWP13/BWP15), preserving complete
 included numerical collections and exact history. Other report families and
-post-collection restrictions remain open. Immediate continuation qualifies shared
-HTTP-response framing on other saved-explorer/hosted-refusal paths before broader
-task/liking and MaxDiff package adapters and remaining latency work. No broader requirement or capability
-is closed by these slices.
+post-collection restrictions remain open. Shared saved-download framing now has
+[scoped callback/native/browser qualification](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md).
+Immediate continuation expands task/liking and MaxDiff package adapters and
+remaining latency work. Framework and participant transport remain separate.
+No broader requirement or capability is closed by these slices.
 
 | ID | Required outcome | Acceptance before closing | Status |
 |---|---|---|---|

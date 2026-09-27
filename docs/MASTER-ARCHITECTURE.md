@@ -19,14 +19,18 @@ still governs saved findings and exact views. The
 connects durable preparation, exact historical sources, complete included
 numerical collections and portable HTML/ZIP for saved gaze, questionnaire and
 paired findings. Its [scoped checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md)
-separates connected acceptance from component and authority evidence. Immediate
-continuation qualifies shared HTTP responses across other saved-explorer and
-hosted-refusal paths, then expands task/liking and MaxDiff report adapters,
+separates connected acceptance from component and authority evidence. The
+[shared saved-download contract](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md) now
+finalizes 19 saved callbacks and hosted 403 after their existing access gates:
+exact streamed GET content, identity encoding and decimal HEAD lengths, with
+no scientific reruns or global formatting changes. Framework downloadHandlers,
+participant/static routes and range/compressed responses remain separate.
+Immediate continuation expands task/liking and MaxDiff report adapters,
 source-opening responsiveness and post-collection restrictions.
 Post-collection restrictions, broader workloads, wider clock/playback methods
 and remaining measurement/device/operation gates stay open. Saved-source opening
 still takes several seconds despite scoped responsiveness gains. The complete
-50-capability/17-package scope below remains active and unfinished.
+50-capability / 17-package scope below remains active and unfinished.
 
 **Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
 [workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)

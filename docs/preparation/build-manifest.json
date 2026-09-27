@@ -5,11 +5,11 @@
   "checkpoint": {
     "status": "implementing",
     "date": "2026-09-27",
-    "publication_handoff": "docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md",
+    "publication_handoff": "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability/17-package build remains active and unfinished. The first saved-findings package profile has scoped acceptance for exact saved gaze, questionnaire and paired findings: durable preparation, complete included numerical collections, HTML/evidence ZIP, current-reader history and downloads. It does not repeat scientific analysis or silently include unsupported families. Wider report/clock/workload profiles, post-collection restrictions and remaining method/device/operation gates stay open. Publication is not a pause. Immediate continuation: qualify shared HTTP-response framing for other saved explorers and hosted refusals, then task/liking and MaxDiff report adapters, remaining source-opening latency and scoped post-collection restrictions."
+    "note": "The full 50-capability / 17-package build remains active and unfinished. Shared saved-download framing now has scoped evidence for 19 prior callbacks / 24 export variants and hosted 403, with exact-byte/native paired/historical report compatibility. The separate saved-findings profile still covers exact saved gaze, questionnaire and paired collections without scientific reruns. Framework downloadHandlers, participant/static/range/compressed routes and wider workloads remain separate. Immediate continuation: task/liking adapters, then MaxDiff, remaining source-opening latency and scoped post-collection restrictions. Publication is not a pause."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -712,7 +712,9 @@
         "docs/operations/REVIEW-ALIGNED-RECORDINGS.md",
         "docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md",
         "docs/architecture/SAVED-REPORT-PACKAGES.md",
-        "docs/operations/SHARE-SAVED-FINDINGS.md"
+        "docs/operations/SHARE-SAVED-FINDINGS.md",
+        "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
+        "tests/HTTP-RESPONSE-REPRODUCE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -789,7 +791,9 @@
         "tests/media-feedback/REPRODUCE.md",
         "tests/TASK-PLOT-REPRODUCE.md",
         "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
-        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md",
+        "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
+        "tests/HTTP-RESPONSE-REPRODUCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

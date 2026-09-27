@@ -21,9 +21,9 @@ brohn_install_clock_plot_review <- function(input,output,session,store,v,native,
         identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired overview download.")
       current(v$plot_pending);fresh<-brohn_clock_plot_resources_current(store,native$plot_handle)
       brohn_require(.brohn_cm_same(.brohn_cm_ref(fresh$record),data$ref)&&.brohn_cm_same(fresh$artifact,artifact),"This overview no longer matches the opened original window.")
-      structure(list(status=200L,content_type=artifact$media_type,content=list(file=artifact$path,owned=FALSE),
-        headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"='attachment; filename="clock-overview.json"')),class="httpResponse")
-    },error=function(e)structure(list(status=404L,content_type="text/plain",content="Reopen the saved original window to download its overview."),class="httpResponse"))))
+      brohn_http_identity_response(structure(list(status=200L,content_type=artifact$media_type,content=list(file=artifact$path,owned=FALSE),
+        headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"='attachment; filename="clock-overview.json"')),class="httpResponse"))
+    },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="Reopen the saved original window to download its overview."),class="httpResponse")))))
     v$plot<-opened$plot;v$plot_url<-paste0(uri,"&key=",token);p$phase<-"ready";p$error<-NULL;v$plot_pending<-p
   }
   begin<-function(){brohn_require(!is.null(v$window),"Open a measurement window before its overview.")

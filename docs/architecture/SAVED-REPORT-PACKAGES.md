@@ -174,13 +174,15 @@ sources/runtime. There are no model weights for assembly. PNG/JPEG bytes and
 saved geometry are checked; unsupported orientation is refused rather than
 guessing a transform. Excluded images leave a labelled geometry frame.
 
-The immediate shared follow-up is HTTP-response framing across other saved
-explorers and hosted refusals: actual file/SVG success, 403/404, identity/gzip,
-zero/nonzero and exact-power byte lengths, and sequential HEAD/GET requests.
-The report-specific proof does not establish every inventoried route is broken
-or fixed. Preserve each route's source/session/token checks and file ownership;
-do not materialize large files merely to answer HEAD or alter global numeric
-formatting. Broader report adapters follow this qualification.
+The [shared saved-download checkpoint](../qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
+now covers 19 other saved-content callbacks and hosted 403 refusals, preserving
+current source/session/token checks, retained file ownership and exact GET
+bytes. Its shared helper and actual callback transport have separate evidence
+from this report-specific helper, which remains unchanged. Framework
+downloadHandlers, participant/static routes and partial/range response shapes
+remain outside that adoption; no Range request interpretation is added.
+Broader task/liking and MaxDiff report adapters, source-opening latency and
+post-collection restrictions are the current continuation.
 
 The next task adapter must bind exact historical sources and a frozen display
 audit. Existing task plots use current-head checks and rebuild delivery-journal

@@ -2,7 +2,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   # Legacy readers retain their original validators and identifiers.
   legacy <- c("study", "comparison", "presentation", "records", "json", "storage", "drafts", "assets", "aois",
     "analysis", "sample-analysis", "gaze-import", "import-report", "protocol", "protocol-storage")
-  platform <- c("core", "question-materials", "welcome", "question-flow", "analysis-plan", "store", "publication", "methods", "library", "catalog", "delivery", "portability", "analysis", "gaze", "vision", "facial-expression", "neural", "eda-events", "headers", "physiology-artifacts", "signal", "multimodal", "jobs", "runtime")
+  platform <- c("core", "http-response", "question-materials", "welcome", "question-flow", "analysis-plan", "store", "publication", "methods", "library", "catalog", "delivery", "portability", "analysis", "gaze", "vision", "facial-expression", "neural", "eda-events", "headers", "physiology-artifacts", "signal", "multimodal", "jobs", "runtime")
   platform <- c(platform, "runner-assets")
   if (file.exists("R/platform-task-delivery.R")) platform <- c(platform, "task-delivery")
   platform <- c(platform, "sciat-window-candidate", "sciat-window", "sciat-window-delivery", "sciat-window-score")

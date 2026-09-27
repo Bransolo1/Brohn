@@ -10,9 +10,9 @@ brohn_guard_hosted_http <- function(session,store) {
   original<-session$handleRequest
   guarded<-function(req) {
     valid<-tryCatch({brohn_hosted_require_session(store);TRUE},error=function(e)FALSE)
-    if(!valid)return(structure(list(status=403L,content_type="text/plain; charset=UTF-8",
+    if(!valid)return(brohn_http_identity_response(structure(list(status=403L,content_type="text/plain; charset=UTF-8",
       content="Researcher access ended. Sign in again or contact the workspace operator.",
-      headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse"))
+      headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse")))
     original(req)
   }
   # R6 locks existing method bindings. Replace only this instance's verified

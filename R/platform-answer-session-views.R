@@ -74,8 +74,8 @@ brohn_install_answer_session <- function(input,output,session,store,state,attemp
         links<-lapply(setdiff(names(r$body$exports),"session-evidence.sqlite"),function(name){ref<-r$body$exports[[name]];path<-brohn_object_path(store,ref$hash,verify=FALSE);token<-brohn_token()
           url<-session$registerDataObj(paste0("answer-session-",name),list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
             brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token)&&identical(active()$id,data$id),"Expired session evidence export.")
-            structure(list(status=200L,content_type=ref$media_type,content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse")
-          },error=function(e)structure(list(status=404L,content_type="text/plain",content="Reopen this exact saved answer and its verified session."),class="httpResponse"))))
+            brohn_http_identity_response(structure(list(status=200L,content_type=ref$media_type,content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse"))
+          },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="Reopen this exact saved answer and its verified session."),class="httpResponse")))))
           list(name=name,url=paste0(url,"&key=",token))});urls(links)
         session$onFlushed(function()session$sendCustomMessage("brohn-focus","answer-session-heading"),once=TRUE)
       }

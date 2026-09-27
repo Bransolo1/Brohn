@@ -162,8 +162,8 @@ brohn_install_paired_plots <- function(input,output,session,store,state,attempt,
           ref<-retained$exports[[data$kind]];brohn_require(!is.null(ref)&&file.exists(ref$path)&&identical(as.numeric(file.info(ref$path)$size),ref$size)&&identical(digest::digest(file=ref$path,algo="sha256"),ref$hash),"The prepared paired evidence is unavailable.")
           content<-list(file=ref$path,owned=FALSE);type<-if(data$kind=="json")"application/json"else"text/csv";suffix<-paste0("paired-evidence.",data$kind)
         }else{content<-enc2utf8(as.character(brohn_paired_plot_svg(v,people_page(v),data$kind)));type<-"image/svg+xml";suffix<-paste0("paired-",data$kind,"-page-",people_page(v),".svg")}
-        structure(list(status=200L,content_type=type,content=content,headers=list("Content-Disposition"=paste0('attachment; filename="',v$report_id,'-',suffix,'"'),"Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse")
-      },error=function(e)structure(list(status=404L,content_type="text/plain",content="This exact paired export is unavailable. Reopen its saved report and current selection."),class="httpResponse"))))
+        brohn_http_identity_response(structure(list(status=200L,content_type=type,content=content,headers=list("Content-Disposition"=paste0('attachment; filename="',v$report_id,'-',suffix,'"'),"Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse"))
+      },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="This exact paired export is unavailable. Reopen its saved report and current selection."),class="httpResponse")))))
       urls[[kind]]<-paste0(uri,"&paired_key=",m$download_token)
     }
     links(urls)

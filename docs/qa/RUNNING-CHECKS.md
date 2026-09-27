@@ -1,5 +1,12 @@
 # Repeatable Brohn checks
 
+For shared saved-download framing and actual registered callbacks, use
+[HTTP-RESPONSE-REPRODUCE](../../tests/HTTP-RESPONSE-REPRODUCE.md). Its 106 unit,
+130 helper-wire and 197 callback-wire checks use fresh synthetic evidence,
+with explicit private dependency spies for callback authority. They supplement
+the [native/browser checkpoint](PUBLICATION-SAVED-DOWNLOADS-20260927.md); they
+do not rerun or replace scientific qualification or the broader QA catalog.
+
 For saved-report assembly and feedback, use
 [REPORT-PACKAGE-REPRODUCE](../../tests/REPORT-PACKAGE-REPRODUCE.md).
 Its synthetic pure renderer, exact-alias, archive/raster and UI checks require

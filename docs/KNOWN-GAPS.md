@@ -38,12 +38,10 @@ records describing only the 01A–01L prototype are historical.
   scientific collections are refused with a reason, not silently dropped.
   Larger payload profiles, original/raw-evidence bundles and enlarged mobile
   figure views remain work. Offline copies cannot be revoked retrospectively.
-- **Download transport outside report packages:** the report-controller HEAD
-  fix is scoped to its successful and refused downloads. Other saved-download
-  and hosted-denial callbacks still need actual HTTP connection-reuse checks
-  and any shared response-helper migration. Their source permissions must
-  remain intact; the report route's synthetic wire checks do not qualify
-  unrelated routes.
+- **Transport beyond the scoped saved routes:** the [shared response checkpoint](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
+  now qualifies 19 earlier saved-content callbacks and hosted 403. Framework
+  downloadHandlers, participant/static routes, partial ranges and compressed
+  responses have separate contracts and are not covered by that adoption.
 - **Post-collection restrictions:** collection-time withdrawal exists, but
   descendant/report restrictions and older-backup restore enforcement need a
   durable ledger and scoped workflow. Restriction is not physical erasure.

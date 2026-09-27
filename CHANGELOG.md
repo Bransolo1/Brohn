@@ -1,5 +1,16 @@
 # Changes
 
+## Saved-download HTTP responses — 2026-09-27
+
+- Adopted shared identity/decimal-length responses for 19 saved-content callback
+  sites and hosted 403, retaining original authority checks and streamed bytes.
+- Added portable helper and actual-callback HTTP regression for empty HEAD,
+  exact lengths, refused access and persistent connection reuse.
+- Qualified native paired exports and historical report compatibility without
+  repeating scientific analysis; see
+  `docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md`. Broader framework/participant
+  routes and the full 50/17 roadmap remain outside this bounded checkpoint.
+
 ## Complete saved-findings handoff — 2026-09-27
 
 - Added durable Prepare report, exact historical selections and explicit

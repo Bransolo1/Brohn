@@ -13,8 +13,8 @@ brohn_material_card_ui <- function(design, kind, material, task_id = NULL) {
 }
 
 .brohn_material_response <- function(status, type = "text/plain; charset=utf-8", content = "Material preview is unavailable.") {
-  structure(list(status = as.integer(status), content_type = type, content = content,
-    headers = list("Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse")
+  brohn_http_identity_response(structure(list(status = as.integer(status), content_type = type, content = content,
+    headers = list("Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse"))
 }
 
 brohn_install_materials <- function(input, output, session, store, current, state, attempt, capture, update_study,

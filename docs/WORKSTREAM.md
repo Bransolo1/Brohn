@@ -21,6 +21,7 @@ This file orders the immediate continuation; it does not replace that scope.
 
 | Workstream | Delivered and checked | Remaining work |
 | --- | --- | --- |
+| Saved-download HTTP | Shared finalizer on 19 saved callbacks / 24 export variants and hosted 403; exact bytes, empty HEAD, current authority and native paired/history compatibility. | Framework downloadHandlers, participant/static/range/compressed routes retain separate contracts. |
 | Saved-findings handoff | Durable one-action prerequisites, exact historical choices, standalone HTML/evidence ZIP and complete included numerical collections; scoped connected acceptance. | Further report families, larger profiles, original/raw-evidence bundles and scoped post-collection restrictions. |
 | Reviewed cross-recording clocks | Original-event selection, exact preview, versioned save, complete original-row exports, automatic charts, independent retry and unchanged historical restart; connected and final mobile acceptance. | Complete playback, additional clock/reset profiles, arbitrary channel counts, retained-CSV paging and wider workload qualification. |
 | Saved-result reports | Results/Explore/Evidence, first-screen saved GNAT/acoustic measurements, long-title phone layout, exact exports and joined restart evidence. | Focused preparation/readiness and task-source digest reuse now qualified; several-second synchronous reads and wider report families/load qualification remain. |
@@ -35,7 +36,8 @@ This file orders the immediate continuation; it does not replace that scope.
 | Original-container video/audio review | Exact frames beside the saved waveform; full timestamp/sample exports, explicit gaps, cancel/retry, saved history and zero-job restart. | Continuous playback, unrelated-sensor clock maps and broader history workload qualification. |
 | Installation and operations | Checked Windows setup plus final integrated-source connected smoke from a separate checkout: actual participant, one automatic report, exports and restart. | Configured broader QA catalog, clean-machine installation, public hosting operations and broader roles. |
 
-Authoritative evidence: [saved-findings checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
+Authoritative evidence: [saved-download checkpoint](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md),
+[saved-findings checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
 [current clock checkpoint](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md),
 [responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md),
 [results/history checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md),
@@ -51,17 +53,7 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Shared HTTP response qualification.** The report-package flow exposed
-   actual gzip/framing and exact-power Content-Length failures. Inspect the
-   other saved explorers and hosted refusal paths against the shared transport
-   seam; possible exposure is not evidence that every route is broken or fixed.
-   Qualify retained files and SVG/text, success/404/403, zero/nonzero and exact
-   100,000-byte payloads, identity/gzip negotiation and sequential HEAD-to-GET
-   on one connection. Preserve current-reader/source/token checks, held files
-   and exact GET bytes; avoid eager file materialization or global formatting
-   options. Only then migrate callers to a qualified shared response helper.
-
-2. **Broader saved-result and package coverage (PC02/PC05; BWP07/BWP13/BWP15).**
+1. **Broader saved-result and package coverage (PC02/PC05; BWP07/BWP13/BWP15).**
    The accepted complete-findings profile supports saved gaze, questionnaire and
    paired evidence. Add further enabled-family adapters only with complete
    numerical/provenance coverage and source/permission tests. Task/choice,
@@ -76,24 +68,24 @@ independent reference evidence. Do not add their counts into a whole-product cla
    artifact adapters follow. Supported questionnaire scales already belong to
    the first profile; they are not an entirely missing report family.
 
-3. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
+2. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
    accepted source guards, exact outputs and ticket/focus behavior. The current
    media and task improvements are scoped; synchronous opening still takes
    several seconds. Measure further changes against the retained corpus and
    distinguish heading/link readiness from image loading. Qualify larger and
    concurrent workloads separately.
 
-4. **Post-collection restrictions (PC13).** Design a durable scoped restriction
+3. **Post-collection restrictions (PC13).** Design a durable scoped restriction
    ledger, affected-source/derivative/report preview and backup-restore
    enforcement. Keep collection-time withdrawal distinct from later restrictions
    and physical erasure. Preserve unrelated people/shared stimuli; qualify
    interrupted and idempotent operations.
 
-5. **Wider clock and review scope (PC12).** Continue playback, additional
+4. **Wider clock and review scope (PC12).** Continue playback, additional
    clock/reset profiles, retained-CSV paging and wider channel/workload coverage.
    Keep physical timing and scientific recipe qualification separate.
 
-6. **Broader completion gates.** Reconcile enabled measurement views,
+5. **Broader completion gates.** Reconcile enabled measurement views,
    method/reference coverage, research operations, workload bounds and remaining
    capabilities against [PC01–PC16](PRODUCT-COMPLETION-BACKLOG.md),
    [known gaps](KNOWN-GAPS.md) and each owning package. Keep physical-device,

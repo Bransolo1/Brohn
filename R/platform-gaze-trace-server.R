@@ -210,15 +210,15 @@ brohn_install_gaze_trace_server <- function(input, output, session, store, state
           guard(); saved <- preview(); held <- checks[["preview"]]
           brohn_require(!is.null(saved) && identical(saved$id, data$id) && identical(brohn_hash(saved$body), data$hash) && !is.null(held) && is.null(held$process), "Reopen this exact verified trace window.")
           for (g in held$guards) .Call(g$native$check, g$pointer)
-          if (data$kind == "svg") return(structure(list(status = 200L, content_type = "image/svg+xml",
+          if (data$kind == "svg") return(brohn_http_identity_response(structure(list(status = 200L, content_type = "image/svg+xml",
             content = brohn_gaze_trace_export_svg(saved$body$result), headers = list("Content-Disposition" = paste0('attachment; filename="', data$id, '-trace.svg"'),
-              "Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse"))
+              "Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse")))
           ref <- if (data$kind == "complete") list(hash = saved$body$request$artifact$sha256) else saved$body$result_object
           path <- brohn_object_path(store, ref$hash, verify = FALSE)
-          structure(list(status = 200L, content_type = if (data$kind == "complete") "application/x-ndjson" else "application/json",
+          brohn_http_identity_response(structure(list(status = 200L, content_type = if (data$kind == "complete") "application/x-ndjson" else "application/json",
             content = list(file = path, owned = FALSE), headers = list("Content-Disposition" = paste0('attachment; filename="', data$id, if (data$kind == "complete") '-complete.ndjson"' else '-window.json"'),
-              "Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse")
-        }, error = function(e) structure(list(status = 404L, content_type = "text/plain", content = "This exact trace download is unavailable. Reopen its saved report."), class = "httpResponse"))))
+              "Cache-Control" = "no-store", "X-Content-Type-Options" = "nosniff")), class = "httpResponse"))
+        }, error = function(e) brohn_http_identity_response(structure(list(status = 404L, content_type = "text/plain", content = "This exact trace download is unavailable. Reopen its saved report."), class = "httpResponse")))))
       paste0(uri, "&trace_key=", token)
     })
     names(urls) <- kinds; links(urls)

@@ -122,8 +122,8 @@ brohn_install_audio_review <- function(input,output,session,store,state,attempt,
           uri<-session$registerDataObj(paste0("audio-",o$kind),list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
             brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired audio export.")
             saved<-active();brohn_require(identical(saved$id,data$id),"The audio view changed.")
-            structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',o$kind,'.csv"'))),class="httpResponse")
-          },error=function(e)structure(list(status=404L,content_type="text/plain",content="This audio export is no longer current. Reopen the saved view."),class="httpResponse"))))
+            brohn_http_identity_response(structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',o$kind,'.csv"'))),class="httpResponse"))
+          },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="This audio export is no longer current. Reopen the saved view."),class="httpResponse")))))
           list(kind=o$kind,url=paste0(uri,"&key=",token))});urls(links)
       }
       for(g in native$guards).Call(g$native$check,g$pointer)

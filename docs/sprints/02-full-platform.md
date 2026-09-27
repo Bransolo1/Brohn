@@ -14,9 +14,10 @@
   qualify supported packed questionnaire and revision/scale evidence.
 - [x] Record the connected and separate component/native evidence in the
   [checkpoint](../qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
-- [ ] Qualify a shared HTTP response seam for other saved explorers and hosted
-  refusals, including gzip negotiation, exact-power lengths, current authority
-  and reused connections. Do not assume every inventoried route is broken/fixed.
+- [x] Qualify and adopt shared framing across 19 saved callbacks and hosted
+  refusals, with separate actual callback transport, native/browser compatibility
+  and independent producer checks; see the [checkpoint](../qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md).
+  Framework downloadHandlers, participant/static and range paths remain separate.
 - [ ] Extend complete package adapters, workload profiles and offline UX after
   separate qualification; retain existing unsupported-family exports.
 - [ ] Continue remaining source-opening latency work with exact source guards.

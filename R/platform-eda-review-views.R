@@ -131,8 +131,8 @@ brohn_install_eda_review <- function(input,output,session,store,state,attempt,me
         url<-session$registerDataObj(paste0("eda-",name),list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
           brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired EDA export.")
           brohn_require(identical(active()$id,data$id),"EDA selection changed.")
-          structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse")
-        },error=function(e)structure(list(status=404L,content_type="text/plain",content="Reopen the current verified EDA event review."),class="httpResponse"))))
+          brohn_http_identity_response(structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse"))
+        },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="Reopen the current verified EDA event review."),class="httpResponse")))))
         list(name=name,url=paste0(url,"&key=",token))});urls(links)
     }
     for(g in native$guards).Call(g$native$check,g$pointer)

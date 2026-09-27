@@ -173,9 +173,9 @@ brohn_install_signal_values <- function(input,output,session,store,state,attempt
       ref<-saved$body$csv_object;path<-brohn_object_path(store,ref$hash,verify=FALSE);verified<-checks[["export"]]
       brohn_require(!is.null(verified)&&is.null(verified$process)&&identical(verified$record$id,saved$id),"Verify the prepared export before downloading.")
       for(g in verified$guards).Call(g$native$check,g$pointer)
-      structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list(
-        "Content-Disposition"=paste0('attachment; filename="',saved$id,'.csv"'),"Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse")
-    },error=function(e){issue(conditionMessage(e));structure(list(status=404L,content_type="text/plain; charset=utf-8",content="This exact source download is unavailable. Reopen its report and prepare it again."),class="httpResponse")})))
+      brohn_http_identity_response(structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list(
+        "Content-Disposition"=paste0('attachment; filename="',saved$id,'.csv"'),"Cache-Control"="no-store","X-Content-Type-Options"="nosniff")),class="httpResponse"))
+    },error=function(e){issue(conditionMessage(e));brohn_http_identity_response(structure(list(status=404L,content_type="text/plain; charset=utf-8",content="This exact source download is unavailable. Reopen its report and prepare it again."),class="httpResponse"))})))
     download(paste0(uri,"&values_key=",token))
   },ignoreNULL=TRUE)
   output$signal_values_download<-shiny::renderUI({r<-exported();url<-download();if(is.null(r)||is.null(url))return(NULL)

@@ -145,8 +145,8 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
         url<-session$registerDataObj(paste0("eda-continuous-",name),list(id=r$id,token=token),function(data,req)shiny::isolate(tryCatch({
           brohn_require(req$REQUEST_METHOD %in% c("GET","HEAD")&&identical(shiny::parseQueryString(brohn_default(req$QUERY_STRING,""))$key,data$token),"Expired EDA export.")
           brohn_require(identical(active()$id,data$id),"EDA selection changed.")
-          structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse")
-        },error=function(e)structure(list(status=404L,content_type="text/plain",content="Reopen the current verified EDA waveform review."),class="httpResponse"))))
+          brohn_http_identity_response(structure(list(status=200L,content_type="text/csv; charset=utf-8",content=list(file=path,owned=FALSE),headers=list("Cache-Control"="no-store","X-Content-Type-Options"="nosniff","Content-Disposition"=paste0('attachment; filename="',name,'"'))),class="httpResponse"))
+        },error=function(e)brohn_http_identity_response(structure(list(status=404L,content_type="text/plain",content="Reopen the current verified EDA waveform review."),class="httpResponse")))))
         list(name=name,url=paste0(url,"&key=",token))});urls(links)
       session$onFlushed(function()session$sendCustomMessage("brohn-focus","eda-continuous-result-heading"),once=TRUE)
     }

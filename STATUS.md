@@ -1,5 +1,16 @@
 # Resume here — Brohn
 
+## Saved-download transport — scoped checkpoint — 27 September 2026
+
+The 19 earlier saved-content callbacks and hosted 403 refusal now use a shared
+HTTP response finalizer. Exact GET bytes and existing access/source checks stay
+intact; HEAD and persistent connection reuse pass component and actual-route
+checks. Genuine saved paired exports and historical report reopening retain
+original scientific values and bytes. Read the [checkpoint](docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
+and [portable checks](tests/HTTP-RESPONSE-REPRODUCE.md). Next: task/liking report
+adapters, then MaxDiff, remaining latency and post-collection restrictions.
+All 50 capabilities and 17 packages remain active and unfinished.
+
 ## Saved-findings handoff — scoped checkpoint 27 September 2026
 
 Brohn connects a durable Prepare report flow to exact saved gaze, questionnaire
@@ -13,10 +24,10 @@ The final connected candidate07 passed creation of an original synthetic control
 
 Read the [checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
 [researcher guide](docs/operations/SHARE-SAVED-FINDINGS.md) and
-[architecture](docs/architecture/SAVED-REPORT-PACKAGES.md). Next: shared HTTP
-response qualification for other saved-download/hosted-refusal paths, complete
-task/liking and MaxDiff report adapters, remaining source-opening responsiveness
-and post-collection restrictions. All 50 capabilities and 17 packages remain active;
+[architecture](docs/architecture/SAVED-REPORT-PACKAGES.md). Its shared HTTP
+follow-up is covered by the later checkpoint above. Complete task/liking and
+MaxDiff adapters, remaining source-opening responsiveness and post-collection
+restrictions remain open. All 50 capabilities and 17 packages remain active;
 this is a bounded delivery checkpoint, not platform completion.
 
 ## Earlier reviewed alignment and complete-window review — 27 September 2026
@@ -117,7 +128,7 @@ local setup have connected acceptance. Paired comparisons now pass their full
 source/export/restart journey. Linked stream/event review now passes its actual
 import, exact-value export, cancellation, paging and restart journey with five
 clean accessibility scans. Abandoned-session recovery now passes40 domain,
-eight browser and19 independent checks/seven scans, with an actual separately
+eight browser and 19 independent checks/seven scans, with an actual separately
 confirmed-completion report and retained original receipts. Paired aggregation
 retains exact output while its1,000-person direct benchmark falls191.23→2.36s.
 Audio waveform/spectrogram review and event-EDA review now have scoped connected
@@ -179,7 +190,7 @@ receiver evidence. Cardiac input review passes21 browser assertions/four scans
 and22 recorded-reference checks/eight jobs, with unchanged original features.
 MaxDiff item illustrations also have a completed authoring-to-report journey.
 Source-bound cardiac artifact exclusions/recalculation now pass38 direct R checks
-across10 jobs,24 independent curated-source checks across8 jobs, and17 researcher
+across10 jobs,24 independent curated-source checks across8 jobs, and 17 researcher
 browser assertions/two scans/four jobs. Original inputs/reports remain unchanged;
 exclusions are versioned and surviving runs are analysed independently. Read
 docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md for the precise scope and retained failures.
@@ -212,7 +223,7 @@ and hosted operations remain open. Longer useful live waveform windows and
 measurement-specific acquisition-quality criteria now pass replay and UI
 acceptance: five-second previews, complete committed support, exact reviewed
 source-code/range/finite/cadence criteria, and unknown stale/interrupted states.
-Reusable equipment setups pass5 metadata,25 storage,53 actual manager and10
+Reusable equipment setups pass5 metadata,25 storage,53 actual manager and 10
 full-browser checks/4 scans, including complete channel-container metadata and
 two-study/source-restart/fresh-review behavior. Native participant camera/input
 preflight has its separate accepted evidence described above. Pinned passive
@@ -468,8 +479,8 @@ work now has113 pure checks across five frozen original CSV/registry fixtures;
 native journal export/reimport passes15 checks, mapping UI14, and storage/worker
 acceptance is active. Dedicated mixed-report task-score exports pass15 checks.
 Participant history now uses40-row metadata-only study/project pages:33 catalog
-and11 Shiny page/guard checks pass, with16 assigned-protocol regressions. Combined report comprehension passes22 scoped,
-10 offline HTML and17 browser checks/five clear accessibility scans on the same
+and11 Shiny page/guard checks pass, with 16 assigned-protocol regressions. Combined report comprehension passes22 scoped,
+10 offline HTML and 17 browser checks/five clear accessibility scans on the same
 saved reports, with unchanged machine exports and source/report hashes.
 Use [the active sprint](docs/sprints/02-full-platform.md) and
 [researcher QA evidence](docs/qa/RESEARCHER-QA.md) for scoped results.
