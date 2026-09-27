@@ -1,5 +1,25 @@
 # Changes
 
+## Complete saved choice findings — accepted source checkpoint 2026-09-27
+
+- Added a separate choice-capable report profile for saved native/imported
+  MaxDiff results and mixed questionnaire/task/choice cohorts. Earlier package
+  profiles retain their exact historical contracts.
+- Preserved complete designs, counts, model parameters/status, probabilities,
+  timing and imported source rows without refitting or scientific rescoring.
+- Added guarded immutable choice preparation and explicit mixed-source
+  admission. Hiding figures retains every included scientific collection.
+- Added plain metric labels and explanations across the seven task profiles in
+  exported reports, with separate administration/cohort meanings and unchanged
+  canonical evidence.
+- Qualified component, supervised worker, cancellation/lifetime and historical
+  package gates separately; see `docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md`.
+- Qualified the normal saved-source researcher flow, actual desktop/phone
+  downloads, complete independent scientific comparison and unchanged cold
+  restart. Retained the earlier comparator-harness failure separately.
+- Continue exact saved EDA with liking, then ECG/PPG separately. Other report
+  families, task/choice image context, performance and restrictions remain open.
+
 ## Complete saved task findings — accepted source checkpoint 2026-09-27
 
 - Extended report preparation to the seven enabled task profiles beside liking

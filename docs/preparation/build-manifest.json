@@ -9,9 +9,14 @@
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability / 17-package build remains active and unfinished. The task-report source checkpoint passed final researcher, mobile, independent download and cold-restart acceptance for seven enabled native/imported profiles and saved cohorts beside supported liking/scales, with complete evidence and no new estimator. Next is the choice/MaxDiff report adapter; task stimulus bytes/context panels, wider complete report families, latency and scoped post-collection restrictions remain open. Publication is not a pause.",
-    "accepted_source_handoff": "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
-    "accepted_source_receipt": "docs/qa/TASK-REPORT-PACKAGE-SOURCE.json"
+    "note": "The full 50-capability / 17-package build remains active and unfinished. Complete saved MaxDiff findings now have scoped source, worker, history, researcher/mobile, independent export and cold-restart acceptance. Exported task reports have plain metric labels across seven profiles with unchanged canonical evidence. Next: exact saved event-related/continuous EDA with liking, then ECG/PPG separately, without reanalysis. Other report families, task/choice image context, raw bundles, latency and post-collection restrictions remain. Publication is not a pause.",
+    "accepted_source_handoff": "docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md",
+    "accepted_source_receipt": "docs/qa/CHOICE-REPORT-PACKAGE-SOURCE.json",
+    "choice_report_checkpoint": {
+      "status": "scoped_accepted_source_checkpoint",
+      "evidence": "docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md",
+      "architecture": "docs/architecture/SAVED-CHOICE-REPORT-PACKAGES.md"
+    }
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -198,7 +203,8 @@
         "Keyboard/list alternatives and exposure-linked reports work end to end.",
         "Reusable question/scale blocks and portable imports preserve internal references, translations, consent text, display logic and scoring keys without transferring participant responses."
       ],
-      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     },
     {
       "id": "BWP05",
@@ -411,7 +417,16 @@
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
         "EDA morphology/deconvolution, beat/breath/EMG events and condition summaries match named reference fixtures.",
         "Nonresponse, missingness, correction and overlap rules remain separate; extension methods are not implied by library availability."
-      ]
+      ],
+      "next_report_adapter": {
+        "status": "planned_not_enabled",
+        "sequence": [
+          "complete_saved_event_and_continuous_eda_with_liking",
+          "separate_saved_ecg_ppg_including_after_exclusion_results"
+        ],
+        "contract": "docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md",
+        "rule": "Preserve complete saved numerical evidence, baseline/exclusion/timing support and current source authority; no reanalysis on export."
+      }
     },
     {
       "id": "BWP10",
@@ -494,7 +509,8 @@
         "Independent direction/error/exclusion cases and event replay match reports.",
         "Correction-inclusive timing, deadlines, stimulus timing and physical movement semantics remain explicit; no generic D score for every task."
       ],
-      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     },
     {
       "id": "BWP11",
@@ -627,7 +643,8 @@
         "Historical report snapshots remain browsable independently of the current draft; reanalysis fixes input/cohort versions and creates comparable new outputs without recollecting or copying observations.",
         "Finalization resolves late/incomplete uploads under policy, freezes a cohort, and preserves prior reports when collection reopens in a new window."
       ],
-      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     },
     {
       "id": "BWP14",
@@ -661,7 +678,8 @@
       "acceptance": [
         "Choice-set design, attributes/levels, allocation and outside choices are preserved.",
         "Source-bound utility/MaxDiff model and uncertainty agree with reference examples."
-      ]
+      ],
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     },
     {
       "id": "BWP15",
@@ -740,7 +758,8 @@
         "Clone, save template, export design and import design are first-class accessible actions with destination/contents previews and actionable dependency fixes.",
         "UX-J19-UX-J34 exercise historical research, curation, delivery, enrollment/waves/endings, closure, clone/reanalysis, portable designs, sharing and retention; planned targets are not achieved usability evidence."
       ],
-      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     },
     {
       "id": "BWP16",
@@ -822,7 +841,8 @@
         "The hosted profile includes HTTPS, researcher authentication, project isolation, bounded participant APIs, operational monitoring and consistent storage/restore evidence before remote recruitment opens.",
         "Frozen report sharing has explicit audience/expiry/revocation; backup restores full authorized history and object integrity with secrets/withdrawal handling, while archive restoration never reopens recruitment."
       ],
-      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
     }
   ],
   "cross_cutting_specifications": {

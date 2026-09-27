@@ -1,6 +1,30 @@
 # Resume here — Brohn
 
-## Task findings with explicit liking — scoped checkpoint, 27 September 2026
+## Complete saved choice findings — scoped checkpoint, 27 September 2026
+
+Brohn now includes saved MaxDiff findings in the existing **Prepare report**
+flow, including native questionnaires, imports and saved cohorts beside liking,
+scales and task findings. Counts and utility sections include each exercise's
+saved model status. Complete designs, exposures, timing, imported rows and
+fitted model values stay in the evidence when figures are hidden or focused.
+Export does not refit utilities or change original scores.
+
+The exact source checkpoint passed component, worker, historical-package,
+connected researcher, desktop/phone export and cold-restart gates. The browser
+used existing genuine synthetic scientific sources; source generation and
+independent scientific checks are separately recorded. See the
+[architecture](docs/architecture/SAVED-CHOICE-REPORT-PACKAGES.md) and
+[phase record](docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md).
+
+Exported task reports also have plain metric labels and explanations across all
+seven profiles, preserving canonical evidence. Next is
+[complete saved EDA with liking](docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
+then ECG/PPG separately, without reanalysis. Task/choice image context, other
+report families, raw bundles, workloads and scoped post-collection restrictions
+remain open. All 50 capabilities and 17 packages remain in scope; this checkpoint
+does not complete the platform.
+
+## Earlier task findings with explicit liking — scoped checkpoint, 27 September 2026
 
 The new complete-findings renderer connects all seven enabled task profiles,
 native/imported sources and saved descriptive cohorts to the existing Prepare

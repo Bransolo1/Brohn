@@ -18,6 +18,20 @@ This limitation does not block building or testing independent software routes.
 
 ## Required product and verification work
 
+Choice-report scoped checkpoint, 27 September: complete saved native/imported
+MaxDiff results and mixed task/liking cohorts now have separate source,
+preparation, pure projection, worker and historical-package evidence. The
+[phase record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) also records final
+researcher/mobile, independent complete-export and unchanged restart acceptance.
+It advances PC02/PC05/PC13/PC16 and BWP04/BWP10/BWP13/BWP14/BWP15/BWP17, without
+closing them. Exported task reports gain plain metric labels and explanations
+across all seven profiles while preserving canonical evidence. The next report
+work starts with [complete saved EDA and liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
+then a distinct ECG/PPG adapter. Preserve full numerical evidence without
+reanalysis. Other physiological/media adapters, task/choice image context,
+raw bundles, performance and post-collection restrictions remain separate requirements.
+
+
 Checkpoint 25 September: the seventh named task profile, Brohn single-target
 GNAT, has [connected acceptance](qa/GNAT-RESEARCHER-ACCEPTANCE.md) for two full
 administrations, imports, cohort, exports and restart (PC02/PC05/PC06). The
@@ -40,7 +54,7 @@ The task/liking report checkpoint now has complete seven-profile source and
 prepared-display evidence plus final mobile, researcher, export and restart acceptance;
 see [its source-phased record](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). It advances
 PC02/PC05/PC13/PC16 and BWP04/BWP10/BWP13/BWP15/BWP17 without closing them. Task
-stimulus image bytes/context panels, MaxDiff and wider report-family adapters,
+stimulus image bytes/context panels, the separately accepted MaxDiff extension and wider report-family adapters,
 remaining latency and post-collection restrictions remain open. Framework and
 participant transport remain separate.
 No broader requirement or capability is closed by these slices.

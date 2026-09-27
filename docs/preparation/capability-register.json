@@ -2428,5 +2428,13 @@
         "docs/product/journey-acceptance.json"
       ]
     }
-  ]
+  ],
+  "active_delivery_note": {
+    "date": "2026-09-27",
+    "scope": "All 50 entries remain in scope; historical current_status values are unchanged.",
+    "evidence": "docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md",
+    "workstream": "docs/WORKSTREAM.md",
+    "next_report_adapters": "Plan exact saved event-related/continuous EDA with liking, then ECG/PPG separately. This is planned package integration, not newly enabled methods or scientific qualification.",
+    "choice_report_checkpoint": "Saved MaxDiff counts/models and mixed-source packages have scoped connected, export and restart acceptance. This does not complete every ranking/conjoint/decision recipe or establish model validity."
+  }
 }

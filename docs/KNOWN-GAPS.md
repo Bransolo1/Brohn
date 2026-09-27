@@ -16,6 +16,20 @@ records describing only the 01A–01L prototype are historical.
 
 ## Immediate continuation
 
+- **Choice/MaxDiff scope after acceptance:** the
+  [complete report checkpoint](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) now has
+  source, worker, researcher/mobile and cold-restart evidence. Its mixed native
+  witness uses choice RT; it does not newly qualify all seven task profiles
+  combined with choice. Conjoint, other choice procedures and broader model
+  qualification remain separate.
+
+- **Next physiological packages:** [saved event-related and continuous EDA with
+  liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md) comes first, then
+  ECG/PPG separately. Complete processed evidence, historical preparation,
+  baseline/exclusion/timing support and current source authority need connected
+  package qualification. Existing signal explorers are not themselves complete
+  offline adapters; exporting must not run new decomposition or detection.
+
 - **Saved-result responsiveness:** [scoped improvements](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
   now remove repeated media preparation and task digest work while preserving
   current authority, native guards and exact outputs. Focused progress and
@@ -35,9 +49,10 @@ records describing only the 01A–01L prototype are historical.
   supported gaze, questionnaire and paired findings with full included numerical
   collections. The [task-report checkpoint](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md)
   adds seven task profiles with liking/scales, original native/imported sources
-  and saved cohorts, with final mobile, researcher, export and restart acceptance. Task stimulus image bytes/context panels, MaxDiff and broader
-  task/choice, neural/physiology and media families still need separate adapters
-  and connected journeys. Historical RT score schema 1.0 has a structural reader
+  and saved cohorts, with final mobile, researcher, export and restart acceptance.
+  The MaxDiff extension has the separate scoped acceptance above. Task/choice
+  stimulus image bytes/context panels and broader task/choice, neural/physiology
+  and media families still need separate adapters and connected journeys. Historical RT score schema 1.0 has a structural reader
   but no retained original producer/worker acceptance fixture in this packet.
   Known unsupported selected parents or
   scientific collections are refused with a reason, not silently dropped.

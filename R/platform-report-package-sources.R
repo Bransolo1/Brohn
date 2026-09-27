@@ -76,10 +76,12 @@
   brohn_require(as.numeric(file.info(path)$size)==bytes,"The saved source byte count changed.")
   list(hash=hash,bytes=as.numeric(bytes),media_type=object$media_type,path=path)
 }
-.brohn_rpk_report_proof <- function(store,m,require_job=TRUE,task_enabled=FALSE) {
-  brohn_require(is.null(.brohn_rpk_unsupported(m,task_enabled)),brohn_default(.brohn_rpk_unsupported(m,task_enabled),"Choose a supported complete report."))
+.brohn_rpk_report_proof <- function(store,m,require_job=TRUE,task_enabled=FALSE,source_admission=NULL) {
+  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));task_enabled<-admission!="gaze-explicit-paired-findings/0.1"
+  reason<-.brohn_rpk_unsupported(m,source_admission=admission)
+  brohn_require(is.null(reason),brohn_default(reason,"Choose a supported complete report."))
   brohn_require(identical(m$id,m$ref$id)&&brohn_valid_id(m$study_id)&&brohn_text(m$origin,128)&&
-    m$kind %in% c("gaze","questionnaire","multimodal",if(isTRUE(task_enabled))c("implicit","implicit_cohort"))&&is.list(m$design)&&
+    m$kind %in% c("gaze","questionnaire","multimodal",if(isTRUE(task_enabled))c("implicit","implicit_cohort"),if(admission=="task-choice-findings/0.1")"explicit_choice")&&is.list(m$design)&&
     identical(m$design$id,m$study_id)&&(is.null(m$design$project_id)||identical(m$design$project_id,m$ref$project_id))&&
     identical(brohn_hash(m$design),m$design_hash),"This report has no supported exact study/design provenance.")
   .brohn_rpk_study(store,m$study_id,m$ref$project_id)
@@ -107,21 +109,27 @@
   }
   object
 }
-.brohn_rpk_unsupported <- function(m,task_enabled=FALSE) {
-  if(isTRUE(task_enabled)&&!is.null(m$source_family))return(.brohn_td_unsupported(m))
+.brohn_rpk_unsupported <- function(m,task_enabled=FALSE,source_admission=NULL) {
+  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission=="task-choice-findings/0.1"
+  if(!is.null(m$choice_source_family)){
+    if(!choices)return("This saved report includes choice-task evidence whose complete package requires the choice-capable renderer. Its existing complete export remains available.")
+    reason<-.brohn_cd_unsupported(m);if(!is.null(reason))return(reason)
+  }
+  if(tasks&&!is.null(m$source_family))return(.brohn_td_unsupported(m,admission))
+  if(choices&&identical(m$kind,"explicit_choice"))return(NULL)
   if(!m$kind %in% c("gaze","questionnaire","multimodal"))return("This report family has no complete-findings package adapter yet. Its existing saved report and exports remain available.")
   if(!is.null(m$schema)&&!(identical(m$kind,"questionnaire")&&identical(m$schema,"brohn-questionnaire-report-preview/1.0")))return("This scientific schema has no qualified complete-findings package adapter yet. Use its existing saved report and complete export.")
-  if(m$task_score_count>0L)return("This saved report includes task scores whose complete package adapter is not enabled yet. Use its existing complete export.")
-  if(m$choice_task_count>0L)return("This saved report includes choice-task evidence whose complete package adapter is not enabled yet. Use its existing complete export.")
+  if(m$task_score_count>0L)return("This saved report includes task scores whose complete package adapter is not enabled in this renderer. Use its existing complete export.")
   if(length(m$artifacts)&&!identical(m$schema,"brohn-questionnaire-report-preview/1.0"))return("This report includes scientific artifacts whose complete package adapter is not enabled yet. Use its existing complete export.")
   NULL
 }
-.brohn_rpk_required_source_fit <- function(store,metadata,task_enabled=FALSE) {
+.brohn_rpk_required_source_fit <- function(store,metadata,task_enabled=FALSE,source_admission=NULL) {
+  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled))
   seen<-character()
   walk<-function(m,root=FALSE){
     key<-brohn_hash(m$ref);if(key %in% seen)return(NULL);seen<<-c(seen,key)
     if(length(seen)>32L)return("The required saved-source dependency closure exceeds this package profile.")
-    reason<-.brohn_rpk_unsupported(m,task_enabled)
+    reason<-.brohn_rpk_unsupported(m,source_admission=admission)
     if(!is.null(reason))return(if(root)reason else paste("A required selected source cannot be included completely.",reason))
     if(!identical(m$study_id,metadata$study_id))return("A required selected source belongs to a different study and cannot be included in this package.")
     for(ref in .brohn_td_parent_refs(m)){
@@ -144,12 +152,13 @@ brohn_report_package_report_choice <- function(store,report_ref) {
     (m$contrast_count>0L||identical(m$schema,"brohn-questionnaire-report-preview/1.0")))adapters<-c(adapters,list("paired-findings"))
   if(isTRUE(m$source_family %in% c("native_questionnaire","imported_implicit")))adapters<-c(adapters,list("task-scores","task-trials"))
   if(identical(m$source_family,"saved_task_cohort"))adapters<-c(adapters,list("task-people"))
-  unsupported<-.brohn_rpk_required_source_fit(store,m,TRUE);if(!is.null(unsupported))adapters<-list()
+  if(!is.null(m$choice_source_family))adapters<-c(adapters,list("choice-counts","choice-utilities"))
+  unsupported<-.brohn_rpk_required_source_fit(store,m,source_admission="task-choice-findings/0.1");if(!is.null(unsupported))adapters<-list()
   recommendations<-tryCatch({
     selected<-list(report_ref)
     if(identical(m$kind,"multimodal"))for(s in brohn_default(m$sources,list()))if(identical(s$state,"selected")){
       linked<-list(kind="report",id=s$id,revision=s$revision,body_hash=s$hash,project_id=report_ref$project_id)
-      parent<-.brohn_rpk_report_metadata(store,linked);.brohn_rpk_report_proof(store,parent)
+      parent<-.brohn_rpk_report_metadata(store,linked);.brohn_rpk_report_proof(store,parent,source_admission="task-choice-findings/0.1")
       brohn_require(identical(parent$study_id,m$study_id)&&parent$kind %in% c("gaze","questionnaire"),"Choose the applicable saved parent reports explicitly.")
       if(!any(vapply(selected,function(x).brohn_rpk_same(x,linked),logical(1))))selected<-c(selected,list(linked))
     }
@@ -157,7 +166,7 @@ brohn_report_package_report_choice <- function(store,report_ref) {
     list(refs=selected,reason=if(length(selected)>1L)"Includes this saved combined report and its exact gaze/explicit source reports, with complete numerical evidence. You can change the selected reports."else "Includes this exact saved report and all its applicable findings.")
   },error=function(e)list(refs=list(),reason="Linked source recommendations are unavailable. Choose the exact saved reports to include."))
   if(!length(adapters))recommendations<-list(refs=list(),reason=brohn_default(unsupported,"This saved report has no enabled complete-findings package adapter."))
-  list(ref=report_ref,title=brohn_default(m$title,report_ref$id),origin=m$origin,kind=m$kind,source_family=m$source_family,
+  list(ref=report_ref,title=brohn_default(m$title,report_ref$id),origin=m$origin,kind=m$kind,source_family=m$source_family,source_components=m$source_components,choice_source_family=m$choice_source_family,
     design_hash=m$design_hash,adapters=adapters,status=if(length(adapters))"available"else"unsupported_package_adapter",
     reason=if(length(adapters))NULL else brohn_default(unsupported,"This saved report has no enabled complete-findings package adapter."),
     recommended_refs=recommendations$refs,recommendation_reason=recommendations$reason)
@@ -187,9 +196,20 @@ brohn_report_package_choices <- function(store,study_id,project_id,cursor=NULL,l
 }
 
 brohn_report_package_selector_catalog <- function(store,report_ref,adapter,cursor=NULL,limit=25L,prepared_ref=NULL) {
+  if(adapter %in% c("choice-counts","choice-utilities"))return(.brohn_cd_selector_catalog(store,report_ref,adapter,cursor,limit,prepared_ref))
   if(adapter %in% c("task-scores","task-trials","task-people"))return(.brohn_td_selector_catalog(store,report_ref,adapter,cursor,limit,prepared_ref))
   m<-.brohn_rpk_report_metadata(store,report_ref);choice<-brohn_report_package_report_choice(store,report_ref)
   brohn_require(adapter %in% unlist(choice$adapters)&&brohn_number(limit,1,100,TRUE),"Choose a supported report figure family.")
+  if(adapter=="paired-findings"&&identical(m$schema,"brohn-questionnaire-report-preview/1.0")){
+    required<-if("task" %in% unlist(m$source_components))"task_display"else if("choice" %in% unlist(m$source_components))"choice_display"else NULL
+    if(!is.null(required)){
+      if(!is.null(prepared_ref))brohn_require(identical(prepared_ref$kind,required),"This source requires its exact component-bound comparison preparation.")
+      else if(required=="task_display"){
+        profile<-if("choice" %in% unlist(m$source_components))"saved-task-display/0.2"else"saved-task-display/0.1"
+        prepared_ref<-brohn_find_task_display(store,report_ref,profile,brohn_task_display_implementation_ref(profile))
+      }else prepared_ref<-brohn_find_choice_display(store,report_ref)
+    }
+  }
   scope<-brohn_hash(if(is.null(prepared_ref))list(report_ref,adapter)else list(report_ref=report_ref,adapter=adapter,prepared_ref=prepared_ref));offset<-0L
   if(!is.null(cursor)){brohn_fields(cursor,c("scope","offset"),label="Figure page");brohn_require(identical(cursor$scope,scope)&&brohn_number(cursor$offset,0,100000,TRUE),"Reopen this exact figure page.");offset<-cursor$offset}
   base<-"SELECT body_json FROM entity_versions WHERE kind='report' AND id=? AND revision=? AND project_id=?"
@@ -200,8 +220,10 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
     items<-lapply(seq_len(nrow(rows)),function(i){r<-as.list(rows[i,,drop=FALSE]);brohn_require(all(vapply(r,brohn_text,logical(1),max=1024)),"A saved exposure has incomplete identity.");stim<-brohn_find(m$design$stimuli,r$stimulus_id)
       list(selector=list(scope="exact_exposure",exposure_key=.brohn_gaze_view_key(r)),label=paste(brohn_default(stim$title,r$stimulus_id),r$participant_id,r$session_id,r$exposure_id,sep=" | "),details=list(stimulus_id=r$stimulus_id))})
   }else if(adapter=="paired-findings") {
-    if(!is.null(prepared_ref)&&identical(prepared_ref$kind,"task_display")){
-      prepared<-.brohn_td_metadata(store,prepared_ref)
+    if(!is.null(prepared_ref)&&prepared_ref$kind %in% c("task_display","choice_display")){
+      required<-if("task" %in% unlist(m$source_components))"task_display"else"choice_display"
+      brohn_require(identical(prepared_ref$kind,required),"This source requires its exact component-bound comparison preparation.")
+      prepared<-if(required=="task_display").brohn_td_metadata(store,prepared_ref)else .brohn_cd_metadata(store,prepared_ref)
       brohn_require(.brohn_td_same(prepared$report_ref,report_ref),"The prepared comparison catalog belongs to another exact report.")
       all<-prepared$record$body$companion_catalog;more<-length(all)>offset+limit
       picked<-if(offset>=length(all))list()else all[seq.int(offset+1L,min(length(all),offset+limit))]
@@ -224,12 +246,12 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
       items<-lapply(seq_len(nrow(rows)),function(i)list(selector=list(scope="exact_item_condition",family=rows$family[[i]],item_id=rows$item_id[[i]],condition_id=if(is.na(rows$condition_id[[i]]))NULL else rows$condition_id[[i]]),label=paste(rows$label[[i]],rows$condition_label[[i]],sep=" | "),details=list()))
     }
   }
-  list(report_ref=report_ref,adapter=adapter,items=items,cursor=cursor,next_cursor=if(more)list(scope=scope,offset=offset+limit)else NULL,requires_display_preparation=needs)
+  list(report_ref=report_ref,adapter=adapter,items=items,cursor=cursor,next_cursor=if(more)list(scope=scope,offset=offset+limit)else NULL,requires_display_preparation=needs,prepared_ref=prepared_ref)
 }
 .brohn_rpk_distribution_metadata <- function(store,ref) {
   .brohn_rpk_ref_catalog(store,ref,"explicit_distributions")
   row<-DBI::dbGetQuery(store$con,paste("SELECT json_extract(body_json,'$.schema') schema,json_extract(body_json,'$.request') request,",
-    "json_extract(body_json,'$.processing') processing,json_extract(body_json,'$.preparation_implementation_ref') preparation_implementation_ref,json_extract(body_json,'$.result_object') result_object FROM entity_versions WHERE kind=? AND id=? AND revision=? AND project_id=?"),params=list(ref$kind,ref$id,ref$revision,ref$project_id))
+    "json_extract(body_json,'$.processing') processing,json_extract(body_json,'$.source_admission') source_admission,json_extract(body_json,'$.preparation_implementation_ref') preparation_implementation_ref,json_extract(body_json,'$.result_object') result_object FROM entity_versions WHERE kind=? AND id=? AND revision=? AND project_id=?"),params=list(ref$kind,ref$id,ref$revision,ref$project_id))
   brohn_require(nrow(row)==1L&&identical(row$schema[[1L]],"brohn-saved-explicit-distributions/1.0"),"Choose a complete saved distribution.")
   r<-brohn_parse(row$request[[1L]]);p<-brohn_parse(row$processing[[1L]]);object<-.brohn_rpk_object(store,brohn_parse(row$result_object[[1L]]),12*1024^2)
   report_ref<-list(kind="report",id=r$report_id,revision=r$report_revision,body_hash=r$report_hash,project_id=r$project_id)
@@ -240,7 +262,11 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   implementation_ref<-.brohn_rpk_parse_optional(row$preparation_implementation_ref[[1L]],1024)
   if(!is.null(implementation_ref))brohn_require(.brohn_td_same(implementation_ref,job$request$preparation_implementation_ref)&&
     .brohn_td_same(report_ref,job$request$report_ref),"Saved pinned distributions differ from their original producer preparation identity.")
-  list(ref=ref,report_ref=report_ref,request=r,processing=p,object=object,preparation_implementation_ref=implementation_ref)
+  admission<-.brohn_rpk_distribution_admission(job$request)
+  body_admission<-if(is.na(row$source_admission[[1L]]))NULL else row$source_admission[[1L]]
+  if(identical(admission,"task-choice-findings/0.1"))brohn_require(identical(body_admission,admission)&&identical(implementation_ref$profile,"saved-explicit-distribution/0.2"),"Saved choice-capable distributions lost their original admission.")else brohn_require(is.null(body_admission),"An older distribution cannot gain a mixed-source admission.")
+  .brohn_rpk_report_proof(store,.brohn_rpk_report_metadata(store,report_ref),source_admission=admission)
+  list(ref=ref,report_ref=report_ref,request=r,processing=p,object=object,preparation_implementation_ref=implementation_ref,source_admission=admission)
 }
 .brohn_rpk_find_distribution <- function(store,report_ref) {
   .brohn_rpk_ref_catalog(store,report_ref,"report")
@@ -251,14 +277,17 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   ref<-list(kind="explicit_distributions",id=rows$id[[1L]],revision=rows$revision[[1L]],body_hash=rows$body_hash[[1L]],project_id=report_ref$project_id)
   .brohn_rpk_distribution_metadata(store,ref);ref
 }
-.brohn_rpk_source_metadata <- function(store,report_refs,display_refs=list(),images=FALSE,task_refs=list(),task_enabled=FALSE) {
+.brohn_rpk_source_metadata <- function(store,report_refs,display_refs=list(),images=FALSE,task_refs=list(),task_enabled=FALSE,source_admission=NULL,choice_refs=list()) {
+  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));task_enabled<-admission!="gaze-explicit-paired-findings/0.1"
+  brohn_require(!length(choice_refs)||admission=="task-choice-findings/0.1","Choice preparation requires the complete choice-capable source profile.")
   objects<-list();reports<-list();seen<-character();active<-character();assets<-list()
   add_object<-function(o){previous<-objects[[o$hash]];if(!is.null(previous))brohn_require(.brohn_rpk_same(previous,o),"An original object has conflicting descriptors.");objects[[o$hash]]<<-o}
   walk<-function(ref){
     key<-brohn_hash(ref);brohn_require(!key %in% active,"The saved report source graph contains a cycle.");if(key %in% seen)return(invisible(NULL));seen<<-c(seen,key);active<<-c(active,key);on.exit(active<<-setdiff(active,key),add=TRUE)
     brohn_require(length(seen)<=32L,"The saved-report dependency closure exceeds this package profile.")
-    m<-.brohn_rpk_report_metadata(store,ref);o<-.brohn_rpk_report_proof(store,m,task_enabled=task_enabled);reports[[key]]<<-m;add_object(o)
+    m<-.brohn_rpk_report_metadata(store,ref);o<-.brohn_rpk_report_proof(store,m,source_admission=admission);reports[[key]]<<-m;add_object(o)
     if(isTRUE(task_enabled))for(extra in .brohn_td_extra_objects(store,m))add_object(extra)
+    if(admission=="task-choice-findings/0.1")for(extra in .brohn_cd_extra_objects(store,m))add_object(extra)
     if(!is.null(m$questionnaire_artifact)){a<-m$questionnaire_artifact;if(is.null(a$media_type))a$media_type<-"application/x-ndjson";add_object(.brohn_rpk_object(store,a,64*1024^2))}
     for(parent in .brohn_td_parent_refs(m))walk(parent)
   }
@@ -266,6 +295,7 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   brohn_require(length(unique(vapply(reports,`[[`,character(1),"study_id")))==1L,"Every exact report and retained source must belong to the same study.")
   distributions<-lapply(display_refs,function(ref){m<-.brohn_rpk_distribution_metadata(store,ref);walk(m$report_ref);add_object(m$object);m})
   task_displays<-lapply(task_refs,function(ref){m<-.brohn_td_metadata(store,ref);walk(m$report_ref);add_object(m$object);add_object(m$document);m})
+  choice_displays<-lapply(choice_refs,function(ref){m<-.brohn_cd_metadata(store,ref);walk(m$report_ref);add_object(m$object);add_object(m$document);m})
   if(isTRUE(images))for(ref in report_refs){m<-reports[[brohn_hash(ref)]];if(m$kind!="gaze")next
     for(stim in m$design$stimuli)if(!is.null(stim$asset)){
       a<-.brohn_rpk_object(store,stim$asset,5*1024^2);brohn_require(a$media_type %in% c("image/png","image/jpeg"),"Choose supported saved PNG/JPEG stimuli or exclude their images.");add_object(a)
@@ -274,7 +304,7 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
     }
   }
   brohn_require(sum(vapply(assets,function(x)x$ref$bytes,numeric(1)))<=16*1024^2,"The chosen saved stimuli exceed the 16 MiB image profile. Exclude images or select fewer source reports.")
-  list(report_refs=report_refs,display_refs=display_refs,task_refs=task_refs,task_enabled=isTRUE(task_enabled),images=isTRUE(images),reports=unname(reports),distributions=distributions,task_displays=task_displays,objects=unname(objects),assets=unname(assets))
+  list(report_refs=report_refs,display_refs=display_refs,task_refs=task_refs,choice_refs=choice_refs,source_admission=admission,task_enabled=isTRUE(task_enabled),images=isTRUE(images),reports=unname(reports),distributions=distributions,task_displays=task_displays,choice_displays=choice_displays,objects=unname(objects),assets=unname(assets))
 }
 .brohn_rpk_release <- function(handle) {
   if(is.environment(handle)&&inherits(handle,"brohn_report_source_resources")&&is.environment(handle$state)&&!isTRUE(handle$state$closed)){
@@ -286,7 +316,7 @@ brohn_release_report_package_sources <- .brohn_rpk_release
 .brohn_rpk_hold_sources <- function(store,metadata) {
   guards<-list();ok<-FALSE;on.exit(if(!ok)for(g in guards).brohn_qexplorer_release(g),add=TRUE)
   guards<-brohn_hold_signal_value_sources(store,list(source_objects=lapply(metadata$objects,function(o)o[c("hash","bytes")])))
-  current<-.brohn_rpk_source_metadata(store,metadata$report_refs,metadata$display_refs,metadata$images,metadata$task_refs,metadata$task_enabled)
+  current<-.brohn_rpk_source_metadata(store,metadata$report_refs,metadata$display_refs,metadata$images,metadata$task_refs,source_admission=metadata$source_admission,choice_refs=metadata$choice_refs)
   brohn_require(.brohn_rpk_same(current,metadata),"Saved-report sources changed while establishing their read seals.")
   for(o in metadata$objects)brohn_object_path(store,o$hash,TRUE)
   handle<-new.env(parent=emptyenv());class(handle)<-"brohn_report_source_resources"
@@ -296,7 +326,7 @@ brohn_release_report_package_sources <- .brohn_rpk_release
 brohn_report_package_sources_current <- function(store,handle) {
   brohn_require(is.environment(handle)&&inherits(handle,"brohn_report_source_resources")&&environmentIsLocked(handle)&&!isTRUE(handle$state$closed)&&identical(store$workspace_id,handle$workspace_id),"Reopen the closed or different-workspace report sources.")
   .brohn_cm_guard_check(c(handle$guards,handle$state$extra_guards))
-  m<-handle$metadata;current<-.brohn_rpk_source_metadata(store,m$report_refs,m$display_refs,m$images,m$task_refs,m$task_enabled)
+  m<-handle$metadata;current<-.brohn_rpk_source_metadata(store,m$report_refs,m$display_refs,m$images,m$task_refs,source_admission=m$source_admission,choice_refs=m$choice_refs)
   brohn_require(.brohn_rpk_same(current,m),"Saved-report source permission, retained proof or exact identity changed.")
   .brohn_cm_guard_check(c(handle$guards,handle$state$extra_guards));invisible(current)
 }
@@ -320,8 +350,17 @@ brohn_report_package_sources_current <- function(store,handle) {
     evidence<-brohn_read_json_file(meta$object$path,maximum=32*1024^2)
     brohn_validate_task_display_evidence(evidence,complete[[brohn_hash(meta$report_ref)]])
     list(ref=meta$ref,body=r$body,evidence=evidence)})
+  choice_displays<-lapply(m$choice_displays,function(meta){r<-.brohn_rpk_record(store,meta$ref,"choice_display")
+    original<-brohn_read_json_file(meta$document$path,maximum=2*1024^2)
+    brohn_require(.brohn_td_same(original,r$body[setdiff(names(r$body),"retained_document")]),"Choice metadata differs from its sealed publication document.")
+    evidence<-brohn_read_json_file(meta$object$path,maximum=64*1024^2)
+    brohn_validate_choice_display_evidence(evidence,complete[[brohn_hash(meta$report_ref)]])
+    brohn_require(.brohn_td_same(evidence$implementation,r$body$implementation)&&.brohn_td_same(evidence$source,r$body$source)&&.brohn_td_same(evidence$coverage,r$body$coverage)&&.brohn_td_same(.brohn_cd_catalog(evidence),r$body$catalog),"Choice metadata differs from its complete evidence.")
+    list(ref=meta$ref,body=r$body,evidence=evidence)})
   brohn_report_package_sources_current(store,handle)
-  list(reports=if(isTRUE(all_reports))unname(complete)else lapply(m$report_refs,function(ref)complete[[brohn_hash(ref)]]),distributions=distributions,task_displays=task_displays,assets=m$assets)
+  result<-list(reports=if(isTRUE(all_reports))unname(complete)else lapply(m$report_refs,function(ref)complete[[brohn_hash(ref)]]),distributions=distributions,task_displays=task_displays,assets=m$assets)
+  if(identical(m$source_admission,"task-choice-findings/0.1"))result$choice_displays<-choice_displays
+  result
 }
 .brohn_rpk_package_metadata <- function(store,ref,project_id) {
   brohn_require(identical(ref$project_id,project_id),"Choose this package's exact project.")
@@ -379,4 +418,96 @@ brohn_report_package_resources_current <- function(store,handle) {
   current<-.brohn_rpk_package_metadata(store,handle$ref,handle$project_id)
   brohn_require(.brohn_rpk_same(current,handle$metadata),"The opened package or current-reader source authority changed.")
   .brohn_cm_guard_check(handle$guards);list(record=current$record,artifacts=current$artifacts)
+}
+
+# Frozen classic vocabulary shared by new source admission, without loading a renderer.
+.brohn_rpk_scientific_keys <- strsplit(paste(
+  "schema schema_version kind title status features observations contrasts quality parameters limitations scales questionnaire_revision artifacts task_scores choice_tasks recordings",
+  "participant_id session_id run_id source_participant_id source_session_id proposed_participant_id proposed_session_id participant_linkage",
+  "stimulus_id exposure_id assessment_id assessment_exposure_id event_id first_answer_event_id last_answer_event_id visit_id occurrence_id step_id instance_id",
+  "source_exposure_id source_recording_id source_segment_id source_report_id report_id source_report_hash source_row_hash source_row source_index source_container source_record",
+  "condition_id aoi_id aoi_label valid_ms inside_ms valid_share_percent crossing_interval_ms fixation_candidate_count fixation_dwell_ms mean_fixation_duration_ms",
+  "first_observed_candidate_from_recorded_start_ms first_observed_candidate_from_exposure_ms ttff_ms ttff_status censor_time_ms exposure_duration_ms observed_span_ms complete_observation valid_coverage denominator aoi_assignment",
+  "first_observed_aoi_contact_ms first_contact_status unobserved_ms retained_interval_count invalid_interval_count observation_span_ms",
+  "record_type x y start_ms end_ms duration_ms qualified boundary_truncated sample_count source_first_row source_last_row aoi_ids peak_velocity_deg_s mean_velocity_deg_s amplitude_deg",
+  "reason from_aoi to_aoi from_end_ms to_start_ms observed_duration_ms onset_unobserved offset_unobserved onset_unobserved_reasons offset_unobserved_reasons record_boundary unsupported_gap label_continues_outside_passive_phase boundary_policy source",
+  "unit valid_pupil_ms valid_pupil_coverage mean_pupil baseline_mean baseline_valid_ms baseline_coverage baseline_status baseline_corrected_mean integration",
+  "passive_sample_count invalid_passive_sample_count valid_interval_ms unobserved_interval_ms saccade_candidate_count median_sample_interval_ms maximum_sample_interval_ms left_eye_unavailable_samples right_eye_unavailable_samples",
+  "question_id prompt value missing_reason information scope ever_visited invalidated dependency_generation answer_version revision_count sequence response_time_ms active_segment_response_ms resumed origin",
+  "condition_label scale_description response_count answered_count numeric_summary_status missing_count numeric_response_mean counts label count",
+  "metric outcome_id outcome_label control_id test_id control_label test_label estimate interval95 lower upper method participant_count paired_session_count excluded_session_count p_value p_adjusted rejects_null aggregation participant_differences session_differences session_count value control_observations test_observations",
+  "multiplicity family_size alpha valid_hypothesis_count unavailable_hypothesis_count adjusted_hypothesis_count interpretation confidence level tail degrees_freedom standard_error standard_deviation statistic",
+  "report_ids modality candidate_source_rows eligible_source_rows unavailable_sources definition_hash definition_hashes source_rows eligible_rows excluded_rows eligible source_eligible source_missing_reason original_source_report_hash original_source_row_hash original_source_row",
+  "source_count usable scientifically_qualified selected_report_count available_report_count source_observation_count eligible_observation_count unlinked_observation_count declared_comparison_count estimable_comparison_count cross_modal_complete_case_filter",
+  "passive_rows invalid_passive_samples candidate_records retained_passive_rows excluded_other_phase_rows missing_outcome_count missing_response_count unlinked_session_count",
+  "input thresholds geometry geometry_source coordinate_space time_unit interpolation smoothing merging blink_boundary_policy terminal_sample edge_policy pupil_baseline phase_column phase_value source_phase",
+  "width_mm height_mm distance_mm center_x_mm center_y_mm velocity_threshold_deg_s min_fixation_ms min_saccade_ms max_gap_ms",
+  "mode start_column end_column minimum_duration_ms minimum_coverage inference_unit missing analysis_plan design_policy measurement_design_hash identity_source observation_weighting",
+  "recipe provenance design_hash scales_hash scale_id scale_version scale_hash scoring conversion items question_id reverse min max aggregation missing minimum_answered prorate converted_value raw_value answered_items missing_items item_values item_count answered_count required_count score status reason",
+  "runs protocol_hash policy_hash events_hash projection_hash effective_records history_records history_events invalidations history_values final_sequence event_count visit_count occurrence_count sealed_occurrence_count",
+  "id type payload clock monotonic_ms time_origin_ms time_ms timestamp_ms clock_id unit value instance_id kind state_version confirmation source_event_hash",
+  "invalidated_by_event_id invalidated_event_id trigger_event_id invalidated_step_id invalidated_question_id invalidated_value previous_value from_step_id to_step_id",
+  "assessment_count known_assessments unassigned_records repeated_assessment_records participant_linkage_complete source_records usable_records invalid_or_unsupported descriptive_unit quantitative summary categories bins states scale_key family item_id",
+  "n mean median minimum maximum value_kind value_json upper_inclusive analysis_sha256 report_hash binding project_id source_binding",
+  "paired control_mean test_mean difference paired_sessions unavailable_observations source_id source_report_ids source_hash comparison_id report_revision result_object artifact",
+  "usable_outcome_count evidence eligible_count complete_count total_count source_row_count row_count source_unit status reason definition",
+  "selected design_revision study_revision study_id dataset_id revision hash source_metadata_hash original_origin compatibility design_compatibility_policy material_identity",
+  "observed_timing visibility_event_count allocation_index finalized_at deployment_id protocol_sha256 protocol_bytes journal_sha256 journal_bytes journal_rows_hash",
+  "displayed acknowledged committed invalidation_count source_event_count scope title prompt items values assessment_scope item_scores item_support missingness missing_policy value_before_conversion answer_hash",
+  "mean_difference sample_sd df t critical_value family tested available declared_outcome_count executed_comparison_count hypothesis_count correction hypotheses alpha confidence_level",
+  "interval_span_ms available_tests missing_hypotheses aoi_map aois asset_hash height width source_design_hash source_report_revision support question option_assignment options randomize_options required rows show_if step question_type extracted_rows",
+  "clock_segment_id from_visit_id phase previous_answer_event_id cause_event_id previous_head_event_id rule_hash source_projection_hash not_scoreable_count scored_assessment_count item_evidence invalid keyed_value input_row response_hash score_id prorated raw_aggregate raw_max raw_min total_items questionnaire responses_hash version answer_projection_hash questionnaire_policy_hash source_response_count unassigned unassigned_response_count",
+  sep=" ")," +")[[1L]]
+
+.brohn_rpk_validate_classic_node <- function(x,path="analysis",depth=0L) {
+  brohn_require(depth<60L,"Scientific projection nesting exceeds its bound.")
+  if(!is.list(x)){brohn_canonical(x);return(invisible(TRUE))}
+  if(!is.null(names(x))){
+    brohn_require(!anyDuplicated(names(x))&&all(nzchar(names(x))),"Scientific projection has duplicate/empty field names.")
+    unknown<-setdiff(names(x),.brohn_rpk_scientific_keys)
+    brohn_require(!length(unknown),paste("Unsupported required scientific fields at",path,":",paste(unknown,collapse=", ")))
+    for(k in names(x)){
+      if(k %in% c("value","previous_value","invalidated_value","item_values","value_before_conversion")){brohn_canonical(x[[k]]);next}
+      .brohn_rpk_validate_classic_node(x[[k]],paste0(path,"/",k),depth+1L)
+    }
+  }else for(i in seq_along(x)).brohn_rpk_validate_classic_node(x[[i]],paste0(path,"/*"),depth+1L)
+  invisible(TRUE)
+}
+
+brohn_report_source_admission <- function(renderer_profile) {
+ profiles<-c("controlled-gaze-explicit-paired/0.1"="gaze-explicit-paired-findings/0.1",
+  "controlled-gaze-explicit-task-paired/0.1"="task-findings/0.1",
+  "controlled-gaze-explicit-task-choice-paired/0.1"="task-choice-findings/0.1")
+ brohn_require(brohn_text(renderer_profile,128)&&renderer_profile %in% names(profiles),"Choose an exact registered saved-report renderer.")
+ unname(profiles[[renderer_profile]])
+}
+.brohn_rpk_admission <- function(source_admission=NULL,task_enabled=FALSE,task_explicit=FALSE) {
+ if(is.null(source_admission))return(if(isTRUE(task_enabled))"task-findings/0.1"else"gaze-explicit-paired-findings/0.1")
+ brohn_require(brohn_text(source_admission,128)&&source_admission %in% c("gaze-explicit-paired-findings/0.1","task-findings/0.1","task-choice-findings/0.1"),"Unsupported complete source admission profile.")
+ if(isTRUE(task_explicit))brohn_require(identical(isTRUE(task_enabled),!identical(source_admission,"gaze-explicit-paired-findings/0.1")),"Conflicting task and source admission settings.")
+ source_admission
+}
+brohn_validate_complete_report_analysis <- function(report,admission) {
+ admission<-.brohn_rpk_admission(admission);a<-report$complete_analysis;b<-report$saved_body
+ .brohn_rpk_ref_valid(report$ref,"report")
+ brohn_require(is.list(a)&&identical(brohn_hash(b),report$ref$body_hash)&&!brohn_questionnaire_is_artifact(a),"Choose the exact complete original report, not a catalog preview or changed source.")
+ tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission=="task-choice-findings/0.1"
+ brohn_require(!length(a$artifacts),"This source contains unsupported scientific artifacts; keep its original complete export.")
+ if(identical(a$kind,"explicit_choice")){
+  brohn_require(choices,"Complete choice evidence requires the choice-capable renderer.");.brohn_cd_validate_import(report);return(invisible(TRUE))
+ }
+ if(a$kind %in% c("implicit","implicit_cohort")){
+  brohn_require(tasks,"Complete task evidence requires the task-capable renderer.")
+  .brohn_td_analysis_fields(a,admission);for(score in a$task_scores).brohn_td_score(score);return(invisible(TRUE))
+ }
+ brohn_fields(a,c("kind","features","observations","contrasts","parameters","quality","limitations"),c("title","schema","status","scales","questionnaire_revision","artifacts","task_scores","choice_tasks","recordings"),"Complete saved scientific analysis")
+ brohn_require(a$kind %in% c("gaze","questionnaire","multimodal"),"This complete scientific family has no package adapter.")
+ brohn_require((tasks||!length(a$task_scores))&&(choices||!length(a$choice_tasks)),"A required task or choice collection is unsupported by this renderer.")
+ if(length(a$task_scores)){brohn_require(identical(a$kind,"questionnaire"),"Task scores need their registered native questionnaire family.");.brohn_td_analysis_fields(a,admission);for(score in a$task_scores).brohn_td_score(score)}
+ if(length(a$choice_tasks)){
+  brohn_require(identical(a$kind,"questionnaire"),"Choice results need their registered native questionnaire family.")
+  .brohn_cd_validate_native(report)
+ }
+ for(key in setdiff(names(a),c("task_scores","choice_tasks"))).brohn_rpk_validate_classic_node(a[[key]],paste0("analysis/",key))
+ invisible(TRUE)
 }

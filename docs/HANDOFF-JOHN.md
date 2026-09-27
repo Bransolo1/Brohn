@@ -1,6 +1,33 @@
 # John: Brohn development handoff
 
-**Current task-report checkpoint, 27 September 2026:** read the
+**Current choice-report scoped checkpoint, 27 September 2026:** read the
+[contract](architecture/SAVED-CHOICE-REPORT-PACKAGES.md),
+[acceptance record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) and
+[researcher guide](operations/SHARE-SAVED-FINDINGS.md). Saved MaxDiff counts/models
+now join task/liking reports without refitting. Every included source component
+retains its complete numerical evidence even when figures are hidden.
+
+Source, worker, historical compatibility, actual researcher/mobile downloads and
+cold restart have passed in separate phases. The browser starts with existing
+genuine synthetic scientific reports; it does not claim new source collection.
+Keep original report, prepared display and renderer identities distinct. Never
+replace exact historical references with current heads or defaults.
+
+Use [the choice reproduction guide](../tests/CHOICE-REPORT-REPRODUCE.md) for
+generated originals and independent export checks, and
+[the source/preparation guide](../tests/CHOICE-DISPLAY-REPRODUCE.md) for its scoped
+backend tests. Configure the installed native guards/methods runtime and keep
+fresh evidence directories outside Git. No stored participant corpus is needed.
+Exported task labels/explanations cover seven profiles while canonical keys and
+values stay exact.
+
+Next is [saved EDA with liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
+followed separately by ECG/PPG. Consume complete saved evidence without new
+analysis, preserving source timing, baselines and exclusions. Follow
+[WORKSTREAM](WORKSTREAM.md) for other report families, image context, performance
+and restrictions. All 50 capabilities and 17 packages remain in scope.
+
+**Earlier task-report checkpoint, 27 September 2026:** read the
 [task-report contract](architecture/SAVED-TASK-REPORT-PACKAGES.md) and
 [acceptance evidence](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). The familiar Prepare
 report flow now supports all seven task profiles with saved

@@ -16,11 +16,12 @@
 }
 .brohn_rpk_section <- function(section,refs) {
   brohn_fields(section,c("id","adapter","adapter_version","source_report_ref","selector","display","order"),label="Report section")
-  brohn_require(brohn_valid_id(section$id)&&section$adapter %in% c("gaze-context","explicit-distribution","paired-findings","task-scores","task-trials","task-people")&&
+  brohn_require(brohn_valid_id(section$id)&&section$adapter %in% c("gaze-context","explicit-distribution","paired-findings","task-scores","task-trials","task-people","choice-counts","choice-utilities")&&
     identical(section$adapter_version,"0.1")&&brohn_number(section$order,1,100,TRUE),"Choose a supported ordered report section.")
   .brohn_rpk_ref_valid(section$source_report_ref,"report")
   brohn_require(any(vapply(refs,function(r).brohn_rpk_same(r,section$source_report_ref),logical(1))),"A section must belong to an exact selected report.")
   if(section$adapter %in% c("task-scores","task-trials","task-people"))return(.brohn_rpk_task_section(section))
+  if(section$adapter %in% c("choice-counts","choice-utilities"))return(.brohn_rpk_choice_section(section))
   s<-section$selector;d<-section$display
   if(section$adapter=="gaze-context") {
     brohn_require(is.list(s)&&s$scope %in% c("all_exposures","exact_exposure"),"Choose all gaze exposures or an exact exposure.")
@@ -54,19 +55,23 @@
   brohn_fields(request,c("schema","study_id","project_id","title","report_refs","requested_sections","contents_policy","limits_profile","renderer_profile"),label="Saved report preparation")
   brohn_require(identical(request$schema,"brohn-report-package-intent-request/0.1")&&brohn_text(request$title,500)&&
     ((identical(request$limits_profile,"controlled-report-package/0.1")&&identical(request$renderer_profile,"controlled-gaze-explicit-paired/0.1"))||
-     (identical(request$limits_profile,"controlled-task-report-package/0.1")&&identical(request$renderer_profile,"controlled-gaze-explicit-task-paired/0.1"))),"Use the supported complete-findings preparation profile.")
+     (identical(request$limits_profile,"controlled-task-report-package/0.1")&&identical(request$renderer_profile,"controlled-gaze-explicit-task-paired/0.1"))||
+     (identical(request$limits_profile,"controlled-task-choice-report-package/0.1")&&identical(request$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1"))),"Use the supported complete-findings preparation profile.")
   .brohn_rpk_study(store,request$study_id,request$project_id);.brohn_rpk_contents(request$contents_policy)
   refs<-request$report_refs
   brohn_require(brohn_array(refs)&&length(refs)>=1L&&length(refs)<=8L,"Select one to eight exact saved reports.")
   for(ref in refs){.brohn_rpk_ref_valid(ref,"report");brohn_require(identical(ref$project_id,request$project_id),"All selected reports must belong to this project.")
     m<-.brohn_rpk_report_metadata(store,ref);brohn_require(identical(m$study_id,request$study_id),"All selected reports must belong to this study.")
-    if(!.brohn_rpk_task_profile(request))brohn_require(!m$kind %in% c("implicit","implicit_cohort")&&m$task_score_count==0L,
-      "Complete task evidence requires the task-capable report profile, even when task figures are hidden.")}
+    if(!.brohn_rpk_prepared_profile(request))brohn_require(!m$kind %in% c("implicit","implicit_cohort")&&m$task_score_count==0L,
+      "Complete task evidence requires the task-capable report profile, even when task figures are hidden.")
+    if(!.brohn_rpk_choice_profile(request))brohn_require(!"choice" %in% unlist(m$source_components)&&!identical(m$kind,"explicit_choice")&&
+      (is.null(m$choice_task_count)||m$choice_task_count==0L),"Complete choice evidence requires the choice-capable report profile, even when choice figures are hidden.")}
   brohn_require(!anyDuplicated(vapply(refs,brohn_hash,character(1))),"Select each exact saved report once.")
   sections<-request$requested_sections
   brohn_require(brohn_array(sections)&&length(sections)>=1L&&length(sections)<=100L,"Choose one to 100 supported report sections.")
   for(s in sections).brohn_rpk_section(s,refs)
-  if(!.brohn_rpk_task_profile(request))brohn_require(!any(vapply(sections,function(s)s$adapter %in% c("task-scores","task-trials","task-people"),logical(1))),"Task findings require the task-capable report profile.")
+  if(!.brohn_rpk_prepared_profile(request))brohn_require(!any(vapply(sections,function(s)s$adapter %in% c("task-scores","task-trials","task-people"),logical(1))),"Task findings require the task-capable report profile.")
+  if(!.brohn_rpk_choice_profile(request))brohn_require(!any(vapply(sections,function(s)s$adapter %in% c("choice-counts","choice-utilities"),logical(1))),"Choice findings require the choice-capable report profile.")
   brohn_require(!anyDuplicated(vapply(sections,`[[`,character(1),"id"))&&!anyDuplicated(vapply(sections,`[[`,numeric(1),"order")),"Report section identities and order must be unique.")
   brohn_require(nchar(brohn_json(request),type="bytes")<=256*1024,"This report preparation exceeds its bounded metadata profile.")
   invisible(request)
@@ -115,7 +120,7 @@ brohn_save_report_package_intent <- function(store,command_id,request,expected_r
     body<-list(schema=.brohn_rpk_intent_schema,id=id,generation=generation,status="prepared",request=request,
       command_id=command_id,command_fingerprint=fingerprint,prior_intent_ref=prior_intent_ref,dependencies=list(),
       selection_ref=NULL,job_ref=NULL,package_ref=NULL,reason=NULL,superseded_by=NULL,created_at=brohn_now())
-    if(.brohn_rpk_task_profile(request)){body$execution_plan<-.brohn_rpk_execution_plan();body["preparation"]<-list(NULL)}
+    if(.brohn_rpk_prepared_profile(request)){body$execution_plan<-.brohn_rpk_execution_plan(request);body["preparation"]<-list(NULL)}
     .brohn_rpk_intent_view(brohn_put_entity(store,"report_package_intent",id,body,0L,request$project_id))
   })
 }
@@ -139,12 +144,13 @@ brohn_report_package_catalog <- function(store,study_id,project_id,cursor=NULL,l
 # launch Python. The execution boundary rechecks every pinned implementation.
 .brohn_rpk_files <- c("R/platform-report-package.R","R/platform-report-package-sources.R","R/platform-report-package-authority.R",
   "R/platform-report-package-preparation.R","R/platform-report-package-tasks.R","R/platform-task-display.R","R/platform-task-display-sources.R",
+  "R/platform-report-package-choice.R","R/platform-choice-display.R","R/platform-choice-display-sources.R","R/platform-load.R",
   "R/platform-report-package-distributions.R","R/platform-report-package-render.R","R/platform-report-package-tables.R",
   "scripts/workers/report_package_archive.py","scripts/workers/report_package_raster.py","R/platform-jobs.R","scripts/analysis-worker.R",
   "R/platform-explicit-distributions.R","R/platform-explicit-distribution-views.R","R/platform-gaze-report-views.R",
   "R/platform-paired-plots.R","R/platform-paired-plot-views.R","R/platform-questionnaire-artifacts.R","R/platform-questionnaire-index.R",
   "R/platform-core.R","R/platform-analysis-plan.R","R/platform-camera-analysis.R","R/platform-capture.R","R/platform-delivery.R",
-  "R/platform-facial-expression.R","R/platform-maxdiff.R","R/platform-participant-equipment.R","R/platform-question-materials.R",
+  "R/platform-facial-expression.R","R/platform-maxdiff.R","R/platform-maxdiff-platform.R","R/platform-maxdiff-import.R","R/platform-maxdiff-plots.R","R/platform-participant-equipment.R","R/platform-question-materials.R",
   "R/platform-question-revision.R","R/platform-question-sections.R","R/platform-questionnaire-artifact-storage.R",
   "R/platform-scale-comparisons.R","R/platform-scales.R","R/platform-store.R","R/platform-welcome.R",
   "R/platform-library.R","R/platform-task-cohort-storage.R","R/platform-questionnaire-explorer.R","R/platform-hosted-profile.R",
@@ -201,7 +207,7 @@ brohn_require(identical(.brohn_rpk_runtime$schema,"brohn-report-package-runtime-
 .brohn_rpk_dependency_users <- function(store,job_id,except_id) {
   DBI::dbGetQuery(store$con,paste("SELECT count(*) n FROM entities e JOIN entity_versions v ON e.kind=v.kind AND e.id=v.id AND e.revision=v.revision,",
     "json_each(v.body_json,'$.dependencies') d WHERE e.kind='report_package_intent' AND e.id<>?",
-    "AND json_extract(v.body_json,'$.status') IN ('prepared','waiting_for_display','ready_to_freeze','assembly_queued','needs_authority','needs_attention')",
+    "AND json_extract(v.body_json,'$.status') IN ('prepared','waiting_for_display','ready_to_freeze','assembly_queued','needs_authority','needs_attention','failed')",
     "AND json_extract(d.value,'$.job_id')=?"),params=list(except_id,job_id))$n[[1L]]
 }
 brohn_cancel_report_package_intent <- function(store,intent_ref) {
@@ -237,7 +243,7 @@ brohn_queue_report_package <- function(store,selection_ref,retry=FALSE) {
   authority<-brohn_report_package_queue_authority(store,"report_package",selection_ref$project_id)
   live<-.brohn_rpk_selection_live(store,selection_ref);s<-live$selection$body
   .brohn_rpk_selection_sources(store,s)
-  if(.brohn_rpk_task_profile(s))brohn_require(.brohn_rpk_same(live$intent$body$execution_plan$renderer_implementation_ref,
+  if(.brohn_rpk_prepared_profile(s))brohn_require(.brohn_rpk_same(live$intent$body$execution_plan$renderer_implementation_ref,
     .brohn_rpk_renderer_implementation_ref()),"The pinned report renderer changed. Prepare these choices as a new version.")
   r<-list(schema="brohn-report-package-job/0.1",project_id=selection_ref$project_id,selection_ref=selection_ref,
     implementation=.brohn_rpk_implementation(),limits=.brohn_rpk_limits(s),authority=authority)
@@ -247,7 +253,7 @@ brohn_queue_report_package <- function(store,selection_ref,retry=FALSE) {
 brohn_continue_report_package_intent <- function(store,intent_ref,action="advance") {
   brohn_require(action %in% c("advance","resume","retry"),"Choose Continue, Resume or Retry explicitly.")
   original<-.brohn_rpk_intent(store,intent_ref)
-  if(.brohn_rpk_task_profile(original$body$request))return(.brohn_rpk_continue_task_intent(store,intent_ref,action))
+  if(.brohn_rpk_prepared_profile(original$body$request))return(.brohn_rpk_continue_task_intent(store,intent_ref,action))
   brohn_store_batch(store,function(){
     r<-.brohn_rpk_intent(store,intent_ref);r<-.brohn_rpk_reconcile(store,r);b<-r$body
     if(b$status %in% c("succeeded","superseded","assembly_queued"))return(.brohn_rpk_intent_view(r))
@@ -323,7 +329,8 @@ brohn_prepare_report_package_execution <- function(store,job,input,scratch) {
   sources<-.brohn_rpk_complete_sources(store,handle)
   # Historical renderer inputs keep their original closed schema. The shared
   # reader's empty task collection is applicable only to the task profile.
-  if(!.brohn_rpk_task_profile(s))sources$task_displays<-NULL
+  if(!.brohn_rpk_prepared_profile(s))sources$task_displays<-NULL
+  if(!.brohn_rpk_choice_profile(s))sources$choice_displays<-NULL
   bundle<-c(list(schema="brohn-report-package-render-input/0.1",selection=s),sources,list(implementation=input$implementation,limits=input$limits))
   path<-file.path(scratch,"report-package-bundle.json");brohn_require(!file.exists(path),"The assembly scratch bundle already exists.")
   brohn_write_json_file(bundle,path,maximum=input$limits$max_model_bytes)
@@ -357,7 +364,7 @@ brohn_publish_report_package <- function(store,output,scratch,job,input,output_p
   output_guard<-.brohn_qexplorer_hold(output_path,file.info(output_path)$size);on.exit(.brohn_qexplorer_release(output_guard),add=TRUE)
   brohn_require(.brohn_rpk_same(brohn_read_json_file(output_path),output),"The worker output changed before publication.")
   result<-output$report$report_package
-  if(.brohn_rpk_task_profile(s)&&identical(result$schema,"brohn-report-package-refusal/0.1"))
+  if(.brohn_rpk_prepared_profile(s)&&identical(result$schema,"brohn-report-package-refusal/0.1"))
     return(.brohn_rpk_publish_panel_refusal(store,result,job,input,s,source_guards,output_guard))
   brohn_fields(result,c("schema","profile","manifest","files","coverage"),label="Complete report package result")
   brohn_require(identical(result$schema,"brohn-report-package-render-result/0.1")&&identical(result$profile,"complete-findings/0.1")&&

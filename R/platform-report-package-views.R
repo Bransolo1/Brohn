@@ -5,13 +5,27 @@
 .brohn_rpv_adapter_label <- function(adapter) switch(adapter,
   `gaze-context`="Gaze views",`explicit-distribution`="Response distributions",
   `paired-findings`="Saved comparisons",`task-scores`="Task scores",
-  `task-trials`="Task response patterns",`task-people`="Saved task results by person","Other findings")
+  `task-trials`="Task response patterns",`task-people`="Saved task results by person",
+  `choice-counts`="Best-worst results",`choice-utilities`="Saved choice model","Other findings")
 .brohn_rpv_task_adapter <- function(adapter) adapter%in%c("task-scores","task-trials","task-people")
+.brohn_rpv_choice_adapter <- function(adapter) adapter%in%c("choice-counts","choice-utilities")
+.brohn_rpv_component <- function(row,component) {
+  if(!is.null(row$source_components))return(component%in%unlist(row$source_components,use.names=FALSE))
+  # Older catalog fixtures/metadata predate independent components. Their task
+  # family retains its original meaning; choice admission requires new metadata.
+  identical(component,"task")&&isTRUE(row$source_family%in%c("native_questionnaire","imported_implicit","saved_task_cohort"))
+}
+.brohn_rpv_has_component <- function(rows,component) any(vapply(rows,.brohn_rpv_component,logical(1),component=component))
+.brohn_rpv_profiles <- function(rows) {
+  choice<-.brohn_rpv_has_component(rows,"choice");task<-.brohn_rpv_has_component(rows,"task")
+  list(renderer_profile=if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1",
+    limits_profile=if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")
+}
 .brohn_rpv_waiting <- function(dependencies) {
   if(!length(dependencies))return("Preparing saved views")
   kinds<-unique(vapply(dependencies,function(d)brohn_default(d$kind,"explicit_distributions"),character(1)))
   paste(vapply(kinds,function(kind){ds<-Filter(function(d)identical(brohn_default(d$kind,"explicit_distributions"),kind),dependencies)
-    label<-if(kind=="task_display")"Saved task views"else if(kind=="explicit_distributions")"Response distributions"else"Saved views"
+    label<-if(kind=="task_display")"Saved task views"else if(kind=="choice_display")"Saved best-worst views"else if(kind=="explicit_distributions")"Response distributions"else"Saved views"
     statuses<-vapply(ds,function(d)brohn_default(d$status,if(!is.null(d$result_ref))"succeeded"else"queued"),character(1))
     paste(label,if(all(statuses=="succeeded"))"ready"else if(any(statuses%in%c("failed","cancelled")))"need attention"else"preparing")
   },character(1)),collapse="; ")
@@ -28,19 +42,21 @@
 .brohn_rpv_section <- function(ref,adapter,selector=NULL) {
   if(is.null(selector))selector<-list(scope=switch(adapter,`gaze-context`="all_exposures",
     `explicit-distribution`="all_groups",`paired-findings`="all_comparisons",
-    `task-scores`="all_administrations",`task-trials`="all_administrations",`task-people`="all_metrics"))
+    `task-scores`="all_administrations",`task-trials`="all_administrations",`task-people`="all_metrics",
+    `choice-counts`="all_exercises",`choice-utilities`="all_exercises"))
   display<-switch(adapter,`gaze-context`=list(candidate_limit=200L),
     `explicit-distribution`=list(pages="all"),
     `paired-findings`=list(charts=list("means","differences"),pages="all"),
     `task-scores`=list(pages="all"),
     `task-trials`=list(measure="profile_default",trial_scope="all",charts="profile_default",pages="all",page_numbers=list()),
-    `task-people`=list(charts=list("people"),pages="all",page_numbers=list()))
+    `task-people`=list(charts=list("people"),pages="all",page_numbers=list()),
+    `choice-counts`=list(pages="all",page_numbers=list()),`choice-utilities`=list(pages="all",page_numbers=list()))
   list(id=paste0("section-",.brohn_rpv_key(list(ref,adapter,selector))),adapter=adapter,
     adapter_version="0.1",source_report_ref=ref,selector=selector,display=display,order=1L)
 }
 .brohn_rpv_default_sections <- function(rows) {
   result<-list()
-  for(adapter in c("gaze-context","task-scores","task-trials","task-people","explicit-distribution","paired-findings"))for(row in rows)
+  for(adapter in c("gaze-context","task-scores","task-trials","task-people","choice-counts","choice-utilities","explicit-distribution","paired-findings"))for(row in rows)
     if(adapter%in%unlist(row$adapters,use.names=FALSE))result[[length(result)+1L]]<-.brohn_rpv_section(row$ref,adapter)
   lapply(seq_along(result),function(i){s<-result[[i]];s$order<-as.integer(i);s})
 }
@@ -82,7 +98,8 @@ brohn_report_package_sources_ui <- function(page,selected) shiny::tagList(
       if(length(row$adapters))shiny::p(paste(vapply(row$adapters,.brohn_rpv_adapter_label,character(1)),collapse=", ")),
       if(!is.null(row$reason))shiny::p(row$reason),
       if(length(row$adapters))brohn_command(if(chosen)"Remove from report"else"Include findings","rpk_source_toggle",row$ref)else
-        shiny::p("These saved findings need a report adapter. Their existing report and exports remain available."))}),
+        shiny::p(if(is.null(row$reason))"These saved findings need a report adapter. Their existing report and exports remain available."else
+          "These saved findings cannot be included for the reason above. Their existing report and exports remain available."))}),
   shiny::div(class="brohn-toolbar",shiny::actionButton("rpk_sources_previous","Newer findings"),
     if(!is.null(page$next_cursor))shiny::actionButton("rpk_sources_next","Older findings")))
 .brohn_rpv_task_controls <- function(s,options=NULL) {
@@ -112,32 +129,49 @@ brohn_report_package_figures_ui <- function(sections,labels=list(),task_options=
     source<-Filter(function(row).brohn_rpv_same(row$ref,s$source_report_ref),sources)
     if(is.null(label))label<-switch(s$selector$scope,all_exposures="All exposures",all_groups="All response groups",
       all_comparisons="All saved comparisons",all_administrations="All applicable saved task administrations",
-      all_metrics="All saved cohort metrics","Selected saved view")
+      all_metrics="All saved cohort metrics",all_exercises="All saved MaxDiff exercises","Selected saved view")
     shiny::div(class="brohn-card",shiny::h3(.brohn_rpv_adapter_label(s$adapter)),shiny::p(label),
       if(length(source)==1L)shiny::p(paste(source[[1]]$title,"| saved version",s$source_report_ref$revision)),
       if(s$adapter=="gaze-context")shiny::numericInput(paste0("rpk_limit_",s$id),"Maximum illustrated candidates per exposure",s$display$candidate_limit,min=1,max=1000,step=1),
       if(s$adapter=="paired-findings")shiny::checkboxGroupInput(paste0("rpk_charts_",s$id),"Paired figures",
         c("Condition means"="means","Person differences"="differences"),selected=unlist(s$display$charts)),
       .brohn_rpv_task_controls(s,task_options[[s$id]]),
-      if(s$adapter%in%c("paired-findings","explicit-distribution","task-scores","task-trials","task-people"))shiny::textInput(paste0("rpk_pages_",s$id),
-        if(s$adapter=="explicit-distribution")"Category pages (blank for all; 20 categories per page)"else if(.brohn_rpv_task_adapter(s$adapter))"Numerical table pages (blank for all; 50 rows per page)"else"Figure pages (blank for all; for example 1, 2)",
+      if(.brohn_rpv_choice_adapter(s$adapter))shiny::p(if(s$adapter=="choice-counts")
+        "Saved adjusted results show best minus worst choices divided by complete-pair exposures containing each item. This is not a raw count or a percentage."else
+        "Saved aggregate relative utilities use the original model's relative logit units. Unrequested or unavailable models have an explanation instead of a fitted chart; preparing this report does not fit a model."),
+      if(s$adapter%in%c("paired-findings","explicit-distribution","task-scores","task-trials","task-people","choice-counts","choice-utilities"))shiny::textInput(paste0("rpk_pages_",s$id),
+        if(s$adapter=="explicit-distribution")"Category pages (blank for all; 20 categories per page)"else if(.brohn_rpv_task_adapter(s$adapter)||.brohn_rpv_choice_adapter(s$adapter))"Numerical table pages (blank for all; 50 rows per page)"else"Figure pages (blank for all; for example 1, 2)",
         if(s$display$pages=="all")""else paste(if(s$adapter=="explicit-distribution")unlist(s$display$offsets)/20+1 else unlist(s$display$page_numbers),collapse=", ")),
       if(.brohn_rpv_task_adapter(s$adapter))shiny::p("Table pages change the rows illustrated here. Task charts still cover the whole selected scope; complete numerical companions retain every row."),
+      if(.brohn_rpv_choice_adapter(s$adapter))shiny::p("Table pages change only the numerical alternative. Choice charts cover every saved item in the selected exercise; complete evidence remains included. An unavailable model has an explanation on page 1."),
       shiny::div(class="brohn-toolbar",
         brohn_command("Choose specific views","rpk_selector_open",list(ref=s$source_report_ref,adapter=s$adapter)),
         if(i>1L)brohn_command("Move earlier","rpk_section_move",list(id=s$id,direction=-1L)),
         if(i<length(sections))brohn_command("Move later","rpk_section_move",list(id=s$id,direction=1L)),
         brohn_command("Remove figure section","rpk_section_remove",s$id)))}))
+.brohn_rpv_choice_details <- function(item,adapter) {
+  d<-item$details;if(!is.list(d)||!.brohn_rpv_choice_adapter(adapter))return(NULL)
+  model<-if(adapter=="choice-counts")d$counts else d$utilities
+  label<-switch(brohn_default(model$status,"unknown"),available="Saved adjusted results are available.",
+    no_complete_pairs="No complete best-worst pairs are available in these saved findings.",
+    estimated="The saved aggregate choice model was estimated.",
+    not_requested="Model fitting was not requested in the saved analysis.",
+    unavailable="The saved choice model is unavailable.","Saved model status is not available from this metadata.")
+  shiny::tagList(shiny::p(paste("Exercise",d$index,"|",d$item_count,"saved items |",d$exposure_count,"saved exposures")),
+    shiny::p(label),if(!is.null(model$reason))shiny::p(model$reason))
+}
 brohn_report_package_selector_ui <- function(page) shiny::div(class="brohn-card",
   shiny::h3("Choose saved views",id="rpk_selector_heading",tabindex="-1"),
   if(!is.null(page$reason))shiny::p(page$reason),
   if(isTRUE(page$requires_display_preparation)&&!isTRUE(page$locked))shiny::p(if(.brohn_rpv_task_adapter(page$adapter))
-    "Specific task choices become available after saved task views are prepared. Prepare report includes all applicable views."else if(page$adapter=="explicit-distribution")
+    "Specific task choices become available after saved task views are prepared. Prepare report includes all applicable views."else if(.brohn_rpv_choice_adapter(page$adapter))
+    "Specific saved exercises become available after preparation. Prepare report includes every saved exercise and its original model status."else if(page$adapter=="explicit-distribution")
     "Response distributions have not been prepared yet. Include all response groups first; saved groups then become available here."else
     "Specific comparison choices are not available from this report's compact metadata. All saved comparisons can still be included with their complete numerical evidence."),
   if(!length(page$items)&&!isTRUE(page$requires_display_preparation)&&!isTRUE(page$locked))shiny::p(if(identical(page$state,"unavailable_source")||identical(page$state,"needs_authority"))
     "These views are currently unavailable. Review the saved source and access reason."else"No specific views are available on this page."),
   lapply(page$items,function(item)shiny::div(class="brohn-stack",shiny::strong(item$label),
+    .brohn_rpv_choice_details(item,page$adapter),
     if(is.character(item$details))shiny::p(paste(item$details,collapse=" "))else if(is.list(item$details))shiny::tagList(
       if(!is.null(item$details$completion))shiny::p(paste("Saved administration:",item$details$completion)),
       if(!is.null(item$details$reason))shiny::p(item$details$reason)),

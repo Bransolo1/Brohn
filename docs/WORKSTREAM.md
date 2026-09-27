@@ -1,6 +1,14 @@
 # Brohn workstream and restart checklist
 
-**Task-report checkpoint, 27 September 2026:** seven-profile complete task findings
+**Choice-report scoped checkpoint, 27 September 2026:** complete saved MaxDiff
+findings now pass separate source/preparation, pure projection, guarded worker,
+historical-package, researcher, mobile export and cold-restart gates. See
+[the phase record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md). Exported reports also
+use plain task labels across seven profiles with unchanged canonical evidence.
+This advances BWP04/BWP10/BWP13/BWP14/BWP15/BWP17; none is closed by this slice.
+Next is complete saved EDA with liking, then ECG/PPG separately.
+
+**Earlier task-report checkpoint, 27 September 2026:** seven-profile complete task findings
 can accompany explicit liking/scales using exact prepared historical evidence.
 The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
 See [acceptance evidence](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). Its work spans
@@ -28,8 +36,9 @@ This file orders the immediate continuation; it does not replace that scope.
 
 | Workstream | Delivered and checked | Remaining work |
 | --- | --- | --- |
+| Complete choice/MaxDiff handoff | Complete saved counts/models, mixed task/liking sources, packed/native/import/cohort evidence, guarded workers, exact history, researcher/mobile downloads and unchanged restart; scoped acceptance. | Exact saved EDA with liking next, then ECG/PPG; task/choice image context and broader methods remain open. |
 | Saved-download HTTP | Shared finalizer on 19 saved callbacks / 24 export variants and hosted 403; exact bytes, empty HEAD, current authority and native paired/history compatibility. | Framework downloadHandlers, participant/static/range/compressed routes retain separate contracts. |
-| Saved task/liking handoff | Seven enabled native/imported task profiles and saved cohorts, complete numerical evidence, exact prepared history, phone-readable exports and unchanged restart; scoped final acceptance. | Choice/MaxDiff next; task stimulus image bytes/context panels, further report families and wider workloads remain open. |
+| Saved task/liking handoff | Seven enabled native/imported task profiles and saved cohorts, complete numerical evidence, exact prepared history, phone-readable exports and unchanged restart; scoped final acceptance. | Choice/MaxDiff extension now has scoped acceptance; task image context, further report families and wider workloads remain open. |
 | Saved-findings handoff | Durable one-action prerequisites, exact historical choices, standalone HTML/evidence ZIP and complete included numerical collections; scoped connected acceptance. | Further report families, larger profiles, original/raw-evidence bundles and scoped post-collection restrictions. |
 | Reviewed cross-recording clocks | Original-event selection, exact preview, versioned save, complete original-row exports, automatic charts, independent retry and unchanged historical restart; connected and final mobile acceptance. | Complete playback, additional clock/reset profiles, arbitrary channel counts, retained-CSV paging and wider workload qualification. |
 | Saved-result reports | Results/Explore/Evidence, first-screen saved GNAT/acoustic measurements, long-title phone layout, exact exports and joined restart evidence. | Focused preparation/readiness and task-source digest reuse now qualified; several-second synchronous reads and wider report families/load qualification remain. |
@@ -61,26 +70,20 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Choice/MaxDiff complete report adapter (PC02/PC05;
-   BWP04/BWP10/BWP13/BWP15/BWP17).** The seven-profile task/liking checkpoint
-   has final researcher, mobile, export and restart acceptance. Extend the same
-   flow to complete saved choice counts, fitted/unavailable/not-requested model
-   states and their numerical evidence. Freeze explicit mixed task/choice source
-   admission before implementation; old task profiles and historical packages
-   must retain their original strict contracts. Preserve exact saved models;
-   package preparation must not fit another estimator. The next adapter remains
-   planned, not enabled by this documentation.
-   Task material definitions/hashes remain complete, but task stimulus image
-   bytes/context panels are still unsupported; optional images currently cover gaze.
-   Later adapters cover complete neural/physiological and camera/media evidence.
-   Known unsupported mixed collections retain existing exports and a precise
-   reason; never silently trim complete evidence. Larger profiles, raw/original
-   bundles and wider task methods remain open.
-   Alongside this adapter, replace researcher-facing task metric keys with plain
-   labels and brief explanations for all seven profiles. Preserve canonical
-   keys, exact values, units and support in evidence; distinguish an individual
-   administration from cohort means of individual metrics. This display-only
-   continuation does not change the accepted checkpoint or its scores.
+1. **Complete saved EDA with liking (PC02/PC05/PC13/PC16;
+   BWP04/BWP06/BWP09/BWP13/BWP15/BWP17).** Follow the
+   [physiological report plan](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md):
+   support both event-related and continuous EDA from exact saved reports and
+   full typed numerical artifacts. Keep baselines, nonresponse versus missing
+   support, exclusions, source clocks and original denominators explicit.
+   Prepare only display evidence; do not clean, decompose or detect again.
+   Co-present liking without inventing an event-level paired estimator.
+   Follow with a separately qualified ECG/PPG adapter, including saved
+   after-exclusion reports and RR/PRV distinctions. Preserve precise refusal
+   for unsupported mixed collections. Further neural/camera/media adapters remain.
+   Task/choice material definitions and hashes are retained, but image bytes and
+   context panels remain a separate extension; optional images cover gaze only.
+   Larger profiles, raw/original bundles and additional choice methods stay open.
 
 2. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
    accepted source guards, exact outputs and ticket/focus behavior. The current

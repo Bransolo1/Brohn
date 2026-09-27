@@ -2,8 +2,24 @@
 # Only bounded metadata is resolved here. Source replay/full decoding belongs
 # to supervised prerequisites; saved scientific scores are never recomputed.
 .brohn_rpk_task_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-paired/0.1")
-.brohn_rpk_limits <- function(x) if(.brohn_rpk_task_profile(x))brohn_report_package_task_limits()else brohn_report_package_limits()
+.brohn_rpk_choice_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1")
+.brohn_rpk_prepared_profile <- function(x) .brohn_rpk_task_profile(x)||.brohn_rpk_choice_profile(x)
+.brohn_rpk_limits <- function(x) if(.brohn_rpk_choice_profile(x))brohn_report_package_choice_limits()else if(.brohn_rpk_task_profile(x))brohn_report_package_task_limits()else brohn_report_package_limits()
 .brohn_rpk_task_adapters <- c("task-scores","task-trials","task-people")
+.brohn_rpk_choice_adapters <- c("choice-counts","choice-utilities")
+.brohn_rpk_choice_section <- function(section) {
+  s<-section$selector;d<-section$display
+  brohn_require(is.list(s)&&brohn_text(s$scope,64)&&s$scope %in% c("all_exercises","exact_exercises"),"Choose all saved choice exercises or exact prepared exercises.")
+  brohn_fields(s,if(s$scope=="all_exercises")"scope"else c("scope","keys"),label="Choice exercise selector")
+  if(s$scope=="exact_exercises")brohn_require(brohn_array(s$keys)&&length(s$keys)>0L&&length(s$keys)<=20L&&
+    all(vapply(s$keys,.brohn_rpk_hash,logical(1)))&&!anyDuplicated(unlist(s$keys)),"Choose distinct exact choice exercises.")
+  brohn_fields(d,c("pages","page_numbers"),label="Choice numerical display")
+  brohn_require(brohn_text(d$pages,16)&&d$pages %in% c("all","selected")&&brohn_array(d$page_numbers),"Choose all or selected numerical table pages.")
+  if(d$pages=="selected")brohn_require(length(d$page_numbers)>0L&&length(d$page_numbers)<=2L&&
+    all(vapply(d$page_numbers,brohn_number,logical(1),min=1,max=2,integer=TRUE))&&!anyDuplicated(unlist(d$page_numbers)),"Choose distinct available 50-row choice table pages.")
+  else brohn_require(!length(d$page_numbers),"All choice table pages cannot also specify selected pages.")
+  invisible(section)
+}
 .brohn_rpk_task_section <- function(section) {
   s<-section$selector;d<-section$display;people<-section$adapter=="task-people"
   all<-if(people)"all_metrics"else"all_administrations";exact<-if(people)"exact_metrics"else"exact_administrations";key<-if(people)"metrics"else"keys"
@@ -29,22 +45,40 @@
 .brohn_rpk_renderer_implementation_ref <- function() {
   x<-.brohn_rpk_implementation();list(profile=x$profile,hash=brohn_hash(x))
 }
-.brohn_rpk_execution_plan <- function() list(schema="brohn-task-report-execution-plan/0.1",
+.brohn_rpk_execution_plan <- function(request=NULL) {
+  if(.brohn_rpk_choice_profile(request))return(list(schema="brohn-task-choice-report-execution-plan/0.1",
+    source_admission=brohn_report_source_admission(request$renderer_profile),
+    explicit_distribution_implementation_ref=.brohn_rpk_distribution_implementation_ref("task-choice-findings/0.1"),
+    task_display_implementation_ref=brohn_task_display_implementation_ref("saved-task-display/0.2"),
+    choice_display_implementation_ref=brohn_choice_display_implementation_ref(),
+    renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref()))
+  list(schema="brohn-task-report-execution-plan/0.1",
   task_display_implementation_ref=brohn_task_display_implementation_ref(),
   explicit_distribution_implementation_ref=.brohn_rpk_distribution_implementation_ref(),
   renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref())
-.brohn_rpk_plan_valid <- function(plan) {
-  brohn_fields(plan,c("schema","task_display_implementation_ref","explicit_distribution_implementation_ref","renderer_implementation_ref"),label="Pinned preparation plan")
-  brohn_require(identical(plan$schema,"brohn-task-report-execution-plan/0.1"),"Reopen a supported saved preparation plan.")
-  for(x in plan[setdiff(names(plan),"schema")]){brohn_fields(x,c("profile","hash"),label="Pinned implementation");brohn_require(brohn_text(x$profile,128)&&.brohn_rpk_hash(x$hash),"The saved preparation lost its implementation identity.")}
+}
+.brohn_rpk_plan_valid <- function(plan,request=NULL) {
+  choice<-identical(plan$schema,"brohn-task-choice-report-execution-plan/0.1")
+  fields<-c("schema","task_display_implementation_ref","explicit_distribution_implementation_ref","renderer_implementation_ref")
+  brohn_fields(plan,c(fields,if(choice)c("source_admission","choice_display_implementation_ref")),label="Pinned preparation plan")
+  brohn_require(choice||identical(plan$schema,"brohn-task-report-execution-plan/0.1"),"Reopen a supported saved preparation plan.")
+  if(!is.null(request))brohn_require(identical(choice,.brohn_rpk_choice_profile(request))&&.brohn_rpk_prepared_profile(request),"The saved preparation plan belongs to a different renderer.")
+  if(choice)brohn_require(identical(plan$source_admission,"task-choice-findings/0.1"),"The saved plan changed its complete-source admission.")
+  for(x in plan[setdiff(names(plan),c("schema","source_admission"))]){brohn_fields(x,c("profile","hash"),label="Pinned implementation");brohn_require(brohn_text(x$profile,128)&&.brohn_rpk_hash(x$hash),"The saved preparation lost its implementation identity.")}
+  brohn_require(identical(plan$task_display_implementation_ref$profile,if(choice)"saved-task-display/0.2"else"saved-task-display/0.1")&&
+    identical(plan$explicit_distribution_implementation_ref$profile,if(choice)"saved-explicit-distribution/0.2"else"saved-explicit-distribution/0.1")&&
+    identical(plan$renderer_implementation_ref$profile,"static-complete-findings/0.1"),"The saved plan has incompatible implementation profiles.")
+  if(choice)brohn_require(identical(plan$choice_display_implementation_ref$profile,"saved-choice-display/0.1"),"The saved choice implementation profile is unavailable.")
   invisible(plan)
 }
 .brohn_rpk_manifest_sources <- function(s) {
-  if(!.brohn_rpk_task_profile(s))return(list(reports=s$report_refs,distributions=s$display_refs))
+  if(!.brohn_rpk_prepared_profile(s))return(list(reports=s$report_refs,distributions=s$display_refs))
   refs<-function(adapter)lapply(Filter(function(x)x$adapter==adapter,s$prepared_sources),`[[`,"prepared_ref")
-  list(reports=s$report_refs,distributions=refs("explicit-distribution"),task_displays=refs("task-display"))
+  result<-list(reports=s$report_refs,distributions=refs("explicit-distribution"),task_displays=refs("task-display"))
+  if(.brohn_rpk_choice_profile(s))result$choice_displays<-refs("choice-display")
+  result
 }
-.brohn_rpk_find_pinned_distribution <- function(store,report_ref,implementation_ref) {
+.brohn_rpk_find_pinned_distribution <- function(store,report_ref,implementation_ref,source_admission="task-findings/0.1") {
   .brohn_rpk_ref_catalog(store,report_ref,"report")
   rows<-DBI::dbGetQuery(store$con,paste("SELECT v.id,v.revision,v.body_hash FROM entity_versions v JOIN entities e ON e.kind=v.kind AND e.id=v.id AND e.revision=v.revision",
     "WHERE v.kind='explicit_distributions' AND v.project_id=? AND json_extract(v.body_json,'$.request.report_id')=?",
@@ -55,11 +89,12 @@
   ref<-list(kind="explicit_distributions",id=rows$id[[1L]],revision=rows$revision[[1L]],body_hash=rows$body_hash[[1L]],project_id=report_ref$project_id)
   m<-.brohn_rpk_distribution_metadata(store,ref);j<-brohn_get_job(store,m$processing$job_id)
   brohn_require(.brohn_rpk_same(m$report_ref,report_ref)&&.brohn_rpk_same(j$request$report_ref,report_ref)&&
-    .brohn_rpk_same(j$request$preparation_implementation_ref,implementation_ref),"Saved response preparation no longer matches its pinned implementation.")
+    .brohn_rpk_same(j$request$preparation_implementation_ref,implementation_ref)&&
+    identical(.brohn_rpk_distribution_admission(j$request),source_admission),"Saved response preparation no longer matches its pinned implementation or source admission.")
   ref
 }
 .brohn_rpk_prepared_sources <- function(deps) lapply(Filter(function(d)!is.null(d$result_ref),deps),function(d)list(
-  adapter=if(d$kind=="task_display")"task-display"else"explicit-distribution",source_report_ref=d$report_ref,
+  adapter=switch(d$kind,task_display="task-display",choice_display="choice-display",explicit_distributions="explicit-distribution"),source_report_ref=d$report_ref,
   prepared_ref=d$result_ref,implementation_ref=d$implementation_ref))
 .brohn_rpk_preparation_view <- function(deps,count=NULL,maximum=NULL,reason=NULL) list(
   prepared_sources=.brohn_rpk_prepared_sources(deps),resolved_panel_count=count,maximum_panels=maximum,reason_code=reason)
@@ -77,15 +112,25 @@
     cursor<-page$next_cursor;if(is.null(cursor))break
   };items
 }
+.brohn_rpk_choice_catalog_all <- function(store,ref) {
+  items<-list();cursor<-NULL
+  repeat{
+    page<-brohn_choice_display_catalog(store,ref,cursor=cursor,limit=25L)
+    items<-c(items,page$items);brohn_require(length(items)<=20L,"This prepared choice catalog exceeds the report selection profile.")
+    cursor<-page$next_cursor;if(is.null(cursor))break
+  };items
+}
 .brohn_rpk_task_dependency_specs <- function(store,request,plan) {
   specs<-list()
   for(ref in request$report_refs){
     selected<-Filter(function(s).brohn_rpk_same(s$source_report_ref,ref),request$requested_sections)
     if(any(vapply(selected,function(s)s$adapter=="explicit-distribution",logical(1))))specs<-c(specs,list(list(kind="explicit_distributions",report_ref=ref,implementation_ref=plan$explicit_distribution_implementation_ref)))
     m<-.brohn_rpk_report_metadata(store,ref)
-    task<-m$kind %in% c("implicit","implicit_cohort")||(identical(m$kind,"questionnaire")&&m$task_score_count>0L)
+    task<-"task" %in% unlist(m$source_components)||m$kind %in% c("implicit","implicit_cohort")||(identical(m$kind,"questionnaire")&&m$task_score_count>0L)
     # Full task evidence is mandatory even when all of its figures are removed.
     if(task)specs<-c(specs,list(list(kind="task_display",report_ref=ref,implementation_ref=plan$task_display_implementation_ref)))
+    if(.brohn_rpk_choice_profile(request)&&"choice" %in% unlist(m$source_components))
+      specs<-c(specs,list(list(kind="choice_display",report_ref=ref,implementation_ref=plan$choice_display_implementation_ref)))
   }
   lapply(specs,function(x){x$slot<-brohn_hash(list(kind=x$kind,report_ref=x$report_ref));x})
 }
@@ -114,6 +159,12 @@
       s$source_ref<-d[[1L]]$result_ref
       resolved<-brohn_resolve_task_report_section(s,.brohn_rpk_task_catalog_all(store,s$source_ref))
       s<-resolved$section;known_panels<-known_panels+resolved$panel_count
+    }else if(s$adapter %in% .brohn_rpk_choice_adapters){
+      d<-Filter(function(x)x$kind=="choice_display"&&.brohn_rpk_same(x$report_ref,s$source_report_ref),deps)
+      brohn_require(.brohn_rpk_choice_profile(request)&&length(d)==1L&&!is.null(d[[1L]]$result_ref),"Choice figures need their exact complete prepared source.")
+      s$source_ref<-d[[1L]]$result_ref
+      resolved<-brohn_resolve_choice_report_section(s,.brohn_rpk_choice_catalog_all(store,s$source_ref))
+      s<-resolved$section;known_panels<-known_panels+resolved$panel_count
     }else if(s$adapter=="explicit-distribution"){
       d<-Filter(function(x)x$kind=="explicit_distributions"&&.brohn_rpk_same(x$report_ref,s$source_report_ref),deps)
       brohn_require(length(d)==1L&&!is.null(d[[1L]]$result_ref),"Response figures need their exact complete prepared source.")
@@ -136,7 +187,7 @@
     if(action=="advance")brohn_require(b$status %in% c("prepared","waiting_for_display","ready_to_freeze"),"This preparation needs an explicit Resume or Retry.")
     if(action=="resume")brohn_require(b$status=="needs_authority","Only an authorization pause can be resumed.")
     if(action=="retry")brohn_require(b$status %in% c("failed","cancelled","needs_attention"),"Only a stopped preparation can be retried.")
-    .brohn_rpk_request(store,b$request);.brohn_rpk_plan_valid(b$execution_plan)
+    .brohn_rpk_request(store,b$request);.brohn_rpk_plan_valid(b$execution_plan,b$request)
     if(!.brohn_rpk_same(b$execution_plan$renderer_implementation_ref,.brohn_rpk_renderer_implementation_ref())){
       b$status<-"needs_attention";b$reason<-"The report implementation changed since Prepare. Review your saved choices and prepare them as a new version; the original plan was preserved."
       b$preparation<-.brohn_rpk_preparation_view(b$dependencies,reason="implementation_changed")
@@ -150,23 +201,23 @@
       job<-brohn_queue_report_package(store,b$selection_ref,retry=TRUE);b<-r$body;b$status<-"assembly_queued";b$job_ref<-list(id=job$id,status=job$status)
       return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
     }
-    deps<-list();waiting<-FALSE
+    deps<-list();waiting<-FALSE;admission<-brohn_report_source_admission(b$request$renderer_profile)
     for(spec in .brohn_rpk_task_dependency_specs(store,b$request,b$execution_plan)){
-      task<-spec$kind=="task_display";ref<-spec$report_ref;impl<-spec$implementation_ref
-      saved<-if(task)brohn_find_task_display(store,ref,impl$profile,impl)else .brohn_rpk_find_pinned_distribution(store,ref,impl)
+      task<-spec$kind=="task_display";choice<-spec$kind=="choice_display";ref<-spec$report_ref;impl<-spec$implementation_ref
+      saved<-if(task)brohn_find_task_display(store,ref,impl$profile,impl)else if(choice)brohn_find_choice_display(store,ref,impl$profile,impl)else .brohn_rpk_find_pinned_distribution(store,ref,impl,admission)
       old<-Filter(function(d)identical(d$slot,spec$slot),b$dependencies);old<-if(length(old))old[[1L]]else NULL
       d<-c(spec,list(job_id=if(is.null(old))NULL else old$job_id,created_for_intent=if(is.null(old))FALSE else old$created_for_intent,result_ref=saved,status=if(is.null(saved))NULL else"succeeded"))
       if(!is.null(saved)){deps<-c(deps,list(d));next}
-      current<-if(task)brohn_task_display_implementation_ref()else .brohn_rpk_distribution_implementation_ref()
+      current<-if(task)brohn_task_display_implementation_ref(impl$profile)else if(choice)brohn_choice_display_implementation_ref()else .brohn_rpk_distribution_implementation_ref(admission)
       if(!.brohn_rpk_same(impl,current)){
         b$status<-"needs_attention";b$dependencies<-.brohn_rpk_retain_dependencies(deps,b$dependencies);b$reason<-"A pinned display implementation is unavailable. Prepare these saved choices as a new version; no different code was substituted."
         b$preparation<-.brohn_rpk_preparation_view(b$dependencies,reason="implementation_changed")
         return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
       }
-      request<-if(task).brohn_task_display_request(store,ref,impl)else .brohn_rpk_distribution_request(store,ref,impl)
-      fingerprint<-if(task)request$content_fingerprint else brohn_hash(request[setdiff(names(request),"authority")])
+      request<-if(task).brohn_task_display_request(store,ref,impl)else if(choice).brohn_choice_display_request(store,ref,impl)else .brohn_rpk_distribution_request(store,ref,impl,admission)
+      fingerprint<-if(task||choice)request$content_fingerprint else brohn_hash(request[setdiff(names(request),"authority")])
       previous<-.brohn_rpk_latest_job(store,spec$kind,fingerprint)
-      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl)
+      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else if(choice)brohn_queue_choice_display(store,ref,retry=retrying,implementation_ref=impl)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl,source_admission=admission)
       d$job_id<-j$id;d$status<-j$status;d$created_for_intent<-if(!is.null(old)&&identical(old$job_id,j$id))isTRUE(old$created_for_intent)else is.null(previous)||!identical(previous$id,j$id)
       deps<-c(deps,list(d))
       if(j$status %in% c("failed","cancelled")){
@@ -184,7 +235,7 @@
       b$preparation<-.brohn_rpk_preparation_view(deps,reason="selection_review")
       return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
     }
-    maximum<-brohn_report_package_task_limits()$max_panels
+    maximum<-.brohn_rpk_limits(b$request)$max_panels
     b$preparation<-.brohn_rpk_preparation_view(deps,resolved$panel_count,maximum)
     if(!is.null(resolved$panel_count)&&resolved$panel_count>maximum){
       b$status<-"needs_attention";b$reason<-paste("These choices contain",resolved$panel_count,"figures; this profile supports",maximum,". Change the figure choices; all complete numerical evidence stays included.")
@@ -197,7 +248,7 @@
     selection<-c(list(schema="brohn-report-package-selection/0.2",id=id,intent_ref=.brohn_rpk_ref(r),generation=b$generation),
       b$request[c("study_id","project_id","title","report_refs")],list(prepared_sources=.brohn_rpk_prepared_sources(deps),sections=resolved$sections),
       b$request[c("contents_policy","limits_profile","renderer_profile")],list(frozen_at=brohn_now(),coverage=list(
-        full_platform_scope=list(capabilities=50L,packages=17L),profile_supported_adapters=as.list(c("gaze-context","explicit-distribution","paired-findings",.brohn_rpk_task_adapters)),
+        full_platform_scope=list(capabilities=50L,packages=17L),profile_supported_adapters=as.list(c("gaze-context","explicit-distribution","paired-findings",.brohn_rpk_task_adapters,if(.brohn_rpk_choice_profile(b$request)).brohn_rpk_choice_adapters)),
         numerical_evidence="complete_selected_reports",raw_recordings="excluded_by_profile",original_raw_bytes_reverified=FALSE)))
     saved<-brohn_put_entity(store,"report_package_selection",id,selection,0L,r$project_id);b<-r$body;b$selection_ref<-.brohn_rpk_ref(saved)
     r<-.brohn_rpk_put_intent(store,r,b);job<-brohn_queue_report_package(store,b$selection_ref,retry=FALSE)

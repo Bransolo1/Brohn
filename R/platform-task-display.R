@@ -2,6 +2,9 @@
 # scientific reads, jobs or subprocess probes occur merely by loading this module.
 # Source/runtime identity is captured once, before any request can be queued.
 .brohn_td_profile <- "saved-task-display/0.1"
+.brohn_td_version <- function(profile) {brohn_require(profile %in% c("saved-task-display/0.1","saved-task-display/0.2"),"Choose a registered task preparation profile.");sub("saved-task-display/","",profile,fixed=TRUE)}
+.brohn_td_schema <- function(prefix,profile)paste0(prefix,"/",.brohn_td_version(profile))
+.brohn_td_admission <- function(profile)if(.brohn_td_version(profile)=="0.2")"task-choice-findings/0.1"else"task-findings/0.1"
 .brohn_td_families <- c("native_questionnaire","imported_implicit","saved_task_cohort")
 .brohn_td_profiles <- c("iat-gnb2003-d1/1.0","biat-nosek2014-goodfocal/1.0","aat-keyboard-cue-balanced/1.0",
   "rt-deary-liewald-simple/1.0","rt-deary-liewald-choice/1.0","sciat-brohn-response-window-im100/1.0","gnat-brohn-single-target/1.0")
@@ -14,25 +17,27 @@
   "R/platform-report-package-sources.R","R/platform-report-package-authority.R","R/platform-publication.R","R/platform-paired-plots.R",
   "R/platform-scales.R","R/platform-scale-comparisons.R","R/platform-task-delivery.R","R/platform-question-materials.R",
   "R/platform-question-sections.R","R/platform-task-import-storage.R","R/platform-library.R","R/platform-questionnaire-artifact-storage.R",
-  "R/platform-questionnaire-index.R","R/platform-questionnaire-explorer.R","R/platform-clock-map.R","R/platform-hosted-profile.R")
+  "R/platform-questionnaire-index.R","R/platform-questionnaire-explorer.R","R/platform-clock-map.R","R/platform-hosted-profile.R",
+  "R/platform-choice-display.R","R/platform-choice-display-sources.R","R/platform-maxdiff.R","R/platform-maxdiff-import.R","R/platform-maxdiff-platform.R","R/platform-maxdiff-plots.R")
 .brohn_td_same <- function(a,b)identical(brohn_json(a),brohn_json(b))
 .brohn_td_bool <- function(x)is.logical(x)&&length(x)==1L&&!is.na(x)
 .brohn_td_sha <- function(x)is.character(x)&&length(x)==1L&&!is.na(x)&&grepl("^[a-f0-9]{64}$",x)
 .brohn_td_object_ref <- function(x)list(hash=brohn_default(x$hash,x$sha256),bytes=brohn_default(x$bytes,x$size),media_type=x$media_type)
 .brohn_td_loaded <- stats::setNames(lapply(.brohn_td_files,function(p)if(file.exists(p))digest::digest(file=p,algo="sha256")else NULL),.brohn_td_files)
 .brohn_td_runtime <- list(R=as.character(getRversion()),jsonlite=as.character(utils::packageVersion("jsonlite")),digest=as.character(utils::packageVersion("digest")))
-brohn_task_display_implementation <- function() {
+brohn_task_display_implementation <- function(preparation_profile=.brohn_td_profile) {
+  .brohn_td_version(preparation_profile)
   brohn_require(all(vapply(.brohn_td_loaded,.brohn_td_sha,logical(1))),"The saved-task display installation is incomplete. Restart after installing its exact source files.")
-  list(schema="brohn-task-display-implementation/0.1",profile=.brohn_td_profile,sources=.brohn_td_loaded,runtime=.brohn_td_runtime)
+  list(schema=.brohn_td_schema("brohn-task-display-implementation",preparation_profile),profile=preparation_profile,sources=.brohn_td_loaded,runtime=.brohn_td_runtime)
 }
 .brohn_td_check_code <- function(implementation) {
-  brohn_require(.brohn_td_same(implementation,brohn_task_display_implementation())&&all(vapply(names(implementation$sources),function(p)
+  brohn_require(.brohn_td_same(implementation,brohn_task_display_implementation(implementation$profile))&&all(vapply(names(implementation$sources),function(p)
     file.exists(p)&&identical(digest::digest(file=p,algo="sha256"),implementation$sources[[p]]),logical(1))),
     "The task preparation installation changed after loading. Restart with the intended code and prepare a new report version.")
   invisible(TRUE)
 }
 .brohn_td_implementation_ref <- function(x)list(profile=x$profile,hash=brohn_hash(x))
-brohn_task_display_implementation_ref <- function() .brohn_td_implementation_ref(brohn_task_display_implementation())
+brohn_task_display_implementation_ref <- function(preparation_profile=.brohn_td_profile) .brohn_td_implementation_ref(brohn_task_display_implementation(preparation_profile))
 .brohn_td_family <- function(analysis) {
   if(identical(analysis$kind,"questionnaire")&&length(analysis$task_scores)>0L)return("native_questionnaire")
   if(identical(analysis$kind,"implicit")&&identical(analysis$parameters$schema,"brohn-implicit-csv-import/1.0"))return("imported_implicit")
@@ -124,7 +129,7 @@ brohn_task_display_implementation_ref <- function() .brohn_td_implementation_ref
     expected_position_count=if(cohort)NULL else sum(vapply(admins,function(x)length(x$plot_model$rows),integer(1))),received_response_count=if(cohort)NULL else received,
     cohort_metric_count=length(models),terminal_evidence=list(state=if(cohort)"not_applicable"else"complete",reason=if(cohort)"Original administration reports are not implicitly selected for full trial export."else NULL),
     original_journal_bytes_included=FALSE,raw_recordings_included=FALSE)
-  result<-list(schema="brohn-task-display-evidence/0.1",source_family=family,source=source,implementation=implementation,administrations=admins,cohort_models=models,coverage=coverage)
+  result<-list(schema=.brohn_td_schema("brohn-task-display-evidence",implementation$profile),source_family=family,source=source,implementation=implementation,administrations=admins,cohort_models=models,coverage=coverage)
   brohn_validate_task_display_evidence(result,report);result
 }
 .brohn_td_catalog <- function(evidence,report) {
@@ -146,8 +151,8 @@ brohn_task_display_implementation_ref <- function() .brohn_td_implementation_ref
     list(comparison_id=c$id,contrast_hash=brohn_hash(m$saved_contrast),model_hash=brohn_hash(m),status=m$status,
       people_count=length(m$people),session_count=length(m$sessions),observation_count=length(m$observations),label=m$label,reason=m$reason)})
 }
-.brohn_td_context <- function(store,report_ref) {
-  m<-.brohn_rpk_source_metadata(store,list(report_ref),task_enabled=TRUE)
+.brohn_td_context <- function(store,report_ref,preparation_profile=.brohn_td_profile) {
+  m<-.brohn_rpk_source_metadata(store,list(report_ref),source_admission=.brohn_td_admission(preparation_profile))
   selected<-Filter(function(x).brohn_td_same(x$ref,report_ref),m$reports)
   brohn_require(length(selected)==1L&&!is.null(selected[[1L]]$source_family),"Choose an exact supported task report.")
   fields<-c("ref","study_id","origin","design_hash","source_family","result_object","questionnaire_artifact","native_runs","run_sources","import_source","registry","cohort_sources","cohort_administrations")
@@ -156,12 +161,13 @@ brohn_task_display_implementation_ref <- function() .brohn_td_implementation_ref
 }
 .brohn_task_display_request <- function(store,report_ref,implementation_ref=NULL) {
   authority<-brohn_report_package_queue_authority(store,"task_display",report_ref$project_id)
-  implementation<-brohn_task_display_implementation();actual<-.brohn_td_implementation_ref(implementation)
+  preparation_profile<-if(is.null(implementation_ref)).brohn_td_profile else implementation_ref$profile
+  implementation<-brohn_task_display_implementation(preparation_profile);actual<-.brohn_td_implementation_ref(implementation)
   if(!is.null(implementation_ref))brohn_require(.brohn_td_same(implementation_ref,actual),"The pinned task preparation code changed. Review and prepare a new report intent explicitly.")
-  c<-.brohn_td_context(store,report_ref);m<-c$selected
-  r<-list(schema="brohn-task-display-job/0.1",project_id=report_ref$project_id,study_id=m$study_id,report_ref=report_ref,source_family=m$source_family,
+  c<-.brohn_td_context(store,report_ref,preparation_profile);m<-c$selected
+  r<-list(schema=.brohn_td_schema("brohn-task-display-job",preparation_profile),project_id=report_ref$project_id,study_id=m$study_id,report_ref=report_ref,source_family=m$source_family,
     analysis_descriptor=list(result_object=.brohn_td_object_ref(m$result_object),packed=m$questionnaire_artifact),original_closure=c$closure,
-    preparation_profile=.brohn_td_profile,implementation=implementation,authority=authority)
+    preparation_profile=preparation_profile,implementation=implementation,authority=authority)
   r$content_fingerprint<-brohn_hash(r[setdiff(names(r),"authority")]);r
 }
 brohn_queue_task_display <- function(store,report_ref,retry=FALSE,implementation_ref=NULL) {
@@ -173,9 +179,9 @@ brohn_queue_task_display <- function(store,report_ref,retry=FALSE,implementation
 brohn_task_display_input <- function(store,job,verify=FALSE) {
   store<-brohn_report_package_job_authorize(store,job);r<-job$request
   brohn_fields(r,c("schema","project_id","study_id","report_ref","source_family","analysis_descriptor","original_closure","preparation_profile","implementation","authority","content_fingerprint"),label="Task display request")
-  brohn_require(identical(job$operation,"task_display")&&identical(r$schema,"brohn-task-display-job/0.1")&&identical(r$preparation_profile,.brohn_td_profile)&&
-    .brohn_td_same(r$implementation,brohn_task_display_implementation())&&identical(r$content_fingerprint,brohn_hash(r[setdiff(names(r),c("authority","content_fingerprint"))])),"Task preparation source/code identity changed.")
-  c<-.brohn_td_context(store,r$report_ref);brohn_require(.brohn_td_same(c$closure,r$original_closure),"Exact original task sources or current permission changed.")
+  brohn_require(identical(job$operation,"task_display")&&identical(r$schema,.brohn_td_schema("brohn-task-display-job",r$preparation_profile))&&
+    .brohn_td_same(r$implementation,brohn_task_display_implementation(r$preparation_profile))&&identical(r$content_fingerprint,brohn_hash(r[setdiff(names(r),c("authority","content_fingerprint"))])),"Task preparation source/code identity changed.")
+  c<-.brohn_td_context(store,r$report_ref,r$preparation_profile);brohn_require(.brohn_td_same(c$closure,r$original_closure),"Exact original task sources or current permission changed.")
   list(schema="brohn-analysis-input/1.0",operation="task_display",project_id=r$project_id,report_ref=r$report_ref,content_fingerprint=r$content_fingerprint)
 }
 .brohn_td_transport_receipts <- function(transport,report) {
@@ -234,9 +240,10 @@ brohn_task_display_input <- function(store,job,verify=FALSE) {
   brohn_require(!anyDuplicated(used)&&setequal(used,which(vapply(a$source_rows,`[[`,logical(1),"selected"))),"Complete imported administration inventory omits or duplicates selected source rows.")
   invisible(TRUE)
 }
-.brohn_td_complete_source_check <- function(reports,registries=list()) {
+.brohn_td_complete_source_check <- function(reports,registries=list(),source_admission="task-findings/0.1") {
   byref<-stats::setNames(reports,vapply(reports,function(x)brohn_hash(x$ref),character(1)))
   for(report in reports){a<-report$complete_analysis;b<-report$saved_body
+    if(identical(source_admission,"task-choice-findings/0.1"))brohn_validate_complete_report_analysis(report,source_admission)
     if(identical(a$kind,"implicit")) .brohn_td_import_binding(report,registries[[a$parameters$source$registry_object_hash]])
     if(identical(a$kind,"implicit_cohort")){
       brohn_require(.brohn_td_same(a$provenance$plan,b$provenance$plan)&&.brohn_td_same(a$provenance$identity_map,b$provenance$identity_map)&&
@@ -264,9 +271,9 @@ brohn_prepare_task_display_execution <- function(store,job,input,scratch) {
   store<-brohn_report_package_job_authorize(store,job)
   .brohn_td_check_code(job$request$implementation)
   brohn_require(.brohn_td_same(input,brohn_task_display_input(store,job,FALSE)),"Task display input changed before preparation.")
-  c<-.brohn_td_context(store,job$request$report_ref);handle<-.brohn_rpk_hold_sources(store,c$metadata);ok<-FALSE
+  c<-.brohn_td_context(store,job$request$report_ref,job$request$preparation_profile);handle<-.brohn_rpk_hold_sources(store,c$metadata);ok<-FALSE
   on.exit(if(!ok).brohn_rpk_release(handle),add=TRUE)
-  all<-.brohn_rpk_complete_sources(store,handle,TRUE)$reports;.brohn_td_complete_source_check(all)
+  all<-.brohn_rpk_complete_sources(store,handle,TRUE)$reports;.brohn_td_complete_source_check(all,source_admission=.brohn_td_admission(job$request$preparation_profile))
   report<-Filter(function(x).brohn_td_same(x$ref,job$request$report_ref),all)[[1L]];family<-.brohn_td_family(report$complete_analysis)
   native<-NULL
   if(family=="native_questionnaire"){
@@ -282,11 +289,11 @@ brohn_prepare_task_display_execution <- function(store,job,input,scratch) {
     hash<-m$import_source$registry_object_hash
     if(is.null(registries[[hash]]))registries[[hash]]<-brohn_read_json_file(brohn_object_path(store,hash,FALSE),maximum=16*1024^2)
   }
-  .brohn_td_complete_source_check(all,registries)
-  bundle<-list(schema="brohn-task-display-input-bundle/0.1",report=report,guarded_reports=all,registries=registries,native_transport=native,implementation=job$request$implementation,request_hash=brohn_hash(job$request))
+  .brohn_td_complete_source_check(all,registries,.brohn_td_admission(job$request$preparation_profile))
+  bundle<-list(schema=.brohn_td_schema("brohn-task-display-input-bundle",job$request$preparation_profile),report=report,guarded_reports=all,registries=registries,native_transport=native,implementation=job$request$implementation,request_hash=brohn_hash(job$request))
   path<-file.path(scratch,"task-display-input.json");brohn_require(!file.exists(path),"The task-display bundle already exists.")
   brohn_write_json_file(bundle,path,maximum=128*1024^2);state<-handle$state;state$extra_guards<-c(state$extra_guards,list(.brohn_qexplorer_hold(path,file.info(path)$size)))
-  input$task_display<-list(schema="brohn-task-display-prepared-input/0.1",bundle=list(file="task-display-input.json",sha256=digest::digest(file=path,algo="sha256"),bytes=as.numeric(file.info(path)$size)))
+  input$task_display<-list(schema=.brohn_td_schema("brohn-task-display-prepared-input",job$request$preparation_profile),bundle=list(file="task-display-input.json",sha256=digest::digest(file=path,algo="sha256"),bytes=as.numeric(file.info(path)$size)))
   brohn_report_package_sources_current(store,handle);brohn_report_package_job_authorize(store,job);ok<-TRUE;list(input=input,handle=handle)
 }
 brohn_task_display_sources_current <- function(store,handle)brohn_report_package_sources_current(store,handle)
@@ -294,12 +301,12 @@ brohn_release_task_display_sources <- function(handle).brohn_rpk_release(handle)
 .brohn_td_bundle <- function(input,scratch) {
   descriptor<-input$task_display;brohn_fields(descriptor,c("schema","bundle"),label="Prepared task input")
   d<-descriptor$bundle;brohn_fields(d,c("file","sha256","bytes"),label="Sealed task bundle")
-  brohn_require(identical(descriptor$schema,"brohn-task-display-prepared-input/0.1")&&identical(d$file,"task-display-input.json")&&.brohn_td_sha(d$sha256)&&brohn_number(d$bytes,1,128*1024^2,TRUE),"Prepared task bundle descriptor is invalid.")
+  brohn_require(descriptor$schema %in% c("brohn-task-display-prepared-input/0.1","brohn-task-display-prepared-input/0.2")&&identical(d$file,"task-display-input.json")&&.brohn_td_sha(d$sha256)&&brohn_number(d$bytes,1,128*1024^2,TRUE),"Prepared task bundle descriptor is invalid.")
   path<-normalizePath(file.path(scratch,d$file),winslash="/",mustWork=TRUE);root<-normalizePath(scratch,winslash="/",mustWork=TRUE)
   link<-Sys.readlink(path)
   brohn_require(identical(dirname(path),root)&&(is.na(link)||!nzchar(link))&&file.info(path)$size==d$bytes&&identical(digest::digest(file=path,algo="sha256"),d$sha256),"Prepared task bundle changed or left owned scratch.")
   bundle<-brohn_read_json_file(path,maximum=128*1024^2)
-  brohn_require(identical(bundle$schema,"brohn-task-display-input-bundle/0.1")&&.brohn_td_same(bundle$report$ref,input$report_ref),"Prepared task bundle belongs to another report.");bundle
+  brohn_require(identical(bundle$schema,.brohn_td_schema("brohn-task-display-input-bundle",bundle$implementation$profile))&&identical(descriptor$schema,.brohn_td_schema("brohn-task-display-prepared-input",bundle$implementation$profile))&&.brohn_td_same(bundle$report$ref,input$report_ref),"Prepared task bundle belongs to another report.");bundle
 }
 brohn_analyse_task_display <- function(input,scratch) {
   bundle<-.brohn_td_bundle(input,scratch);.brohn_td_check_code(bundle$implementation);report<-bundle$report;native<-list()
@@ -315,12 +322,12 @@ brohn_analyse_task_display <- function(input,scratch) {
         native[[length(native)+1L]]<-ex}
     }
   }
-  .brohn_td_complete_source_check(bundle$guarded_reports,bundle$registries)
+  .brohn_td_complete_source_check(bundle$guarded_reports,bundle$registries,.brohn_td_admission(bundle$implementation$profile))
   evidence<-.brohn_td_build_evidence(report,native,bundle$implementation)
   brohn_require(sum(vapply(evidence$administrations,function(x)length(x$plot_model$rows),integer(1)))<=20000L,"Complete task positions exceed this display profile; no partial display was saved.")
   directory<-file.path(scratch,"artifacts");dir.create(directory,showWarnings=FALSE)
   path<-file.path(directory,"task-display.json");brohn_write_json_file(evidence,path,maximum=32*1024^2)
-  list(task_display=list(schema="brohn-task-display-worker-result/0.1",source_family=evidence$source_family,source=evidence$source,implementation=bundle$implementation,
+  list(task_display=list(schema=.brohn_td_schema("brohn-task-display-worker-result",bundle$implementation$profile),source_family=evidence$source_family,source=evidence$source,implementation=bundle$implementation,
     coverage=evidence$coverage,catalog=.brohn_td_catalog(evidence,report),companion_catalog=.brohn_td_companion_catalog(report),input_binding_hash=input$content_fingerprint,
     artifact=list(file="task-display.json",sha256=digest::digest(file=path,algo="sha256"),bytes=as.numeric(file.info(path)$size),media_type="application/json")))
 }
@@ -330,15 +337,15 @@ brohn_publish_task_display <- function(store,output,scratch,job,input,output_pat
   .brohn_publication_output_identity(output,job$request$implementation$sources)
   brohn_task_display_input(store,job,FALSE);bundle<-.brohn_td_bundle(input,scratch)
   brohn_require(identical(bundle$request_hash,brohn_hash(job$request))&&.brohn_td_same(bundle$implementation,job$request$implementation),"Prepared task input lost the original queued request identity.")
-  m<-.brohn_td_context(store,job$request$report_ref);sources<-.brohn_rpk_hold_sources(store,m$metadata)
+  m<-.brohn_td_context(store,job$request$report_ref,job$request$preparation_profile);sources<-.brohn_rpk_hold_sources(store,m$metadata)
   on.exit(.brohn_rpk_release(sources),add=TRUE)
-  reports<-.brohn_rpk_complete_sources(store,sources,TRUE)$reports;.brohn_td_complete_source_check(reports,bundle$registries)
+  reports<-.brohn_rpk_complete_sources(store,sources,TRUE)$reports;.brohn_td_complete_source_check(reports,bundle$registries,.brohn_td_admission(job$request$preparation_profile))
   report<-Filter(function(x).brohn_td_same(x$ref,job$request$report_ref),reports)[[1L]]
   brohn_require(.brohn_td_same(report,bundle$report),"Task artifact source differs from its sealed original report.")
   output_guard<-.brohn_qexplorer_hold(output_path,file.info(output_path)$size);on.exit(.brohn_qexplorer_release(output_guard),add=TRUE)
   brohn_require(.brohn_td_same(brohn_read_json_file(output_path),output),"Task worker result changed before publication.")
   result<-output$report$task_display;brohn_fields(result,c("schema","source_family","source","implementation","coverage","catalog","companion_catalog","input_binding_hash","artifact"),label="Task worker result")
-  brohn_require(identical(result$schema,"brohn-task-display-worker-result/0.1")&&identical(result$input_binding_hash,job$request$content_fingerprint)&&
+  brohn_require(identical(result$schema,.brohn_td_schema("brohn-task-display-worker-result",job$request$preparation_profile))&&identical(result$input_binding_hash,job$request$content_fingerprint)&&
     .brohn_td_same(result$implementation,job$request$implementation),"Task worker result has a foreign source/preparation identity.")
   a<-result$artifact;brohn_fields(a,c("file","sha256","bytes","media_type"),label="Complete task artifact")
   brohn_require(identical(a$file,"task-display.json")&&identical(a$media_type,"application/json")&&brohn_number(a$bytes,1,32*1024^2,TRUE)&&.brohn_td_sha(a$sha256),"Complete task artifact exceeds its bound or has an invalid identity.")
@@ -352,15 +359,15 @@ brohn_publish_task_display <- function(store,output,scratch,job,input,output_pat
   on.exit({if(!is.null(document))brohn_close_publication(document$guard,committed);if(!is.null(staged))brohn_close_publication(staged$guard,committed)},add=TRUE)
   staged<-.brohn_publication_stage(store,job,list(list(key="task-display",kind="task-display",path=path,sha256=a$sha256,bytes=a$bytes,media_type=a$media_type)))
   id<-paste0("task-display-",sub("^job[_-]","",job$id));object<-staged$descriptors[[1L]]
-  body<-list(schema="brohn-saved-task-display/0.1",study_id=job$request$study_id,project_id=job$request$project_id,source_family=result$source_family,source=result$source,
-    preparation_profile=.brohn_td_profile,implementation=result$implementation,implementation_hash=brohn_hash(result$implementation),input_binding_hash=job$request$content_fingerprint,
-    artifact=.brohn_td_object_ref(object),artifact_schema="brohn-task-display-evidence/0.1",catalog=result$catalog,companion_catalog=result$companion_catalog,coverage=result$coverage,
+  body<-list(schema=.brohn_td_schema("brohn-saved-task-display",job$request$preparation_profile),study_id=job$request$study_id,project_id=job$request$project_id,source_family=result$source_family,source=result$source,
+    preparation_profile=job$request$preparation_profile,implementation=result$implementation,implementation_hash=brohn_hash(result$implementation),input_binding_hash=job$request$content_fingerprint,
+    artifact=.brohn_td_object_ref(object),artifact_schema=.brohn_td_schema("brohn-task-display-evidence",job$request$preparation_profile),catalog=result$catalog,companion_catalog=result$companion_catalog,coverage=result$coverage,
     producer=list(job_id=job$id,attempt=job$attempt,request_hash=brohn_hash(job$request),worker_result_hash=digest::digest(file=output_path,algo="sha256")))
   brohn_require(nchar(brohn_json(body),type="bytes")<=2*1024^2,"Task catalog exceeds its complete metadata bound.")
   document<-.brohn_publication_stage_json(store,job,body,file.path(scratch,"published-task-display.json"))
   receipt<-brohn_store_batch(store,function(){
     brohn_report_package_sources_current(store,sources);brohn_report_package_job_fence(store,job)
-    brohn_require(.brohn_td_same(.brohn_td_context(store,job$request$report_ref)$closure,job$request$original_closure),"Task source authority changed before commit.")
+    brohn_require(.brohn_td_same(.brohn_td_context(store,job$request$report_ref,job$request$preparation_profile)$closure,job$request$original_closure),"Task source authority changed before commit.")
     .brohn_cm_guard_check(list(output_guard,guard));.brohn_publication_register(store,staged)
     body$retained_document<-.brohn_td_object_ref(.brohn_publication_register(store,document)[[1L]])
     brohn_put_entity(store,"task_display",id,body,0L,job$request$project_id)
@@ -386,14 +393,16 @@ brohn_publish_task_display <- function(store,output,scratch,job,input,output_pat
 }
 brohn_validate_task_display_evidence <- function(evidence,report) {
   brohn_fields(evidence,c("schema","source_family","source","implementation","administrations","cohort_models","coverage"),label="Saved task display evidence")
-  brohn_require(identical(evidence$schema,"brohn-task-display-evidence/0.1")&&evidence$source_family %in% .brohn_td_families,
+  brohn_require(identical(evidence$schema,.brohn_td_schema("brohn-task-display-evidence",evidence$implementation$profile))&&evidence$source_family %in% .brohn_td_families,
     "Unsupported saved task display evidence.")
   a<-report$complete_analysis;b<-report$saved_body
-  .brohn_td_analysis_fields(a)
+  admission<-.brohn_td_admission(evidence$implementation$profile)
+  .brohn_td_analysis_fields(a,admission)
+  if(admission=="task-choice-findings/0.1")brohn_validate_complete_report_analysis(report,admission)
   brohn_require(.brohn_td_same(evidence$source$report_ref,report$ref)&&identical(evidence$source_family,.brohn_td_family(a))&&
     identical(evidence$source$analysis_hash,brohn_hash(a))&&.brohn_td_same(evidence$source$result_object,.brohn_td_object_ref(b$result_object)),"Task evidence does not bind this exact complete scientific report.")
   brohn_fields(evidence$implementation,c("schema","profile","sources","runtime"),label="Saved preparation identity")
-  brohn_require(identical(evidence$implementation$schema,"brohn-task-display-implementation/0.1")&&identical(evidence$implementation$profile,.brohn_td_profile)&&
+  brohn_require(identical(evidence$implementation$schema,.brohn_td_schema("brohn-task-display-implementation",evidence$implementation$profile))&&
     is.list(evidence$implementation$sources)&&length(evidence$implementation$sources)>0L&&all(vapply(evidence$implementation$sources,.brohn_td_sha,logical(1))),"Saved task preparation identity is invalid.")
   brohn_require(brohn_array(evidence$administrations)&&brohn_array(evidence$cohort_models),"Keep task administrations and cohort models as distinct arrays.")
   if(identical(evidence$source_family,"saved_task_cohort")){
@@ -486,11 +495,12 @@ brohn_validate_task_display_evidence <- function(evidence,report) {
     invisible(NULL)
   };walk(value);invisible(TRUE)
 }
-.brohn_td_analysis_fields <- function(a) {
+.brohn_td_analysis_fields <- function(a,source_admission="task-findings/0.1") {
+  source_admission<-.brohn_rpk_admission(source_admission)
   family<-.brohn_td_family(a)
   if(family=="native_questionnaire"){
     brohn_fields(a,c("kind","title","features","observations","contrasts","parameters","quality","limitations","task_scores"),c("scales","questionnaire_revision","choice_tasks"),"Complete native task questionnaire")
-    brohn_require(!length(a$choice_tasks),"Choice-task scientific evidence needs its own complete adapter.")
+    brohn_require(identical(source_admission,"task-choice-findings/0.1")||!length(a$choice_tasks),"Choice-task scientific evidence needs its own complete adapter.")
   }else{
     allowed<-.brohn_td_field_contract()[[a$kind]][["$"]]
     brohn_fields(a,allowed,label="Complete imported/cohort task source")

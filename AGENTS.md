@@ -1,14 +1,21 @@
 # Brohn working agreement
 
-Current continuation, 27 September 2026: the owner again said "keep going".
-Reviewed clock selection/save/window/complete-chart/history now has scoped
-acceptance in `docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md`. Read the current
-workstream and handoff. Continue the full 50-capability/17-package build; the next
-connected packet is the choice/MaxDiff report adapter. The first saved-report
-handoff and shared saved-download transport have published scoped acceptance.
-Read docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md before updating task-report claims;
-its final researcher, mobile, download and restart checks passed. Preserve their
-source-specific scope. Publishing is not a pause.
+Current continuation, 27 September 2026: the owner said "keep going". The
+choice/MaxDiff complete report checkpoint has scoped source, worker, historical,
+researcher, mobile export and cold-restart acceptance. Read
+`docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md`, STATUS and `docs/WORKSTREAM.md`
+before extending claims. Its browser used existing genuine synthetic sources;
+original scientific generation, independent conservation and UI evidence remain
+separate. Preserve original estimates and complete mixed-source evidence.
+
+Next is exact saved event-related/continuous EDA with liking, followed separately
+by ECG/PPG; read `docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md`.
+Preserve baselines, exclusions, timing and full typed evidence without reanalysis.
+Earlier classic/task/choice profiles and prepared history retain their contracts.
+Plain labels for seven task profiles are delivered in exported reports, without
+changing canonical evidence. Other report families, task/choice image context,
+latency and post-collection restrictions remain open. Continue all 50 capabilities
+and 17 packages; publishing is not a pause or whole-platform completion.
 
 The owner explicitly resumed development on 24 September 2026 with "keep going",
 after publishing checkpoint `2b3b31a` to `Bransolo1/Brohn` on `main`. The earlier

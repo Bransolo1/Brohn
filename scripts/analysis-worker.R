@@ -27,11 +27,11 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
-if (input$operation %in% c("report_package","task_display") || isTRUE(input$report_package_distribution)) {
+if (input$operation %in% c("report_package","task_display","choice_display") || isTRUE(input$report_package_distribution)) {
   paths <- c("R/platform-hosted-profile.R", "R/platform-paired-plots.R", "R/platform-task-evidence.R", "R/platform-task-plots.R",
     "R/platform-gaze-report-views.R", "R/platform-explicit-distribution-views.R", "R/platform-paired-plot-views.R",
-    "R/platform-task-plot-views.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-render.R",
-    "R/platform-report-package-authority.R", "R/platform-task-display-sources.R", "R/platform-task-display.R", "R/platform-report-package-sources.R",
+    "R/platform-task-plot-views.R", "R/platform-maxdiff-plots.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-choice.R", "R/platform-report-package-render.R",
+    "R/platform-report-package-authority.R", "R/platform-task-display-sources.R", "R/platform-task-display.R", "R/platform-choice-display-sources.R", "R/platform-choice-display.R", "R/platform-report-package-sources.R",
     "R/platform-report-package-distributions.R", "R/platform-report-package.R", "R/platform-report-package-preparation.R")
   identity <- c(identity,hash_sources(setdiff(paths,names(identity))))
   for (path in paths) source(path,encoding="UTF-8")

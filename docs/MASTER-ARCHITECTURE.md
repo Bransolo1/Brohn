@@ -1,6 +1,36 @@
 # Brohn master architecture and large-build contract
 
-**Task-report checkpoint, 27 September 2026:** the
+**Choice-report scoped checkpoint, 27 September 2026:** the
+[new report contract](architecture/SAVED-CHOICE-REPORT-PACKAGES.md) preserves
+complete saved MaxDiff results inside the same durable preparation lifecycle.
+An explicit source-admission profile and separate choice-display artifact allow
+native, imported and packed cohort choice findings beside tasks, liking and
+scales. Every present task/choice component requires exact prepared evidence,
+even when its figures are hidden. Old profiles and historical packages remain
+strict and unchanged; a newer report head cannot replace a selected source.
+
+Choice preparation audits the saved result and original source binding without
+refitting utilities or replaying choice journals. Native task display preparation
+retains its separately identified audit boundary. Assembly consumes the frozen
+artifacts. Counts/utility sections show saved not-requested or unavailable
+states rather than inventing estimates. No choice–liking estimator is added.
+
+The [phase record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) records scoped
+source/worker/pure/history, final researcher/mobile and unchanged restart
+acceptance. Its browser uses existing genuine synthetic reports; original
+scientific production is a separate phase. This advances BWP04/BWP10/BWP13/BWP14/
+BWP15/BWP17 without closing any package. Task/choice image bytes, raw bundles,
+other report families, performance and restrictions remain open. The full
+50-capability/17-package architecture remains authoritative.
+
+The [next physiological package](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+first covers exact saved event-related and continuous EDA beside liking, then
+ECG/PPG under a separate admission profile. It reuses complete typed evidence
+and saved figures without reanalysis; it cannot silently promote event features
+into a new paired estimator or admit unsupported mixed parents. BWP09 owns the
+physiology methods; report, source and experience packages share the integration.
+
+**Earlier task-report checkpoint, 27 September 2026:** the
 [saved task-report contract](architecture/SAVED-TASK-REPORT-PACKAGES.md) extends
 the existing durable report flow with a separate immutable task-display boundary.
 It binds complete native, imported and cohort evidence to original scientific

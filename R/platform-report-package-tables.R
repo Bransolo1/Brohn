@@ -15,7 +15,7 @@ brohn_report_package_task_limits <- function() {
   value<-brohn_report_package_limits();value$profile<-"controlled-task-report-package/0.1";value
 }
 .brohn_rp_limits <- function(value) {
-  defaults<-if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
+  defaults<-if(identical(value$profile,"controlled-task-choice-report-package/0.1"))brohn_report_package_choice_limits()else if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
   brohn_fields(value,names(defaults),label="Package limits")
   brohn_require(identical(value$profile,defaults$profile)&&all(vapply(setdiff(names(defaults),"profile"),function(k)
     brohn_number(value[[k]],1,defaults[[k]],TRUE),logical(1))),"Report limits exceed the supported profile.")
@@ -223,10 +223,18 @@ brohn_report_package_task_limits <- function() {
   }
   out
 }
-.brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL) {
+.brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL,choice_evidence=NULL) {
   body<-item$saved_body;a<-item$complete_analysis
   brohn_fields(body,c("id","title","origin","analysis","provenance"),c("schema_version","created_at","status","study_id","dataset_id","project_id","processing","result_object","session_quality"),"Saved report projection")
-  if(is.null(task_evidence)){
+  if(!is.null(choice_evidence)){
+    brohn_validate_complete_report_analysis(item,"task-choice-findings/0.1")
+    brohn_validate_choice_display_evidence(choice_evidence,item)
+    brohn_require((length(a$task_scores)>0L)==!is.null(task_evidence),"Mixed native task/choice evidence requires both complete prepared components.")
+    if(!is.null(task_evidence)){
+      brohn_require(identical(task_evidence$schema,"brohn-task-display-evidence/0.2"),"Choice-capable source requires the explicitly wider task preparation.")
+      brohn_validate_task_display_evidence(task_evidence,item)
+    }
+  }else if(is.null(task_evidence)){
   brohn_fields(a,c("kind","features","observations","contrasts","parameters","quality","limitations"),
     c("title","schema","status","scales","questionnaire_revision","artifacts","task_scores","choice_tasks","recordings"),"Complete scientific analysis")
   brohn_require(a$kind %in% c("gaze","questionnaire","multimodal")&&!brohn_questionnaire_is_artifact(a),"Complete findings require a supported full analysis, not its catalog preview.")
@@ -246,6 +254,7 @@ brohn_report_package_task_limits <- function() {
   brohn_require(identical(brohn_hash(p$design),p$design_hash),"Saved design hash is inconsistent.")
   brohn_validate_design(p$design)
   projected<-if(is.null(task_evidence)).brohn_rp_project(a,aliases,namespace)else .brohn_rpt_analysis(item,task_evidence,aliases,namespace)
+  if(!is.null(choice_evidence))projected<-.brohn_rpc_analysis(item,projected,aliases,namespace)
   provenance<-p
   if(!is.null(provenance$source)){
     brohn_fields(provenance$source,c("hash"),c("size","bytes","media_type","format","filename","path","name"),"Original source descriptor")
@@ -267,7 +276,7 @@ brohn_report_package_task_limits <- function() {
   list(schema="brohn-portable-numerical-evidence/0.1",source_ref=item$ref,
     source_analysis_sha256=brohn_hash(a),source_result_object=body$result_object,
     projection_profile="scientific-values-and-local-labels/0.1",identifier_mode=aliases$mode,
-    counts=c(if(is.null(task_evidence)).brohn_questionnaire_counts(a)else .brohn_rpt_counts(a),list(contrasts=length(a$contrasts),recordings=length(a$recordings),scale_item_evidence=length(a$scales$item_evidence),
+    counts=c(if(!is.null(choice_evidence)&&identical(a$kind,"explicit_choice"))list(choice_tasks=length(a$choice_tasks),observations=length(a$observations),source_rows=length(a$source_rows))else if(is.null(task_evidence)).brohn_questionnaire_counts(a)else .brohn_rpt_counts(a),list(contrasts=length(a$contrasts),recordings=length(a$recordings),scale_item_evidence=length(a$scales$item_evidence),
       scale_source_references=sum(vapply(a$scales$item_evidence,function(e)sum(vapply(e$items,function(i)length(i$source),integer(1))),integer(1))))),
     report=body[intersect(c("id","title","origin","schema_version","created_at","status","study_id","dataset_id"),names(body))],
     analysis=projected,provenance=provenance,producer=producer,

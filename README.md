@@ -47,6 +47,19 @@ contracts. No new score or task–liking estimator is introduced.
 The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
 Read the [acceptance evidence](docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md) for limits.
 
+The [choice-report profile](docs/architecture/SAVED-CHOICE-REPORT-PACKAGES.md)
+adds saved MaxDiff counts and model results, including mixed task/liking sources
+and saved cohorts. Complete numerical evidence is preserved without refitting.
+Its [scoped acceptance](docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) separates
+component, worker, connected researcher, mobile export and cold-restart evidence.
+Exported task reports also gain plain labels/explanations across all seven
+profiles; canonical metric keys, values and support remain in the evidence.
+
+The [next physiological report plan](docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+starts with saved event-related and continuous EDA beside liking, followed
+separately by ECG/PPG. These planned adapters, task/choice stimulus image context
+and the wider platform remain unfinished.
+
 ## What is connected
 
 | Workflow | Current local application |

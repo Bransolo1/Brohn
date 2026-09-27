@@ -1,0 +1,156 @@
+{
+  "schema": "brohn-choice-report-documentation-source/0.1",
+  "date": "2026-09-27",
+  "status": "scoped_accepted_source_checkpoint",
+  "baseline": "711eac4ead93bad564c5ce5d87be996499b1750c",
+  "candidate": "integrated-source-02",
+  "candidate_manifest_sha256": "afc7c8be1cdcf9144a2896bf5bef398ab10dd7b024fcd5da03ff6ebf25558943",
+  "candidate_component_manifest_sha256": "59e97c4af95c48ff77b978ab233e43b1d81da6a0b82b95a87d261cf4f1a22bf7",
+  "source_byte_scope": "Exact qualified Windows worktree bytes. Git text normalization may change raw bytes on another checkout; not a universal installation identity.",
+  "components": {
+    "R/platform-jobs.R": {
+      "sha256": "fe3b5d513a7a0fee72856b392d220dd8832188a2ee7f7abb7b9ddb797a3f3dd2",
+      "bytes": 63881
+    },
+    "R/platform-load.R": {
+      "sha256": "788032ff3887cb6a229e19f4deaf6198a29db0b68602c45f1da5b1dbd09060c8",
+      "bytes": 8241
+    },
+    "R/platform-report-package-authority.R": {
+      "sha256": "50f4162bde63cab758be3ba6a7ba78b837263bd6b35f16d3b8c1d18842222c27",
+      "bytes": 4707
+    },
+    "R/platform-report-package-distributions.R": {
+      "sha256": "51da9c1107042d69933799923a0782772cb0c71c97b975016115ede805f8a326",
+      "bytes": 11005
+    },
+    "R/platform-report-package-preparation.R": {
+      "sha256": "0ec71c2c848015672e921cf66254b322d1c58e39542fd1962a8ccb1ae5d5b68c",
+      "bytes": 25471
+    },
+    "R/platform-report-package.R": {
+      "sha256": "e4b8bc558c1dba63408b9eca4091d95eac0c6db3553bc70ab70ee079b20c9da9",
+      "bytes": 39648
+    },
+    "R/platform-run-evidence.R": {
+      "sha256": "67277315bb71fc41449c2a5430a9ddc1fa8964c322811d08af06f606c6c85429",
+      "bytes": 26479
+    },
+    "scripts/analysis-worker.R": {
+      "sha256": "f9f2e9c0df2c183e7329db9095742c7fdf6a0af8a79a2373d9fcba89db0e1863",
+      "bytes": 14463
+    },
+    "R/platform-task-display.R": {
+      "sha256": "add2ad1b4cfe277f316f9c32a4362472de7d2323c3eb25cafcabdd87352d1bf2",
+      "bytes": 79540
+    },
+    "R/platform-task-display-sources.R": {
+      "sha256": "c7618a6b911d0cdba1c5099d1cdbe8426bb5885a85f0f07c8b4f3a89de7c6cb0",
+      "bytes": 17788
+    },
+    "R/platform-report-package-sources.R": {
+      "sha256": "9ea0a64a2f0725b0e806e4efef38a5dd9ab46e4c336fc517f7547fe60b9938c5",
+      "bytes": 52746
+    },
+    "R/platform-choice-display.R": {
+      "sha256": "aeebb74e830b5498c91edc881cdcddbdac8e6b55628c78aeafcf307c5c41782c",
+      "bytes": 44007
+    },
+    "R/platform-choice-display-sources.R": {
+      "sha256": "e5fdba4423fd0ac914ae5d324204e8222747fda627148aa3018db966bb1e5f23",
+      "bytes": 11607
+    },
+    "R/platform-report-package-tables.R": {
+      "sha256": "dcb62ab9c9199ced5211e1743d92dab65e10a6424c5349eac55153316726ccfe",
+      "bytes": 28529
+    },
+    "R/platform-report-package-tasks.R": {
+      "sha256": "e702a41b8ff72bc2e72e0e1a135313c153177828721728410b6e0f1437c6a695",
+      "bytes": 52872
+    },
+    "R/platform-report-package-choice.R": {
+      "sha256": "5f49ee0d14775af40d78ea947bc2a934e2410740f4130d0392c17b5e58bde636",
+      "bytes": 18867
+    },
+    "R/platform-report-package-render.R": {
+      "sha256": "f4b9d67496813428f90a75339b9d042a3613d6c1e633cf2bb9cb0084f6e11c9b",
+      "bytes": 42810
+    },
+    "R/platform-report-package-views.R": {
+      "sha256": "ecc893613c51fb67d994bc198ed5d1f4f09f20a619851943b5d0dee32c142fee",
+      "bytes": 18141
+    },
+    "R/platform-report-package-server.R": {
+      "sha256": "30d8ea04f9fb49995410dd45f456ad59456e1650002b9b6e33b0e76aa3538145",
+      "bytes": 34064
+    }
+  },
+  "external_receipt_sha256": {
+    "source-candidate-01/FREEZE.json": "9b343eaebea4b6d8c8357036774ebf1a36b0ab8533785983958e7b6da5c8d62c",
+    "pure-03/results.json": "1042e524315dbec311da7824b9501141adc3eea05d7d501413d898079cb5f931",
+    "peer-validator-02/results.json": "00a9d50f9e64b0711a13527a8b318d1f9e7e5dbc793504b3042874e682295b6d",
+    "backend-01/results.json": "dca80cf855c6294ce810ec72e61af87771fdcf0c66cfe25e2658ff807d158f3e",
+    "guards-03/results.json": "6f84ea1dfa95f87ff33bdbd8600e47c0e7a9b0ef2bc0114539e1b6a1e6f9d740",
+    "guards-03/conservation.json": "384d92052366f192a991b29f48b4a1219b2453117ebf636614d74fe9351d9bae",
+    "extension-backend-01/results.json": "d65d1b5bbc0168db623f5703f6eb86c64f7d41881ad765c8a564029ce398aa24",
+    "proof-01/results.json": "0059e931c3e8d91dc125d445ac8201d65801e076348ee61c2ae907e0dae00497",
+    "portable-01/results.json": "e486a68cf0dd505323ef4caa4dc90b07612b02ee565a5b389c47c0a58bd472b3",
+    "source-tests-candidate/ACCEPTANCE.json": "9ca21128957e9b50d8b6fa060a04ab4af5b154ca0d6fe39dc8748957b5102bfe",
+    "SOURCE-ACCEPTANCE.md": "bdadda126cf40830d029b08890be91f6eb7959b565000691b0a7c3be6d5b7c77",
+    "child-lifetime-01/results.json": "defeba9511de74c3e94ea0f5a28791dd8243d8febc4590498360b4bcad4d393e",
+    "root-hooks-01/FREEZE.json": "526947896a565b4f7fa71c9d292b450d8514f3ad4d2e8585eeee0da5b0a506cb",
+    "root-intents-03/results.json": "485b9036dfa8166f6dffad570d46cb30c88745fc46572851bc0ff0c7327ffa3c",
+    "pure-candidate-03/FREEZE.json": "7b617a5935705a12d982b1e51dc7d11a2538f141c743dc20221c2d45ac1eb851",
+    "ui-candidate/UI-ACCEPTANCE.json": "fc0d309a79609c6320904a333de8333bc329e739c860b41777d97b60dfbbcde4",
+    "portable-pure-tests/ACCEPTANCE.json": "1107bc8da6e99f78bf27f1447205398b7b5d9819afdf245b98265bcee1fcc7c6",
+    "integrated-packages-06/results.json": "4df2cabd63181ae2d475a2a2e747b7249af4eda29f33e7ea48e660210f6aef74",
+    "portable-lifetime-01/results.json": "a4cfe92df3bb2fcff84c8e277a702b2d15c88cd87d7959cc30a6a94f14c01044",
+    "historical-packages-01/results.json": "584d45742d4d280f2f7faa6f4e30b3cc84794b670af107a91831563908b95742",
+    "legacy-render-01/ACCEPTANCE.json": "e751d718de4ae0e0e549ef8262864a426539c96e078a82fe45833b057a9179e2",
+    "sixty-render-01/results.json": "407d414f98a260bb23e3c5964ad5f9c25704571f428b89dcc297f3ca0bd16b7c",
+    "TASK-METRIC-DISPLAY-MAP.json": "04d75ef4d903241080c829afc7e5ebecf72e5480d3d475cd7cf15e4af343014b",
+    "PEER-METRIC-LABEL-CORRECTION.json": "f7b73ca017215022e6ecc7edb1bd3e17670f020640e66fd446275789478842fd",
+    "journey-01/browser-cancel-01/result.json": "fdd0eb563960afe23be538c0d9ff5bc71a6c81d32dda8a78fcd075f10d69ed06",
+    "journey-01/browser-initial-01/failure.json": "15a4666f62577590183c60d8c8ad2b5d6e8c0a58982c4a06b3c4dae9fdbe0c40",
+    "journey-02/browser-cancel-01/result.json": "2e2b3fa65662232fbaac0e0077084351a5fbe97fe77b7ff243c8faec09620571",
+    "journey-02/browser-initial-01/result.json": "1a8a9c587df1d7b4ffea6745465458acb457e410efc377fd3cbf296d31b05f22",
+    "journey-02/INITIAL-BROWSER-ACCEPTANCE.json": "5b6c679e0e967bff233547ab1f3b4c065d93632d7eda5b3be7cde1f4f5968bcd",
+    "journey-02/BROWSER-SOURCE-ORACLE-01.json": "333423cff9e1db6c14709c18ab11a0d2eb7e6979248684138e48677dd736d4fd",
+    "integrated-oracle-03/import-default/results.json": "c7c4e1e1c7a4e19ffd5efc18d21248788f070dedaadb69062a6e64212d60b306",
+    "integrated-oracle-03/import-focused/results.json": "731450a5b8bd15cbf5584b6415346c48bc8a494934a1d2b6072bc00de37e304d",
+    "integrated-oracle-03/native-default/results.json": "34176bef83cff0ee2c06c94f5075e0b07d3cb641f06d3987b83956340d6fdc86",
+    "integrated-oracle-03/native-focused/results.json": "62419be29157626c688cd77715d0744d4c8729277104f80260eed6e748d87a85",
+    "journey-02/CONNECTED-BROWSER-ACCEPTANCE.json": "20ff3e399b943c6a16c8585f2a4ea7205c05fd9046c7bffdc03774646c155b67",
+    "journey-02/BROWSER-RESTART-BYTE-ORACLE-01.json": "fa5775a79ab1b46e8d49ff4e47bd2378dd2119fdee9aec27f1d1fb4f644f9657",
+    "FINAL-CONSERVATION.json": "57ced56fbef175c003d1bf8c156bf9f046b77e0ec186c0a00add8d8eb5ddb8b6"
+  },
+  "original_source_fixtures": {
+    "corpus-02": {
+      "files_unchanged": 45,
+      "freeze_sha256": "20f1c0197c6b7386ae938e68400805ac906ca77fb34074e1c233972bea179f26"
+    },
+    "corpus-native-01": {
+      "files_unchanged": 67,
+      "freeze_sha256": "0e4a22369ce814e77e316fa77faaa583292e522e77d54ad048d2daf654c59da4"
+    },
+    "corpus-sixty-01": {
+      "files_unchanged": 18,
+      "freeze_sha256": "89cb877ae039bf63c672c7a008c9ff9621984dd4d186b0957815405d6bf9b0b5"
+    },
+    "corpus-nonuniform-01": {
+      "files_unchanged": 18,
+      "freeze_sha256": "c26a87236ed639160dee6e31b0586b2b176afd2c425151384f3c531e6fde85db"
+    }
+  },
+  "scope": "Only source identity, receipt hashes and scoped counts are public. Original stores, participant data, local runtime paths and operational configuration remain external. Refer to the adjacent acceptance Markdown for separate phases; no publication or whole-platform completion claim.",
+  "connected_acceptance": {
+    "journey-02/CONNECTED-BROWSER-ACCEPTANCE.json": "20ff3e399b943c6a16c8585f2a4ea7205c05fd9046c7bffdc03774646c155b67",
+    "journey-02/BROWSER-RESTART-BYTE-ORACLE-01.json": "fa5775a79ab1b46e8d49ff4e47bd2378dd2119fdee9aec27f1d1fb4f644f9657",
+    "FINAL-CONSERVATION.json": "57ced56fbef175c003d1bf8c156bf9f046b77e0ec186c0a00add8d8eb5ddb8b6",
+    "journey-02/BROWSER-SOURCE-ORACLE-01.json": "333423cff9e1db6c14709c18ab11a0d2eb7e6979248684138e48677dd736d4fd"
+  },
+  "publication": {
+    "target": "Bransolo1/Brohn main",
+    "status": "separate_coordinator_action_not_asserted"
+  }
+}

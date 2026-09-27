@@ -16,7 +16,7 @@ checks<-list();check<-function(label,value){checks[[length(checks)+1L]]<<-list(l
 reject<-function(expr)tryCatch({force(expr);FALSE},error=function(e)TRUE)
 spy<-new.env();spy$ready<-list();spy$queues<-0L;spy$resolves<-0L;spy$panels<-2L;spy$renderer<-brohn_hash("fixture-renderer-1")
 impl<-list(profile="saved-task-display/0.1",hash=brohn_hash("fixture-task-code"))
-brohn_task_display_implementation_ref<-function()impl
+brohn_task_display_implementation_ref<-function(preparation_profile="saved-task-display/0.1"){stopifnot(identical(preparation_profile,impl$profile));impl}
 .brohn_rpk_renderer_implementation_ref<-function()list(profile="static-complete-findings/0.1",hash=spy$renderer)
 brohn_report_package_task_limits<-brohn_report_package_limits
 .brohn_task_display_request<-function(store,report_ref,implementation_ref){

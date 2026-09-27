@@ -69,7 +69,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
           selected<-pages(page_input)
           s$display$pages<-if(is.null(selected))"all"else"selected"
           s$display$offsets<-NULL;s$display$page_numbers<-NULL
-          if(s$adapter%in%c("task-trials","task-people"))s$display$page_numbers<-list()
+          if(s$adapter%in%c("task-trials","task-people","choice-counts","choice-utilities"))s$display$page_numbers<-list()
           if(!is.null(selected))if(s$adapter=="explicit-distribution")s$display$offsets<-lapply(selected,function(p)(p-1L)*20L)else s$display$page_numbers<-selected
         }
         if(s$adapter=="paired-findings"){
@@ -100,13 +100,14 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     result<-list(draft=d,sections=normalize_sections(sections))
     if(commit){v$draft<-d;v$sections<-result$sections};result}
   dirty<-function(){clear_view();v$dirty<-TRUE;v$issue<-NULL;v$phase<-"idle";v$request_command<-NULL;v$request_snapshot<-NULL;v$recommendation_note<-NULL}
-  request<-function(commit=TRUE){captured<-capture(commit);brohn_require(length(v$rows)>0L&&length(v$rows)<=8L,"Choose between one and eight saved reports.")
+  request<-function(commit=TRUE,new_profile=FALSE){captured<-capture(commit);brohn_require(length(v$rows)>0L&&length(v$rows)<=8L,"Choose between one and eight saved reports.")
     brohn_require(length(captured$sections)>0L,"Choose at least one supported figure section.")
-    task<-any(vapply(v$rows,function(row)isTRUE(row$source_family%in%c("native_questionnaire","imported_implicit","saved_task_cohort")),logical(1)))
+    # Reads/history retain their original version. Only an explicit new intent
+    # derives a profile from the independent components of its selected sources.
+    profile<-if(!new_profile&&!is.null(v$intent))v$intent$request else .brohn_rpv_profiles(v$rows)
     list(schema="brohn-report-package-intent-request/0.1",study_id=v$scope$study_id,project_id=v$scope$project_id,
       title=captured$draft$title,report_refs=unname(lapply(v$rows,`[[`,"ref")),requested_sections=unname(captured$sections),
-      contents_policy=captured$draft$contents_policy,limits_profile=if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1",
-      renderer_profile=if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1")}
+      contents_policy=captured$draft$contents_policy,limits_profile=profile$limits_profile,renderer_profile=profile$renderer_profile)}
   start<-function(action,payload=NULL,label,passive=FALSE){require_active();release();v$issue<-NULL
     if(!passive)v$focus_token<-brohn_token()
     if(action=="open")v$open_attempt_key<-.brohn_rpv_key(payload$package_ref)
@@ -131,9 +132,11 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   selector_preparation<-function(ref,adapter){
     if(identical(adapter,"explicit-distribution"))return("explicit-distribution")
     if(.brohn_rpv_task_adapter(adapter))return("task-display")
+    if(.brohn_rpv_choice_adapter(adapter))return("choice-display")
     row<-Filter(function(row).brohn_rpv_same(row$ref,ref),v$rows)
-    task_source<-length(row)==1L&&isTRUE(row[[1]]$source_family%in%c("native_questionnaire","imported_implicit","saved_task_cohort"))
-    if(identical(adapter,"paired-findings")&&task_source)"task-display"else NULL}
+    if(!identical(adapter,"paired-findings")||length(row)!=1L)return(NULL)
+    # Component identity determines the companion, never asynchronous job order.
+    if(.brohn_rpv_component(row[[1]],"task"))"task-display"else if(.brohn_rpv_component(row[[1]],"choice"))"choice-display"else NULL}
   refresh_prepared<-function(view){prepared<-prepared_sources(view)
     # A history adoption precedes hydration. Do not refresh the previous editor's
     # unrelated sources under the new intent, which may have different access.
@@ -191,7 +194,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     v$draft<-make_draft(paste(v$choices$study$title,"report"));editor();v$phase<-"idle"
     session$onFlushed(function()session$sendCustomMessage("brohn-focus","brohn-main"),once=TRUE)
   },error=fail))
-  prepare<-function(new_version=FALSE){r<-request()
+  prepare<-function(new_version=FALSE){r<-request(new_profile=new_version||isTRUE(v$dirty)||is.null(v$intent))
     if(new_version)brohn_require(!is.null(v$intent)&&identical(v$intent$next_action,"review"),"Review this preparation before creating a new version.")
     if(!new_version&&!is.null(v$intent)&&.brohn_rpv_same(r,v$intent$request)&&!isTRUE(v$dirty)){
       if(v$intent$status=="succeeded")start("open",v$intent,"Opening your saved report.")else v$issue<-"These choices already have a saved preparation. Review its status or use Resume below."
@@ -252,7 +255,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     preparation<-selector_preparation(ref,adapter)
     prepared<-Filter(function(p)identical(p$adapter,preparation)&&.brohn_rpv_same(p$source_report_ref,ref),prepared_sources(v$intent))
     saved_source<-!is.null(v$intent)&&any(vapply(v$intent$request$report_refs,function(r).brohn_rpv_same(r,ref),logical(1)))
-    pinned_required<-identical(preparation,"task-display")||(!is.null(preparation)&&!is.null(v$intent)&&identical(v$intent$request$renderer_profile,"controlled-gaze-explicit-task-paired/0.1"))
+    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1"))
     if(saved_source&&pinned_required&&!length(prepared)){
       v$selector<-list(report_ref=ref,adapter=adapter,items=list(),cursor=NULL,next_cursor=NULL,
         requires_display_preparation=TRUE,state="needs_preparation",prepared_ref=NULL,locked=TRUE,
@@ -264,7 +267,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
       # the exact verified input to keep subsequent page refreshes bound to it.
       page$prepared_ref<-prepared[[1]]$prepared_ref;v$selector<-page
     }else v$selector<-brohn_report_package_selector_catalog(store,ref,adapter,cursor=cursor)
-    if(.brohn_rpv_task_adapter(adapter))for(s in v$sections)if(.brohn_rpv_same(s$source_report_ref,ref)&&identical(s$adapter,adapter)&&!startsWith(s$selector$scope,"all_")){
+    if(.brohn_rpv_task_adapter(adapter)||.brohn_rpv_choice_adapter(adapter))for(s in v$sections)if(.brohn_rpv_same(s$source_report_ref,ref)&&identical(s$adapter,adapter)&&!startsWith(s$selector$scope,"all_")){
       item<-Filter(function(item).brohn_rpv_same(item$selector,s$selector),v$selector$items)
       if(length(item)==1L){v$labels[[s$id]]<-item[[1]]$label;v$task_options[[s$id]]<-item[[1]]$details}
     }
@@ -308,9 +311,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   output$rpk_editor<-shiny::renderUI({if(!active())return(NULL);v$editor_tick
     shiny::isolate({if(is.null(v$draft))NULL else{d<-v$draft;d$form_identity<-v$form_identity;brohn_report_package_editor_ui(d)}})})
   output$rpk_contents<-shiny::renderUI({if(!active())return(NULL)
-    task<-any(vapply(v$rows,function(row)isTRUE(row$source_family%in%c("native_questionnaire","imported_implicit","saved_task_cohort")),logical(1)))
+    task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
     shiny::tagList(shiny::p(paste(length(v$rows),"saved reports and",length(v$sections),"figure sections selected. Complete numerical collections stay included, even when only selected figure pages are shown.")),
-      if(task)shiny::tagList(shiny::p("Task scores and response patterns, liking and other answers, and saved comparisons are included where applicable. Task details are checked during preparation."),
+      if(choice)shiny::tagList(shiny::p("Saved best-worst results and choice models, task views, liking and other answers are included where applicable. Every selected source's complete numerical evidence stays included, even when a figure section is hidden."),
+        shiny::p("These findings are shown together; no relationship between choice results, task scores and liking has been calculated. Saved models are displayed without refitting."))else if(task)shiny::tagList(shiny::p("Task scores and response patterns, liking and other answers, and saved comparisons are included where applicable. Task details are checked during preparation."),
         shiny::p("These findings are shown together; no relationship between task scores and liking has been calculated.")),
       if(!is.null(v$recommendation_note))shiny::p(v$recommendation_note))})
   output$rpk_sources<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL);brohn_report_package_sources_ui(v$choices,v$rows)})
@@ -319,9 +323,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   output$rpk_figures<-shiny::renderUI({if(!active())return(NULL);brohn_report_package_figures_ui(v$sections,v$labels,v$task_options,v$rows)})
   output$rpk_material_scope<-shiny::renderUI({if(!active())return(NULL)
     gaze<-any(vapply(v$rows,function(row)"gaze-context"%in%unlist(row$adapters),logical(1)))
-    task<-any(vapply(v$rows,function(row)isTRUE(row$source_family%in%c("native_questionnaire","imported_implicit","saved_task_cohort")),logical(1)))
+    task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
     shiny::tagList(shiny::p(if(gaze)"This option embeds supported PNG/JPEG gaze stimulus images."else
       "No gaze source is selected. The gaze image option does not apply to this report."),
+      if(choice)shiny::p("Task and choice material definitions and hashes are included as saved references. Task and choice material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study.")else
       if(task)shiny::p("Task material definitions and hashes are included as saved references. Task material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study."))})
   output$rpk_selector<-shiny::renderUI({if(!active()||is.null(v$selector))return(NULL);brohn_report_package_selector_ui(v$selector)})
   output$rpk_history<-shiny::renderUI({if(!active()||is.null(v$history))return(NULL);brohn_report_package_history_ui(v$history)})

@@ -1,6 +1,6 @@
 # Narrow authority for new saved-report display/export jobs. Historical reads
 # use the current reader, never the original producer's expired login.
-.brohn_rpa_operations <- c("report_package", "explicit_distributions", "task_display")
+.brohn_rpa_operations <- c("report_package", "explicit_distributions", "task_display", "choice_display")
 .brohn_rpa_same <- function(a,b) identical(brohn_json(a),brohn_json(b))
 .brohn_rpa_scope <- function(store,operation,project_id) {
   brohn_require(is.character(operation)&&length(operation)==1L&&operation %in% .brohn_rpa_operations&&brohn_valid_id(project_id),

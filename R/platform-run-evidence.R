@@ -137,11 +137,11 @@ brohn_prepare_run_evidence_input <- function(store, job, scratch) {
   invisible(scope)
 }
 # Mechanical transport only: each caller establishes its own source authority
-# and exact membership. The task-display caller additionally compares these
+# and exact membership. Task/choice display callers additionally compare these
 # original-byte receipts to the retained scientific producer's receipts.
 brohn_prepare_run_evidence_transport <- function(store, job, scratch, members, scope) {
   .brohn_store_ready(store); .brohn_run_evidence_job(store, job)
-  brohn_require(job$operation %in% c("analyse_run","analyse_cohort","task_display"), "This operation does not use completed-run evidence.")
+  brohn_require(job$operation %in% c("analyse_run","analyse_cohort","task_display","choice_display"), "This operation does not use completed-run evidence.")
   .brohn_run_evidence_transport_members(members); .brohn_run_evidence_scope(scope)
   brohn_require(!RSQLite::sqliteIsTransacting(store$con), "Prepare run evidence outside a catalog write or read transaction.")
   scratch <- .brohn_store_contained(store, scratch)
@@ -264,7 +264,7 @@ brohn_read_run_evidence_input <- function(input, scratch) {
 }
 brohn_read_run_evidence_transport <- function(input, scratch, expected_operation) {
   brohn_fields(input, c("schema", "operation", "project_id", "run_evidence"), label = "Run evidence input")
-  brohn_require(brohn_text(expected_operation,64) && expected_operation %in% c("analyse_run","analyse_cohort","task_display") &&
+  brohn_require(brohn_text(expected_operation,64) && expected_operation %in% c("analyse_run","analyse_cohort","task_display","choice_display") &&
     identical(input$operation,expected_operation), "Run evidence operation differs from its explicit caller.")
   evidence <- input$run_evidence
   brohn_fields(evidence, c("schema", "workspace_id", "job_id", "attempt", "request", "request_hash", "runs", "binding_hash"), label = "Run evidence manifest")

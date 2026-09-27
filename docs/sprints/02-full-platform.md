@@ -1,5 +1,32 @@
 # Full platform build — Brohn continuation
 
+## Saved choice findings — scoped checkpoint 27 September 2026
+
+- [x] Preserve strict earlier profiles and introduce explicit mixed task/choice
+  admission, task display 0.2 and saved choice display 0.1.
+- [x] Qualify genuine native/imported and packed three-visit/two-person cohort
+  sources, complete model variants, 60-item pagination and nonuniform utilities.
+- [x] Preserve full numerical evidence when figures are hidden/focused; default
+  counts and utilities show every exercise's saved model status without a refit.
+- [x] Qualify native guards, exact historical refs, checksum-before-decode,
+  stale/cancelled lease refusal and actual child exit before source release.
+- [x] Qualify final-source worker publication and exact prior classic/task
+  package reopening as distinct API/worker gates.
+- [x] Qualify the final saved-source researcher flow: 10 queued-cancellation
+  checks, 51 initial checks and 10 cold-restart checks; desktop/phone downloads
+  and complete independent evidence pass separately. Original science is unchanged.
+- [x] Add plain task metric labels/explanations across all seven profiles in
+  exported reports, retaining canonical keys, values and support.
+- [ ] Add complete exact saved event-related and continuous EDA with liking,
+  preserving baseline/exclusion/timing support without reanalysis; then qualify
+  ECG/PPG separately under the [next plan](../architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md).
+- [ ] Add task/choice image context and wider
+  physiological/media report adapters; retain raw/performance/restriction work.
+
+See the [phase record](../qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md). All 50
+capabilities/17 packages remain unfinished, including the owning BWP14 choice
+package and BWP04/BWP10/BWP13/BWP15/BWP17 integration work.
+
 ## Saved task findings with explicit liking — scoped checkpoint 27 September 2026
 
 - [x] Add exact historical task-display preparation for all seven enabled native

@@ -76,11 +76,11 @@ brohn_resolve_task_report_section <- function(section,catalog) {
   out$score$attempt_id<-out$id
   out
 }
-.brohn_rpt_entry <- function(entry,item) {
+.brohn_rpt_entry <- function(entry,item,choice_profile=FALSE) {
   brohn_fields(entry,c("ref","body","evidence"),label="Prepared task source")
   .brohn_rp_ref(entry$ref,"task_display")
   brohn_require(identical(entry$ref$body_hash,brohn_hash(entry$body))&&
-    identical(entry$body$schema,"brohn-saved-task-display/0.1")&&
+    identical(entry$body$schema,if(choice_profile)"brohn-saved-task-display/0.2"else"brohn-saved-task-display/0.1")&&
     .brohn_rp_same(entry$body$source,entry$evidence$source)&&
     .brohn_rp_same(entry$body$implementation,entry$evidence$implementation)&&
     .brohn_rp_same(entry$body$coverage,entry$evidence$coverage),"Prepared task metadata differs from its complete original artifact.")
@@ -103,6 +103,32 @@ brohn_resolve_task_report_section <- function(section,catalog) {
     }else brohn_require(identical(c$metric,m$metric)&&identical(c$compatible_charts,list("people"))&&is.null(c$default_measure),"Prepared cohort catalog does not match its saved measure.")
   };invisible(entry)
 }
+# Display vocabulary only. Never used to calculate, convert or filter a metric.
+.brohn_rpt_metric_vocabulary <- list(
+  "correct_test_rt_mean"=list(expected_unit="ms",administration_label="Mean retained correct test-response time",individual_label="Individual mean test response time",cohort_mean_label="Mean of individual mean test response times",support_note="Retained correct test responses within the saved response-time window. Preserve the original retained count and eligibility reason."),
+  "correct_test_rt_median"=list(expected_unit="ms",administration_label="Median retained correct test-response time",individual_label="Individual median test response time",cohort_mean_label="Mean of individual median test response times",support_note="Retained correct test responses within the saved response-time window. The cohort value is a mean of individual medians, not a pooled median."),
+  "correct_test_rt_sd"=list(expected_unit="ms",administration_label="Retained correct response-time standard deviation",individual_label="Individual response-time standard deviation",cohort_mean_label="Mean of individual response-time standard deviations",support_note="Saved sample standard deviation requires at least two retained correct test responses. This is not the cohort between-person standard deviation."),
+  "test_first_response_error_rate"=list(expected_unit="proportion",administration_label="Wrong first-response proportion in answered test trials",individual_label="Individual first-response error proportion",cohort_mean_label="Mean individual first-response error proportion",support_note="Wrong first responses divided by answered scored test trials, including recorded responses outside the response-time window; practice and no-response timeouts are excluded. Retain the saved numerator and denominator."),
+  "test_omission_rate"=list(expected_unit="proportion",administration_label="No-response proportion in test trials",individual_label="Individual no-response proportion",cohort_mean_label="Mean individual no-response proportion",support_note="No-response timeouts divided by all scored test trials in the complete frozen task; practice is excluded. Retain the saved numerator and denominator."),
+  "IAT_D1"=list(expected_unit="D",administration_label="IAT D1 score",individual_label="Individual IAT D1 score",cohort_mean_label="Mean individual IAT D1 score",support_note="Retain the saved contrast direction, scoring eligibility, exclusions and support. A D score is not an explicit liking rating."),
+  "BIAT_D"=list(expected_unit="D",administration_label="Brief IAT D score",individual_label="Individual Brief IAT D score",cohort_mean_label="Mean individual Brief IAT D score",support_note="Retain the saved focal-category contrast direction, eligibility and exclusions. Do not infer a favourable direction from the metric name."),
+  "SCIAT_target_positive_D"=list(expected_unit="D",administration_label="SC-IAT target-positive D score",individual_label="Individual SC-IAT target-positive D score",cohort_mean_label="Mean individual SC-IAT target-positive D score",support_note="Use the exact saved target-positive contrast and response-window scoring audit. Replacement scoring latencies are not recorded response times."),
+  "keyboard_aat_relative_approach_advantage"=list(expected_unit="ms",administration_label="Relative keyboard approach advantage",individual_label="Individual relative keyboard approach advantage",cohort_mean_label="Mean individual relative keyboard approach advantage",support_note="Saved contrast: (avoid minus approach) for target A minus (avoid minus approach) for target B. Keep the original target identities and scoring support; do not infer liking."),
+  "GNAT_r1_positive_d_prime"=list(expected_unit="dimensionless",administration_label="750 ms: target + positive sensitivity (d-prime)",individual_label="Individual 750 ms: target + positive sensitivity (d-prime)",cohort_mean_label="Mean individual 750 ms: target + positive sensitivity (d-prime)",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r1_positive_criterion"=list(expected_unit="dimensionless",administration_label="750 ms: target + positive response criterion",individual_label="Individual 750 ms: target + positive response criterion",cohort_mean_label="Mean individual 750 ms: target + positive response criterion",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r1_negative_d_prime"=list(expected_unit="dimensionless",administration_label="750 ms: target + negative sensitivity (d-prime)",individual_label="Individual 750 ms: target + negative sensitivity (d-prime)",cohort_mean_label="Mean individual 750 ms: target + negative sensitivity (d-prime)",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r1_negative_criterion"=list(expected_unit="dimensionless",administration_label="750 ms: target + negative response criterion",individual_label="Individual 750 ms: target + negative response criterion",cohort_mean_label="Mean individual 750 ms: target + negative response criterion",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r1_target_positive_contrast"=list(expected_unit="dimensionless",administration_label="750 ms target-positive contrast",individual_label="Individual 750 ms target-positive contrast",cohort_mean_label="Mean individual 750 ms target-positive contrast",support_note="Keep the saved positive-versus-negative pairing contrast and both cell support records. Do not substitute another round or infer explicit liking."),
+  "GNAT_r2_positive_d_prime"=list(expected_unit="dimensionless",administration_label="600 ms: target + positive sensitivity (d-prime)",individual_label="Individual 600 ms: target + positive sensitivity (d-prime)",cohort_mean_label="Mean individual 600 ms: target + positive sensitivity (d-prime)",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r2_positive_criterion"=list(expected_unit="dimensionless",administration_label="600 ms: target + positive response criterion",individual_label="Individual 600 ms: target + positive response criterion",cohort_mean_label="Mean individual 600 ms: target + positive response criterion",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r2_negative_d_prime"=list(expected_unit="dimensionless",administration_label="600 ms: target + negative sensitivity (d-prime)",individual_label="Individual 600 ms: target + negative sensitivity (d-prime)",cohort_mean_label="Mean individual 600 ms: target + negative sensitivity (d-prime)",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r2_negative_criterion"=list(expected_unit="dimensionless",administration_label="600 ms: target + negative response criterion",individual_label="Individual 600 ms: target + negative response criterion",cohort_mean_label="Mean individual 600 ms: target + negative response criterion",support_note="Keep the exact saved round, pairing, expected/observed cell support and eligibility. Correct withholding has no recorded response time. Preserve original unavailable reasons and avoid new interpretation."),
+  "GNAT_r2_target_positive_contrast"=list(expected_unit="dimensionless",administration_label="600 ms target-positive contrast",individual_label="Individual 600 ms target-positive contrast",cohort_mean_label="Mean individual 600 ms target-positive contrast",support_note="Keep the saved positive-versus-negative pairing contrast and both cell support records. Do not substitute another round or infer explicit liking.")
+)
+.brohn_rpt_metric_label <- function(key,context="administration") {
+  entry<-.brohn_rpt_metric_vocabulary[[key]]
+  if(is.null(entry))key else entry[[paste0(context,"_label")]]
+}
 .brohn_rpt_score_rows <- function(score,key) {
   common<-score[intersect(c("participant_id","session_id","attempt_id","task_id","profile","schema_version","scoring_recipe","status","eligible","reason"),names(score))]
   names(common)[names(common)%in%c("status","eligible","reason")]<-paste0("task_",names(common)[names(common)%in%c("status","eligible","reason")])
@@ -120,10 +146,26 @@ brohn_resolve_task_report_section <- function(section,catalog) {
     shiny::div(class=paste("brohn-task-scroll",paste0("brohn-task-",kind,"-scroll")),role="region",tabindex="0",
       `aria-label`=paste(label,":",gsub("-"," ",key)),`aria-describedby`=instruction,content))
 }
-.brohn_rpt_table <- function(rows,title,key,columns=NULL,maximum=50L,friendly=FALSE) {
+.brohn_rpt_table <- function(rows,title,key,columns=NULL,maximum=50L,friendly=FALSE,metric_context=NULL) {
   table<-.brohn_rp_table(rows,title,columns,maximum,friendly)
   if(!length(rows))return(table)
   if(is.null(columns))columns<-unique(unlist(lapply(rows,names),use.names=FALSE))
+  if(!is.null(metric_context)){
+    # Change only the registered name column, never an equal-valued identity or
+    # free-text cell. This table has one non-spanning cell per declared column.
+    cell_index<-0L
+    display<-function(node){if(inherits(node,"shiny.tag")){
+      metric_cell<-FALSE
+      if(identical(node$name,"td")){cell_index<<-cell_index+1L;metric_cell<-identical(columns[[(cell_index-1L)%%length(columns)+1L]],"name")}
+      if(metric_cell&&length(node$children)==1L&&is.character(node$children[[1L]])){
+        field<-node$children[[1L]];entry<-.brohn_rpt_metric_vocabulary[[field]]
+        if(!is.null(entry)){node$attribs[["data-saved-field"]]<-field
+          node$children<-list(shiny::tags$span(.brohn_rpt_metric_label(field,metric_context)),shiny::tags$details(shiny::tags$summary("Saved field and support"),shiny::tags$code(field),shiny::p(entry$support_note)))
+          return(node)
+        }
+      };node$children<-lapply(node$children,display)
+    }else if(is.list(node))node<-lapply(node,display);node};table<-display(table)
+  }
   # Remove only the shared scroll wrapper; all caption/header/cell nodes stay exact.
   inner<-table$children[[1L]]
   inner$attribs$style<-paste0("min-width:",max(40,length(columns)*8.5),"rem;table-layout:auto")
@@ -190,7 +232,7 @@ brohn_resolve_task_report_section <- function(section,catalog) {
   for(index in seq_along(s$resolved_models)){
     r<-s$resolved_models[[index]];matches<-Filter(function(m)identical(m$key,r$key),models);brohn_require(length(matches)==1L,"Selected task key does not resolve uniquely.");m<-matches[[1L]]
     model<-m$plot_model;key<-paste0(prefix,"-task-",sprintf("%04d",index));people<-identical(s$adapter,"task-people");scores<-identical(s$adapter,"task-scores")
-    title<-if(people)model$label else{
+    title<-if(people).brohn_rpt_metric_label(model$metric,"individual")else{
       score<-p$projection$analysis$task_scores[[m$score_binding$index]]
       label<-if(friendly).brohn_rp_friendly(score$participant_id)else score$participant_id
       visit<-if(friendly).brohn_rp_friendly(score$session_id)else score$session_id
@@ -214,15 +256,18 @@ brohn_resolve_task_report_section <- function(section,catalog) {
       nodes<-c(nodes,list(shiny::p(paste("Collection:",model$origin,"| materials:",model$material_origin,"| evidence:",gsub("_"," ",model$evidence_level))),
         shiny::p(if(people&&is.null(model$summary$selected_person_count))paste("Unique-person support is unavailable.",model$summary$reason)else
           paste(view$available,if(people)"available person values;"else"recorded latencies;",view$withheld,"observed withholding without latency;",view$missing,"unavailable among",length(rows),"selected positions.")),
-        shiny::p(if(people)paste("Saved equal-person mean (rounded display):",.brohn_rp_text(model$summary$mean),model$unit,".",brohn_default(model$summary$reason,""))else
+        shiny::p(if(people)paste(.brohn_rpt_metric_label(model$metric,"cohort_mean"),"(saved equal-person mean; rounded display):",.brohn_rp_text(model$summary$mean),model$unit,".",brohn_default(model$summary$reason,""))else
           paste(view$label,".",if(s$display$trial_scope=="scored")"Profile test/scoring positions are selected; this does not mean every value was retained for scoring."else"All expected positions are selected, including practice, interruptions and unavailable responses.")),
         shiny::p("Charts use the complete selected scope. Numerical page choices affect tables only. Complete source collections remain in the evidence ZIP.")))
       if(!people)nodes<-c(nodes,list(shiny::p("Recorded values and saved scoring adjustments are separate. A visible response can still be excluded from scoring. Unavailable latency is never zero; GNAT observed withholding has no latency."),
         shiny::p("Distribution bins describe all finite selected recorded values, including provisional interrupted responses. The first bin includes both edges; later bins exclude the lower edge and include the upper edge.")))
+      if(people)nodes<-c(nodes,list(shiny::p("Eligible administrations were averaged within session, then eligible sessions within person, before the saved equal-person mean. This is not pooled trial arithmetic."),
+        shiny::tags$details(shiny::tags$summary("Saved metric field and support"),shiny::tags$code(model$metric),shiny::p(.brohn_rpt_metric_vocabulary[[model$metric]]$support_note))))
       for(chart in r$charts){
         renderer<-brohn_task_plot_svg;environment(renderer)<-list2env(list(.brohn_tp_num=.brohn_rp_number),parent=environment(brohn_task_plot_svg))
+        display_view<-view;if(people)display_view$label<-.brohn_rpt_metric_label(model$metric,"individual")
         svg<-if((people&&!length(rows))||(chart=="distribution"&&!view$available)) .brohn_rpt_empty_svg(view,chart)else
-          renderer(view,if(chart=="people")"chronology"else chart,680L)
+          renderer(display_view,if(chart=="people")"chronology"else chart,680L)
         chart_key<-paste0(key,"-",chart)
         node<-figure(svg,chart_key,list(source_report=p$item$ref,source=task$entry$ref,model_key=m$key,
           original_model_hash=r$model_hash,chart=chart,measure=r$measure,scope=view$scope,selected_rows=rows,distribution_bins=view$bins,outcome_counts=view$outcome_counts))
@@ -236,7 +281,7 @@ brohn_resolve_task_report_section <- function(section,catalog) {
     if(!scores&&identical(model$profile,"gnat-brohn-single-target/1.0"))columns<-c("position","trial_id","phase","round_id","expected_action","outcome_state","correct","response_ms","disposition","missing_reason")
     for(page in pages){start<-(page-1L)*50L;page_rows<-utils::head(utils::tail(rows,max(0,length(rows)-start)),50L)
       nodes<-c(nodes,list(shiny::tags$details(shiny::tags$summary(paste("View numerical table page",page,"of",max(1L,ceiling(length(rows)/50L)))),
-        .brohn_rpt_table(page_rows,paste("Saved",if(scores)"metric support"else if(people)"person values"else"trial records","in selected page",page),paste0(key,"-page-",page),columns,maximum=50L,friendly=friendly))))
+        .brohn_rpt_table(page_rows,paste("Saved",if(scores)"metric support"else if(people)"person values"else"trial records","in selected page",page),paste0(key,"-page-",page),columns,maximum=50L,friendly=friendly,metric_context=if(scores)"administration"else NULL))))
     }
   }
   list(nodes=nodes,coverage=list(full_models=length(models),selected_models=length(s$resolved_models),selected_positions=if(identical(s$adapter,"task-scores"))NULL else selected_positions,
@@ -247,7 +292,7 @@ brohn_resolve_task_report_section <- function(section,catalog) {
   needed<-length(item$complete_analysis$task_scores)>0L||item$complete_analysis$kind%in%c("implicit","implicit_cohort")
   brohn_require(length(hits)==as.integer(needed),"Each selected task report needs exactly one complete prepared task source.")
   if(!needed)return(NULL)
-  .brohn_rpt_entry(hits[[1L]],item);hits[[1L]]
+  .brohn_rpt_entry(hits[[1L]],item,.brohn_rpc_profile(bundle$selection));hits[[1L]]
 }
 brohn_report_package_panel_preflight <- function(bundle) {
   # Full-bundle worker boundary. Deliberately does not open a store, write files,
@@ -259,9 +304,9 @@ brohn_report_package_panel_preflight <- function(bundle) {
       identical(item$ref$project_id,selection$project_id)&&identical(item$saved_body$study_id,selection$study_id),"Panel source differs from its exact selected study/report.")
     if(!brohn_questionnaire_is_artifact(item$saved_body$analysis))brohn_require(.brohn_rp_same(item$saved_body$analysis,item$complete_analysis),"Inline analysis changed before panel preflight.")
     else brohn_validate_questionnaire_preview(item$saved_body$analysis,item$complete_analysis,brohn_questionnaire_artifact_source(item$saved_body))
-    task<-.brohn_rpt_find_entry(bundle,item)
-    .brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence)
-    body<-item$saved_body;body$analysis<-item$complete_analysis;list(item=item,body=body,task=task)
+    task<-.brohn_rpt_find_entry(bundle,item);choice<-if(.brohn_rpc_profile(selection)).brohn_rpc_find_entry(bundle,item)else NULL
+    .brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence,if(is.null(choice))NULL else choice$evidence)
+    body<-item$saved_body;body$analysis<-item$complete_analysis;list(item=item,body=body,task=task,choice=choice)
   })
   counts<-lapply(selection$sections,function(s){
     at<-which(vapply(bodies,function(x).brohn_rp_same(x$item$ref,s$source_report_ref),logical(1)))
@@ -270,6 +315,10 @@ brohn_report_package_panel_preflight <- function(bundle) {
       brohn_require(!is.null(p$task)&&.brohn_rp_same(p$task$ref,s$source_ref),"Task panel source differs from its exact prepared artifact.")
       resolved<-brohn_resolve_task_report_section(s,p$task$body$catalog)
       brohn_require(.brohn_rp_same(s$resolved_models,resolved$section$resolved_models),"Frozen task panel resolution changed.");n<-resolved$panel_count
+    }else if(s$adapter%in%c("choice-counts","choice-utilities")){
+      brohn_require(.brohn_rpc_profile(selection)&&!is.null(p$choice)&&.brohn_rp_same(p$choice$ref,s$source_ref),"Choice panel source differs from the exact required preparation.")
+      resolved<-brohn_resolve_choice_report_section(s,p$choice$body$catalog)
+      brohn_require(.brohn_rp_same(s$resolved_models,resolved$section$resolved_models),"Frozen choice panel resolution changed.");n<-resolved$panel_count
     }else if(identical(s$adapter,"gaze-context")){
       brohn_require(.brohn_rp_same(s$source_ref,s$source_report_ref),"Gaze panel source changed.")
       model<-brohn_gaze_report_model(p$body);groups<-model$groups
@@ -399,6 +448,8 @@ brohn_report_package_panel_preflight <- function(bundle) {
 }
 .brohn_rpt_prepared_bindings <- function(bundle) {
   brohn_require(brohn_array(bundle$task_displays),"Prepared task sources must be an ordered array.")
+  choice_profile<-.brohn_rpc_profile(bundle$selection)
+  if(choice_profile)brohn_require(brohn_array(bundle$choice_displays),"Prepared choice sources must be an ordered array.")
   actual<-list()
   for(item in bundle$reports){
     distributions<-Filter(function(d)identical(d$body$result$binding$report_id,item$ref$id)&&identical(d$body$result$binding$report_hash,item$ref$body_hash),bundle$distributions)
@@ -407,12 +458,18 @@ brohn_report_package_panel_preflight <- function(bundle) {
     if(length(distributions)){
       d<-distributions[[1L]];ref<-d$body$preparation_implementation_ref
       brohn_require(is.list(ref)&&brohn_text(ref$profile,128)&&.brohn_rp_hash(ref$hash),"New-profile explicit distributions need their pinned preparation identity.")
+      if(choice_profile)brohn_require(identical(ref$profile,"saved-explicit-distribution/0.2")&&identical(d$body$source_admission,"task-choice-findings/0.1"),"Choice-profile explicit distributions require the exact complete mixed-source admission.")
       actual[[length(actual)+1L]]<-list(adapter="explicit-distribution",source_report_ref=item$ref,prepared_ref=d$ref,implementation_ref=ref)
     }
     if(length(tasks)){d<-tasks[[1L]];actual[[length(actual)+1L]]<-list(adapter="task-display",source_report_ref=item$ref,prepared_ref=d$ref,
       implementation_ref=list(profile=d$body$implementation$profile,hash=brohn_hash(d$body$implementation)))}
+    if(choice_profile){choices<-Filter(function(d).brohn_rp_same(d$evidence$source$report_ref,item$ref),bundle$choice_displays)
+      brohn_require(length(choices)<=1L,"An exact source report has duplicate choice preparations.")
+      if(length(choices)){d<-choices[[1L]];actual[[length(actual)+1L]]<-list(adapter="choice-display",source_report_ref=item$ref,prepared_ref=d$ref,
+        implementation_ref=list(profile=d$body$implementation$profile,hash=brohn_hash(d$body$implementation)))}
+    }
   }
-  brohn_require(length(actual)==length(bundle$distributions)+length(bundle$task_displays)&&
+  brohn_require(length(actual)==length(bundle$distributions)+length(bundle$task_displays)+(if(choice_profile)length(bundle$choice_displays)else 0L)&&
     .brohn_rp_same(actual,bundle$selection$prepared_sources),"Complete prepared sources differ from the frozen exact order or implementation.")
   invisible(TRUE)
 }

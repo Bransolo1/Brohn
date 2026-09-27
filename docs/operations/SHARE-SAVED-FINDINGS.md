@@ -9,7 +9,7 @@ Brohn can assemble supported saved gaze, questionnaire and paired findings into 
 
 1. Open the saved findings you want to share and choose **Prepare report**. A compatible combined report offers its exact linked gaze and questionnaire reports, so you can review them together. You can also enter from the study's **Results** and choose saved findings.
 2. Give the report a title. **Change contents** lets you include or remove exact saved reports, order figure sections, choose particular saved views or figure pages, and decide whether to include gaze stimulus images or original participant/session identifiers.
-3. Choose **Prepare report**. Brohn saves your choices first, prepares response distributions if needed, then assembles the report. Existing distributions are reused when they match the exact selected report.
+3. Choose **Prepare report**. Brohn saves your choices first, prepares the required saved displays and response distributions if needed, then assembles the report. Existing distributions are reused when they match the exact selected report.
 4. When the report is ready, choose **Download report** for its standalone HTML, or **Download report + evidence** for the ZIP.
 
 The initial profile supports complete compatible gaze, questionnaire and paired findings. Known unsupported report families or embedded collections explain why their package adapter is unavailable; their existing reports and exports remain available. A package does not silently drop an unsupported scientific collection.
@@ -46,6 +46,33 @@ panels are not included by this profile.
 On a phone, task charts and wide numerical tables scroll horizontally so labels
 and exact values stay readable. Tap or focus the labelled region and swipe or
 use the arrow keys; this changes the view, not the saved figure or evidence.
+
+## Adding saved MaxDiff findings
+
+This extension has [scoped acceptance](../qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md)
+for native/imported saved findings and mixed cohorts. Other report families
+retain separate adapters and evidence.
+
+Select the saved MaxDiff findings with the liking, scale or task reports you
+want to share, then use the same **Prepare report** action. Brohn saves your
+choices, prepares missing complete display evidence and builds the report.
+Both counts and utility sections initially include all saved exercises.
+
+Each exercise shows its saved model status. A model that was not requested or
+could not be estimated retains that explanation; it does not become a zero
+utility chart. Partial answers, unpresented sets and complete pairs stay distinct.
+Presenting choice results beside liking does not calculate a new relationship.
+
+After preparation, **Change contents** can focus exercises, compatible charts
+and 50-row numerical pages. Pages change the HTML alternatives, not the complete
+chart or evidence. Hiding a figure still preserves its complete selected source
+collections in the ZIP. Imported rows keep their source mapping, including rows
+excluded from the selected exercise; native timing keeps its saved availability.
+
+Task and choice material definitions/hashes are retained, but their image bytes
+and context panels are not included. **Include gaze stimulus images** still
+applies only to supported gaze images. Earlier saved reports reopen using their
+own exact choices and profiles.
 
 ## Read the download
 
