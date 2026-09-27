@@ -30,6 +30,15 @@ records faster saved-source preparation, visible progress and scoped mobile
 keyboard checks. Complete source opening still takes several seconds; wider
 performance and the full platform remain unfinished.
 
+The [saved-findings handoff guide](docs/operations/SHARE-SAVED-FINDINGS.md)
+covers one preparation flow for supported saved gaze, explicit responses and
+paired findings. Standalone HTML contains selected figures and numerical
+alternatives; its evidence ZIP retains every row in the included numerical
+collections. Exact saved choices reopen from history without repeating science.
+Read the [scoped checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md)
+for tested boundaries. This profile uses the configured methods environment
+with **CPython 3.12.10 and Pillow 12.3.0**; see installation instructions.
+
 ## What is connected
 
 | Workflow | Current local application |

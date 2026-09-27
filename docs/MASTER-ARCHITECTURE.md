@@ -14,9 +14,15 @@ Physical synchronization is not established and scientific recipes do not
 silently consume the reviewed map.
 
 The [results/history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
-still governs saved findings and exact views. The next connected packet is a
-complete report package that preserves selected findings/figures and full
-numerical companions, starting with controlled gaze plus explicit liking.
+still governs saved findings and exact views. The
+[saved-report package contract](architecture/SAVED-REPORT-PACKAGES.md) now
+connects durable preparation, exact historical sources, complete included
+numerical collections and portable HTML/ZIP for saved gaze, questionnaire and
+paired findings. Its [scoped checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md)
+separates connected acceptance from component and authority evidence. Immediate
+continuation qualifies shared HTTP responses across other saved-explorer and
+hosted-refusal paths, then expands task/liking and MaxDiff report adapters,
+source-opening responsiveness and post-collection restrictions.
 Post-collection restrictions, broader workloads, wider clock/playback methods
 and remaining measurement/device/operation gates stay open. Saved-source opening
 still takes several seconds despite scoped responsiveness gains. The complete

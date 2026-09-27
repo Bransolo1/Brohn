@@ -187,11 +187,28 @@ The historical prototype remains explicit:
 use `run-local.ps1` / `scripts/run-brohn.R` for the connected supervisor. Do not
 assume that starting only a Shiny page also started collection and processing.
 
+## Saved-report package runtime
+
+The complete-findings report package uses the existing **methods** environment
+with **CPython 3.12.10 and Pillow 12.3.0**. These exact versions, including the
+Python patch, are the qualified profile; generic Python 3.12 is not an equivalent
+claim. `scripts/benchmarks/requirements-methods.txt` already pins Pillow.
+Configure the interpreter through `BROHN_PYTHON_METHODS` or the saved
+`methods` profile. No model weights are required for package assembly.
+
+`scripts/readiness/report-package-runtime.json` records portable version
+requirements, not a machine-specific executable hash. The running installation
+still verifies its actual configured source/runtime identity. The report
+profile's requirement does not raise the separate minimum for core publication
+or portable design ZIP handling. See the
+[saved-findings guide](SHARE-SAVED-FINDINGS.md) and
+[package evidence](../qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
+
 ## Optional Python environments
 
 | Profile | Exact requirements | Configure executable | Capabilities using the profile |
 | --- | --- | --- | --- |
-| methods | `scripts/benchmarks/requirements-methods.txt` | `BROHN_PYTHON_METHODS` | Peripheral physiology, EEG and associated typed signal processing |
+| methods | `scripts/benchmarks/requirements-methods.txt` | `BROHN_PYTHON_METHODS` | Peripheral physiology, EEG, typed signal processing and saved complete-findings HTML/ZIP packages |
 | acquisition | `scripts/readiness/requirements-acquisition.txt` | `BROHN_PYTHON_ACQUISITION` | XDF/bundle preservation, fNIRS/native supporting formats and implemented acquisition tools |
 | vision-audio | `scripts/readiness/requirements-media.txt` | `BROHN_PYTHON_VISION_AUDIO` | Imported/captured video geometry and audio analysis |
 | segmentation | `scripts/readiness/requirements-segmentation.txt` | `BROHN_PYTHON_SEGMENTATION` | Reviewed point-assisted AOI proposals |

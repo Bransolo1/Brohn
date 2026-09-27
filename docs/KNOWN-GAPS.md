@@ -30,11 +30,20 @@ records describing only the 01A–01L prototype are historical.
   one event channel and one or two scalar signals each. More clock profiles,
   reset-spanning maps, continuous playback, arbitrary channels and robust
   retained-CSV paging remain open; physical synchronization is not established.
-- **Complete report handoff:** a primary report download does not yet package
-  accepted selected paired/task/explicit/signal figures with their numerical
-  companions. Build one saved source-bound package interface, beginning with
-  controlled gaze plus explicit liking. Do not silently equate a default static
-  gaze/neural figure with a complete selected-findings deliverable.
+- **Wider report handoff:** the first
+  [complete-findings profile](qa/PUBLICATION-REPORT-HANDOFF-20260927.md) covers
+  supported gaze, questionnaire and paired findings with full included numerical
+  collections. Other task/choice, neural/physiology and media families need their
+  own adapters and connected journeys. Known unsupported selected parents or
+  scientific collections are refused with a reason, not silently dropped.
+  Larger payload profiles, original/raw-evidence bundles and enlarged mobile
+  figure views remain work. Offline copies cannot be revoked retrospectively.
+- **Download transport outside report packages:** the report-controller HEAD
+  fix is scoped to its successful and refused downloads. Other saved-download
+  and hosted-denial callbacks still need actual HTTP connection-reuse checks
+  and any shared response-helper migration. Their source permissions must
+  remain intact; the report route's synthetic wire checks do not qualify
+  unrelated routes.
 - **Post-collection restrictions:** collection-time withdrawal exists, but
   descendant/report restrictions and older-backup restore enforcement need a
   durable ledger and scoped workflow. Restriction is not physical erasure.

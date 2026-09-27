@@ -50,6 +50,8 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_paired_plots(input, output, session, store, state, attempt, prepare_download)
   brohn_install_linked_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
   brohn_install_clock_review(input, output, session, store, state, attempt)
+  brohn_install_report_package_server(input,output,session,store,state,current,
+    attempt=attempt,message=message,refresh=refresh)
   media_review <- brohn_install_media_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
   brohn_install_audio_review(input, output, session, store, state, attempt, message, refresh, prepare_download, open_media = media_review$open)
   brohn_install_audio_extraction(input, output, session, store, state, attempt, message, refresh, prepare_download)
@@ -564,7 +566,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   })
   output$platform_content <- shiny::renderUI({
     # Immutable report controls keep their DOM when other workspace data refresh.
-    if (!identical(state$page, "report")) state$refresh
+    if (!state$page %in% c("report","report_package")) state$refresh
     brohn_render_page(store, state, current$study)
   })
   output$dataset_reports <- shiny::renderUI({
@@ -685,6 +687,7 @@ brohn_render_page <- function(store, state, record) {
   if (page == "ingestion") return(brohn_page("Preparing your source", "The original upload and its processing history stay connected.", shiny::uiOutput("ingestion_detail")))
   if (page == "dataset") return(brohn_dataset_detail_ui(store, state$dataset_id))
   if (page == "report") return(brohn_report_detail_ui(store, state$report_id))
+  if (page == "report_package") return(brohn_report_package_page_ui())
   if (page != "study" || is.null(record)) return(brohn_empty("Choose a study", "Open a saved design from Studies."))
   d <- record$body
   stages <- if (isTRUE(d$archived)) c("Overview", "Review", "Results", "History") else c("Overview", "Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")

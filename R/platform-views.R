@@ -160,7 +160,8 @@ brohn_results_ui <- function(store, record, state = NULL) {
   page <- brohn_search_related(store,"study_reports",record$id,offset=brohn_related_offset(state,"study_reports",record$id))
   reports <- page$records
   deployments <- brohn_deployments(store, record$id)
-  shiny::tagList(if (length(reports)) brohn_card(title = "Bring measures together", subtitle = "Link reviewed participant identities across saved gaze, questionnaire and physiological reports.",
+  shiny::tagList(brohn_report_package_entry_ui(record$id,record$project_id),
+    if (length(reports)) brohn_card(title = "Bring measures together", subtitle = "Link reviewed participant identities across saved gaze, questionnaire and physiological reports.",
     brohn_command("Combine measures", "combine_measures", record$id, "btn btn-primary")),
     if (length(reports)) brohn_card(title = "Task results across participants", subtitle = "Review original administrations, participant identities and repeat-session weighting before creating a descriptive task summary.",
       brohn_command("Review task participants", "task_cohort_open", record$id)),

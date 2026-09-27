@@ -30,9 +30,14 @@ acceptance](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md) for PC02/PC05/PC07
 Several-second synchronous source opening and broader workloads remain open.
 Checkpoint 27 September: [reviewed clock selection, saved windows and complete
 charts](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) now have connected versioning,
-export, retry and restart acceptance (PC12). Next is complete selected-findings
-report handoff, followed by scoped post-collection restrictions. No broader
-requirement or capability is closed by these slices.
+export, retry and restart acceptance (PC12). The first supported
+[saved-findings handoff](qa/PUBLICATION-REPORT-HANDOFF-20260927.md) also has
+scoped acceptance (PC02/PC05/PC13; BWP07/BWP13/BWP15), preserving complete
+included numerical collections and exact history. Other report families and
+post-collection restrictions remain open. Immediate continuation qualifies shared
+HTTP-response framing on other saved-explorer/hosted-refusal paths before broader
+task/liking and MaxDiff package adapters and remaining latency work. No broader requirement or capability
+is closed by these slices.
 
 | ID | Required outcome | Acceptance before closing | Status |
 |---|---|---|---|

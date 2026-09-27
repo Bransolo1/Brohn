@@ -1,5 +1,12 @@
 # Repeatable Brohn checks
 
+For saved-report assembly and feedback, use
+[REPORT-PACKAGE-REPRODUCE](../../tests/REPORT-PACKAGE-REPRODUCE.md).
+Its synthetic pure renderer, exact-alias, archive/raster and UI checks require
+no private research store. Component success does not replace the
+[connected report handoff](PUBLICATION-REPORT-HANDOFF-20260927.md) or native
+current-reader/authority qualification.
+
 For reviewed-clock arithmetic/source/export/display components, use the
 [self-contained Python suite](../../tests/CLOCK-PYTHON-REPRODUCE.md). Its
 `clock-python` catalog entry generates fresh synthetic sources and includes a

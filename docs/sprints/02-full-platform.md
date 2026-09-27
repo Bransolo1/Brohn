@@ -1,5 +1,28 @@
 # Full platform build — Brohn continuation
 
+## Saved-findings handoff — scoped checkpoint 27 September 2026
+
+- [x] Save exact report/figure/contents choices before shared prerequisites;
+  reuse compatible saved distributions and assemble under supervised jobs.
+- [x] Retain complete included numerical collections when choosing specific
+  exposures, categories or paired-person figure pages.
+- [x] Publish standalone accessible HTML, SVG/JSON/CSV companions, inventory
+  and deterministic ZIP under native guards and current reader/source checks.
+- [x] Connect saved history, cancellation, explicit resume/retry and download
+  feedback without repeating the original scientific analysis.
+- [x] Preserve exact report/project/revision/hash and source-person relationships;
+  qualify supported packed questionnaire and revision/scale evidence.
+- [x] Record the connected and separate component/native evidence in the
+  [checkpoint](../qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
+- [ ] Qualify a shared HTTP response seam for other saved explorers and hosted
+  refusals, including gzip negotiation, exact-power lengths, current authority
+  and reused connections. Do not assume every inventoried route is broken/fixed.
+- [ ] Extend complete package adapters, workload profiles and offline UX after
+  separate qualification; retain existing unsupported-family exports.
+- [ ] Continue remaining source-opening latency work with exact source guards.
+- [ ] Add scoped post-collection restrictions and older-backup enforcement.
+- [ ] Continue all 50 capabilities, 17 packages and remaining PC01–PC16 gates.
+
 ## Reviewed clock workflow — scoped acceptance 27 September 2026
 
 - [x] Connect two-recording/source/import/event selection and reviewed preview.
@@ -12,8 +35,8 @@
   exports and worker-free cold restart. Final first signal chart fits the phone view.
 - [x] Publish reproducible 141 Python and 36 Node checks; run existing 408 core
   regression assertions. Keep backend, browser and final presentation phases distinct.
-- [ ] Complete portable report packages containing selected findings, figures
-  and complete numerical companions, starting with controlled gaze plus liking.
+- [x] Complete the first supported saved-findings package profile; its scoped
+  evidence is recorded in the later handoff checkpoint above.
 - [ ] Add scoped post-collection restrictions and restore-aware lineage handling.
 - [ ] Continue wider clock/playback/workload and all remaining 50/17 capabilities.
 

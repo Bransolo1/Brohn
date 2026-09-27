@@ -1,6 +1,23 @@
 # John: Brohn development handoff
 
-**Current checkpoint, 27 September 2026:** development remains active. Read the
+**Current saved-findings checkpoint, 27 September 2026:** read the
+[guide](operations/SHARE-SAVED-FINDINGS.md),
+[architecture](architecture/SAVED-REPORT-PACKAGES.md) and
+[acceptance record](qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
+Prepare report now saves exact choices before prerequisites, then creates
+offline HTML and complete included numerical companions. History, cancel/retry
+and fresh-reader downloads preserve original scientific results. Leaving the
+page does not cancel queued work; unfinished continuation requires Resume.
+
+Use [portable report checks](../tests/REPORT-PACKAGE-REPRODUCE.md) in a new
+external evidence directory. The report profile requires the configured
+CPython 3.12.10/Pillow 12.3.0 methods environment. Raw qualification stores are
+not in Git. Next is shared HTTP-response qualification for other saved explorers
+and hosted refusals, then task/liking and MaxDiff package adapters, remaining
+latency and post-collection restrictions in [WORKSTREAM](WORKSTREAM.md). All 50/17 scope
+remains active. The dated checkpoints below preserve historical context.
+
+**Earlier reviewed-clock checkpoint, 27 September 2026:** development remains active. Read the
 [reviewed-clock checkpoint](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md),
 [normal alignment guide](operations/REVIEW-ALIGNED-RECORDINGS.md) and
 [ordered workstream](WORKSTREAM.md). Two original recordings can now be reviewed
@@ -12,11 +29,12 @@ accuracy claims or new scientific analysis inputs.
 Run the self-contained [Python clock checks](../tests/CLOCK-PYTHON-REPRODUCE.md)
 and [Node feedback checks](../tests/CLOCK-UI-REPRODUCE.md) from an installed clone.
 Brohn's raw browser/native qualification stores remain external. All 50/17 scope
-is preserved. Next implement complete report handoff, then scoped participant
-restrictions; keep existing profiles/results unchanged. The dated notes below
+is preserved. At that checkpoint, next work was complete report handoff, whose
+first supported profile is now delivered above; scoped participant restrictions
+remain in the current ordered workstream. The dated notes below
 describe earlier checkpoints rather than current blockers.
 
-**Current checkpoint, 25 September 2026:** development remains active after
+**Earlier responsiveness checkpoint, 25 September 2026:** development remains active after
 `0b7bf38`. Read the [saved-review responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
 for the current changes, distinct source phases and retained failures. Media
 and task-source opening do less repeated work, expose accurate focused progress,
@@ -29,9 +47,10 @@ and [task plots](../tests/TASK-PLOT-REPRODUCE.md). Media qualification needs a
 verified retained synthetic corpus copied into a new workspace; task component
 tests create their own fixture. Do not use a real research workspace for tests.
 
-The immediate next feature is reviewed cross-recording clock selection and
-review. Local backend and hosted-actor paths have external qualification; the
-normal UI and full researcher journey are still pending and not enabled here.
+At that checkpoint, next work was reviewed cross-recording clock selection and
+review. The local backend and hosted-actor paths had external qualification; the
+normal UI and full researcher journey were pending then. Their later connected
+delivery is recorded in the reviewed-clock checkpoint above.
 Follow the [workstream](WORKSTREAM.md) and [completion backlog](PRODUCT-COMPLETION-BACKLOG.md).
 All 50 capabilities and 17 packages remain in scope; publishing is not a pause.
 
@@ -40,7 +59,8 @@ requested continued development. The [workstream](WORKSTREAM.md) now tracks
 portable connected QA, facial temporal review and declared video/audio mapping.
 The integrated-source core journey, complete facial review and video/audio
 gap/export/restart journey now have [scoped acceptance](qa/PUBLICATION-SAVED-MEDIA-20260924.md).
-Next: configured core-catalog portability and GNAT's complete distinct journey.
+At that checkpoint, next work was configured core-catalog portability and
+GNAT's complete distinct journey; later delivery is recorded in the current workstream.
 The pause below is historical.
 
 **Paused checkpoint — 24 September 2026:** the owner requested this source

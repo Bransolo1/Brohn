@@ -40,6 +40,8 @@ brohn_job_input <- function(store, job) {
   if (identical(job$operation, "summarize_signal_windows")) return(brohn_signal_windows_input(store, job))
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   if (identical(job$operation, "answer_session")) return(brohn_answer_session_input(store, job))
+  if (identical(job$operation,"report_package")) return(brohn_report_package_input(store,job,FALSE))
+  if (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1")) return(brohn_report_distribution_input(store,job,FALSE))
   if (identical(job$operation, "explicit_distributions")) return(brohn_explicit_distribution_input(store, job))
   if (identical(job$operation, "save_clock_map")) return(brohn_clock_map_save_input(store, job))
   if (identical(job$operation, "clock_plot")) return(brohn_clock_plot_input(store, job))
@@ -122,6 +124,8 @@ brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
   brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(!(identical(job$operation,"report_package") || (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1"))),
+    "Retry this saved report preparation from Prepare report so its contents and current authorization are preserved.")
   retry_request<-if(job$operation %in% .brohn_clock_authority_operations)brohn_clock_retry_request(store,job)else job$request
   retry_job<-job;retry_job$request<-retry_request
   if(identical(job$operation,"save_clock_map"))brohn_clock_map_save_metadata(store,retry_request)
@@ -235,6 +239,7 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0"), "Unsupported analysis worker input.")
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
+  if (identical(input$operation,"report_package")) return(brohn_analyse_report_package(input,scratch))
   if (identical(input$operation, "explicit_distributions")) return(brohn_analyse_explicit_distributions(input, scratch))
   if (identical(input$operation, "save_clock_map")) return(brohn_analyse_clock_map_save(input, scratch))
   if (identical(input$operation, "clock_plot")) return(brohn_analyse_clock_plot(input, scratch))
@@ -536,7 +541,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
+  explorer <- job$operation %in% c("report_package", "questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
   if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
@@ -546,6 +551,21 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   tryCatch({
     if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "Complete-source review requires process memory monitoring.")
     input <- if (identical(job$operation,"clock_plot")) brohn_clock_plot_input(store,job,FALSE) else if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
+    if (identical(job$operation,"report_package")) {
+      package_execution <- brohn_prepare_report_package_execution(store,job,input,scratch)
+      input <- package_execution$input
+      on.exit({
+        if (!is.null(child) && child$is_alive()) child$kill_tree()
+        brohn_release_report_package_sources(package_execution$handle)
+      },add=TRUE,after=FALSE)
+    } else if (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1")) {
+      distribution_execution <- brohn_prepare_report_distribution_execution(store,job,input,scratch)
+      input <- distribution_execution$input
+      on.exit({
+        if (!is.null(child) && child$is_alive()) child$kill_tree()
+        brohn_release_report_distribution_sources(distribution_execution$handle)
+      },add=TRUE,after=FALSE)
+    }
     if(identical(job$operation,"vision_index")) {
       vision_source_guards<-.brohn_vexplorer_guards(store,job$request)
       on.exit(for(g in vision_source_guards).brohn_qexplorer_release(g),add=TRUE)
@@ -636,6 +656,8 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       return(brohn_publish_ingestion(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"questionnaire_index")) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"answer_session")) return(brohn_publish_answer_session(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"report_package")) return(brohn_publish_report_package(store,result,scratch,job,input,result_path))
+    if (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1")) return(brohn_publish_report_distribution(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"explicit_distributions")) return(brohn_publish_explicit_distributions(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"save_clock_map")) return(brohn_publish_clock_map_save(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"clock_plot")) return(brohn_publish_clock_plot(store, result, scratch, job, input, result_path))

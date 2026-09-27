@@ -1,5 +1,20 @@
 # Changes
 
+## Complete saved-findings handoff — 2026-09-27
+
+- Added durable Prepare report, exact historical selections and explicit
+  cancellation/resume/retry for supported saved gaze, questionnaire and paired
+  findings, with shared exact display prerequisites.
+- Added standalone HTML and deterministic evidence ZIP containing selected
+  figures plus complete included numerical collections and provenance.
+- Kept current reader/source checks and native protection on saved downloads;
+  scientific analysis is not repeated to assemble or reopen the package.
+- Added accessible numerical alternatives, source-scoped friendly labels,
+  portable component tests and exact configured report-runtime requirements.
+- Recorded scoped acceptance in
+  `docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md`; broader report families,
+  restrictions and the full 50/17 roadmap remain unfinished.
+
 ## Reviewed cross-recording alignment — 2026-09-27
 
 - Connected original-event selection, exact preview with independent checks,

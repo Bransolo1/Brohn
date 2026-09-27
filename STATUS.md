@@ -1,6 +1,25 @@
 # Resume here — Brohn
 
-## Reviewed alignment and complete-window review — 27 September 2026
+## Saved-findings handoff — scoped checkpoint 27 September 2026
+
+Brohn connects a durable Prepare report flow to exact saved gaze, questionnaire
+and paired findings. The first complete-findings profile produces standalone
+HTML and an evidence ZIP; choosing fewer figure pages preserves complete
+included numerical collections. Historical packages retain exact source
+revisions and fresh current-reader checks. No scientific analysis repeats to
+assemble or reopen these saved findings.
+
+The final connected candidate07 passed creation of an original synthetic control/test study, seven participant visits, gaze import and analysis, questionnaire/cohort and paired findings, report preparation, image inclusion, historical reopening, cancellation/retry and cold restart. All original report revisions and all 33 pre-existing stored objects remain unchanged. Report work added one descriptive distribution prerequisite and four assembly attempts (three succeeded, one intentionally cancelled); it did not rerun the scientific analyses. Cold restart and reopening added zero jobs and preserved exact downloaded HTML/ZIP bytes.
+
+Read the [checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
+[researcher guide](docs/operations/SHARE-SAVED-FINDINGS.md) and
+[architecture](docs/architecture/SAVED-REPORT-PACKAGES.md). Next: shared HTTP
+response qualification for other saved-download/hosted-refusal paths, complete
+task/liking and MaxDiff report adapters, remaining source-opening responsiveness
+and post-collection restrictions. All 50 capabilities and 17 packages remain active;
+this is a bounded delivery checkpoint, not platform completion.
+
+## Earlier reviewed alignment and complete-window review — 27 September 2026
 
 Brohn now connects original event selection, reviewed two-event clock previews,
 versioned alignment saves, full original-row windows and automatic complete-window
@@ -15,8 +34,9 @@ native/hosted authority tests, 141 portable Python checks, 36 client checks and
 408 existing core regression assertions. This review profile does not establish
 physical synchronization or enable its use in new scientific scoring recipes.
 
-Next is a complete saved report handoff: selected findings/figures and full
-numerical companions in an accessible portable deliverable. Broader performance,
+At that checkpoint, next work was a complete saved report handoff with selected
+findings/figures and full numerical companions; its first supported profile is
+now delivered in the later checkpoint above. Broader performance,
 participant restrictions and remaining method/device/operation gates stay open.
 All 50 capabilities and 17 packages remain active. Publication is not a pause.
 

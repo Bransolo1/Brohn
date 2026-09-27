@@ -40,6 +40,10 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   platform <- c(platform, "paired-plots")
   if (file.exists("R/platform-related-catalog.R")) platform <- c(platform, "related-catalog")
   if (file.exists("R/platform-maxdiff.R")) platform <- c(platform, "maxdiff", "maxdiff-platform", "maxdiff-import")
+  # Static report primitives are pure definitions, shared by UI and workers.
+  platform <- c(platform, "gaze-report-views", "explicit-distribution-views", "paired-plot-views",
+    "report-package-tables", "report-package-render", "report-package-authority",
+    "report-package-sources", "report-package-distributions", "report-package")
   for (file in c(paste0("R/", legacy, ".R"), paste0("R/platform-", platform, ".R"))) source(file, local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-reuse-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-cardiac-review-views.R", local = envir, encoding = "UTF-8")
@@ -49,9 +53,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (ui) source("R/platform-collection-history-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-runner-provenance-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-session-resolution-views.R", local = envir, encoding = "UTF-8")
-  if (ui) source("R/platform-explicit-distribution-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-answer-session-views.R", local = envir, encoding = "UTF-8")
-  if (ui) source("R/platform-paired-plot-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-linked-history-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-linked-review-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-clock-catalog-views.R", local = envir, encoding = "UTF-8")
@@ -75,6 +77,8 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (ui) source("R/platform-equipment-setup-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-material-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-guidance-views.R", local = envir, encoding = "UTF-8")
-  if (ui) for (name in c("shell", "aoi", "vision-views", "question-flow-views", "question-sections-views", "question-revision-views", "questionnaire-artifact-views", "questionnaire-explorer-views", "scale-views", "maxdiff-views", "maxdiff-plots", "maxdiff-import-views", "task-import-views", "task-cohort-views", "task-plot-views", "capture-views", "acquisition-views", "stream-curation-views", "collection-routes", "views", "task-views", "gaze-views", "neural-views", "neural-views-plots", "eda-events-views", "peripheral-views", "peripheral-report", "ingestion-views", "run-review-views", "data-views", "signal-views", "signal-annotations-views", "welcome-views", "gaze-report-views", "headers-views", "analysis-plan-views", "multimodal-views", "interchange-views", "app")) source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
+  if (ui) for (name in c("shell", "aoi", "vision-views", "question-flow-views", "question-sections-views", "question-revision-views", "questionnaire-artifact-views", "questionnaire-explorer-views", "scale-views", "maxdiff-views", "maxdiff-plots", "maxdiff-import-views", "task-import-views", "task-cohort-views", "task-plot-views", "capture-views", "acquisition-views", "stream-curation-views", "collection-routes", "views", "task-views", "gaze-views", "neural-views", "neural-views-plots", "eda-events-views", "peripheral-views", "peripheral-report", "ingestion-views", "run-review-views", "data-views", "signal-views", "signal-annotations-views", "welcome-views", "headers-views", "analysis-plan-views", "multimodal-views", "interchange-views", "app")) source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
+  if (ui) for (name in c("report-package-views", "report-package-server"))
+    source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
   invisible(TRUE)
 }

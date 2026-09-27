@@ -1,7 +1,7 @@
 # Brohn documentation map
 
 This is the map for John and future contributors, updated for the
-[25 September 2026 review responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md).
+[27 September 2026 saved-findings checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
 Development resumed at the owner's request after the September 24 checkpoint; see the
 [current workstream and next steps](WORKSTREAM.md). The intended platform is broader than the
 working local application. Read current status and evidence alongside the architecture.
@@ -18,12 +18,13 @@ working local application. Read current status and evidence alongside the archit
 | Scientific methods and reusable implementations | [Method references](methods/reuse/README.md), [analysis plans](methods/DECLARATIVE-ANALYSIS-PLANS.md) and [multimodal reports](methods/MULTIMODAL-REPORTS.md). |
 | Design and run the named Brohn Go/No-Go procedure | [GNAT researcher guide](operations/RUN-GNAT.md), [frozen procedure](methods/GNAT-BROHN-PROCEDURE.md) and [connected qualification](qa/GNAT-RESEARCHER-ACCEPTANCE.md). |
 | Review saved results and history | [Results, exploration and history guide](operations/REVIEW-SAVED-RESULTS.md), [architecture](architecture/RESULTS-AND-SAVED-HISTORY.md) and [joined checkpoint](qa/PUBLICATION-RESULTS-HISTORY-20260925.md). |
+| Prepare and share saved findings | [Report guide](operations/SHARE-SAVED-FINDINGS.md), [package contract](architecture/SAVED-REPORT-PACKAGES.md), [checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md) and [portable checks](../tests/REPORT-PACKAGE-REPRODUCE.md). |
 | Understand opening progress and reproduce its checks | [Joined responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md), [media instructions](../tests/media-feedback/REPRODUCE.md) and [task component instructions](../tests/TASK-PLOT-REPRODUCE.md). |
 | Inspect the original evidence behind media results | [Saved facial and video/audio review](operations/REVIEW-SAVED-MEDIA.md), including exact frames, full numerical exports and saved reopening. |
 | Brand, onboarding and launch | [Brand system](brand/BRAND-SYSTEM.md) and [introduction plan](product/INTRODUCTION-AND-LAUNCH.md). |
 | Installation and contribution | [Installation](operations/LOCAL-INSTALLATION.md), [dependencies](../DEPENDENCIES.md), [contribution guide](../CONTRIBUTING.md) and [agent instructions](../AGENTS.md). |
 | What has actually been checked | [Researcher QA](qa/RESEARCHER-QA.md), [running checks](qa/RUNNING-CHECKS.md), [configured core subset](qa/PORTABLE-CATALOG-ACCEPTANCE.md), [portable connected smoke](qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md) and the linked method/journey evidence. |
-| Planned alignment across separate recordings | [Reviewed two-event clock mapping](architecture/REVIEWED-CLOCK-ALIGNMENT.md), with exact source/identity/epoch contracts; not an enabled synchronization claim. |
+| Review alignment across separate recordings | [Reviewed two-event clock mapping](architecture/REVIEWED-CLOCK-ALIGNMENT.md) and [connected checkpoint](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md); software review does not establish physical synchronization. |
 | Original strategy and competitor research | [Planning archive](planning/INDEX.md), including the [strategy](planning/STRATEGY.md), [competitor review](planning/COMPETITOR-REVIEW.md), specialist reviews and [238-ticket backlog](planning/IMPLEMENTATION-BACKLOG.csv). |
 
 The master architecture and current build manifest govern implementation. STATUS,

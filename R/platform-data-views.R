@@ -373,7 +373,10 @@ brohn_report_detail_ui <- function(store, id) {
     brohn_respiration_review_panel(r$body), brohn_emg_review_panel(r$body), brohn_eda_continuous_review_panel(r$body),
     brohn_signal_explorer_ui(r), brohn_neural_explorer_ui(r$body))
   htmltools::tagAppendAttributes(brohn_page(r$body$title, subtitle = NULL,
-    actions = shiny::downloadButton("report_html", "Download report", icon = NULL),
+    actions = shiny::tagList(shiny::downloadButton("report_html", "Download report", icon = NULL),
+      brohn_report_package_entry_ui(r$body$study_id,r$project_id,
+        list(kind="report",id=r$id,revision=r$revision,
+          body_hash=.brohn_qexplorer_catalog(store,"report",r$id,r$revision,r$project_id),project_id=r$project_id))),
     shiny::tags$nav(class = "brohn-toolbar", `aria-label` = "Report sections",
       shiny::tags$a(href = paste0("#", section_id("results")), class = "btn btn-default", "Results"),
       shiny::tags$a(href = paste0("#", section_id("explore")), class = "btn btn-default", "Explore"),

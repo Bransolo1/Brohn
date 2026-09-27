@@ -27,6 +27,16 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
+if (identical(input$operation,"report_package") || isTRUE(input$report_package_distribution)) {
+  paths <- c("R/platform-hosted-profile.R", "R/platform-paired-plots.R",
+    "R/platform-gaze-report-views.R", "R/platform-explicit-distribution-views.R", "R/platform-paired-plot-views.R",
+    "R/platform-report-package-tables.R", "R/platform-report-package-render.R",
+    "R/platform-report-package-authority.R", "R/platform-report-package-sources.R",
+    "R/platform-report-package-distributions.R", "R/platform-report-package.R")
+  identity <- c(identity,hash_sources(setdiff(paths,names(identity))))
+  for (path in paths) source(path,encoding="UTF-8")
+  identity <- c(identity,hash_sources(setdiff(.brohn_rpk_files,names(identity))))
+}
 if(!is.null(input$camera_analysis_authority)) {
   identity<-c(identity,hash_sources("R/platform-camera-analysis-store.R"))
   source("R/platform-camera-analysis-store.R",encoding="UTF-8")

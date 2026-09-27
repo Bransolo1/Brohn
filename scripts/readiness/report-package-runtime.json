@@ -1,0 +1,12 @@
+{
+  "schema": "brohn-report-package-runtime-profile/0.1",
+  "profile": "qualified-windows-cpython-pillow/0.1",
+  "runtime": {
+    "Python": {
+      "implementation": "CPython",
+      "version": "3.12.10"
+    },
+    "Pillow": "12.3.0"
+  },
+  "scope": "Qualified required CPython/Pillow version profile. The supervised parent and archive/raster subprocesses must observe matching versions before successful publication. Other Python versions are not qualified by this profile."
+}
