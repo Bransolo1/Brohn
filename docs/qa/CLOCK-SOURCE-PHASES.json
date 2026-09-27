@@ -1,0 +1,89 @@
+{
+  "schema": "brohn-clock-checkpoint-source-phases/0.1",
+  "base_commit": "28bc168c9f0e333dfa7be9d56dcf8ab7462a38b8",
+  "scope": "Separate original-window, authority, full-display, connected controller and final presentation phases; not whole-platform qualification.",
+  "final_working_source_files": {
+    "R/platform-app.R": "534775de60d10368de0c8fa941519cb88cd69b0b826b1257fa437eed7e86ad95",
+    "R/platform-clock-authority.R": "8bacb3ea7209fc3af5e879977ffb82204a8691b5efbeded3736c4029f839c264",
+    "R/platform-clock-catalog-views.R": "4c1a992be30996e232ac70c3a80ee12396c8f8050f722c16ea19ad0909bb1313",
+    "R/platform-clock-catalog.R": "f2594738250b4b0ed3ef90ac28201b00c0e21559f7cf30e83e664f015cbe6d8e",
+    "R/platform-clock-dispatch-views.R": "1d16de4c15b293f54f1d05ffba6b72c9782d8f6d9250636bf6346eff12ca08b1",
+    "R/platform-clock-events.R": "91ac897523f55d210bf44bcbf1d4bcf51aef69aa0449454538016412969d0e23",
+    "R/platform-clock-jobs.R": "7173da63693fc253aa2a5ec754fccf0f04aced30d89ebcd92b560f7b538583c4",
+    "R/platform-clock-map-save.R": "068bf34c0376e0182b08a4f713c2f0b8a1cb77230a3fd5a63301ee1afea846fa",
+    "R/platform-clock-map.R": "f0e05461eb50af433fdd3ca8b4344558f1c4521f7d16ebeaf352ee6ab9c64eed",
+    "R/platform-clock-plot-resources.R": "bfcf7338c3c0c29c0547676dd693d0e21f6dd3c033fccc227c4481b255d319a5",
+    "R/platform-clock-plot-review-views.R": "439325b43e097f1e0787bd3a83fdb62cab904357c85f29e2fac87c3cbe8e0830",
+    "R/platform-clock-plot-views.R": "f85b62448ea354da08099ee9db13d34a3ae38ad5461d2dbcb0cd771ed716fad8",
+    "R/platform-clock-plot.R": "d02360ea3aa1a80acdad30bf2932d1b2867571d75fab7903e963a6212d1d8b5c",
+    "R/platform-clock-preview.R": "eef5b747534bf3019fc6a352bb0a8648d117ac65f75ab31857bcc9cb3e404309",
+    "R/platform-clock-resources.R": "2a632892f95bcaebe8d5611a1a78d88befabf625f324f63675658862f989d788",
+    "R/platform-clock-selection.R": "d10f52d1d9c017a2cb454f24a844f0a8537d3070fd4733446efc90d270955565",
+    "R/platform-clock-view-model.R": "5f9d02aa410dd90c93080deb3be15e2b6c730c0f33313b5487b43464e1d6fa63",
+    "R/platform-clock-views.R": "e8a0cc9e49b245db963a9dab53015914e3e03df06e3646df17032ba341987507",
+    "R/platform-clock-window.R": "5cdeb4b1d359716812dd2f319c37f893a5aa376151882b25f0f717be02975b85",
+    "R/platform-interchange-views.R": "b127dd0bd84eb12d3b7d703c13a06ec94c5d157e7d1b4d03b3ca557e84e8bfea",
+    "R/platform-jobs.R": "4d0960737857e2c461382439ffb8e8d64260c0c65760d71b29130e720bba3bd1",
+    "R/platform-load.R": "8bf07c18a5fb592e26e7fd1f16cee8b7f0acfdba4a9fcd3440e8e7160ba8ed66",
+    "scripts/analysis-worker.R": "746ac7a6b069129e09c92745e17fa79c698485f5eafacfcc29de6b1168adbbdf",
+    "scripts/workers/clock_affine.py": "dc2b45fe429baeeaf78e5959fb49e307616d508d680d7416da6e16cf22db7a2d",
+    "scripts/workers/clock_events.py": "32f7013d61f381656ca7d5b53311d1ca32cae6dac43139dff60dcf1cf6f65b81",
+    "scripts/workers/clock_events_worker.py": "d028150c2daa39dc9b0b357105ecf7dd758b5f78755c768f91c1b7470b5f55a1",
+    "scripts/workers/clock_plot.py": "3822a9f163558a812f3fcc9584ec9bfdec2f6e65959fe322b4c43b451079b175",
+    "scripts/workers/clock_plot_worker.py": "1975b35dc5c46b8ae134a437e78a286f43b42ec4734553531dffd94229fecbf1",
+    "scripts/workers/clock_preview.py": "ab507fb66d22e540371e915c2b41d6997de9063653162116a306e4fe9707edaa",
+    "scripts/workers/clock_preview_worker.py": "ccdb9812ace6b8abafb1232befa731d785fb338d5599151924bc9e9528b85ea8",
+    "scripts/workers/clock_source.py": "8b54537faaba214873e720da16955e4505c05c3d95d3b17db8d4dc5691d2e198",
+    "scripts/workers/clock_window.py": "603785d6b6b5fc6709c11232ab1018ad8e748677dfddaf6cefc5f4d10b7e5d8e",
+    "scripts/workers/clock_window_worker.py": "42ba2980ac10260e5a9c99c62d02964af0bafdfbe935bcc088223cd6b8d63c22",
+    "scripts/workers/validate_clock_preview_math.py": "4ad4be22cd94d0858a3285c4f18227e9c149dbb4bce6bf1348f70c35d7bc6cf8",
+    "www/clock-review-ui.js": "ecff3bed1377f1eee0f45e327da032568b1cc4804eac0f1c2bb3a4f20087bf55"
+  },
+  "evidence": {
+    "connected_original_window": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-journey-02/results.json",
+      "sha256": "215ff808593081d3ccf3d53fb41b2441aa92a991797875e2174e7df68c32ca04"
+    },
+    "independent_original_rows": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-journey-02/independent-exports.json",
+      "sha256": "4f76b1d19565fb9907ae30f287be3cbd2c54f91781a9e69c24fae1f340c631b2"
+    },
+    "saved_history": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-history-01/results.json",
+      "sha256": "e77d61d0c234397e009c7def7283364b6eec24858fae0629be398e4c0f3e7872"
+    },
+    "connected_complete_plot": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-plot-02/results.json",
+      "sha256": "8932c0cf05cf81c964d857424524d6821517d2720ebfbc6969aeb3b1c87733df"
+    },
+    "independent_complete_plot": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-plot-02/independent-plot.json",
+      "sha256": "3a5df7809746327064c58c1dd152741d37b2e6c16607a32e1243960fd6b4dc47"
+    },
+    "final_presentation": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-final-01/results.json",
+      "sha256": "4062e229abfd5abdc1d5cb4a73e45a14c3da891290420a1acbeceda77a843beb"
+    },
+    "final_preservation": {
+      "external_relative_to_make": "work/clock-ux-next-20260925/browser-final-01/verified.json",
+      "sha256": "f97ccc66f82b44a65313ee4691447b55d60cde3a79d53bbdd8363132cc4a6c33"
+    },
+    "plot_adapter": {
+      "external_relative_to_make": "work/clock-plot-next-20260925/adapter-acceptance.json",
+      "sha256": "b31e3a17d1260ad7185d9306d1ba03add4ef83c8135c1436ee345682457970f2"
+    },
+    "plot_resources": {
+      "external_relative_to_make": "work/clock-plot-next-20260925/plot-resources-02/results.json",
+      "sha256": "0cca02888b28efc70f51531cb253dcb440c84c2408b308b634e148f7dd1b50a6"
+    },
+    "controller": {
+      "external_relative_to_make": "work/clock-plot-controller-review-20260927/review-freeze.json",
+      "sha256": "a9515b940ec23fecd26321128d1138f18da1bd2641bd20c78e98d574cbffdc11"
+    },
+    "core_regression": {
+      "external_relative_to_make": "work/clock-core-regression-20260927/acceptance.json",
+      "sha256": "b7c2d0db162dc65c7c72ed384ae9984391b119112b6483d0c0f16b81e8d7f63d"
+    }
+  },
+  "qualified_profile": "Configured Windows AMD64; raw QA stores and protected profiles remain external."
+}

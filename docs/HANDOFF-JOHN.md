@@ -1,5 +1,21 @@
 # John: Brohn development handoff
 
+**Current checkpoint, 27 September 2026:** development remains active. Read the
+[reviewed-clock checkpoint](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md),
+[normal alignment guide](operations/REVIEW-ALIGNED-RECORDINGS.md) and
+[ordered workstream](WORKSTREAM.md). Two original recordings can now be reviewed
+through explicit event matching, versioned maps, full original-data exports and
+automatic complete-window charts. Cancel/retry and historical reopening retain
+original evidence. Clock maps are review/export profiles, not synchronization
+accuracy claims or new scientific analysis inputs.
+
+Run the self-contained [Python clock checks](../tests/CLOCK-PYTHON-REPRODUCE.md)
+and [Node feedback checks](../tests/CLOCK-UI-REPRODUCE.md) from an installed clone.
+Brohn's raw browser/native qualification stores remain external. All 50/17 scope
+is preserved. Next implement complete report handoff, then scoped participant
+restrictions; keep existing profiles/results unchanged. The dated notes below
+describe earlier checkpoints rather than current blockers.
+
 **Current checkpoint, 25 September 2026:** development remains active after
 `0b7bf38`. Read the [saved-review responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
 for the current changes, distinct source phases and retained failures. Media

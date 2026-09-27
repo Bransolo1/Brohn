@@ -1,5 +1,12 @@
 # Repeatable Brohn checks
 
+For reviewed-clock arithmetic/source/export/display components, use the
+[self-contained Python suite](../../tests/CLOCK-PYTHON-REPRODUCE.md). Its
+`clock-python` catalog entry generates fresh synthetic sources and includes a
+real R JSON roundtrip. The [Node client checks](../../tests/CLOCK-UI-REPRODUCE.md)
+cover preparation, stale tickets and focus without extra browser dependencies.
+These component checks do not replace the [connected clock evidence](PUBLICATION-REVIEWED-CLOCK-20260927.md).
+
 For the saved-review progress and focus components, see
 [task preparation checks](../../tests/TASK-PLOT-REPRODUCE.md) and
 [media feedback qualification](../../tests/media-feedback/REPRODUCE.md).

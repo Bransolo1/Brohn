@@ -1,5 +1,24 @@
 # Full platform build — Brohn continuation
 
+## Reviewed clock workflow — scoped acceptance 27 September 2026
+
+- [x] Connect two-recording/source/import/event selection and reviewed preview.
+- [x] Save immutable named versions and full original-row windows with four exports.
+- [x] Automatically prepare complete-export signal/event charts with exact tables,
+  separate units, missingness, gaps, native resources and current-reader checks.
+- [x] Preserve original exports during chart preparation/cancel/retry; paint retry
+  status before expensive work and preserve deliberate focus changes.
+- [x] Exercise real version-two authoring, version-one reopening, same-byte
+  exports and worker-free cold restart. Final first signal chart fits the phone view.
+- [x] Publish reproducible 141 Python and 36 Node checks; run existing 408 core
+  regression assertions. Keep backend, browser and final presentation phases distinct.
+- [ ] Complete portable report packages containing selected findings, figures
+  and complete numerical companions, starting with controlled gaze plus liking.
+- [ ] Add scoped post-collection restrictions and restore-aware lineage handling.
+- [ ] Continue wider clock/playback/workload and all remaining 50/17 capabilities.
+
+See [clock checkpoint](../qa/PUBLICATION-REVIEWED-CLOCK-20260927.md).
+
 ## Saved-review responsiveness wave — scoped acceptance 25 September 2026
 
 - [x] Remove repeated immediate media source preparation with fresh native and
@@ -18,8 +37,8 @@
   task component tests each pass 19 checks and create their own synthetic source.
 - [ ] Reduce remaining several-second synchronous source opening and qualify
   broader source/report/concurrent workloads without weakening integrity.
-- [ ] Integrate and qualify the normal cross-recording clock researcher UI;
-  local backend/hosted-actor acceptance is external and not an enabled feature.
+- [x] Integrate and qualify the normal cross-recording clock researcher UI;
+  completed by the scoped 27 September wave above.
 - [ ] Continue all 50 capabilities, 17 packages and remaining PC01–PC16 gates.
 
 See [joined evidence](../qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md) for

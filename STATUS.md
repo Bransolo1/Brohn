@@ -1,6 +1,26 @@
 # Resume here — Brohn
 
-## Current saved-review responsiveness checkpoint — 25 September 2026
+## Reviewed alignment and complete-window review — 27 September 2026
+
+Brohn now connects original event selection, reviewed two-event clock previews,
+versioned alignment saves, full original-row windows and automatic complete-window
+charts. Original downloads remain available while a chart is prepared or retried.
+Prior versions and exact exports reopen after restart without repeating analysis.
+The first complete signal figure is visible in the tested phone viewport.
+
+Read the [checkpoint evidence](docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) and
+[researcher guide](docs/operations/REVIEW-ALIGNED-RECORDINGS.md). Qualification
+separates actual browser/worker/history checks, independent exact-value oracles,
+native/hosted authority tests, 141 portable Python checks, 36 client checks and
+408 existing core regression assertions. This review profile does not establish
+physical synchronization or enable its use in new scientific scoring recipes.
+
+Next is a complete saved report handoff: selected findings/figures and full
+numerical companions in an accessible portable deliverable. Broader performance,
+participant restrictions and remaining method/device/operation gates stay open.
+All 50 capabilities and 17 packages remain active. Publication is not a pause.
+
+## Earlier saved-review responsiveness checkpoint — 25 September 2026
 
 Continuing from `0b7bf38`, saved-media source opening removes repeated complete
 source reconstruction within one immediate call, and task evidence/plots reuse
@@ -17,9 +37,9 @@ its final tested routes. These scoped gains do not close broader responsiveness
 or concurrent-load qualification. Saved sources and scientific reports are not
 recomputed to reopen them.
 
-Reviewed cross-recording clock backend and hosted-actor paths have external
-qualification; the normal selection/save/review/export UI and its connected
-researcher journey remain pending. No clock alignment is enabled here.
+At that earlier checkpoint, reviewed clock backend/authority acceptance was
+external. The connected review/export flow is now accepted in the current
+27 September checkpoint above.
 The [workstream](docs/WORKSTREAM.md), all 50 capabilities and all 17 packages
 remain active and unfinished. Publication does not pause or complete the build.
 

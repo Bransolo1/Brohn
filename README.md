@@ -18,7 +18,14 @@ limits. For inspecting complete saved observations and original frames, use the
 [facial and video/audio review guide](docs/operations/REVIEW-SAVED-MEDIA.md).
 The [saved-results guide](docs/operations/REVIEW-SAVED-RESULTS.md) covers
 Results/Explore/Evidence, paged histories and reopening original views.
-The [current responsiveness checkpoint](docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
+The [aligned-recordings guide](docs/operations/REVIEW-ALIGNED-RECORDINGS.md) covers
+reviewed original-event matching, versioned maps, automatic complete-window
+charts and unchanged historical exports. Its
+[checkpoint evidence](docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) separates
+connected browser, reference and authority checks; it does not establish
+physical synchronization. This route uses the configured methods Python and
+qualified native resource protection; no additional model is required.
+The [responsiveness checkpoint](docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
 records faster saved-source preparation, visible progress and scoped mobile
 keyboard checks. Complete source opening still takes several seconds; wider
 performance and the full platform remain unfinished.

@@ -41,6 +41,11 @@ brohn_job_input <- function(store, job) {
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   if (identical(job$operation, "answer_session")) return(brohn_answer_session_input(store, job))
   if (identical(job$operation, "explicit_distributions")) return(brohn_explicit_distribution_input(store, job))
+  if (identical(job$operation, "save_clock_map")) return(brohn_clock_map_save_input(store, job))
+  if (identical(job$operation, "clock_plot")) return(brohn_clock_plot_input(store, job))
+  if (identical(job$operation, "clock_window")) return(brohn_clock_window_input(store, job))
+  if (identical(job$operation, "clock_event_page")) return(brohn_clock_events_input(store, job))
+  if (identical(job$operation, "preview_clock_alignment")) return(brohn_clock_preview_job_input(store, job))
   if (identical(job$operation, "linked_review")) return(brohn_linked_review_input(store, job))
   if (identical(job$operation, "analyse_resolved_run")) return(brohn_resolved_session_input(store, job))
   if (identical(job$operation, "audio_review")) return(brohn_audio_review_input(store, job))
@@ -116,7 +121,14 @@ brohn_queue_cohort <- function(store, deployment_id) {
 brohn_retry_processing <- function(store, id) {
   job <- brohn_get_job(store, id)
   brohn_require(!is.null(job) && job$status %in% c("failed", "cancelled"), "Only failed or cancelled processing can be retried.")
-  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review"), "Use the operation's setup screen to choose a new destination or source.")
+  brohn_require(job$operation %in% c("analyse_dataset", "analyse_run", "analyse_cohort", "analyse_task_cohort", "analyse_multimodal", "segment_aoi", "normalise_dataset", "import_multistream", "inspect_header", "signal_catalog", "signal_preview", "signal_values_page", "signal_values_export", "gaze_trace_catalog", "gaze_trace_preview", "vision_index", "vision_frame", "summarize_signal_windows", "assemble_capture", "extract_stream", "preview_cardiac_review", "reanalyse_cardiac", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review"), "Use the operation's setup screen to choose a new destination or source.")
+  retry_request<-if(job$operation %in% .brohn_clock_authority_operations)brohn_clock_retry_request(store,job)else job$request
+  retry_job<-job;retry_job$request<-retry_request
+  if(identical(job$operation,"save_clock_map"))brohn_clock_map_save_metadata(store,retry_request)
+  if(identical(job$operation,"clock_plot"))brohn_clock_plot_input(store,retry_job,FALSE)
+  if(identical(job$operation,"clock_window"))brohn_clock_window_input(store,retry_job)
+  if(identical(job$operation,"clock_event_page"))brohn_clock_events_input(store,retry_job)
+  if(identical(job$operation,"preview_clock_alignment"))brohn_clock_preview_job_input(store,retry_job)
   if(identical(job$operation,"linked_review"))brohn_linked_review_input(store,job)
   if(identical(job$operation,"analyse_resolved_run"))brohn_resolved_session_input(store,job)
   if(identical(job$operation,"audio_review"))brohn_audio_review_input(store,job)
@@ -138,7 +150,7 @@ brohn_retry_processing <- function(store, id) {
   if(job$operation %in% c("preview_cardiac_review", "reanalyse_cardiac"))brohn_cardiac_review_input(store,job)
   if(identical(job$operation,"summarize_signal_windows"))brohn_signal_windows_input(store,job)
   brohn_store_batch(store, function() {
-    retried <- brohn_enqueue_job(store, job$operation, job$request, paste0("retry:", id, ":", brohn_id("request")))
+    retried <- brohn_enqueue_job(store, job$operation, retry_request, paste0("retry:", id, ":", brohn_id("request")))
     brohn_put_entity(store, "job_retry", brohn_id("retry"), list(source_job_id = id, new_job_id = retried$id, at = brohn_now(), policy = "same_frozen_inputs_new_attempt"))
     retried
   })
@@ -224,6 +236,11 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
   if (identical(input$operation, "explicit_distributions")) return(brohn_analyse_explicit_distributions(input, scratch))
+  if (identical(input$operation, "save_clock_map")) return(brohn_analyse_clock_map_save(input, scratch))
+  if (identical(input$operation, "clock_plot")) return(brohn_analyse_clock_plot(input, scratch))
+  if (identical(input$operation, "clock_window")) return(brohn_analyse_clock_window(input, scratch))
+  if (identical(input$operation, "clock_event_page")) return(brohn_analyse_clock_events(input, scratch))
+  if (identical(input$operation, "clock_preview_candidate")) return(brohn_analyse_clock_preview(input, scratch))
   if (identical(input$operation, "linked_review")) return(brohn_analyse_linked_review(input, scratch))
   if (identical(input$operation, "analyse_resolved_run")) return(brohn_analyse_resolved_session(input, scratch))
   if (identical(input$operation, "audio_review")) return(brohn_analyse_audio_review(input, scratch))
@@ -519,7 +536,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
+  explorer <- job$operation %in% c("questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
   if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
@@ -528,7 +545,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       operation = job$operation, attempt = job$attempt)), error = function(e) NULL), add = TRUE)
   tryCatch({
     if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "Complete-source review requires process memory monitoring.")
-    input <- if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
+    input <- if (identical(job$operation,"clock_plot")) brohn_clock_plot_input(store,job,FALSE) else if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
     if(identical(job$operation,"vision_index")) {
       vision_source_guards<-.brohn_vexplorer_guards(store,job$request)
       on.exit(for(g in vision_source_guards).brohn_qexplorer_release(g),add=TRUE)
@@ -564,7 +581,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       on.exit(for(g in value_source_guards).brohn_qexplorer_release(g),add=TRUE)
       brohn_require(identical(brohn_hash(input),brohn_hash(brohn_signal_values_input(store,job))),"Exact-value source changed before its processing read guard was established.")
     }
-    if(job$operation %in% c("audio_tracks", "audio_extract", "audio_review", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "respiration_review", "emg_review", "eda_continuous_review", "answer_session", "signal_catalog", "signal_preview", "summarize_signal_windows") ||
+    if(job$operation %in% c("preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "audio_tracks", "audio_extract", "audio_review", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "respiration_review", "emg_review", "eda_continuous_review", "answer_session", "signal_catalog", "signal_preview", "summarize_signal_windows") ||
         (identical(job$operation,"analyse_dataset") && !is.null(input$derived_audio_lineage))) {
       # Keep every immutable parent readable but unwritable throughout the child
       # read, not only when publishing its output. Re-resolve authority after all
@@ -620,6 +637,11 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation,"questionnaire_index")) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"answer_session")) return(brohn_publish_answer_session(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"explicit_distributions")) return(brohn_publish_explicit_distributions(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"save_clock_map")) return(brohn_publish_clock_map_save(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"clock_plot")) return(brohn_publish_clock_plot(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"clock_window")) return(brohn_publish_clock_window(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"clock_event_page")) return(brohn_publish_clock_events(store, result, scratch, job, input, result_path))
+    if (identical(job$operation,"preview_clock_alignment")) return(brohn_publish_clock_preview(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"linked_review")) return(brohn_publish_linked_review(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"analyse_resolved_run")) return(brohn_publish_resolved_session(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"audio_review")) return(brohn_publish_audio_review(store, result, scratch, job, input, result_path))

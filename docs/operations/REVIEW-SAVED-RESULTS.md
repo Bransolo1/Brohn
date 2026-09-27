@@ -1,5 +1,10 @@
 # Review results and reopen saved views
 
+For two preserved recordings with independently recorded clocks, use the
+[reviewed alignment guide](REVIEW-ALIGNED-RECORDINGS.md). Its normal flow joins
+original events, saved map versions, complete measurement windows and automatic
+full-export charts. Exact history reopens without repeating scientific analysis.
+
 Open a saved report from its study or dataset. The report starts with **Results**.
 The Brohn GNAT view leads with the saved eligible scores and target/deadline
 labels. Acoustic reports lead with saved recording measurements, their units

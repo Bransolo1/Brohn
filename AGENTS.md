@@ -1,5 +1,11 @@
 # Brohn working agreement
 
+Current continuation, 27 September 2026: the owner again said "keep going".
+Reviewed clock selection/save/window/complete-chart/history now has scoped
+acceptance in `docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md`. Read the current
+workstream and handoff. Continue the full 50-capability/17-package build; the next
+connected packet is complete saved-report handoff. Publishing is not a pause.
+
 The owner explicitly resumed development on 24 September 2026 with "keep going",
 after publishing checkpoint `2b3b31a` to `Bransolo1/Brohn` on `main`. The earlier
 pause is revoked. Continue the full build through the workstream, with source

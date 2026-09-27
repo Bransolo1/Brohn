@@ -1,5 +1,11 @@
 # Integrated workflow continuation — 24 September 2026
 
+**Continuation, 27 September:** the [reviewed-clock checkpoint](PUBLICATION-REVIEWED-CLOCK-20260927.md)
+adds original event selection, exact preview, versioned map saves, complete row
+exports and automatic charts. Actual authoring, cancel/retry, previous-version
+retrieval, unchanged cold restart and final narrow layout are separately recorded.
+The full platform scope remains unfinished; this ledger is not whole-product sign-off.
+
 The owner reconfirmed sustained end-to-end implementation after the source
 publication checkpoint. This record tracks the subsequent connected work;
 publishing a checkpoint does not complete the 50-capability, 17-package plan.

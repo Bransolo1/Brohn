@@ -21,6 +21,7 @@ brohn_interchange_dataset_ui <- function(store, record) {
       shiny::actionButton("accept_multistream", if (d$status %in% c("accepted", "analysed")) "Save notes and preserve streams" else "Preserve streams", class = "btn-primary")),
     shiny::uiOutput("multistream_progress"), shiny::uiOutput("multistream_history"),
     shiny::uiOutput("linked_review_entry"),
+    brohn_clock_review_ui(),
     shiny::uiOutput("multistream_catalog"), shiny::uiOutput("multistream_stream_detail"))
 }
 

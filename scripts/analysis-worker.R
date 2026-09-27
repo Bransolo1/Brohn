@@ -71,6 +71,31 @@ if (identical(input$operation, "analyse_resolved_run")) {
   identity <- c(identity, hash_sources("R/platform-session-resolution.R"))
   source("R/platform-session-resolution.R", encoding = "UTF-8")
 }
+if (identical(input$operation, "save_clock_map")) {
+  paths <- c("R/platform-clock-preview.R", "R/platform-clock-map.R", "R/platform-clock-authority.R", "R/platform-clock-jobs.R", "R/platform-clock-map-save.R")
+  identity <- c(identity, hash_sources(paths))
+  for (path in paths) source(path, encoding="UTF-8")
+}
+if (identical(input$operation, "clock_plot")) {
+  paths <- c("R/platform-clock-preview.R", "R/platform-clock-map.R", "R/platform-clock-authority.R", "R/platform-clock-jobs.R", "R/platform-clock-window.R", "R/platform-clock-resources.R", "R/platform-clock-plot.R")
+  identity <- c(identity, hash_sources(paths))
+  for (path in paths) source(path, encoding="UTF-8")
+}
+if (identical(input$operation, "clock_window")) {
+  paths <- c("R/platform-clock-preview.R", "R/platform-clock-map.R", "R/platform-clock-authority.R", "R/platform-clock-jobs.R", "R/platform-clock-window.R")
+  identity <- c(identity, hash_sources(paths))
+  for (path in paths) source(path, encoding="UTF-8")
+}
+if (identical(input$operation, "clock_event_page")) {
+  paths <- c("R/platform-clock-preview.R", "R/platform-clock-map.R", "R/platform-clock-authority.R", "R/platform-clock-events.R")
+  identity <- c(identity, hash_sources(paths))
+  for (path in paths) source(path, encoding="UTF-8")
+}
+if (identical(input$operation, "clock_preview_candidate")) {
+  paths <- c("R/platform-clock-preview.R", "R/platform-clock-map.R", "R/platform-clock-authority.R", "R/platform-clock-jobs.R")
+  identity <- c(identity, hash_sources(paths))
+  for (path in paths) source(path, encoding="UTF-8")
+}
 if (identical(input$operation, "linked_review")) {
   identity <- c(identity, hash_sources("R/platform-linked-review.R"))
   source("R/platform-linked-review.R", encoding = "UTF-8")
@@ -91,6 +116,11 @@ native_sources <- if (identical(input$operation,"analyse_dataset") && identical(
   if (identical(input$operation, "respiration_review")) c("scripts/workers/respiration_review.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "emg_review")) c("scripts/workers/emg_review.py", "scripts/workers/physiology_artifacts.py") else
   if (identical(input$operation, "eda_continuous_review")) c("scripts/workers/eda_continuous_review.py", "scripts/workers/physiology_artifacts.py") else
+  if (identical(input$operation, "save_clock_map")) c("scripts/workers/clock_affine.py", "scripts/workers/validate_clock_preview_math.py") else
+  if (identical(input$operation, "clock_plot")) c("scripts/workers/clock_plot.py", "scripts/workers/clock_plot_worker.py") else
+  if (identical(input$operation, "clock_window")) c("scripts/workers/clock_window_worker.py", "scripts/workers/clock_window.py", "scripts/workers/clock_preview_worker.py", "scripts/workers/clock_preview.py", "scripts/workers/clock_affine.py", "scripts/workers/clock_source.py", "scripts/workers/stream_extract.py", "scripts/workers/validate_clock_preview_math.py") else
+  if (identical(input$operation, "clock_event_page")) c("scripts/workers/clock_events_worker.py", "scripts/workers/clock_events.py", "scripts/workers/clock_preview_worker.py", "scripts/workers/clock_preview.py", "scripts/workers/clock_affine.py", "scripts/workers/clock_source.py", "scripts/workers/stream_extract.py") else
+  if (identical(input$operation, "clock_preview_candidate")) c("scripts/workers/clock_preview_worker.py", "scripts/workers/clock_preview.py", "scripts/workers/clock_affine.py", "scripts/workers/clock_source.py", "scripts/workers/stream_extract.py", "scripts/workers/validate_clock_preview_math.py") else
   if (identical(input$operation, "linked_review")) c("scripts/workers/linked_review.py", "scripts/workers/stream_extract.py") else
   if (identical(input$operation, "vision_index")) "scripts/workers/vision_explorer.py" else
   if (identical(input$operation, "vision_frame")) c("scripts/workers/vision_frame.py", "scripts/workers/vision.py", "scripts/workers/vision_explorer.py") else

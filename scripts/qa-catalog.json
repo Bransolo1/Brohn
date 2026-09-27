@@ -12,6 +12,7 @@
     }
   },
   "tests": [
+    {"id":"clock-python","suite":"interchange","path":"tests/platform-clock-python.R","timeout_s":2100},
     {"id":"gnat","suite":"domain","path":"tests/platform-gnat.R","timeout_s":300},
     {"id":"gnat-replay","suite":"domain","path":"tests/platform-gnat-replay.R","timeout_s":360},
     {"id":"gnat-import","suite":"domain","path":"tests/platform-gnat-import.R","timeout_s":300},

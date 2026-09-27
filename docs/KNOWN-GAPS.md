@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **25 September 2026** for the ongoing end-to-end implementation.
+Updated **27 September 2026** for the ongoing end-to-end implementation.
 The owner resumed development after the published source checkpoint. The
 [workstream](WORKSTREAM.md) orders the active implementation;
 these gaps and the full capability/package scope remain open.
@@ -24,13 +24,20 @@ records describing only the 01A–01L prototype are historical.
   13–14 s; task source readiness about 8–12 s on the tested local corpus. Media
   images can still be loading after headings/links appear. Larger/concurrent
   loads and wider report families remain unqualified.
-- **Reviewed cross-recording alignment:** the
-  [two-event contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) has externally
-  qualified local backend and hosted-actor paths, alongside exact arithmetic,
-  source inspection, original-event paging, exports and versioned map storage.
-  The normal researcher selection/preview/save/review/export UI is still being
-  built and its full browser journey remains pending. No alignment is enabled
-  by the current source checkpoint; physical synchronization is not established.
+- **Wider clock and playback scope:** the [reviewed two-event flow](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md)
+  now connects original selection, saved versions, full exports, automatic charts,
+  cancellation/retry and historical restart. It supports two recordings with
+  one event channel and one or two scalar signals each. More clock profiles,
+  reset-spanning maps, continuous playback, arbitrary channels and robust
+  retained-CSV paging remain open; physical synchronization is not established.
+- **Complete report handoff:** a primary report download does not yet package
+  accepted selected paired/task/explicit/signal figures with their numerical
+  companions. Build one saved source-bound package interface, beginning with
+  controlled gaze plus explicit liking. Do not silently equate a default static
+  gaze/neural figure with a complete selected-findings deliverable.
+- **Post-collection restrictions:** collection-time withdrawal exists, but
+  descendant/report restrictions and older-backup restore enforcement need a
+  durable ledger and scoped workflow. Restriction is not physical erasure.
 
 - **Complete measurement review:** the enabled-profile
   [visual coverage audit](qa/MEASUREMENT-VISUAL-COVERAGE-AUDIT.md) identifies

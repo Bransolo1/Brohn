@@ -4,12 +4,12 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-25",
-    "publication_handoff": "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md",
+    "date": "2026-09-27",
+    "publication_handoff": "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability/17-package build remains active and unfinished. Saved media/task preparation now has source-phased responsiveness, focused progress, exact export and restart acceptance. Original guards and scientific results remain unchanged. Multi-second synchronous opening and wider workloads remain open. Reviewed clock local backend and hosted-actor paths are externally qualified; normal researcher UI and connected acceptance remain pending and are not enabled here."
+    "note": "The full 50-capability/17-package build remains active and unfinished. Reviewed original-event clock selection, exact previews, immutable map versions, complete windows and automatic full-export plots now have connected retry/history/export/restart and final mobile acceptance. Current-source/reader guards and original scientific results remain intact. Physical synchronization, wider clock/channel/playback/workload scope, complete report handoff and post-collection restrictions remain open. Publication is not a pause."
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -83,7 +83,9 @@
         "tests/platform-ingestion-views.R",
         "docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md",
         "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
-        "docs/qa/CANONICAL-ENCODER-PERFORMANCE.md"
+        "docs/qa/CANONICAL-ENCODER-PERFORMANCE.md",
+        "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
       ],
       "acceptance": [
         "Duplicate allocation/job requests are idempotent; conflicts are explicit.",
@@ -268,7 +270,9 @@
         "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
-        "docs/qa/MIXED-STUDY-JOURNEY.md"
+        "docs/qa/MIXED-STUDY-JOURNEY.md",
+        "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
       ],
       "acceptance": [
         "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
@@ -697,7 +701,9 @@
         "docs/qa/MEDIA-REOPEN-PERFORMANCE-ACCEPTANCE.md",
         "docs/qa/MEDIA-REOPEN-FEEDBACK-ACCEPTANCE.md",
         "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md",
-        "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md"
+        "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md",
+        "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -772,7 +778,9 @@
         "docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md",
         "docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md",
         "tests/media-feedback/REPRODUCE.md",
-        "tests/TASK-PLOT-REPRODUCE.md"
+        "tests/TASK-PLOT-REPRODUCE.md",
+        "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",

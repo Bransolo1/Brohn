@@ -1,5 +1,20 @@
 # Changes
 
+## Reviewed cross-recording alignment — 2026-09-27
+
+- Connected original-event selection, exact preview with independent checks,
+  named immutable map versions, complete original-row windows and four exports.
+- Added automatic full-export plots with separate signal/event lanes, retained
+  gaps, exact numerical evidence and independent cancel/retry. Plot preparation
+  does not block original downloads or rerun scientific analysis.
+- Qualified actual version revision, earlier-view reopening, restart, fresh
+  authority and stale-download refusal. Final mobile layout shows the first
+  complete signal figure without manual scrolling after readiness.
+- Added self-contained Python and Node checks; seven existing core suites pass.
+  Scope, source phases and retained failures are in
+  `docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md`.
+- Continued the full roadmap; next is complete selected-findings report handoff.
+
 ## Saved-review responsiveness and focused progress — 2026-09-25
 
 - Reduced repeated complete source preparation during saved-media opening and

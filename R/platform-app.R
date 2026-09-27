@@ -49,6 +49,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   brohn_install_explicit_distribution_server(input, output, session, store, state, attempt, message, prepare_download)
   brohn_install_paired_plots(input, output, session, store, state, attempt, prepare_download)
   brohn_install_linked_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
+  brohn_install_clock_review(input, output, session, store, state, attempt)
   media_review <- brohn_install_media_review(input, output, session, store, state, attempt, message, refresh, prepare_download)
   brohn_install_audio_review(input, output, session, store, state, attempt, message, refresh, prepare_download, open_media = media_review$open)
   brohn_install_audio_extraction(input, output, session, store, state, attempt, message, refresh, prepare_download)

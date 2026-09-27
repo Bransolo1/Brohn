@@ -1,7 +1,7 @@
 # Reviewed alignment between two recordings
 
-24 September 2026. **Implementation contract for the next PC12 slice; not an
-enabled feature.** This extends `centralization.recordings` without changing
+Updated 27 September 2026. **Enabled as a scoped reviewed original-row
+alignment and complete-display profile.** See the [connected acceptance](../qa/PUBLICATION-REVIEWED-CLOCK-20260927.md). This extends `centralization.recordings` without changing
 the existing same-import linked-review or one-anchor interval-reuse contracts.
 Complete saved-review discovery is the preceding workstream.
 
@@ -28,7 +28,7 @@ timestamp jitter and system delay. This supports keeping original observations
 and mapping evidence separate; it does not validate a particular Brohn mapping
 or the accuracy of manually matched events. Reviewed 24 September 2026.
 
-Brohn's first proposed profile is
+Brohn's first enabled review profile is
 `reviewed-two-event-affine/0.1.0-draft`: exactly two reviewed correspondences
 define a positive affine map within one unambiguous epoch on each recording.
 Additional selected events may check the map but do not silently refit it.
@@ -174,3 +174,33 @@ inference; this first profile supports auditable review/export only.
 Passing this slice would establish the specified software mapping/review route.
 Physical-device timing, inferred event equivalence, empirical uncertainty and
 general multimodal validity remain distinct evidence requirements.
+
+## Complete saved-window display and operational scope
+
+The connected flow implements original-event paging, independently reviewed
+preview, supervised named-map save, exact original-window preparation and
+`clock_plot` as separate durable operations. R owns source/identity/permission
+and publication rules. Bounded Python workers preserve exact rational
+coordinates. The display worker reads all four complete original exports,
+retains actual first/minimum/maximum/last representatives in up to 512 time bins,
+and never joins original gaps or identity boundaries. At most 2,000 selected
+events use individual marks; larger event sets use complete count bins.
+
+The current selection supports one event channel and one or two scalar signals
+per recording. The plot artifact is bounded at 8 MiB and 32,768 signal vertices;
+exact input/export bounds remain independently enforced. Chart JSON records
+complete coverage, source rows, separate units/ranges, original references and
+unknown synchronization uncertainty. Accessible SVG is a projection of that
+qualified saved artifact, with complete numerical exports alongside it.
+
+Window resources seal every original input and exported artifact before full
+verification. Plot resources borrow that verified window and seal their two
+additional retained files. Current reader/source/job checks are repeated on
+delivery without caching permission. The original four exports remain usable
+while the independent chart is pending, cancelled or failed. Historical plots
+reuse exact window identity; numerical-page changes currently retain separately
+identified windows. Robust retained-CSV paging is an explicit future optimization.
+
+These Windows resource and scoped hosted-actor checks do not qualify physical
+timing, all devices, public deployment, continuous playback or a new scientific
+mapping recipe. See the checkpoint for distinct source phases and known gaps.

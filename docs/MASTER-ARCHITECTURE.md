@@ -1,31 +1,34 @@
 # Brohn master architecture and large-build contract
 
-**Current checkpoint, 25 September 2026:** saved media and task review now have
-[joined responsiveness and progress acceptance](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md).
-Media preparation uses same-call verified contexts; task evidence/plots use
-bounded exact-value digest reuse. Neither caches permissions or skips original
-source verification/full journal replay. Specific status is painted in view
-before expensive synchronous reads. Versioned UI tickets fence stale work,
-control restoration and completion focus; deliberate user movement is respected.
-Scientific values, original artifacts and exports remain unchanged. Complete
-source opening still takes several seconds; wider workload performance is open.
+**Current checkpoint, 27 September 2026:** the
+[reviewed-clock workflow](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) now connects
+original event selection, supervised exact previews, named map versions,
+complete original-row windows and automatic full-export charts. Original export
+readiness is independent of chart preparation. Current reader/source checks,
+native read seals and session-bound downloads preserve exact earlier versions
+across retry and restart. The tested phone view presents the first complete
+signal figure when ready. Read the
+[contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md) and
+[researcher guide](operations/REVIEW-ALIGNED-RECORDINGS.md) for supported bounds.
+Physical synchronization is not established and scientific recipes do not
+silently consume the reviewed map.
 
-The [results and history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
-continues to govern Results/Explore/Evidence, metadata paging and exact saved
-view restoration. The [reviewed two-event clock contract](architecture/REVIEWED-CLOCK-ALIGNMENT.md)
-now has externally qualified local backend and hosted-actor paths. Its normal
-event-selection, preview/save, review/export and history UI is under development;
-connected researcher qualification remains pending. These external components
-enable no new alignment or scientific recipe in the published application.
-The complete 50-capability/17-package scope below is retained and unfinished.
+The [results/history architecture](architecture/RESULTS-AND-SAVED-HISTORY.md)
+still governs saved findings and exact views. The next connected packet is a
+complete report package that preserves selected findings/figures and full
+numerical companions, starting with controlled gaze plus explicit liking.
+Post-collection restrictions, broader workloads, wider clock/playback methods
+and remaining measurement/device/operation gates stay open. Saved-source opening
+still takes several seconds despite scoped responsiveness gains. The complete
+50-capability/17-package scope below remains active and unfinished.
 
 **Explicitly resumed 24 September 2026 after checkpoint `2b3b31a`.** The
 [workstream](WORKSTREAM.md) and [current checkpoint](qa/PUBLICATION-SAVED-MEDIA-20260924.md)
 record delivered work and ordered continuation. Portable connected verification
 and complete facial review now have scoped acceptance;
 [declared video/audio mapping](architecture/SAVED-MEDIA-REVIEW.md) passes
-its separate gap/export/restart journey. Next are configured catalog portability
-and the named GNAT procedure's complete vertical integration. The full scope below is retained; publication does not
+its separate gap/export/restart journey. Those configured-core and GNAT
+vertical-integration slices were subsequently accepted; see the current workstream. The full scope below is retained; publication does not
 establish completion.
 
 **Resumed 20 September 2026:** the owner resumed implementation, keeping the
@@ -34,7 +37,7 @@ Brohn name. [Current status](../STATUS.md) and the
 record the latest connected work and its scoped acceptance. [John's handoff](HANDOFF-JOHN.md) preserves the
 8 September stopped checkpoint. This plan remains incomplete.
 
-Revision 2026-09-25, retaining the September 8 full-scope contract. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
+Revision 2026-09-27, retaining the September 8 full-scope contract. **This is the authoritative implementation plan.** It expands the earlier eye/EEG/EDA examples into a holistic platform and incorporates the executable method/tooling preparation. The [50-capability register](preparation/capability-register.json), [scope explanation](preparation/HOLISTIC-CAPABILITIES.md), [build manifest](preparation/build-manifest.json) and [method specifications](methods/reuse/README.md) are its companions. Earlier documents in `docs/planning` retain detailed source research and the 238-ticket archive; conflicting example defaults or sequence labels there do not override this plan.
 
 The destination is a premium, accessible R-first workspace for undergraduate and commercial researchers: design controlled studies, combine implicit/explicit/physiological measures, collect or import once, and receive traceable analysis with minimal intervention. Breadth is part of the architecture from the start. Features become available when their complete study-to-report route works, rather than from the presence of a package or an empty screen.
 
