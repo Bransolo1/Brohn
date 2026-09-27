@@ -1,0 +1,157 @@
+{
+  "schema": "brohn-task-report-public-source-receipt/0.1",
+  "date": "2026-09-27",
+  "status": "accepted_source_checkpoint",
+  "baseline_commit": "763fd597ebad477f9c37313ad66305e542095feb",
+  "scope": "Scoped seven-profile task report handoff; no full-platform completion, new estimator, live-device or public-host qualification.",
+  "components": {
+    "R/platform-jobs.R": "809d9f93bddfb1b2a745823fac415a431f9ffae96d58af834634f64274b089c7",
+    "R/platform-load.R": "b09bd1d2e20fa21145a4fa8ff1a7e63c567e9fa3d97f1b388fb3c0f392e98f26",
+    "R/platform-report-package-authority.R": "590550f6291935fdda9c913ab86bfccc23e0d8e798d1342e5590b94664c062c3",
+    "R/platform-report-package-distributions.R": "fbc569fb8dd4ff1018298ba6c1c771d608e141a5e4f2348a5ab63c0e0fb84282",
+    "R/platform-report-package-preparation.R": "3cabed8ec97a2eb0fcb344f105cf710ff313d0fe84bb8b2dfe1d36c96c9b14ac",
+    "R/platform-report-package.R": "21c416a6670399d478889ea0b8420bb9ba85135c57ffca0d018891e5a1cabd6b",
+    "R/platform-run-evidence.R": "cb0a5e826590d913f45c1c6da6e435f37d2e3635da2c66db6c6f7859fa3b485e",
+    "scripts/analysis-worker.R": "3a5cb55de47d7936934193f983d3ae1eaf3fc96a2294e58e3beedd4762b3350a",
+    "tests/platform-run-evidence.R": "3ca916b87b0e87c398e9590b62716a6345bbe02790ccefcfe402a4feb5b8b4c5",
+    "tests/report-task-package-intents.R": "6c6bb0ebfbeded12527cf6f285018f2b3aa71b7646335dc47531968a31cd21d8",
+    "R/platform-task-display.R": "77612331425f5f60beb2c34d2ba3d09d72a84ee5743eea11f4dad793f6c65da4",
+    "R/platform-task-display-sources.R": "458d2b4d488c6ac8b2f838e94282ed35c5ee674a38a4db34211b127309cb74d9",
+    "R/platform-report-package-sources.R": "eb66a123da388faf5ac822c4828c86773364e6aaaaf40613e1b44c6dbc1e1409",
+    "R/platform-report-package-tables.R": "6ebc30fc699892d20d3f4f4f071dfd7d3a6ce9e04fca278d79b6cc6f1b598140",
+    "R/platform-report-package-tasks.R": "6d73e2adf21eddfb7898b55e8a13eb4287a6e6ce82f67c510051bce68abffd8d",
+    "R/platform-report-package-render.R": "53632bd3afbe8514611e6dd5f66dad62ea5ede2aa297f49828c7e82d905d083c",
+    "R/platform-report-package-views.R": "e8872ce72a0b59eb1e02d7b267bccb7f6af5895ab57523ddf93910a7e3139792",
+    "R/platform-report-package-server.R": "bd56598f8bd9c344e39cd9ea76478a2aa81604623163a6fb9b2926a8e671b17f",
+    "tests/report-task-package-ui-state.R": "6d8d8230090aec41994d52f6a030d7cd1bf7a4d0947da180344c07ff2e9ce6e9",
+    "tests/report-task-display-backend.R": "a4c86408fa70077de65678f1a6b1b3439e385d2cc7c5ca25392fcecdb3cfc63d",
+    "tests/report-task-display-boundaries.R": "aad8ec5b551f98972f205be095d115305cde8d0100efe4a5db31114fe615a2b0",
+    "tests/report-task-display-models.R": "897cbb157793f2ff83b508cbdead0db8ec08ef5e7af5a06e199690e3f2202428",
+    "tests/report-task-display.py": "c384e52c4cfaa239e40c0156f10fe61a49335576fa363caeb66b909a6fcc6457",
+    "tests/report-task-source-corpus.R": "d218231386d7701369fbe5e5db13a68a8bb28a5d7839571484a89409c517c003",
+    "tests/REPORT-TASK-DISPLAY-REPRODUCE.md": "205105dd225afec17d780d3948df4c41ea4360bdd90c7621986f040e54dd381f"
+  },
+  "evidence": [
+    {
+      "phase": "final_browser",
+      "receipt": "journey-05/BROWSER-ACCEPTANCE.json",
+      "sha256": "d38a870546065085119fc13211c3fbbd018ce8a488c770c60171137f5c90708e",
+      "bytes": 3161
+    },
+    {
+      "phase": "final_initial",
+      "receipt": "journey-05/browser-initial-01/result.json",
+      "sha256": "678995d97c9c1760b84d71bb69384f5e405787fde1786c49329558f3c8028249",
+      "bytes": 50678
+    },
+    {
+      "phase": "final_restart",
+      "receipt": "journey-05/browser-restart-01/result.json",
+      "sha256": "0e825d5417efc7e3a7f9260208bd13364485c7b40fe9fb570be2bab8a0ea1cff",
+      "bytes": 17471
+    },
+    {
+      "phase": "final_native_mobile",
+      "receipt": "journey-05/mobile-native-01/results.json",
+      "sha256": "fd6d077cfe3fd7560f3dfb78175eaf4ed3778ba10a14151e1b74a92dcf512c5f",
+      "bytes": 25631
+    },
+    {
+      "phase": "final_import_mobile",
+      "receipt": "journey-05/mobile-import-01/results.json",
+      "sha256": "c84d28572c6151a6b8336f48a7c68e4a3009ae91647827711bc5973ac1a73666",
+      "bytes": 45125
+    },
+    {
+      "phase": "final_conservation",
+      "receipt": "journey-05/conservation-01.json",
+      "sha256": "36fabba50eb29c6d52be86a40d16ac9365099443086416c0e1a9d1476dd1dbbf",
+      "bytes": 2047
+    },
+    {
+      "phase": "final_download_science",
+      "receipt": "browser-oracle-final-02/results.json",
+      "sha256": "4961a89e27e050c7c6b6611cfa2461039f824c9873c4a18980b79b4cdc822f33",
+      "bytes": 19199
+    },
+    {
+      "phase": "comparison_boundary",
+      "receipt": "comparison-boundary-01/results.json",
+      "sha256": "694e5ddaa65304b112e67054b3402215d1a221dbe2367d256fa33a622956463c",
+      "bytes": 1059
+    },
+    {
+      "phase": "mobile_presentation_delta",
+      "receipt": "PURE-TASK-MOBILE-ACCEPTANCE.json",
+      "sha256": "e4b28bf172d4b70d2789b1138e31eb75759d066dc32fec3ee6d7a6b4de8efbfa",
+      "bytes": 2686
+    },
+    {
+      "phase": "portable_pure",
+      "receipt": "PORTABLE-PURE-TEST-MAP.json",
+      "sha256": "1f8618058489618da447c5380459cbc5479d38d2b57b1108af343624c77b320d",
+      "bytes": 2631
+    },
+    {
+      "phase": "backend_phase",
+      "receipt": "BACKEND-ACCEPTANCE.json",
+      "sha256": "d45f844cd1db06a44f2c629ae6500d6d996be7ccd0276abcbc96974fdf132421",
+      "bytes": 3885
+    },
+    {
+      "phase": "portable_source_display_phase",
+      "receipt": "PORTABLE-TEST-ACCEPTANCE.json",
+      "sha256": "79430ba5eb6a05d251bcf465866b9b0da9d76478f036d98a68898ffcdbcc4439",
+      "bytes": 1581
+    },
+    {
+      "phase": "panel_limit",
+      "receipt": "panel-limit-03/independent-acceptance.json",
+      "sha256": "5e5ac23d4152e8d37306d2e2249a35525f4004351463cb79be038753cb387ab8",
+      "bytes": 2413
+    }
+  ],
+  "counts": {
+    "final_browser_initial": 93,
+    "initial_accessibility_overflow_scans": 18,
+    "final_restart": 17,
+    "actual_download_mobile_native": 33,
+    "actual_download_mobile_import": 45,
+    "actual_download_mobile_scans_each": 2,
+    "conservation": 13,
+    "original_scientific_jobs": 2,
+    "original_reports": 2,
+    "original_objects": 23,
+    "original_workspace_files": 34,
+    "candidate_files_unchanged": 1337,
+    "new_task_display_jobs": 2,
+    "new_distribution_jobs": 1,
+    "new_assembly_jobs": 4,
+    "restart_new_jobs": 0,
+    "final_download_wrapper_checks": 28,
+    "final_download_scientific_checks": 69,
+    "final_download_scientific_scalars": 21454,
+    "portable_pure_R": 19,
+    "portable_pure_independent_Python": 230
+  },
+  "phase_boundaries": [
+    "Original source generation occurred before the browser/export boundary.",
+    "Backend05 and generated-source portable smoke retain their prior declared source phases; the later selector correction has its own regression.",
+    "Only scoped legacy/intent/transport regressions were executed; no full 408-core rerun is claimed for this slice.",
+    "Panel118-to20 recovery is API/native-worker evidence, not browser-limit interaction.",
+    "Task material definitions/hashes are complete; task image bytes/context panels are unsupported.",
+    "Actual mobile exports use accessible horizontal panning, not responsive chart relayout.",
+    "Prior failures remain external; final comparator correction changed test semantics only, preserving exact source-bound distribution bytes."
+  ],
+  "retained_failure_refs": [
+    "browser-oracle-final-01",
+    "journey-04",
+    "backend-01",
+    "backend-02",
+    "backend-03",
+    "backend-04",
+    "panel-limit-01",
+    "panel-limit-02"
+  ],
+  "privacy": "Only source hashes and sanitized phase summaries are included; no raw study stores, participant records, runtime configuration, credentials or local executable paths."
+}

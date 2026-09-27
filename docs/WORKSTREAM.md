@@ -1,5 +1,11 @@
 # Brohn workstream and restart checklist
 
+**Task-report checkpoint, 27 September 2026:** seven-profile complete task findings
+can accompany explicit liking/scales using exact prepared historical evidence.
+The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
+See [acceptance evidence](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). Its work spans
+BWP04/BWP10/BWP13/BWP15/BWP17; none is closed by this slice.
+
 **Explicitly resumed by the owner on 24 September 2026** with "keep going",
 after checkpoint `2b3b31a` was published to `Bransolo1/Brohn`, branch `main`.
 The saved-media, configured contributor QA and distinct GNAT slices have scoped
@@ -9,7 +15,8 @@ preparation now have scoped responsiveness and focused-progress acceptance.
 Reviewed cross-recording selection, saved windows and complete charts now have
 scoped connected acceptance. The first saved-findings report handoff now has
 scoped acceptance for gaze, questionnaire and paired findings; broader report
-families, source-opening latency and workload qualification remain open.
+families, source-opening latency and workload qualification remain open. The
+seven-profile task/liking extension now also has scoped connected acceptance.
 The full build continues across these checkpoints.
 
 The platform is unfinished. The [master architecture](MASTER-ARCHITECTURE.md),
@@ -22,6 +29,7 @@ This file orders the immediate continuation; it does not replace that scope.
 | Workstream | Delivered and checked | Remaining work |
 | --- | --- | --- |
 | Saved-download HTTP | Shared finalizer on 19 saved callbacks / 24 export variants and hosted 403; exact bytes, empty HEAD, current authority and native paired/history compatibility. | Framework downloadHandlers, participant/static/range/compressed routes retain separate contracts. |
+| Saved task/liking handoff | Seven enabled native/imported task profiles and saved cohorts, complete numerical evidence, exact prepared history, phone-readable exports and unchanged restart; scoped final acceptance. | Choice/MaxDiff next; task stimulus image bytes/context panels, further report families and wider workloads remain open. |
 | Saved-findings handoff | Durable one-action prerequisites, exact historical choices, standalone HTML/evidence ZIP and complete included numerical collections; scoped connected acceptance. | Further report families, larger profiles, original/raw-evidence bundles and scoped post-collection restrictions. |
 | Reviewed cross-recording clocks | Original-event selection, exact preview, versioned save, complete original-row exports, automatic charts, independent retry and unchanged historical restart; connected and final mobile acceptance. | Complete playback, additional clock/reset profiles, arbitrary channel counts, retained-CSV paging and wider workload qualification. |
 | Saved-result reports | Results/Explore/Evidence, first-screen saved GNAT/acoustic measurements, long-title phone layout, exact exports and joined restart evidence. | Focused preparation/readiness and task-source digest reuse now qualified; several-second synchronous reads and wider report families/load qualification remain. |
@@ -53,20 +61,26 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Broader saved-result and package coverage (PC02/PC05; BWP07/BWP13/BWP15).**
-   The accepted complete-findings profile supports saved gaze, questionnaire and
-   paired evidence. Add further enabled-family adapters only with complete
-   numerical/provenance coverage and source/permission tests. Task/choice,
-   EEG/physiology, facial/media and other report families retain their current
-   exports until separately qualified. Larger profiles and original/raw-evidence
-   bundles remain separate work; never silently omit unsupported collections.
-   The next useful adapter is saved task findings with explicit liking, covering
-   the seven enabled task profiles (including GNAT and SC-IAT). It needs exact
-   historical source reads and a pinned saved display/audit path; the current
-   task explorer's current-head checks and delivery-journal replay are not a
-   byte-only historical export contract. MaxDiff and complete physiological
-   artifact adapters follow. Supported questionnaire scales already belong to
-   the first profile; they are not an entirely missing report family.
+1. **Choice/MaxDiff complete report adapter (PC02/PC05;
+   BWP04/BWP10/BWP13/BWP15/BWP17).** The seven-profile task/liking checkpoint
+   has final researcher, mobile, export and restart acceptance. Extend the same
+   flow to complete saved choice counts, fitted/unavailable/not-requested model
+   states and their numerical evidence. Freeze explicit mixed task/choice source
+   admission before implementation; old task profiles and historical packages
+   must retain their original strict contracts. Preserve exact saved models;
+   package preparation must not fit another estimator. The next adapter remains
+   planned, not enabled by this documentation.
+   Task material definitions/hashes remain complete, but task stimulus image
+   bytes/context panels are still unsupported; optional images currently cover gaze.
+   Later adapters cover complete neural/physiological and camera/media evidence.
+   Known unsupported mixed collections retain existing exports and a precise
+   reason; never silently trim complete evidence. Larger profiles, raw/original
+   bundles and wider task methods remain open.
+   Alongside this adapter, replace researcher-facing task metric keys with plain
+   labels and brief explanations for all seven profiles. Preserve canonical
+   keys, exact values, units and support in evidence; distinguish an individual
+   administration from cohort means of individual metrics. This display-only
+   continuation does not change the accepted checkpoint or its scores.
 
 2. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
    accepted source guards, exact outputs and ticket/focus behavior. The current

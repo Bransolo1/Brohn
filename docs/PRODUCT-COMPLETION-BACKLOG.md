@@ -36,8 +36,13 @@ scoped acceptance (PC02/PC05/PC13; BWP07/BWP13/BWP15), preserving complete
 included numerical collections and exact history. Other report families and
 post-collection restrictions remain open. Shared saved-download framing now has
 [scoped callback/native/browser qualification](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md).
-Immediate continuation expands task/liking and MaxDiff package adapters and
-remaining latency work. Framework and participant transport remain separate.
+The task/liking report checkpoint now has complete seven-profile source and
+prepared-display evidence plus final mobile, researcher, export and restart acceptance;
+see [its source-phased record](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). It advances
+PC02/PC05/PC13/PC16 and BWP04/BWP10/BWP13/BWP15/BWP17 without closing them. Task
+stimulus image bytes/context panels, MaxDiff and wider report-family adapters,
+remaining latency and post-collection restrictions remain open. Framework and
+participant transport remain separate.
 No broader requirement or capability is closed by these slices.
 
 | ID | Required outcome | Acceptance before closing | Status |

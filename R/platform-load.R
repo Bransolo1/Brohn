@@ -42,8 +42,8 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (file.exists("R/platform-maxdiff.R")) platform <- c(platform, "maxdiff", "maxdiff-platform", "maxdiff-import")
   # Static report primitives are pure definitions, shared by UI and workers.
   platform <- c(platform, "gaze-report-views", "explicit-distribution-views", "paired-plot-views",
-    "report-package-tables", "report-package-render", "report-package-authority",
-    "report-package-sources", "report-package-distributions", "report-package")
+    "task-plot-views", "report-package-tables", "report-package-tasks", "report-package-render", "report-package-authority",
+    "task-display-sources", "task-display", "report-package-sources", "report-package-distributions", "report-package", "report-package-preparation")
   for (file in c(paste0("R/", legacy, ".R"), paste0("R/platform-", platform, ".R"))) source(file, local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-reuse-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-cardiac-review-views.R", local = envir, encoding = "UTF-8")

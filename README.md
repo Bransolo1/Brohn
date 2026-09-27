@@ -39,6 +39,14 @@ Read the [scoped checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md)
 for tested boundaries. This profile uses the configured methods environment
 with **CPython 3.12.10 and Pillow 12.3.0**; see installation instructions.
 
+The [task-report profile](docs/architecture/SAVED-TASK-REPORT-PACKAGES.md)
+adds complete saved findings for IAT, BIAT, AAT, simple and choice reaction time,
+Brohn response-window SC-IAT and Brohn single-target GNAT beside explicit liking
+and scales. Native, imported and saved-cohort evidence have separate source
+contracts. No new score or task–liking estimator is introduced.
+The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
+Read the [acceptance evidence](docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md) for limits.
+
 ## What is connected
 
 | Workflow | Current local application |

@@ -191,6 +191,41 @@ local({
   finish_job(job)
   workspace_id <- store$workspace_id; brohn_close_store(store); store <- brohn_open_store(root)
   check("reopened source retains exact run identity and original protocol hash", identical(store$workspace_id, workspace_id) && identical(DBI::dbGetQuery(store$con, "SELECT protocol_hash FROM delivery_runs WHERE id=?", params = list(original$id))$protocol_hash[[1]], rawhash(original$protocol_json)))
+  # Real task-display job leases exercise the same transport. These source
+  # fixtures qualify its mechanical boundary, not task/report source authority.
+  legacy_checks <- length(checks)
+  task_request <- list(schema="brohn-task-display-job/0.1",project_id=saved$project_id,
+    report_ref=list(kind="report",id="report-transport-fixture",revision=1L,
+      body_hash=rawhash("synthetic report binding"),project_id=saved$project_id))
+  task <- claim(task_request,"task_display",lease=2)
+  scope <- .brohn_run_evidence_source_scope(store,original$id)
+  task_path <- scratch()
+  task_input <- brohn_prepare_run_evidence_transport(store,task,task_path,list(original$id),scope)
+  task_read <- brohn_read_run_evidence_transport(brohn_parse(brohn_json(task_input)),task_path,"task_display")
+  check("task transport preserves its genuine operation, request and lease",identical(task_input$operation,"task_display") &&
+    identical(task_input$run_evidence$job_id,task$id) && .brohn_run_evidence_equal(task_input$run_evidence$request,task_request) &&
+    brohn_get_job(store,task$id)$lease_until-.brohn_store_now()>45)
+  check("task and scientific transport preserve identical original receipts",.brohn_run_evidence_equal(task_input$run_evidence$runs,input$run_evidence$runs))
+  check("task transport preserves every original decimal, null, false and Unicode value",.brohn_run_evidence_equal(task_read$events,hydrated$events))
+  check("scientific reader refuses task operation",rejects(brohn_read_run_evidence_input(task_input,task_path),"does not use completed-run"))
+  check("task caller refuses scientific operation",rejects(brohn_read_run_evidence_transport(input,path,"task_display"),"operation differs"))
+  check("task transport refuses duplicate membership",rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(original$id,original$id),scope),"distinct"))
+  check("task transport refuses empty membership",rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(),scope),"distinct"))
+  for (field in c("study_id","project_id","deployment_id","design_hash","origin")) {
+    wrong <- scope; wrong[[field]] <- if(field=="design_hash")rawhash("different design")else if(field=="origin")"pilot"else paste0("foreign-",field)
+    check(paste("task scope binds",field),rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(original$id),wrong),"outside this frozen"))
+  }
+  check("task transport refuses cross-release membership",rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(original$id,foreign_run$id),scope),"outside this frozen"))
+  wrong <- task; wrong$token <- "wrong-real-task-lease"
+  check("task transport refuses a foreign lease",rejects(brohn_prepare_run_evidence_transport(store,wrong,scratch(),list(original$id),scope),"job lease"))
+  wrong <- task; wrong$request$report_ref$id <- "report-other"
+  check("task transport refuses changed report request",rejects(brohn_prepare_run_evidence_transport(store,wrong,scratch(),list(original$id),scope),"job lease"))
+  check("task transport cannot snapshot during catalog transaction",DBI::dbWithTransaction(store$con,
+    rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(original$id),scope),"outside a catalog")))
+  finish_job(task)
+  check("cancelled task cannot snapshot original rows",rejects(brohn_prepare_run_evidence_transport(store,task,scratch(),list(original$id),scope),"job lease"))
+  check("task snapshots never alter original participant rows",identical(before_rows,DBI::dbGetQuery(store$con,"SELECT * FROM delivery_events WHERE run_id=? ORDER BY sequence",params=list(original$id))))
+  cat("Legacy scientific transport checks:",legacy_checks,"; shared task transport checks:",length(checks)-legacy_checks,"\n")
   cat("Run evidence checks passed:", length(checks), "\n")
   cat("Large original journal bytes:", large_input$run_evidence$runs[[1]]$journal$bytes, "; compact input bytes:", nchar(brohn_json(large_input), type = "bytes"), "\n")
 })

@@ -113,8 +113,37 @@
 }
 brohn_prepare_run_evidence_input <- function(store, job, scratch) {
   .brohn_store_ready(store); .brohn_run_evidence_job(store, job)
-  brohn_require(!RSQLite::sqliteIsTransacting(store$con), "Prepare run evidence outside a catalog write or read transaction.")
   members <- .brohn_run_evidence_membership(job$operation, job$request)
+  scope <- .brohn_run_evidence_source_scope(store, members[[1L]])
+  brohn_prepare_run_evidence_transport(store, job, scratch, members, scope)
+}
+.brohn_run_evidence_source_scope <- function(store, run_id) {
+  row <- DBI::dbGetQuery(store$con, paste("SELECT r.study_id,d.project_id,r.deployment_id,d.design_hash,r.origin",
+    "FROM delivery_runs r JOIN delivery_deployments d ON d.id=r.deployment_id WHERE r.id=?"), params=list(run_id))
+  brohn_require(nrow(row)==1L, "Run protocol is missing or exceeds its source bound.")
+  as.list(row[1L,,drop=FALSE])
+}
+.brohn_run_evidence_transport_members <- function(members) {
+  brohn_require(brohn_array(members) && length(members)>0L &&
+    all(vapply(members, brohn_valid_id, logical(1))) && !anyDuplicated(unlist(members)),
+    "Select distinct retained run identities.")
+  invisible(members)
+}
+.brohn_run_evidence_scope <- function(scope) {
+  brohn_fields(scope,c("study_id","project_id","deployment_id","design_hash","origin"),label="Frozen run transport scope")
+  brohn_require(all(vapply(scope[c("study_id","project_id","deployment_id")],brohn_valid_id,logical(1))) &&
+    .brohn_run_evidence_sha(scope$design_hash) && brohn_text(scope$origin,16) && scope$origin %in% c("sample","pilot","live"),
+    "The frozen run transport scope is invalid.")
+  invisible(scope)
+}
+# Mechanical transport only: each caller establishes its own source authority
+# and exact membership. The task-display caller additionally compares these
+# original-byte receipts to the retained scientific producer's receipts.
+brohn_prepare_run_evidence_transport <- function(store, job, scratch, members, scope) {
+  .brohn_store_ready(store); .brohn_run_evidence_job(store, job)
+  brohn_require(job$operation %in% c("analyse_run","analyse_cohort","task_display"), "This operation does not use completed-run evidence.")
+  .brohn_run_evidence_transport_members(members); .brohn_run_evidence_scope(scope)
+  brohn_require(!RSQLite::sqliteIsTransacting(store$con), "Prepare run evidence outside a catalog write or read transaction.")
   scratch <- .brohn_store_contained(store, scratch)
   brohn_require(dir.exists(scratch), "Create the job's owned scratch directory before preparing run evidence.")
   directory <- file.path(scratch, "input-evidence")
@@ -142,7 +171,7 @@ brohn_prepare_run_evidence_input <- function(store, job, scratch) {
     list(run = head, deployment = deployment_row(head$deployment_id[[1]]))
   }))
   prepare <- function() {
-    runs <- list(); project_id <- NULL; common_design <- NULL; common_origin <- NULL; common_deployment <- NULL
+    runs <- list(); project_id <- scope$project_id
     for (i in seq_along(members)) {
       progress()
       row <- heads[[i]]$run
@@ -152,8 +181,8 @@ brohn_prepare_run_evidence_input <- function(store, job, scratch) {
       run <- .brohn_delivery_run(row); metadata <- run[setdiff(names(run), "protocol")]
       deployment <- heads[[i]]$deployment
       brohn_require(nrow(deployment) == 1L && identical(deployment$study_id[[1]], run$study_id) && identical(deployment$origin[[1]], run$origin), "Run and original release identities disagree.")
-      if (is.null(project_id)) {project_id <- deployment$project_id[[1]]; common_design <- deployment$design_hash[[1]]; common_origin <- run$origin; common_deployment <- run$deployment_id}
-      brohn_require(identical(deployment$project_id[[1]], project_id) && identical(deployment$design_hash[[1]], common_design) && identical(run$origin, common_origin) && identical(run$deployment_id, common_deployment) &&
+      brohn_require(identical(deployment$project_id[[1]], project_id) && identical(deployment$design_hash[[1]], scope$design_hash) &&
+        identical(run$origin, scope$origin) && identical(run$deployment_id, scope$deployment_id) && identical(run$study_id,scope$study_id) &&
         (is.null(job$request$deployment_id) || identical(job$request$deployment_id, run$deployment_id)) &&
         (is.null(job$request$project_id) || identical(job$request$project_id, project_id)) && (is.null(job$request$study_id) || identical(job$request$study_id, run$study_id)), "The requested run is outside this frozen release, study, project or origin.")
       metadata$design_revision <- deployment$design_revision[[1]]; metadata$design_hash <- deployment$design_hash[[1]]
@@ -226,16 +255,26 @@ brohn_prepare_run_evidence_input <- function(store, job, scratch) {
   invisible(TRUE)
 }
 brohn_read_run_evidence_input <- function(input, scratch) {
+  members <- .brohn_run_evidence_membership(input$operation, input$run_evidence$request)
+  actual <- input$run_evidence$runs
+  brohn_require(brohn_array(actual) && length(members)==length(actual), "Run evidence membership differs from the frozen request.")
+  brohn_require(all(vapply(seq_along(members),function(i)identical(members[[i]],actual[[i]]$metadata$id),logical(1))),
+    "Run evidence descriptor is invalid or belongs to another session.")
+  brohn_read_run_evidence_transport(input,scratch,input$operation)
+}
+brohn_read_run_evidence_transport <- function(input, scratch, expected_operation) {
   brohn_fields(input, c("schema", "operation", "project_id", "run_evidence"), label = "Run evidence input")
+  brohn_require(brohn_text(expected_operation,64) && expected_operation %in% c("analyse_run","analyse_cohort","task_display") &&
+    identical(input$operation,expected_operation), "Run evidence operation differs from its explicit caller.")
   evidence <- input$run_evidence
   brohn_fields(evidence, c("schema", "workspace_id", "job_id", "attempt", "request", "request_hash", "runs", "binding_hash"), label = "Run evidence manifest")
   brohn_require(identical(input$schema, "brohn-analysis-input/1.0") && identical(evidence$schema, "brohn-run-evidence-input/1.0") &&
     brohn_valid_id(input$project_id) && brohn_text(evidence$workspace_id, 128) && brohn_valid_id(evidence$job_id) && brohn_number(evidence$attempt, 1, .Machine$integer.max, TRUE) &&
     .brohn_run_evidence_sha(evidence$request_hash) && identical(evidence$request_hash, brohn_hash(evidence$request)) &&
     .brohn_run_evidence_sha(evidence$binding_hash) && identical(evidence$binding_hash, .brohn_run_evidence_binding(input)) && brohn_array(evidence$runs), "Run evidence manifest identity or integrity is invalid.")
-  members <- .brohn_run_evidence_membership(input$operation, evidence$request)
-  brohn_require(length(members) == length(evidence$runs), "Run evidence membership differs from the frozen request.")
-  runs <- list(); events <- list(); common_design <- NULL; common_origin <- NULL; common_deployment <- NULL
+  members <- lapply(evidence$runs,function(item)item$metadata$id)
+  .brohn_run_evidence_transport_members(members)
+  runs <- list(); events <- list(); common_design <- NULL; common_origin <- NULL; common_deployment <- NULL; common_study <- NULL
   for (i in seq_along(evidence$runs)) {
     item <- evidence$runs[[i]]
     brohn_fields(item, c("metadata", "protocol", "journal"), label = "Run evidence source")
@@ -250,8 +289,9 @@ brohn_read_run_evidence_input <- function(input, scratch) {
     raw <- readBin(protocol_path, "raw", n = 16*1024^2+1L)
     brohn_require(length(raw) == item$protocol$bytes && identical(.brohn_run_evidence_hash(raw), item$protocol$sha256), "Run protocol failed its original byte hash.")
     protocol <- .brohn_run_evidence_protocol(.brohn_run_evidence_decode(raw, 16*1024^2), item$metadata, input$project_id)
-    if (is.null(common_design)) {common_design <- protocol$value$design_hash; common_origin <- item$metadata$origin; common_deployment <- item$metadata$deployment_id}
+    if (is.null(common_design)) {common_design <- protocol$value$design_hash; common_origin <- item$metadata$origin; common_deployment <- item$metadata$deployment_id; common_study <- item$metadata$study_id}
     brohn_require(identical(protocol$value$design_hash, common_design) && identical(item$metadata$origin, common_origin) && identical(item$metadata$deployment_id, common_deployment) &&
+      identical(item$metadata$study_id,common_study) &&
       (is.null(evidence$request$deployment_id) || identical(evidence$request$deployment_id, item$metadata$deployment_id)) &&
       (is.null(evidence$request$project_id) || identical(evidence$request$project_id, input$project_id)) &&
       (is.null(evidence$request$study_id) || identical(evidence$request$study_id, item$metadata$study_id)), "Run evidence crosses the frozen cohort source boundary.")

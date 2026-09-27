@@ -1,19 +1,29 @@
 # Exact historical distribution prerequisites with explicit server-side authority.
 # Existing untagged distribution jobs retain their existing adapter.
 .brohn_rpk_distribution_schema <- "brohn-report-package-distribution-job/0.1"
-.brohn_rpk_distribution_request <- function(store,report_ref) {
+.brohn_rpk_distribution_implementation <- function() list(profile="saved-explicit-distribution/0.1",
+  sources=.brohn_rpk_loaded,distribution_sources=.brohn_ed_loaded,
+  runtime=list(R=as.character(getRversion()),jsonlite=as.character(utils::packageVersion("jsonlite")),digest=as.character(utils::packageVersion("digest"))))
+.brohn_rpk_distribution_implementation_ref <- function() {
+  x<-.brohn_rpk_distribution_implementation();list(profile=x$profile,hash=brohn_hash(x))
+}
+.brohn_rpk_distribution_request <- function(store,report_ref,implementation_ref=NULL) {
   authority<-brohn_report_package_queue_authority(store,"explicit_distributions",report_ref$project_id)
-  m<-.brohn_rpk_report_metadata(store,report_ref);.brohn_rpk_report_proof(store,m)
+  m<-.brohn_rpk_report_metadata(store,report_ref);.brohn_rpk_report_proof(store,m,task_enabled=!is.null(implementation_ref))
   brohn_require(identical(m$kind,"questionnaire"),"Choose a saved explicit-response report.")
-  list(schema=.brohn_rpk_distribution_schema,project_id=report_ref$project_id,report_ref=report_ref,
+  result<-list(schema=.brohn_rpk_distribution_schema,project_id=report_ref$project_id,report_ref=report_ref,
     result_object=m$result_object,artifact=m$questionnaire_artifact,implementation=.brohn_rpk_loaded,distribution_implementation=.brohn_ed_loaded,authority=authority)
+  if(!is.null(implementation_ref)){
+    brohn_require(.brohn_rpk_same(implementation_ref,.brohn_rpk_distribution_implementation_ref()),"The pinned response preparation changed. Prepare these choices as a new version.")
+    result$preparation_implementation_ref<-implementation_ref
+  };result
 }
 .brohn_rpk_latest_job <- function(store,operation,fingerprint) {
   rows<-DBI::dbGetQuery(store$con,"SELECT * FROM jobs WHERE operation=? AND json_extract(request_json,'$.content_fingerprint')=? ORDER BY created_at DESC,rowid DESC LIMIT 1",params=list(operation,fingerprint))
   if(!nrow(rows))NULL else .brohn_store_job(rows)
 }
-brohn_queue_explicit_distributions_ref <- function(store,report_ref,retry=FALSE) {
-  r<-.brohn_rpk_distribution_request(store,report_ref)
+brohn_queue_explicit_distributions_ref <- function(store,report_ref,retry=FALSE,implementation_ref=NULL) {
+  r<-.brohn_rpk_distribution_request(store,report_ref,implementation_ref)
   r$content_fingerprint<-brohn_hash(r[setdiff(names(r),"authority")])
   brohn_store_batch(store,function(){
     old<-.brohn_rpk_latest_job(store,"explicit_distributions",r$content_fingerprint)
@@ -23,17 +33,18 @@ brohn_queue_explicit_distributions_ref <- function(store,report_ref,retry=FALSE)
 }
 brohn_report_distribution_input <- function(store,job,verify=FALSE) {
   store<-brohn_report_package_job_authorize(store,job)
-  r<-job$request;brohn_fields(r,c("schema","project_id","report_ref","result_object","artifact","implementation","distribution_implementation","authority","content_fingerprint"),label="Exact distribution request")
+  r<-job$request;brohn_fields(r,c("schema","project_id","report_ref","result_object","artifact","implementation","distribution_implementation","authority","content_fingerprint"),"preparation_implementation_ref",label="Exact distribution request")
   brohn_require(identical(r$schema,.brohn_rpk_distribution_schema)&&identical(job$operation,"explicit_distributions")&&
     .brohn_rpk_same(r$implementation,.brohn_rpk_loaded)&&.brohn_rpk_same(r$distribution_implementation,.brohn_ed_loaded),"Rebuild saved distributions with the current installation.")
-  m<-.brohn_rpk_report_metadata(store,r$report_ref);.brohn_rpk_report_proof(store,m)
+  if(!is.null(r$preparation_implementation_ref))brohn_require(.brohn_rpk_same(r$preparation_implementation_ref,.brohn_rpk_distribution_implementation_ref()),"The pinned response preparation changed.")
+  m<-.brohn_rpk_report_metadata(store,r$report_ref);.brohn_rpk_report_proof(store,m,task_enabled=!is.null(r$preparation_implementation_ref))
   brohn_require(.brohn_rpk_same(m$result_object,r$result_object)&&.brohn_rpk_same(m$questionnaire_artifact,r$artifact),"The distribution prerequisite changed its pinned complete source.")
   list(schema="brohn-analysis-input/1.0",operation="explicit_distributions",project_id=r$project_id,report_ref=r$report_ref,content_fingerprint=r$content_fingerprint)
 }
 brohn_prepare_report_distribution_execution <- function(store,job,input,scratch) {
   store<-brohn_report_package_job_authorize(store,job);brohn_require(.brohn_rpk_same(input,brohn_report_distribution_input(store,job,FALSE)),"Distribution source input changed.")
   .brohn_rpk_check_code(job$request$implementation)
-  m<-.brohn_rpk_source_metadata(store,list(job$request$report_ref));handle<-.brohn_rpk_hold_sources(store,m);ok<-FALSE
+  m<-.brohn_rpk_source_metadata(store,list(job$request$report_ref),task_enabled=!is.null(job$request$preparation_implementation_ref));handle<-.brohn_rpk_hold_sources(store,m);ok<-FALSE
   on.exit(if(!ok).brohn_rpk_release(handle),add=TRUE)
   ref<-job$request$report_ref
   source<-.brohn_questionnaire_index_source(store,ref$id,ref$revision,ref$body_hash,ref$project_id,TRUE)
@@ -57,6 +68,7 @@ brohn_publish_report_distribution <- function(store,output,scratch,job,input,out
   id<-paste0("explicit-distributions-",sub("^job[_-]","",job$id))
   body<-list(schema="brohn-saved-explicit-distributions/1.0",id=id,report_id=ref$id,origin=input$index_input$binding$origin,request=request,result=result,
     created_at=brohn_now(),processing=list(job_id=job$id,attempt=job$attempt,code_hashes=output$code_identity,authority_profile="original_queued_actor_and_sealed_source/0.1"))
+  if(!is.null(job$request$preparation_implementation_ref))body$preparation_implementation_ref<-job$request$preparation_implementation_ref
   document<-.brohn_publication_stage_json(store,job,body,file.path(scratch,"published-distributions.json"));committed<-FALSE
   on.exit(brohn_close_publication(document$guard,committed),add=TRUE)
   receipt<-brohn_store_batch(store,function(){

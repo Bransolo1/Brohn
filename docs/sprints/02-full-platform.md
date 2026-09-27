@@ -1,5 +1,28 @@
 # Full platform build — Brohn continuation
 
+## Saved task findings with explicit liking — scoped checkpoint 27 September 2026
+
+- [x] Add exact historical task-display preparation for all seven enabled native
+  and imported task profiles plus saved descriptive cohorts, with separate
+  original-science, display-audit and renderer identities.
+- [x] Preserve complete task, liking, scale, source-row and cohort collections;
+  retain unavailable values, genuine withholding and unlinked null denominators.
+- [x] Qualify actual supervised source holds/publication, current-reader fences,
+  exact prepared selector/cursor binding and complete package projection.
+- [x] Qualify the real 100-panel worker limit: refuse 118 figures without a
+  partial package, then reuse preparation in a new 20-figure intent with all
+  three original numerical reports unchanged.
+- [x] Complete final mobile visual correction and fresh researcher/restart gate:
+  93 initial checks / 18 scans, 17 restart checks, separate native/import mobile
+  download checks and independent full scientific comparisons.
+- [x] Join phase-specific final source/test receipts without claiming a full core rerun.
+- [ ] Add task stimulus image bytes/context panels and an original historical
+  RT1.0 fixture; extend MaxDiff and remaining complete report families separately.
+
+Read the [acceptance evidence](../qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). This spans
+BWP04/BWP10/BWP13/BWP15/BWP17 and preserves all 50 capabilities / 17 packages.
+The record separates component/API, final connected and independent evidence.
+
 ## Saved-findings handoff — scoped checkpoint 27 September 2026
 
 - [x] Save exact report/figure/contents choices before shared prerequisites;

@@ -41,6 +41,7 @@ brohn_job_input <- function(store, job) {
   if (identical(job$operation, "questionnaire_index")) return(brohn_questionnaire_index_input(store, job))
   if (identical(job$operation, "answer_session")) return(brohn_answer_session_input(store, job))
   if (identical(job$operation,"report_package")) return(brohn_report_package_input(store,job,FALSE))
+  if (identical(job$operation,"task_display")) return(brohn_task_display_input(store,job,FALSE))
   if (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1")) return(brohn_report_distribution_input(store,job,FALSE))
   if (identical(job$operation, "explicit_distributions")) return(brohn_explicit_distribution_input(store, job))
   if (identical(job$operation, "save_clock_map")) return(brohn_clock_map_save_input(store, job))
@@ -240,6 +241,7 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   if (identical(input$operation, "summarize_signal_windows")) return(brohn_analyse_signal_windows(input, scratch))
   if (identical(input$operation, "questionnaire_index")) return(brohn_analyse_questionnaire_index(input, scratch))
   if (identical(input$operation,"report_package")) return(brohn_analyse_report_package(input,scratch))
+  if (identical(input$operation,"task_display")) return(brohn_analyse_task_display(input,scratch))
   if (identical(input$operation, "explicit_distributions")) return(brohn_analyse_explicit_distributions(input, scratch))
   if (identical(input$operation, "save_clock_map")) return(brohn_analyse_clock_map_save(input, scratch))
   if (identical(input$operation, "clock_plot")) return(brohn_analyse_clock_plot(input, scratch))
@@ -541,7 +543,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- job$operation %in% c("report_package", "questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
+  explorer <- job$operation %in% c("report_package", "task_display", "questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
   if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
@@ -551,7 +553,14 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   tryCatch({
     if (explorer) brohn_require(requireNamespace("ps", quietly = TRUE), "Complete-source review requires process memory monitoring.")
     input <- if (identical(job$operation,"clock_plot")) brohn_clock_plot_input(store,job,FALSE) else if (job$operation %in% c("analyse_run", "analyse_cohort")) brohn_prepare_run_evidence_input(store, job, scratch) else brohn_job_input(store, job)
-    if (identical(job$operation,"report_package")) {
+    if (identical(job$operation,"task_display")) {
+      task_display_execution <- brohn_prepare_task_display_execution(store,job,input,scratch)
+      input <- task_display_execution$input
+      on.exit({
+        if (!is.null(child) && child$is_alive()) child$kill_tree()
+        brohn_release_task_display_sources(task_display_execution$handle)
+      },add=TRUE,after=FALSE)
+    } else if (identical(job$operation,"report_package")) {
       package_execution <- brohn_prepare_report_package_execution(store,job,input,scratch)
       input <- package_execution$input
       on.exit({
@@ -657,6 +666,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation,"questionnaire_index")) return(brohn_publish_questionnaire_index(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"answer_session")) return(brohn_publish_answer_session(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"report_package")) return(brohn_publish_report_package(store,result,scratch,job,input,result_path))
+    if (identical(job$operation,"task_display")) return(brohn_publish_task_display(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"explicit_distributions") && identical(job$request$schema,"brohn-report-package-distribution-job/0.1")) return(brohn_publish_report_distribution(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"explicit_distributions")) return(brohn_publish_explicit_distributions(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"save_clock_map")) return(brohn_publish_clock_map_save(store, result, scratch, job, input, result_path))

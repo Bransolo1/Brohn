@@ -1,5 +1,13 @@
 # Saved-report package architecture
 
+**Task-report extension:** the separate
+[task contract](SAVED-TASK-REPORT-PACKAGES.md) adds versioned prepared task
+evidence and new selection/renderer profiles while retaining this original
+profile and its historical bytes. Its final mobile, connected and restart scope
+is recorded in the [acceptance record](../qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md).
+The extension spans BWP04/BWP10/BWP13/BWP15/BWP17; this document's original
+BWP07/BWP13/BWP15 attribution remains specific to the earlier gaze-first slice.
+
 27 September 2026. This contract covers the `complete-findings/0.1` contents
 profile and `controlled-gaze-explicit-paired/0.1` renderer. Read the
 [checkpoint](../qa/PUBLICATION-REPORT-HANDOFF-20260927.md) for executed scope and
@@ -181,16 +189,14 @@ bytes. Its shared helper and actual callback transport have separate evidence
 from this report-specific helper, which remains unchanged. Framework
 downloadHandlers, participant/static routes and partial/range response shapes
 remain outside that adoption; no Range request interpretation is added.
-Broader task/liking and MaxDiff report adapters, source-opening latency and
-post-collection restrictions are the current continuation.
-
-The next task adapter must bind exact historical sources and a frozen display
-audit. Existing task plots use current-head checks and rebuild delivery-journal
-display evidence under current profile rules, so calling them unchanged would
-not establish an exact historical, byte-only package. All seven enabled task
-profiles, including GNAT and SC-IAT, remain in scope. Choice tasks, physiology,
-EEG and camera/media each need their complete numerical/artifact projections;
-supported questionnaire scales already belong to this first profile.
+The task-report extension now has a separately qualified implementation and
+source-phased evidence. It does not call the current-head task explorer during
+package assembly. A supervised task-display prerequisite freezes the source-bound
+native display audit or complete declared imported summary before selection.
+Later assembly/opening reads that exact saved evidence without replay or scoring.
+The [task contract](SAVED-TASK-REPORT-PACKAGES.md) specifies all seven profiles,
+native/import/cohort branches, mixed liking/scales and complete numerical artifacts.
+MaxDiff, neural/physiological and camera/media adapters remain separate work.
 
 Other report families, original/raw-recording bundles, larger profiles, public
 sharing operations, post-collection restrictions and backup enforcement remain

@@ -11,8 +11,12 @@ brohn_report_package_limits <- function() list(profile="controlled-report-packag
   max_html_bytes=32*1024^2,max_payload_bytes=256*1024^2,max_members=1024L,max_image_bytes=5*1024^2,
   max_image_total_bytes=16*1024^2,max_model_bytes=128*1024^2,max_rows=100000L,max_questionnaire_bytes=64*1024^2,
   max_paired_questionnaire_bytes=12*1024^2)
+brohn_report_package_task_limits <- function() {
+  value<-brohn_report_package_limits();value$profile<-"controlled-task-report-package/0.1";value
+}
 .brohn_rp_limits <- function(value) {
-  defaults<-brohn_report_package_limits();brohn_fields(value,names(defaults),label="Package limits")
+  defaults<-if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
+  brohn_fields(value,names(defaults),label="Package limits")
   brohn_require(identical(value$profile,defaults$profile)&&all(vapply(setdiff(names(defaults),"profile"),function(k)
     brohn_number(value[[k]],1,defaults[[k]],TRUE),logical(1))),"Report limits exceed the supported profile.")
   value
@@ -122,6 +126,8 @@ brohn_report_package_limits <- function() list(profile="controlled-report-packag
     key<-sprintf("report-%02d",i);r<-reports[[i]];edges<-list(list(id=r$ref$id,hash=r$ref$body_hash,revision=r$ref$revision,project_id=r$ref$project_id,kind=r$ref$kind,key=key))
     for(s in r$saved_body$provenance$selection)if(!is.null(s$hash))edges[[length(edges)+1L]]<-list(id=s$id,hash=s$hash,revision=s$revision,project_id=r$ref$project_id,kind="report",
       key=register(s$id,s$hash,s$revision,r$ref$project_id))
+    for(s in r$saved_body$provenance$source_reports)edges[[length(edges)+1L]]<-list(id=s$id,hash=s$body_hash,revision=s$revision,project_id=r$ref$project_id,kind="report",
+      key=register(s$id,s$body_hash,s$revision,r$ref$project_id))
     relations[[key]]<-edges
   }
   resolve<-function(namespace,id,hash=NULL,revision=NULL){
@@ -217,20 +223,29 @@ brohn_report_package_limits <- function() list(profile="controlled-report-packag
   }
   out
 }
-.brohn_rp_projection <- function(item,aliases,namespace) {
+.brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL) {
   body<-item$saved_body;a<-item$complete_analysis
   brohn_fields(body,c("id","title","origin","analysis","provenance"),c("schema_version","created_at","status","study_id","dataset_id","project_id","processing","result_object","session_quality"),"Saved report projection")
+  if(is.null(task_evidence)){
   brohn_fields(a,c("kind","features","observations","contrasts","parameters","quality","limitations"),
     c("title","schema","status","scales","questionnaire_revision","artifacts","task_scores","choice_tasks","recordings"),"Complete scientific analysis")
   brohn_require(a$kind %in% c("gaze","questionnaire","multimodal")&&!brohn_questionnaire_is_artifact(a),"Complete findings require a supported full analysis, not its catalog preview.")
   brohn_require(!length(a$artifacts)&&!length(a$task_scores)&&!length(a$choice_tasks),
     "This complete analysis also contains artifact/task/choice evidence without a package adapter. Keep its original export or choose a report fully supported by this profile.")
   .brohn_rp_validate_scientific(a)
+  }else{
+    brohn_validate_task_display_evidence(task_evidence,item)
+    if(identical(a$kind,"questionnaire")){
+      classic<-a;classic$task_scores<-list();.brohn_rp_validate_scientific(classic)
+      brohn_require(!length(a$artifacts)&&!length(a$choice_tasks),"Task projection does not silently omit artifact or choice-task evidence.")
+    }
+  }
   p<-body$provenance
-  brohn_fields(p,c("design","design_hash"),c("engine","origin","study_id","study_revision","source","mapping","dataset_id","dataset_revision","dataset_hash","runs","cohort_policy","run_evidence","selection","crosswalk","crosswalk_hash","identity_source","declared_contrasts","request_hash"),"Scientific provenance")
+  brohn_fields(p,c("design","design_hash"),c("engine","origin","study_id","study_revision","source","mapping","dataset_id","dataset_revision","dataset_hash","runs","cohort_policy","run_evidence","selection","crosswalk","crosswalk_hash","identity_source","declared_contrasts","request_hash",
+    if(!is.null(task_evidence))c("source_reports","source_administrations","plan","identity_map")),"Scientific provenance")
   brohn_require(identical(brohn_hash(p$design),p$design_hash),"Saved design hash is inconsistent.")
   brohn_validate_design(p$design)
-  projected<-.brohn_rp_project(a,aliases,namespace)
+  projected<-if(is.null(task_evidence)).brohn_rp_project(a,aliases,namespace)else .brohn_rpt_analysis(item,task_evidence,aliases,namespace)
   provenance<-p
   if(!is.null(provenance$source)){
     brohn_fields(provenance$source,c("hash"),c("size","bytes","media_type","format","filename","path","name"),"Original source descriptor")
@@ -245,20 +260,22 @@ brohn_report_package_limits <- function() list(profile="controlled-report-packag
   }
   # Only these registered provenance containers carry person/session identities.
   for(k in intersect(c("runs","crosswalk","run_evidence"),names(provenance)))provenance[k]<-list(.brohn_rp_project(provenance[[k]],aliases,namespace,paste0("provenance/",k)))
+  if(!is.null(task_evidence))provenance<-.brohn_rpt_provenance(provenance,item,task_evidence,aliases,namespace)
   processing<-body$processing
   if(!is.null(processing))brohn_fields(processing,c("recipe"),c("code_hashes","output_hash","request_hash","attempt","job_id","publication"),"Saved report producer")
   producer<-if(is.null(processing))NULL else processing[intersect(c("recipe","code_hashes","output_hash","request_hash"),names(processing))]
   list(schema="brohn-portable-numerical-evidence/0.1",source_ref=item$ref,
     source_analysis_sha256=brohn_hash(a),source_result_object=body$result_object,
     projection_profile="scientific-values-and-local-labels/0.1",identifier_mode=aliases$mode,
-    counts=c(.brohn_questionnaire_counts(a),list(contrasts=length(a$contrasts),recordings=length(a$recordings),scale_item_evidence=length(a$scales$item_evidence),
+    counts=c(if(is.null(task_evidence)).brohn_questionnaire_counts(a)else .brohn_rpt_counts(a),list(contrasts=length(a$contrasts),recordings=length(a$recordings),scale_item_evidence=length(a$scales$item_evidence),
       scale_source_references=sum(vapply(a$scales$item_evidence,function(e)sum(vapply(e$items,function(i)length(i$source),integer(1))),integer(1))))),
     report=body[intersect(c("id","title","origin","schema_version","created_at","status","study_id","dataset_id"),names(body))],
     analysis=projected,provenance=provenance,producer=producer,
     session_quality=.brohn_rp_project(body$session_quality,aliases,namespace,"session_quality"),
     policy=list(scientific_values="Complete saved typed values and ordering; no scoring or inference added.",
       identifiers="Labels are scoped to exact source report; saved crosswalk relationships remain explicit. This is not anonymization; free text remains verbatim.",
-      omitted_operational_paths=list("report.processing except recipe/code_hashes/output_hash/request_hash","report.project_id",
+      omitted_operational_paths=c(list("report.processing except recipe/code_hashes/output_hash/request_hash","report.project_id",
         "provenance.source filename/path/name","provenance.run_evidence workspace_id/job_id/attempt","provenance.design.stimuli[].asset filename/path"),
+        if(!is.null(task_evidence))list("provenance.design.blocks[].materials[].asset filename/path","protocol registry descriptors filename/path")),
       original_raw_bytes_reverified=FALSE))
 }

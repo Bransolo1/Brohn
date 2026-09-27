@@ -9,7 +9,9 @@
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability / 17-package build remains active and unfinished. Shared saved-download framing now has scoped evidence for 19 prior callbacks / 24 export variants and hosted 403, with exact-byte/native paired/historical report compatibility. The separate saved-findings profile still covers exact saved gaze, questionnaire and paired collections without scientific reruns. Framework downloadHandlers, participant/static/range/compressed routes and wider workloads remain separate. Immediate continuation: task/liking adapters, then MaxDiff, remaining source-opening latency and scoped post-collection restrictions. Publication is not a pause."
+    "note": "The full 50-capability / 17-package build remains active and unfinished. The task-report source checkpoint passed final researcher, mobile, independent download and cold-restart acceptance for seven enabled native/imported profiles and saved cohorts beside supported liking/scales, with complete evidence and no new estimator. Next is the choice/MaxDiff report adapter; task stimulus bytes/context panels, wider complete report families, latency and scoped post-collection restrictions remain open. Publication is not a pause.",
+    "accepted_source_handoff": "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
+    "accepted_source_receipt": "docs/qa/TASK-REPORT-PACKAGE-SOURCE.json"
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",
@@ -186,14 +188,17 @@
         "docs/qa/MATERIAL-EDITOR-ACCEPTANCE.md",
         "docs/qa/QUESTION-ILLUSTRATIONS-ACCEPTANCE.md",
         "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md",
-        "docs/qa/EXPLICIT-DISTRIBUTIONS-ACCEPTANCE.md"
+        "docs/qa/EXPLICIT-DISTRIBUTIONS-ACCEPTANCE.md",
+        "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
         "Scale keys and missing/prorating rules match independent examples.",
         "Keyboard/list alternatives and exposure-linked reports work end to end.",
         "Reusable question/scale blocks and portable imports preserve internal references, translations, consent text, display logic and scoring keys without transferring participant responses."
-      ]
+      ],
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
     },
     {
       "id": "BWP05",
@@ -480,13 +485,16 @@
         "docs/qa/GNAT-PARTICIPANT-ACCEPTANCE.md",
         "docs/qa/GNAT-INTEGRATION-ACCEPTANCE.md",
         "docs/qa/GNAT-RESEARCHER-ACCEPTANCE.md",
-        "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md"
+        "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md",
+        "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Each activated profile binds a source-versioned procedure/scorer and control/allocation rules.",
         "Independent direction/error/exclusion cases and event replay match reports.",
         "Correction-inclusive timing, deadlines, stimulus timing and physical movement semantics remain explicit; no generic D score for every task."
-      ]
+      ],
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
     },
     {
       "id": "BWP11",
@@ -608,7 +616,9 @@
         "docs/qa/TASK-PLOT-SOURCE-RESPONSIVENESS.md",
         "docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md",
         "docs/architecture/SAVED-REPORT-PACKAGES.md",
-        "docs/operations/SHARE-SAVED-FINDINGS.md"
+        "docs/operations/SHARE-SAVED-FINDINGS.md",
+        "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -616,7 +626,8 @@
         "Report snapshot reproduces from sealed inputs and configuration; all enabled packs supply at least one vertical report fixture.",
         "Historical report snapshots remain browsable independently of the current draft; reanalysis fixes input/cohort versions and creates comparable new outputs without recollecting or copying observations.",
         "Finalization resolves late/incomplete uploads under policy, freezes a cohort, and preserves prior reports when collection reopens in a new window."
-      ]
+      ],
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
     },
     {
       "id": "BWP14",
@@ -714,7 +725,9 @@
         "docs/architecture/SAVED-REPORT-PACKAGES.md",
         "docs/operations/SHARE-SAVED-FINDINGS.md",
         "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
-        "tests/HTTP-RESPONSE-REPRODUCE.md"
+        "tests/HTTP-RESPONSE-REPRODUCE.md",
+        "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -726,7 +739,8 @@
         "Home, Studies, Data library and Design library surround study planning, questionnaires/tasks, collection, review, results and history; search/filter/archive/history recover after restart with an actual next action.",
         "Clone, save template, export design and import design are first-class accessible actions with destination/contents previews and actionable dependency fixes.",
         "UX-J19-UX-J34 exercise historical research, curation, delivery, enrollment/waves/endings, closure, clone/reanalysis, portable designs, sharing and retention; planned targets are not achieved usability evidence."
-      ]
+      ],
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
     },
     {
       "id": "BWP16",
@@ -793,7 +807,9 @@
         "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
         "docs/operations/REVIEW-ALIGNED-RECORDINGS.md",
         "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
-        "tests/HTTP-RESPONSE-REPRODUCE.md"
+        "tests/HTTP-RESPONSE-REPRODUCE.md",
+        "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",
@@ -805,7 +821,8 @@
         "Versioned .brohn-study.zip export/import roundtrips on a clean supported installation, includes permitted design assets and rejects unsafe/corrupt/incompatible archives atomically without execution or automatic collection.",
         "The hosted profile includes HTTPS, researcher authentication, project isolation, bounded participant APIs, operational monitoring and consistent storage/restore evidence before remote recruitment opens.",
         "Frozen report sharing has explicit audience/expiry/revocation; backup restores full authorized history and object integrity with secrets/withdrawal handling, while archive restoration never reopens recruitment."
-      ]
+      ],
+      "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing."
     }
   ],
   "cross_cutting_specifications": {

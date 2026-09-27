@@ -1,6 +1,25 @@
 # Brohn master architecture and large-build contract
 
-**Current checkpoint, 27 September 2026:** the
+**Task-report checkpoint, 27 September 2026:** the
+[saved task-report contract](architecture/SAVED-TASK-REPORT-PACKAGES.md) extends
+the existing durable report flow with a separate immutable task-display boundary.
+It binds complete native, imported and cohort evidence to original scientific
+reports before rendering all seven enabled task profiles beside explicit liking
+and scales. No new score, task–liking association or construct claim is added.
+Exact preparation identity survives history; package opening never rebuilds
+the native journal audit under today's rules.
+
+The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
+The [acceptance evidence](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md) separates genuine
+source/scoring jobs from display preparation and saved export. The actual
+118/100 panel refusal and new-intent recovery to 20 figures preserve every
+included numerical collection. This advances BWP04 (liking/scales), BWP10
+(task evidence), BWP13 (reports), BWP15 (guided history/recovery) and BWP17
+(portable artifacts/qualification), retaining all statuses as implementing.
+Task stimulus image bytes/context panels, unsupported mixed families, MaxDiff,
+larger workloads and post-collection restrictions remain explicit work.
+
+**Earlier reviewed-clock checkpoint, 27 September 2026:** the
 [reviewed-clock workflow](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) now connects
 original event selection, supervised exact previews, named map versions,
 complete original-row windows and automatic full-export charts. Original export
@@ -25,7 +44,8 @@ finalizes 19 saved callbacks and hosted 403 after their existing access gates:
 exact streamed GET content, identity encoding and decimal HEAD lengths, with
 no scientific reruns or global formatting changes. Framework downloadHandlers,
 participant/static routes and range/compressed responses remain separate.
-Immediate continuation expands task/liking and MaxDiff report adapters,
+The task/liking continuation has the scoped acceptance described above. Later work
+expands MaxDiff and other complete report adapters,
 source-opening responsiveness and post-collection restrictions.
 Post-collection restrictions, broader workloads, wider clock/playback methods
 and remaining measurement/device/operation gates stay open. Saved-source opening
@@ -650,6 +670,6 @@ The [build manifest](preparation/build-manifest.json) maps **every capability** 
 
 This build's done definition is working vertical journeys and reproducible outputs. Keep a machine-readable record of planned/implementing/implemented/verified/externally-blocked packages, with the exact blocker and evidence. An unavailable SDK blocks its adapter, not unrelated processing. Do not silently mark an advanced capability complete because a generic chart or plugin slot exists.
 
-Current execution evidence is in [researcher QA](qa/RESEARCHER-QA.md), the [active sprint](sprints/02-full-platform.md) and the named module tests. The [readiness index](preparation/LARGE-BUILD-READINESS.md) retains the preparation record; package installation alone does not establish product integration. GitHub publication still needs the repository destination and selected source licence. Preserve reviewable local changes until those publication inputs are supplied.
+Current execution evidence is in [researcher QA](qa/RESEARCHER-QA.md), the [active sprint](sprints/02-full-platform.md) and the named module tests. The [readiness index](preparation/LARGE-BUILD-READINESS.md) retains the preparation record; package installation alone does not establish product integration. The established destination is `Bransolo1/Brohn` on GitHub with the MIT licence. Record each source checkpoint separately from its actual publication commit; preserve reviewable local changes until the qualified checkpoint is pushed.
 
 Use the [Astra brief](preparation/ASTRA-BUILD-BRIEF.md) to establish shared fixtures, bounded agent ownership and reviewable checkpoints. BWP15 owns the unified accessible experience and brand integration; BWP17 owns the [introduction and launch deliverables](product/INTRODUCTION-AND-LAUNCH.md), including an honestly labelled sample, first-study guidance, demonstrations and a release support matrix. Public claims must follow the enabled journey and named-device evidence recorded for that release.

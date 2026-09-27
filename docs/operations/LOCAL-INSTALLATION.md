@@ -1,5 +1,14 @@
 # Local installation and readiness
 
+The [task-report profile](../architecture/SAVED-TASK-REPORT-PACKAGES.md)
+uses the existing qualified report runtime and native retained-source support;
+it adds no model download. Keep the configured methods Python environment
+(CPython 3.12.10 / Pillow 12.3.0), R library and research workspace outside the
+repository. The final connected/mobile/restart checks passed on the configured
+local profile; this is not a new clean-machine or cross-platform release claim.
+The [task report reproduction guide](../../tests/REPORT-TASK-PACKAGE-REPRODUCE.md)
+separates generated-source, pure, intent and UI checks.
+
 The connected local profile runs the researcher interface, participant HTTP
 service and supervised analysis process against one durable workspace. Windows
 AMD64, native R 4.6.1 and isolated Python 3.12.10 environments are the currently

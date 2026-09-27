@@ -1,5 +1,21 @@
 # Changes
 
+## Complete saved task findings — accepted source checkpoint 2026-09-27
+
+- Extended report preparation to the seven enabled task profiles beside liking
+  and scales, including native, imported and saved-cohort evidence.
+- Added immutable prepared display/audit evidence and exact historical selectors;
+  retained original scores and full numerical collections without new estimators.
+- Preserved missing/withheld/unlinked states, complete imported source rows and
+  exact source/person relationships in portable evidence.
+- Qualified real 118/100 figure refusal and new-intent recovery to 20 figures,
+  reusing preparation without changing original analyses or publishing partial output.
+- Qualified final mobile charts/tables, actual report downloads, historical
+  reopening and cold restart with original scientific sources unchanged.
+  Task stimulus bytes/context panels and
+  wider report families remain open.
+  See `docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md` for source-phased evidence.
+
 ## Saved-download HTTP responses — 2026-09-27
 
 - Adopted shared identity/decimal-length responses for 19 saved-content callback

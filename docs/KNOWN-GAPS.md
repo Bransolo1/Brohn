@@ -33,11 +33,17 @@ records describing only the 01A–01L prototype are historical.
 - **Wider report handoff:** the first
   [complete-findings profile](qa/PUBLICATION-REPORT-HANDOFF-20260927.md) covers
   supported gaze, questionnaire and paired findings with full included numerical
-  collections. Other task/choice, neural/physiology and media families need their
-  own adapters and connected journeys. Known unsupported selected parents or
+  collections. The [task-report checkpoint](qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md)
+  adds seven task profiles with liking/scales, original native/imported sources
+  and saved cohorts, with final mobile, researcher, export and restart acceptance. Task stimulus image bytes/context panels, MaxDiff and broader
+  task/choice, neural/physiology and media families still need separate adapters
+  and connected journeys. Historical RT score schema 1.0 has a structural reader
+  but no retained original producer/worker acceptance fixture in this packet.
+  Known unsupported selected parents or
   scientific collections are refused with a reason, not silently dropped.
-  Larger payload profiles, original/raw-evidence bundles and enlarged mobile
-  figure views remain work. Offline copies cannot be revoked retrospectively.
+  Larger payload profiles, original/raw-evidence bundles and responsive chart
+  relayout remain work. Current task charts/tables use keyboard-accessible
+  horizontal panning on narrow screens. Offline copies cannot be revoked retrospectively.
 - **Transport beyond the scoped saved routes:** the [shared response checkpoint](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
   now qualifies 19 earlier saved-content callbacks and hosted 403. Framework
   downloadHandlers, participant/static routes, partial ranges and compressed

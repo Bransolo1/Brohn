@@ -1,15 +1,51 @@
 # Prepare and share saved findings
 
+The saved task extension has [scoped acceptance](../qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md)
+for the same report flow, including mobile exports and historical restart.
+
 Brohn can assemble supported saved gaze, questionnaire and paired findings into an offline report with complete numerical companions. Report preparation uses the saved calculations; it does not run another scientific analysis.
 
 ## Prepare a report
 
 1. Open the saved findings you want to share and choose **Prepare report**. A compatible combined report offers its exact linked gaze and questionnaire reports, so you can review them together. You can also enter from the study's **Results** and choose saved findings.
-2. Give the report a title. **Change contents** lets you include or remove exact saved reports, order figure sections, choose particular saved views or figure pages, and decide whether to include stimulus images or original participant/session identifiers.
+2. Give the report a title. **Change contents** lets you include or remove exact saved reports, order figure sections, choose particular saved views or figure pages, and decide whether to include gaze stimulus images or original participant/session identifiers.
 3. Choose **Prepare report**. Brohn saves your choices first, prepares response distributions if needed, then assembles the report. Existing distributions are reused when they match the exact selected report.
 4. When the report is ready, choose **Download report** for its standalone HTML, or **Download report + evidence** for the ZIP.
 
 The initial profile supports complete compatible gaze, questionnaire and paired findings. Known unsupported report families or embedded collections explain why their package adapter is unavailable; their existing reports and exports remain available. A package does not silently drop an unsupported scientific collection.
+
+## Adding task findings
+
+Select the saved task and liking/scale findings you want together. One **Prepare
+report** action saves your choices, prepares any missing task displays and
+response distributions, then builds the report. It reuses matching saved
+preparation. You do not need to start separate preparation jobs yourself.
+
+This profile covers IAT, BIAT, AAT, simple reaction time, choice reaction time,
+Brohn response-window SC-IAT and Brohn single-target GNAT. Native studies,
+imported trial summaries and saved descriptive cohorts keep their different
+evidence labels. Presenting tasks beside liking does not calculate a new
+relationship between them.
+
+The default includes all applicable figures. Once exact prepared choices are
+available, **Change contents** can focus administrations, trial views, compatible
+charts and numerical pages. These choices never remove complete numerical
+evidence from the ZIP. If the report exceeds the figure limit, reduce figure
+choices and prepare a new version; completed preparation is reused. Retrying
+unchanged frozen choices preserves the same choices rather than trimming them.
+
+Trial displays distinguish profile positions, observed responses, genuine
+withholding, missing positions and scoring support. An unavailable metric stays
+unavailable; an unlinked cohort does not become a zero-person result. The report
+retains the saved explanation and complete numerical alternatives.
+
+**Include gaze stimulus images** applies to gaze only. Task material definitions
+and hashes remain in task evidence, but task stimulus image bytes and context
+panels are not included by this profile.
+
+On a phone, task charts and wide numerical tables scroll horizontally so labels
+and exact values stay readable. Tap or focus the labelled region and swipe or
+use the arrow keys; this changes the view, not the saved figure or evidence.
 
 ## Read the download
 

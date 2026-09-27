@@ -1,5 +1,26 @@
 # Resume here — Brohn
 
+## Task findings with explicit liking — scoped checkpoint, 27 September 2026
+
+The new complete-findings renderer connects all seven enabled task profiles,
+native/imported sources and saved descriptive cohorts to the existing Prepare
+report lifecycle. Complete scores, trial/audit evidence, source rows and cohort
+collections accompany selected figures; liking and scales retain their existing
+analyses. Preparation freezes display evidence under exact historical references;
+assembly and reopening do not rerun scoring or delivery-journal replay.
+
+The actual 100-figure limit now has supervised-worker refusal/recovery evidence:
+118 requested figures published no partial package; a new edited intent reused
+the exact prerequisite and produced 20 figures with all numerical collections.
+All 38 original objects and 18 original jobs remained unchanged in that test.
+
+The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
+Read the [architecture](docs/architecture/SAVED-TASK-REPORT-PACKAGES.md) and
+[source-phased evidence](docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md). Task stimulus
+image bytes/context panels, MaxDiff and other report-family adapters, broader
+workloads and post-collection restrictions remain open. All 50 capabilities and
+17 packages remain active; this is not a platform completion claim.
+
 ## Saved-download transport — scoped checkpoint — 27 September 2026
 
 The 19 earlier saved-content callbacks and hosted 403 refusal now use a shared
@@ -7,8 +28,9 @@ HTTP response finalizer. Exact GET bytes and existing access/source checks stay
 intact; HEAD and persistent connection reuse pass component and actual-route
 checks. Genuine saved paired exports and historical report reopening retain
 original scientific values and bytes. Read the [checkpoint](docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md)
-and [portable checks](tests/HTTP-RESPONSE-REPRODUCE.md). Next: task/liking report
-adapters, then MaxDiff, remaining latency and post-collection restrictions.
+and [portable checks](tests/HTTP-RESPONSE-REPRODUCE.md). At that checkpoint, the
+next task/liking adapter was planned; its accepted source checkpoint is recorded above.
+MaxDiff, remaining latency and post-collection restrictions remain open.
 All 50 capabilities and 17 packages remain active and unfinished.
 
 ## Saved-findings handoff — scoped checkpoint 27 September 2026
@@ -25,9 +47,8 @@ The final connected candidate07 passed creation of an original synthetic control
 Read the [checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
 [researcher guide](docs/operations/SHARE-SAVED-FINDINGS.md) and
 [architecture](docs/architecture/SAVED-REPORT-PACKAGES.md). Its shared HTTP
-follow-up is covered by the later checkpoint above. Complete task/liking and
-MaxDiff adapters, remaining source-opening responsiveness and post-collection
-restrictions remain open. All 50 capabilities and 17 packages remain active;
+follow-up is covered by the later checkpoint above. Task/liking support is covered by the later checkpoint above. MaxDiff adapters,
+remaining source-opening responsiveness and post-collection restrictions remain open. All 50 capabilities and 17 packages remain active;
 this is a bounded delivery checkpoint, not platform completion.
 
 ## Earlier reviewed alignment and complete-window review — 27 September 2026
