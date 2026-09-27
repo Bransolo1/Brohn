@@ -1,6 +1,50 @@
 # Full platform build — Brohn continuation
 
-## Saved choice findings — scoped checkpoint 27 September 2026
+## Saved EDA report checkpoint — 28 September 2026
+
+- [x] Implement a separate event/continuous EDA admission and prepared-display
+  profile in the existing one-Prepare lifecycle, with complete selected and
+  required EDA evidence beside liking and no scientific rerun.
+- [x] Add exact decimal continuous windows, bounded metadata before first
+  preparation/refusal, new-draft recovery and immutable old intents. Default
+  unavailable cells, separate components/candidate pages and full evidence stay.
+- [x] Record scoped native large-source recovery with a normal 60-second lease:
+  15 checks, 500,100/500,000 refusal and 101 selected display samples; all
+  666,734 original rows remain source evidence. Source-pulse 12, lease 51 and
+  instrumented lifetime 17 checks retain their separate scopes.
+- [x] Record final historical compatibility (66 checks), earlier nine exported
+  variants (423 independent oracle checks), controller/metadata evidence and
+  corrected offline phone/A4 presentation as distinct source-bound phases.
+- [x] Close the scoped final researcher/download/restart gate against joined08
+  (same app bytes as joined07): 8 queued-cancel, 74 initial / 11 scans and 9
+  restart checks. Eight executed jobs succeeded on attempt 1 under normal
+  60-second leases; exact HTML/ZIP reopened without new jobs or changed originals.
+  Owned services stopped and earlier failed phases remain retained. This main
+  journey used UI02 / joined07=08 application bytes.
+- [x] Qualify final joined10/UI04 capacity guidance and the stale-resume fix:
+  78 focused / 36 legacy controller checks, separate 24 actual reread checks /
+  4 clean scans and 106 conservation checks. Only two UI files and their test
+  differ from joined08; no whole main journey rerun or science change is claimed.
+- [ ] Qualify larger complete-evidence capacity. The separate large UI test
+  prepared its 10–20 second display, but correctly refused a 201,416,771-byte
+  projection against 201,326,592. This is not full large-package recovery.
+- [ ] Implement the [versioned constant-signal remedy](../methods/EDA-CONSTANT-SIGNAL-NEXT.md)
+  with independent witnesses and unchanged historical 1.0 evidence.
+- [ ] Add [saved ECG/PPG packages](../architecture/SAVED-CARDIAC-REPORT-NEXT.md)
+  separately; retain image context, raw bundles, current latency, Windows path
+  budget, tiny-chunk review cost, workloads and restrictions.
+- [ ] Improve plain EDA labels, field-aware missing-reason wording and print
+  heading placement without changing values, support or canonical keys.
+
+Read the [EDA architecture](../architecture/SAVED-EDA-REPORT-PACKAGES.md),
+[guide](../operations/SHARE-SAVED-EDA-FINDINGS.md),
+[phase record](../qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+[source receipt](../qa/EDA-REPORT-PACKAGE-SOURCE.json).
+BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17 share this work; none closes here.
+All 50 capabilities and 17 packages remain active and unfinished. Dated sections below
+preserve their historical evidence and then-current follow-on work.
+
+## Earlier saved choice findings — scoped checkpoint 27 September 2026
 
 - [x] Preserve strict earlier profiles and introduce explicit mixed task/choice
   admission, task display 0.2 and saved choice display 0.1.
@@ -17,9 +61,9 @@
   and complete independent evidence pass separately. Original science is unchanged.
 - [x] Add plain task metric labels/explanations across all seven profiles in
   exported reports, retaining canonical keys, values and support.
-- [ ] Add complete exact saved event-related and continuous EDA with liking,
-  preserving baseline/exclusion/timing support without reanalysis; then qualify
-  ECG/PPG separately under the [next plan](../architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md).
+- [ ] The EDA follow-on from this checkpoint is tracked in the current section
+  above. Its [original plan](../architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+  retains provenance; ECG/PPG remains a separate future profile.
 - [ ] Add task/choice image context and wider
   physiological/media report adapters; retain raw/performance/restriction work.
 

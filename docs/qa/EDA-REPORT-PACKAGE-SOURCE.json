@@ -1,0 +1,322 @@
+{
+  "schema": "brohn-eda-report-documentation-source/0.1",
+  "date": "2026-09-28",
+  "status": "scoped_accepted_source_checkpoint",
+  "baseline": "dd4afb6b28326626c49b1e03d10e988a05d7ca4f",
+  "candidate": "joined-development-10",
+  "candidate_manifest_sha256": "c56fc610d4404648b295cb7cad1a6f4966cb5623e7f413369f4f00a9265c5b95",
+  "source_byte_scope": "Exact qualified Windows worktree bytes. Git text normalization can change raw bytes on another checkout; this is not a universal installation identity.",
+  "components": {
+    "R/platform-report-package.R": {
+      "sha256": "a78048b1e832def524c61fa5b34eabb9e77f02cdfc087e9cc2db7dd6aed65963",
+      "bytes": 43012
+    },
+    "R/platform-report-package-preparation.R": {
+      "sha256": "9cb5502c58428d8169f76f680fb1b7a59973c05ad6fd5c1286c31a5ac65e37ba",
+      "bytes": 33936
+    },
+    "R/platform-report-package-authority.R": {
+      "sha256": "8df180983b7751853855d0da67eb64b45790d912ce3591ee96c6e4b1654202e7",
+      "bytes": 4722
+    },
+    "R/platform-jobs.R": {
+      "sha256": "4498a1b29722081d5fed6b7ee693fb0a2e369af3b4fd1665317321db69d466bd",
+      "bytes": 66123
+    },
+    "R/platform-load.R": {
+      "sha256": "341512dce0ca94eb0235477cbb0b295882caa53c85be33bdd8a3e4b045b1c045",
+      "bytes": 8331
+    },
+    "scripts/analysis-worker.R": {
+      "sha256": "76ee3c1f0e4b70de0a89f40db0d1f7a91f503af36ed9fb08f5c352d0e0ec5c34",
+      "bytes": 15291
+    },
+    "tests/report-eda-package-intents.R": {
+      "sha256": "4e4430d51295a6bcde546c477bccf77c11fe522f8e4cbfcc9a26896709d8763c",
+      "bytes": 19796
+    },
+    "tests/eda-display-lifetime.R": {
+      "sha256": "02822178b9adfac60b8f75580fb966eb29ffe5c788f41c252853be0e4ac70b3f",
+      "bytes": 14640
+    },
+    "tests/eda-report-originals-extended.R": {
+      "sha256": "23e97411da5376cfe732510f8b24ab7f3efc42aa94c5c39d216bab4d27a88a9e",
+      "bytes": 12392
+    },
+    "tests/report-eda-packages.R": {
+      "sha256": "ea99cfcabe5aa39ad089a4b6367db62ea8da7a1aea26178863b891961e6492b6",
+      "bytes": 13815
+    },
+    "tests/eda-large-originals.R": {
+      "sha256": "2f0a10ef59320fd2b527d1827728c3799e29e0364310c3206940a313cd817435",
+      "bytes": 5668
+    },
+    "tests/EDA-REPORT-INTEGRATION-REPRODUCE.md": {
+      "sha256": "dd91ea25251d2ad47bde9ac40fd76496cb012c5bb51cd8fceffce82a0c50fe97",
+      "bytes": 4601
+    },
+    "tests/eda-report-lease-pulse.R": {
+      "sha256": "a835c54e6ed7eb11913fea029e81c57eebef3c3c1060ab0c650a25e6099c5334",
+      "bytes": 12111
+    },
+    "tests/EDA-REPORT-LEASE-PULSE-REPRODUCE.md": {
+      "sha256": "6e9ffaf0a46c986fc283af968603dc84ed9fe6659ebfddfc84cedfe58e20a9e3",
+      "bytes": 1407
+    },
+    "R/platform-eda-display-sources.R": {
+      "sha256": "d94c832c9cfd92252d6c3d1db65fea1298d4e1b84b8ca33ff5ed0b0f8ed2134c",
+      "bytes": 42316
+    },
+    "R/platform-eda-display.R": {
+      "sha256": "558f42fb87b828338bb51a2b7591248c89119cef15dff3ac2c32a9540db9e640",
+      "bytes": 67406
+    },
+    "R/platform-report-package-sources.R": {
+      "sha256": "78fa2c2047938e53a01cb8ffa310696c565c1dfb0329621df0a4c01d12ca241a",
+      "bytes": 61549
+    },
+    "tests/eda-display-boundaries.R": {
+      "sha256": "4d32b8b674f67c0794d924b77eb9c7a7ca0d5518d84f1d4e2794afdfacb9163d",
+      "bytes": 8249
+    },
+    "tests/eda-display-large-recovery.R": {
+      "sha256": "c2858c1c9ec5f5a0b3eed2c9ff749936e6e9ebacd28e6cb7b3c0ea3db9835156",
+      "bytes": 6752
+    },
+    "tests/eda-display-originals.R": {
+      "sha256": "97d0a1334cc13dc509aec1f4e7ec3ac5e0012c95ebe4f0d6dd3779545673af8d",
+      "bytes": 11026
+    },
+    "tests/eda-display-primitives.R": {
+      "sha256": "89caa056b0538523b08e9e301d03b55969ed3cca533bee9925e8fe779f9672b2",
+      "bytes": 3544
+    },
+    "tests/EDA-DISPLAY-REPRODUCE.md": {
+      "sha256": "070b32d0162f7f92812df0cb0e67151cf4de1a0eec9e248ab712a97fc0d88b70",
+      "bytes": 5569
+    },
+    "tests/eda-display-source-integrity.R": {
+      "sha256": "c521b63a8c3f351ebebc15ecb5f686afb5e00e11e900e2b88ddeb00d66864e7a",
+      "bytes": 4415
+    },
+    "tests/eda-display-source-pulse.R": {
+      "sha256": "72650feeaf6cfd7397ca7246bd48fac13a486cbbb67a3a02b7fa1876f1c55071",
+      "bytes": 4606
+    },
+    "tests/eda-display-source-validation.R": {
+      "sha256": "77cbe10e988f8e9b44b9e51c708d622042c1689c961f3f7ba745d1c257a56c41",
+      "bytes": 2888
+    },
+    "tests/eda-display-source-windows.R": {
+      "sha256": "764ce54e1a6682c821467e537f3cd87a56c6d6994c8138b4454d178e1ea03584",
+      "bytes": 5198
+    },
+    "tests/eda-display-workers.R": {
+      "sha256": "cb12c7a089975283c7a739ab364cd20b91454fee2681591c97c5dc3dd9a3e2e4",
+      "bytes": 4376
+    },
+    "scripts/workers/eda_display.py": {
+      "sha256": "7a871db04f99aca72d79231d7f2a7c686b7710e0ddb78f7311e1e4e51ec1a318",
+      "bytes": 34863
+    },
+    "scripts/workers/report_package_eda.py": {
+      "sha256": "db8b20eace214d525ea74b9252edcf5ea9c9f66ef0aaa4b325c7166223c6f79b",
+      "bytes": 14806
+    },
+    "R/platform-report-package-eda.R": {
+      "sha256": "c556c5d4194469b9ca9b39df475bb9dd8f957ec18a8e65fc125ed386a36abea2",
+      "bytes": 33642
+    },
+    "R/platform-report-package-eda-figures.R": {
+      "sha256": "3928de83b9954c6db38f424ed6e04fab92d0175aa11d620fbf96b2fd680f9252",
+      "bytes": 21980
+    },
+    "R/platform-report-package-tables.R": {
+      "sha256": "24ed4d2d1091eade6540d950c1a73d65112f85f7f7f5db11234f0a1cb4f64282",
+      "bytes": 29532
+    },
+    "R/platform-report-package-tasks.R": {
+      "sha256": "e910bdcaba53a36ef01ad756cf7529754149b0219fe82d05ce8f59646fac84fb",
+      "bytes": 53659
+    },
+    "R/platform-report-package-choice.R": {
+      "sha256": "ef626a15f1f47f618e46c42337967cb5fccf3842f881ffa3a8d9186b48e8b487",
+      "bytes": 18924
+    },
+    "R/platform-report-package-render.R": {
+      "sha256": "7222870eb4ec4c28f5a75899535749210839f77eb5acaeb0d0b6410c153d77d8",
+      "bytes": 46857
+    },
+    "tests/eda-report-index-lifetime.py": {
+      "sha256": "b5c3947a0e96878e5a14107195262ac11da611569fc9bf5f4eca5957078ad692",
+      "bytes": 3082
+    },
+    "tests/eda-report-oracle-refusals.py": {
+      "sha256": "d2564c34384251509ff2f38a6eac30868800d050f0f16bf6959c7d5063a259f9",
+      "bytes": 5297
+    },
+    "tests/eda-report-package-pure.R": {
+      "sha256": "92c246d0320c53b434e5c975dc976a3aa77c88e8ae6913c6696f7375e5f012b4",
+      "bytes": 7361
+    },
+    "tests/EDA-REPORT-PACKAGE-REPRODUCE.md": {
+      "sha256": "4625f8d51765d1423ec8b609b458aaa58e3b13f63462718434f34c8ce50a4df0",
+      "bytes": 5459
+    },
+    "tests/eda-report-python-pure.py": {
+      "sha256": "2776a394fca539e2c72855cfa9b9cf3a090bc49d5d381b1d6fe3127cef110f66",
+      "bytes": 4176
+    },
+    "tests/verify-eda-report-download.py": {
+      "sha256": "7ecf622091e758bacf53000cba7a4154c89cbbf031d8481727b43ad36b0f71b0",
+      "bytes": 22374
+    },
+    "R/platform-report-package-views.R": {
+      "sha256": "6b7b83222d5bffa2a22c8d32b94726be6164e0c60e8ab552e27d87842330730b",
+      "bytes": 28209
+    },
+    "R/platform-report-package-server.R": {
+      "sha256": "220c43d86d535fdbf9eeab5095c83a29f9814343c335e8729acd267dfcdac251",
+      "bytes": 45757
+    },
+    "tests/report-eda-package-ui-state.R": {
+      "sha256": "eadb711a21d94554bf208e5e8d4dd11578a180358c442a4bc6cd58e4ae0a1030",
+      "bytes": 44138
+    }
+  },
+  "phases": {
+    "source_and_native": {
+      "receipt_sha256": "2e5bcc58bf6f319bea12757f8b0a6ab0d9c913269fe845834bdef1ac66517d57",
+      "scope": "Final source primitives/semantics/native-held cancellation and normal60 large refusal/recovery. Earlier phases remain separately scoped."
+    },
+    "pure_components": {
+      "receipt_sha256": "a361cf9e0492e9665ed5f192d871a82d315cd4cf23d32a4c068fa8d72b385911",
+      "scope": "Typed original preservation, projection, Windows writer lifetime, pure render and independent adversarial export checks."
+    },
+    "nine_actual_exports": {
+      "receipt_sha256": "a202a9f5cbee636b179f617c3565a1ad1a0a3376c916884ddc931eb7a099e6fd",
+      "scope": "423 independent checks on nine real joined06 exports. Later spool/lease changes have separate final native/browser gates."
+    },
+    "historical": {
+      "receipt_sha256": "e994ee8899a2641bffc2a4bb09faead8c63474aafef85bbe52bd39477bcf3559",
+      "scope": "66 checks on nine exact classic/task/choice historical versions under final application bytes; no new jobs or science."
+    },
+    "large": {
+      "receipt_sha256": "3d1c3cf8a5823ffef2f0191b7e7591f78a777e97c6b1d9ac94c0e4331885beb2",
+      "scope": "15 checks: actual500100/500000 refusal then101-sample display, retaining all666734 processed source rows. Both attempts use normal60 leases."
+    },
+    "lease_components": {
+      "receipt_sha256": "27cf3589b5d5c59714ca7585ae4f7d00b47401fd35b8fd219b01201a5a91c66d",
+      "scope": "51 real-SQLite checks using a declared clock: expiry, cancellation, replacement, request/actor fencing and original deadlines."
+    },
+    "lease_review": {
+      "receipt_sha256": "55134d12235eec0dcaf49a9d1f54647f4c786b7d4c41bfc466110549e4faf9e4",
+      "scope": "Independent review of root and source pulse changes; no weakened source/publication fences."
+    },
+    "final_child_lifetime": {
+      "receipt_sha256": "36976ee93a1efe2fb826a53d5815430e21b1ba9d421e29912892093d9877110e",
+      "scope": "17 checks on finaljoined08: actual R/Python processes observed before normal cancellation or declared-clock lease replacement; all descendants stop before native guards close, originals unchanged. This instrumented120s-claim gate is separate from normal60 worker timing."
+    },
+    "final_paired_oracles": {
+      "receipt_sha256": "20a1ef3051015800c3b0bc1c3b5853dd636eb59e9cd8284b0c8ad1ca9897d8d9",
+      "scope": "164 independent checks on finalnormal60 publicCLI paired-only and paired-with-parent exports, including all8 EDA figures and complete original rows."
+    },
+    "actual_phone_review": {
+      "receipt_sha256": "7d27836065d5db5ed8b4aa597098e0669d223a23cd28212faad790c900e06b88",
+      "scope": "13 focused checks and manual390x844 excerpts from the actual recovered-event browser download."
+    },
+    "offline_visual": {
+      "receipt_sha256": "61b5bd2befa2805c618bb1203ebb64707cf7954fca4641fb68daa8eac76d7421",
+      "scope": "19 presentation/keyboard checks plus actual A4 review. Exact renderer output unchanged by spool/lease repairs."
+    },
+    "researcher": {
+      "receipt_sha256": "a8ea33fb94f52b86bbb17e67ba3420304238c185cb3a4b953a4a4ef362334ed2",
+      "scope": "Real queued cancel/retry, cold mixed prerequisites, exact-window and figure-only changes, phone/desktop downloads and unchanged restart. Existing synthetic sources."
+    },
+    "application_equality": {
+      "receipt_sha256": "40ab7af4ee3d4a10ccf162f70a48d216f0038f7e3f200668fa0840695b8b9f57",
+      "scope": "Joined08 application bytes equal browser/historical joined07; differences are portable test files only. Final guidance and stale-resume changes have separate delta and actual UI evidence."
+    },
+    "large_researcher_refusal": {
+      "receipt_sha256": "0ed9752511d444eb455f6fa585a3b3537f1dd241da4cf8149e76a9eae70764bb",
+      "scope": "Actual joined08 full-window refusal, new10..20-second display success, then201416771/201326592-byte complete-evidence projection refusal. Read-only history11 and conservation37 closed. No complete large package; original single-source guidance defect retained and separately corrected."
+    },
+    "final_ui_guidance": {
+      "receipt_sha256": "e9d9641a36cca0753a58f4a75e4a6534bed3e94f7c8242b995040bc45873e224",
+      "scope": "Targeted actual desktop/phone reread of preserved capacity refusal and earlier display refusal on final joined10. Single-source guidance/action correction, original history, no new jobs, original conservation and service shutdown."
+    },
+    "final_ui_delta": {
+      "receipt_sha256": "85788f3bbe2d2db7b42aa597b4dff227f16bbb20d030bb832910d79b9cf98449",
+      "scope": "Final source differs from joined08 only in owned report UI/controller-test files. All backend, scientific, preparation, export and worker bytes are identical; main journey retains its original phase binding. UI04 also fences stale Resume to original intent refs after source replacement."
+    },
+    "final_ui_controller": {
+      "receipt_sha256": "ca346912b3f07022da4dcb27b2d4dc155541bd06eae15019525f1e10b6dceb04",
+      "scope": "78 focused checks in14 scenarios and36 legacy checks in9 scenarios on final UI04. Explicit source/metadata/intent spies. A retained cancellation-then-source-replacement regression demonstrates the stale Resume repair; this is separate from actual browser evidence."
+    },
+    "constant_counterexamples": {
+      "receipt_sha256": "e4b11135910ee93234c63d6338f418cc7913c0fa8090c67b3c52eab62b290b0a",
+      "scope": "23 checks reproduce five known unchanged-recipe numerical counterexamples. This is diagnostic evidence, not acceptance or scientific qualification of a remedy."
+    },
+    "normal60_public_cli": {
+      "receipt_sha256": "f46299088016f2ce5ca9082817b0d2716617c8acf900d6ecd05422521c94c06d",
+      "scope": "23 checks on final joined08 via the public paired-group CLI. Required-only and selected-plus-required EDA parents, exact exports and original conservation use normal60 job leases."
+    }
+  },
+  "browser_phase_checks": {
+    "browser-cancel": 8,
+    "browser-initial": 74,
+    "browser-restart": 9
+  },
+  "normal_worker_jobs": [
+    {
+      "operation": "eda_display",
+      "attempt": 1,
+      "renewals": 8
+    },
+    {
+      "operation": "report_package",
+      "attempt": 1,
+      "renewals": 15
+    },
+    {
+      "operation": "eda_display",
+      "attempt": 1,
+      "renewals": 7
+    },
+    {
+      "operation": "explicit_distributions",
+      "attempt": 1,
+      "renewals": 2
+    },
+    {
+      "operation": "report_package",
+      "attempt": 1,
+      "renewals": 11
+    },
+    {
+      "operation": "eda_display",
+      "attempt": 1,
+      "renewals": 7
+    },
+    {
+      "operation": "report_package",
+      "attempt": 1,
+      "renewals": 10
+    },
+    {
+      "operation": "report_package",
+      "attempt": 1,
+      "renewals": 10
+    }
+  ],
+  "originals": "Genuine unchanged-producer synthetic import and replay corpora. Scientific generation, export fidelity and UI interaction have separate evidence.",
+  "remaining": [
+    "Large complete-evidence export capacity: the500100-sample source recovered its display but still exceeded the192MiB projection budget; no full package was produced.",
+    "Versioned continuous EDA constant-input numerical/scientific remedy; faithful export does not qualify the original detector.",
+    "ECG/PPG and further saved report adapters; physical devices and scientific reference breadth.",
+    "Many-tiny-chunk acquisition review latency and deep Windows curation paths.",
+    "Broader workloads, task/choice image context, raw bundles, restrictions and hosted operations.",
+    "Full 50-capability and17-package platform completion."
+  ],
+  "privacy": "No raw stores, participant records, SDKs, runtime binaries, secrets or local machine paths are included."
+}

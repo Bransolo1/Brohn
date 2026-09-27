@@ -30,14 +30,14 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     editor_tick=0L,form_identity=NULL,intent=NULL,history=NULL,selector=NULL,issue=NULL,
     generation=0L,pending=NULL,focus_token=NULL,phase="idle",automatic=FALSE,dirty=FALSE,
     opened=NULL,urls=list(),open_attempt_key=NULL,request_command=NULL,request_snapshot=NULL,recommendation_note=NULL,
-    task_options=list(),metadata_key=NULL)
+    task_options=list(),metadata_key=NULL,eda_display_requests=list(),window_editor=NULL)
   native<-new.env(parent=emptyenv());native$handle<-NULL
   cursors<-new.env(parent=emptyenv());cursors$sources<-list();cursors$history<-list();cursors$selector<-list()
   active<-function()identical(state$page,"report_package")&&!is.null(v$scope)
   require_active<-function(){brohn_require(active(),"Open this study's report preparation again.");brohn_hosted_require_session(store)}
   release<-function(){if(!is.null(native$handle))brohn_release_report_package_resources(native$handle)
     native$handle<-NULL;v$opened<-NULL;v$urls<-list()}
-  clear_view<-function(){v$generation<-v$generation+1L;v$pending<-NULL;v$automatic<-FALSE;release()}
+  clear_view<-function(){v$generation<-v$generation+1L;v$pending<-NULL;v$automatic<-FALSE;v$window_editor<-NULL;release()}
   fail<-function(e){release();v$issue<-substr(conditionMessage(e),1L,1000L);v$phase<-"failed";v$pending<-NULL;v$automatic<-FALSE}
   safe<-function(fn)tryCatch({require_active();fn()},error=fail)
   session$onSessionEnded(function(){if(!is.null(native$handle))brohn_release_report_package_resources(native$handle);native$handle<-NULL})
@@ -55,6 +55,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     brohn_require(length(p)<=100L&&!anyDuplicated(p)&&all(is.finite(p)&p>=1&p<=100000&p==floor(p)),"Choose distinct positive figure pages.")
     as.list(as.integer(p))}
   capture<-function(commit=TRUE){require_form();d<-v$draft
+    if(commit)brohn_require(is.null(v$window_editor),"Apply or cancel the open display-window edit before changing or preparing this report.")
     title<-trimws(brohn_default(input$rpk_title,d$title));brohn_require(nzchar(title)&&nchar(title)<=200L,"Give this report a title of 1 to 200 characters.")
     d$title<-title;d$contents_policy$identifier_mode<-if(isTRUE(input$rpk_source_identifiers))"source_identifiers"else"package_aliases"
     d$contents_policy$stimulus_images<-if(isTRUE(input$rpk_images))"included"else"excluded_by_choice"
@@ -69,8 +70,8 @@ brohn_install_report_package_server <- function(input,output,session,store,state
           selected<-pages(page_input)
           s$display$pages<-if(is.null(selected))"all"else"selected"
           s$display$offsets<-NULL;s$display$page_numbers<-NULL
-          if(s$adapter%in%c("task-trials","task-people","choice-counts","choice-utilities"))s$display$page_numbers<-list()
-          if(!is.null(selected))if(s$adapter=="explicit-distribution")s$display$offsets<-lapply(selected,function(p)(p-1L)*20L)else s$display$page_numbers<-selected
+          if(s$adapter%in%c("task-trials","task-people","choice-counts","choice-utilities","eda-events","eda-continuous"))s$display$page_numbers<-list()
+          if(!is.null(selected))if(s$adapter=="explicit-distribution")s$display$offsets<-lapply(selected,function(p)(p-1L)*20L)else s$display$page_numbers<-if(.brohn_rpv_eda_adapter(s$adapter))as.list(sort(unlist(selected)))else selected
         }
         if(s$adapter=="paired-findings"){
           charts<-brohn_default(input[[paste0("rpk_charts_",s$id)]],unlist(s$display$charts))
@@ -96,18 +97,33 @@ brohn_install_report_package_server <- function(input,output,session,store,state
             }
           }
         }
+        if(.brohn_rpv_eda_adapter(s$adapter)){
+          components<-input[[paste0("rpk_eda_components_",s$id)]]
+          if(is.null(components))components<-unlist(s$display$components)
+          allowed<-c("clean_us","tonic_us","phasic_us")
+          brohn_require(length(components)>0L&&!anyDuplicated(components)&&all(components%in%allowed),"Choose at least one processed signal component.")
+          s$display$components<-as.list(allowed[allowed%in%components])
+          marker_input<-input[[paste0("rpk_eda_markers_",s$id)]]
+          if(!is.null(marker_input)){
+            selected<-pages(marker_input)
+            s$display$marker_pages<-list(pages=if(is.null(selected))"all"else"selected",page_numbers=if(is.null(selected))list()else as.list(sort(unlist(selected))))
+          }
+          brohn_require("phasic_us"%in%components||identical(s$display$marker_pages,list(pages="all",page_numbers=list())),"Candidate marker pages require a phasic figure. Clear the marker-page field or include the phasic component.")
+        }
       };s})
     result<-list(draft=d,sections=normalize_sections(sections))
     if(commit){v$draft<-d;v$sections<-result$sections};result}
   dirty<-function(){clear_view();v$dirty<-TRUE;v$issue<-NULL;v$phase<-"idle";v$request_command<-NULL;v$request_snapshot<-NULL;v$recommendation_note<-NULL}
   request<-function(commit=TRUE,new_profile=FALSE){captured<-capture(commit);brohn_require(length(v$rows)>0L&&length(v$rows)<=8L,"Choose between one and eight saved reports.")
-    brohn_require(length(captured$sections)>0L,"Choose at least one supported figure section.")
     # Reads/history retain their original version. Only an explicit new intent
     # derives a profile from the independent components of its selected sources.
     profile<-if(!new_profile&&!is.null(v$intent))v$intent$request else .brohn_rpv_profiles(v$rows)
-    list(schema="brohn-report-package-intent-request/0.1",study_id=v$scope$study_id,project_id=v$scope$project_id,
+    brohn_require(length(captured$sections)>0L||.brohn_rpv_eda_profile(profile$renderer_profile),"Choose at least one supported figure section.")
+    result<-list(schema="brohn-report-package-intent-request/0.1",study_id=v$scope$study_id,project_id=v$scope$project_id,
       title=captured$draft$title,report_refs=unname(lapply(v$rows,`[[`,"ref")),requested_sections=unname(captured$sections),
-      contents_policy=captured$draft$contents_policy,limits_profile=profile$limits_profile,renderer_profile=profile$renderer_profile)}
+      contents_policy=captured$draft$contents_policy,limits_profile=profile$limits_profile,renderer_profile=profile$renderer_profile)
+    if(.brohn_rpv_eda_profile(profile$renderer_profile))result$eda_display_requests<-.brohn_rpk_normalize_eda_requests(v$eda_display_requests,result$report_refs)
+    result}
   start<-function(action,payload=NULL,label,passive=FALSE){require_active();release();v$issue<-NULL
     if(!passive)v$focus_token<-brohn_token()
     if(action=="open")v$open_attempt_key<-.brohn_rpv_key(payload$package_ref)
@@ -119,6 +135,8 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     refresh_prepared(view)
     invisible(view)}
   hydrate<-function(view){v$recommendation_note<-NULL;v$rows<-lapply(view$request$report_refs,function(ref)brohn_report_package_report_choice(store,ref))
+    v$eda_display_requests<-if(.brohn_rpv_eda_profile(view$request$renderer_profile)).brohn_rpk_normalize_eda_requests(view$request$eda_display_requests,view$request$report_refs)else list()
+    v$window_editor<-NULL
     v$sections<-view$request$requested_sections;v$draft<-make_draft(view$request$title,view$request$contents_policy);v$labels<-list();v$task_options<-list();v$selector<-NULL;editor();refresh_prepared(view)}
   prepared_sources<-function(view){if(is.null(view))return(list())
     prepared<-view$preparation$prepared_sources
@@ -133,6 +151,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     if(identical(adapter,"explicit-distribution"))return("explicit-distribution")
     if(.brohn_rpv_task_adapter(adapter))return("task-display")
     if(.brohn_rpv_choice_adapter(adapter))return("choice-display")
+    if(.brohn_rpv_eda_adapter(adapter))return("eda-display")
     row<-Filter(function(row).brohn_rpv_same(row$ref,ref),v$rows)
     if(!identical(adapter,"paired-findings")||length(row)!=1L)return(NULL)
     # Component identity determines the companion, never asynchronous job order.
@@ -144,7 +163,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     if(!length(prepared)){
       if(!is.null(v$metadata_key)||view$status%in%c("failed","needs_attention","needs_authority")){
         v$metadata_key<-NULL;v$task_options<-list()
-        if(!is.null(v$selector)&&!is.null(selector_preparation(v$selector$report_ref,v$selector$adapter)))v$selector<-NULL
+        if(is.null(v$selector$source_windows)){
+          v$window_editor<-NULL
+          if(!is.null(v$selector)&&!is.null(selector_preparation(v$selector$report_ref,v$selector$adapter)))v$selector<-NULL
+        }
       }
       return(invisible(NULL))
     }
@@ -158,6 +180,9 @@ brohn_install_report_package_server <- function(input,output,session,store,state
         .brohn_rpv_same(p$source_report_ref,v$selector$report_ref),prepared)
       binding<-if(length(selected)==1L)selected[[1L]]$prepared_ref else NULL
       cursor<-v$selector$cursor
+      if(!is.null(v$window_editor)&&!.brohn_rpv_same(v$window_editor$prepared_ref,binding)){
+        v$window_editor<-NULL;v$issue<-"The exact prepared view changed. Reopen the display-window editor; your saved overrides are retained."
+      }
       if(!.brohn_rpv_same(v$selector$prepared_ref,binding)){cursor<-NULL;cursors$selector<-list()}
       selector_load(v$selector$report_ref,v$selector$adapter,cursor)}
     v$metadata_key<-key
@@ -184,7 +209,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     brohn_fields(command,c("study_id","project_id","report_ref"),label="Report preparation entry")
     clear_view();v$scope<-list(study_id=command$study_id,project_id=command$project_id);state$page<-"report_package"
     v$intent<-NULL;v$rows<-list();v$sections<-list();v$labels<-list();v$selector<-NULL;v$dirty<-FALSE;v$issue<-NULL;v$open_attempt_key<-NULL
-    v$task_options<-list();v$metadata_key<-NULL
+    v$task_options<-list();v$metadata_key<-NULL;v$eda_display_requests<-list();v$window_editor<-NULL
     cursors$sources<-list();cursors$history<-list();load_choices();load_history()
     entry<-if(!is.null(command$report_ref))brohn_report_package_report_choice(store,command$report_ref)else NULL
     refs<-if(is.null(entry))v$choices$recommended_refs else if(is.null(entry$recommended_refs))list(command$report_ref)else entry$recommended_refs
@@ -194,7 +219,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     v$draft<-make_draft(paste(v$choices$study$title,"report"));editor();v$phase<-"idle"
     session$onFlushed(function()session$sendCustomMessage("brohn-focus","brohn-main"),once=TRUE)
   },error=fail))
-  prepare<-function(new_version=FALSE){r<-request(new_profile=new_version||isTRUE(v$dirty)||is.null(v$intent))
+  source_limit<-function(rows=v$rows).brohn_rpv_single_source_limit(v$intent,rows)
+  prepare<-function(new_version=FALSE){
+    brohn_require(!source_limit(),.brohn_rpv_single_source_limit_message())
+    r<-request(new_profile=new_version||isTRUE(v$dirty)||is.null(v$intent))
     if(new_version)brohn_require(!is.null(v$intent)&&identical(v$intent$next_action,"review"),"Review this preparation before creating a new version.")
     if(!new_version&&!is.null(v$intent)&&.brohn_rpv_same(r,v$intent$request)&&!isTRUE(v$dirty)){
       if(v$intent$status=="succeeded")start("open",v$intent,"Opening your saved report.")else v$issue<-"These choices already have a saved preparation. Review its status or use Resume below."
@@ -225,7 +253,11 @@ brohn_install_report_package_server <- function(input,output,session,store,state
       if(isTRUE(v$automatic)&&view$next_action=="continue")advance("advance")
       if(!is.null(native$handle))brohn_report_package_resources_current(store,native$handle)
     })})
-  shiny::observeEvent(input$rpk_resume,safe(function(){brohn_require(!is.null(v$intent)&&v$intent$next_action%in%c("resume","retry","continue"),"Review this preparation's available next step.")
+  shiny::observeEvent(input$rpk_resume,safe(function(){
+    # Resume operates on the saved intent, never the replacement draft sources.
+    original_rows<-lapply(v$intent$request$report_refs,function(ref)list(ref=ref))
+    brohn_require(!source_limit(original_rows),.brohn_rpv_single_source_limit_message())
+    brohn_require(!is.null(v$intent)&&v$intent$next_action%in%c("resume","retry","continue"),"Review this preparation's available next step.")
     action<-if(v$intent$next_action=="retry")"retry"else"resume"
     start(action,list(action=if(v$intent$next_action=="continue")"advance"else action),if(action=="retry")"Retrying the saved report choices."else"Resuming the saved report choices.")
   }))
@@ -242,7 +274,8 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     row<-Filter(function(r).brohn_rpv_same(r$ref,ref),v$choices$reports)
     brohn_require(length(found)==1L||(length(row)==1L&&length(row[[1]]$adapters)>0L),"Choose selected findings or findings from the current catalog page.")
     dirty()
-    if(length(found)){v$rows<-v$rows[-found];v$sections<-Filter(function(s)!.brohn_rpv_same(s$source_report_ref,ref),v$sections)}else{
+    if(length(found)){v$rows<-v$rows[-found];v$sections<-Filter(function(s)!.brohn_rpv_same(s$source_report_ref,ref),v$sections)
+      v$eda_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)}else{
       brohn_require(length(v$rows)<8L,"This report supports up to eight saved sources.");v$rows<-c(v$rows,row);v$sections<-c(v$sections,.brohn_rpv_default_sections(row))}
     v$sections<-normalize_sections(v$sections);v$selector<-NULL
   }))
@@ -255,25 +288,36 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     preparation<-selector_preparation(ref,adapter)
     prepared<-Filter(function(p)identical(p$adapter,preparation)&&.brohn_rpv_same(p$source_report_ref,ref),prepared_sources(v$intent))
     saved_source<-!is.null(v$intent)&&any(vapply(v$intent$request$report_refs,function(r).brohn_rpv_same(r,ref),logical(1)))
-    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1"))
+    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display","eda-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1"))
     if(saved_source&&pinned_required&&!length(prepared)){
       v$selector<-list(report_ref=ref,adapter=adapter,items=list(),cursor=NULL,next_cursor=NULL,
         requires_display_preparation=TRUE,state="needs_preparation",prepared_ref=NULL,locked=TRUE,
-        reason=paste("This saved preparation's exact views are not available for focused changes. Its requested choices are retained.",brohn_default(v$intent$reason,"Follow the preparation status above.")))
+        reason=paste("This saved preparation's exact views are not available for focused figure choices. Its requested choices are retained.",brohn_default(v$intent$reason,"Follow the preparation status above.")))
     }else if(!is.null(preparation)&&length(prepared)){
       brohn_require(length(prepared)==1L,"This source has ambiguous prepared evidence. Review the saved preparation.")
       page<-brohn_report_package_selector_catalog(store,ref,adapter,cursor=cursor,prepared_ref=prepared[[1]]$prepared_ref)
       # The generic catalog need not echo its optional input reference. Retain
       # the exact verified input to keep subsequent page refreshes bound to it.
       page$prepared_ref<-prepared[[1]]$prepared_ref;v$selector<-page
-    }else v$selector<-brohn_report_package_selector_catalog(store,ref,adapter,cursor=cursor)
-    if(.brohn_rpv_task_adapter(adapter)||.brohn_rpv_choice_adapter(adapter))for(s in v$sections)if(.brohn_rpv_same(s$source_report_ref,ref)&&identical(s$adapter,adapter)&&!startsWith(s$selector$scope,"all_")){
+    }else v$selector<-brohn_report_package_selector_catalog(store,ref,adapter,
+      cursor=if(!is.null(v$selector$source_windows)&&.brohn_rpv_same(v$selector$report_ref,ref))NULL else cursor)
+    # Original window metadata can be read before a display exists, including
+    # after a size refusal. It is never used as a prepared figure catalog.
+    if(identical(adapter,"eda-continuous")&&!length(prepared)&&
+       (isTRUE(v$selector$locked)||isTRUE(v$selector$requires_display_preparation))){
+      windows<-brohn_eda_source_windows(store,ref,cursor=cursor)
+      brohn_require(identical(windows$schema,"brohn-eda-source-windows/0.1")&&
+        identical(windows$source_family,"continuous")&&.brohn_rpv_same(windows$report_ref,ref),
+        "The original recording windows do not match this selected saved source.")
+      v$selector$source_windows<-windows;v$selector$cursor<-windows$cursor;v$selector$next_cursor<-windows$next_cursor
+    }
+    if(.brohn_rpv_task_adapter(adapter)||.brohn_rpv_choice_adapter(adapter)||.brohn_rpv_eda_adapter(adapter))for(s in v$sections)if(.brohn_rpv_same(s$source_report_ref,ref)&&identical(s$adapter,adapter)&&!startsWith(s$selector$scope,"all_")){
       item<-Filter(function(item).brohn_rpv_same(item$selector,s$selector),v$selector$items)
       if(length(item)==1L){v$labels[[s$id]]<-item[[1]]$label;v$task_options[[s$id]]<-item[[1]]$details}
     }
   }
   shiny::observeEvent(input$rpk_selector_open,safe(function(){capture();x<-input$rpk_selector_open;cursors$selector<-list();selector_load(x$ref,x$adapter)}))
-  shiny::observeEvent(input$rpk_selector_close,safe(function(){v$selector<-NULL}))
+  shiny::observeEvent(input$rpk_selector_close,safe(function(){v$selector<-NULL;v$window_editor<-NULL}))
   set_selector<-function(x,all=FALSE){capture();p<-v$selector;brohn_require(!is.null(p)&&.brohn_rpv_same(x$ref,p$report_ref)&&identical(x$adapter,p$adapter),"Choose a view from the current figure list.")
     item<-if(all)NULL else Filter(function(item).brohn_rpv_same(item$selector,x$selector),p$items)
     brohn_require(!isTRUE(p$locked)&&!isTRUE(p$state%in%c("unavailable_source","needs_authority"))&&(all||length(item)==1L),"Choose an available saved view from this page.")
@@ -284,6 +328,67 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     if(.brohn_rpv_task_adapter(s$adapter))v$task_options[[s$id]]<-if(all)NULL else item[[1]]$details}
   shiny::observeEvent(input$rpk_selector_choose,safe(function()set_selector(input$rpk_selector_choose)))
   shiny::observeEvent(input$rpk_selector_all,safe(function()set_selector(input$rpk_selector_all,TRUE)))
+  window_request<-function(ref){found<-Filter(function(x).brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)
+    if(length(found))found[[1]]$display_request else brohn_normalize_eda_display_request()}
+  window_focus<-function(){target<-if(is.null(v$selector))"brohn-main"else"rpk_selector_heading"
+    session$onFlushed(function()session$sendCustomMessage("brohn-focus",target),once=TRUE)}
+  window_change<-function(ref,key,bounds=NULL){r<-window_request(ref)
+    r$continuous_windows<-Filter(function(x)!identical(x$key,key),r$continuous_windows)
+    if(!is.null(bounds))r$continuous_windows<-c(r$continuous_windows,list(list(key=key,start_s=bounds$start_s,end_s=bounds$end_s)))
+    r<-brohn_normalize_eda_display_request(r)
+    entries<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)
+    entries<-c(entries,list(list(report_ref=ref,display_request=r)))
+    entries<-.brohn_rpk_normalize_eda_requests(entries,lapply(v$rows,`[[`,"ref"))
+    if(!.brohn_rpv_same(entries,v$eda_display_requests)){dirty();v$eda_display_requests<-entries}else v$window_editor<-NULL
+    window_focus()
+  }
+  shiny::observeEvent(input$rpk_eda_window_open,safe(function(){capture();x<-input$rpk_eda_window_open;p<-v$selector
+    brohn_fields(x,c("ref","key"),label="Continuous display window")
+    brohn_require(!is.null(p)&&identical(p$adapter,"eda-continuous")&&.brohn_rpv_same(p$report_ref,x$ref),"Choose a continuous cell from the current exact saved catalog.")
+    metadata<-p$source_windows
+    if(!is.null(metadata)){
+      items<-Filter(function(item)identical(item$key,x$key),metadata$items)
+      brohn_require(length(items)==1L&&isTRUE(items[[1]]$focusable),"This saved recording has no editable continuous display window.")
+      d<-items[[1]];label<-d$label
+    }else{
+      brohn_require(!isTRUE(p$locked),"The exact prepared view is not available for this edit.")
+      items<-Filter(function(item)identical(item$details$key,x$key),p$items)
+      brohn_require(length(items)==1L&&isTRUE(items[[1]]$details$focusable),"This saved cell has no editable continuous display window.")
+      d<-items[[1]]$details;label<-items[[1]]$label
+    }
+    overrides<-Filter(function(w)identical(w$key,x$key),window_request(x$ref)$continuous_windows)
+    v$window_editor<-list(token=brohn_token(),ref=x$ref,key=x$key,prepared_ref=p$prepared_ref,label=label,
+      source_binding_hash=metadata$source_binding_hash,source_cursor=metadata$cursor,
+      bounds=d$original_default_bounds,requested=if(length(overrides))overrides[[1]][c("start_s","end_s")]else d$original_default_bounds)
+    session$onFlushed(function()session$sendCustomMessage("brohn-focus","rpk_eda_window_heading"),once=TRUE)
+  }))
+  window_editor_current<-function(){require_form();e<-v$window_editor
+    brohn_require(!is.null(e)&&identical(input$rpk_eda_window_identity,e$token)&&!is.null(v$selector)&&
+      .brohn_rpv_same(e$ref,v$selector$report_ref)&&.brohn_rpv_same(e$prepared_ref,v$selector$prepared_ref)&&
+      any(vapply(v$rows,function(row).brohn_rpv_same(row$ref,e$ref),logical(1))),"Reopen the current display-window edit.")
+    if(!is.null(e$source_binding_hash)){
+      brohn_require(identical(e$source_binding_hash,v$selector$source_windows$source_binding_hash)&&
+        .brohn_rpv_same(e$source_cursor,v$selector$source_windows$cursor),"Reopen the current original recording window.")
+      fresh<-brohn_eda_source_windows(store,e$ref,cursor=e$source_cursor)
+      items<-Filter(function(item)identical(item$key,e$key),fresh$items)
+      brohn_require(.brohn_rpv_same(fresh$report_ref,e$ref)&&identical(fresh$source_binding_hash,e$source_binding_hash)&&
+        length(items)==1L&&isTRUE(items[[1]]$focusable)&&.brohn_rpv_same(items[[1]]$original_default_bounds,e$bounds),
+        "The saved source windows changed or are no longer accessible. Reopen the current original recording window.")
+    }
+    e}
+  shiny::observeEvent(input$rpk_eda_window_apply,safe(function(){e<-window_editor_current()
+    normalized<-brohn_normalize_eda_display_request(list(schema="brohn-eda-display-request/0.1",continuous_windows=list(list(key=e$key,start_s=input$rpk_eda_start,end_s=input$rpk_eda_end))))
+    bounds<-normalized$continuous_windows[[1]]
+    brohn_require(brohn_eda_decimal_compare(bounds$start_s,e$bounds$start_s)>=0L&&brohn_eda_decimal_compare(bounds$end_s,e$bounds$end_s)<=0L,"Choose display bounds within this saved segment's original bounds.")
+    window_change(e$ref,e$key,normalized$continuous_windows[[1]])
+  }))
+  shiny::observeEvent(input$rpk_eda_window_reset,safe(function(){e<-window_editor_current();window_change(e$ref,e$key)}))
+  shiny::observeEvent(input$rpk_eda_window_cancel,safe(function(){require_form();v$window_editor<-NULL;window_focus()}))
+  shiny::observeEvent(input$rpk_eda_override_reset,safe(function(){capture();x<-input$rpk_eda_override_reset
+    brohn_fields(x,c("ref","key"),label="Saved display window reset")
+    brohn_require(any(vapply(window_request(x$ref)$continuous_windows,function(w)identical(w$key,x$key),logical(1))),"Choose a current saved display override.")
+    window_change(x$ref,x$key)
+  }))
   page_next<-function(kind){capture_if<-kind!="history";if(capture_if)capture()
     p<-switch(kind,sources=v$choices,history=v$history,selector=v$selector);if(is.null(p)||is.null(p$next_cursor))return()
     cursors[[kind]]<-c(cursors[[kind]],list(p$cursor));switch(kind,sources=load_choices(p$next_cursor),history=load_history(p$next_cursor),selector=selector_load(p$report_ref,p$adapter,p$next_cursor))}
@@ -310,17 +415,26 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     shiny::p(paste("Study:",v$choices$study$title,". Saved report versions determine the design and findings in this package."))})
   output$rpk_editor<-shiny::renderUI({if(!active())return(NULL);v$editor_tick
     shiny::isolate({if(is.null(v$draft))NULL else{d<-v$draft;d$form_identity<-v$form_identity;brohn_report_package_editor_ui(d)}})})
+  output$rpk_prepare_action<-shiny::renderUI({if(!active()||is.null(v$draft)||source_limit())return(NULL)
+    shiny::actionButton("rpk_prepare","Prepare report",class="btn-primary")})
   output$rpk_contents<-shiny::renderUI({if(!active())return(NULL)
     task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
     shiny::tagList(shiny::p(paste(length(v$rows),"saved reports and",length(v$sections),"figure sections selected. Complete numerical collections stay included, even when only selected figure pages are shown.")),
       if(choice)shiny::tagList(shiny::p("Saved best-worst results and choice models, task views, liking and other answers are included where applicable. Every selected source's complete numerical evidence stays included, even when a figure section is hidden."),
         shiny::p("These findings are shown together; no relationship between choice results, task scores and liking has been calculated. Saved models are displayed without refitting."))else if(task)shiny::tagList(shiny::p("Task scores and response patterns, liking and other answers, and saved comparisons are included where applicable. Task details are checked during preparation."),
         shiny::p("These findings are shown together; no relationship between task scores and liking has been calculated.")),
+      if(.brohn_rpv_has_eda(v$rows))shiny::tagList(
+        shiny::p("Skin-conductance reports retain complete saved analysis, processed streams, candidates and unavailable results for every selected or required EDA source. Related EDA sources are included as evidence without adding figures automatically."),
+        shiny::p("Complete raw conductance series and raw input bytes are excluded. Any bounded raw preview and raw-derived measurements already in the saved analysis remain included."),
+        shiny::p("Saved measurements are displayed without repeating decomposition or peak detection. This report does not calculate a new EDA-liking relationship.")),
       if(!is.null(v$recommendation_note))shiny::p(v$recommendation_note))})
   output$rpk_sources<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL);brohn_report_package_sources_ui(v$choices,v$rows)})
   output$rpk_selected<-shiny::renderUI({if(!active())return(NULL);shiny::tags$ul(lapply(v$rows,function(row)shiny::tags$li(row$title," | ",row$origin," | saved version ",row$ref$revision,
-    brohn_command(paste("Remove",row$title),"rpk_source_toggle",row$ref))))})
-  output$rpk_figures<-shiny::renderUI({if(!active())return(NULL);brohn_report_package_figures_ui(v$sections,v$labels,v$task_options,v$rows)})
+    brohn_command(paste("Remove",row$title),"rpk_source_toggle",row$ref),
+    if(.brohn_rpv_has_eda(v$rows))lapply(row$adapters,function(adapter)brohn_command(paste("Choose",.brohn_rpv_adapter_label(adapter)),"rpk_selector_open",list(ref=row$ref,adapter=adapter))))))})
+  output$rpk_figures<-shiny::renderUI({if(!active())return(NULL)
+    if(!length(v$sections)&&.brohn_rpv_has_eda(v$rows))return(shiny::p("No figures selected; complete numerical evidence is included. Choose saved views from a selected source to add figures again."))
+    brohn_report_package_figures_ui(v$sections,v$labels,v$task_options,v$rows)})
   output$rpk_material_scope<-shiny::renderUI({if(!active())return(NULL)
     gaze<-any(vapply(v$rows,function(row)"gaze-context"%in%unlist(row$adapters),logical(1)))
     task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
@@ -329,20 +443,29 @@ brohn_install_report_package_server <- function(input,output,session,store,state
       if(choice)shiny::p("Task and choice material definitions and hashes are included as saved references. Task and choice material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study.")else
       if(task)shiny::p("Task material definitions and hashes are included as saved references. Task material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study."))})
   output$rpk_selector<-shiny::renderUI({if(!active()||is.null(v$selector))return(NULL);brohn_report_package_selector_ui(v$selector)})
+  output$rpk_eda_window<-shiny::renderUI({if(!active())return(NULL);brohn_report_package_eda_window_ui(v$window_editor)})
+  output$rpk_eda_windows<-shiny::renderUI({if(!active()||!length(v$eda_display_requests))return(NULL)
+    shiny::tags$section(`aria-labelledby`="rpk_eda_overrides_heading",shiny::h3("Saved display-window overrides",id="rpk_eda_overrides_heading"),
+      shiny::p("These source settings remain in the draft when you remove figures or choose all views. Apply prepares no data; use Prepare report after changing the draft."),
+      lapply(v$eda_display_requests,function(x){row<-Filter(function(row).brohn_rpv_same(row$ref,x$report_ref),v$rows)
+        shiny::div(shiny::strong(if(length(row))row[[1]]$title else"Saved source"),lapply(x$display_request$continuous_windows,function(w)
+          shiny::p(paste("Cell",substr(w$key,1L,12L),"|",w$start_s,"to",w$end_s,"seconds"),brohn_command("Reset this display window","rpk_eda_override_reset",list(ref=x$report_ref,key=w$key)))))}))})
   output$rpk_history<-shiny::renderUI({if(!active()||is.null(v$history))return(NULL);brohn_report_package_history_ui(v$history)})
-  output$rpk_feedback<-shiny::renderUI({if(!active())return(NULL);p<-v$pending;i<-v$intent
-    label<-if(!is.null(v$issue))v$issue else if(!is.null(p))p$label else if(isTRUE(v$dirty))"Report choices changed. Prepare them to create a new saved version."else if(!is.null(i))paste(.brohn_rpv_status(i$status,i$dependencies),brohn_default(i$reason,""))else"Review the contents, then prepare your report."
+  output$rpk_feedback<-shiny::renderUI({if(!active())return(NULL);p<-v$pending;i<-v$intent;limited<-source_limit()
+    label<-if(!is.null(v$issue))v$issue else if(!is.null(p))p$label else if(limited)"Complete source evidence exceeds this report's capacity."else if(isTRUE(v$dirty))"Report choices changed. Prepare them to create a new saved version."else if(!is.null(i))paste(.brohn_rpv_status(i$status,i$dependencies),brohn_default(i$reason,""))else"Review the contents, then prepare your report."
     shiny::div(id="rpk_status",role="status",`aria-live`="polite",tabindex="-1",
       `data-rpk-ticket`=if(is.null(p))NULL else p$ticket,`data-rpk-focus`=v$focus_token,
       `data-rpk-phase`=v$phase,`data-rpk-passive`=if(!is.null(p)&&isTRUE(p$passive))"true"else"false",
        shiny::p(label),
        if(!is.null(i)&&!isTRUE(v$dirty)&&identical(i$preparation$reason_code,"panel_limit"))shiny::p(paste(
          "These choices need",i$preparation$resolved_panel_count,"illustrated panels; the limit is",paste0(i$preparation$maximum_panels,"."),
-         "Open Change contents to choose fewer figure views or pages. Complete numerical evidence remains included.")),
-       if(!is.null(i)&&!isTRUE(v$dirty)&&identical(i$next_action,"review"))shiny::tagList(
+         if(.brohn_rpv_eda_profile(i$request$renderer_profile))"Open Change contents to choose fewer figure views, components or candidate marker pages. Numerical table pages do not reduce EDA figures. Complete numerical evidence remains included."else
+           "Open Change contents to choose fewer figure views or pages. Complete numerical evidence remains included.")),
+        if(!is.null(i)&&(!isTRUE(v$dirty)||limited)&&.brohn_rpv_eda_profile(i$request$renderer_profile)).brohn_rpv_eda_refusal(i$preparation,v$rows,single_source_limit=limited),
+        if(!limited&&!is.null(i)&&!isTRUE(v$dirty)&&identical(i$next_action,"review"))shiny::tagList(
          shiny::p("Review the reason above. A new version uses current preparation code and keeps earlier saved versions available."),
          shiny::actionButton("rpk_prepare_new","Prepare these choices as a new version")),
-       if(!is.null(i)&&!isTRUE(v$dirty)&&i$next_action%in%c("resume","retry","continue"))
+        if(!limited&&!is.null(i)&&!isTRUE(v$dirty)&&i$next_action%in%c("resume","retry","continue"))
         shiny::actionButton("rpk_resume",if(i$next_action=="retry")"Retry preparation"else"Resume preparation"),
       if(!is.null(i)&&i$status=="succeeded"&&is.null(native$handle)&&is.null(p)&&!isTRUE(v$dirty))shiny::actionButton("rpk_reopen","Reopen saved report"),
        if(!is.null(p)||(!is.null(i)&&i$status%in%c("prepared","waiting_for_display","ready_to_freeze","assembly_queued","needs_authority","failed","needs_attention")))shiny::actionButton("rpk_cancel","Cancel preparation"))})

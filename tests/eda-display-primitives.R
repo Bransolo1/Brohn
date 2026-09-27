@@ -1,0 +1,25 @@
+# Pure exact-value and request tests; no scientific worker or source store.
+args<-commandArgs(TRUE);stopifnot(length(args)==2L)
+repo<-normalizePath(args[[1L]],winslash="/",mustWork=TRUE)
+out<-args[[2L]];stopifnot(!file.exists(out));dir.create(out,recursive=TRUE);out<-normalizePath(out,winslash="/",mustWork=TRUE)
+setwd(repo);source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=FALSE)
+checks<-character();ok<-function(condition,label){stopifnot(isTRUE(condition));checks<<-c(checks,label)}
+refuse<-function(f,label)ok(inherits(tryCatch({f();NULL},error=identity),"error"),label)
+ok(identical(.brohn_ed_recipe,"explicit-saved-distributions/1.0")&&identical(names(.brohn_ed_loaded),"R/platform-explicit-distributions.R")&&is.function(.brohn_edd_recipe),"legacy explicit namespace survives cold EDA loading")
+cases<-c("+001.2000e+002"="12e1","-0e-1000"="0",".00100"="1e-3","1000000000000"="1e12","-0002.30E-002"="-23e-3")
+for(s in names(cases)){v<-.brohn_edd_decimal_parts(s)$canonical;ok(identical(v,cases[[s]]),paste("exact normalization",s));ok(identical(.brohn_edd_decimal_parts(v)$canonical,v),paste("idempotence",s))}
+long<-paste0(".",paste(rep("123456789",9L),collapse=""));long<-substr(long,1L,80L);v<-.brohn_edd_decimal_parts(long)$canonical
+ok(nchar(v)>80L&&identical(v,.brohn_edd_decimal_parts(v)$canonical),"long exact coefficient canonical roundtrip")
+ok(brohn_eda_decimal_compare("1.00000000000000000000000000001","1")==1L,"sub-double exact comparison")
+ok(brohn_eda_decimal_compare("-1e-1000","0")==-1L&&brohn_eda_decimal_compare("-1.2","-1.19")==-1L,"negative exact order")
+for(x in c("1e1001","1000000000000.000000000001","NaN"," 1","1,2","0e1100",paste(rep("1",100),collapse="")))refuse(function().brohn_edd_decimal_parts(x),paste("refused",substr(x,1L,30L)))
+key<-paste(rep("a",64),collapse="");r<-list(schema="brohn-eda-display-request/0.1",continuous_windows=list(list(key=key,start_s="1.00",end_s="2.00")))
+n<-brohn_normalize_eda_display_request(r);ok(identical(n,brohn_normalize_eda_display_request(n)),"request canonical idempotence")
+r$continuous_windows[[2L]]<-r$continuous_windows[[1L]];refuse(function()brohn_normalize_eda_display_request(r),"duplicate windows refuse")
+vectors<-list(null=NULL,false=FALSE,true=TRUE,empty_array=list(),empty_object=structure(list(),names=character()),empty_string="",positive_zero=0,negative_zero=-0.0,decimal=0.1,integer=3L,number=3,array=list(1,"\u00e9",NULL),object=stats::setNames(list(1,list(),structure(list(),names=character())),c("z","a","\u00e9")),nested=list(a=list(1,list(b=-0.0))))
+hashes<-lapply(vectors,brohn_eda_value_hash);ok(hashes$integer==hashes$number,"one JSON numeric domain");ok(hashes$negative_zero!=hashes$positive_zero,"signed zero distinct");ok(hashes$empty_object!=hashes$empty_array,"empty object distinct")
+transport<-lapply(vectors,function(x){wire<-.brohn_edd_json_text(brohn_json(x));parsed<-brohn_parse(wire);if(!identical(brohn_eda_value_hash(x),brohn_eda_value_hash(parsed)))stop(paste("Transport digest changed:",wire));ok(TRUE,paste("R JSON transport",wire));list(json=wire,sha256=brohn_eda_value_hash(x))})
+refuse(function().brohn_edd_json_text('{"x":9007199254740992}'),"large integer lexical token refuses before double parse")
+ok(identical(.brohn_edd_json_text('{"x":"-0","y":-0}'),'{"x":"-0","y":-0.0}'),"negative zero repair never edits text")
+brohn_eda_write_json_file(list(checks=as.list(checks),passed=TRUE,vectors=transport),file.path(out,"results.json"))
+cat(length(checks),"pure primitive checks passed\n")

@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **27 September 2026** for the ongoing end-to-end implementation.
+Updated **28 September 2026** for the ongoing end-to-end implementation.
 The owner resumed development after the published source checkpoint. The
 [workstream](WORKSTREAM.md) orders the active implementation;
 these gaps and the full capability/package scope remain open.
@@ -23,12 +23,38 @@ records describing only the 01A–01L prototype are historical.
   combined with choice. Conjoint, other choice procedures and broader model
   qualification remain separate.
 
-- **Next physiological packages:** [saved event-related and continuous EDA with
-  liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md) comes first, then
-  ECG/PPG separately. Complete processed evidence, historical preparation,
-  baseline/exclusion/timing support and current source authority need connected
-  package qualification. Existing signal explorers are not themselves complete
-  offline adapters; exporting must not run new decomposition or detection.
+- **Saved EDA scope and capacity:** the [report contract](architecture/SAVED-EDA-REPORT-PACKAGES.md)
+  has scoped final researcher/download/restart acceptance; native/export/history
+  and phone/A4 evidence remain separate in the [phase record](qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md).
+  No decomposition, detection or new liking estimator runs on export. Complete
+  raw series/input bytes are excluded; original bounded raw previews remain.
+  The separate large UI case recovered a 10–20 second display after the
+  500,100/500,000-sample refusal, but assembly correctly refused 201,416,771
+  projected bytes against 201,326,592. Full large-package recovery/capacity
+  is not qualified. Smaller figures cannot justify dropping complete evidence.
+  Single-source guidance and stale retry actions are corrected and have scoped
+  final UI04 controller plus actual saved-history checks; this does not raise
+  the package capacity or repair the scientific method.
+
+- **Continuous EDA scientific remedy:** the [retained constant-signal finding](qa/EDA-CONSTANT-SIGNAL-FINDING.md)
+  reproduces numerical peaks and a zero-input error in unchanged method 1.0.
+  Follow the [versioned remedy contract](methods/EDA-CONSTANT-SIGNAL-NEXT.md):
+  independent constant, near-flat and small-response witnesses; separate
+  numerical precision from scientific threshold/quality policy; preserve all
+  historical results. No arbitrary floor or scientific readiness is implied.
+  [Saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md) follow
+  separately, including after-exclusion results and RR/PRV distinctions.
+
+- **EDA presentation follow-ups:** add accurate plain labels beside canonical
+  metric keys; distinguish a null missing-reason field from an unavailable
+  measure; keep print headings with their following content. The corrected
+  phone/A4 artifact passed its scoped review, not every future label/printer.
+
+- **Source operations:** an unchanged producer failed at a downstream
+  265-character Windows curation artifact path. Review of 1,204 tiny acquisition
+  chunks was cancelled after about 453 seconds; its latency cause is unproven.
+  A successful shorter-path, batched replay chain does not fix either issue.
+  Retain them under PC07/BWP06/BWP17 and qualify any remedy independently.
 
 - **Saved-result responsiveness:** [scoped improvements](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
   now remove repeated media preparation and task digest work while preserving
@@ -51,8 +77,9 @@ records describing only the 01A–01L prototype are historical.
   adds seven task profiles with liking/scales, original native/imported sources
   and saved cohorts, with final mobile, researcher, export and restart acceptance.
   The MaxDiff extension has the separate scoped acceptance above. Task/choice
-  stimulus image bytes/context panels and broader task/choice, neural/physiology
-  and media families still need separate adapters and connected journeys. Historical RT score schema 1.0 has a structural reader
+  stimulus image bytes/context panels and broader task/choice, neural, remaining
+  physiology and media families still need separate adapters and journeys.
+  EDA's separate scoped acceptance and remaining capacity limit are above. Historical RT score schema 1.0 has a structural reader
   but no retained original producer/worker acceptance fixture in this packet.
   Known unsupported selected parents or
   scientific collections are refused with a reason, not silently dropped.

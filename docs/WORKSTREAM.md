@@ -1,12 +1,35 @@
 # Brohn workstream and restart checklist
 
-**Choice-report scoped checkpoint, 27 September 2026:** complete saved MaxDiff
+**Saved EDA report checkpoint, 28 September 2026:** the scoped final researcher,
+download and cold-restart flow passed: 8 queued-cancel, 74 initial / 11 scans and
+9 restart checks. Eight executed jobs succeeded on attempt 1 with normal
+60-second leases; saved HTML/ZIP bytes reopened unchanged without new jobs.
+Original sources remained exact and owned services stopped. Separate native,
+source/lease, history, independent export and phone/A4 phases retain their own
+limits. Final joined10/UI04 adds only the capacity-guidance/stale-resume
+correction and its controller test: 78/36 controller checks and a separate
+24-check/four-scan actual reread with 106 conservation checks. The main journey
+used UI02 / joined07=08; it was not rerun wholesale on the later UI source.
+Read the [phase record](qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md),
+[source receipt](qa/EDA-REPORT-PACKAGE-SOURCE.json),
+[architecture](architecture/SAVED-EDA-REPORT-PACKAGES.md) and
+[guide](operations/SHARE-SAVED-EDA-FINDINGS.md).
+
+The separate large UI case recovered a 10–20 s display after the full-view
+sample refusal, then correctly refused oversized complete evidence. It is not
+a completed large-package recovery. All 50 capabilities and 17 packages remain
+active and unfinished, with individual statuses and ownership unchanged.
+
+The dated entries below retain earlier checkpoint provenance; the **Active
+work** list controls the next implementation order.
+
+**Earlier choice-report scoped checkpoint, 27 September 2026:** complete saved MaxDiff
 findings now pass separate source/preparation, pure projection, guarded worker,
 historical-package, researcher, mobile export and cold-restart gates. See
 [the phase record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md). Exported reports also
 use plain task labels across seven profiles with unchanged canonical evidence.
 This advances BWP04/BWP10/BWP13/BWP14/BWP15/BWP17; none is closed by this slice.
-Next is complete saved EDA with liking, then ECG/PPG separately.
+Its EDA follow-on is the scoped checkpoint above; ECG/PPG remains separate.
 
 **Earlier task-report checkpoint, 27 September 2026:** seven-profile complete task findings
 can accompany explicit liking/scales using exact prepared historical evidence.
@@ -34,9 +57,10 @@ This file orders the immediate continuation; it does not replace that scope.
 
 ## Current checkpoint
 
-| Workstream | Delivered and checked | Remaining work |
+| Workstream | Scoped implementation and evidence | Remaining work |
 | --- | --- | --- |
-| Complete choice/MaxDiff handoff | Complete saved counts/models, mixed task/liking sources, packed/native/import/cohort evidence, guarded workers, exact history, researcher/mobile downloads and unchanged restart; scoped acceptance. | Exact saved EDA with liking next, then ECG/PPG; task/choice image context and broader methods remain open. |
+| Saved event/continuous EDA handoff | One-Prepare flow, original-window metadata, complete included processed evidence, exact history, corrected offline presentation, scoped main researcher/restart acceptance and separate final-source capacity-guidance/history checks. | Versioned constant-signal method repair, saved ECG/PPG, larger complete-evidence capacity, plain EDA labels, field-aware missing-reason wording and print heading placement. |
+| Complete choice/MaxDiff handoff | Complete saved counts/models, mixed task/liking sources, packed/native/import/cohort evidence, guarded workers, exact history, researcher/mobile downloads and unchanged restart; scoped acceptance. | EDA has separate scoped acceptance above; task/choice image context and broader methods remain open. |
 | Saved-download HTTP | Shared finalizer on 19 saved callbacks / 24 export variants and hosted 403; exact bytes, empty HEAD, current authority and native paired/history compatibility. | Framework downloadHandlers, participant/static/range/compressed routes retain separate contracts. |
 | Saved task/liking handoff | Seven enabled native/imported task profiles and saved cohorts, complete numerical evidence, exact prepared history, phone-readable exports and unchanged restart; scoped final acceptance. | Choice/MaxDiff extension now has scoped acceptance; task image context, further report families and wider workloads remain open. |
 | Saved-findings handoff | Durable one-action prerequisites, exact historical choices, standalone HTML/evidence ZIP and complete included numerical collections; scoped connected acceptance. | Further report families, larger profiles, original/raw-evidence bundles and scoped post-collection restrictions. |
@@ -53,7 +77,8 @@ This file orders the immediate continuation; it does not replace that scope.
 | Original-container video/audio review | Exact frames beside the saved waveform; full timestamp/sample exports, explicit gaps, cancel/retry, saved history and zero-job restart. | Continuous playback, unrelated-sensor clock maps and broader history workload qualification. |
 | Installation and operations | Checked Windows setup plus final integrated-source connected smoke from a separate checkout: actual participant, one automatic report, exports and restart. | Configured broader QA catalog, clean-machine installation, public hosting operations and broader roles. |
 
-Authoritative evidence: [saved-download checkpoint](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md),
+Authoritative evidence: [EDA phase record](qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md),
+[EDA source binding](qa/EDA-REPORT-PACKAGE-SOURCE.json), [saved-download checkpoint](qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md),
 [saved-findings checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md),
 [current clock checkpoint](qa/PUBLICATION-REVIEWED-CLOCK-20260927.md),
 [responsiveness checkpoint](qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md),
@@ -70,27 +95,37 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Complete saved EDA with liking (PC02/PC05/PC13/PC16;
-   BWP04/BWP06/BWP09/BWP13/BWP15/BWP17).** Follow the
-   [physiological report plan](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md):
-   support both event-related and continuous EDA from exact saved reports and
-   full typed numerical artifacts. Keep baselines, nonresponse versus missing
-   support, exclusions, source clocks and original denominators explicit.
-   Prepare only display evidence; do not clean, decompose or detect again.
-   Co-present liking without inventing an event-level paired estimator.
-   Follow with a separately qualified ECG/PPG adapter, including saved
-   after-exclusion reports and RR/PRV distinctions. Preserve precise refusal
-   for unsupported mixed collections. Further neural/camera/media adapters remain.
-   Task/choice material definitions and hashes are retained, but image bytes and
-   context panels remain a separate extension; optional images cover gaze only.
-   Larger profiles, raw/original bundles and additional choice methods stay open.
+1. **Versioned constant-signal EDA remedy, then saved ECG/PPG
+   (PC02/PC05/PC13/PC16; BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17).**
+   Preserve the accepted EDA export source and all failed phase evidence.
+   Implement the independently reviewed, versioned
+   [constant-signal remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md). Keep numerical
+   precision handling separate from scientific SCR thresholds and data quality;
+   do not pick an arbitrary floor. Preserve historical 1.0 results exactly.
+   [Saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md) follow as
+   a separate admission profile, including after-exclusion results and explicit
+   RR/PRV distinctions. Consume saved evidence without new analysis or a new
+   liking estimator. Before broadening EDA presentation, add accurate plain
+   metric labels, distinguish a null missing-reason field from an unavailable
+   measure, and keep print headings with their following content.
+   Further neural/camera/media adapters remain. Task/choice material definitions
+   and hashes are retained, but image bytes/context panels are still separate;
+   optional embedded stimulus images cover gaze only. Larger profiles,
+   raw/original bundles and additional choice methods remain open. The large
+   UI source produced a valid focused display but its 201,416,771-byte complete
+   projection exceeded 201,326,592 bytes. Qualify any capacity expansion without
+   trimming evidence or interpreting a narrower view as reduced source volume.
 
 2. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
    accepted source guards, exact outputs and ticket/focus behavior. The current
    media and task improvements are scoped; synchronous opening still takes
    several seconds. Measure further changes against the retained corpus and
    distinguish heading/link readiness from image loading. Qualify larger and
-   concurrent workloads separately.
+   concurrent workloads separately. Retain two unchanged-producer findings:
+   a downstream 265-character Windows curation artifact path failed, and review
+   of 1,204 tiny acquisition chunks was cancelled after about 453 seconds.
+   The review-latency cause is unproven; a successful short-path, batched replay
+   chain does not close either finding. Track these under PC07/BWP06/BWP17.
 
 3. **Post-collection restrictions (PC13).** Design a durable scoped restriction
    ledger, affected-source/derivative/report preview and backup-restore

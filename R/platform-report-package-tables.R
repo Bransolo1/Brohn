@@ -15,7 +15,7 @@ brohn_report_package_task_limits <- function() {
   value<-brohn_report_package_limits();value$profile<-"controlled-task-report-package/0.1";value
 }
 .brohn_rp_limits <- function(value) {
-  defaults<-if(identical(value$profile,"controlled-task-choice-report-package/0.1"))brohn_report_package_choice_limits()else if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
+  defaults<-if(identical(value$profile,"controlled-task-choice-eda-report-package/0.1"))brohn_report_package_eda_limits()else if(identical(value$profile,"controlled-task-choice-report-package/0.1"))brohn_report_package_choice_limits()else if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
   brohn_fields(value,names(defaults),label="Package limits")
   brohn_require(identical(value$profile,defaults$profile)&&all(vapply(setdiff(names(defaults),"profile"),function(k)
     brohn_number(value[[k]],1,defaults[[k]],TRUE),logical(1))),"Report limits exceed the supported profile.")
@@ -185,6 +185,8 @@ brohn_report_package_task_limits <- function() {
   list(mode=mode,label=label,resolve=resolve,owner=owner,score_context=score_context)
 }
 .brohn_rp_project <- function(x,aliases,namespace,path="analysis",person=NULL,session=NULL) {
+  eda_own<-aliases$eda_states[[namespace]]
+  if(!is.null(eda_own)&&grepl("/(original_source_row|original_source_record)(/|$)",path))return(eda_own$project(x,path))
   if(!is.list(x))return(x)
   if(is.null(names(x)))return(lapply(x,.brohn_rp_project,aliases=aliases,namespace=namespace,path=paste0(path,"/*"),person=person,session=session))
   original_person<-brohn_default(x$participant_id,person)
@@ -199,6 +201,7 @@ brohn_report_package_task_limits <- function() {
     if(!is.null(x[["report_id"]])&&grepl("crosswalk",path,fixed=TRUE))aliases$resolve(namespace,x[["report_id"]])else namespace
   source_person<-if("source_participant_id"%in%names(x))x[["source_participant_id"]]else if(source_namespace==namespace)original_person else NULL
   source_session<-if("source_session_id"%in%names(x))x[["source_session_id"]]else if(source_namespace==namespace)original_session else NULL
+  eda_source<-aliases$eda_states[[source_namespace]]
   out<-x
   person_keys<-c("participant_id","proposed_participant_id")
   session_keys<-c("session_id","run_id","proposed_session_id")
@@ -212,7 +215,9 @@ brohn_report_package_task_limits <- function() {
     else if(k %in% session_keys)out[k]<-list(aliases$label(namespace,"session",x[[k]],original_person))
     else if(k=="source_participant_id")out[k]<-list(aliases$label(source_namespace,"person",x[[k]]))
     else if(k=="source_session_id")out[k]<-list(aliases$label(source_namespace,"session",x[[k]],source_person))
-    else if(k %in% c("source_exposure_id","source_recording_id","source_segment_id"))out[k]<-list(aliases$label(source_namespace,sub("_id$","",sub("^source_","",k)),x[[k]],source_person,source_session))
+    else if(k %in% c("source_exposure_id","source_recording_id","source_segment_id"))out[k]<-list(if(is.null(eda_source))aliases$label(source_namespace,sub("_id$","",sub("^source_","",k)),x[[k]],source_person,source_session)else
+      eda_source$label(sub("_id$","",sub("^source_","",k)),x[[k]],x$source_recording_id,brohn_default(x$support$channel,x$outcome_id),list(participant_id=source_person,session_id=source_session)))
+    else if(k=="support"&&!is.null(eda_source)&&!is.null(x$source_recording_id))out[k]<-list(eda_source$project(x[[k]],"source_support",x$source_recording_id,brohn_default(x$support$channel,x$outcome_id),list(participant_id=source_person,session_id=source_session)))
     else if(k %in% names(identity_kind))out[k]<-list(aliases$label(namespace,unname(identity_kind[[k]]),x[[k]],original_person,original_session))
     else if(k=="id"&&grepl("/history_events/",paste0(path,"/"),fixed=TRUE))out[k]<-list(aliases$label(namespace,"event",x[[k]],original_person,original_session))
     else if(k=="id"&&grepl("^provenance/(run_evidence/)?runs/\\*$",path))out[k]<-list(aliases$label(namespace,"session",x[[k]],original_person))
@@ -223,7 +228,7 @@ brohn_report_package_task_limits <- function() {
   }
   out
 }
-.brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL,choice_evidence=NULL) {
+.brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL,choice_evidence=NULL,source_admission=NULL) {
   body<-item$saved_body;a<-item$complete_analysis
   brohn_fields(body,c("id","title","origin","analysis","provenance"),c("schema_version","created_at","status","study_id","dataset_id","project_id","processing","result_object","session_quality"),"Saved report projection")
   if(!is.null(choice_evidence)){
@@ -240,7 +245,7 @@ brohn_report_package_task_limits <- function() {
   brohn_require(a$kind %in% c("gaze","questionnaire","multimodal")&&!brohn_questionnaire_is_artifact(a),"Complete findings require a supported full analysis, not its catalog preview.")
   brohn_require(!length(a$artifacts)&&!length(a$task_scores)&&!length(a$choice_tasks),
     "This complete analysis also contains artifact/task/choice evidence without a package adapter. Keep its original export or choose a report fully supported by this profile.")
-  .brohn_rp_validate_scientific(a)
+  if(identical(source_admission,"task-choice-eda-findings/0.1")&&identical(a$kind,"multimodal"))brohn_validate_complete_report_analysis(item,source_admission)else .brohn_rp_validate_scientific(a)
   }else{
     brohn_validate_task_display_evidence(task_evidence,item)
     if(identical(a$kind,"questionnaire")){

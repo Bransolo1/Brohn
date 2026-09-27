@@ -1,5 +1,19 @@
 # Brohn - Implicit Research Platform
 
+**Saved EDA report checkpoint, 28 September 2026.** The existing Prepare report
+flow now includes saved event and continuous skin conductance beside liking,
+preserving complete included processed evidence without repeating scientific
+analysis. The scoped researcher/download/restart journey has passed; component,
+native worker, export and presentation evidence remain separate. Read the
+[EDA guide](docs/operations/SHARE-SAVED-EDA-FINDINGS.md),
+[contract](docs/architecture/SAVED-EDA-REPORT-PACKAGES.md),
+[phase record](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+[source receipt](docs/qa/EDA-REPORT-PACKAGE-SOURCE.json).
+A later UI-only correction has separate final-source saved-history checks:
+single-source capacity refusals explain original exports and do not offer
+ineffective retries. Large complete-evidence packages remain bounded; a smaller
+display does not shrink the full evidence or guarantee package admission.
+
 Brohn is an open-source, R-first workspace for consumer and psychology research:
 design controlled studies, collect or import data, review traceable analyses,
 and reuse study designs. It aims to make these workflows approachable for
@@ -55,10 +69,13 @@ component, worker, connected researcher, mobile export and cold-restart evidence
 Exported task reports also gain plain labels/explanations across all seven
 profiles; canonical metric keys, values and support remain in the evidence.
 
-The [next physiological report plan](docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
-starts with saved event-related and continuous EDA beside liking, followed
-separately by ECG/PPG. These planned adapters, task/choice stimulus image context
-and the wider platform remain unfinished.
+The immediate method work is the
+[versioned constant-signal remedy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md),
+followed by [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+Faithful export does not qualify the existing detector: a retained synthetic
+constant-signal counterexample needs correction under a new scientific version.
+Task/choice stimulus image context, raw input bundles, broader workloads and the
+wider platform remain unfinished.
 
 ## What is connected
 

@@ -297,16 +297,17 @@ brohn_resolve_task_report_section <- function(section,catalog) {
 brohn_report_package_panel_preflight <- function(bundle) {
   # Full-bundle worker boundary. Deliberately does not open a store, write files,
   # render images, replay journals, run scorers or modify the frozen selection.
-  selection<-bundle$selection;brohn_require(identical(selection$schema,"brohn-report-package-selection/0.2"),"Task panel preflight needs the explicit new selection profile.")
-  limits<-.brohn_rp_limits(bundle$limits);aliases<-.brohn_rp_alias_context(selection$contents_policy$identifier_mode,bundle$reports)
+  selection<-bundle$selection;eda_profile<-.brohn_rpe_profile(selection);brohn_require(selection$schema%in%c("brohn-report-package-selection/0.2","brohn-report-package-selection/0.3"),"Task panel preflight needs the explicit new selection profile.")
+  limits<-.brohn_rp_limits(bundle$limits);aliases<-if(eda_profile).brohn_rpe_alias_context(bundle)else .brohn_rp_alias_context(selection$contents_policy$identifier_mode,bundle$reports)
   bodies<-lapply(seq_along(bundle$reports),function(i){item<-bundle$reports[[i]]
     brohn_require(identical(item$ref$body_hash,brohn_hash(item$saved_body))&&identical(item$saved_body$id,item$ref$id)&&
       identical(item$ref$project_id,selection$project_id)&&identical(item$saved_body$study_id,selection$study_id),"Panel source differs from its exact selected study/report.")
     if(!brohn_questionnaire_is_artifact(item$saved_body$analysis))brohn_require(.brohn_rp_same(item$saved_body$analysis,item$complete_analysis),"Inline analysis changed before panel preflight.")
     else brohn_validate_questionnaire_preview(item$saved_body$analysis,item$complete_analysis,brohn_questionnaire_artifact_source(item$saved_body))
     task<-.brohn_rpt_find_entry(bundle,item);choice<-if(.brohn_rpc_profile(selection)).brohn_rpc_find_entry(bundle,item)else NULL
-    .brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence,if(is.null(choice))NULL else choice$evidence)
-    body<-item$saved_body;body$analysis<-item$complete_analysis;list(item=item,body=body,task=task,choice=choice)
+    eda<-if(eda_profile).brohn_rpe_find(bundle,item)else NULL
+    if(is.null(eda)).brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence,if(is.null(choice))NULL else choice$evidence,if(eda_profile)"task-choice-eda-findings/0.1"else NULL)
+    body<-item$saved_body;body$analysis<-item$complete_analysis;list(item=item,body=body,task=task,choice=choice,eda=eda)
   })
   counts<-lapply(selection$sections,function(s){
     at<-which(vapply(bodies,function(x).brohn_rp_same(x$item$ref,s$source_report_ref),logical(1)))
@@ -319,6 +320,10 @@ brohn_report_package_panel_preflight <- function(bundle) {
       brohn_require(.brohn_rpc_profile(selection)&&!is.null(p$choice)&&.brohn_rp_same(p$choice$ref,s$source_ref),"Choice panel source differs from the exact required preparation.")
       resolved<-brohn_resolve_choice_report_section(s,p$choice$body$catalog)
       brohn_require(.brohn_rp_same(s$resolved_models,resolved$section$resolved_models),"Frozen choice panel resolution changed.");n<-resolved$panel_count
+    }else if(s$adapter%in%c("eda-events","eda-continuous")){
+      brohn_require(eda_profile&&!is.null(p$eda)&&.brohn_rp_same(p$eda$ref,s$source_ref),"EDA panel source differs from the exact required preparation.")
+      resolved<-brohn_resolve_eda_report_section(s,p$eda$body$catalog)
+      brohn_require(.brohn_rpe_same(s$resolved_models,resolved$section$resolved_models),"Frozen EDA panel resolution changed.");n<-resolved$panel_count
     }else if(identical(s$adapter,"gaze-context")){
       brohn_require(.brohn_rp_same(s$source_ref,s$source_report_ref),"Gaze panel source changed.")
       model<-brohn_gaze_report_model(p$body);groups<-model$groups
@@ -447,6 +452,7 @@ brohn_report_package_panel_preflight <- function(bundle) {
   result$owner<-function(namespace,session,person=NULL)owner(namespace,session,canonical_person(person));result
 }
 .brohn_rpt_prepared_bindings <- function(bundle) {
+  if(.brohn_rpe_profile(bundle$selection))return(.brohn_rpe_prepared_bindings(bundle))
   brohn_require(brohn_array(bundle$task_displays),"Prepared task sources must be an ordered array.")
   choice_profile<-.brohn_rpc_profile(bundle$selection)
   if(choice_profile)brohn_require(brohn_array(bundle$choice_displays),"Prepared choice sources must be an ordered array.")

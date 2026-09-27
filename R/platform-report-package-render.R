@@ -97,28 +97,28 @@
   x
 }
 .brohn_rp_selection <- function(s) {
-  task<-identical(s$schema,"brohn-report-package-selection/0.2");choice<-.brohn_rpc_profile(s)
-  brohn_fields(s,c("schema","id","intent_ref","study_id","project_id","title","report_refs",if(task)"prepared_sources"else"display_refs","sections","contents_policy","limits_profile","renderer_profile","frozen_at","coverage"),
+  eda<-.brohn_rpe_profile(s);task<-s$schema%in%c("brohn-report-package-selection/0.2","brohn-report-package-selection/0.3");choice<-.brohn_rpc_profile(s)
+  brohn_fields(s,c("schema","id","intent_ref","study_id","project_id","title","report_refs",if(task)"prepared_sources"else"display_refs","sections","contents_policy","limits_profile","renderer_profile","frozen_at","coverage",if(eda)c("eda_display_requests","related_eda_refs","source_identity_graph_binding")),
     c("generation"),"Frozen report selection")
-  brohn_require(s$schema%in%c("brohn-report-package-selection/0.1","brohn-report-package-selection/0.2")&&brohn_valid_id(s$id)&&brohn_valid_id(s$study_id)&&brohn_valid_id(s$project_id)&&
-    brohn_text(s$title,500)&&brohn_text(s$frozen_at,64)&&(!choice||task)&&identical(s$limits_profile,if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")&&
-    identical(s$renderer_profile,if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1"),"Invalid frozen report selection.")
+  brohn_require(s$schema%in%c("brohn-report-package-selection/0.1","brohn-report-package-selection/0.2","brohn-report-package-selection/0.3")&&identical(eda,identical(s$schema,"brohn-report-package-selection/0.3"))&&brohn_valid_id(s$id)&&brohn_valid_id(s$study_id)&&brohn_valid_id(s$project_id)&&
+    brohn_text(s$title,500)&&brohn_text(s$frozen_at,64)&&(!choice||task)&&identical(s$limits_profile,if(eda)"controlled-task-choice-eda-report-package/0.1"else if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")&&
+    identical(s$renderer_profile,if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.1"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1"),"Invalid frozen report selection.")
   .brohn_rp_ref(s$intent_ref,"report_package_intent");.brohn_rp_contents(s$contents_policy)
   for(ref in c(s$report_refs,s$display_refs)).brohn_rp_ref(ref)
   if(task){
     brohn_require(brohn_array(s$prepared_sources),"Prepared source inventory must be an ordered array.")
     for(p in s$prepared_sources){brohn_fields(p,c("adapter","source_report_ref","prepared_ref","implementation_ref"),label="Exact prepared source")
-      brohn_require(p$adapter%in%c("explicit-distribution","task-display",if(choice)"choice-display"),"Unsupported prepared source adapter.")
-      .brohn_rp_ref(p$source_report_ref,"report");.brohn_rp_ref(p$prepared_ref,switch(p$adapter,"task-display"="task_display","choice-display"="choice_display","explicit-distribution"="explicit_distributions"))
+      brohn_require(p$adapter%in%c("explicit-distribution","task-display",if(choice)"choice-display",if(eda)"eda-display"),"Unsupported prepared source adapter.")
+      .brohn_rp_ref(p$source_report_ref,"report");.brohn_rp_ref(p$prepared_ref,switch(p$adapter,"task-display"="task_display","choice-display"="choice_display","eda-display"="eda_display","explicit-distribution"="explicit_distributions"))
       brohn_fields(p$implementation_ref,c("profile","hash"),label="Prepared implementation identity")
       brohn_require(brohn_text(p$implementation_ref$profile,128)&&.brohn_rp_hash(p$implementation_ref$hash),"Prepared implementation is not pinned.")
     }
   }
-  brohn_require(brohn_array(s$sections)&&length(s$sections)>0L&&!anyDuplicated(vapply(s$sections,`[[`,character(1),"id"))&&
+  brohn_require(brohn_array(s$sections)&&(eda||length(s$sections)>0L)&&!anyDuplicated(vapply(s$sections,`[[`,character(1),"id"))&&
     !anyDuplicated(vapply(s$sections,`[[`,numeric(1),"order")),"Report sections need distinct stable identities and orders.")
   for(x in s$sections){
     brohn_fields(x,c("id","adapter","adapter_version","source_report_ref","source_ref","selector","display","order"),c("resolved_group_ids",if(task)"resolved_models"),"Report section")
-    brohn_require(brohn_valid_id(x$id)&&identical(x$adapter_version,"0.1")&&x$adapter%in%c("gaze-context","explicit-distribution","paired-findings",if(task)c("task-scores","task-trials","task-people"),if(choice)c("choice-counts","choice-utilities"))&&brohn_number(x$order,1,10000,TRUE),"Unsupported report section adapter.")
+    brohn_require(brohn_valid_id(x$id)&&identical(x$adapter_version,"0.1")&&x$adapter%in%c("gaze-context","explicit-distribution","paired-findings",if(task)c("task-scores","task-trials","task-people"),if(choice)c("choice-counts","choice-utilities"),if(eda)c("eda-events","eda-continuous"))&&brohn_number(x$order,1,10000,TRUE),"Unsupported report section adapter.")
     .brohn_rp_ref(x$source_report_ref,"report");.brohn_rp_ref(x$source_ref)
   };s
 }
@@ -163,9 +163,9 @@
   assign(a$ref$hash,result,cache);result
 }
 
-brohn_render_report_package <- function(bundle,output_dir) {
-  task_profile<-identical(bundle$selection$schema,"brohn-report-package-selection/0.2");choice_profile<-.brohn_rpc_profile(bundle$selection)
-  brohn_fields(bundle,c("schema","selection","reports","distributions","assets","implementation","limits",if(task_profile)"task_displays",if(choice_profile)"choice_displays"),label="Report render input")
+.brohn_render_report_package_impl <- function(bundle,output_dir) {
+  eda_profile<-.brohn_rpe_profile(bundle$selection);task_profile<-bundle$selection$schema%in%c("brohn-report-package-selection/0.2","brohn-report-package-selection/0.3");choice_profile<-.brohn_rpc_profile(bundle$selection)
+  brohn_fields(bundle,c("schema","selection","reports","distributions","assets","implementation","limits",if(task_profile)"task_displays",if(choice_profile)"choice_displays",if(eda_profile)c("eda_displays","related_eda_sources","source_identity_graph")),label="Report render input")
   brohn_require(identical(bundle$schema,"brohn-report-package-render-input/0.1"),"Unsupported report render input.")
   limits<-.brohn_rp_limits(bundle$limits);selection<-.brohn_rp_selection(bundle$selection);policy<-selection$contents_policy
   friendly<-identical(policy$identifier_mode,"package_aliases")
@@ -182,12 +182,15 @@ brohn_render_report_package <- function(bundle,output_dir) {
   dir.create(output_dir,recursive=TRUE,showWarnings=FALSE);output_dir<-normalizePath(output_dir,winslash="/",mustWork=TRUE)
   previous<-options(OutDec=".",scipen=0);on.exit(options(previous),add=TRUE)
   locale<-Sys.getlocale("LC_NUMERIC");suppressWarnings(Sys.setlocale("LC_NUMERIC","C"));on.exit(suppressWarnings(Sys.setlocale("LC_NUMERIC",locale)),add=TRUE)
-  files<-list();sections<-list();coverage<-list();panels<-0L;aliases<-.brohn_rp_alias_context(policy$identifier_mode,bundle$reports);assets<-new.env(parent=emptyenv())
+  all_reports<-if(eda_profile).brohn_rpe_all_reports(bundle)else bundle$reports
+  files<-list();sections<-list();coverage<-list();panels<-0L;aliases<-if(eda_profile).brohn_rpe_alias_context(bundle)else .brohn_rp_alias_context(policy$identifier_mode,all_reports);assets<-new.env(parent=emptyenv())
   private<-file.path(output_dir,".private");dir.create(private);assign(".scratch",private,assets)
   add<-function(path,type,role){entry<-.brohn_rp_file(output_dir,path,type,role);files[[length(files)+1L]]<<-entry
+    if(eda_profile){stream_files<-Filter(function(f)f$role%in%c("complete_processed_eda_stream","complete_processed_eda_rows"),files)
+      .brohn_edd_limit(sum(vapply(stream_files,`[[`,numeric(1),"bytes")),limits$max_eda_projection_bytes,"projection_bytes",NULL,"fewer_sources")}
     brohn_require(sum(vapply(files,`[[`,numeric(1),"bytes"))<=limits$max_payload_bytes&&length(files)+2L<=limits$max_members,"Complete report payload exceeds its byte/member bound.");entry}
-  json<-function(value,path,role){.brohn_rp_write(value,file.path(output_dir,path),TRUE);add(path,"application/json",role)}
-  csv<-function(rows,path,role){.brohn_rp_csv(rows,file.path(output_dir,path));add(path,"text/csv; charset=utf-8",role)}
+  json<-function(value,path,role){if(eda_profile){dir.create(dirname(file.path(output_dir,path)),recursive=TRUE,showWarnings=FALSE);brohn_require(!file.exists(file.path(output_dir,path)),"A report payload already exists.");brohn_eda_write_json_file(value,file.path(output_dir,path),limits$max_payload_bytes)}else .brohn_rp_write(value,file.path(output_dir,path),TRUE);add(path,"application/json",role)}
+  csv<-function(rows,path,role){if(eda_profile).brohn_rpe_csv(rows,file.path(output_dir,path))else .brohn_rp_csv(rows,file.path(output_dir,path));add(path,"text/csv; charset=utf-8",role)}
   figure<-function(svg,key,binding){
     panels<<-panels+1L;brohn_require(panels<=limits$max_panels,"Selected figure pages exceed the 100-panel profile. Choose fewer figures; numerical evidence was not trimmed.")
     svg<-.brohn_rp_namespace_svg(svg,paste0("figure-",key))
@@ -196,8 +199,8 @@ brohn_render_report_package <- function(bundle,output_dir) {
     shiny::tags$figure(svg,shiny::tags$figcaption(paste("Selected figure",panels,". Complete numerical collections accompany the evidence package.")))
   }
   prepared<-list()
-  for(i in seq_along(bundle$reports)){
-    item<-bundle$reports[[i]];brohn_fields(item,c("ref","saved_body","complete_analysis"),label="Verified report model");.brohn_rp_ref(item$ref,"report")
+  for(i in seq_along(all_reports)){
+    item<-all_reports[[i]];brohn_fields(item,c("ref","saved_body","complete_analysis"),label="Verified report model");.brohn_rp_ref(item$ref,"report")
     brohn_require(identical(item$ref$body_hash,brohn_hash(item$saved_body))&&identical(item$saved_body$id,item$ref$id)&&
       identical(item$ref$project_id,selection$project_id)&&identical(item$saved_body$study_id,selection$study_id),"A complete model differs from its exact selected report/study.")
     original<-item$saved_body;original$analysis<-item$complete_analysis
@@ -209,18 +212,22 @@ brohn_render_report_package <- function(bundle,output_dir) {
     key<-sprintf("report-%02d",i);gaze<-if(original$analysis$kind=="gaze")brohn_gaze_report_model(original)else NULL
     task_entry<-if(task_profile).brohn_rpt_find_entry(bundle,item)else NULL
     choice_entry<-if(choice_profile).brohn_rpc_find_entry(bundle,item)else NULL
-    projection<-.brohn_rp_projection(item,aliases,key,if(is.null(task_entry))NULL else task_entry$evidence,if(is.null(choice_entry))NULL else choice_entry$evidence)
+    eda_entry<-if(eda_profile).brohn_rpe_find(bundle,item)else NULL
+    eda_state<-if(is.null(eda_entry))NULL else aliases$eda_states[[key]]
+    projection<-if(!is.null(eda_entry)).brohn_rpe_projection(item,eda_state,aliases,key)else .brohn_rp_projection(item,aliases,key,if(is.null(task_entry))NULL else task_entry$evidence,if(is.null(choice_entry))NULL else choice_entry$evidence,if(eda_profile)"task-choice-eda-findings/0.1"else NULL)
     projection$implementation<-implementation
     projection$projection_body_sha256<-brohn_hash(projection)
     json(projection,paste0("evidence/",key,".json"),"complete_typed_numerical_projection")
-    family<-switch(original$analysis$kind,gaze="gaze",questionnaire="explicit",multimodal="paired",implicit="tasks",implicit_cohort="tasks",explicit_choice="choices")
+    family<-switch(original$analysis$kind,gaze="gaze",questionnaire="explicit",multimodal="paired",implicit="tasks",implicit_cohort="tasks",explicit_choice="choices",eda="eda")
     if("observations"%in%names(projection$analysis))csv(projection$analysis$observations,paste0("data/",family,"/",key,"-observations.csv"),"complete_observations")
     if("features"%in%names(projection$analysis))csv(projection$analysis$features,paste0("data/",family,"/",key,"-features.csv"),"complete_features")
     if(!is.null(projection$analysis$scales))csv(projection$analysis$scales$observations,paste0("data/explicit/",key,"-scales.csv"),"complete_scale_assessments")
     task<-if(is.null(task_entry))NULL else .brohn_rpt_write_complete(task_entry,item,projection,aliases,key,json,csv)
     choice<-if(is.null(choice_entry))NULL else .brohn_rpc_write_complete(choice_entry,item,projection,aliases,key,json,csv)
-    prepared[[i]]<-list(item=item,original=original,projection=projection,gaze=gaze,key=key,task=task,choice=choice)
+    eda<-if(is.null(eda_entry))NULL else .brohn_rpe_write_complete(bundle,eda_entry,item,eda_state,i,output_dir,private,json,add)
+    prepared[[i]]<-list(item=item,original=original,projection=projection,gaze=gaze,key=key,task=task,choice=choice,eda=eda)
   }
+  if(eda_profile)json(.brohn_rpe_relationships(bundle,aliases),"evidence/eda/identity-relationships.json","saved_source_identity_relationships")
   requested<-selection$sections[order(vapply(selection$sections,`[[`,numeric(1),"order"))]
   for(si in seq_along(requested)){
     s<-requested[[si]];at<-which(vapply(prepared,function(p).brohn_rp_same(p$item$ref,s$source_report_ref),logical(1)))
@@ -288,6 +295,9 @@ brohn_render_report_package <- function(bundle,output_dir) {
     }else if(s$adapter%in%c("choice-counts","choice-utilities")){
       brohn_require(choice_profile,"Choice sections need the explicit choice-capable renderer.")
       rendered_choice<-.brohn_rpc_section(s,p,prefix,figure,json,csv,friendly);nodes<-rendered_choice$nodes;record<-c(record,rendered_choice$coverage)
+    }else if(s$adapter%in%c("eda-events","eda-continuous")){
+      brohn_require(eda_profile,"EDA sections require the explicit EDA renderer.")
+      rendered_eda<-.brohn_rpe_section(s,p,prefix,figure,friendly,selection$sections);nodes<-rendered_eda$nodes;record<-c(record,rendered_eda$coverage)
     }else{
       brohn_require(.brohn_rp_same(s$source_ref,s$source_report_ref),"Paired section source differs from its saved scientific report.")
       brohn_fields(s$selector,"scope",if(s$selector$scope=="exact_comparison")c("comparison_id","contrast_hash")else character(),"Paired selector")
@@ -329,7 +339,7 @@ brohn_render_report_package <- function(bundle,output_dir) {
     record$selected_figures<-panels-before;coverage[[length(coverage)+1L]]<-record
     sections[[length(sections)+1L]]<-shiny::tags$section(id=prefix,`aria-labelledby`=paste0(prefix,"-heading"),
       shiny::h2(id=paste0(prefix,"-heading"),paste0(si,". ",switch(s$adapter,"gaze-context"="Gaze in context","explicit-distribution"="Explicit responses","paired-findings"="Saved paired findings",
-        "task-scores"="Saved task scores","task-trials"="Task response evidence","task-people"="People behind task measures","choice-counts"="Best-worst choices","choice-utilities"="Saved choice utilities"),
+        "task-scores"="Saved task scores","task-trials"="Task response evidence","task-people"="People behind task measures","choice-counts"="Best-worst choices","choice-utilities"="Saved choice utilities","eda-events"="Event-related conductance","eda-continuous"="Continuous conductance"),
         " \u2014 Source ",at)),
       shiny::p(class="muted",paste("Source",at,"\u2014",body$title,"| origin:",body$origin)),nodes)
   }
@@ -341,16 +351,17 @@ brohn_render_report_package <- function(bundle,output_dir) {
     archive_order="ASCII lexicographic relative paths; ZIP_STORED; fixed 1980-01-01 timestamp; no comments or extra fields."),"schemas/numerical-evidence.json","projection_schema")
   evidence_index<-lapply(files,function(f)shiny::tags$li(shiny::tags$a(href=f$path,paste(gsub("_"," ",f$role),"\u2014",f$path))))
   page<-shiny::tagList(shiny::tags$head(shiny::tags$meta(charset="UTF-8"),shiny::tags$title(paste("Brohn",selection$title)),
-    shiny::tags$meta(name="viewport",content="width=device-width, initial-scale=1"),shiny::tags$style(htmltools::HTML(.brohn_rp_style))),
+    shiny::tags$meta(name="viewport",content="width=device-width, initial-scale=1"),shiny::tags$style(htmltools::HTML(paste0(.brohn_rp_style,if(eda_profile).brohn_rpe_figure_style else"")))),
     shiny::tags$body(shiny::tags$a(class="skip",href="#report-main","Skip to findings"),shiny::tags$header(shiny::h1(selection$title),
       shiny::p("Brohn \u2022 saved research findings"),shiny::p(paste("Frozen",selection$frozen_at)),
       shiny::p(class="notice",paste(if(policy$identifier_mode=="package_aliases")"Package-local person/session labels."else"Original source identifiers included.",
         if(policy$stimulus_images=="included")if(task_profile)"Selected pinned gaze stimulus images included when available."else"Selected pinned stimulus images included when available."else if(task_profile)"Gaze stimulus images excluded by choice."else"Stimulus images excluded by choice.",
         "Complete numerical evidence is in the report + evidence ZIP. Free text remains verbatim; these files are not claimed to be anonymized."))),
-      shiny::tags$main(id="report-main",sections,shiny::tags$section(shiny::h2("Methods and complete evidence"),
+      shiny::tags$main(id="report-main",if(eda_profile&&!length(sections))shiny::p("No figures were selected. The complete saved evidence remains in the report + evidence ZIP."),sections,shiny::tags$section(shiny::h2("Methods and complete evidence"),
         shiny::p("This package presents existing saved analyses. It does not rerun detectors, scales, comparisons or inference. Original raw recording bytes were not reverified by export."),
         if(task_profile)shiny::p("Task material definitions and immutable image references are retained. Task material image bytes and context panels are not included in this adapter. The optional image setting covers gaze stimuli only."),
         if(choice_profile)shiny::p("Choice definitions, item labels, illustration references and full numerical/model evidence are retained. Choice material image bytes are not included. Saved best-worst choices are explicit stated preferences; aggregate utilities are not individual preferences or population estimates."),
+        if(eda_profile)shiny::p("Complete saved processed EDA samples and candidate streams are retained, including excluded samples and unavailable support. Figure tables show representative points and selected candidate pages. Original partial raw previews remain labelled evidence; the complete raw conductance waveform and raw input bytes are not included."),
         shiny::p("Non-integer numerical summaries are displayed to four significant figures; integer values and counts stay exact. Complete JSON, CSV typed records and SVG metadata retain the exact saved numerical values."),
         shiny::p("The following links work only after unpacking the report + evidence ZIP. This standalone HTML contains the selected figures and bounded numerical alternatives, not every source row."),
         shiny::tags$ul(evidence_index),lapply(prepared,function(p)shiny::tags$details(shiny::tags$summary(paste("Saved methods:",p$original$title)),
@@ -358,6 +369,7 @@ brohn_render_report_package <- function(bundle,output_dir) {
       shiny::tags$footer(shiny::p("Brohn \u2022 open research software. Interpret each measure using its saved support, method and limitations."))))
   rendered<-htmltools::renderTags(page);brohn_require(!length(rendered$dependencies),"Offline report cannot depend on widgets or external assets.")
   html<-paste0('<!doctype html>\n<html lang="en">\n<head>\n',rendered$head,'\n</head>\n',rendered$html,'\n</html>\n')
+  if(eda_profile).brohn_edd_limit(nchar(enc2utf8(html),type="bytes"),limits$max_html_bytes,"html_bytes",NULL,"fewer_figures")
   brohn_require(nchar(enc2utf8(html),type="bytes")<=limits$max_html_bytes,"Selected inline figures exceed the standalone HTML bound. Choose fewer figures; complete numbers remain available.")
   .brohn_rp_write(html,file.path(output_dir,"report.html"));add("report.html","text/html; charset=utf-8","standalone_report")
   portable_selection<-selection[setdiff(names(selection),c("intent_ref","generation"))]
@@ -368,7 +380,9 @@ brohn_render_report_package <- function(bundle,output_dir) {
     scope="Faithful saved-result presentation and complete named numerical projections; no new scientific analysis, device or construct qualification.")
   if(task_profile)manifest$task_material_coverage<-lapply(Filter(function(p)!is.null(p$task),prepared),function(p).brohn_rpt_material_coverage(p$item))
   if(choice_profile)manifest$choice_source_coverage<-lapply(Filter(function(p)!is.null(p$choice),prepared),function(p)list(source_ref=p$item$ref,coverage=p$choice$entry$evidence$coverage,collections=p$choice$collections))
-  .brohn_rp_write(manifest,file.path(output_dir,"manifest.json"),TRUE)
+  if(eda_profile){manifest$sources$eda_displays<-lapply(bundle$eda_displays,`[[`,"ref");manifest$sources$related_eda_sources<-selection$related_eda_refs;manifest$sources$source_identity_graph_binding<-selection$source_identity_graph_binding
+    manifest$eda_source_coverage<-lapply(Filter(function(p)!is.null(p$eda),prepared),function(p)list(source_ref=p$item$ref,source_ordinal=p$eda$source_ordinal,coverage=p$eda$entry$complete_evidence$coverage,streams=p$eda$streams$coverage))}
+  if(eda_profile)brohn_eda_write_json_file(manifest,file.path(output_dir,"manifest.json"),limits$max_payload_bytes)else .brohn_rp_write(manifest,file.path(output_dir,"manifest.json"),TRUE)
   manifest_file<-.brohn_rp_file(output_dir,"manifest.json","application/json","portable_inventory")
   request<-list(schema="brohn-report-package-archive-request/0.1",root=output_dir,files=files,manifest=manifest_file,
     limits=list(max_members=limits$max_members,max_payload_bytes=limits$max_payload_bytes))
@@ -383,4 +397,8 @@ brohn_render_report_package <- function(bundle,output_dir) {
   brohn_require(.brohn_rp_same(zip_file,result$artifact),"Archive bytes differ from their verified receipt.")
   list(schema="brohn-report-package-render-result/0.1",profile="complete-findings/0.1",manifest=manifest,
     files=c(files,list(manifest_file,zip_file)),coverage=coverage)
+}
+brohn_render_report_package <- function(bundle,output_dir) {
+  if(.brohn_rpe_profile(bundle$selection))tryCatch(.brohn_render_report_package_impl(bundle,output_dir),brohn_eda_refusal=function(e)e$refusal)
+  else .brohn_render_report_package_impl(bundle,output_dir)
 }

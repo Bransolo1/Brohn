@@ -59,7 +59,7 @@
     brohn_require(length(complete)==1L,"This questionnaire preview has no unique complete retained artifact.")
     metadata$questionnaire_artifact<-complete[[1L]]
   }
-  .brohn_td_augment_metadata(store,metadata)
+  .brohn_edd_augment_metadata(store,.brohn_td_augment_metadata(store,metadata))
 }
 .brohn_rpk_study <- function(store,id,project_id) {
   brohn_report_package_queue_authority(store,"report_package",project_id)
@@ -81,7 +81,7 @@
   reason<-.brohn_rpk_unsupported(m,source_admission=admission)
   brohn_require(is.null(reason),brohn_default(reason,"Choose a supported complete report."))
   brohn_require(identical(m$id,m$ref$id)&&brohn_valid_id(m$study_id)&&brohn_text(m$origin,128)&&
-    m$kind %in% c("gaze","questionnaire","multimodal",if(isTRUE(task_enabled))c("implicit","implicit_cohort"),if(admission=="task-choice-findings/0.1")"explicit_choice")&&is.list(m$design)&&
+    m$kind %in% c("gaze","questionnaire","multimodal",if(isTRUE(task_enabled))c("implicit","implicit_cohort"),if(admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1"))"explicit_choice",if(admission=="task-choice-eda-findings/0.1")"eda")&&is.list(m$design)&&
     identical(m$design$id,m$study_id)&&(is.null(m$design$project_id)||identical(m$design$project_id,m$ref$project_id))&&
     identical(brohn_hash(m$design),m$design_hash),"This report has no supported exact study/design provenance.")
   .brohn_rpk_study(store,m$study_id,m$ref$project_id)
@@ -110,12 +110,13 @@
   object
 }
 .brohn_rpk_unsupported <- function(m,task_enabled=FALSE,source_admission=NULL) {
-  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission=="task-choice-findings/0.1"
+  admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1")
+  if(identical(m$kind,"eda"))return(if(admission=="task-choice-eda-findings/0.1").brohn_edd_unsupported(m)else"This saved EDA source requires its complete physiological report adapter.")
   if(!is.null(m$choice_source_family)){
     if(!choices)return("This saved report includes choice-task evidence whose complete package requires the choice-capable renderer. Its existing complete export remains available.")
     reason<-.brohn_cd_unsupported(m);if(!is.null(reason))return(reason)
   }
-  if(tasks&&!is.null(m$source_family))return(.brohn_td_unsupported(m,admission))
+  if(tasks&&!is.null(m$source_family))return(.brohn_td_unsupported(m,if(admission=="task-choice-eda-findings/0.1")"task-choice-findings/0.1"else admission))
   if(choices&&identical(m$kind,"explicit_choice"))return(NULL)
   if(!m$kind %in% c("gaze","questionnaire","multimodal"))return("This report family has no complete-findings package adapter yet. Its existing saved report and exports remain available.")
   if(!is.null(m$schema)&&!(identical(m$kind,"questionnaire")&&identical(m$schema,"brohn-questionnaire-report-preview/1.0")))return("This scientific schema has no qualified complete-findings package adapter yet. Use its existing saved report and complete export.")
@@ -153,20 +154,23 @@ brohn_report_package_report_choice <- function(store,report_ref) {
   if(isTRUE(m$source_family %in% c("native_questionnaire","imported_implicit")))adapters<-c(adapters,list("task-scores","task-trials"))
   if(identical(m$source_family,"saved_task_cohort"))adapters<-c(adapters,list("task-people"))
   if(!is.null(m$choice_source_family))adapters<-c(adapters,list("choice-counts","choice-utilities"))
-  unsupported<-.brohn_rpk_required_source_fit(store,m,source_admission="task-choice-findings/0.1");if(!is.null(unsupported))adapters<-list()
+  if(!is.null(m$eda_source_family))adapters<-c(adapters,list(if(m$eda_source_family=="event")"eda-events"else"eda-continuous"))
+  requirements<-tryCatch(.brohn_rpk_eda_requirements(store,list(report_ref),"task-choice-eda-findings/0.1"),error=function(e)NULL)
+  has_eda<-!is.null(requirements)&&length(requirements$required_eda_refs)>0L
+  unsupported<-.brohn_rpk_required_source_fit(store,m,source_admission="task-choice-eda-findings/0.1");if(!is.null(unsupported))adapters<-list()
   recommendations<-tryCatch({
     selected<-list(report_ref)
     if(identical(m$kind,"multimodal"))for(s in brohn_default(m$sources,list()))if(identical(s$state,"selected")){
       linked<-list(kind="report",id=s$id,revision=s$revision,body_hash=s$hash,project_id=report_ref$project_id)
-      parent<-.brohn_rpk_report_metadata(store,linked);.brohn_rpk_report_proof(store,parent,source_admission="task-choice-findings/0.1")
-      brohn_require(identical(parent$study_id,m$study_id)&&parent$kind %in% c("gaze","questionnaire"),"Choose the applicable saved parent reports explicitly.")
+      parent<-.brohn_rpk_report_metadata(store,linked);.brohn_rpk_report_proof(store,parent,source_admission="task-choice-eda-findings/0.1")
+      brohn_require(identical(parent$study_id,m$study_id)&&parent$kind %in% c("gaze","questionnaire","eda"),"Choose the applicable saved parent reports explicitly.")
       if(!any(vapply(selected,function(x).brohn_rpk_same(x,linked),logical(1))))selected<-c(selected,list(linked))
     }
     brohn_require(length(selected)<=8L,"Choose up to eight exact saved source reports.")
     list(refs=selected,reason=if(length(selected)>1L)"Includes this saved combined report and its exact gaze/explicit source reports, with complete numerical evidence. You can change the selected reports."else "Includes this exact saved report and all its applicable findings.")
   },error=function(e)list(refs=list(),reason="Linked source recommendations are unavailable. Choose the exact saved reports to include."))
   if(!length(adapters))recommendations<-list(refs=list(),reason=brohn_default(unsupported,"This saved report has no enabled complete-findings package adapter."))
-  list(ref=report_ref,title=brohn_default(m$title,report_ref$id),origin=m$origin,kind=m$kind,source_family=m$source_family,source_components=m$source_components,choice_source_family=m$choice_source_family,
+  list(ref=report_ref,title=brohn_default(m$title,report_ref$id),origin=m$origin,kind=m$kind,source_family=m$source_family,source_components=m$source_components,choice_source_family=m$choice_source_family,eda_source_family=m$eda_source_family,has_required_eda=isTRUE(has_eda),
     design_hash=m$design_hash,adapters=adapters,status=if(length(adapters))"available"else"unsupported_package_adapter",
     reason=if(length(adapters))NULL else brohn_default(unsupported,"This saved report has no enabled complete-findings package adapter."),
     recommended_refs=recommendations$refs,recommendation_reason=recommendations$reason)
@@ -196,6 +200,7 @@ brohn_report_package_choices <- function(store,study_id,project_id,cursor=NULL,l
 }
 
 brohn_report_package_selector_catalog <- function(store,report_ref,adapter,cursor=NULL,limit=25L,prepared_ref=NULL) {
+  if(adapter %in% c("eda-events","eda-continuous"))return(.brohn_edd_selector_catalog(store,report_ref,adapter,cursor,limit,prepared_ref))
   if(adapter %in% c("choice-counts","choice-utilities"))return(.brohn_cd_selector_catalog(store,report_ref,adapter,cursor,limit,prepared_ref))
   if(adapter %in% c("task-scores","task-trials","task-people"))return(.brohn_td_selector_catalog(store,report_ref,adapter,cursor,limit,prepared_ref))
   m<-.brohn_rpk_report_metadata(store,report_ref);choice<-brohn_report_package_report_choice(store,report_ref)
@@ -277,9 +282,10 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   ref<-list(kind="explicit_distributions",id=rows$id[[1L]],revision=rows$revision[[1L]],body_hash=rows$body_hash[[1L]],project_id=report_ref$project_id)
   .brohn_rpk_distribution_metadata(store,ref);ref
 }
-.brohn_rpk_source_metadata <- function(store,report_refs,display_refs=list(),images=FALSE,task_refs=list(),task_enabled=FALSE,source_admission=NULL,choice_refs=list()) {
+.brohn_rpk_source_metadata <- function(store,report_refs,display_refs=list(),images=FALSE,task_refs=list(),task_enabled=FALSE,source_admission=NULL,choice_refs=list(),eda_refs=list()) {
   admission<-.brohn_rpk_admission(source_admission,task_enabled,!missing(task_enabled));task_enabled<-admission!="gaze-explicit-paired-findings/0.1"
-  brohn_require(!length(choice_refs)||admission=="task-choice-findings/0.1","Choice preparation requires the complete choice-capable source profile.")
+  brohn_require(!length(choice_refs)||admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1"),"Choice preparation requires the complete choice-capable source profile.")
+  brohn_require(!length(eda_refs)||identical(admission,"task-choice-eda-findings/0.1"),"EDA preparation requires its complete physiological source profile.")
   objects<-list();reports<-list();seen<-character();active<-character();assets<-list()
   add_object<-function(o){previous<-objects[[o$hash]];if(!is.null(previous))brohn_require(.brohn_rpk_same(previous,o),"An original object has conflicting descriptors.");objects[[o$hash]]<<-o}
   walk<-function(ref){
@@ -287,7 +293,8 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
     brohn_require(length(seen)<=32L,"The saved-report dependency closure exceeds this package profile.")
     m<-.brohn_rpk_report_metadata(store,ref);o<-.brohn_rpk_report_proof(store,m,source_admission=admission);reports[[key]]<<-m;add_object(o)
     if(isTRUE(task_enabled))for(extra in .brohn_td_extra_objects(store,m))add_object(extra)
-    if(admission=="task-choice-findings/0.1")for(extra in .brohn_cd_extra_objects(store,m))add_object(extra)
+    if(admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1"))for(extra in .brohn_cd_extra_objects(store,m))add_object(extra)
+    if(identical(m$kind,"eda")){lineage<-.brohn_edd_source_closure(store,m);m$eda_source_closure<-lineage;reports[[key]]<<-m;for(extra in lineage$objects)add_object(extra)}
     if(!is.null(m$questionnaire_artifact)){a<-m$questionnaire_artifact;if(is.null(a$media_type))a$media_type<-"application/x-ndjson";add_object(.brohn_rpk_object(store,a,64*1024^2))}
     for(parent in .brohn_td_parent_refs(m))walk(parent)
   }
@@ -296,6 +303,7 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   distributions<-lapply(display_refs,function(ref){m<-.brohn_rpk_distribution_metadata(store,ref);walk(m$report_ref);add_object(m$object);m})
   task_displays<-lapply(task_refs,function(ref){m<-.brohn_td_metadata(store,ref);walk(m$report_ref);add_object(m$object);add_object(m$document);m})
   choice_displays<-lapply(choice_refs,function(ref){m<-.brohn_cd_metadata(store,ref);walk(m$report_ref);add_object(m$object);add_object(m$document);m})
+  eda_displays<-lapply(eda_refs,function(ref){m<-.brohn_edd_metadata(store,ref);walk(m$report_ref);add_object(m$object);add_object(m$document);m})
   if(isTRUE(images))for(ref in report_refs){m<-reports[[brohn_hash(ref)]];if(m$kind!="gaze")next
     for(stim in m$design$stimuli)if(!is.null(stim$asset)){
       a<-.brohn_rpk_object(store,stim$asset,5*1024^2);brohn_require(a$media_type %in% c("image/png","image/jpeg"),"Choose supported saved PNG/JPEG stimuli or exclude their images.");add_object(a)
@@ -304,7 +312,16 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
     }
   }
   brohn_require(sum(vapply(assets,function(x)x$ref$bytes,numeric(1)))<=16*1024^2,"The chosen saved stimuli exceed the 16 MiB image profile. Exclude images or select fewer source reports.")
-  list(report_refs=report_refs,display_refs=display_refs,task_refs=task_refs,choice_refs=choice_refs,source_admission=admission,task_enabled=isTRUE(task_enabled),images=isTRUE(images),reports=unname(reports),distributions=distributions,task_displays=task_displays,choice_displays=choice_displays,objects=unname(objects),assets=unname(assets))
+  if(identical(admission,"task-choice-eda-findings/0.1")){
+    streams<-list();for(m in reports)if(identical(m$kind,"eda"))for(a in m$artifacts)streams[[a$hash]]<-a
+    .brohn_edd_limit(length(objects),256L,"source_objects",recovery="fewer_sources")
+    .brohn_edd_limit(sum(vapply(objects,`[[`,numeric(1),"bytes")),1024^3,"source_bytes",recovery="fewer_sources")
+    .brohn_edd_limit(sum(vapply(streams,`[[`,numeric(1),"size")),96*1024^2,"complete_stream_bytes",recovery="fewer_sources")
+    .brohn_edd_limit(sum(vapply(streams,`[[`,numeric(1),"rows")),1e6,"complete_stream_rows",recovery="fewer_sources")
+    .brohn_edd_limit(sum(vapply(streams,`[[`,numeric(1),"tables")),256L,"complete_stream_tables",recovery="fewer_sources")
+    .brohn_edd_limit(sum(vapply(eda_displays,function(x)x$object$bytes,numeric(1))),48*1024^2,"prepared_evidence_bytes",recovery="fewer_sources")
+  }
+  list(report_refs=report_refs,display_refs=display_refs,task_refs=task_refs,choice_refs=choice_refs,eda_refs=eda_refs,source_admission=admission,task_enabled=isTRUE(task_enabled),images=isTRUE(images),reports=unname(reports),distributions=distributions,task_displays=task_displays,choice_displays=choice_displays,eda_displays=eda_displays,objects=unname(objects),assets=unname(assets))
 }
 .brohn_rpk_release <- function(handle) {
   if(is.environment(handle)&&inherits(handle,"brohn_report_source_resources")&&is.environment(handle$state)&&!isTRUE(handle$state$closed)){
@@ -313,12 +330,19 @@ brohn_report_package_selector_catalog <- function(store,report_ref,adapter,curso
   };invisible(NULL)
 }
 brohn_release_report_package_sources <- .brohn_rpk_release
-.brohn_rpk_hold_sources <- function(store,metadata) {
+# Optional supervisor callback: no renewal or authority side effects for readers.
+.brohn_rpk_source_pulse <- function(pulse) {
+  if(!is.null(pulse)){brohn_require(is.function(pulse),"Source progress callback must be a function.");pulse()}
+  invisible(NULL)
+}
+.brohn_rpk_hold_sources <- function(store,metadata,pulse=NULL) {
+  .brohn_rpk_source_pulse(pulse)
   guards<-list();ok<-FALSE;on.exit(if(!ok)for(g in guards).brohn_qexplorer_release(g),add=TRUE)
   guards<-brohn_hold_signal_value_sources(store,list(source_objects=lapply(metadata$objects,function(o)o[c("hash","bytes")])))
-  current<-.brohn_rpk_source_metadata(store,metadata$report_refs,metadata$display_refs,metadata$images,metadata$task_refs,source_admission=metadata$source_admission,choice_refs=metadata$choice_refs)
+  .brohn_rpk_source_pulse(pulse)
+  current<-.brohn_rpk_source_metadata(store,metadata$report_refs,metadata$display_refs,metadata$images,metadata$task_refs,source_admission=metadata$source_admission,choice_refs=metadata$choice_refs,eda_refs=metadata$eda_refs)
   brohn_require(.brohn_rpk_same(current,metadata),"Saved-report sources changed while establishing their read seals.")
-  for(o in metadata$objects)brohn_object_path(store,o$hash,TRUE)
+  for(o in metadata$objects){.brohn_rpk_source_pulse(pulse);brohn_object_path(store,o$hash,TRUE);.brohn_rpk_source_pulse(pulse)}
   handle<-new.env(parent=emptyenv());class(handle)<-"brohn_report_source_resources"
   handle$metadata<-metadata;handle$workspace_id<-store$workspace_id;handle$guards<-guards;handle$state<-new.env(parent=emptyenv());handle$state$closed<-FALSE;handle$state$extra_guards<-list()
   lockEnvironment(handle,bindings=TRUE);reg.finalizer(handle,.brohn_rpk_release,onexit=TRUE);ok<-TRUE;handle
@@ -326,40 +350,50 @@ brohn_release_report_package_sources <- .brohn_rpk_release
 brohn_report_package_sources_current <- function(store,handle) {
   brohn_require(is.environment(handle)&&inherits(handle,"brohn_report_source_resources")&&environmentIsLocked(handle)&&!isTRUE(handle$state$closed)&&identical(store$workspace_id,handle$workspace_id),"Reopen the closed or different-workspace report sources.")
   .brohn_cm_guard_check(c(handle$guards,handle$state$extra_guards))
-  m<-handle$metadata;current<-.brohn_rpk_source_metadata(store,m$report_refs,m$display_refs,m$images,m$task_refs,source_admission=m$source_admission,choice_refs=m$choice_refs)
+  m<-handle$metadata;current<-.brohn_rpk_source_metadata(store,m$report_refs,m$display_refs,m$images,m$task_refs,source_admission=m$source_admission,choice_refs=m$choice_refs,eda_refs=m$eda_refs)
   brohn_require(.brohn_rpk_same(current,m),"Saved-report source permission, retained proof or exact identity changed.")
   .brohn_cm_guard_check(c(handle$guards,handle$state$extra_guards));invisible(current)
 }
-.brohn_rpk_complete_sources <- function(store,handle,all_reports=FALSE) {
+.brohn_rpk_complete_sources <- function(store,handle,all_reports=FALSE,pulse=NULL) {
+  .brohn_rpk_source_pulse(pulse)
   m<-brohn_report_package_sources_current(store,handle);complete<-list()
   for(meta in m$reports){
+    .brohn_rpk_source_pulse(pulse)
+    if(identical(meta$kind,"eda")) .brohn_edd_validate_lineage_documents(meta$eda_source_closure,pulse)
     record<-.brohn_rpk_record(store,meta$ref,"report");b<-record$body
-    retained<-brohn_read_json_file(brohn_object_path(store,b$result_object$hash,FALSE),maximum=16*1024^2)
+    retained<-if(identical(meta$kind,"eda"))brohn_eda_read_json_file(brohn_object_path(store,b$result_object$hash,FALSE),maximum=16*1024^2)else brohn_read_json_file(brohn_object_path(store,b$result_object$hash,FALSE),maximum=16*1024^2)
+    .brohn_rpk_source_pulse(pulse)
+    if(identical(meta$kind,"eda"))brohn_require(identical(brohn_eda_value_hash(retained$report$analysis),brohn_eda_value_hash(b$analysis)),"Original EDA typed numeric values changed in catalog transport; no reconstruction is permitted.")
     brohn_require(identical(retained$schema,"brohn-analysis-output/1.0")&&.brohn_rpk_same(retained$report,b[setdiff(names(b),"result_object")]),"Saved report catalog contents differ from their sealed original worker envelope.")
     full<-if(brohn_questionnaire_is_artifact(b$analysis)){
       a<-brohn_questionnaire_report_artifact(b);f<-brohn_read_questionnaire_artifact(brohn_object_path(store,a$hash,FALSE),a,brohn_questionnaire_artifact_source(b),max_bytes=64*1024^2)
       brohn_validate_questionnaire_preview(b$analysis,f,brohn_questionnaire_artifact_source(b));f
     }else b$analysis
     complete[[brohn_hash(meta$ref)]]<-list(ref=meta$ref,saved_body=b,complete_analysis=full)
+    .brohn_rpk_source_pulse(pulse)
   }
-  distributions<-lapply(m$distributions,function(meta){r<-.brohn_rpk_record(store,meta$ref,"explicit_distributions");original<-brohn_read_json_file(meta$object$path,maximum=12*1024^2)
+  distributions<-lapply(m$distributions,function(meta){.brohn_rpk_source_pulse(pulse);r<-.brohn_rpk_record(store,meta$ref,"explicit_distributions");original<-brohn_read_json_file(meta$object$path,maximum=12*1024^2)
     brohn_require(.brohn_rpk_same(original,r$body[setdiff(names(r$body),"result_object")]),"Saved distribution catalog and sealed original document disagree.");list(ref=meta$ref,body=r$body)})
-  task_displays<-lapply(m$task_displays,function(meta){r<-.brohn_rpk_record(store,meta$ref,"task_display")
+  task_displays<-lapply(m$task_displays,function(meta){.brohn_rpk_source_pulse(pulse);r<-.brohn_rpk_record(store,meta$ref,"task_display")
     original<-brohn_read_json_file(meta$document$path,maximum=2*1024^2)
     brohn_require(.brohn_td_same(original,r$body[setdiff(names(r$body),"retained_document")]),"Task display metadata differs from its sealed publication document.")
     evidence<-brohn_read_json_file(meta$object$path,maximum=32*1024^2)
     brohn_validate_task_display_evidence(evidence,complete[[brohn_hash(meta$report_ref)]])
+    .brohn_rpk_source_pulse(pulse)
     list(ref=meta$ref,body=r$body,evidence=evidence)})
-  choice_displays<-lapply(m$choice_displays,function(meta){r<-.brohn_rpk_record(store,meta$ref,"choice_display")
+  choice_displays<-lapply(m$choice_displays,function(meta){.brohn_rpk_source_pulse(pulse);r<-.brohn_rpk_record(store,meta$ref,"choice_display")
     original<-brohn_read_json_file(meta$document$path,maximum=2*1024^2)
     brohn_require(.brohn_td_same(original,r$body[setdiff(names(r$body),"retained_document")]),"Choice metadata differs from its sealed publication document.")
     evidence<-brohn_read_json_file(meta$object$path,maximum=64*1024^2)
     brohn_validate_choice_display_evidence(evidence,complete[[brohn_hash(meta$report_ref)]])
+    .brohn_rpk_source_pulse(pulse)
     brohn_require(.brohn_td_same(evidence$implementation,r$body$implementation)&&.brohn_td_same(evidence$source,r$body$source)&&.brohn_td_same(evidence$coverage,r$body$coverage)&&.brohn_td_same(.brohn_cd_catalog(evidence),r$body$catalog),"Choice metadata differs from its complete evidence.")
     list(ref=meta$ref,body=r$body,evidence=evidence)})
   brohn_report_package_sources_current(store,handle)
   result<-list(reports=if(isTRUE(all_reports))unname(complete)else lapply(m$report_refs,function(ref)complete[[brohn_hash(ref)]]),distributions=distributions,task_displays=task_displays,assets=m$assets)
-  if(identical(m$source_admission,"task-choice-findings/0.1"))result$choice_displays<-choice_displays
+  if(m$source_admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1"))result$choice_displays<-choice_displays
+  if(identical(m$source_admission,"task-choice-eda-findings/0.1"))result<-.brohn_edd_complete_package_sources(store,handle,complete,result,pulse)
+  .brohn_rpk_source_pulse(pulse)
   result
 }
 .brohn_rpk_package_metadata <- function(store,ref,project_id) {
@@ -477,13 +511,14 @@ brohn_report_package_resources_current <- function(store,handle) {
 brohn_report_source_admission <- function(renderer_profile) {
  profiles<-c("controlled-gaze-explicit-paired/0.1"="gaze-explicit-paired-findings/0.1",
   "controlled-gaze-explicit-task-paired/0.1"="task-findings/0.1",
-  "controlled-gaze-explicit-task-choice-paired/0.1"="task-choice-findings/0.1")
+  "controlled-gaze-explicit-task-choice-paired/0.1"="task-choice-findings/0.1",
+  "controlled-gaze-explicit-task-choice-eda-paired/0.1"="task-choice-eda-findings/0.1")
  brohn_require(brohn_text(renderer_profile,128)&&renderer_profile %in% names(profiles),"Choose an exact registered saved-report renderer.")
  unname(profiles[[renderer_profile]])
 }
 .brohn_rpk_admission <- function(source_admission=NULL,task_enabled=FALSE,task_explicit=FALSE) {
  if(is.null(source_admission))return(if(isTRUE(task_enabled))"task-findings/0.1"else"gaze-explicit-paired-findings/0.1")
- brohn_require(brohn_text(source_admission,128)&&source_admission %in% c("gaze-explicit-paired-findings/0.1","task-findings/0.1","task-choice-findings/0.1"),"Unsupported complete source admission profile.")
+ brohn_require(brohn_text(source_admission,128)&&source_admission %in% c("gaze-explicit-paired-findings/0.1","task-findings/0.1","task-choice-findings/0.1","task-choice-eda-findings/0.1"),"Unsupported complete source admission profile.")
  if(isTRUE(task_explicit))brohn_require(identical(isTRUE(task_enabled),!identical(source_admission,"gaze-explicit-paired-findings/0.1")),"Conflicting task and source admission settings.")
  source_admission
 }
@@ -491,23 +526,68 @@ brohn_validate_complete_report_analysis <- function(report,admission) {
  admission<-.brohn_rpk_admission(admission);a<-report$complete_analysis;b<-report$saved_body
  .brohn_rpk_ref_valid(report$ref,"report")
  brohn_require(is.list(a)&&identical(brohn_hash(b),report$ref$body_hash)&&!brohn_questionnaire_is_artifact(a),"Choose the exact complete original report, not a catalog preview or changed source.")
- tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission=="task-choice-findings/0.1"
+ tasks<-admission!="gaze-explicit-paired-findings/0.1";choices<-admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1")
+ if(identical(a$kind,"eda")){brohn_require(identical(admission,"task-choice-eda-findings/0.1"),"Complete EDA evidence requires its registered renderer.");.brohn_edd_validate_analysis(report);return(invisible(TRUE))}
  brohn_require(!length(a$artifacts),"This source contains unsupported scientific artifacts; keep its original complete export.")
  if(identical(a$kind,"explicit_choice")){
   brohn_require(choices,"Complete choice evidence requires the choice-capable renderer.");.brohn_cd_validate_import(report);return(invisible(TRUE))
  }
  if(a$kind %in% c("implicit","implicit_cohort")){
   brohn_require(tasks,"Complete task evidence requires the task-capable renderer.")
-  .brohn_td_analysis_fields(a,admission);for(score in a$task_scores).brohn_td_score(score);return(invisible(TRUE))
+  .brohn_td_analysis_fields(a,if(admission=="task-choice-eda-findings/0.1")"task-choice-findings/0.1"else admission);for(score in a$task_scores).brohn_td_score(score);return(invisible(TRUE))
  }
  brohn_fields(a,c("kind","features","observations","contrasts","parameters","quality","limitations"),c("title","schema","status","scales","questionnaire_revision","artifacts","task_scores","choice_tasks","recordings"),"Complete saved scientific analysis")
  brohn_require(a$kind %in% c("gaze","questionnaire","multimodal"),"This complete scientific family has no package adapter.")
  brohn_require((tasks||!length(a$task_scores))&&(choices||!length(a$choice_tasks)),"A required task or choice collection is unsupported by this renderer.")
- if(length(a$task_scores)){brohn_require(identical(a$kind,"questionnaire"),"Task scores need their registered native questionnaire family.");.brohn_td_analysis_fields(a,admission);for(score in a$task_scores).brohn_td_score(score)}
+ if(length(a$task_scores)){brohn_require(identical(a$kind,"questionnaire"),"Task scores need their registered native questionnaire family.");.brohn_td_analysis_fields(a,if(admission=="task-choice-eda-findings/0.1")"task-choice-findings/0.1"else admission);for(score in a$task_scores).brohn_td_score(score)}
  if(length(a$choice_tasks)){
   brohn_require(identical(a$kind,"questionnaire"),"Choice results need their registered native questionnaire family.")
   .brohn_cd_validate_native(report)
  }
- for(key in setdiff(names(a),c("task_scores","choice_tasks"))).brohn_rpk_validate_classic_node(a[[key]],paste0("analysis/",key))
+ for(key in setdiff(names(a),c("task_scores","choice_tasks"))){
+  if(identical(admission,"task-choice-eda-findings/0.1")&&identical(a$kind,"multimodal")&&key=="observations"){
+   for(observation in a$observations)if(identical(observation$modality,"eda")) .brohn_edd_validate_observation(observation)else .brohn_rpk_validate_classic_node(observation,"analysis/observations")
+  }else .brohn_rpk_validate_classic_node(a[[key]],paste0("analysis/",key))
+ }
  invisible(TRUE)
+}
+
+# Newer selection authority is here rather than changing historical task code.
+.brohn_rpk_selection_sources <- function(store,selection) {
+ s<-selection;admission<-brohn_report_source_admission(s$renderer_profile);eda<-identical(admission,"task-choice-eda-findings/0.1")
+ if(identical(s$schema,"brohn-report-package-selection/0.1")){
+  brohn_require(identical(admission,"gaze-explicit-paired-findings/0.1"),"Unsupported saved report selection version.")
+  return(.brohn_rpk_source_metadata(store,s$report_refs,s$display_refs,identical(s$contents_policy$stimulus_images,"included"),source_admission=admission))
+ }
+ brohn_require(s$schema %in% c("brohn-report-package-selection/0.2","brohn-report-package-selection/0.3")&&identical(eda,identical(s$schema,"brohn-report-package-selection/0.3"))&&is.null(s$display_refs)&&brohn_array(s$prepared_sources),"This renderer requires its exact versioned prepared-source inventory.")
+ get<-function(adapter)lapply(Filter(function(x)identical(x$adapter,adapter),s$prepared_sources),`[[`,"prepared_ref")
+ d<-get("explicit-distribution");t<-get("task-display");c<-get("choice-display");e<-get("eda-display")
+ choice<-admission %in% c("task-choice-findings/0.1","task-choice-eda-findings/0.1")
+ brohn_require(length(d)+length(t)+length(c)+length(e)==length(s$prepared_sources)&&(!length(c)||choice)&&(!length(e)||eda),"Unsupported prepared report adapter.")
+ metadata<-.brohn_rpk_source_metadata(store,s$report_refs,d,identical(s$contents_policy$stimulus_images,"included"),t,source_admission=admission,choice_refs=c,eda_refs=e)
+ for(binding in s$prepared_sources){
+  candidates<-switch(binding$adapter,"task-display"=metadata$task_displays,"choice-display"=metadata$choice_displays,"eda-display"=metadata$eda_displays,metadata$distributions)
+  item<-Filter(function(x).brohn_rpk_same(x$ref,binding$prepared_ref),candidates)
+  brohn_require(length(item)==1L&&.brohn_rpk_same(item[[1L]]$report_ref,binding$source_report_ref),"The selected preparation belongs to another exact source report.")
+  actual<-if(binding$adapter=="explicit-distribution")item[[1L]]$preparation_implementation_ref else .brohn_td_implementation_ref(item[[1L]]$record$body$implementation)
+  brohn_require(.brohn_rpk_same(actual,binding$implementation_ref),"Selected preparation differs from its frozen original implementation.")
+  expected<-switch(binding$adapter,"task-display"=if(choice)"saved-task-display/0.2"else"saved-task-display/0.1","choice-display"="saved-choice-display/0.1","eda-display"="saved-eda-display/0.1",if(choice)"saved-explicit-distribution/0.2"else"saved-explicit-distribution/0.1")
+  brohn_require(identical(actual$profile,expected),"This renderer requires the exact compatible preparation version.")
+ }
+ for(ref in s$report_refs){m<-Filter(function(x).brohn_rpk_same(x$ref,ref),metadata$reports)[[1L]]
+  for(component in intersect(unlist(m$source_components),c("task","choice"))){adapter<-paste0(component,"-display");matches<-Filter(function(x)identical(x$adapter,adapter)&&.brohn_rpk_same(x$source_report_ref,ref),s$prepared_sources)
+   brohn_require(length(matches)==1L,"Every selected task/choice source requires its complete preparation even when figures are hidden.")}
+ }
+ if(eda){requirements<-.brohn_rpk_eda_requirements(store,s$report_refs,admission)
+  brohn_require(.brohn_rpk_same(s$related_eda_refs,requirements$related_eda_refs)&&.brohn_rpk_same(s$source_identity_graph_binding,requirements$source_identity_graph_binding),"Required EDA source graph differs from its exact frozen selection.")
+  bindings<-Filter(function(x)identical(x$adapter,"eda-display"),s$prepared_sources)
+  brohn_require(length(bindings)==length(requirements$required_eda_refs),"Every selected or required EDA source needs exactly one preparation.")
+  for(ref in requirements$required_eda_refs){selected<-Filter(function(x).brohn_rpk_same(x$source_report_ref,ref),bindings);brohn_require(length(selected)==1L,"Required EDA preparation membership is missing or ambiguous.")
+   prepared<-Filter(function(x).brohn_rpk_same(x$ref,selected[[1L]]$prepared_ref),metadata$eda_displays)[[1L]]
+   requests<-Filter(function(x).brohn_rpk_same(x$report_ref,ref),s$eda_display_requests);brohn_require(length(requests)<=1L,"EDA source has conflicting display requests.")
+   request<-brohn_normalize_eda_display_request(if(length(requests))requests[[1L]]$display_request else NULL)
+   brohn_require(.brohn_rpk_same(prepared$record$body$display_request,request),"Prepared EDA windows differ from the frozen exact source request.")
+  }
+ }
+ metadata
 }

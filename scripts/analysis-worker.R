@@ -27,15 +27,16 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
-if (input$operation %in% c("report_package","task_display","choice_display") || isTRUE(input$report_package_distribution)) {
+if (input$operation %in% c("report_package","task_display","choice_display","eda_display") || isTRUE(input$report_package_distribution)) {
   paths <- c("R/platform-hosted-profile.R", "R/platform-paired-plots.R", "R/platform-task-evidence.R", "R/platform-task-plots.R",
     "R/platform-gaze-report-views.R", "R/platform-explicit-distribution-views.R", "R/platform-paired-plot-views.R",
-    "R/platform-task-plot-views.R", "R/platform-maxdiff-plots.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-choice.R", "R/platform-report-package-render.R",
-    "R/platform-report-package-authority.R", "R/platform-task-display-sources.R", "R/platform-task-display.R", "R/platform-choice-display-sources.R", "R/platform-choice-display.R", "R/platform-report-package-sources.R",
+    "R/platform-task-plot-views.R", "R/platform-maxdiff-plots.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-choice.R", "R/platform-report-package-eda-figures.R", "R/platform-report-package-eda.R", "R/platform-report-package-render.R",
+    "R/platform-report-package-authority.R", "R/platform-task-display-sources.R", "R/platform-task-display.R", "R/platform-choice-display-sources.R", "R/platform-choice-display.R", "R/platform-eda-continuous-review.R", "R/platform-eda-display-sources.R", "R/platform-eda-display.R", "R/platform-report-package-sources.R",
     "R/platform-report-package-distributions.R", "R/platform-report-package.R", "R/platform-report-package-preparation.R")
   identity <- c(identity,hash_sources(setdiff(paths,names(identity))))
   for (path in paths) source(path,encoding="UTF-8")
   identity <- c(identity,hash_sources(setdiff(.brohn_rpk_files,names(identity))))
+  identity <- c(identity,hash_sources(setdiff(.brohn_edd_files,names(identity))))
 }
 if(!is.null(input$camera_analysis_authority)) {
   identity<-c(identity,hash_sources("R/platform-camera-analysis-store.R"))
@@ -150,7 +151,13 @@ native_sources <- if (identical(input$operation,"analyse_dataset") && identical(
       if (identical(input$dataset$modality, "eda") && brohn_eda_events_is_event(input$dataset$metadata)) "scripts/workers/eda_events.py")
   } else character()
 identity <- c(identity, hash_sources(unique(c(native_sources, "scripts/workers/publication.py", "src/publication_guard.c"))))
-result <- brohn_analyse_input(input, arg("--scratch"))
+result <- tryCatch(brohn_analyse_input(input, arg("--scratch")), brohn_eda_refusal=function(e) {
+  brohn_require(identical(input$operation,"eda_display")||
+    (identical(input$operation,"report_package")&&identical(input$limits$profile,"controlled-task-choice-eda-report-package/0.1")),
+    "A typed EDA refusal belongs only to its registered operation.")
+  brohn_validate_eda_refusal(e$refusal)
+  setNames(list(e$refusal),input$operation)
+})
 result <- brohn_pack_questionnaire_report(result, arg("--scratch"))
 brohn_require(identical(identity, hash_sources(names(identity))), "Analysis implementation changed while this job was running. Retry with a stable installation; the source is preserved.")
 brohn_write_json_file(list(schema = "brohn-analysis-output/1.0", code_identity = identity, report = result), arg("--output"))

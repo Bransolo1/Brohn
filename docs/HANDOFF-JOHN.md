@@ -1,6 +1,57 @@
 # John: Brohn development handoff
 
-**Current choice-report scoped checkpoint, 27 September 2026:** read the
+## Current EDA continuation — 28 September 2026
+
+Saved EDA has scoped final researcher/download and cold-restart acceptance:
+8 queued-cancel, 74 initial / 11 scans and 9 restart checks. Eight executed jobs
+succeeded on attempt 1 under normal 60-second leases. Saved HTML/ZIP bytes
+reopened unchanged with no new jobs; originals remained exact and owned
+services stopped. Component/native/export/history and offline presentation
+checks remain separate evidence. The main journey used UI02 / joined07=08.
+Final joined10/UI04 changes only two UI files and their regression test; its
+separate 24-check/four-scan saved-history reread and 78/36 controller checks
+qualify that correction, not a full rerun of the main journey. Start with the
+[EDA guide](operations/SHARE-SAVED-EDA-FINDINGS.md),
+[architecture](architecture/SAVED-EDA-REPORT-PACKAGES.md),
+[phase record](qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+[exact source receipt](qa/EDA-REPORT-PACKAGE-SOURCE.json). Do not infer a broader
+platform or scientific pass from those scoped phases.
+
+The same Prepare report flow includes saved event/continuous EDA beside liking.
+Default cells include unavailable support. Continuous window edits can begin
+from original metadata before display preparation; Apply changes a draft and
+the next Prepare saves a new intent. History stays exact. Figure/window choices
+never trim complete selected and required EDA processed evidence, but the
+package is not a complete raw-series/input-byte archive. Original bounded raw
+previews remain where saved. Exporting and reopening do not rerun science.
+
+Prioritize the [versioned constant-signal remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md), then
+[saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+Read the [known counterexample](qa/EDA-CONSTANT-SIGNAL-FINDING.md) before treating
+the existing continuous detector as scientifically ready. Its portable test
+reproduces a known 1.0 problem; a passing diagnostic is not a qualified fix.
+Keep old reports/downloads unchanged and distinguish precision repair from
+scientific response criteria.
+
+Do not mistake successful display recovery for unlimited export capacity. The
+large UI case refused 500,100 full-view samples against 500,000, prepared the
+exact 10–20 second display successfully, then refused a 201,416,771-byte
+complete projection against 201,326,592. No full large package was produced;
+complete evidence must not be silently trimmed to fit. The corrected message
+points to the original report's separate exports through Back to study. It
+removes ineffective retries while that exact source stays selected. Replacing
+the source enables a new Prepare; a stale Resume cannot restart the old
+oversized intent. Read-only history/conservation checks are closed.
+
+Keep the 265-character Windows curation-path failure and roughly 453-second
+review of 1,204 tiny acquisition chunks in the backlog. The latter's cause is
+not established. Current source-open latency, image context, raw bundles,
+workloads and restrictions remain open. EDA follow-ups also include plain
+metric labels, field-aware missing-reason text and print heading placement.
+All 50 capabilities and 17 packages remain active and unfinished. Older entries below
+retain their original evidence; [WORKSTREAM](WORKSTREAM.md) gives current order.
+
+**Earlier choice-report scoped checkpoint, 27 September 2026:** read the
 [contract](architecture/SAVED-CHOICE-REPORT-PACKAGES.md),
 [acceptance record](qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) and
 [researcher guide](operations/SHARE-SAVED-FINDINGS.md). Saved MaxDiff counts/models
@@ -21,9 +72,9 @@ fresh evidence directories outside Git. No stored participant corpus is needed.
 Exported task labels/explanations cover seven profiles while canonical keys and
 values stay exact.
 
-Next is [saved EDA with liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
-followed separately by ECG/PPG. Consume complete saved evidence without new
-analysis, preserving source timing, baselines and exclusions. Follow
+The then-planned [EDA follow-on](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+is now the scoped checkpoint above. ECG/PPG remains separate. Preserve source
+timing, baselines and exclusions without new analysis on export. Follow
 [WORKSTREAM](WORKSTREAM.md) for other report families, image context, performance
 and restrictions. All 50 capabilities and 17 packages remain in scope.
 

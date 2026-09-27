@@ -2,11 +2,45 @@
 # Only bounded metadata is resolved here. Source replay/full decoding belongs
 # to supervised prerequisites; saved scientific scores are never recomputed.
 .brohn_rpk_task_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-paired/0.1")
-.brohn_rpk_choice_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1")
+.brohn_rpk_eda_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.1")
+.brohn_rpk_choice_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1")||.brohn_rpk_eda_profile(x)
 .brohn_rpk_prepared_profile <- function(x) .brohn_rpk_task_profile(x)||.brohn_rpk_choice_profile(x)
-.brohn_rpk_limits <- function(x) if(.brohn_rpk_choice_profile(x))brohn_report_package_choice_limits()else if(.brohn_rpk_task_profile(x))brohn_report_package_task_limits()else brohn_report_package_limits()
+.brohn_rpk_limits <- function(x) if(.brohn_rpk_eda_profile(x))brohn_report_package_eda_limits()else if(.brohn_rpk_choice_profile(x))brohn_report_package_choice_limits()else if(.brohn_rpk_task_profile(x))brohn_report_package_task_limits()else brohn_report_package_limits()
 .brohn_rpk_task_adapters <- c("task-scores","task-trials","task-people")
 .brohn_rpk_choice_adapters <- c("choice-counts","choice-utilities")
+.brohn_rpk_eda_adapters <- c("eda-events","eda-continuous")
+# The mixed renderer does not widen the unchanged questionnaire prerequisite.
+.brohn_rpk_distribution_admission_for <- function(request) {
+  if(.brohn_rpk_choice_profile(request))"task-choice-findings/0.1"else brohn_report_source_admission(request$renderer_profile)
+}
+.brohn_rpk_normalize_eda_requests <- function(requests,refs) {
+  if(is.null(requests))requests<-list()
+  brohn_require(brohn_array(requests)&&length(requests)<=8L,"Choose at most one EDA window request per selected source.")
+  keys<-character();values<-list()
+  for(x in requests){
+    brohn_fields(x,c("report_ref","display_request"),label="EDA display window source")
+    .brohn_rpk_ref_valid(x$report_ref,"report")
+    brohn_require(any(vapply(refs,function(r).brohn_rpk_same(r,x$report_ref),logical(1))),"EDA window choices must belong to an exact selected report.")
+    key<-brohn_hash(x$report_ref)
+    brohn_require(!key %in% keys,"Choose one EDA window request per exact source.")
+    keys<-c(keys,key);value<-brohn_normalize_eda_display_request(x$display_request)
+    if(length(value$continuous_windows))values[[key]]<-list(report_ref=x$report_ref,display_request=value)
+  }
+  # Defaults have one representation; selected source order is canonical.
+  result<-list()
+  for(ref in refs){key<-brohn_hash(ref);if(!is.null(values[[key]]))result<-c(result,list(values[[key]]))}
+  result
+}
+.brohn_rpk_eda_request_for <- function(request,ref) {
+  found<-Filter(function(x).brohn_rpk_same(x$report_ref,ref),request$eda_display_requests)
+  brohn_require(length(found)<=1L,"An EDA source has conflicting saved window requests.")
+  brohn_normalize_eda_display_request(if(length(found))found[[1L]]$display_request else NULL)
+}
+.brohn_rpk_eda_requirements_current <- function(store,intent) {
+  actual<-.brohn_rpk_eda_requirements(store,intent$request$report_refs,brohn_report_source_admission(intent$request$renderer_profile))
+  brohn_require(.brohn_rpk_same(actual,intent$source_requirements),"The required EDA sources changed. Review these choices and prepare a new version.")
+  actual
+}
 .brohn_rpk_choice_section <- function(section) {
   s<-section$selector;d<-section$display
   brohn_require(is.list(s)&&brohn_text(s$scope,64)&&s$scope %in% c("all_exercises","exact_exercises"),"Choose all saved choice exercises or exact prepared exercises.")
@@ -46,6 +80,13 @@
   x<-.brohn_rpk_implementation();list(profile=x$profile,hash=brohn_hash(x))
 }
 .brohn_rpk_execution_plan <- function(request=NULL) {
+  if(.brohn_rpk_eda_profile(request))return(list(schema="brohn-eda-report-execution-plan/0.1",
+    source_admission=brohn_report_source_admission(request$renderer_profile),
+    explicit_distribution_implementation_ref=.brohn_rpk_distribution_implementation_ref("task-choice-findings/0.1"),
+    task_display_implementation_ref=brohn_task_display_implementation_ref("saved-task-display/0.2"),
+    choice_display_implementation_ref=brohn_choice_display_implementation_ref(),
+    eda_display_implementation_ref=brohn_eda_display_implementation_ref(),
+    renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref()))
   if(.brohn_rpk_choice_profile(request))return(list(schema="brohn-task-choice-report-execution-plan/0.1",
     source_admission=brohn_report_source_admission(request$renderer_profile),
     explicit_distribution_implementation_ref=.brohn_rpk_distribution_implementation_ref("task-choice-findings/0.1"),
@@ -58,12 +99,14 @@
   renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref())
 }
 .brohn_rpk_plan_valid <- function(plan,request=NULL) {
-  choice<-identical(plan$schema,"brohn-task-choice-report-execution-plan/0.1")
+  eda<-identical(plan$schema,"brohn-eda-report-execution-plan/0.1")
+  choice<-eda||identical(plan$schema,"brohn-task-choice-report-execution-plan/0.1")
   fields<-c("schema","task_display_implementation_ref","explicit_distribution_implementation_ref","renderer_implementation_ref")
-  brohn_fields(plan,c(fields,if(choice)c("source_admission","choice_display_implementation_ref")),label="Pinned preparation plan")
+  brohn_fields(plan,c(fields,if(choice)c("source_admission","choice_display_implementation_ref"),if(eda)"eda_display_implementation_ref"),label="Pinned preparation plan")
   brohn_require(choice||identical(plan$schema,"brohn-task-report-execution-plan/0.1"),"Reopen a supported saved preparation plan.")
-  if(!is.null(request))brohn_require(identical(choice,.brohn_rpk_choice_profile(request))&&.brohn_rpk_prepared_profile(request),"The saved preparation plan belongs to a different renderer.")
-  if(choice)brohn_require(identical(plan$source_admission,"task-choice-findings/0.1"),"The saved plan changed its complete-source admission.")
+  if(!is.null(request))brohn_require(identical(choice,.brohn_rpk_choice_profile(request))&&identical(eda,.brohn_rpk_eda_profile(request))&&.brohn_rpk_prepared_profile(request),"The saved preparation plan belongs to a different renderer.")
+  if(choice)brohn_require(identical(plan$source_admission,if(eda)"task-choice-eda-findings/0.1"else"task-choice-findings/0.1"),"The saved plan changed its complete-source admission.")
+  if(eda)brohn_require(identical(plan$eda_display_implementation_ref$profile,"saved-eda-display/0.1"),"The saved EDA implementation profile is unavailable.")
   for(x in plan[setdiff(names(plan),c("schema","source_admission"))]){brohn_fields(x,c("profile","hash"),label="Pinned implementation");brohn_require(brohn_text(x$profile,128)&&.brohn_rpk_hash(x$hash),"The saved preparation lost its implementation identity.")}
   brohn_require(identical(plan$task_display_implementation_ref$profile,if(choice)"saved-task-display/0.2"else"saved-task-display/0.1")&&
     identical(plan$explicit_distribution_implementation_ref$profile,if(choice)"saved-explicit-distribution/0.2"else"saved-explicit-distribution/0.1")&&
@@ -76,6 +119,11 @@
   refs<-function(adapter)lapply(Filter(function(x)x$adapter==adapter,s$prepared_sources),`[[`,"prepared_ref")
   result<-list(reports=s$report_refs,distributions=refs("explicit-distribution"),task_displays=refs("task-display"))
   if(.brohn_rpk_choice_profile(s))result$choice_displays<-refs("choice-display")
+  if(.brohn_rpk_eda_profile(s)){
+    result$eda_displays<-refs("eda-display")
+    result$related_eda_sources<-s$related_eda_refs
+    result$source_identity_graph_binding<-s$source_identity_graph_binding
+  }
   result
 }
 .brohn_rpk_find_pinned_distribution <- function(store,report_ref,implementation_ref,source_admission="task-findings/0.1") {
@@ -94,10 +142,21 @@
   ref
 }
 .brohn_rpk_prepared_sources <- function(deps) lapply(Filter(function(d)!is.null(d$result_ref),deps),function(d)list(
-  adapter=switch(d$kind,task_display="task-display",choice_display="choice-display",explicit_distributions="explicit-distribution"),source_report_ref=d$report_ref,
+  adapter=switch(d$kind,task_display="task-display",choice_display="choice-display",eda_display="eda-display",explicit_distributions="explicit-distribution"),source_report_ref=d$report_ref,
   prepared_ref=d$result_ref,implementation_ref=d$implementation_ref))
 .brohn_rpk_preparation_view <- function(deps,count=NULL,maximum=NULL,reason=NULL) list(
   prepared_sources=.brohn_rpk_prepared_sources(deps),resolved_panel_count=count,maximum_panels=maximum,reason_code=reason)
+.brohn_rpk_preparation_failure <- function(deps,job,previous=NULL) {
+  # A new attempt's ordinary error must not inherit an earlier typed refusal.
+  result<-.brohn_rpk_preparation_view(deps,previous$resolved_panel_count,previous$maximum_panels)
+  failure<-job$error
+  if(is.list(failure)&&identical(failure$schema,"brohn-eda-report-refusal/0.1")){
+    refusal<-failure[setdiff(names(failure),"source_preserved")]
+    brohn_validate_eda_refusal(refusal)
+    for(key in setdiff(names(refusal),"schema"))result[key]<-refusal[key]
+  }
+  result
+}
 .brohn_rpk_retain_dependencies <- function(updated,previous) {
   # An early refusal at one slot does not detach later owned/shared jobs.
   # Keep their references until the whole unchanged request can be reconciled.
@@ -120,8 +179,22 @@
     cursor<-page$next_cursor;if(is.null(cursor))break
   };items
 }
-.brohn_rpk_task_dependency_specs <- function(store,request,plan) {
+.brohn_rpk_eda_catalog_all <- function(store,ref) {
+  items<-list();cursor<-NULL
+  repeat{
+    page<-brohn_eda_display_catalog(store,ref,cursor=cursor,limit=25L)
+    items<-c(items,page$items);brohn_require(length(items)<=2000L,"This prepared EDA catalog exceeds the report selection profile.")
+    cursor<-page$next_cursor;if(is.null(cursor))break
+  };items
+}
+.brohn_rpk_task_dependency_specs <- function(store,request,plan,source_requirements=NULL) {
   specs<-list()
+  eda<-.brohn_rpk_eda_profile(request)
+  if(eda){
+    actual<-.brohn_rpk_eda_requirements(store,request$report_refs,plan$source_admission)
+    if(!is.null(source_requirements))brohn_require(.brohn_rpk_same(actual,source_requirements),"Required EDA source membership differs from the saved preparation.")
+    source_requirements<-actual
+  }
   for(ref in request$report_refs){
     selected<-Filter(function(s).brohn_rpk_same(s$source_report_ref,ref),request$requested_sections)
     if(any(vapply(selected,function(s)s$adapter=="explicit-distribution",logical(1))))specs<-c(specs,list(list(kind="explicit_distributions",report_ref=ref,implementation_ref=plan$explicit_distribution_implementation_ref)))
@@ -131,8 +204,14 @@
     if(task)specs<-c(specs,list(list(kind="task_display",report_ref=ref,implementation_ref=plan$task_display_implementation_ref)))
     if(.brohn_rpk_choice_profile(request)&&"choice" %in% unlist(m$source_components))
       specs<-c(specs,list(list(kind="choice_display",report_ref=ref,implementation_ref=plan$choice_display_implementation_ref)))
+    if(eda&&any(vapply(source_requirements$required_eda_refs,function(r).brohn_rpk_same(r,ref),logical(1))))
+      specs<-c(specs,list(list(kind="eda_display",report_ref=ref,display_request=.brohn_rpk_eda_request_for(request,ref),implementation_ref=plan$eda_display_implementation_ref)))
   }
-  lapply(specs,function(x){x$slot<-brohn_hash(list(kind=x$kind,report_ref=x$report_ref));x})
+  if(eda)for(related in source_requirements$related_eda_refs)specs<-c(specs,list(list(kind="eda_display",report_ref=related$report_ref,
+    display_request=brohn_normalize_eda_display_request(),implementation_ref=plan$eda_display_implementation_ref)))
+  lapply(specs,function(x){identity<-list(kind=x$kind,report_ref=x$report_ref)
+    if(x$kind=="eda_display")identity$display_request<-x$display_request
+    x$slot<-brohn_hash(identity);x})
 }
 .brohn_rpk_explicit_panel_count <- function(store,section) {
   ref<-section$source_ref
@@ -165,6 +244,12 @@
       s$source_ref<-d[[1L]]$result_ref
       resolved<-brohn_resolve_choice_report_section(s,.brohn_rpk_choice_catalog_all(store,s$source_ref))
       s<-resolved$section;known_panels<-known_panels+resolved$panel_count
+    }else if(s$adapter %in% .brohn_rpk_eda_adapters){
+      d<-Filter(function(x)x$kind=="eda_display"&&.brohn_rpk_same(x$report_ref,s$source_report_ref),deps)
+      brohn_require(.brohn_rpk_eda_profile(request)&&length(d)==1L&&!is.null(d[[1L]]$result_ref),"EDA figures need their exact complete prepared source.")
+      s$source_ref<-d[[1L]]$result_ref
+      resolved<-brohn_resolve_eda_report_section(s,.brohn_rpk_eda_catalog_all(store,s$source_ref))
+      s<-resolved$section;known_panels<-known_panels+resolved$panel_count
     }else if(s$adapter=="explicit-distribution"){
       d<-Filter(function(x)x$kind=="explicit_distributions"&&.brohn_rpk_same(x$report_ref,s$source_report_ref),deps)
       brohn_require(length(d)==1L&&!is.null(d[[1L]]$result_ref),"Response figures need their exact complete prepared source.")
@@ -188,6 +273,7 @@
     if(action=="resume")brohn_require(b$status=="needs_authority","Only an authorization pause can be resumed.")
     if(action=="retry")brohn_require(b$status %in% c("failed","cancelled","needs_attention"),"Only a stopped preparation can be retried.")
     .brohn_rpk_request(store,b$request);.brohn_rpk_plan_valid(b$execution_plan,b$request)
+    if(.brohn_rpk_eda_profile(b$request)).brohn_rpk_eda_requirements_current(store,b)
     if(!.brohn_rpk_same(b$execution_plan$renderer_implementation_ref,.brohn_rpk_renderer_implementation_ref())){
       b$status<-"needs_attention";b$reason<-"The report implementation changed since Prepare. Review your saved choices and prepare them as a new version; the original plan was preserved."
       b$preparation<-.brohn_rpk_preparation_view(b$dependencies,reason="implementation_changed")
@@ -197,32 +283,33 @@
     if(retrying&&!is.null(b$selection_ref)){
       frozen<-.brohn_rpk_record(store,b$selection_ref,"report_package_selection")
       brohn_require(identical(frozen$body$intent_ref$id,r$id)&&frozen$body$generation==b$generation,"The retry no longer belongs to its original frozen contents.")
+      if(.brohn_rpk_eda_profile(b$request))b$preparation<-.brohn_rpk_preparation_view(b$dependencies,b$preparation$resolved_panel_count,b$preparation$maximum_panels)
       b$status<-"ready_to_freeze";b$reason<-NULL;b$job_ref<-NULL;b$package_ref<-NULL;r<-.brohn_rpk_put_intent(store,r,b)
       job<-brohn_queue_report_package(store,b$selection_ref,retry=TRUE);b<-r$body;b$status<-"assembly_queued";b$job_ref<-list(id=job$id,status=job$status)
       return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
     }
-    deps<-list();waiting<-FALSE;admission<-brohn_report_source_admission(b$request$renderer_profile)
-    for(spec in .brohn_rpk_task_dependency_specs(store,b$request,b$execution_plan)){
-      task<-spec$kind=="task_display";choice<-spec$kind=="choice_display";ref<-spec$report_ref;impl<-spec$implementation_ref
-      saved<-if(task)brohn_find_task_display(store,ref,impl$profile,impl)else if(choice)brohn_find_choice_display(store,ref,impl$profile,impl)else .brohn_rpk_find_pinned_distribution(store,ref,impl,admission)
+    deps<-list();waiting<-FALSE;admission<-.brohn_rpk_distribution_admission_for(b$request)
+    for(spec in .brohn_rpk_task_dependency_specs(store,b$request,b$execution_plan,b$source_requirements)){
+      task<-spec$kind=="task_display";choice<-spec$kind=="choice_display";eda<-spec$kind=="eda_display";ref<-spec$report_ref;impl<-spec$implementation_ref
+      saved<-if(task)brohn_find_task_display(store,ref,impl$profile,impl)else if(choice)brohn_find_choice_display(store,ref,impl$profile,impl)else if(eda)brohn_find_eda_display(store,ref,spec$display_request,impl$profile,impl)else .brohn_rpk_find_pinned_distribution(store,ref,impl,admission)
       old<-Filter(function(d)identical(d$slot,spec$slot),b$dependencies);old<-if(length(old))old[[1L]]else NULL
       d<-c(spec,list(job_id=if(is.null(old))NULL else old$job_id,created_for_intent=if(is.null(old))FALSE else old$created_for_intent,result_ref=saved,status=if(is.null(saved))NULL else"succeeded"))
       if(!is.null(saved)){deps<-c(deps,list(d));next}
-      current<-if(task)brohn_task_display_implementation_ref(impl$profile)else if(choice)brohn_choice_display_implementation_ref()else .brohn_rpk_distribution_implementation_ref(admission)
+      current<-if(task)brohn_task_display_implementation_ref(impl$profile)else if(choice)brohn_choice_display_implementation_ref()else if(eda)brohn_eda_display_implementation_ref()else .brohn_rpk_distribution_implementation_ref(admission)
       if(!.brohn_rpk_same(impl,current)){
         b$status<-"needs_attention";b$dependencies<-.brohn_rpk_retain_dependencies(deps,b$dependencies);b$reason<-"A pinned display implementation is unavailable. Prepare these saved choices as a new version; no different code was substituted."
         b$preparation<-.brohn_rpk_preparation_view(b$dependencies,reason="implementation_changed")
         return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
       }
-      request<-if(task).brohn_task_display_request(store,ref,impl)else if(choice).brohn_choice_display_request(store,ref,impl)else .brohn_rpk_distribution_request(store,ref,impl,admission)
-      fingerprint<-if(task||choice)request$content_fingerprint else brohn_hash(request[setdiff(names(request),"authority")])
+      request<-if(task).brohn_task_display_request(store,ref,impl)else if(choice).brohn_choice_display_request(store,ref,impl)else if(eda).brohn_eda_display_request(store,ref,spec$display_request,impl)else .brohn_rpk_distribution_request(store,ref,impl,admission)
+      fingerprint<-if(task||choice||eda)request$content_fingerprint else brohn_hash(request[setdiff(names(request),"authority")])
       previous<-.brohn_rpk_latest_job(store,spec$kind,fingerprint)
-      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else if(choice)brohn_queue_choice_display(store,ref,retry=retrying,implementation_ref=impl)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl,source_admission=admission)
+      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else if(choice)brohn_queue_choice_display(store,ref,retry=retrying,implementation_ref=impl)else if(eda)brohn_queue_eda_display(store,ref,spec$display_request,retry=retrying,implementation_ref=impl)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl,source_admission=admission)
       d$job_id<-j$id;d$status<-j$status;d$created_for_intent<-if(!is.null(old)&&identical(old$job_id,j$id))isTRUE(old$created_for_intent)else is.null(previous)||!identical(previous$id,j$id)
       deps<-c(deps,list(d))
       if(j$status %in% c("failed","cancelled")){
         b$status<-j$status;b$dependencies<-.brohn_rpk_retain_dependencies(deps,b$dependencies);b$reason<-.brohn_rpk_job_error(j,"Saved display preparation stopped. Review the source and explicitly retry.")
-        b$preparation<-.brohn_rpk_preparation_view(b$dependencies)
+        b$preparation<-if(.brohn_rpk_eda_profile(b$request)).brohn_rpk_preparation_failure(b$dependencies,j)else .brohn_rpk_preparation_view(b$dependencies)
         return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
       }
       brohn_require(j$status %in% c("queued","running"),"A successful display job has no retained complete result.");waiting<-TRUE
@@ -245,15 +332,39 @@
     if(retrying)b$generation<-b$generation+1L
     b$status<-"ready_to_freeze";b$job_ref<-NULL;b$package_ref<-NULL;b$selection_ref<-NULL;r<-.brohn_rpk_put_intent(store,r,b)
     id<-brohn_id("report-selection")
-    selection<-c(list(schema="brohn-report-package-selection/0.2",id=id,intent_ref=.brohn_rpk_ref(r),generation=b$generation),
+    selection<-c(list(schema=if(.brohn_rpk_eda_profile(b$request))"brohn-report-package-selection/0.3"else"brohn-report-package-selection/0.2",id=id,intent_ref=.brohn_rpk_ref(r),generation=b$generation),
       b$request[c("study_id","project_id","title","report_refs")],list(prepared_sources=.brohn_rpk_prepared_sources(deps),sections=resolved$sections),
       b$request[c("contents_policy","limits_profile","renderer_profile")],list(frozen_at=brohn_now(),coverage=list(
-        full_platform_scope=list(capabilities=50L,packages=17L),profile_supported_adapters=as.list(c("gaze-context","explicit-distribution","paired-findings",.brohn_rpk_task_adapters,if(.brohn_rpk_choice_profile(b$request)).brohn_rpk_choice_adapters)),
+        full_platform_scope=list(capabilities=50L,packages=17L),profile_supported_adapters=as.list(c("gaze-context","explicit-distribution","paired-findings",.brohn_rpk_task_adapters,if(.brohn_rpk_choice_profile(b$request)).brohn_rpk_choice_adapters,if(.brohn_rpk_eda_profile(b$request)).brohn_rpk_eda_adapters)),
         numerical_evidence="complete_selected_reports",raw_recordings="excluded_by_profile",original_raw_bytes_reverified=FALSE)))
+    if(.brohn_rpk_eda_profile(b$request)){
+      selection$eda_display_requests<-b$request$eda_display_requests
+      selection$related_eda_refs<-b$source_requirements$related_eda_refs
+      selection$source_identity_graph_binding<-b$source_requirements$source_identity_graph_binding
+      selection$coverage$numerical_evidence<-"complete_selected_reports_and_related_eda"
+      selection$coverage$raw_conductance<-"original_bounded_previews_retained_complete_raw_series_excluded"
+    }
     saved<-brohn_put_entity(store,"report_package_selection",id,selection,0L,r$project_id);b<-r$body;b$selection_ref<-.brohn_rpk_ref(saved)
     r<-.brohn_rpk_put_intent(store,r,b);job<-brohn_queue_report_package(store,b$selection_ref,retry=FALSE)
     b<-r$body;b$status<-"assembly_queued";b$job_ref<-list(id=job$id,status=job$status)
     .brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b))
+  })
+}
+.brohn_rpk_publish_eda_refusal <- function(store,result,job,input,selection,source_guards,output_guard) {
+  brohn_validate_eda_refusal(result)
+  if(!is.null(result$source)){
+    refs<-c(selection$report_refs,lapply(selection$related_eda_refs,`[[`,"report_ref"))
+    brohn_require(any(vapply(refs,function(ref).brohn_rpk_same(ref,result$source),logical(1))),"This preparation refusal refers to an unrelated source.")
+  }
+  brohn_store_batch(store,function(){
+    current<-.brohn_rpk_selection_sources(store,selection)
+    brohn_require(identical(brohn_hash(current),input$source_binding),"Source authority changed before the refusal could be retained.")
+    .brohn_cm_guard_check(c(source_guards,list(output_guard)));brohn_report_package_job_fence(store,job)
+    r<-.brohn_rpk_selection_live(store,input$selection_ref,job)$intent;b<-r$body
+    b$status<-"needs_attention";b$reason<-result$message;b$job_ref<-list(id=job$id,status="failed")
+    b$preparation<-.brohn_rpk_preparation_failure(b$dependencies,list(error=result))
+    .brohn_rpk_put_intent(store,r,b)
+    brohn_fail_job(store,job$id,job$worker,job$token,c(result,list(source_preserved=TRUE)))
   })
 }
 .brohn_rpk_publish_panel_refusal <- function(store,result,job,input,selection,source_guards,output_guard) {

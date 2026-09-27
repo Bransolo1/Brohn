@@ -1,6 +1,80 @@
 # Brohn master architecture and large-build contract
 
-**Choice-report scoped checkpoint, 27 September 2026:** the
+## Saved EDA report boundary — 28 September 2026
+
+The [EDA report contract](architecture/SAVED-EDA-REPORT-PACKAGES.md) extends
+the existing durable Prepare report lifecycle. Its scoped final researcher,
+download and cold-restart flow has passed. The
+[phase record](qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+[source receipt](qa/EDA-REPORT-PACKAGE-SOURCE.json) keep component, native worker,
+independent export, history, presentation and browser evidence separate.
+
+EDA display preparation is a distinct supervised prerequisite. Queue and catalog
+paths read bounded metadata; complete source verification, typed streams,
+display reduction and export occur behind the worker boundary. Frozen source
+relationships retain required EDA parents, including related-only sources, and
+deduplicate the same exact source selected directly and required indirectly.
+The new profile does not widen earlier classic/task/choice admission or replace
+an old source/preparation with its current head.
+
+The request retains exact decimal continuous-window overrides independently of
+figure sections. Original-window metadata permits a cold or refused request to
+be edited without inventing a prepared model. Applying a window changes the
+draft; preparing that edit creates a new intent and display. Component/page-only
+changes reuse the exact preparation. Related-only sources keep original windows
+until their exact report is explicitly selected. Zero-figure EDA packages still
+retain all required numerical evidence.
+
+Event defaults show phasic conductance and original method windows; continuous
+defaults show tonic and phasic conductance. Unavailable cells remain visible.
+Each component and candidate-marker page counts toward the figure limit;
+numerical table pages are separate and do not silently truncate candidate
+overlays. Whole-segment features stay whole-segment features in a focused view.
+Complete original analyses and processed rows remain in evidence regardless of
+figure/window choices. Complete raw conductance series and input bytes are
+excluded, while original bounded raw previews and raw summary fields remain.
+
+Current-reader/source fences, native guards, child lifetime and lease checks
+remain necessary at publication and download. Separate source/lease checks and
+the normal 60-second-lease researcher flow have passed. The child-lifetime
+test uses explicit instrumentation and a declared replacement clock; it is not
+proof of arbitrary wall-clock expiry. No decomposition, peak detection, scoring
+or new EDA-liking estimator is run to assemble or reopen a report.
+
+Display limits and complete-evidence limits are independent. The actual large
+UI source exceeded the 500,000-sample full-view bound; its exact 10–20 second
+display succeeded. Assembly still correctly refused 201,416,771 projected bytes
+against a 201,326,592-byte budget. The complete 666,734 original rows cannot be
+discarded to make a smaller figure fit. This demonstrates honest refusal, not
+full large-package recovery; broader capacity remains open.
+
+A known single-source complete-evidence refusal is attached to its exact saved
+report ref. The UI explains the limit and original-export path rather than
+offering a smaller figure/window or unchanged new version as a remedy. Adding
+sources, changing the title or hiding figures does not unlock that known bound.
+Removing/replacing the source allows ordinary new preparation, while Resume
+checks the original saved intent independently of the edited draft.
+
+Final joined10/UI04 differs from the main journey's joined07/08 application in
+only two UI files and one regression test across 1,395 compared files. Backend,
+scientific, preparation and export sources remain identical. Its separate
+78/36 controller and 24-check/four-scan actual history/guidance checks close the
+correction; the main 8/74/9 journey is retained under its original source binding.
+
+This advances BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17 without closing any
+package. The [constant-signal method remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md)
+now has priority, followed by the [separate saved ECG/PPG contract](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+The [retained counterexample](qa/EDA-CONSTANT-SIGNAL-FINDING.md) prevents export
+fidelity from being mistaken for detector qualification. Historical 1.0 results
+stay exact; no arbitrary threshold is introduced here. Source-open latency,
+deep Windows curation paths, tiny-chunk review cost, task/choice image context,
+raw bundles, wider workloads and restrictions remain open. The full
+50-capability/17-package contract is unchanged.
+
+Dated checkpoint notes below are historical; current implementation priorities
+are in [WORKSTREAM](WORKSTREAM.md).
+
+**Earlier choice-report scoped checkpoint, 27 September 2026:** the
 [new report contract](architecture/SAVED-CHOICE-REPORT-PACKAGES.md) preserves
 complete saved MaxDiff results inside the same durable preparation lifecycle.
 An explicit source-admission profile and separate choice-display artifact allow
@@ -23,12 +97,11 @@ BWP15/BWP17 without closing any package. Task/choice image bytes, raw bundles,
 other report families, performance and restrictions remain open. The full
 50-capability/17-package architecture remains authoritative.
 
-The [next physiological package](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
-first covers exact saved event-related and continuous EDA beside liking, then
-ECG/PPG under a separate admission profile. It reuses complete typed evidence
-and saved figures without reanalysis; it cannot silently promote event features
-into a new paired estimator or admit unsupported mixed parents. BWP09 owns the
-physiology methods; report, source and experience packages share the integration.
+The [original physiological package plan](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+specified EDA followed by separate ECG/PPG admission. Its EDA follow-on is the
+scoped checkpoint above; BWP09 continues to own physiology methods while report,
+source and experience packages share integration. Neither profile may invent a
+paired estimator or silently admit unsupported mixed parents.
 
 **Earlier task-report checkpoint, 27 September 2026:** the
 [saved task-report contract](architecture/SAVED-TASK-REPORT-PACKAGES.md) extends

@@ -1,21 +1,42 @@
 # Brohn working agreement
 
-Current continuation, 27 September 2026: the owner said "keep going". The
-choice/MaxDiff complete report checkpoint has scoped source, worker, historical,
-researcher, mobile export and cold-restart acceptance. Read
-`docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md`, STATUS and `docs/WORKSTREAM.md`
-before extending claims. Its browser used existing genuine synthetic sources;
-original scientific generation, independent conservation and UI evidence remain
-separate. Preserve original estimates and complete mixed-source evidence.
+Current continuation, 28 September 2026: the owner said "keep going". The
+saved event/continuous EDA report checkpoint has scoped final researcher,
+download and cold-restart acceptance. Read
+`docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md`, its
+`docs/qa/EDA-REPORT-PACKAGE-SOURCE.json`, STATUS and `docs/WORKSTREAM.md` before
+extending claims. Source generation, component/native checks, independent export
+conservation, offline presentation and browser evidence remain separate.
+The main journey used UI02 / joined07=08 application bytes. Final joined10/UI04
+changes only two UI files plus their test, qualified by 78/36 controller checks
+and a targeted 24-check/four-scan actual reread. Do not claim the whole main
+journey reran on that later UI source.
 
-Next is exact saved event-related/continuous EDA with liking, followed separately
-by ECG/PPG; read `docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md`.
-Preserve baselines, exclusions, timing and full typed evidence without reanalysis.
-Earlier classic/task/choice profiles and prepared history retain their contracts.
-Plain labels for seven task profiles are delivered in exported reports, without
-changing canonical evidence. Other report families, task/choice image context,
-latency and post-collection restrictions remain open. Continue all 50 capabilities
-and 17 packages; publishing is not a pause or whole-platform completion.
+Use `docs/architecture/SAVED-EDA-REPORT-PACKAGES.md` and
+`docs/operations/SHARE-SAVED-EDA-FINDINGS.md` for the EDA contract. Preserve
+complete saved values, source relationships, baselines, exclusions and history;
+export must not rerun decomposition, detection or estimation. Focused figures
+are not complete raw-data exports. Current-reader checks still apply to saved
+downloads; offline copies cannot be revoked retrospectively. A smaller display
+does not bypass the complete-evidence projection budget. The actual large UI
+case recovered display preparation but refused oversized package assembly;
+do not describe it as full large-package recovery. The corrected one-source
+refusal points to original exports and blocks ineffective retries while that
+exact source remains selected. Resume checks the original saved intent even
+after source replacement; ordinary Prepare uses the edited draft.
+
+Prioritize the versioned remedy in `docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md`,
+then `docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md`. Keep original EDA 1.0
+results unchanged. Do not choose an arbitrary numerical floor or label an
+export pass as scientific readiness. Review in these plans means internal
+scientific evidence and design review, not a new user-permission requirement.
+
+Retain Windows curation-path and tiny-chunk acquisition-review findings,
+current source-open latency, task/choice image context, raw bundles, wider
+workloads and post-collection restrictions. Earlier classic/task/choice profiles
+and prepared history retain their contracts. Continue all 50 capabilities and
+17 unfinished packages, preserving individual statuses (BWP16 remains planned);
+publishing is not a pause or platform completion.
 
 The owner explicitly resumed development on 24 September 2026 with "keep going",
 after publishing checkpoint `2b3b31a` to `Bransolo1/Brohn` on `main`. The earlier

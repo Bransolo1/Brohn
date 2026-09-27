@@ -1,6 +1,65 @@
 # Resume here — Brohn
 
-## Complete saved choice findings — scoped checkpoint, 27 September 2026
+## Saved EDA report checkpoint — 28 September 2026
+
+The scoped final researcher and cold-restart journey has passed. The same
+**Prepare report** action saves choices, prepares missing views and assembles
+saved EDA beside liking. All cells, including unavailable ones, are included by
+default. Smaller continuous windows and fewer figures retain complete selected
+and required EDA evidence; they do not recompute whole-segment measurements.
+Exact history and current-reader checks remain part of the contract. See the
+[architecture](docs/architecture/SAVED-EDA-REPORT-PACKAGES.md),
+[researcher guide](docs/operations/SHARE-SAVED-EDA-FINDINGS.md),
+[acceptance record](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+[source receipt](docs/qa/EDA-REPORT-PACKAGE-SOURCE.json).
+
+| Separate phase | Scoped evidence |
+| --- | --- |
+| Main researcher flow, UI02 / joined07=08 application | 8 queued-cancellation checks, 74 initial checks / 11 scans and 9 restart checks. Eight executed jobs completed on attempt 1 with normal 60-second leases. HTML/ZIP bytes reopened unchanged without new jobs; originals remained exact and owned services stopped. |
+| Native large-source display | 15 checks: 500,100 samples refuse the 500,000-sample full-view limit; an exact smaller window displays 101 samples. All 666,734 original processed/candidate rows remain source evidence, not a truncated report dataset. |
+| Source and lease progress | 12 source-pulse and 51 lease checks, separate from the browser's normal-lease evidence. |
+| Final child lifetime | 17 checks with observed R/Python processes before cancellation or declared replacement-clock reclaim; instrumented 120-second lease. This does not establish uninstrumented wall-clock expiry behavior. |
+| Historical compatibility | 66 checks on exact earlier saved packages. |
+| Earlier actual package exports | Nine exported variants, independently checked by 423 oracle assertions; retain that phase's exact source binding. |
+| Final UI04 controller | 78 focused and 36 legacy checks with declared spies. Single-source capacity recovery and stale Resume after source replacement are covered; old failing attempts remain retained. |
+| Final UI04 / joined10 actual reread | 24 checks / 4 clean desktop and phone scans; 106 conservation checks. No new preparation or scientific job. All 5 original jobs, 7 objects and non-runtime entity versions remained exact; owned runtime start/stop records are the declared exception. |
+| Earlier offline presentation | 19 visual checks and actual A4 inspection, separate from controller, source and connected-browser evidence. |
+
+The separate large-source UI test reached the intended full-view refusal, then
+prepared the exact 10–20 second display on attempt 1. Complete package assembly
+correctly refused `projection_bytes`: 201,416,771 bytes exceed 201,326,592.
+This is truthful capacity refusal, **not full large-package recovery or capacity
+qualification**. Narrower figures cannot remove required complete evidence.
+The final read-only guidance/history phase is closed. The corrected interface
+explains this single-source limit, points to original report exports and removes
+ineffective Prepare/new-version/resume actions while the offending exact source
+remains selected. Source replacement still permits a new report; Resume always
+checks the original intent. Older smaller-window history remains usable.
+
+The main journey used UI02 on joined07/08 application bytes. Final joined10 adds
+only two UI files and their controller regression test; a 1,395-file comparison
+confirms no other source changes. Its targeted reread is not a rerun of the whole
+main journey. Exact final source and phase bindings are in the source receipt.
+Counts are scoped and overlapping, not a completion percentage. Earlier failed visual, lifetime,
+large-source and browser attempts remain retained in the phase record. The
+browser used existing genuine synthetic reports; it did not collect new source
+data or establish physical-device, participant or construct validity.
+
+Immediate continuation is the [versioned constant-signal EDA remedy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md),
+then [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+The [constant-signal finding](docs/qa/EDA-CONSTANT-SIGNAL-FINDING.md) concerns
+original method 1.0, which this export preserves rather than repairs. Keep
+scientific qualification separate from export fidelity. Retain the
+265-character Windows curation-path failure and roughly 453-second review of
+1,204 tiny acquisition chunks; its latency cause is not established. Current
+saved-open latency, image context, raw bundles, larger/concurrent workloads and
+restrictions remain open. All 50 capabilities and 17 packages remain active and
+unfinished; individual package statuses, including BWP16 planned, are unchanged.
+
+Dated checkpoint sections below preserve historical evidence and their
+then-current follow-ons; use this section and WORKSTREAM for current priorities.
+
+## Earlier complete saved choice findings — scoped checkpoint, 27 September 2026
 
 Brohn now includes saved MaxDiff findings in the existing **Prepare report**
 flow, including native questionnaires, imports and saved cohorts beside liking,
@@ -17,9 +76,8 @@ independent scientific checks are separately recorded. See the
 [phase record](docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md).
 
 Exported task reports also have plain metric labels and explanations across all
-seven profiles, preserving canonical evidence. Next is
-[complete saved EDA with liking](docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
-then ECG/PPG separately, without reanalysis. Task/choice image context, other
+seven profiles, preserving canonical evidence. Its then-planned EDA follow-on
+is now the scoped checkpoint above; ECG/PPG remains a separate later profile. Task/choice image context, other
 report families, raw bundles, workloads and scoped post-collection restrictions
 remain open. All 50 capabilities and 17 packages remain in scope; this checkpoint
 does not complete the platform.

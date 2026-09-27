@@ -1,5 +1,43 @@
 # Changes
 
+## Saved EDA report checkpoint — 2026-09-28
+
+- Added a separate saved event/continuous EDA profile to the existing one-action
+  report flow beside liking, with complete processed evidence for selected
+  sources and required EDA parents. No scientific analysis repeats.
+- Added exact continuous display windows independent of figure selections,
+  bounded original-window metadata before preparation and new-draft recovery
+  after a display-size refusal. Old attempts remain unchanged.
+- Kept all default cells and candidate pages, unavailable reasons, separate
+  component support, exact historical references and current-reader checks.
+- Qualified the scoped final researcher and cold-restart flow: 8 queued-cancel,
+  74 initial / 11 scans and 9 restart checks. Eight executed jobs succeeded on
+  attempt 1 under normal 60-second leases; exact HTML/ZIP reopened with no new
+  jobs and unchanged originals. Owned services stopped.
+- Kept native large-display, source/lease, instrumented child-lifetime, earlier
+  profile history, independent numerical export and corrected phone/A4 evidence
+  separate. Final joined08 retains joined07 application bytes. See
+  [the phase record](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
+  [source receipt](docs/qa/EDA-REPORT-PACKAGE-SOURCE.json). The main journey used
+  UI02 on joined07/08; it is not relabelled as a final UI04 whole-journey rerun.
+- Corrected single-source capacity guidance and ineffective retry controls,
+  including stale Resume after source replacement. Final joined10 changes only
+  two UI files and their test: 78 focused / 36 legacy controller checks and a
+  separate 24-check/four-scan actual saved-history reread with 106 conservation
+  checks. Original jobs/objects/non-runtime history remain exact; no new
+  preparation, scientific calculation or capacity change was introduced.
+- Recorded the separate large UI capacity boundary: after successful 10–20 s
+  display preparation, complete evidence exceeded the 201,326,592-byte projection
+  budget (201,416,771 bytes). No partial package was substituted or full
+  large-package recovery claimed.
+- Retained the unchanged method 1.0 constant-signal counterexample, downstream
+  Windows path failure and tiny-chunk review latency finding. Next: versioned
+  EDA remedy, then saved ECG/PPG. All 50 capabilities and 17 package statuses
+  remain in scope and unchanged.
+
+Older entries preserve their acceptance evidence and then-current continuation;
+the current ordered work is in `docs/WORKSTREAM.md`.
+
 ## Complete saved choice findings — accepted source checkpoint 2026-09-27
 
 - Added a separate choice-capable report profile for saved native/imported
@@ -17,8 +55,9 @@
 - Qualified the normal saved-source researcher flow, actual desktop/phone
   downloads, complete independent scientific comparison and unchanged cold
   restart. Retained the earlier comparator-harness failure separately.
-- Continue exact saved EDA with liking, then ECG/PPG separately. Other report
-  families, task/choice image context, performance and restrictions remain open.
+- The next step at this checkpoint was exact saved EDA with liking, followed
+  separately by ECG/PPG; see the scoped checkpoint above. Other report families,
+  task/choice image context, performance and restrictions remain open.
 
 ## Complete saved task findings — accepted source checkpoint 2026-09-27
 

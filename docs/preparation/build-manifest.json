@@ -4,18 +4,80 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-27",
+    "date": "2026-09-28",
     "publication_handoff": "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability / 17-package build remains active and unfinished. Complete saved MaxDiff findings now have scoped source, worker, history, researcher/mobile, independent export and cold-restart acceptance. Exported task reports have plain metric labels across seven profiles with unchanged canonical evidence. Next: exact saved event-related/continuous EDA with liking, then ECG/PPG separately, without reanalysis. Other report families, task/choice image context, raw bundles, latency and post-collection restrictions remain. Publication is not a pause.",
-    "accepted_source_handoff": "docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md",
-    "accepted_source_receipt": "docs/qa/CHOICE-REPORT-PACKAGE-SOURCE.json",
+    "note": "The full 50-capability / 17-package build remains active and unfinished with individual statuses unchanged. Saved event/continuous EDA now has scoped final researcher/download/restart acceptance, distinct from native, history, independent export and presentation phases. Smaller display preparation does not bypass the complete-evidence projection budget; the large UI case refused package assembly, not a full recovery. Next: versioned constant-signal EDA remedy, then separate saved ECG/PPG packages. Windows curation paths, tiny-chunk review latency, source-open latency, image context, raw bundles, workloads and restrictions remain. Publication is not a pause. Final UI04 capacity guidance and stale-resume correction have separate targeted actual-history and controller acceptance; main UI02 journey evidence retains its original source binding.",
+    "accepted_source_handoff": "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+    "accepted_source_receipt": "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
     "choice_report_checkpoint": {
       "status": "scoped_accepted_source_checkpoint",
       "evidence": "docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md",
       "architecture": "docs/architecture/SAVED-CHOICE-REPORT-PACKAGES.md"
+    },
+    "eda_report_checkpoint": {
+      "status": "scoped_accepted_source_checkpoint",
+      "evidence": "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+      "source_receipt": "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
+      "architecture": "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+      "guide": "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+      "application_binding": "Main researcher journey used joined07/08 application with UI02. Final joined10/UI04 changes only two UI files and one controller test across 1395 compared files; no other application, scientific, preparation or export source changes. Targeted final UI guidance/history acceptance is separate, not a whole main journey rerun.",
+      "separate_phase_checks": {
+        "native_large_normal_60_second_lease": 15,
+        "source_pulse": 12,
+        "lease": 51,
+        "final_historical_compatibility": 66,
+        "earlier_nine_export_oracle": 423,
+        "offline_visual": 19,
+        "final_connected_researcher": 74,
+        "final_connected_restart": 9,
+        "final_connected_queued_cancel": 8,
+        "final_connected_scans": 11,
+        "final_instrumented_child_lifetime": 17,
+        "final_ui_focused_controller": 78,
+        "final_ui_legacy_controller": 36,
+        "final_ui_guidance_browser": 24,
+        "final_ui_guidance_scans": 4,
+        "final_ui_guidance_conservation": 106
+      },
+      "limits": "Counts are scoped and overlapping. Source generation, exports, UI spies, native authority, scientific validity and physical-device evidence are distinct.",
+      "method_finding": "docs/qa/EDA-CONSTANT-SIGNAL-FINDING.md",
+      "next_method_contract": "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+      "next_report_contract": "docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md",
+      "connected_scope": "Existing genuine synthetic reports, actual Prepare/download/history/restart; eight executed jobs succeeded on attempt 1 under normal 60-second leases. Exact HTML/ZIP reopened with no new jobs; originals unchanged and owned services stopped. No new source collection or scientific rerun.",
+      "large_capacity_boundary": {
+        "full_view_selected_samples": 500100,
+        "maximum_selected_samples": 500000,
+        "focused_window_s": [
+          "10",
+          "20"
+        ],
+        "focused_display_succeeded_attempt": 1,
+        "original_complete_rows": 666734,
+        "package_outcome": "refused_projection_bytes",
+        "projection_bytes": 201416771,
+        "maximum_projection_bytes": 201326592,
+        "full_large_package_recovery_qualified": false,
+        "conservation_receipt": {
+          "status": "closed_scoped_read_only_history_and_guidance",
+          "public_source_receipt": "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
+          "evidence_sha256": "e9d9641a36cca0753a58f4a75e4a6534bed3e94f7c8242b995040bc45873e224",
+          "jobs_unchanged": 5,
+          "objects_unchanged": 7,
+          "non_runtime_entity_versions_unchanged": true,
+          "allowed_runtime_changes": "Only owned acquisition_service running/stopped revisions and service.json; source files exact and services stopped."
+        }
+      },
+      "lifetime_scope": "Observed real R/Python child cancellation/reclaim, instrumented 120-second lease and declared replacement clock; no uninstrumented wall-clock-expiry claim.",
+      "final_source_manifest_sha256": "c56fc610d4404648b295cb7cad1a6f4966cb5623e7f413369f4f00a9265c5b95",
+      "phase_binding_receipts": {
+        "main_connected": "a8ea33fb94f52b86bbb17e67ba3420304238c185cb3a4b953a4a4ef362334ed2",
+        "final_ui_delta": "85788f3bbe2d2db7b42aa597b4dff227f16bbb20d030bb832910d79b9cf98449",
+        "final_ui_guidance": "e9d9641a36cca0753a58f4a75e4a6534bed3e94f7c8242b995040bc45873e224"
+      },
+      "single_source_capacity_guidance": "No ineffective Prepare/new-version/resume while exact oversized source remains; replacement draft may prepare, but Resume checks original saved refs. Multiple-source and original smaller_window recovery remain distinct."
     }
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
@@ -92,7 +154,11 @@
         "docs/qa/ACQUISITION-PUBLICATION-AND-MONITORING.md",
         "docs/qa/CANONICAL-ENCODER-PERFORMANCE.md",
         "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
-        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Duplicate allocation/job requests are idempotent; conflicts are explicit.",
@@ -101,7 +167,8 @@
         "Selected workspace catalog and immutable object storage support authorized dataset reuse, independent source provenance, version history and recoverable relocation.",
         "Consent/eligibility precede transactional quota/assignment reservation; concurrent final-seat starts, expiry, duplicate/revoked tokens and access to another project are exercised.",
         "Archive, purge and backup restore are distinct; restore applies restricted/deleted-object policy and does not automatically reactivate accepting endpoints."
-      ]
+      ],
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP03",
@@ -195,7 +262,11 @@
         "docs/qa/MAXDIFF-ILLUSTRATIONS-ACCEPTANCE.md",
         "docs/qa/EXPLICIT-DISTRIBUTIONS-ACCEPTANCE.md",
         "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
-        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
@@ -204,7 +275,8 @@
         "Reusable question/scale blocks and portable imports preserve internal references, translations, consent text, display logic and scoring keys without transferring participant responses."
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
-      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP05",
@@ -283,14 +355,19 @@
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
         "docs/qa/MIXED-STUDY-JOURNEY.md",
         "docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md",
-        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md"
+        "docs/operations/REVIEW-ALIGNED-RECORDINGS.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Synthetic/replay input seals a truthful multi-stream run including markers/gaps.",
         "XDF/BIDS/SNIRF and named vendor paths preserve units/coordinates/timestamps.",
         "Resource limits, sidecar restart and source-reset handling are tested before physical support claims.",
         "A first-class Data library accepts multi-file imports with preview/dictionary/unit/clock/identity mapping, duplicate resolution and source provenance; curation creates a new immutable version."
-      ]
+      ],
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP07",
@@ -411,7 +488,15 @@
         "docs/qa/CARDIAC-EXCLUSION-ACCEPTANCE.md",
         "docs/qa/CARDIAC-EXCLUSION-CURATED-SOURCE-ACCEPTANCE.md",
         "docs/qa/CARDIAC-ARTIFACT-REVIEW-UI.md",
-        "docs/qa/PROCESSED-VALUES-ACCEPTANCE.md"
+        "docs/qa/PROCESSED-VALUES-ACCEPTANCE.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
+        "docs/qa/EDA-CONSTANT-SIGNAL-FINDING.md",
+        "tests/eda-flatline-counterexamples.py",
+        "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+        "docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md"
       ],
       "acceptance": [
         "Each enabled recipe retains calibrated units, valid support, masks, baselines and effective parameters.",
@@ -421,12 +506,19 @@
       "next_report_adapter": {
         "status": "planned_not_enabled",
         "sequence": [
-          "complete_saved_event_and_continuous_eda_with_liking",
+          "versioned_constant_signal_eda_remedy",
           "separate_saved_ecg_ppg_including_after_exclusion_results"
         ],
         "contract": "docs/architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md",
-        "rule": "Preserve complete saved numerical evidence, baseline/exclusion/timing support and current source authority; no reanalysis on export."
-      }
+        "rule": "Preserve complete saved numerical evidence, baseline/exclusion/timing support and current source authority; no reanalysis on export.",
+        "current_contracts": [
+          "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+          "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+          "docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md"
+        ],
+        "note": "Saved EDA has scoped connected acceptance. The constant-signal remedy and ECG/PPG report adapter remain plans, not enabled or qualified new methods; historical scientific results stay exact."
+      },
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP10",
@@ -634,7 +726,11 @@
         "docs/architecture/SAVED-REPORT-PACKAGES.md",
         "docs/operations/SHARE-SAVED-FINDINGS.md",
         "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
-        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Automatic jobs assemble eligible results without erasing good modalities when another fails.",
@@ -644,7 +740,8 @@
         "Finalization resolves late/incomplete uploads under policy, freezes a cohort, and preserves prior reports when collection reopens in a new window."
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
-      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP14",
@@ -745,7 +842,11 @@
         "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
         "tests/HTTP-RESPONSE-REPRODUCE.md",
         "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
-        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Plan-to-Results journeys support autosave/resume/undo, batch import and exception-driven review.",
@@ -759,7 +860,8 @@
         "UX-J19-UX-J34 exercise historical research, curation, delivery, enrollment/waves/endings, closure, clone/reanalysis, portable designs, sharing and retention; planned targets are not achieved usability evidence."
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
-      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     },
     {
       "id": "BWP16",
@@ -828,7 +930,11 @@
         "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
         "tests/HTTP-RESPONSE-REPRODUCE.md",
         "docs/architecture/SAVED-TASK-REPORT-PACKAGES.md",
-        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md"
+        "docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
+        "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
+        "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
       ],
       "acceptance": [
         "Clean-machine setup and backup restore reproduce a declared supported configuration.",
@@ -842,7 +948,8 @@
         "Frozen report sharing has explicit audience/expiry/revocation; backup restores full authorized history and object integrity with secrets/withdrawal handling, while archive restoration never reopens recruitment."
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
-      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing."
+      "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
     }
   ],
   "cross_cutting_specifications": {
