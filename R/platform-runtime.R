@@ -8,6 +8,45 @@ brohn_participant_ready <- function(workspace_id, port = Sys.getenv("BROHN_PARTI
     identical(result$service, "brohn-participant") && identical(result$workspace_id, workspace_id)
   }, error = function(e) FALSE, warning = function(w) FALSE)
 }
+.brohn_runtime_wait_ready <- function(state, name, probe, timeout_s = 15) {
+  brohn_require(brohn_number(timeout_s,.1,15),"Service readiness requires a bounded startup deadline.")
+  child<-state$owned[[name]];started<-proc.time()[["elapsed"]];last<-list(status="starting",ready=FALSE,error=NULL)
+  fail<-function(reason) {
+    elapsed<-proc.time()[["elapsed"]]-started
+    exit_code<-child$get_exit_status();log<-state$logs[[name]]$stderr
+    detail<-paste0(name," service ",reason," after ",format(round(elapsed,2),trim=TRUE)," seconds.",
+      if(!is.null(exit_code))paste0(" Exit code: ",exit_code,".")else"",
+      " Last readiness state: ",last$status,".",if(!is.null(last$error))paste0(" ",last$error)else"",
+      " Inspect its owned service log: ",log)
+    brohn_service_event(state,list(service=name,event="startup_failed",reason=reason,elapsed_s=elapsed,
+      readiness_status=last$status,exit_code=exit_code,log=log))
+    brohn_stop(detail)
+  }
+  repeat {
+    last<-probe()
+    elapsed<-proc.time()[["elapsed"]]-started
+    if(elapsed>=timeout_s)fail("did not become ready before its startup deadline")
+    if(isTRUE(last$ready)) {
+      # A compatible same-workspace service may win a concurrent launch. It
+      # remains external only after a fresh probe following our child's exit.
+      if(!child$is_alive()) {
+        last<-probe()
+        if(proc.time()[["elapsed"]]-started>=timeout_s)fail("did not become ready before its startup deadline")
+        if(!isTRUE(last$ready))fail("exited before readiness")
+        if(name=="acquisition"&&(is.null(last$value$process$pid)||identical(as.numeric(last$value$process$pid),as.numeric(child$get_pid()))))
+          fail("exited before verified replacement readiness")
+        state$owned[[name]]<-NULL
+      }
+      brohn_service_event(state,list(service=name,event="startup_ready",elapsed_s=proc.time()[["elapsed"]]-started,
+        owned=!is.null(state$owned[[name]])))
+      return(invisible(TRUE))
+    }
+    if(!child$is_alive())fail("exited before readiness")
+    remaining<-timeout_s-elapsed
+    if(remaining<=0)fail("did not become ready before its startup deadline")
+    Sys.sleep(min(.1,remaining))
+  }
+}
 brohn_start_services <- function(root, participant_port = 3840L) {
   brohn_require(brohn_number(participant_port, 1024, 65535, TRUE), "Choose a participant port between 1024 and 65535.")
   profile <- brohn_hosted_profile()
@@ -20,45 +59,47 @@ brohn_start_services <- function(root, participant_port = 3840L) {
   brohn_initialise_library(store)
   state <- new.env(parent = emptyenv()); state$owned <- list(); state$root <- store$root
   state$stopped <- FALSE; state$scheduled <- FALSE; state$participant_port <- participant_port
-  state$specs <- list(); state$generations <- list(); state$failures <- list(); state$next_attempt <- list(); state$started <- list()
+  state$specs <- list(); state$generations <- list(); state$failures <- list(); state$next_attempt <- list(); state$started <- list(); state$logs <- list()
   state$last_error <- list(); state$events <- list(); state$session_id <- brohn_id("runtime"); state$snapshot <- list()
   logdir <- file.path(store$root, "logs"); dir.create(logdir, showWarnings = FALSE)
   start <- function(name, script, args) {
     state$specs[[name]] <- list(script = script, args = args)
     state$generations[[name]] <- brohn_default(state$generations[[name]], 0L)+1L
     prefix <- paste(name, state$session_id, state$generations[[name]], sep = "-")
+    state$logs[[name]]<-list(stdout=file.path(logdir,paste0(prefix,".stdout.txt")),stderr=file.path(logdir,paste0(prefix,".stderr.txt")))
     child <- processx::process$new(brohn_rscript(), c("--vanilla", script, "--root", store$root, args),
-      stdout = file.path(logdir, paste0(prefix, ".stdout.txt")), stderr = file.path(logdir, paste0(prefix, ".stderr.txt")),
+      stdout = state$logs[[name]]$stdout, stderr = state$logs[[name]]$stderr,
       env = c("current", R_LIBS_USER = paste(.libPaths(), collapse = .Platform$path.sep)),
       windows_hide_window = TRUE, cleanup_tree = TRUE)
     state$started[[name]] <- as.numeric(Sys.time()); child
   }
   state$start <- start
   ok <- FALSE
-  on.exit(if (!ok) for (child in state$owned) if (child$is_alive()) child$kill_tree(), add = TRUE)
+  on.exit(if (!ok) {
+    # A later launch can fail after the owned acquisition manager is ready.
+    # Preserve its exact stop/flush/archive path before any forced fallback.
+    tryCatch(brohn_stop_services(state),error=function(e)
+      brohn_service_event(state,list(event="startup_cleanup_failed",message=conditionMessage(e))))
+    for (child in state$owned) tryCatch({if(child$is_alive())child$kill_tree();child$wait(5000)},
+      error=function(e)brohn_service_event(state,list(event="startup_cleanup_failed",message=conditionMessage(e))))
+  }, add = TRUE)
   # A compatible service in this same workspace may already be running. Never
   # stop, replace or adopt an unrelated process simply because it owns the port.
   if (!brohn_participant_ready(store$workspace_id, participant_port)) {
     child <- start("participant", "scripts/run-participant.R", c("--port", as.character(participant_port)))
     state$owned$participant <- child
-    for (i in 1:30) {
-      if (brohn_participant_ready(store$workspace_id, participant_port)) break
-      brohn_require(child$is_alive(), "Participant service could not start. Its local port may already be in use; choose another participant port.")
-      Sys.sleep(.1)
-    }
-    brohn_require(brohn_participant_ready(store$workspace_id, participant_port), "Participant service did not become ready for this workspace.")
+    .brohn_runtime_wait_ready(state,"participant",function(){ready<-brohn_participant_ready(store$workspace_id,participant_port)
+      list(ready=ready,status=if(ready)"ready"else"workspace_health_unavailable",
+        error=if(ready)NULL else paste("Expected workspace health on local port",participant_port,"is unavailable; the port may already be in use."))})
   }
-  state$owned$worker <- start("worker", "scripts/run-worker.R", character())
   if (!brohn_acquisition_ready(store$root, store$workspace_id)) {
     child <- start("acquisition", "scripts/run-acquisition.R", character())
     state$owned$acquisition <- child
-    for (i in 1:30) {
-      if (brohn_acquisition_ready(store$root, store$workspace_id)) break
-      brohn_require(child$is_alive(), "The local acquisition manager could not start. Inspect its owned service log.")
-      Sys.sleep(.1)
-    }
-    brohn_require(brohn_acquisition_ready(store$root, store$workspace_id), "The acquisition manager did not become ready for this workspace.")
+    .brohn_runtime_wait_ready(state,"acquisition",function()brohn_acquisition_service_status(store$root,store$workspace_id))
   }
+  # Do not claim analysis work or compete with cold service initialization until
+  # both workspace-owned service identities have passed their readiness checks.
+  state$owned$worker <- start("worker", "scripts/run-worker.R", character())
   Sys.setenv(BROHN_PARTICIPANT_PORT = as.character(participant_port))
   state$workspace_id <- store$workspace_id; ok <- TRUE; state
 }

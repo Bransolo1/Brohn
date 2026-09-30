@@ -1,0 +1,357 @@
+{
+  "schema": "brohn-eda-constant-documentation-source/0.1",
+  "date": "2026-09-30",
+  "status": "scoped_accepted_source_checkpoint",
+  "baseline": "08573a3004c554c6fddd78efd07a855c21143c77",
+  "candidate": "joined-development-03",
+  "candidate_manifest_sha256": "07ee8287dd82cf773f820a0693c547109f213ac4475ea51d9188b9a6c93076fd",
+  "source_byte_scope": "Exact qualified Windows worktree bytes. Git text normalization can change raw bytes in another checkout. Reconciled final documentation is separate from the immutable application-source snapshot; historical joined documentation is not restored over production.",
+  "components": {
+    "R/platform-data-views.R": {
+      "sha256": "f142fecc612278452bfbef31de10caf23f2cbfb25425ffef36096bc408ce761c",
+      "bytes": 49802
+    },
+    "R/platform-eda-continuous-review-views.R": {
+      "sha256": "7801cf009bd6d334c58fcdd634fbf56945d035cfa0d32bb4177b4377bf34c31b",
+      "bytes": 34525
+    },
+    "R/platform-eda-continuous-review.R": {
+      "sha256": "b841d3020e0fe15969f4e22631ff62be43fda8143dd246baf0da04e4627bbd00",
+      "bytes": 37678
+    },
+    "R/platform-eda-events-views.R": {
+      "sha256": "c43c993ab24d6d331e9d445e8927243852a09b364cef0210a9f9dc82720ce448",
+      "bytes": 11803
+    },
+    "R/platform-eda-events.R": {
+      "sha256": "91fddb239c7c369bc83a0049867678c2850961723d5423837c5156e98c49cb41",
+      "bytes": 15622
+    },
+    "R/platform-multimodal.R": {
+      "sha256": "c424f8cd6353aeb21655f5ab4e66dc7563ad41000178ea55082dde7e82461a45",
+      "bytes": 36567
+    },
+    "R/platform-report-package-choice.R": {
+      "sha256": "0bfebdd2d488b06b9f3da4191dec9d757ca46e0c21b815b072e935c9d5b49fa8",
+      "bytes": 18978
+    },
+    "R/platform-report-package-preparation.R": {
+      "sha256": "da76b507d734311751961b500060028ccbf4b024ec4240bd41e15a146e3a40e4",
+      "bytes": 35003
+    },
+    "R/platform-report-package-render.R": {
+      "sha256": "bed3f74d8baf0a957f7cf5be57c025d25349fc6516ff30bb75f1e0a6254bee38",
+      "bytes": 47059
+    },
+    "R/platform-report-package-server.R": {
+      "sha256": "57d51a1ebf5c4c28682eb8aaa3431535da92c37c4757a19323e98cc8291fc72c",
+      "bytes": 46070
+    },
+    "R/platform-report-package-sources.R": {
+      "sha256": "2cdecadcb8629cdeba7170f2f5ccfb135d6e61600f80f1ef13b5f65d815ea98b",
+      "bytes": 62234
+    },
+    "R/platform-report-package-tables.R": {
+      "sha256": "d1ae5c7e2ed3cb6580d0f586e60c60b64e7e2010c058d54c28efb80f2ca01e5c",
+      "bytes": 29663
+    },
+    "R/platform-report-package-tasks.R": {
+      "sha256": "2b65321410116ecb9482acbc03513762557f053c68b04949f165024389edead4",
+      "bytes": 53283
+    },
+    "R/platform-report-package-views.R": {
+      "sha256": "b45db2fa888d7585eccfd5e95178ce6333e632da2aade7982d2bc80c44e1013d",
+      "bytes": 31226
+    },
+    "R/platform-runtime.R": {
+      "sha256": "e7f04de5e7dc50b91c88043dbe9fe8594595178e778ed8dd0882e24e9c474401",
+      "bytes": 11228
+    },
+    "scripts/workers/eda_continuous_review.py": {
+      "sha256": "263a0051de63b378021d96fbace25076a4c4b0278eb594dea386f307ffc90337",
+      "bytes": 38576
+    },
+    "scripts/workers/physiology.py": {
+      "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+      "bytes": 80261
+    },
+    "scripts/workers/physiology_artifacts.py": {
+      "sha256": "462631637b9432f18d311b2dc9ca0750b5f47b6b8fe5dcb523cca189e86ddcce",
+      "bytes": 36579
+    },
+    "tests/report-eda-package-intents.R": {
+      "sha256": "8bd1fc0e3c244e2015286fad462afaad7ac8835a88b52dd3f820b0708fee415a",
+      "bytes": 21535
+    },
+    "R/platform-eda-display-sources.R": {
+      "sha256": "44eec7b0d7d9fa51980325909b5ece0ab88d506418438241a7a4e596e8f13123",
+      "bytes": 44082
+    },
+    "R/platform-eda-display.R": {
+      "sha256": "4b250019297c27dee2cd5299ed298e4b0c8897c822fd1e6c48f3ca9ddc722120",
+      "bytes": 77034
+    },
+    "scripts/workers/eda_display.py": {
+      "sha256": "ec14cc0fac52619f66e0f23c1977743e640368c8c81dd0d62c750c80f9fc7fb0",
+      "bytes": 40728
+    },
+    "scripts/workers/report_package_eda.py": {
+      "sha256": "5e8b63a2e8121254cef3037d2aeb75b96b86c9cec935fef501589f13027eacd5",
+      "bytes": 15486
+    },
+    "R/platform-report-package-eda.R": {
+      "sha256": "3f4419594dd960ec45d3d9909a138d73ea48cf5290f876c52e0ecbf5a539b436",
+      "bytes": 35936
+    },
+    "R/platform-report-package-eda-figures.R": {
+      "sha256": "1a9f3d8b2d377d0c3ef760bce8d04f9855376df897a527b223924c0c7399208f",
+      "bytes": 24929
+    },
+    "tests/report-eda-package-ui-state.R": {
+      "sha256": "4d4e65a62484baaf29970a354e80c60983ae132d98eaaae15e594bbad48fa9bb",
+      "bytes": 50541
+    },
+    "tests/eda-constant-producer.py": {
+      "sha256": "405773c8723970a4212a106f35b61ea2e3fc0f85d967bef4b8de3345d556a68a",
+      "bytes": 15360
+    },
+    "tests/eda-constant-originals.R": {
+      "sha256": "80a8804f98f021c92dd89ee7138791789713eec3384dfd0f0e5c915596844633",
+      "bytes": 9102
+    },
+    "tests/eda-constant-history.R": {
+      "sha256": "dfb6c484ff34694d573f4e53e4a0ac427ad970ebf4a2c054efb29fb98d734ddd",
+      "bytes": 4818
+    },
+    "tests/eda-constant-model-contract.R": {
+      "sha256": "f643df4105251c3a0aeb665ee954dcb5f6013ab238fe47b7746eaf03c085302b",
+      "bytes": 7098
+    },
+    "tests/eda-constant-reader-contract.R": {
+      "sha256": "88612e675f1863ffdd7aee5eb4653a56489343621bb00e5c8dd9bd8a6eda8240",
+      "bytes": 2487
+    },
+    "tests/eda-constant-source-contract.R": {
+      "sha256": "935cc4422790b322429269fd17d17534589b6ed18225b1ce6e2edcc63f5070c2",
+      "bytes": 7186
+    },
+    "tests/eda-constant-pure.py": {
+      "sha256": "39cfccf8147e325e4bcc76c806b6999052d5a21b6723760abc0ad2b0196f816d",
+      "bytes": 15738
+    },
+    "tests/eda-constant-report-pure.R": {
+      "sha256": "5161dfd1a30903ae505079de8b59790d821b919f1b9cbbaf7f6fc2b9a89b0041",
+      "bytes": 6088
+    },
+    "tests/eda-constant-ui.R": {
+      "sha256": "cc453c7ea41a03d3b2781897914b70f2effcef6f71909b0f3cb8a2ce868d8230",
+      "bytes": 15063
+    },
+    "tests/eda-constant-level-label.R": {
+      "sha256": "5829736dbc13283ac71ec04a323f48515b0ed1dd16bbc1e4467a59ba584aef92",
+      "bytes": 4968
+    },
+    "tests/eda-constant-legacy-python.py": {
+      "sha256": "763873354ebccc7e7f85ada3d2f8a19b9f310c01ace296c3ddd4cfb4a90b70d0",
+      "bytes": 4485
+    },
+    "tests/eda-constant-oracle-refusals.py": {
+      "sha256": "32a91c2a92de88c100fdfef9c2998506f8d34b035ab00cfc522cd8d123336089",
+      "bytes": 3713
+    },
+    "tests/verify-eda-constant-report-download.py": {
+      "sha256": "019a5c5752d4821bbf1e45ec398f891541368ecb326901982766432ad99550b0",
+      "bytes": 32730
+    },
+    "tests/eda-constant-packages.R": {
+      "sha256": "488177f62148823cc92e6910bc6c03dc6b732926a096fa478f8468af3b3b60c5",
+      "bytes": 7895
+    },
+    "tests/report-eda-validation-performance.R": {
+      "sha256": "b25fa1cb961cb8e273fdde280a3fecdfbcc22f19af4e493792789584aa98bb6d",
+      "bytes": 4944
+    },
+    "tests/eda-constant-original-bundle.R": {
+      "sha256": "3067204971668f70c6c289c9fa838734f2aaeb4409dbafd0f360e22dcbd65ddb",
+      "bytes": 3407
+    },
+    "tests/runtime-startup-readiness.R": {
+      "sha256": "a59fe0d290889ba8dbe84ebe75e977c48b0bd71e88efd7001cdfd144fb4b5f6b",
+      "bytes": 11834
+    },
+    "tests/compare-eda-constant-package-variants.py": {
+      "sha256": "724f1eb7beccc9dba2fe3a0c44960835e7499bd8b28119bf86a5606fd70cc140",
+      "bytes": 9372
+    }
+  },
+  "profiles": {
+    "continuous_recipe": "eda-neurokit-highpass/1.1",
+    "constant_policy": "raw_description_only/1.0",
+    "standalone_review": "saved-continuous-eda-review/1.1",
+    "prepared_display": "saved-eda-display/0.2",
+    "renderer": "controlled-gaze-explicit-task-choice-eda-paired/0.2",
+    "admission": "task-choice-eda-findings/0.2",
+    "selection": "brohn-report-package-selection/0.3"
+  },
+  "phases": {
+    "producer_components": {
+      "receipt": "producer-freeze-01/MANIFEST.json",
+      "sha256": "26c249e8da321f378a688536f5e38e4ec91a4c4f323de87ef8ef464d55781956",
+      "scope": "Independent constant-value/support witnesses and exact unchanged-path regression; synthetic component sources, no native or device qualification.",
+      "checks": 160,
+      "regression_passes": {
+        "physiology": 18,
+        "artifacts": 26
+      },
+      "environment_skips": {
+        "physiology": 2,
+        "artifacts": 2
+      }
+    },
+    "source_reader": {
+      "receipt": "source-development-01/MANIFEST.json",
+      "sha256": "3d98ef08a31b107001e5d971194143daa7ff6be6a3e0d1da3a8b5e2676c292c5",
+      "scope": "Exact source/version admission, structural model refusals and actual Python-to-R reader checks.",
+      "checks": [
+        44,
+        23,
+        30
+      ]
+    },
+    "initial_pure_reader": {
+      "receipt": "pure-development-01/MANIFEST.json",
+      "sha256": "9bb3c6fc77b3c7b1daac2dc741bd62fb88c4ece2dc4153f3af062e8fcd3520fd",
+      "scope": "158 Python checks and initial 63 R checks; later render checks remain separately bound. Component report wrappers explicitly synthetic."
+    },
+    "initial_ui": {
+      "receipt": "ui-freeze-01/CANDIDATE.json",
+      "sha256": "e0bc9c79b27d00931adf70d9a4ec43fc4ceb661153c4ffb5caf69986597f03b6",
+      "scope": "Method/review, EDA report state and legacy controllers with declared spies, not browser evidence.",
+      "checks": [
+        36,
+        94,
+        36
+      ]
+    },
+    "initial_joined_source": {
+      "receipt": "joined-development-01-SOURCE.json",
+      "sha256": "5b6187e58653dd6f76c926776187866c7630aae426c9eeb8f327b851a7f9cf38",
+      "scope": "Initial 1405-file joined source; earlier generation/edit/cancellation browser journey uses these application bytes.",
+      "files": 1405
+    },
+    "native_packages": {
+      "receipt": "NATIVE-PACKAGES-ACCEPTANCE-02.json",
+      "sha256": "83bc385d39f72c832b02058274609af881156008a201b344835ea4af999fef69",
+      "scope": "Joined02 source, 24 checks; two reviews, five EDA preparations, one distribution, two six-source package jobs; attempt one, normal 60-second lease and unchanged 300-second deadline.",
+      "checks": 24,
+      "new_jobs": 10,
+      "package_seconds": [
+        282.5573089122772,
+        237.23160004615784
+      ]
+    },
+    "joined02_source": {
+      "receipt": "joined-development-02-SOURCE.json",
+      "sha256": "e4b6c4a616dfbef4277e00e57436ee2193bfada438508bf055efa7b89f7af4f4",
+      "scope": "1413 files; includes scoped performance and phone/readability changes. Report/scientific implementation bytes remain exact in joined03.",
+      "files": 1413
+    },
+    "joined02_history": {
+      "receipt": "JOINED-HISTORICAL-ACCEPTANCE-02.json",
+      "sha256": "8fa5c58e29dde62713a000ea4928190b767d9e48fdba1d83c73c0c7e207410de",
+      "scope": "12 old standalone plus 57 old package checks; original downloads exact, current authorization refusals intact, no new jobs.",
+      "checks": [
+        12,
+        57
+      ]
+    },
+    "performance_conservation": {
+      "receipt": "PERFORMANCE-CONSERVATION-01.json",
+      "sha256": "b11550f10e64398aca33363567897ab16e7549a88f576210c01b71cfa80f37af",
+      "scope": "Seventy payload files exact; six numerical projections and five receipts differ only in enumerated implementation metadata and derived hashes. No scientific values change."
+    },
+    "performance_contract": {
+      "receipt": "PERFORMANCE-PATCH-02.json",
+      "sha256": "fb26f26c9b09e57c7b91304efc40f2c58ca663a01d054e6a9cd827a3dc3a8616",
+      "scope": "Six-file performance patch; 677 focused assertions plus independent 1250-case equality review. Private reuse preserves model bindings, file SHA checks, authority and source holds."
+    },
+    "cross_variant_conservation": {
+      "receipt": "peer-native-package-conservation-01/results.json",
+      "sha256": "c69ec458a1892ec83214da790049b09a79fb7401d66239be41fb7c44e69d997e",
+      "scope": "Exact six-source full/evidence-only pair. All 49 complete data/evidence members and six/five scientific/prepared refs conserved; explicit omitted 25 SVGs and five section companions. Original strict-mode failure retained.",
+      "complete_members": 49
+    },
+    "earlier_researcher": {
+      "receipt": "researcher-journey-02/ACCEPTANCE-01.json",
+      "sha256": "892521bdd9c97d51f9d296bb6c8f6b14fc84b2521a3561c0fdca65e4b236b799",
+      "scope": "Joined01 actual new source/review/report journey, 30 initial + ten cold checks. Cold history used an owned prestarted acquisition manager after startup timeout; not integrated-startup qualification.",
+      "checks": [
+        30,
+        10
+      ]
+    },
+    "phone_review_patch": {
+      "receipt": "ui-mobile-freeze-01/MANIFEST.json",
+      "sha256": "0f7a6d8db1b95b08e2bf5e45c9c1a3330aaa99e37e7c56fb157a0de90649c66e",
+      "scope": "One joined01-based view patch: 36 component + nine actual browser checks, readable keyboard-scroll table at390px. No final-source whole-journey claim.",
+      "checks": [
+        36,
+        9
+      ]
+    },
+    "compact_summary_and_earlier_download": {
+      "receipt": "pure-integration-evidence-01/MANIFEST.json",
+      "sha256": "25b8e6db2652807fe5688ebe7c986bc83ff4a9b9eb73a2f6b1c6afc7aaa5de16",
+      "scope": "Compact status format: 22 targeted +69 rendering checks and phone inspection. Browser-produced three-source download: 74 independent checks, 35597 scientific leaves,12069 identities,1200 constant rows; guarded bundle export four checks."
+    },
+    "native_signed_zero": {
+      "receipt": "signed-zero-resolution-01/RESOLUTION.json",
+      "sha256": "11d059143ec9b985b1aa04ffcb7048c60c0c3395c20cb72accf14a6bbb525205",
+      "scope": "13 native checks on literal -0.0 CSV. Original mean/preview publish positive zero before review. Synthetic negative-zero transport probe is separate; no generic transport fix.",
+      "checks": 13
+    },
+    "runtime_patch": {
+      "receipt": "runtime-startup-freeze-01/MANIFEST.json",
+      "sha256": "f67aa2bc326052248b5dea1f6ff3447732124c03481abb923e4ca3592faf3f10",
+      "scope": "Bounded readiness, exact-owned-process cleanup and worker-last startup;27 real-process focused checks."
+    },
+    "joined03_runtime": {
+      "receipt": "joined03-runtime-qualification-01/ACCEPTANCE.json",
+      "sha256": "f2bb0abdf82caada8ab71d5281d00033d51ef93e8a6da2b032dca30ce386ef47",
+      "scope": "All1415 source files exact. Full runtime74 and acquisition22, actual recording flush/archive/shutdown/recovery, owned-process cleanup; no physical device qualification.",
+      "checks": [
+        74,
+        22
+      ]
+    },
+    "mixed_all_oracle": {
+      "receipt": "native-packages-02/mixed-all-oracle.json/results.json",
+      "sha256": "55895be6d1f3237a4d7bf182c162c79882143d532bb73ab805ab300b65ccd62b",
+      "scope": "Independent stdlib comparison against complete native originals;109863 scientific leaves,38232 identity fields and7000 constant coordinates per package.",
+      "checks": 171
+    },
+    "evidence_only_oracle": {
+      "receipt": "native-packages-02/evidence-only-oracle-02/results.json",
+      "sha256": "c8daff91db57bd5aa4bbef5e9a5769387df11d5488122e1530f053f1f5e45956",
+      "scope": "Independent stdlib comparison against complete native originals;109863 scientific leaves,38232 identity fields and7000 constant coordinates per package.",
+      "checks": 131
+    },
+    "final_researcher": {
+      "receipt": "researcher-final-02/ACCEPTANCE.json",
+      "sha256": "0d6983257d6f0a8d5eeaebaab4ba2d26d13d7ce8c12bea193b621aa366634053",
+      "scope": "Exact joined03 normal first/cold startup, saved original review and new0.2/old0.1 package rereads/downloads, offline desktop/phone/keyboard checks and preservation; complements earlier generation/edit/cancel journey. No new science/preparation/render jobs."
+    }
+  },
+  "public_evidence_policy": "Source identities, scoped receipts and portable tests are published. Large synthetic stores/runtime binaries/screenshots stay external. No participant data, credentials or local absolute runtime paths are included here.",
+  "remaining": [
+    "Near-constant precision and physiological response criteria",
+    "Broader complete-evidence workloads and capacity",
+    "Current source-open/download-validation latency",
+    "Saved cardiac and other physiological report adapters",
+    "Windows curation path and tiny-chunk acquisition review findings",
+    "Hardware/provider/hosting and scientific qualification",
+    "All50 capabilities and17 work-package completion criteria; no package is closed by this slice"
+  ],
+  "scientifically_qualified": false,
+  "platform_complete": false
+}

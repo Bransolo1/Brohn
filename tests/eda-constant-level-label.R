@@ -1,0 +1,40 @@
+# Focused display-only regression; no source store, jobs or scientific processing.
+args<-commandArgs(TRUE);stopifnot(length(args)==5L)
+base<-normalizePath(args[[1]],winslash="/",mustWork=TRUE);pure<-normalizePath(args[[2]],winslash="/",mustWork=TRUE)
+frozen<-normalizePath(args[[3]],winslash="/",mustWork=TRUE);fixtures<-normalizePath(args[[4]],winslash="/",mustWork=TRUE)
+out<-args[[5]];stopifnot(!file.exists(out));dir.create(out,recursive=TRUE);out<-normalizePath(out,winslash="/",mustWork=TRUE)
+setwd(base);source("R/platform-load.R");brohn_load(ui=FALSE)
+for(p in c("tables","tasks","choice","eda","eda-figures","render"))source(file.path(pure,"R",paste0("platform-report-package-",p,".R")))
+old<-new.env(parent=globalenv());sys.source(file.path(frozen,"R/platform-report-package-eda-figures.R"),envir=old)
+checks<-character();check<-function(ok,label){stopifnot(isTRUE(ok));checks<<-c(checks,label)}
+values<-c(0,-0,.5,5,500,12345678,1.234567e-8,1e307,-1e307,1e-307,.Machine$double.xmin,.Machine$double.xmax)
+expected<-c("0","-0","0.5","5","500","1.235e+07","1.235e-08","1e+307","-1e+307","1e-307","2.225e-308","1.798e+308")
+before<-serialize(values,NULL)
+check(identical(vapply(values,.brohn_rpe_constant_level_label,character(1)),expected),"Constant raw-level labels stay compact through finite binary64 extremes and four-significant-digit rounding")
+check(identical(serialize(values,NULL),before),"Formatting preserves original binary64 values including negative zero")
+for(x in list(NULL,NA_real_,Inf,-Inf,NaN,c(1,2),"5"))check(inherits(tryCatch({.brohn_rpe_constant_level_label(x);NULL},error=identity),"error"),"Invalid raw-level display input refuses")
+check(identical(readBin(file.path(pure,"R/platform-report-package-render.R"),"raw",n=file.info(file.path(pure,"R/platform-report-package-render.R"))$size),readBin(file.path(frozen,"R/platform-report-package-render.R"),"raw",n=file.info(file.path(frozen,"R/platform-report-package-render.R"))$size)),"Shared numerical formatter and complete feature-table renderer stay byte-identical")
+render<-function(folder,constant=FALSE){
+  e<-brohn_eda_read_json_file(file.path(folder,"evidence.json"));catalog<-brohn_eda_read_json_file(file.path(folder,"catalog.json"));q<-brohn_eda_read_json_file(file.path(folder,"prepared-request.json"))
+  before<-brohn_eda_value_hash(list(e,catalog,q))
+  ref<-list(kind="eda_display",id="label-fixture",revision=1,body_hash=paste(rep("a",64),collapse=""),project_id="synthetic-project")
+  keys<-lapply(Filter(function(c)constant||!identical(c$status,"raw_description_only"),catalog),`[[`,"key")
+  section<-list(id="label-section",adapter="eda-continuous",adapter_version="0.1",source_report_ref=q$report$ref,source_ref=ref,selector=list(scope="exact_cells",keys=keys),
+    display=list(components=list("clean_us","tonic_us","phasic_us"),pages="all",page_numbers=list(),marker_pages=list(pages="all",page_numbers=list())),order=1)
+  section<-brohn_resolve_eda_report_section(section,catalog)$section
+  p<-list(item=q$report,projection=list(analysis=q$report$complete_analysis),eda=list(entry=list(ref=ref,body=list(catalog=catalog)),display=e))
+  figure<-function(svg,key,metadata)shiny::tags$figure(svg,shiny::tags$figcaption("Original figure"))
+  current<-.brohn_rpe_section(section,p,"label-check",figure,FALSE);previous<-old$.brohn_rpe_section(section,p,"label-check",figure,FALSE)
+  check(before==brohn_eda_value_hash(list(e,catalog,q)),paste(basename(folder),"render preserves exact original evidence and model"))
+  current_html<-as.character(htmltools::tagList(current$nodes));previous_html<-as.character(htmltools::tagList(previous$nodes))
+  if(constant){
+    check(grepl("Saved raw mean: 1e+307 uS (displayed to up to four significant figures; exact value in evidence).",current_html,fixed=TRUE),"Huge raw-level summary uses readable scientific notation")
+    strip<-function(s)gsub("<p>Saved raw mean:[^<]*</p>","",s)
+    check(identical(strip(current_html),strip(previous_html)),"Constant section differs only in raw-level summary; exact feature table and figure remain identical")
+    check(identical(current$coverage,previous$coverage),"Constant display coverage remains identical")
+  }else check(identical(current_html,previous_html)&&identical(current$coverage,previous$coverage),paste(basename(folder),"ordinary or legacy HTML and coverage stay byte-identical"))
+}
+render(file.path(fixtures,"constant-6"),TRUE)
+for(case in c("mixed-support","legacy-ordinary","legacy-flatline","legacy-zero"))render(file.path(fixtures,case))
+brohn_eda_write_json_file(list(passed=TRUE,checks=as.list(checks),count=length(checks),source_sha256=digest::digest(file=file.path(pure,"R/platform-report-package-eda-figures.R"),algo="sha256"),scope="Display-only finite-level formatting, exact original evidence and ordinary/legacy rendered bytes; no native package or browser qualification"),file.path(out,"results.json"))
+cat(length(checks),"constant-level display checks passed\n")

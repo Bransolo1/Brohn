@@ -1,6 +1,6 @@
 # EDA: implementation-ready analysis recipes
 
-Prepared 2026-09-08. Reuse **NeuroKit2 0.2.13**, with **CVXOPT 1.3.2** for the cvxEDA route, in an isolated local worker. R selects the named recipe, validates its inputs, applies study eligibility/contrasts and generates the report. These are analysis specifications and executable references; the Brohn UI does not yet run them.
+Prepared 2026-09-08; retained analysis-family specification. Brohn now has executable continuous/event EDA, saved review and report paths; this broader catalogue still includes unimplemented methods. Read the [current exact-constant policy](../EDA-CONSTANT-SIGNAL-NEXT.md), [event method](../EVENT-RELATED-EDA.md) and [saved-report contract](../../architecture/SAVED-EDA-REPORT-PACKAGES.md) for actual supported behavior. Reuse **NeuroKit2 0.2.13**, with **CVXOPT 1.3.2** for the cvxEDA route, in an isolated local worker. R selects the named recipe, validates its inputs, applies study eligibility/contrasts and generates the report.
 
 ## Input and quality contract
 

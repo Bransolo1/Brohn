@@ -294,7 +294,7 @@ brohn_resolve_task_report_section <- function(section,catalog) {
   if(!needed)return(NULL)
   .brohn_rpt_entry(hits[[1L]],item,.brohn_rpc_profile(bundle$selection));hits[[1L]]
 }
-brohn_report_package_panel_preflight <- function(bundle) {
+brohn_report_package_panel_preflight <- function(bundle,eda_lookup=NULL) {
   # Full-bundle worker boundary. Deliberately does not open a store, write files,
   # render images, replay journals, run scorers or modify the frozen selection.
   selection<-bundle$selection;eda_profile<-.brohn_rpe_profile(selection);brohn_require(selection$schema%in%c("brohn-report-package-selection/0.2","brohn-report-package-selection/0.3"),"Task panel preflight needs the explicit new selection profile.")
@@ -305,8 +305,8 @@ brohn_report_package_panel_preflight <- function(bundle) {
     if(!brohn_questionnaire_is_artifact(item$saved_body$analysis))brohn_require(.brohn_rp_same(item$saved_body$analysis,item$complete_analysis),"Inline analysis changed before panel preflight.")
     else brohn_validate_questionnaire_preview(item$saved_body$analysis,item$complete_analysis,brohn_questionnaire_artifact_source(item$saved_body))
     task<-.brohn_rpt_find_entry(bundle,item);choice<-if(.brohn_rpc_profile(selection)).brohn_rpc_find_entry(bundle,item)else NULL
-    eda<-if(eda_profile).brohn_rpe_find(bundle,item)else NULL
-    if(is.null(eda)).brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence,if(is.null(choice))NULL else choice$evidence,if(eda_profile)"task-choice-eda-findings/0.1"else NULL)
+    eda<-if(eda_profile){if(is.null(eda_lookup)).brohn_rpe_find(bundle,item)else eda_lookup(item)}else NULL
+    if(is.null(eda)).brohn_rp_projection(item,aliases,sprintf("report-%02d",i),if(is.null(task))NULL else task$evidence,if(is.null(choice))NULL else choice$evidence,if(eda_profile).brohn_rpe_admission(selection)else NULL)
     body<-item$saved_body;body$analysis<-item$complete_analysis;list(item=item,body=body,task=task,choice=choice,eda=eda)
   })
   counts<-lapply(selection$sections,function(s){
@@ -451,8 +451,8 @@ brohn_report_package_panel_preflight <- function(bundle) {
   }
   result$owner<-function(namespace,session,person=NULL)owner(namespace,session,canonical_person(person));result
 }
-.brohn_rpt_prepared_bindings <- function(bundle) {
-  if(.brohn_rpe_profile(bundle$selection))return(.brohn_rpe_prepared_bindings(bundle))
+.brohn_rpt_prepared_bindings <- function(bundle,eda_lookup=NULL) {
+  if(.brohn_rpe_profile(bundle$selection))return(.brohn_rpe_prepared_bindings(bundle,eda_lookup))
   brohn_require(brohn_array(bundle$task_displays),"Prepared task sources must be an ordered array.")
   choice_profile<-.brohn_rpc_profile(bundle$selection)
   if(choice_profile)brohn_require(brohn_array(bundle$choice_displays),"Prepared choice sources must be an ordered array.")

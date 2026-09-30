@@ -1,6 +1,6 @@
 # Remaining work — Brohn
 
-Updated **28 September 2026** for the ongoing end-to-end implementation.
+Updated **30 September 2026** for the ongoing end-to-end implementation.
 The owner resumed development after the published source checkpoint. The
 [workstream](WORKSTREAM.md) orders the active implementation;
 these gaps and the full capability/package scope remain open.
@@ -36,12 +36,15 @@ records describing only the 01A–01L prototype are historical.
   final UI04 controller plus actual saved-history checks; this does not raise
   the package capacity or repair the scientific method.
 
-- **Continuous EDA scientific remedy:** the [retained constant-signal finding](qa/EDA-CONSTANT-SIGNAL-FINDING.md)
-  reproduces numerical peaks and a zero-input error in unchanged method 1.0.
-  Follow the [versioned remedy contract](methods/EDA-CONSTANT-SIGNAL-NEXT.md):
-  independent constant, near-flat and small-response witnesses; separate
-  numerical precision from scientific threshold/quality policy; preserve all
-  historical results. No arbitrary floor or scientific readiness is implied.
+- **Continuous EDA scientific boundary:** explicit recipe 1.1 preserves the
+  eligible raw description of an exactly constant signal while withholding nine
+  processed estimates. The [phase record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md)
+  separates native, export, historical, runtime and browser evidence. Original
+  recipe 1.0 results and the [retained finding](qa/EDA-CONSTANT-SIGNAL-FINDING.md)
+  remain unchanged. Near-constant precision, small-response witnesses and
+  physiological response criteria remain open under the
+  [method policy](methods/EDA-CONSTANT-SIGNAL-NEXT.md). No arbitrary floor or
+  scientific readiness is implied.
   [Saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md) follow
   separately, including after-exclusion results and RR/PRV distinctions.
 
@@ -49,6 +52,10 @@ records describing only the 01A–01L prototype are historical.
   metric keys; distinguish a null missing-reason field from an unavailable
   measure; keep print headings with their following content. The corrected
   phone/A4 artifact passed its scoped review, not every future label/printer.
+  In reports with many cells, move repeated method explanations into one
+  accessible disclosure while keeping each cell's result, basis, support and
+  unavailable reason visible. The current constant panels are readable but
+  repeat substantial explanatory text; this remains a comprehension improvement.
 
 - **Source operations:** an unchanged producer failed at a downstream
   265-character Windows curation artifact path. Review of 1,204 tiny acquisition

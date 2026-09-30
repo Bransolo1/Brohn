@@ -102,7 +102,7 @@
     c("generation"),"Frozen report selection")
   brohn_require(s$schema%in%c("brohn-report-package-selection/0.1","brohn-report-package-selection/0.2","brohn-report-package-selection/0.3")&&identical(eda,identical(s$schema,"brohn-report-package-selection/0.3"))&&brohn_valid_id(s$id)&&brohn_valid_id(s$study_id)&&brohn_valid_id(s$project_id)&&
     brohn_text(s$title,500)&&brohn_text(s$frozen_at,64)&&(!choice||task)&&identical(s$limits_profile,if(eda)"controlled-task-choice-eda-report-package/0.1"else if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")&&
-    identical(s$renderer_profile,if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.1"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1"),"Invalid frozen report selection.")
+    identical(s$renderer_profile,if(eda)paste0("controlled-gaze-explicit-task-choice-eda-paired/",.brohn_rpe_version(s))else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1"),"Invalid frozen report selection.")
   .brohn_rp_ref(s$intent_ref,"report_package_intent");.brohn_rp_contents(s$contents_policy)
   for(ref in c(s$report_refs,s$display_refs)).brohn_rp_ref(ref)
   if(task){
@@ -174,11 +174,12 @@
     brohn_array(bundle$distributions)&&brohn_array(bundle$assets),"Choose supported complete report sources.")
   brohn_require(.brohn_rp_same(lapply(bundle$reports,`[[`,"ref"),selection$report_refs)&&
     identical(limits$profile,selection$limits_profile),"Render sources or limits differ from the frozen ordered selection.")
-  if(task_profile).brohn_rpt_prepared_bindings(bundle)else
+  eda_lookup<-if(eda_profile).brohn_rpe_lookup(bundle)else NULL
+  if(task_profile).brohn_rpt_prepared_bindings(bundle,eda_lookup)else
     brohn_require(.brohn_rp_same(lapply(bundle$distributions,`[[`,"ref"),selection$display_refs),"Render sources differ from the frozen ordered selection.")
   brohn_require(nchar(brohn_json(bundle),type="bytes")<=limits$max_model_bytes,"Decoded report bundle exceeds its explicit model bound.")
   brohn_require(brohn_text(output_dir,4096)&&!file.exists(output_dir),"Choose a fresh owned output directory.")
-  if(task_profile){preflight<-brohn_report_package_panel_preflight(bundle);if(identical(preflight$schema,"brohn-report-package-refusal/0.1"))return(preflight)}
+  if(task_profile){preflight<-brohn_report_package_panel_preflight(bundle,eda_lookup);if(identical(preflight$schema,"brohn-report-package-refusal/0.1"))return(preflight)}
   dir.create(output_dir,recursive=TRUE,showWarnings=FALSE);output_dir<-normalizePath(output_dir,winslash="/",mustWork=TRUE)
   previous<-options(OutDec=".",scipen=0);on.exit(options(previous),add=TRUE)
   locale<-Sys.getlocale("LC_NUMERIC");suppressWarnings(Sys.setlocale("LC_NUMERIC","C"));on.exit(suppressWarnings(Sys.setlocale("LC_NUMERIC",locale)),add=TRUE)
@@ -212,9 +213,9 @@
     key<-sprintf("report-%02d",i);gaze<-if(original$analysis$kind=="gaze")brohn_gaze_report_model(original)else NULL
     task_entry<-if(task_profile).brohn_rpt_find_entry(bundle,item)else NULL
     choice_entry<-if(choice_profile).brohn_rpc_find_entry(bundle,item)else NULL
-    eda_entry<-if(eda_profile).brohn_rpe_find(bundle,item)else NULL
+    eda_entry<-if(eda_profile)eda_lookup(item)else NULL
     eda_state<-if(is.null(eda_entry))NULL else aliases$eda_states[[key]]
-    projection<-if(!is.null(eda_entry)).brohn_rpe_projection(item,eda_state,aliases,key)else .brohn_rp_projection(item,aliases,key,if(is.null(task_entry))NULL else task_entry$evidence,if(is.null(choice_entry))NULL else choice_entry$evidence,if(eda_profile)"task-choice-eda-findings/0.1"else NULL)
+    projection<-if(!is.null(eda_entry)).brohn_rpe_projection(item,eda_state,aliases,key,.brohn_rpe_admission(selection))else .brohn_rp_projection(item,aliases,key,if(is.null(task_entry))NULL else task_entry$evidence,if(is.null(choice_entry))NULL else choice_entry$evidence,if(eda_profile).brohn_rpe_admission(selection)else NULL)
     projection$implementation<-implementation
     projection$projection_body_sha256<-brohn_hash(projection)
     json(projection,paste0("evidence/",key,".json"),"complete_typed_numerical_projection")
@@ -361,7 +362,7 @@
         shiny::p("This package presents existing saved analyses. It does not rerun detectors, scales, comparisons or inference. Original raw recording bytes were not reverified by export."),
         if(task_profile)shiny::p("Task material definitions and immutable image references are retained. Task material image bytes and context panels are not included in this adapter. The optional image setting covers gaze stimuli only."),
         if(choice_profile)shiny::p("Choice definitions, item labels, illustration references and full numerical/model evidence are retained. Choice material image bytes are not included. Saved best-worst choices are explicit stated preferences; aggregate utilities are not individual preferences or population estimates."),
-        if(eda_profile)shiny::p("Complete saved processed EDA samples and candidate streams are retained, including excluded samples and unavailable support. Figure tables show representative points and selected candidate pages. Original partial raw previews remain labelled evidence; the complete raw conductance waveform and raw input bytes are not included."),
+        if(eda_profile)shiny::p(if(.brohn_rpe_version(selection)=="0.2")"Complete saved EDA streams retain all coordinates, support flags and candidate rows. Exact-constant segments preserve coordinate-only rows with unavailable processed values; they do not supply a zero waveform or a zero physiological response. Figure tables show representative processed points where available. Original partial raw previews remain labelled evidence; the full raw waveform and raw input bytes are not included."else"Complete saved processed EDA samples and candidate streams are retained, including excluded samples and unavailable support. Figure tables show representative points and selected candidate pages. Original partial raw previews remain labelled evidence; the complete raw conductance waveform and raw input bytes are not included."),
         shiny::p("Non-integer numerical summaries are displayed to four significant figures; integer values and counts stay exact. Complete JSON, CSV typed records and SVG metadata retain the exact saved numerical values."),
         shiny::p("The following links work only after unpacking the report + evidence ZIP. This standalone HTML contains the selected figures and bounded numerical alternatives, not every source row."),
         shiny::tags$ul(evidence_index),lapply(prepared,function(p)shiny::tags$details(shiny::tags$summary(paste("Saved methods:",p$original$title)),

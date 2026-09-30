@@ -17,14 +17,55 @@
 .brohn_ecr_axis_ticks <- function(lower,upper,compact=FALSE)
   .brohn_ecr_axis_labels(unique(seq(lower,upper,length.out=if(compact)3 else 5)))
 .brohn_ecr_label <- function(e)paste(e$recording_id,brohn_default(e$segment_id,"no supported segment"),e$channel,e$status,sep=" | ")
+.brohn_ecr_raw_recording <- function(analysis,recording) {
+  p<-analysis$parameters[[brohn_default(recording$recording_id,"")]]
+  if(is.null(p))p<-analysis$parameters
+  identical(p$recipe,"eda-neurokit-highpass/1.1")&&identical(p$exact_constant_policy,"raw_description_only/1.0")&&
+    identical(recording$status,"descriptive_only")&&identical(recording$exact_flatline,TRUE)&&identical(recording$processing_branch,"exact_constant_raw_description/1.0")
+}
+.brohn_ecr_raw_model <- function(result) identical(result$schema,"brohn-eda-continuous-review/1.1")&&identical(result$status,"raw_description_only")
+.brohn_ecr_raw_description_ui <- function(result,urls,review_id) {
+  e<-result$recording;c<-result$counts
+  labels<-c(conductance_raw_mean="Mean recorded conductance",tonic_mean="Mean tonic conductance",tonic_median="Median tonic conductance",tonic_slope="Tonic conductance slope",
+    scr_count="Skin conductance response count",scr_rate="Skin conductance response rate",scr_amplitude_mean="Mean response amplitude",scr_amplitude_median="Median response amplitude",
+    phasic_area_signed="Signed phasic area",phasic_area_positive="Positive phasic area")
+  rows<-lapply(result$features,function(f)list(measure=unname(labels[[f$name]]),saved_key=f$name,
+    value=if(is.null(f$value))"Unavailable"else .brohn_ecr_number(f$value),unit=f$unit,
+    support=if(isTRUE(f$eligible))"Recorded level available"else"Withheld: exactly constant signal"))
+  columns<-c("measure","value","unit","support","saved_key")
+  table_help<-"eda-continuous-measures-help"
+  measurements<-shiny::tagList(
+    shiny::tags$style(".brohn-ecr-measures table{min-width:800px;table-layout:auto}.brohn-ecr-measures th,.brohn-ecr-measures td{overflow-wrap:normal;word-break:normal}.brohn-ecr-measures th:first-child,.brohn-ecr-measures td:first-child{min-width:160px}.brohn-ecr-measures th:nth-child(2),.brohn-ecr-measures td:nth-child(2){min-width:115px}.brohn-ecr-measures th:nth-child(4),.brohn-ecr-measures td:nth-child(4){min-width:190px}.brohn-ecr-measures caption{text-align:left;color:inherit}"),
+    shiny::p(id=table_help,class="brohn-muted","Scroll horizontally to read all five columns. Keyboard: focus the measurement table, then use the left and right arrow keys."),
+    shiny::div(class="brohn-table brohn-ecr-measures",tabindex="0",role="region",`aria-label`="Original EDA segment measurements",`aria-describedby`=table_help,
+      shiny::tags$table(shiny::tags$caption("All 10 original segment measurements and availability"),
+        shiny::tags$thead(shiny::tags$tr(lapply(c("Measurement","Value","Unit","Availability","Saved key"),function(label)shiny::tags$th(scope="col",label)))),
+        shiny::tags$tbody(lapply(rows,function(row)shiny::tags$tr(lapply(columns,function(column)shiny::tags$td(row[[column]]))))))))
+  shiny::div(style="min-width:0;overflow-wrap:anywhere",`data-review-id`=review_id,`data-review-state`="raw_description_only",
+    shiny::h3(id="eda-continuous-result-heading",tabindex="-1","Saved conductance level; response estimates unavailable"),
+    shiny::p(.brohn_ecr_label(e)),
+    shiny::p("Every converted sample in this eligible segment is exactly constant. The original mean recorded conductance is retained. Cleaning, decomposition and response detection were withheld; the other nine estimates remain unavailable."),
+    shiny::p("This is not evidence of no physiological response, good sensor contact, calmness, emotion or attention. A smaller display window cannot restore response support."),
+    shiny::p(paste(c$segment_coordinate_rows,"original sample-coordinate rows;",c$segment_retained_coordinate_rows,"retained and",c$segment_excluded_coordinate_rows,"excluded by the original edge policy. Filtering was withheld. These are record counts, not an SCR denominator.")),
+    measurements,
+    shiny::p("No processed waveform is drawn. Complete coordinate CSVs preserve the original times, source indices and retained flags; processed values are unavailable. Candidate and marker CSVs contain headers only. Typed provenance distinguishes null values from empty CSV cells."),
+    shiny::p("The complete raw conductance series is not included in this review. Original bounded raw previews remain in the saved scientific report; the original dataset export remains available separately."),
+    shiny::div(class="brohn-toolbar",lapply(urls,function(u)shiny::tags$a(href=u$url,download=u$name,class="btn btn-primary",switch(u$name,
+      `eda-samples.csv`="Download every sample coordinate",`eda-candidates.csv`="Download candidate table (no rows)",`eda-markers.csv`="Download marker table (no rows)"))),
+      shiny::downloadButton("eda_continuous_review_manifest","Download EDA review provenance",icon=NULL)),
+    shiny::tags$details(shiny::tags$summary("Original method and complete support"),
+      shiny::p(paste("Recipe:",result$parameters$recipe,"| original unit:",e$source_unit,"| declared scale to uS:",.brohn_ecr_number(e$scale_factor))),
+      shiny::p(result$display_policy),lapply(result$limitations,shiny::p)))
+}
 brohn_eda_continuous_review_panel <- function(body) {
   if(!brohn_eda_continuous_review_supported(body))return(NULL)
-  brohn_card(title="Continuous EDA and candidates",subtitle="Inspect saved cleaned, tonic and phasic conductance, with saved spontaneous candidates.",
+  brohn_card(title="Continuous EDA and support",subtitle="Inspect saved conductance and response support, including descriptive-only constant segments.",
     brohn_command("Review continuous EDA","open_eda_continuous_review",list(report_id=body$id,report_hash=.brohn_sv_hash(body))),
     shiny::uiOutput("eda_continuous_review_controls"),shiny::uiOutput("eda_continuous_review_selection_support"),shiny::uiOutput("eda_continuous_review_status"),
     shiny::uiOutput("eda_continuous_review_result"),shiny::uiOutput("eda_continuous_review_history"))
 }
 brohn_eda_continuous_review_svg <- function(result,width=900L,candidate_offset=0L) {
+  brohn_require(!.brohn_ecr_raw_model(result),"This exactly constant segment has descriptive evidence, not a processed waveform to export.")
   compact<-width<500;left<-if(compact)74 else 90;right<-width-20;height<-680;plot_height<-205
   esc<-function(x)as.character(htmltools::htmlEscape(as.character(x)))
   lo<-as.numeric(result$selection$start_s);hi<-as.numeric(result$selection$end_s);x<-function(t)left+(t-lo)/(hi-lo)*(right-left)
@@ -79,7 +120,12 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
     .brohn_qexplorer_catalog(store,"report",s$id,s$revision,s$project_id)
     r<-brohn_get_entity(store,"report",s$id);brohn_require(r$revision==s$revision&&identical(.brohn_sv_hash(r$body),.brohn_sv_hash(s$body)),"The current EDA report changed. Reopen its saved waveform review.");r}
   choice<-function(validate=TRUE){s<-current();value<-input$eda_continuous_review_recording;brohn_require(brohn_text(value,4000),"Choose a saved continuous segment and channel.")
-    sel<-c(jsonlite::fromJSON(value,simplifyVector=FALSE),list(start_s=input$eda_continuous_review_start,end_s=input$eda_continuous_review_end));if(validate)brohn_eda_continuous_review_selection(s$body$analysis,sel);sel}
+    id<-jsonlite::fromJSON(value,simplifyVector=FALSE)
+    rs<-Filter(function(e).brohn_ecr_same(e[c("recording_id","segment_id","channel")],id),s$body$analysis$recordings)
+    whole<-length(rs)==1L&&.brohn_ecr_raw_recording(s$body$analysis,rs[[1]])
+    bounds<-if(whole)list(start_s=.brohn_ecr_shortest(rs[[1]]$start_time_s),end_s=.brohn_ecr_shortest(rs[[1]]$end_time_s))else
+      list(start_s=input$eda_continuous_review_start,end_s=input$eda_continuous_review_end)
+    sel<-c(id,bounds);if(validate)brohn_eda_continuous_review_selection(s$body$analysis,sel);sel}
   same<-function(r)!is.null(r)&&isTRUE(tryCatch(.brohn_ecr_same(choice(FALSE),r$body$request$selection),error=function(e)FALSE))
   active<-function(){s<-current();r<-opened();brohn_require(same(r)&&identical(native$id,r$id)&&!is.null(urls()),"Reopen the verified current EDA candidate window before exporting.")
     for(g in native$guards).Call(g$native$check,g$pointer)
@@ -92,10 +138,17 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
     choices<-stats::setNames(vapply(selected,function(e)brohn_json(e[c("recording_id","segment_id","channel")]),character(1)),vapply(selected,.brohn_ecr_label,character(1)))
     brohn_card(title="Choose a continuous segment",subtitle=paste("Saved recording/channel segments",offset+1,"to",min(offset+25,length(events)),"of",length(events)),
       shiny::selectInput("eda_continuous_review_recording","Saved recording and continuous segment",choices,selectize=FALSE),
-      shiny::div(class="brohn-form-grid",shiny::textInput("eda_continuous_review_start","Window start (source seconds)","0"),shiny::textInput("eda_continuous_review_end","Window end (source seconds)","60")),
-      shiny::numericInput("eda_continuous_review_candidate_start","First saved candidate to display",value=1,min=1,step=50),
+      shiny::uiOutput("eda_continuous_review_window_controls"),
       shiny::div(class="brohn-toolbar",if(offset>0)brohn_command("Previous EDA segments","eda_continuous_review_event_page",offset-25),if(offset+25<length(events))brohn_command("Next EDA segments","eda_continuous_review_event_page",offset+25)),
-      shiny::p("Source-time bounds are decimal seconds. This window selects complete saved samples; it does not rerun filtering, detection or scores. At most 50 saved candidates overlay the chart at once; complete CSVs include every selected candidate."))})
+      shiny::p("Review reads the exact saved evidence; it does not rerun filtering, detection or scores."))})
+  output$eda_continuous_review_window_controls<-shiny::renderUI({s<-source();v<-input$eda_continuous_review_recording;if(is.null(s)||is.null(v))return(NULL)
+    id<-jsonlite::fromJSON(v,simplifyVector=FALSE);rs<-Filter(function(e).brohn_ecr_same(e[c("recording_id","segment_id","channel")],id),s$body$analysis$recordings)
+    if(length(rs)!=1L||.brohn_ecr_raw_recording(s$body$analysis,rs[[1]]))return(NULL)
+    r<-rs[[1]];shiny::tagList(shiny::div(class="brohn-form-grid",
+      shiny::textInput("eda_continuous_review_start","Window start (source seconds)",if(is.null(r$start_time_s))"0"else .brohn_ecr_number(r$start_time_s)),
+      shiny::textInput("eda_continuous_review_end","Window end (source seconds)",if(is.null(r$end_time_s))"60"else .brohn_ecr_number(min(r$end_time_s,r$start_time_s+60)))),
+      shiny::numericInput("eda_continuous_review_candidate_start","First saved candidate to display",value=1,min=1,step=50),
+      shiny::p("Source-time bounds are decimal seconds. At most 50 saved candidates overlay the chart at once; complete CSVs include every selected candidate."))})
   shiny::observeEvent(input$eda_continuous_review_recording,{
     tryCatch({s<-current();id<-jsonlite::fromJSON(input$eda_continuous_review_recording,simplifyVector=FALSE);rs<-Filter(function(e).brohn_ecr_same(e[c("recording_id","segment_id","channel")],id),s$body$analysis$recordings)
       restored<-restored_selection();restored_selection(NULL)
@@ -105,6 +158,9 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
   },ignoreInit=TRUE)
   output$eda_continuous_review_selection_support<-shiny::renderUI({if(is.null(source()))return(NULL);s<-current();v<-input$eda_continuous_review_recording;if(is.null(v))return(NULL)
     id<-jsonlite::fromJSON(v,simplifyVector=FALSE);rs<-Filter(function(e).brohn_ecr_same(e[c("recording_id","segment_id","channel")],id),s$body$analysis$recordings);if(length(rs)!=1L)return(NULL);r<-rs[[1]]
+    if(.brohn_ecr_raw_recording(s$body$analysis,r))return(shiny::div(`data-segment`=brohn_json(id),
+      shiny::p(role="status","This exactly constant segment retains its recorded conductance level. Processed waveform and response estimates are unavailable. Review preserves the whole original segment; a smaller window is not a remedy."),
+      shiny::actionButton("eda_continuous_review_prepare","Prepare descriptive review",class="btn-primary")))
     if(!identical(r$status,"computed"))return(shiny::p(`data-segment`=brohn_json(id),role="status",class="brohn-alert",paste("This segment has no processed waveform:",r$reason,"Choose a computed segment or inspect the original source. No zero conductance or no-response result is inferred.")))
     shiny::div(`data-segment`=brohn_json(id),shiny::p(paste("Selected continuous support:",.brohn_ecr_number(r$start_time_s),"to",.brohn_ecr_number(r$end_time_s),"source seconds.",r$samples,"processed samples. Other segments and missing intervals are not joined.")),shiny::actionButton("eda_continuous_review_prepare","Prepare candidate window",class="btn-primary"))})
   shiny::observeEvent(input$eda_continuous_review_event_page,attempt(function(){s<-current();value<-input$eda_continuous_review_event_page;brohn_require(brohn_number(value,0,length(s$body$analysis$recordings)-1,TRUE)&&value%%25==0,"Choose an available source page.");page(value);opened(NULL);release()}))
@@ -125,7 +181,7 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
     if(!same(r)){release();return()};s<-current();saved<-pending_record(r$id,s$id,s$project_id)
     brohn_require(identical(.brohn_ecr_view_hash(saved$body),.brohn_ecr_view_hash(r$body)),"Saved EDA review authority changed.")
     if(is.null(native$id)&&is.null(native$process)) {
-      i<-brohn_eda_continuous_review_input(store,list(operation="eda_continuous_review",request=r$body$request),verify=FALSE)
+      i<-.brohn_ecr_record_source(store,r$id,r$body$report_id,r$project_id)$input
       refs<-c(i$source_objects,lapply(r$body$exports,function(x)list(hash=x$hash,bytes=x$size)),list(list(hash=r$body$result_object$hash,bytes=r$body$result_object$size)))
       refs<-unname(refs[!duplicated(vapply(refs,`[[`,character(1),"hash"))]);i$source_objects<-refs;native$guards<-brohn_hold_signal_value_sources(store,i)
       paths<-lapply(refs,function(x)list(path=brohn_object_path(store,x$hash,verify=FALSE),sha256=x$hash))
@@ -155,7 +211,8 @@ brohn_install_eda_continuous_review <- function(input,output,session,store,state
   candidate_offset<-function(r){v<-input$eda_continuous_review_candidate_start;brohn_require(brohn_number(v,1,max(1,length(r$body$result$candidates)),TRUE),"Choose an existing saved candidate index to display.");as.integer(v-1L)}
   output$eda_continuous_review_result<-shiny::renderUI({r<-opened();if(is.null(r))return(NULL);if(!same(r))return(shiny::p(role="status","The source selection or time window changed. Prepare its window to inspect or export it."))
     if(is.null(urls()))return(shiny::p(role="status","Verifying the retained source and complete EDA exports in the background."))
-    b<-r$body$result;e<-b$recording;offset<-tryCatch(candidate_offset(r),error=function(e)NULL);if(is.null(offset))return(shiny::p(role="status","Choose a first saved candidate between 1 and the available candidate count."));n<-length(b$candidates)
+    b<-r$body$result;if(.brohn_ecr_raw_model(b))return(.brohn_ecr_raw_description_ui(b,urls(),r$id))
+    e<-b$recording;offset<-tryCatch(candidate_offset(r),error=function(e)NULL);if(is.null(offset))return(shiny::p(role="status","Choose a first saved candidate between 1 and the available candidate count."));n<-length(b$candidates)
     picked<-if(n)b$candidates[seq.int(offset+1,min(n,offset+50))]else list();rows<-function(xs)lapply(xs,function(row)lapply(row,function(x)if(is.numeric(x)).brohn_ecr_number(x)else if(is.null(x))"Unavailable"else if(is.list(x))brohn_json(x)else x))
     shiny::div(style="min-width:0;overflow-wrap:anywhere",`data-review-id`=r$id,`data-start`=b$selection$start_s,`data-end`=b$selection$end_s,shiny::h3(id="eda-continuous-result-heading",tabindex="-1","Saved EDA waveform review"),shiny::p(.brohn_ecr_label(e)),
       shiny::p(paste(b$counts$selected_samples,"complete saved samples in this closed window:",b$counts$retained_samples,"retained;",b$counts$excluded_samples,"excluded processing edges.",n,"intersecting candidates retain their full original boundaries, even outside the viewport.")),

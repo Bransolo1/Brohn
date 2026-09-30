@@ -20,6 +20,18 @@ MAX_JSON = 24 * 1024**2
 IDENTITY = ("recording_id", "segment_id", "channel")
 EVENT_FIELDS = ("type", "time_s", "peak_sample", "source_peak_sample", "onset_time_s", "recovery_time_s", "amplitude_us", "peak_height_us", "rise_time_s", "recovery_time_from_peak_s", "recovery_fraction", "missing_reason")
 COMPONENTS = ("clean_us", "tonic_us", "phasic_us")
+CONSTANT_SUPPORT = {
+    "processing_branch": "exact_constant_raw_description/1.0",
+    "descriptive_status": "computed", "response_status": "unavailable",
+    "response_reason": "exact_constant_signal", "numerical_candidate_count": 0,
+    "response_denominator": None,
+}
+FEATURE_UNITS = {
+    "tonic_mean": "uS", "tonic_median": "uS", "tonic_slope": "uS/s",
+    "conductance_raw_mean": "uS", "scr_count": "count", "scr_rate": "count/min",
+    "scr_amplitude_mean": "uS", "scr_amplitude_median": "uS",
+    "phasic_area_signed": "uS*s", "phasic_area_positive": "uS*s",
+}
 
 
 def finite(value):
@@ -87,13 +99,31 @@ def preview(rows, component):
 
 
 def review(request):
+    require(isinstance(request, dict), "Choose a registered saved continuous EDA review.")
+    schema = request.get("schema")
+    versions = {"brohn-eda-continuous-review-request/1.0": "1.0",
+                "brohn-eda-continuous-review-request/1.1": "1.1"}
+    require(schema in versions, "Choose a registered saved continuous EDA review.")
+    version = versions[schema]
+    require(request.get("parameters", {}).get("recipe") == "eda-neurokit-highpass/" + version,
+            "The saved scientific recipe differs from its exact review version.")
+    if version == "1.1":
+        p = request["parameters"]
+        require(p.get("exact_constant_policy") == "raw_description_only/1.0",
+                "The new scientific recipe lost its fixed exact-constant policy.")
+        if request.get("recording", {}).get("status") == "descriptive_only":
+            return _review_constant(request)
+    return _review_processed(request, version)
+
+
+def _review_processed(request, version):
     require(set(request) == {"schema", "binding", "recording", "parameters", "features", "selection", "original_source", "sealed_objects", "artifacts", "export_directory"}
-            and request["schema"] == "brohn-eda-continuous-review-request/1.0", "Choose a registered saved continuous EDA review.")
+            and request["schema"] == "brohn-eda-continuous-review-request/" + version, "Choose a registered saved continuous EDA review.")
     binding, recording, parameters, features, selection = (request[k] for k in ("binding", "recording", "parameters", "features", "selection"))
     require(isinstance(binding, dict) and set(selection) == {*IDENTITY, "start_s", "end_s"}, "The EDA review needs an exact source selection.")
     require(all(selection[k] == recording[k] for k in IDENTITY) and recording["status"] == "computed", "The selected recording/segment/channel is unavailable.")
     fs = recording["sampling_rate"]
-    require(parameters["recipe"] == "eda-neurokit-highpass/1.0" and recording["unit"] == "uS" and finite(fs) and fs >= 8 and
+    require(parameters["recipe"] == "eda-neurokit-highpass/" + version and recording["unit"] == "uS" and finite(fs) and fs >= 8 and
             parameters["cleaner"] == "neurokit" and parameters["clean_lowpass_hz"] == 3 and parameters["clean_order"] == 4 and
             parameters["decomposition"] == "highpass" and parameters["phasic_cutoff_hz"] == .05 and parameters["recovery_fraction"] == .5 and
             parameters["threshold_definition"] == "candidate_prominence_relative_to_maximum_prominence" and parameters["no_missing_value_imputation"] is True and
@@ -138,6 +168,8 @@ def review(request):
                 required.update({k: ("float64", "uS") for k in COMPONENTS})
                 required.update(source_sample_index=("integer", "sample_index"), retained=("boolean", None))
                 require(spec["support"].get("raw_source_omitted") is True and "raw_us" not in columns, "This saved recipe declares processed evidence only; raw samples cannot be reconstructed.")
+                require(all(columns[k]["nullable"] is False for k in COMPONENTS),
+                        "An ordinary processed table cannot use the constant branch's nullable component grammar.")
             else:
                 required.update(type=("string", None), peak_sample=("integer", "segment_sample_index"), source_peak_sample=("integer", "sample_index"),
                     recovery_fraction=("float64", "proportion"), missing_reason=("string", None))
@@ -245,7 +277,7 @@ def review(request):
     exports = [export_csv(directory, name, fields, rows) for name, fields, rows in (
         ("eda-samples.csv", sample_fields, samples), ("eda-candidates.csv", candidate_fields, candidates), ("eda-markers.csv", marker_fields, markers))]
     for source in sources: check_source(source)
-    result = dict(schema="brohn-eda-continuous-review/1.0", status="available" if samples else "no_processed_samples", binding=binding,
+    result = dict(schema="brohn-eda-continuous-review/" + version, status="available" if samples else "no_processed_samples", binding=binding,
         selection=selection, recording=recording, parameters=parameters, features=features, unit="uS", raw_available=False,
         counts=counts, candidates=candidates, markers=markers, series={k: preview(samples, k) for k in COMPONENTS}, rows=samples[:50],
         source_tables=list(selected_tables.values()), verification=verification, exports=exports,
@@ -256,6 +288,187 @@ def review(request):
             "Complete raw source samples were not retained in these processed tables; use the original dataset download. No raw overlay is reconstructed.",
             "No filtering, detection, imputation, decomposition or whole-segment scoring is repeated for the selected viewport."])
     require(len(json.dumps(result, ensure_ascii=True, allow_nan=False).encode()) <= MAX_JSON, "The complete EDA review exceeds its document bound; narrow the window.")
+    return result
+
+
+def _constant_parameters(parameters):
+    fixed = dict(recipe="eda-neurokit-highpass/1.1", cleaner="neurokit", clean_lowpass_hz=3,
+                 clean_order=4, decomposition="highpass", phasic_cutoff_hz=.05, recovery_fraction=.5,
+                 no_missing_value_imputation=True,
+                 threshold_definition="candidate_prominence_relative_to_maximum_prominence",
+                 exact_constant_policy="raw_description_only/1.0")
+    require(set(parameters) == set(fixed) | {"edge_exclusion_s", "amplitude_min_relative_prominence"}
+            and all(parameters[k] == v and type(parameters[k]) is type(v)
+                    if isinstance(v, (str, bool)) else finite(parameters[k]) and parameters[k] == v
+                    for k, v in fixed.items())
+            and finite(parameters["edge_exclusion_s"]) and parameters["edge_exclusion_s"] >= 10
+            and finite(parameters["amplitude_min_relative_prominence"]) and .001 <= parameters["amplitude_min_relative_prominence"] <= 1,
+            "Constant description requires the exact registered scientific method parameters.")
+
+
+def constant_support(recording, parameters):
+    """Validate saved branch declarations, without analysing the raw signal."""
+    _constant_parameters(parameters)
+    require(recording.get("status") == "descriptive_only" and recording.get("exact_flatline") is True
+            and set(CONSTANT_SUPPORT) <= set(recording)
+            and all(recording[k] == v for k, v in CONSTANT_SUPPORT.items())
+            and type(recording["numerical_candidate_count"]) is int,
+            "Saved constant support must withhold response interpretation explicitly.")
+
+
+def constant_event_columns():
+    return [tables._column("type", "string", None, role="label"),
+            tables._column("time_s", "float64", "s", role="coordinate"),
+            tables._column("peak_sample", "integer", "segment_sample_index", role="index"),
+            tables._column("source_peak_sample", "integer", "sample_index", role="index"),
+            *[tables._column(k, "float64", "s", True, role="derived_event") for k in ("onset_time_s", "recovery_time_s")],
+            *[tables._column(k, "float64", "uS", True) for k in ("amplitude_us", "peak_height_us")],
+            *[tables._column(k, "float64", "s", True) for k in ("rise_time_s", "recovery_time_from_peak_s")],
+            tables._column("recovery_fraction", "float64", "proportion"),
+            tables._column("missing_reason", "string", None, True, role="support")]
+
+
+def coordinate_csv_rows(manifest, spec):
+    # Already fully verified under held sources; keep one typed chunk in memory.
+    with Path(manifest["path"]).open("r", encoding="utf-8") as stream:
+        for line in stream:
+            item = json.loads(line)
+            if item.get("type") == "rows" and item["table_id"] == spec["table_id"]:
+                for i, values in enumerate(item["rows"]):
+                    yield {"table_id": item["table_id"], "table_row_index": item["offset"]+i,
+                           **dict(zip((c["name"] for c in spec["columns"]), values))}
+
+
+def _review_constant(request):
+    require(set(request) == {"schema", "binding", "recording", "parameters", "features", "selection",
+                             "original_source", "sealed_objects", "artifacts", "export_directory"},
+            "Constant review request fields changed.")
+    binding, r, p, features, selection = (request[k] for k in ("binding", "recording", "parameters", "features", "selection"))
+    constant_support(r, p)
+    require(isinstance(binding, dict) and set(selection) == {*IDENTITY, "start_s", "end_s"}
+            and all(selection[k] == r[k] for k in IDENTITY) and r["unit"] == "uS"
+            and finite(r["sampling_rate"]) and r["sampling_rate"] >= 8,
+            "The constant coordinate view lost its original identity or unit.")
+    lower, upper = decimal(selection["start_s"]), decimal(selection["end_s"])
+    require(lower < upper and lower == Decimal(str(r["start_time_s"])) and upper == Decimal(str(r["end_time_s"])),
+            "Constant description uses the full original segment; a smaller window cannot repair withheld response support.")
+    require(isinstance(features, list) and [f.get("name") for f in features] == list(FEATURE_UNITS),
+            "Constant description must retain all ten saved feature rows in their original order.")
+    for f in features:
+        raw = f["name"] == "conductance_raw_mean"
+        amplitude = f["name"] in {"scr_amplitude_mean", "scr_amplitude_median"}
+        required = {*IDENTITY, "group", "name", "value", "unit", "scope", "eligible", "support_status", "missing_reason"}
+        if amplitude: required.add("denominator")
+        require(set(f) == required and all(f[k] == r[k] for k in (*IDENTITY, "group")) and f["scope"] == "recording"
+                and f["unit"] == FEATURE_UNITS[f["name"]] and f["eligible"] is raw
+                and f["support_status"] == ("computed" if raw else "unavailable")
+                and f["missing_reason"] == (None if raw else "exact_constant_signal")
+                and ((finite(f["value"]) and f["value"] >= 0) if raw else f["value"] is None)
+                and (not amplitude or f["denominator"] is None),
+                "Constant feature value, null denominator or saved support differs from the registered branch.")
+    artifacts = request["artifacts"]
+    require(len(artifacts) == 2 and {a["kind"] for a in artifacts} == {"physiology-series", "physiology-events"},
+            "The complete coordinate and empty-candidate stream pair is required.")
+    sources = [request["original_source"], *request["sealed_objects"]]
+    for source in sources: check_source(source)
+    selected, verification = {}, []
+    counts = dict(segment_coordinate_rows=0, segment_retained_coordinate_rows=0,
+                  segment_numerical_candidate_rows=0, selected_numerical_candidate_rows=0, displayed_processed_points=0)
+    edge = math.ceil(p["edge_exclusion_s"] * r["sampling_rate"])
+    require(r["retained_samples"] == r["samples"] - 2*edge and r["filter_edge_samples"] == 2*edge
+            and r["retained_duration_s"] == r["retained_samples"]/r["sampling_rate"] and r["retained_duration_s"] >= 20,
+            "Constant description changed original retained duration or declared edge exclusions.")
+    for manifest in artifacts:
+        declared = {}; previous = None; first_time = None
+        def on_table(spec):
+            declared[spec["table_id"]] = spec
+            if any(spec["identity"].get(k) != selection[k] for k in IDENTITY): return
+            kind = manifest["kind"]
+            require(kind not in selected and spec["identity"] == {k:r[k] for k in (*IDENTITY, "group")}
+                    and spec["support"]["source"] == r and spec["support"]["method"] == p
+                    and spec["support"]["raw_source_omitted"] is True,
+                    "Constant tables changed their exact original source or method support.")
+            support = spec["support"]["retained_support"]
+            require(set(support) == {"retained_samples", "retained_duration_s", "filter_edge_samples", *CONSTANT_SUPPORT}
+                    and all(support[k] == r[k] for k in support), "Constant retained support differs from the original segment.")
+            coordinate = spec["coordinates"]
+            require(coordinate["reference"] == "seconds relative to original recording start; no source timestamp rebasing"
+                    and coordinate["source_time_origin"] == r["source_time_origin"]
+                    and coordinate["axis"] == ("time" if kind == "physiology-series" else "event"),
+                    "Constant coordinates changed their original clock.")
+            if kind == "physiology-series":
+                expected = [tables._column("time_s","float64","s",role="coordinate"),
+                            tables._column("source_sample_index","integer","sample_index",role="index"),
+                            *[tables._column(k,"float64","uS",True) for k in COMPONENTS],
+                            tables._column("retained","boolean",None,role="support")]
+                require(spec["columns"] == expected, "Constant processed columns must be explicitly nullable in the original coordinate table.")
+            else:
+                require(spec["expected_rows"] == 0 and spec["columns"] == constant_event_columns(),
+                        "The constant candidate table must preserve its registered empty event schema.")
+            selected[kind] = spec
+        def on_rows(table_id, offset, values):
+            nonlocal previous, first_time
+            spec = declared[table_id]
+            if any(spec["identity"].get(k) != selection[k] for k in IDENTITY): return
+            require(manifest["kind"] == "physiology-series", "The bypassed detector cannot emit a constant candidate row.")
+            for index, values_row in enumerate(values):
+                row = dict(zip((c["name"] for c in spec["columns"]), values_row))
+                time = row["time_s"]
+                require(finite(time) and (previous is None or 0 < time-previous <= 1.5/r["sampling_rate"]+1e-12)
+                        and row["source_sample_index"] == r["source_row_start"]+offset+index
+                        and all(row[k] is None for k in COMPONENTS) and type(row["retained"]) is bool
+                        and row["retained"] == (edge <= offset+index < r["samples"]-edge),
+                        "Constant coordinate rows changed time/index/support or substituted a processed value.")
+                if first_time is None: first_time = time
+                previous = time
+                counts["segment_coordinate_rows"] += 1
+                counts["segment_retained_coordinate_rows"] += row["retained"]
+                require(counts["segment_coordinate_rows"] <= MAX_SAMPLES,
+                        "coordinate_rows_limit: complete constant coordinate view exceeds 500000 rows; a smaller response window is not a repair.")
+        verified = tables.verify_artifact(manifest, on_table=on_table, on_rows=on_rows)
+        provenance = verified["provenance"]
+        require(provenance["source_sha256"] == request["original_source"]["hash"]
+                and provenance["operation"] == "physiology" and provenance["origin"] == binding["origin"],
+                "Constant artifacts changed original provenance.")
+        verification.append(dict(kind=manifest["kind"],sha256=manifest["sha256"],rows=verified["rows"],tables=verified["tables"]))
+        counts["complete_sample_artifact_rows" if manifest["kind"] == "physiology-series" else "complete_event_artifact_rows"] = verified["rows"]
+        if manifest["kind"] == "physiology-series":
+            require(first_time == r["start_time_s"] and previous == r["end_time_s"], "Constant table endpoints changed original segment bounds.")
+        if len(verification) == 1: original_provenance = provenance
+        else: require(provenance == original_provenance, "Constant streams have different original provenance.")
+    require(set(selected) == {"physiology-series","physiology-events"}
+            and counts["segment_coordinate_rows"] == r["samples"] == r["source_row_end_exclusive"]-r["source_row_start"]
+            and counts["segment_retained_coordinate_rows"] == r["retained_samples"], "Constant complete coordinate support does not reconcile.")
+    require({k:v for k,v in selected["physiology-events"]["coordinates"].items() if k != "axis"} ==
+            {k:v for k,v in selected["physiology-series"]["coordinates"].items() if k != "axis"},
+            "Constant coordinate and candidate tables changed their original clock declarations.")
+    counts["segment_excluded_coordinate_rows"] = counts["segment_coordinate_rows"]-counts["segment_retained_coordinate_rows"]
+    for prefix in ("", "retained_", "excluded_"):
+        counts["selected_"+prefix+"coordinate_rows"] = counts["segment_"+prefix+"coordinate_rows"]
+    sample_spec = selected["physiology-series"]
+    sample_manifest = next(a for a in artifacts if a["kind"] == "physiology-series")
+    directory = Path(request["export_directory"])
+    require(directory.is_dir() and not directory.is_symlink(), "Choose an existing owned export directory.")
+    exports = [export_csv(directory,name,fields,rows) for name,fields,rows in (
+        ("eda-samples.csv",("table_id","table_row_index","source_sample_index","time_s",*COMPONENTS,"retained"),coordinate_csv_rows(sample_manifest,sample_spec)),
+        ("eda-candidates.csv",("table_id","table_row_index",*EVENT_FIELDS),()),
+        ("eda-markers.csv",("candidate_table_row_index","kind","time_s","phasic_us","source_sample_index","retained","in_view"),()))]
+    require(exports[0]["rows"] == counts["segment_coordinate_rows"], "Constant coordinate CSV lost complete original rows.")
+    for source in sources: check_source(source)
+    for manifest in artifacts:
+        require(Path(manifest["path"]).stat().st_size == manifest["bytes"] and tables.digest_file(manifest["path"]) == manifest["sha256"],
+                "Constant typed source changed during complete export.")
+    result = dict(schema="brohn-eda-continuous-review/1.1",status="raw_description_only",binding=binding,
+        selection=selection,recording=r,parameters=p,features=features,unit="uS",raw_available=False,
+        counts=counts,candidates=[],markers=[],series={k:[] for k in COMPONENTS},processed_components=[],rows=[],
+        source_tables=list(selected.values()),verification=verification,exports=exports,
+        display_policy="Full original coordinate/support rows are preserved. Processing and response estimates were withheld for the saved exact-constant branch; no waveform or zero response is reconstructed.",
+        limitations=["Recorded raw level is descriptive; it does not establish no physiological response or reliable sensor contact.",
+                     "Declared edge exclusions are retained even though filtering, decomposition and detection were withheld.",
+                     "Structural candidate-row count is zero; response measures and amplitude denominators remain unavailable.",
+                     "The full raw waveform is omitted; the original bounded raw preview remains separate saved evidence.",
+                     "No scientific processing was repeated for this saved coordinate view."])
+    require(len(json.dumps(result,ensure_ascii=True,allow_nan=False).encode()) <= MAX_JSON, "Constant review exceeds its complete document bound.")
     return result
 
 def load_request(path):

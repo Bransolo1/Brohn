@@ -1,5 +1,28 @@
 # Full platform build — Brohn continuation
 
+## Exact-constant EDA extension — 30 September 2026
+
+- [x] Preserve eligible raw descriptions in explicit recipe 1.1 and mark all
+  nine processed estimates unavailable; retain original coordinates, units,
+  eligibility and historical recipe 1.0 outputs.
+- [x] Connect standalone review 1.1 and report preparation/rendering 0.2 with
+  truthful status panels, complete evidence and unchanged old saved downloads.
+- [x] Qualify native originals and two six-source native packages under normal
+  leases and unchanged worker limits; independently conserve all scientific
+  evidence with and without figures. Keep original failed attempts recorded.
+- [x] Improve phone table readability and compact raw-level summaries; qualify
+  bounded startup readiness, recovery and preservation of an active synthetic
+  recording on shutdown.
+- [x] Qualify final joined03 saved-result rereading: 31 initial and 11 cold
+  checks, exact native six-source/old downloads, desktop/phone/keyboard/offline
+  presentation, normal startup and unchanged saved jobs/objects/listed entities.
+  This complements the earlier generation journey; all owned services stopped.
+- [ ] Continue saved ECG/PPG integration, near-constant/scientific criteria,
+  complete-evidence capacity, source-open latency and the other open work below.
+
+See [the separate phase record](../qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md).
+All 50 capabilities and 17 package statuses remain in scope; none closes here.
+
 ## Saved EDA report checkpoint — 28 September 2026
 
 - [x] Implement a separate event/continuous EDA admission and prepared-display
@@ -28,8 +51,9 @@
 - [ ] Qualify larger complete-evidence capacity. The separate large UI test
   prepared its 10–20 second display, but correctly refused a 201,416,771-byte
   projection against 201,326,592. This is not full large-package recovery.
-- [ ] Implement the [versioned constant-signal remedy](../methods/EDA-CONSTANT-SIGNAL-NEXT.md)
-  with independent witnesses and unchanged historical 1.0 evidence.
+- [x] The explicit exact-constant branch is implemented in the extension above;
+  the broader [scientific method work](../methods/EDA-CONSTANT-SIGNAL-NEXT.md)
+  remains open and historical 1.0 evidence remains unchanged.
 - [ ] Add [saved ECG/PPG packages](../architecture/SAVED-CARDIAC-REPORT-NEXT.md)
   separately; retain image context, raw bundles, current latency, Windows path
   budget, tiny-chunk review cost, workloads and restrictions.

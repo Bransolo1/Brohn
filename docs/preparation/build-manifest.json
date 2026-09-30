@@ -4,12 +4,12 @@
   "product": "Brohn",
   "checkpoint": {
     "status": "implementing",
-    "date": "2026-09-28",
+    "date": "2026-09-30",
     "publication_handoff": "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability / 17-package build remains active and unfinished with individual statuses unchanged. Saved event/continuous EDA now has scoped final researcher/download/restart acceptance, distinct from native, history, independent export and presentation phases. Smaller display preparation does not bypass the complete-evidence projection budget; the large UI case refused package assembly, not a full recovery. Next: versioned constant-signal EDA remedy, then separate saved ECG/PPG packages. Windows curation paths, tiny-chunk review latency, source-open latency, image context, raw bundles, workloads and restrictions remain. Publication is not a pause. Final UI04 capacity guidance and stale-resume correction have separate targeted actual-history and controller acceptance; main UI02 journey evidence retains its original source binding.",
+    "note": "The full 50-capability / 17-package build remains active and unfinished, with all individual statuses unchanged including BWP16 planned. Exact-constant EDA 1.1/report 0.2 has separate source/history, initial 30-check/six-scan researcher, ten cold checks and 13-check native signed-zero review evidence; no generic transport change. Initial six-source deadline failure and 324.02-second direct render diagnostic remain retained. Corrected same-source native publication passed 24 checks with ten new read-only jobs on attempt 1, normal 60-second leases and unchanged 300-second deadline (mixed 282.557 s, evidence-only 237.232 s). Independent oracles passed 171/131 checks over the same complete evidence; 49-member cross-variant conservation passed. Phone correction passed 36/9; targeted startup 27 and joined03 runtime 74/22 checks passed. Final joined03 saved-review/offline browser acceptance passed 31 initial and 11 cold checks with normal full startup, exact old/new downloads, unchanged jobs/objects/listed entities and all owned services closed. This complements earlier generation/edit/cancel evidence; it is not a whole-journey rerun. Next is saved ECG/PPG; near-flat/absolute response criteria, physical qualification, capacity, image context, raw bundles, workloads and restrictions remain open. Publication is not a pause.",
     "accepted_source_handoff": "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
     "accepted_source_receipt": "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
     "choice_report_checkpoint": {
@@ -78,6 +78,140 @@
         "final_ui_guidance": "e9d9641a36cca0753a58f4a75e4a6534bed3e94f7c8242b995040bc45873e224"
       },
       "single_source_capacity_guidance": "No ineffective Prepare/new-version/resume while exact oversized source remains; replacement draft may prepare, but Resume checks original saved refs. Multiple-source and original smaller_window recovery remain distinct."
+    },
+    "eda_constant_checkpoint": {
+      "status": "scoped_accepted",
+      "evidence": "docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md",
+      "science_recipe": "eda-neurokit-highpass/1.1",
+      "new_preparation_profile": "saved-eda-display/0.2",
+      "new_renderer_profile": "controlled-gaze-explicit-task-choice-eda-paired/0.2",
+      "historical_policy": "Exact original1.0 science, standalone review and report0.1 outputs remain unchanged; no scientific replay during history/export.",
+      "scope": "Eligible exact finite unit-normalized constants, including zero; preserve raw mean and complete coordinate/null evidence, with unavailable response interpretation. No amplitude floor or near-flat remedy.",
+      "next_report_contract": "docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md",
+      "open_method_work": "Near-flat/absolute response criteria and broader detector/reference qualification.",
+      "baseline_commit": "08573a3004c554c6fddd78efd07a855c21143c77",
+      "separate_phase_checks": {
+        "native_original_source": 25,
+        "initial_researcher": 30,
+        "initial_scans": 6,
+        "cold_restart": 10,
+        "native_signed_zero_standalone": 13,
+        "independent_performance_equality_pairs": 1250,
+        "native_six_source": 24,
+        "native_new_read_only_jobs": 10,
+        "full_package_oracle": 171,
+        "evidence_only_package_oracle": 131,
+        "cross_variant_complete_members": 49,
+        "phone_table_component": 36,
+        "phone_table_actual_browser": 9,
+        "startup_targeted": 27,
+        "joined03_supervisor": 74,
+        "joined03_acquisition": 22,
+        "final_joined03_browser_initial": 31,
+        "final_joined03_browser_cold": 11
+      },
+      "connected_scope": "Initial researcher-journey-02 explicitly mapped and analysed1.1, reviewed/exported complete coordinates and mixed constant/ordinary/liking report, then cold reopened exact old/new HTML/ZIP without new jobs. This does not qualify later performance/UI source changes.",
+      "signed_zero_resolution": {
+        "status": "native_reachability_closed_no_code_change",
+        "source_lexeme": "-0.0",
+        "source_samples": 1200,
+        "original_csv_bytes_preserved": true,
+        "persisted_scientific_mean_and_preview": "positive_zero_before_standalone",
+        "standalone_attempt": 1,
+        "checks": 13,
+        "resolution_sha256": "11d059143ec9b985b1aa04ffcb7048c60c0c3395c20cb72accf14a6bbb525205",
+        "limit": "Injected negative-zero feature counterexample remains retained; no generic or old1.0 transport change and no claim that negative-zero sign survives existing science serialization."
+      },
+      "native_six_source_gate": {
+        "status": "passed_corrected_same_six_source_native",
+        "deadline_seconds": 300,
+        "direct_diagnostic_render_seconds": 324.02,
+        "direct_diagnostic_complete_sources_seconds": 109.5,
+        "direct_diagnostic_is_native_publication": false,
+        "limits_increased": false,
+        "performance_change": "Private per-render reuse of fully validated EDA evidence with exact item match and per-hit size/SHA256 check; strict equality fastpath keeps canonical validation and exact old fallback. Pure unchanged analysis hashing is reused within one validation call; no cross-call cache.",
+        "peer_review_sha256": "fac2cd7b99d18d84178e9a1bfb0f1082a827ff69a4d1d17f10254cbeced745f0",
+        "original_deadline_failure_retained": true,
+        "normal_lease_seconds": 60,
+        "attempt": 1,
+        "new_read_only_jobs": 10,
+        "mixed_elapsed_seconds": 282.5573089122772,
+        "evidence_only_elapsed_seconds": 237.23160004615784,
+        "acceptance_freeze_sha256": "83bc385d39f72c832b02058274609af881156008a201b344835ea4af999fef69",
+        "source_manifest_sha256": "e4b6c4a616dfbef4277e00e57436ee2193bfada438508bf055efa7b89f7af4f4",
+        "source_files": 1413,
+        "peer_review_02_sha256": "a0a98ab21a7639ec3fab5a0b6498d0df1b2ae3d9ee3e7c5d54d42720771f8b19"
+      },
+      "mobile_gate": {
+        "status": "passed_isolated_phone_table_correction",
+        "finding": "Original direct descriptive-review columns became unreadable on phones despite clean automated scans.",
+        "candidate": "Readable minimum column widths, semantic caption/headers and keyboard-focusable horizontal scrolling passed actual phone/desktop inspection. Final joined03 saved-review/offline/cold browser acceptance also passed under its separate source binding.",
+        "component_checks": 36,
+        "actual_browser_checks": 9,
+        "phone_width": 390,
+        "desktop_width": 1280,
+        "jobs_and_objects_unchanged": true
+      },
+      "qualification_limit": "Counts are scoped and overlapping; source generation, direct diagnostics, native execution, independent export conservation, isolated phone correction, targeted startup, joined runtime and final saved-review/offline/cold browser remain separate. Final 31/11 browser phase complements earlier generation/edit/cancel, not a whole-journey rerun. No work package or capability status closes.",
+      "initial_frozen_joined_source_manifest_sha256": "5b6187e58653dd6f76c926776187866c7630aae426c9eeb8f327b851a7f9cf38",
+      "final_joined_source_manifest_sha256": "07ee8287dd82cf773f820a0693c547109f213ac4475ea51d9188b9a6c93076fd",
+      "final_joined_source_files": 1415,
+      "independent_export": {
+        "standalone_oracle_checks": [
+          171,
+          131
+        ],
+        "same_scientific_leaves_each": 109863,
+        "same_identity_fields_each": 38232,
+        "same_constant_coordinate_rows_each": 7000,
+        "cross_variant_complete_members": 49,
+        "exact_original_reports": 6,
+        "exact_eda_preparations": 5,
+        "cross_variant_receipt_sha256": "c69ec458a1892ec83214da790049b09a79fb7401d66239be41fb7c44e69d997e",
+        "strict_compare_limit": "Existing --compare-zip requires identical scientific AND prepared source sets and all companions; removing the optional explicit-distribution preparation correctly fails that mode. Separate proof permits exactly five section-bound presentation companions and 25 SVG removals while preserving complete scientific evidence."
+      },
+      "runtime_gate": {
+        "status": "passed_targeted_then_joined03_runtime",
+        "targeted_startup_checks": 27,
+        "joined03_supervisor_checks": 74,
+        "joined03_acquisition_checks": 22,
+        "joined03_files_unchanged": 1415,
+        "joined03_receipt_sha256": "0b735ea7686972857c4f65835e3b0cd4c80fe4e0d7c12e637f34fadef524c8cf",
+        "scope": "Bounded exact-identity readiness, owned stop/flush cleanup and real lifecycle checks; final actual joined browser passed normal full startup on both boots in its separate phase."
+      },
+      "pending_gates": [],
+      "final_browser_gate": {
+        "status": "passed",
+        "receipt": "researcher-final-02/ACCEPTANCE.json",
+        "sha256": "0d6983257d6f0a8d5eeaebaab4ba2d26d13d7ce8c12bea193b621aa366634053",
+        "initial_checks": 31,
+        "cold_checks": 11,
+        "source_files": 1415,
+        "source_manifest_sha256": "07ee8287dd82cf773f820a0693c547109f213ac4475ea51d9188b9a6c93076fd",
+        "normal_full_startup_both_boots": true,
+        "prestarted_manager": false,
+        "new_02_mixed_evidence_only_and_old_01_html_zip_head_exact": true,
+        "jobs_objects_listed_entities_unchanged": true,
+        "all_owned_services_ports_closed": true,
+        "scope": "Actual normal startup, direct saved-review access, exact native-produced six-source0.2 mixed/evidence-only packages and old0.1 history through UI, offline review, owned shutdown and cold full restart. No original mapping/scientific analysis/preparation/render repeated in this browser phase. No broad scientific/platform/hardware qualification.",
+        "original_store": {
+          "preexisting_files": 408,
+          "all_preexisting_bytes_exact": true,
+          "added_sqlite_sidecars": [
+            "catalog.sqlite-shm",
+            "catalog.sqlite-wal"
+          ],
+          "note": "Sidecars came from the retained final01 read-only backup attempt. Final02 used a plain file copy of the closed source with empty WAL and excluded sidecars. Preexisting data bytes remain exact; no directory-identity claim.",
+          "catalog_sha256": "272e46d120f325c95d5fb7e5322c5a45acbff408b0b86aa1e37489c554762082",
+          "wal_bytes": 0,
+          "logical_catalog_unchanged_basis": "Original catalog SHA-256 is exact and WAL is empty; no alternate uncheckpointed state exists."
+        },
+        "retained_failure": {
+          "receipt": "researcher-final-01/browser-initial-01/result.json",
+          "sha256": "624772bb47f30142cd07a2d629a44c5785026f298d2426ea79ddcd3913980fce",
+          "cause": "Harness source configuration read UTF-8 JSON with the Windows default code page, so the old title expected mojibake while the actual UI displayed the correct em dash. Final02 uses explicit UTF-8 source reads and helper pipes on a fresh store copy. No product source changed."
+        }
+      }
     }
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
@@ -168,7 +302,8 @@
         "Consent/eligibility precede transactional quota/assignment reservation; concurrent final-seat starts, expiry, duplicate/revoked tokens and access to another project are exercised.",
         "Archive, purge and backup restore are distinct; restore applies restricted/deleted-object policy and does not automatically reactivate accepting endpoints."
       ],
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP03",
@@ -276,7 +411,8 @@
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
       "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP05",
@@ -367,7 +503,8 @@
         "Resource limits, sidecar restart and source-reset handling are tested before physical support claims.",
         "A first-class Data library accepts multi-file imports with preview/dictionary/unit/clock/identity mapping, duplicate resolution and source provenance; curation creates a new immutable version."
       ],
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP07",
@@ -516,9 +653,10 @@
           "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
           "docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md"
         ],
-        "note": "Saved EDA has scoped connected acceptance. The constant-signal remedy and ECG/PPG report adapter remain plans, not enabled or qualified new methods; historical scientific results stay exact."
+        "note": "Saved EDA and its versioned exact-constant extension have scoped connected acceptance, including native/export/phone/runtime and final joined03 saved-review/offline/cold browser evidence. The separate ECG/PPG report adapter remains planned, not enabled or qualified; external source inventory/generation does not admit a new family. Historical scientific results stay exact."
       },
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP10",
@@ -741,7 +879,8 @@
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
       "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP14",
@@ -861,7 +1000,8 @@
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
       "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     },
     {
       "id": "BWP16",
@@ -949,7 +1089,8 @@
       ],
       "task_report_checkpoint_note": "Scoped source/preparation/export, final mobile/researcher/restart and independent scientific checks passed. Broader work remains; this package stays implementing.",
       "choice_report_checkpoint_note": "Complete saved MaxDiff and mixed task/liking packages have scoped source, worker, researcher/mobile, independent export and cold-restart acceptance. Earlier profiles and exact historical outputs remain preserved. Broader package work remains; status stays implementing.",
-      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity."
+      "eda_report_checkpoint_note": "Scoped saved EDA researcher/download/restart acceptance with distinct native/export/history/presentation phases. No package/capability is closed and no method/device readiness is claimed. Large focused display succeeded but full evidence exceeded projection capacity.",
+      "eda_constant_checkpoint_note": "Exact-constant 1.1/report 0.2 scoped acceptance: native source/history, initial 30-check/six-scan journey and ten cold checks, plus 13-check signed-zero review passed in separate scopes. Corrected six-source native 24 checks/ten read-only jobs passed on attempt 1 with normal leases/deadline; independent oracles 171/131 and exact 49-member conservation passed. Phone 36/9 and startup/runtime 27/74/22 checks passed. Final joined03 saved-review/offline/normal cold startup passed 31/11 checks, preserving exact old/new downloads and saved state with all owned services closed; not a repeat of the earlier generation/edit/cancel journey. Preserve raw descriptive values, unavailable response support, exact historical profiles and all failed receipts; no package status change."
     }
   ],
   "cross_cutting_specifications": {

@@ -1,6 +1,11 @@
 # Pure saved EDA projection, catalog resolution and report assembly support.
 # No source lookup, queue, scientific estimator or source-time process.
-.brohn_rpe_profile <- function(selection) identical(selection$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.1")
+.brohn_rpe_profile <- function(selection) isTRUE(selection$renderer_profile%in%c("controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+.brohn_rpe_version <- function(selection) {
+  brohn_require(.brohn_rpe_profile(selection),"Choose an exact registered EDA report profile.")
+  if(identical(selection$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.2"))"0.2"else"0.1"
+}
+.brohn_rpe_admission <- function(selection)paste0("task-choice-eda-findings/",.brohn_rpe_version(selection))
 brohn_report_package_eda_limits <- function() {
   x<-brohn_report_package_limits();x$profile<-"controlled-task-choice-eda-report-package/0.1"
   c(x,list(max_eda_stream_bytes=64*1024^2,max_eda_line_bytes=2*1024^2,
@@ -53,9 +58,13 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   for(i in seq_along(catalog)){
     item<-catalog[[i]];brohn_fields(item,fields,label="Prepared EDA catalog cell")
     brohn_require(identical(item$kind,"eda_cell")&&identical(item$source_family,family)&&.brohn_rp_hash(item$key)&&
-      brohn_number(item$source_record_index,i,i,TRUE)&&brohn_text(item$label,4000)&&item$status%in%c("available","no_processed_samples","unavailable")&&
+      brohn_number(item$source_record_index,i,i,TRUE)&&brohn_text(item$label,4000)&&item$status%in%c("available","no_processed_samples","unavailable","raw_description_only")&&
       (is.null(item$model_hash)||.brohn_rp_hash(item$model_hash)),"The EDA catalog changed its exact identity, order or model status.")
-    has_trace<-!is.null(item$model_hash)&&item$status!="no_processed_samples"
+    has_trace<-!is.null(item$model_hash)&&identical(item$status,"available")
+    if(identical(item$status,"raw_description_only"))brohn_require(identical(family,"continuous")&&.brohn_rp_hash(item$model_hash)&&
+      identical(item$original_status,"descriptive_only")&&identical(item$reason,"exact_constant_signal")&&identical(item$focusable,FALSE)&&identical(item$focus_reason,"exact_constant_signal")&&
+      identical(item$descriptive_status,"computed")&&is.null(item$descriptive_reason)&&identical(item$scr_status,"unavailable")&&identical(item$scr_reason,"exact_constant_signal")&&
+      brohn_number(item$feature_count,10,10,TRUE)&&brohn_number(item$candidate_count,0,0,TRUE),"Constant catalog must retain raw description and withhold response support.")
     brohn_require(brohn_array(item$components)&&identical(item$components,if(has_trace)as.list(.brohn_rpe_components)else list()),"Prepared component coverage is inconsistent.")
     brohn_fields(item$component_counts,.brohn_rpe_components,label="EDA component counts")
     brohn_fields(item$numerical_page_counts,c("points","candidates"),label="EDA numerical page counts")
@@ -79,7 +88,7 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   }
   numerical_policy<-s$display[c("pages","page_numbers")];seen_num<-integer();seen_marker<-integer()
   resolved<-lapply(selected,function(item){
-    has_trace<-!is.null(item$model_hash)&&item$status!="no_processed_samples"
+    has_trace<-!is.null(item$model_hash)&&identical(item$status,"available")
     components<-if(has_trace)s$display$components else list()
     points<-setNames(lapply(unlist(components),function(k).brohn_rpe_pages(numerical_policy,item$numerical_page_counts$points[[k]])),unlist(components))
     if(!length(points))points<-structure(list(),names=character())
@@ -124,7 +133,7 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
     root_refs=graph$root_refs,nodes=nodes,edges=graph$edges,
     interpretation="Only retained reviewed source relationships connect labels. Context-only intermediate sources are identity proof, not a claim that their full numerical data is exported.")
 }
-.brohn_rpe_prepared_bindings <- function(bundle) {
+.brohn_rpe_prepared_bindings <- function(bundle,eda_lookup=NULL) {
   for(k in c("eda_displays","related_eda_sources","task_displays","choice_displays","distributions"))brohn_require(brohn_array(bundle[[k]]),paste("Prepared",k,"must be an ordered array."))
   graph<-bundle$source_identity_graph;brohn_fields(graph,c("schema","root_refs","nodes","edges"),label="Exact source identity graph")
   brohn_require(identical(graph$schema,"brohn-report-source-identity-graph/0.1")&&.brohn_rp_same(graph$root_refs,bundle$selection$report_refs),"Source graph roots changed.")
@@ -188,7 +197,7 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   for(item in all){
     if(any(vapply(bundle$reports,function(r).brohn_rp_same(r$ref,item$ref),logical(1))))actual<-c(actual,Filter(function(x).brohn_rp_same(x$source_report_ref,item$ref),legacy$selection$prepared_sources))
     if(identical(item$complete_analysis$kind,"eda")){
-      d<-.brohn_rpe_find(bundle,item);eda_count<-eda_count+1L
+      d<-if(is.null(eda_lookup)).brohn_rpe_find(bundle,item)else eda_lookup(item);eda_count<-eda_count+1L
       related<-Filter(function(x).brohn_rp_same(x$report$ref,item$ref),bundle$related_eda_sources)
       if(length(related))brohn_require(length(related)==1L&&.brohn_rp_same(related[[1L]]$prepared_ref,d$ref),"Related EDA source points to a different preparation.")
       actual[[length(actual)+1L]]<-list(adapter="eda-display",source_report_ref=item$ref,prepared_ref=d$ref,implementation_ref=list(profile=d$body$implementation$profile,hash=brohn_hash(d$body$implementation)))
@@ -207,6 +216,9 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   brohn_require(length(hits)==1L,"Every selected or required EDA source needs one exact complete preparation.")
   entry<-hits[[1L]];brohn_fields(entry,c("ref","body","evidence","streams"),label="Complete prepared EDA source")
   .brohn_rp_ref(entry$ref,"eda_display");brohn_require(identical(entry$ref$body_hash,brohn_hash(entry$body)),"Saved EDA catalog body changed.")
+  version<-.brohn_rpe_version(bundle$selection)
+  brohn_require(identical(entry$body$schema,paste0("brohn-saved-eda-display/",version))&&
+    identical(entry$body$implementation$profile,paste0("saved-eda-display/",version)),"Prepared EDA profile differs from the exact frozen renderer generation.")
   d<-entry$evidence;brohn_fields(d,c("hash","bytes","media_type","path"),label="Sealed EDA evidence")
   brohn_require(.brohn_rpe_same(d[c("hash","bytes","media_type")],entry$body$artifact),"Complete EDA evidence descriptor differs from its exact saved artifact.")
   brohn_require(brohn_array(entry$streams)&&length(entry$streams)==length(item$complete_analysis$artifacts),"Complete EDA stream membership changed.")
@@ -220,6 +232,26 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   evidence<-brohn_eda_read_json_file(d$path,24*1024^2)
   brohn_validate_eda_display_evidence(evidence,item,entry$body)
   entry$complete_evidence<-evidence;entry
+}
+
+# One render owns this closure. Reuse a completely validated model only for the
+# same exact input and unchanged sealed bytes; independent calls start fresh.
+# No source/permission checks or publication holds are cached here.
+.brohn_rpe_lookup <- function(bundle) {
+  entries<-list()
+  function(item) {
+    if(!identical(item$complete_analysis$kind,"eda"))return(NULL)
+    at<-which(vapply(entries,function(x)identical(x$item,item,num.eq=FALSE,attrib.as.set=FALSE),logical(1)))
+    if(length(at)){
+      entry<-entries[[at[[1L]]]]$entry;d<-entry$evidence
+      brohn_require(file.exists(d$path)&&identical(as.numeric(file.info(d$path)$size),as.numeric(d$bytes))&&
+        identical(digest::digest(file=d$path,algo="sha256"),d$hash),"Complete EDA evidence bytes changed.")
+      return(entry)
+    }
+    entry<-.brohn_rpe_find(bundle,item)
+    entries[[length(entries)+1L]]<<-list(item=item,entry=entry)
+    entry
+  }
 }
 
 # Source-scoped registered EDA identity domains. This state is made from full
@@ -309,9 +341,10 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
   list(label=label,project=project,analysis=projected_analysis,metadata=metadata,mapping=mapping,recordings=recordings)
 }
 
-.brohn_rpe_projection <- function(item,state,aliases,ns) {
+.brohn_rpe_projection <- function(item,state,aliases,ns,source_admission="task-choice-eda-findings/0.1") {
   body<-item$saved_body;a<-item$complete_analysis
-  brohn_validate_complete_report_analysis(item,"task-choice-eda-findings/0.1")
+  brohn_require(source_admission%in%c("task-choice-eda-findings/0.1","task-choice-eda-findings/0.2"),"Choose an exact EDA source admission.")
+  brohn_validate_complete_report_analysis(item,source_admission)
   provenance<-body$provenance
   if(!is.null(provenance$source))provenance$source<-provenance$source[intersect(c("hash","size","bytes","media_type","format"),names(provenance$source))]
   for(i in seq_along(provenance$design$stimuli))if(!is.null(provenance$design$stimuli[[i]]$asset))provenance$design$stimuli[[i]]$asset<-provenance$design$stimuli[[i]]$asset[setdiff(names(provenance$design$stimuli[[i]]$asset),c("filename","path"))]
@@ -345,12 +378,13 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
 
 .brohn_rpe_write_complete <- function(bundle,entry,item,state,ordinal,output_dir,private,json,add) {
   family<-.brohn_rpe_family(item);stem<-sprintf("eda-%03d",ordinal)
-  inspection<-.brohn_rpe_child(bundle,list(schema="brohn-eda-stream-inspection-request/0.1",source_report_ref=item$ref,source_family=family,streams=entry$streams),private,paste0(stem,"-i"),TRUE)
+  version<-.brohn_rpe_version(bundle$selection)
+  inspection<-.brohn_rpe_child(bundle,list(schema=paste0("brohn-eda-stream-inspection-request/",version),source_report_ref=item$ref,source_family=family,streams=entry$streams),private,paste0(stem,"-i"),TRUE)
   check<-inspection;check$value_hash<-NULL;brohn_require(identical(brohn_eda_value_hash(check),inspection$value_hash),"Complete stream metadata typed hash changed.")
   metadata<-lapply(inspection$streams,state$metadata)
-  result<-.brohn_rpe_child(bundle,list(schema="brohn-eda-stream-projection-request/0.1",inspection=inspection,source_family=family,source_report_ref=item$ref,
+  result<-.brohn_rpe_child(bundle,list(schema=paste0("brohn-eda-stream-projection-request/",version),inspection=inspection,source_family=family,source_report_ref=item$ref,
     identifier_mode=bundle$selection$contents_policy$identifier_mode,streams=entry$streams,projected_metadata=metadata,projection_implementation=.brohn_rp_implementation(bundle$implementation)),private,paste0(stem,"-p"))
-  brohn_require(identical(result$schema,"brohn-eda-stream-projection-result/0.1")&&isTRUE(result$coverage$complete)&&.brohn_rpe_same(result$source_report_ref,item$ref),"Complete stream projection returned an invalid binding.")
+  brohn_require(identical(result$schema,paste0("brohn-eda-stream-projection-result/",version))&&isTRUE(result$coverage$complete)&&.brohn_rpe_same(result$source_report_ref,item$ref),"Complete stream projection returned an invalid binding.")
   prefix<-sprintf("evidence/eda/source-%03d/",ordinal)
   for(f in result$files){
     brohn_require(grepl("^(series|candidates)\\.(csv|ndjson)$",f$path),"Unexpected EDA projection artifact path.")

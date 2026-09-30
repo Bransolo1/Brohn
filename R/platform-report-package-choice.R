@@ -1,5 +1,5 @@
 # Pure original choice projection and presentation. No store, replay or fitting.
-.brohn_rpc_profile <- function(selection)isTRUE(selection$renderer_profile%in%c("controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1"))
+.brohn_rpc_profile <- function(selection)isTRUE(selection$renderer_profile%in%c("controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
 brohn_report_package_choice_limits <- function(){x<-brohn_report_package_limits();x$profile<-"controlled-task-choice-report-package/0.1";x}
 .brohn_rpc_model <- function(exercise,kind)exercise[[if(kind=="adjusted")"counts_model"else"utilities_model"]]
 .brohn_rpc_catalog_model <- function(item,kind)item[[if(kind=="adjusted")"counts"else"utilities"]]

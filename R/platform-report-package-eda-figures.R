@@ -1,4 +1,10 @@
 # Pure figure primitives are independent of explorer controllers and source lookup.
+.brohn_rpe_constant_level_label <- function(value) {
+  brohn_require(is.numeric(value)&&length(value)==1L&&is.finite(value),"Constant description requires its exact saved finite raw mean.")
+  # A raw level is a measurement, even when its binary64 value is an integer.
+  # Bound only this new display label; original evidence and old formatters stay exact.
+  trimws(formatC(value,format="g",digits=4,decimal.mark="."))
+}
 .brohn_rpe_region <- function(content,label,key,minimum=900L) {
   brohn_require(brohn_text(label,5000)&&brohn_text(key,180)&&grepl("^[a-z][a-z0-9-]*$",key)&&brohn_number(minimum,600,1600,TRUE),"EDA figure/table region identity is invalid.")
   hint<-shiny::p(id=paste0(key,"-help"),class="brohn-eda-scroll-help","On a narrow screen, scroll horizontally for the full figure or table. Keyboard: focus this area, then use the left and right arrow keys.")
@@ -32,11 +38,13 @@
     half_recovery_after_declared_boundary="Half recovery occurs after the saved observation limit",
     another_event_precedes_half_recovery="Another event occurs before half recovery",
     unobserved_or_preexisting_scr_onset="Response onset is unobserved or precedes the permitted latency window",
-    scr_detector_failed="The saved response detector did not produce usable results")
+    scr_detector_failed="The saved response detector did not produce usable results",
+    exact_constant_signal="The original segment is exactly constant; processed and response measures were withheld")
   if(reason%in%names(labels))unname(labels[[reason]])else gsub("_"," ",reason,fixed=TRUE)
 }
 .brohn_rpe_support_text <- function(c) {
   r<-c$original_support
+  if(identical(c$status,"raw_description_only"))return("The original segment is exactly constant. Brohn retained its recorded level and coordinate support, and withheld cleaning, decomposition and response detection. No processed waveform or physiological zero response is inferred. This description does not establish reliable sensor contact.")
   if(is.null(c$model))return(paste("No supported processed trace was saved for this cell.",.brohn_rpe_reason(c$reason)))
   if(identical(c$status,"no_processed_samples"))return("No processed samples fall within this saved view. The original model, whole-source measures and complete evidence remain available; no waveform is invented.")
   if(is.null(r$scr_status))return("The trace shows this saved segment/window. Whole-segment measures remain unchanged when the illustrated window is smaller; these continuous candidates are not event-attributed responses.")
@@ -64,6 +72,12 @@
 .brohn_rpe_svg <- function(cell,component,marker_page,key,axis=NULL) {
   m<-cell$model;title<-if(is.null(component))"Saved EDA support"else switch(component,clean_us="Cleaned conductance",tonic_us="Tonic conductance",phasic_us="Phasic conductance")
   label<-paste(title,"\u2014",cell$identity$channel)
+  if(identical(cell$status,"raw_description_only"))return(shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",width=900,height=160,viewBox="0 0 900 160",role="img",`aria-labelledby`=paste0(key,"-title"),
+    shiny::tags$title(id=paste0(key,"-title"),"Saved raw description; processed and response measures unavailable"),
+    shiny::tags$desc("The exact-constant segment retains coordinate and descriptive evidence. There is no processed trace, candidate detection, or inferred zero response."),
+    shiny::tags$rect(width=900,height=160,fill="#14202b"),
+    shiny::tags$text(x=24,y=56,fill="#e2ebe8",`font-size`=18,"Recorded level retained; processed and response measures withheld"),
+    shiny::tags$text(x=24,y=92,fill="#c4d2cc",`font-size`=14,"No waveform or physiological zero response is inferred.")))
   if(is.null(m)||identical(cell$status,"no_processed_samples"))return(shiny::tags$svg(xmlns="http://www.w3.org/2000/svg",width=900,height=160,viewBox="0 0 900 160",role="img",`aria-labelledby`=paste0(key,"-title"),
     shiny::tags$title(id=paste0(key,"-title"),"Saved EDA support is unavailable"),shiny::tags$desc("No numerical waveform is invented. The complete original support and values remain in evidence."),shiny::tags$rect(width=900,height=160,fill="#14202b"),
     shiny::tags$text(x=24,y=56,fill="#e2ebe8",`font-size`=18,"No supported processed trace in this saved view")))
@@ -137,11 +151,17 @@
       c$original_support$condition_id,paste("measured onset",.brohn_rp_text(c$original_support$time_s),"s"),sep=" | ")else paste("Segment",at)
     nodes<-c(nodes,list(shiny::h3(paste(context_label,"\u2014",c$identity$channel)),
       shiny::p(.brohn_rpe_support_text(c))))
-    if(isTRUE(c$original_support$exact_flatline))nodes<-c(nodes,list(shiny::p("The saved recording is flagged as exactly flat. Its saved detector candidates need method review and must not be treated as physiological responses. The original flag, candidate values and calculations are preserved without rescoring.")))
+    if(identical(c$status,"raw_description_only")){
+      raw<-Filter(function(f)identical(f$name,"conductance_raw_mean"),m$features)
+      brohn_require(length(raw)==1L&&is.numeric(raw[[1L]]$value)&&is.finite(raw[[1L]]$value),"Constant description requires its exact saved finite raw mean.")
+      nodes<-c(nodes,list(shiny::p(paste("Saved raw mean:",.brohn_rpe_constant_level_label(raw[[1L]]$value),"uS (displayed to up to four significant figures; exact value in evidence).")),
+        shiny::p(paste("Complete coordinate support:",m$counts$segment_coordinate_rows,"rows;",m$counts$segment_retained_coordinate_rows,"retained and",m$counts$segment_excluded_coordinate_rows,"excluded by the declared edge rule. These are coordinate counts, not processed observations or response denominators.")),
+        shiny::p("The candidate table contains zero stored rows because detection was withheld. All nine processed/response measures and both amplitude denominators remain unavailable. The bounded original raw preview is retained separately; a full raw waveform is not reconstructed.")))
+    }else if(isTRUE(c$original_support$exact_flatline))nodes<-c(nodes,list(shiny::p("The saved recording is flagged as exactly flat. Its saved detector candidates need method review and must not be treated as physiological responses. The original flag, candidate values and calculations are preserved without rescoring.")))
     if(s$adapter=="eda-events"&&!is.null(m))nodes<-c(nodes,list(shiny::p("Blue shading is the baseline; green is the response window. Hatching means incomplete saved support. The white line marks measured onset, top ticks mark saved events, the purple bar is permitted onset latency, and orange shading marks a saved nuisance-effect interval when present."),
       shiny::p("Triangle: onset. Diamond: peak. Open circle: half recovery. Gold marks supported original selected-response anchors, repeated on every marker page separately from page membership. Gray endpoints do not imply a supported event response."),
       shiny::tags$details(shiny::tags$summary("View exact saved event windows and support"),.brohn_rp_table(lapply(c("baseline","response"),function(k)c(list(window=k),c$original_support[[paste0(k,"_support")]])),"Saved event-window support",maximum=2L),shiny::tags$pre(brohn_json(m$parameters,TRUE)))))
-    if(is.null(m)||identical(c$status,"no_processed_samples"))nodes<-c(nodes,list(.brohn_rpe_region(figure(.brohn_rpe_svg(c,NULL,NULL,key),key,list(source=p$item$ref,cell_key=c$key,status=c$status,reason=c$reason,original_model_hash=c$model_hash)),paste("Unavailable EDA support",key),paste0(key,"-support"))))
+    if(is.null(m)||c$status%in%c("no_processed_samples","raw_description_only"))nodes<-c(nodes,list(.brohn_rpe_region(figure(.brohn_rpe_svg(c,NULL,NULL,key),key,list(source=p$item$ref,cell_key=c$key,status=c$status,reason=c$reason,original_model_hash=c$model_hash)),paste(if(identical(c$status,"raw_description_only"))"EDA raw description and withheld measures"else"Unavailable EDA support",key),paste0(key,"-support"))))
     if(!is.null(m)){
       for(component in r$components){
         comparable<-list(c);scope<-"individual_segment_window"
@@ -169,7 +189,7 @@
       if(length(candidate_pages))nodes<-c(nodes,list(shiny::tags$details(shiny::tags$summary(paste("View saved candidate values \u2014",length(m$candidates),"candidates;",length(candidate_pages),"selected numerical pages")),candidate_pages)))
     }
     features<-p$projection$analysis$features[unlist(c$feature_indices)]
-    nodes<-c(nodes,list(shiny::tags$details(shiny::tags$summary(paste("View all",length(features),"saved cell measures and support")),.brohn_rpe_region(.brohn_rp_table(features,"Complete saved cell measures",c("name","value","unit","eligible","missing_reason","support_status"),maximum=100000L),paste("EDA cell measures",key),paste0(key,"-measures")))))
+    nodes<-c(nodes,list(shiny::tags$details(shiny::tags$summary(paste("View all",length(features),"saved cell measures and support")),.brohn_rpe_region(.brohn_rp_table(features,"Complete saved cell measures",c("name","value","unit","eligible","missing_reason","support_status",if(identical(c$status,"raw_description_only"))"denominator"),maximum=100000L),paste("EDA cell measures",key),paste0(key,"-measures")))))
     coverage[[ci]]<-list(key=c$key,source_record_index=c$source_record_index,status=c$status,original_status=c$original_status,model_hash=c$model_hash,selected=r,complete_feature_count=length(features))
   }
   list(nodes=nodes,coverage=list(full_cells=length(eda$display$cells),selected_cells=length(coverage),cells=coverage,complete_evidence_preserved=TRUE))

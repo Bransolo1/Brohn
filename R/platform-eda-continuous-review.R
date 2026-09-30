@@ -2,7 +2,7 @@
 .brohn_eda_continuous_review_loaded <- local({p<-c("R/platform-eda-continuous-review.R","scripts/workers/eda_continuous_review.py","scripts/workers/physiology_artifacts.py");stats::setNames(lapply(p,function(x)digest::digest(file=x,algo="sha256")),p)})
 .brohn_ecr_same <- function(a,b)identical(.brohn_sv_hash(a),.brohn_sv_hash(b))
 brohn_eda_continuous_review_supported <- function(report)identical(report$analysis$modality,"eda")&&length(report$analysis$recordings)>0L&&
-  any(vapply(report$analysis$parameters,function(p)identical(p$recipe,"eda-neurokit-highpass/1.0"),logical(1)))
+  any(vapply(report$analysis$parameters,function(p)p$recipe %in% c("eda-neurokit-highpass/1.0","eda-neurokit-highpass/1.1"),logical(1)))
 .brohn_ecr_decimal <- function(x)brohn_text(x,80)&&grepl("^-?[0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?$",x)&&is.finite(suppressWarnings(as.numeric(x)))&&abs(as.numeric(x))<=1e12
 .brohn_ecr_shortest <- function(x) {
   for(n in 1:17){s<-sprintf(paste0("%.",n,"g"),x);if(identical(as.numeric(s),as.numeric(x)))return(s)}
@@ -23,6 +23,76 @@ brohn_eda_continuous_review_supported <- function(report)identical(report$analys
   text<-.brohn_ecr_shortest(time)
   .brohn_ecr_decimal_compare(text,selection$start_s)>=0&&.brohn_ecr_decimal_compare(text,selection$end_s)<=0
 }
+
+.brohn_ecr_recipe_spec <- function(p) {
+  brohn_require(is.list(p)&&p$recipe %in% c("eda-neurokit-highpass/1.0","eda-neurokit-highpass/1.1"),"Choose an exact registered continuous EDA recipe.")
+  new<-identical(p$recipe,"eda-neurokit-highpass/1.1");version<-if(new)"1.1"else"1.0"
+  fixed<-list(recipe=p$recipe,cleaner="neurokit",clean_lowpass_hz=3,clean_order=4,decomposition="highpass",phasic_cutoff_hz=.05,recovery_fraction=.5,no_missing_value_imputation=TRUE,threshold_definition="candidate_prominence_relative_to_maximum_prominence")
+  if(new)fixed$exact_constant_policy<-"raw_description_only/1.0"
+  brohn_fields(p,c(names(fixed),"edge_exclusion_s","amplitude_min_relative_prominence"),label="Saved continuous EDA recipe")
+  brohn_require(.brohn_ecr_same(p[names(fixed)],fixed)&&brohn_number(p$edge_exclusion_s,10,120)&&brohn_number(p$amplitude_min_relative_prominence,.001,1),"The saved continuous EDA recipe changed its fixed semantics.")
+  list(new=new,queued_recipe=paste0("saved-continuous-eda-review/",version),request_schema=paste0("brohn-eda-continuous-review-request/",version),model_schema=paste0("brohn-eda-continuous-review/",version))
+}
+.brohn_ecr_constant_original <- function(r,p,features=NULL) {
+  brohn_require(.brohn_ecr_recipe_spec(p)$new&&identical(r$status,"descriptive_only")&&identical(r$exact_flatline,TRUE)&&identical(r$processing_branch,"exact_constant_raw_description/1.0")&&identical(r$descriptive_status,"computed")&&identical(r$response_status,"unavailable")&&identical(r$response_reason,"exact_constant_signal")&&"response_denominator" %in% names(r)&&is.null(r$response_denominator)&&brohn_number(r$numerical_candidate_count,0,0,TRUE),"The constant review requires exact registered descriptive/response support.")
+  brohn_require(brohn_number(r$samples,1,2^53-1,TRUE)&&brohn_number(r$sampling_rate,8,100000)&&r$samples==r$source_row_end_exclusive-r$source_row_start&&r$filter_edge_samples==2*ceiling(p$edge_exclusion_s*r$sampling_rate)&&r$retained_samples==r$samples-r$filter_edge_samples&&r$retained_duration_s==r$retained_samples/r$sampling_rate&&r$retained_duration_s>=20,"Constant coordinate/edge support does not reconcile.")
+  if(!is.null(features)){
+    keys<-c("tonic_mean","tonic_median","tonic_slope","conductance_raw_mean","scr_count","scr_rate","scr_amplitude_mean","scr_amplitude_median","phasic_area_signed","phasic_area_positive")
+    units<-c("uS","uS","uS/s","uS","count","count/min","uS","uS","uS*s","uS*s")
+    brohn_require(length(features)==10L&&identical(vapply(features,`[[`,character(1),"name"),keys)&&identical(vapply(features,`[[`,character(1),"unit"),units),"The constant description lost a complete ordered feature or unit.")
+    for(i in seq_along(features)){f<-features[[i]];raw<-i==4L;amp<-i %in% c(7L,8L)
+      brohn_require(identical(f$eligible,raw)&&identical(f$support_status,if(raw)"computed"else"unavailable")&&identical(f$missing_reason,if(raw)NULL else"exact_constant_signal")&&(if(raw)brohn_number(f$value,0)else is.null(f$value))&&identical("denominator" %in% names(f),amp)&&(!amp||is.null(f$denominator)),"The constant description changed original feature nulls/eligibility/denominators.")
+    }
+  }
+  invisible(TRUE)
+}
+.brohn_ecr_validate_constant_model <- function(result,recording,parameters,features,artifacts,selection,direct=FALSE) {
+  .brohn_ecr_constant_original(recording,parameters,features)
+  fields<-c("schema","status","binding","selection","recording","parameters","features","unit","raw_available","counts","candidates","markers","series","processed_components","source_tables","verification","display_policy","limitations",if(direct)c("rows","exports")else"endpoint_coverage")
+  brohn_fields(result,fields,label="Constant EDA description model")
+  brohn_require(identical(result$schema,"brohn-eda-continuous-review/1.1")&&identical(result$status,"raw_description_only")&&identical(result$unit,"uS")&&identical(result$raw_available,FALSE)&&.brohn_ecr_same(result$recording,recording)&&.brohn_ecr_same(result$parameters,parameters)&&.brohn_ecr_same(result$features,features)&&.brohn_ecr_same(result$selection,selection),"The raw-description model substituted its exact original source.")
+  brohn_require(.brohn_ecr_decimal_compare(selection$start_s,.brohn_ecr_shortest(recording$start_time_s))==0&&.brohn_ecr_decimal_compare(selection$end_s,.brohn_ecr_shortest(recording$end_time_s))==0,"A raw-description review must retain the complete original coordinate bounds.")
+  fields<-c("complete_sample_artifact_rows","complete_event_artifact_rows","segment_coordinate_rows","segment_retained_coordinate_rows","segment_excluded_coordinate_rows","selected_coordinate_rows","selected_retained_coordinate_rows","selected_excluded_coordinate_rows","segment_numerical_candidate_rows","selected_numerical_candidate_rows","displayed_processed_points")
+  brohn_fields(result$counts,fields,label="Constant coordinate support counts");c<-result$counts
+  for(x in c)brohn_require(brohn_number(x,0,2^53-1,TRUE),"Coordinate support counts must remain nonnegative integers.")
+  sample<-Filter(function(a)identical(a$kind,"physiology-series"),artifacts);event<-Filter(function(a)identical(a$kind,"physiology-events"),artifacts)
+  brohn_require(length(sample)==1L&&length(event)==1L&&c$complete_sample_artifact_rows==sample[[1L]]$rows&&c$complete_event_artifact_rows==event[[1L]]$rows&&c$segment_coordinate_rows==recording$samples&&c$segment_retained_coordinate_rows==recording$retained_samples&&c$segment_excluded_coordinate_rows==recording$samples-recording$retained_samples&&c$selected_coordinate_rows==c$segment_coordinate_rows&&c$selected_coordinate_rows<=500000L&&c$selected_retained_coordinate_rows==c$segment_retained_coordinate_rows&&c$selected_excluded_coordinate_rows==c$segment_excluded_coordinate_rows&&c$segment_numerical_candidate_rows==0&&c$selected_numerical_candidate_rows==0&&c$displayed_processed_points==0,"Raw-description coordinate and structural record counts changed.")
+  empty<-function(x)brohn_array(x)&&!length(x)
+  brohn_require(empty(result$candidates)&&empty(result$markers)&&empty(result$processed_components),"A raw-description model cannot invent candidates, markers or processed components.")
+  brohn_fields(result$series,c("clean_us","tonic_us","phasic_us"),label="Unavailable processed components");brohn_require(all(vapply(result$series,empty,logical(1))),"A constant recording cannot display a fabricated processed waveform.")
+  if(!direct){brohn_fields(result$endpoint_coverage,"unobserved",label="Constant endpoint coverage");brohn_require(empty(result$endpoint_coverage$unobserved),"A constant description cannot invent unobserved candidate endpoints.")}
+  brohn_require(brohn_array(result$source_tables)&&length(result$source_tables)==2L&&brohn_text(result$display_policy,4000)&&brohn_array(result$limitations)&&all(vapply(result$limitations,brohn_text,logical(1),4000)),"Constant model lost its complete table support or limitations.")
+  table_kinds<-character()
+  for(t in result$source_tables){
+    brohn_fields(t,c("type","table_id","identity","columns","coordinates","support","expected_rows"),label="Complete constant source table")
+    brohn_require(identical(t$type,"table")&&brohn_text(t$table_id,160)&&.brohn_ecr_same(t$support$source,recording)&&.brohn_ecr_same(t$support$method,parameters)&&.brohn_ecr_same(t$identity,recording[c("recording_id","segment_id","channel","group")]),"A complete constant table changed source support/method/identity.")
+    keys<-vapply(t$columns,`[[`,character(1),"name");sample_table<-"source_sample_index" %in% keys
+    brohn_require(brohn_array(t$columns)&&!anyDuplicated(keys),"A constant table lost its typed column declarations.")
+    table_kinds<-c(table_kinds,if(sample_table)"samples"else"candidates")
+    brohn_require(t$expected_rows==if(sample_table)c$segment_coordinate_rows else 0L,"Constant sample/candidate table row counts changed.")
+    if(sample_table){
+      column<-function(name,type,unit,role,nullable)list(name=name,type=type,unit=unit,role=role,nullable=nullable)
+      expected_columns<-list(column("time_s","float64","s","coordinate",FALSE),column("source_sample_index","integer","sample_index","index",FALSE),column("clean_us","float64","uS","processed_measure",TRUE),column("tonic_us","float64","uS","processed_measure",TRUE),column("phasic_us","float64","uS","processed_measure",TRUE),column("retained","boolean",NULL,"support",FALSE))
+      brohn_require(.brohn_ecr_same(t$columns,expected_columns),"Constant coordinates require three explicitly nullable processed columns.")
+    }else brohn_require(identical(keys,c("type","time_s","peak_sample","source_peak_sample","onset_time_s","recovery_time_s","amplitude_us","peak_height_us","rise_time_s","recovery_time_from_peak_s","recovery_fraction","missing_reason")),"Constant candidate table changed its registered columns.")
+    support_fields<-c("retained_samples","retained_duration_s","filter_edge_samples","processing_branch","descriptive_status","response_status","response_reason","numerical_candidate_count","response_denominator")
+    brohn_require(.brohn_ecr_same(t$support$retained_support,recording[support_fields])&&identical(t$support$raw_source_omitted,TRUE)&&identical(t$coordinates$source_time_origin,recording$source_time_origin),"Constant table changed retained support, raw-data scope or original clock.")
+  }
+  brohn_require(setequal(table_kinds,c("samples","candidates")),"The constant model must retain both original table families.")
+  if(direct){
+    brohn_require(empty(result$rows)&&length(result$exports)==3L&&identical(vapply(result$exports,`[[`,character(1),"name"),c("eda-samples.csv","eda-candidates.csv","eda-markers.csv"))&&result$exports[[1L]]$rows==c$selected_coordinate_rows&&result$exports[[2L]]$rows==0&&result$exports[[3L]]$rows==0,"Constant direct exports changed complete coordinates or invented response rows.")
+    for(x in result$exports)brohn_require(brohn_text(x$hash,64)&&grepl("^[a-f0-9]{64}$",x$hash)&&brohn_number(x$bytes,1,128*1024^2,TRUE),"Constant export descriptor exceeds its registered bounds.")
+  }
+  no_paths<-function(x)!is.list(x)||(!any(names(x)%in%c("path","source_path","output_path","export_path"))&&all(vapply(x,no_paths,logical(1))))
+  brohn_require(no_paths(result),"The saved constant review contains a private path.")
+  invisible(TRUE)
+}
+.brohn_ecr_original_producer <- function(store,record) {
+  b<-record$body;p<-b$processing;j<-brohn_get_job(store,p$job_id)
+  brohn_require(!is.null(j)&&identical(j$operation,"eda_continuous_review")&&identical(j$status,"succeeded")&&j$attempt==p$attempt&&identical(j$result$eda_continuous_review_id,record$id)&&identical(j$result$report_id,b$report_id)&&identical(j$result$output_hash,b$result_object$hash)&&.brohn_ecr_same(j$request,b$request),"The saved continuous review no longer matches its original successful producer.")
+  brohn_require(is.list(b$request$implementation)&&length(b$request$implementation)>0L&&!is.null(names(b$request$implementation))&&!anyDuplicated(names(b$request$implementation))&&all(vapply(names(b$request$implementation),function(k)identical(b$request$implementation[[k]],p$code_hashes[[k]]),logical(1))),"The original continuous review code identity differs from its producer receipt.")
+  invisible(TRUE)
+}
 brohn_eda_continuous_review_selection <- function(analysis,selection) {
   brohn_fields(selection,c("recording_id","segment_id","channel","start_s","end_s"),label="EDA candidate selection")
   identity<-selection[c("recording_id","segment_id","channel")]
@@ -31,13 +101,19 @@ brohn_eda_continuous_review_selection <- function(analysis,selection) {
   matches<-Filter(function(e)all(vapply(names(identity),function(k)identical(e[[k]],identity[[k]]),logical(1))),analysis$recordings)
   brohn_require(length(matches)==1L,"Choose one continuous segment from the complete saved result.")
   recording<-matches[[1L]];p<-analysis$parameters[[recording$recording_id]]
-  brohn_require(identical(recording$status,"computed"),paste("This saved segment is unavailable:",brohn_default(recording$reason,"no supported processed samples")))
-  brohn_require(identical(p$recipe,"eda-neurokit-highpass/1.0")&&identical(recording$unit,"uS")&&identical(p$cleaner,"neurokit")&&
+  constant<-identical(recording$status,"descriptive_only")
+  brohn_require(recording$status %in% c("computed",if(identical(p$recipe,"eda-neurokit-highpass/1.1"))"descriptive_only"),paste("This saved segment is unavailable:",brohn_default(recording$reason,"no supported processed samples")))
+  brohn_require(p$recipe %in% c("eda-neurokit-highpass/1.0","eda-neurokit-highpass/1.1")&&identical(recording$unit,"uS")&&identical(p$cleaner,"neurokit")&&
     p$clean_lowpass_hz==3&&p$clean_order==4&&identical(p$decomposition,"highpass")&&p$phasic_cutoff_hz==.05&&p$recovery_fraction==.5&&
     identical(p$threshold_definition,"candidate_prominence_relative_to_maximum_prominence")&&isTRUE(p$no_missing_value_imputation),
     "This review requires saved continuous EDA conductance with its original decomposition and relative-prominence settings.")
   brohn_require(brohn_number(recording$start_time_s)&&brohn_number(recording$end_time_s,recording$start_time_s)&&brohn_number(recording$sampling_rate,8,100000)&&
     brohn_number(p$amplitude_min_relative_prominence,.001,1)&&brohn_number(p$edge_exclusion_s,10,120),"The saved EDA continuous support, sample rate or relative threshold is incomplete.")
+  .brohn_ecr_recipe_spec(p)
+  if(constant){
+    .brohn_ecr_constant_original(recording,p)
+    brohn_require(.brohn_ecr_decimal_compare(selection$start_s,.brohn_ecr_shortest(recording$start_time_s))==0&&.brohn_ecr_decimal_compare(selection$end_s,.brohn_ecr_shortest(recording$end_time_s))==0,"Exact-constant descriptions retain the whole original segment; a smaller window does not restore response measures.")
+  }
   list(recording=recording,parameters=p)
 }
 .brohn_ecr_source <- function(store,r,verify=FALSE) {
@@ -60,6 +136,7 @@ brohn_eda_continuous_review_selection <- function(analysis,selection) {
     brohn_require(identical(brohn_hash(study$body),p$design_hash),"The original study revision changed.")
   }
   picked<-brohn_eda_continuous_review_selection(a,r$selection)
+  brohn_require(identical(r$recipe,.brohn_ecr_recipe_spec(picked$parameters)$queued_recipe),"The saved review recipe differs from its exact scientific source version.")
   artifacts<-lapply(Filter(function(k)any(vapply(a$artifacts,function(x)identical(x$kind,k),logical(1))),c("physiology-series","physiology-events")),function(k)brohn_signal_artifact(report,k))
   brohn_require(length(artifacts)==2L,"Complete saved continuous and candidate artifacts are required; display previews cannot replace them.")
   if(!is.null(r$artifacts))brohn_require(.brohn_ecr_same(artifacts,r$artifacts),"The original eda processed artifacts changed.")
@@ -75,14 +152,15 @@ brohn_queue_eda_continuous_review <- function(store,report_id,report_revision,re
   brohn_require(!is.null(report)&&identical(.brohn_sv_hash(report$body),report_hash),"Reopen the exact eda report before choosing a candidate window.")
   r<-list(report_id=report_id,report_revision=report_revision,report_hash=report_hash,project_id=report$project_id,
     catalog_hash=.brohn_qexplorer_catalog(store,"report",report_id,report_revision,report$project_id),selection=selection,
-    recipe="saved-continuous-eda-review/1.0",implementation=.brohn_eda_continuous_review_loaded,origin=report$body$origin)
+    recipe=.brohn_ecr_recipe_spec(brohn_eda_continuous_review_selection(report$body$analysis,selection)$parameters)$queued_recipe,implementation=.brohn_eda_continuous_review_loaded,origin=report$body$origin)
   source<-.brohn_ecr_source(store,r);r$dataset_catalog_hash<-source$dataset_catalog_hash;r$artifacts<-source$artifacts;r$result_object<-source$retained
   brohn_enqueue_job(store,"eda_continuous_review",r,paste0("eda-continuous-review:",brohn_hash(r),if(retry)paste0(":",brohn_id("retry"))else""))
 }
-brohn_eda_continuous_review_input <- function(store,job,verify=TRUE) {
+brohn_eda_continuous_review_input <- function(store,job,verify=TRUE) .brohn_ecr_input(store,job,verify,TRUE)
+.brohn_ecr_input <- function(store,job,verify=TRUE,execution=TRUE) {
   r<-job$request
   brohn_fields(r,c("report_id","report_revision","report_hash","project_id","catalog_hash","selection","recipe","implementation","origin","dataset_catalog_hash","artifacts","result_object"),label="Saved eda review request")
-  brohn_require(identical(job$operation,"eda_continuous_review")&&identical(r$recipe,"saved-continuous-eda-review/1.0")&&.brohn_ecr_same(r$implementation,.brohn_eda_continuous_review_loaded),"Rebuild this eda review with the current saved-result reader.")
+  brohn_require(identical(job$operation,"eda_continuous_review")&&r$recipe %in% c("saved-continuous-eda-review/1.0","saved-continuous-eda-review/1.1")&&(!isTRUE(execution)||.brohn_ecr_same(r$implementation,.brohn_eda_continuous_review_loaded)),"Rebuild this eda review with the current saved-result reader.")
   s<-.brohn_ecr_source(store,r,verify);pick<-s$picked
   brohn_require(.brohn_ecr_same(s$retained,r$result_object),"The retained report envelope changed.")
   features<-Filter(function(f)all(vapply(c("recording_id","segment_id","channel"),function(k)identical(f[[k]],pick$recording[[k]]),logical(1))),s$report$body$analysis$features)
@@ -94,10 +172,17 @@ brohn_eda_continuous_review_input <- function(store,job,verify=TRUE) {
     sealed_objects=list(c(s$retained,list(path=brohn_object_path(store,s$retained$hash,verify=FALSE)))),source_objects=s$source_objects)
 }
 brohn_validate_eda_continuous_review <- function(result,input) {
-  brohn_require(identical(result$schema,"brohn-eda-continuous-review/1.0")&&result$status %in% c("available","no_processed_samples")&&
+  spec<-.brohn_ecr_recipe_spec(input$parameters);constant<-identical(input$recording$status,"descriptive_only")
+  brohn_require(identical(result$schema,spec$model_schema)&&result$status %in% c("available","no_processed_samples",if(spec$new)"raw_description_only")&&
     .brohn_ecr_same(result$binding,input$binding)&&.brohn_ecr_same(result$selection,input$selection)&&.brohn_ecr_same(result$recording,input$recording)&&
     .brohn_ecr_same(result$parameters,input$parameters)&&.brohn_ecr_same(result$features,input$features)&&identical(result$unit,"uS")&&identical(result$raw_available,FALSE),
     "EDA review substituted its original source, support, parameters or whole-segment measurements.")
+  if(constant){
+    .brohn_ecr_validate_constant_model(result,input$recording,input$parameters,input$features,input$artifacts,input$selection,TRUE)
+    expected<-lapply(input$artifacts,function(a)list(kind=a$kind,sha256=a$sha256,rows=a$rows,tables=a$tables));arrange<-function(xs)xs[base::order(vapply(xs,`[[`,character(1),"kind"))]
+    brohn_require(.brohn_ecr_same(arrange(result$verification),arrange(expected)),"Constant review omitted complete original artifact verification.")
+    return(invisible(result))
+  }
   c<-result$counts;lo<-as.numeric(input$selection$start_s);hi<-as.numeric(input$selection$end_s)
   samples<-Filter(function(a)identical(a$kind,"physiology-series"),input$artifacts)[[1L]];events<-Filter(function(a)identical(a$kind,"physiology-events"),input$artifacts)[[1L]]
   brohn_require(brohn_number(c$selected_samples,0,500000,TRUE)&&brohn_number(c$selected_candidates,0,5000,TRUE)&&
@@ -162,7 +247,7 @@ brohn_validate_eda_continuous_review <- function(result,input) {
 brohn_analyse_eda_continuous_review <- function(input,scratch) {
   directory<-file.path(scratch,"artifacts");brohn_require(dir.create(directory),"Cannot prepare eda review exports.")
   request<-input[setdiff(names(input),c("schema","operation","project_id","source_objects"))]
-  request$schema<-"brohn-eda-continuous-review-request/1.0";request$export_directory<-normalizePath(directory,winslash="/")
+  request$schema<-.brohn_ecr_recipe_spec(input$parameters)$request_schema;request$export_directory<-normalizePath(directory,winslash="/")
   request_path<-file.path(scratch,"eda-continuous-review-input.json");result_path<-file.path(scratch,"eda-continuous-review-output.json");brohn_write_json_file(request,request_path)
   child<-processx::run(.brohn_publication_python(),c("scripts/workers/eda_continuous_review.py","--request",request_path,"--output",result_path),timeout=15*60,error_on_status=FALSE,cleanup_tree=TRUE,windows_hide_window=TRUE)
   brohn_require(file.exists(result_path),paste("eda review returned no result.",substr(child$stderr,1,500)))
@@ -208,7 +293,8 @@ brohn_publish_eda_continuous_review <- function(store,output,scratch,job,input,o
 .brohn_ecr_record_source <- function(store,id,report_id,project_id) {
   r<-brohn_get_entity(store,"eda_continuous_review",id)
   brohn_require(!is.null(r)&&identical(r$body$schema,"brohn-saved-eda-continuous-review/1.0")&&identical(r$body$report_id,report_id)&&identical(r$project_id,project_id),"Open a eda review belonging to this report and project.")
-  input<-brohn_eda_continuous_review_input(store,list(operation="eda_continuous_review",request=r$body$request),verify=FALSE)
+  .brohn_ecr_original_producer(store,r)
+  input<-.brohn_ecr_input(store,list(operation="eda_continuous_review",request=r$body$request),verify=FALSE,execution=FALSE)
   list(record=r,input=input)
 }
 brohn_eda_continuous_review_record <- function(store,id,report_id,project_id) {
@@ -217,7 +303,9 @@ brohn_eda_continuous_review_record <- function(store,id,report_id,project_id) {
 }
 .brohn_ecr_verify_snapshot <- function(path) {
   snapshot<-readRDS(path)
-  brohn_require(.brohn_ecr_same(snapshot$body$request$implementation,.brohn_eda_continuous_review_loaded),"The background reader implementation changed.")
+  # The captured snapshot was authorized against its original successful job.
+  # Reopening immutable history does not require today's execution code hashes.
+  brohn_require(identical(snapshot$body$request$recipe,.brohn_ecr_recipe_spec(snapshot$input$parameters)$queued_recipe)&&.brohn_ecr_same(snapshot$body$request,snapshot$input$binding),"The saved review snapshot changed its original version/request binding.")
   for(ref in snapshot$paths)brohn_require(file.exists(ref$path)&&identical(digest::digest(file=ref$path,algo="sha256"),ref$sha256),"An EDA source or complete export changed.")
   brohn_require(.brohn_ecr_same(snapshot$body,brohn_read_json_file(snapshot$retained_path)),"The retained EDA review differs from its catalog.")
   .brohn_ecr_validate_cached(snapshot$body$result,snapshot$input)

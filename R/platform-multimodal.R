@@ -117,6 +117,33 @@ brohn_multimodal_input <- function(store, request) {
   brohn_require(nchar(brohn_json(result), type = "bytes") <= 12*1024^2, "Selected synthesis reports exceed the 12 MiB frozen worker-input limit; select a smaller report set.")
   result
 }
+.brohn_mm_eda_constant_feature <- function(source, recording, recipe) {
+  units <- c(tonic_mean="uS", tonic_median="uS", tonic_slope="uS/s", conductance_raw_mean="uS",
+    scr_count="count", scr_rate="count/min", scr_amplitude_mean="uS", scr_amplitude_median="uS",
+    phasic_area_signed="uS*s", phasic_area_positive="uS*s")
+  branch <- identical(recipe$recipe, "eda-neurokit-highpass/1.1") &&
+    identical(recipe$exact_constant_policy, "raw_description_only/1.0") &&
+    identical(recording$status, "descriptive_only") &&
+    identical(recording$exact_flatline, TRUE) &&
+    identical(recording$processing_branch, "exact_constant_raw_description/1.0") &&
+    identical(recording$descriptive_status, "computed") && identical(recording$response_status, "unavailable") &&
+    identical(recording$response_reason, "exact_constant_signal") &&
+    brohn_number(recording$numerical_candidate_count, 0, 0, TRUE) &&
+    "response_denominator" %in% names(recording) && is.null(recording$response_denominator)
+  if (!branch || !source$name %in% names(units) || !identical(source$unit, unname(units[[source$name]])) ||
+      !all(c("value", "eligible", "support_status", "missing_reason") %in% names(source))) return(NULL)
+  if (identical(source$name, "conductance_raw_mean")) {
+    if (brohn_number(source$value, 0) && isTRUE(source$eligible) && identical(source$support_status, "computed") &&
+        is.null(source$missing_reason) && !"denominator" %in% names(source)) return(list(eligible=TRUE, reason=NULL))
+  } else {
+    amplitude <- source$name %in% c("scr_amplitude_mean", "scr_amplitude_median")
+    denominator <- if (amplitude) "denominator" %in% names(source) && is.null(source$denominator) else !"denominator" %in% names(source)
+    if (is.null(source$value) && identical(source$eligible, FALSE) && identical(source$support_status, "unavailable") &&
+        identical(source$missing_reason, "exact_constant_signal") && denominator)
+      return(list(eligible=FALSE, reason="exact_constant_signal"))
+  }
+  NULL
+}
 .brohn_mm_extract <- function(body, reference, design) {
   brohn_require(!brohn_questionnaire_is_artifact(body$analysis), "Read the complete questionnaire artifact before extracting scientific observations; preview rows are not evidence.")
   # Use each report's own AOI definition in compatible-revision synthesis.
@@ -186,10 +213,15 @@ brohn_multimodal_input <- function(store, request) {
       if (is.null(recipe) && brohn_text(a$parameters$recipe, 200)) recipe <- a$parameters
       good <- length(matched) == 1L && identical(matched[[1]]$status, "computed") && brohn_text(source$unit, 120) && brohn_number(source$value) &&
         is.list(recipe) && brohn_text(recipe$recipe, 200)
+      reason <- if (good) NULL else "missing_or_ambiguous_computed_signal_support"
+      if (identical(kind, "eda") && length(matched) == 1L) {
+        constant <- .brohn_mm_eda_constant_feature(source, matched[[1]], recipe)
+        if (!is.null(constant)) { good <- constant$eligible; reason <- constant$reason }
+      }
       dimensions <- source[intersect(names(source), c("band_hz", "frequency_hz", "target_hz", "window_s", "polarity", "power"))]
       outcome <- if (length(dimensions)) paste0(source$channel, " | ", brohn_json(dimensions)) else source$channel
       emit(source, i, "features", kind, source$name, outcome, brohn_default(source$unit, "unit_missing"), source$value, good,
-        if (good) NULL else "missing_or_ambiguous_computed_signal_support", list(recipe = recipe, dimensions = dimensions, scope = source$scope),
+        reason, list(recipe = recipe, dimensions = dimensions, scope = source$scope),
         if (length(matched) == 1L) matched[[1]] else list(status = "unavailable"))
     }
   }

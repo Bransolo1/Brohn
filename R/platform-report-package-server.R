@@ -219,9 +219,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     v$draft<-make_draft(paste(v$choices$study$title,"report"));editor();v$phase<-"idle"
     session$onFlushed(function()session$sendCustomMessage("brohn-focus","brohn-main"),once=TRUE)
   },error=fail))
-  source_limit<-function(rows=v$rows).brohn_rpv_single_source_limit(v$intent,rows)
+  source_limit<-function(rows=v$rows).brohn_rpv_single_source_limit(v$intent,rows)||.brohn_rpv_constant_coordinate_limit(v$intent,rows)
+  source_limit_message<-function()if(.brohn_rpv_constant_coordinate_refusal(v$intent$preparation)).brohn_rpv_constant_coordinate_message()else .brohn_rpv_single_source_limit_message()
   prepare<-function(new_version=FALSE){
-    brohn_require(!source_limit(),.brohn_rpv_single_source_limit_message())
+    brohn_require(!source_limit(),source_limit_message())
     r<-request(new_profile=new_version||isTRUE(v$dirty)||is.null(v$intent))
     if(new_version)brohn_require(!is.null(v$intent)&&identical(v$intent$next_action,"review"),"Review this preparation before creating a new version.")
     if(!new_version&&!is.null(v$intent)&&.brohn_rpv_same(r,v$intent$request)&&!isTRUE(v$dirty)){
@@ -256,7 +257,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   shiny::observeEvent(input$rpk_resume,safe(function(){
     # Resume operates on the saved intent, never the replacement draft sources.
     original_rows<-lapply(v$intent$request$report_refs,function(ref)list(ref=ref))
-    brohn_require(!source_limit(original_rows),.brohn_rpv_single_source_limit_message())
+    brohn_require(!source_limit(original_rows),source_limit_message())
     brohn_require(!is.null(v$intent)&&v$intent$next_action%in%c("resume","retry","continue"),"Review this preparation's available next step.")
     action<-if(v$intent$next_action=="retry")"retry"else"resume"
     start(action,list(action=if(v$intent$next_action=="continue")"advance"else action),if(action=="retry")"Retrying the saved report choices."else"Resuming the saved report choices.")
@@ -288,7 +289,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     preparation<-selector_preparation(ref,adapter)
     prepared<-Filter(function(p)identical(p$adapter,preparation)&&.brohn_rpv_same(p$source_report_ref,ref),prepared_sources(v$intent))
     saved_source<-!is.null(v$intent)&&any(vapply(v$intent$request$report_refs,function(r).brohn_rpv_same(r,ref),logical(1)))
-    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display","eda-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1"))
+    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display","eda-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
     if(saved_source&&pinned_required&&!length(prepared)){
       v$selector<-list(report_ref=ref,adapter=adapter,items=list(),cursor=NULL,next_cursor=NULL,
         requires_display_preparation=TRUE,state="needs_preparation",prepared_ref=NULL,locked=TRUE,
@@ -408,7 +409,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     if(!active()||isTRUE(v$dirty)||!identical(input$rpk_form_identity,v$form_identity))return()
     expected<-if(!is.null(v$pending)&&v$pending$action=="save")v$pending$payload$request else if(!is.null(v$intent))v$intent$request else NULL
     if(is.null(expected))return()
-    fresh<-tryCatch(request(FALSE),error=function(e)NULL)
+    fresh<-tryCatch(request(FALSE,new_profile=!is.null(v$pending)&&v$pending$action=="save"),error=function(e)NULL)
     if(is.null(fresh)||!.brohn_rpv_same(fresh,expected))dirty()
   },priority=100)
   output$rpk_context<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL)

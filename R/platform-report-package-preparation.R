@@ -2,7 +2,18 @@
 # Only bounded metadata is resolved here. Source replay/full decoding belongs
 # to supervised prerequisites; saved scientific scores are never recomputed.
 .brohn_rpk_task_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-paired/0.1")
-.brohn_rpk_eda_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.1")
+.brohn_rpk_eda_profile <- function(x) isTRUE(x$renderer_profile %in% c(
+  "controlled-gaze-explicit-task-choice-eda-paired/0.1",
+  "controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+.brohn_rpk_eda_preparation_profile <- function(x) {
+  brohn_require(.brohn_rpk_eda_profile(x),"Choose a supported EDA report renderer.")
+  if(identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+    "saved-eda-display/0.2" else "saved-eda-display/0.1"
+}
+.brohn_rpk_eda_plan_schema <- function(x) {
+  if(identical(.brohn_rpk_eda_preparation_profile(x),"saved-eda-display/0.2"))
+    "brohn-eda-report-execution-plan/0.2" else "brohn-eda-report-execution-plan/0.1"
+}
 .brohn_rpk_choice_profile <- function(x) identical(x$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1")||.brohn_rpk_eda_profile(x)
 .brohn_rpk_prepared_profile <- function(x) .brohn_rpk_task_profile(x)||.brohn_rpk_choice_profile(x)
 .brohn_rpk_limits <- function(x) if(.brohn_rpk_eda_profile(x))brohn_report_package_eda_limits()else if(.brohn_rpk_choice_profile(x))brohn_report_package_choice_limits()else if(.brohn_rpk_task_profile(x))brohn_report_package_task_limits()else brohn_report_package_limits()
@@ -80,12 +91,12 @@
   x<-.brohn_rpk_implementation();list(profile=x$profile,hash=brohn_hash(x))
 }
 .brohn_rpk_execution_plan <- function(request=NULL) {
-  if(.brohn_rpk_eda_profile(request))return(list(schema="brohn-eda-report-execution-plan/0.1",
+  if(.brohn_rpk_eda_profile(request))return(list(schema=.brohn_rpk_eda_plan_schema(request),
     source_admission=brohn_report_source_admission(request$renderer_profile),
     explicit_distribution_implementation_ref=.brohn_rpk_distribution_implementation_ref("task-choice-findings/0.1"),
     task_display_implementation_ref=brohn_task_display_implementation_ref("saved-task-display/0.2"),
     choice_display_implementation_ref=brohn_choice_display_implementation_ref(),
-    eda_display_implementation_ref=brohn_eda_display_implementation_ref(),
+    eda_display_implementation_ref=brohn_eda_display_implementation_ref(.brohn_rpk_eda_preparation_profile(request)),
     renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref()))
   if(.brohn_rpk_choice_profile(request))return(list(schema="brohn-task-choice-report-execution-plan/0.1",
     source_admission=brohn_report_source_admission(request$renderer_profile),
@@ -99,14 +110,19 @@
   renderer_implementation_ref=.brohn_rpk_renderer_implementation_ref())
 }
 .brohn_rpk_plan_valid <- function(plan,request=NULL) {
-  eda<-identical(plan$schema,"brohn-eda-report-execution-plan/0.1")
+  eda<-isTRUE(plan$schema %in% c("brohn-eda-report-execution-plan/0.1","brohn-eda-report-execution-plan/0.2"))
   choice<-eda||identical(plan$schema,"brohn-task-choice-report-execution-plan/0.1")
   fields<-c("schema","task_display_implementation_ref","explicit_distribution_implementation_ref","renderer_implementation_ref")
   brohn_fields(plan,c(fields,if(choice)c("source_admission","choice_display_implementation_ref"),if(eda)"eda_display_implementation_ref"),label="Pinned preparation plan")
   brohn_require(choice||identical(plan$schema,"brohn-task-report-execution-plan/0.1"),"Reopen a supported saved preparation plan.")
   if(!is.null(request))brohn_require(identical(choice,.brohn_rpk_choice_profile(request))&&identical(eda,.brohn_rpk_eda_profile(request))&&.brohn_rpk_prepared_profile(request),"The saved preparation plan belongs to a different renderer.")
-  if(choice)brohn_require(identical(plan$source_admission,if(eda)"task-choice-eda-findings/0.1"else"task-choice-findings/0.1"),"The saved plan changed its complete-source admission.")
-  if(eda)brohn_require(identical(plan$eda_display_implementation_ref$profile,"saved-eda-display/0.1"),"The saved EDA implementation profile is unavailable.")
+  if(eda){
+    profile<-if(identical(plan$schema,"brohn-eda-report-execution-plan/0.2"))"saved-eda-display/0.2"else"saved-eda-display/0.1"
+    spec<-.brohn_edd_profile_spec(profile)
+    brohn_require(identical(plan$source_admission,spec$admission)&&
+      identical(plan$eda_display_implementation_ref$profile,spec$profile),"The saved EDA plan has incompatible source and preparation profiles.")
+    if(!is.null(request))brohn_require(identical(plan$schema,.brohn_rpk_eda_plan_schema(request)),"The saved EDA plan belongs to a different renderer version.")
+  }else if(choice)brohn_require(identical(plan$source_admission,"task-choice-findings/0.1"),"The saved plan changed its complete-source admission.")
   for(x in plan[setdiff(names(plan),c("schema","source_admission"))]){brohn_fields(x,c("profile","hash"),label="Pinned implementation");brohn_require(brohn_text(x$profile,128)&&.brohn_rpk_hash(x$hash),"The saved preparation lost its implementation identity.")}
   brohn_require(identical(plan$task_display_implementation_ref$profile,if(choice)"saved-task-display/0.2"else"saved-task-display/0.1")&&
     identical(plan$explicit_distribution_implementation_ref$profile,if(choice)"saved-explicit-distribution/0.2"else"saved-explicit-distribution/0.1")&&
@@ -295,16 +311,16 @@
       old<-Filter(function(d)identical(d$slot,spec$slot),b$dependencies);old<-if(length(old))old[[1L]]else NULL
       d<-c(spec,list(job_id=if(is.null(old))NULL else old$job_id,created_for_intent=if(is.null(old))FALSE else old$created_for_intent,result_ref=saved,status=if(is.null(saved))NULL else"succeeded"))
       if(!is.null(saved)){deps<-c(deps,list(d));next}
-      current<-if(task)brohn_task_display_implementation_ref(impl$profile)else if(choice)brohn_choice_display_implementation_ref()else if(eda)brohn_eda_display_implementation_ref()else .brohn_rpk_distribution_implementation_ref(admission)
+      current<-if(task)brohn_task_display_implementation_ref(impl$profile)else if(choice)brohn_choice_display_implementation_ref()else if(eda)brohn_eda_display_implementation_ref(impl$profile)else .brohn_rpk_distribution_implementation_ref(admission)
       if(!.brohn_rpk_same(impl,current)){
         b$status<-"needs_attention";b$dependencies<-.brohn_rpk_retain_dependencies(deps,b$dependencies);b$reason<-"A pinned display implementation is unavailable. Prepare these saved choices as a new version; no different code was substituted."
         b$preparation<-.brohn_rpk_preparation_view(b$dependencies,reason="implementation_changed")
         return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))
       }
-      request<-if(task).brohn_task_display_request(store,ref,impl)else if(choice).brohn_choice_display_request(store,ref,impl)else if(eda).brohn_eda_display_request(store,ref,spec$display_request,impl)else .brohn_rpk_distribution_request(store,ref,impl,admission)
+      request<-if(task).brohn_task_display_request(store,ref,impl)else if(choice).brohn_choice_display_request(store,ref,impl)else if(eda).brohn_eda_display_request(store,ref,spec$display_request,impl,impl$profile)else .brohn_rpk_distribution_request(store,ref,impl,admission)
       fingerprint<-if(task||choice||eda)request$content_fingerprint else brohn_hash(request[setdiff(names(request),"authority")])
       previous<-.brohn_rpk_latest_job(store,spec$kind,fingerprint)
-      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else if(choice)brohn_queue_choice_display(store,ref,retry=retrying,implementation_ref=impl)else if(eda)brohn_queue_eda_display(store,ref,spec$display_request,retry=retrying,implementation_ref=impl)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl,source_admission=admission)
+      j<-if(task)brohn_queue_task_display(store,ref,retry=retrying,implementation_ref=impl)else if(choice)brohn_queue_choice_display(store,ref,retry=retrying,implementation_ref=impl)else if(eda)brohn_queue_eda_display(store,ref,spec$display_request,retry=retrying,implementation_ref=impl,preparation_profile=impl$profile)else brohn_queue_explicit_distributions_ref(store,ref,retry=retrying,implementation_ref=impl,source_admission=admission)
       d$job_id<-j$id;d$status<-j$status;d$created_for_intent<-if(!is.null(old)&&identical(old$job_id,j$id))isTRUE(old$created_for_intent)else is.null(previous)||!identical(previous$id,j$id)
       deps<-c(deps,list(d))
       if(j$status %in% c("failed","cancelled")){

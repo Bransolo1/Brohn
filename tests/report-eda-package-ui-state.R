@@ -328,6 +328,53 @@ scenario("stale resume after source replacement still binds the original refused
  session$setInputs(rpk_prepare=2L);ack()
  check(mock$saves==before+1L&&mock$advances==advanced+1L&&saved()!=old_id&&.brohn_rpv_same(controller$state$intent$request$report_refs,list(rows[[1]]$ref)),"Ordinary Prepare still creates one new intent for the replacement source after stale Resume refusal")
 })
+scenario("new profile choice and exact old intent reopening",{
+ mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_prepare=1L);ack();id<-saved()
+ check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2","A new old-science-only EDA package explicitly uses renderer 0.2")
+ old<-mock$intents[[id]];old$request$renderer_profile<-"controlled-gaze-explicit-task-choice-eda-paired/0.1";old$view$request<-old$request;old$view$status<-"needs_attention";old$view$next_action<-"review";mock$intents[[id]]<-old
+ session$setInputs(rpk_history_open=old$view$intent_ref);bind_eda();before<-mock$saves;advanced<-mock$advances
+ check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.1"&&!isTRUE(controller$state$dirty)&&mock$saves==before,"Opening exact historical 0.1 choices does not migrate or mark them unsaved")
+ session$setInputs(rpk_prepare_new=1L);ack()
+ check(mock$saves==before+1L&&mock$advances==advanced+1L&&controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2"&&mock$intents[[id]]$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.1","Explicit new-version action creates 0.2 while keeping the original request's 0.1 identity")
+})
+coordinate_failure<-function(source=NULL)list(prepared_sources=list(),reason_code="coordinate_rows_limit",source=source,resource="coordinate_rows",measured=500100,maximum=500000,recovery_scope="none",message="The complete constant-signal coordinate view exceeds current capacity; a smaller response window is not a repair.")
+scenario("constant coordinate limit blocks ineffective edits and stale original resume",{
+ mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[2]]$ref));bind_eda();session$setInputs(rpk_prepare=1L);ack()
+ p<-coordinate_failure(rows[[2]]$ref);publish_view("needs_attention","review",p,p$message);session$setInputs(rpk_cancel=1L)
+ old_id<-saved();old<-brohn_json(mock$intents[[old_id]]$view);before<-mock$saves;advanced<-mock$advances
+ check(is.null(output$rpk_prepare_action)&&!grepl('id="rpk_prepare_new"',output$rpk_feedback$html,fixed=TRUE)&&!grepl('id="rpk_resume"',output$rpk_feedback$html,fixed=TRUE)&&grepl("separate evidence exports",output$rpk_feedback$html,fixed=TRUE),"Constant coordinate refusal hides ineffective actions and points to original evidence exports")
+ session$setInputs(rpk_title="Different title");session$setInputs(rpk_section_remove=controller$state$sections[[1]]$id);open_window();apply_window("1","2")
+ check(is.null(output$rpk_prepare_action)&&identical(old,brohn_json(mock$intents[[old_id]]$view)),"Title, hidden figures and synthetic stale window edits cannot change constant capacity or saved history")
+ session$setInputs(rpk_source_toggle=rows[[1]]$ref);bind_eda()
+ check(is.null(output$rpk_prepare_action),"Adding another source does not evade a known single-source constant bound")
+ for(input_id in c("rpk_prepare","rpk_prepare_new","rpk_resume"))do.call(session$setInputs,setNames(list(9L),input_id))
+ check(mock$saves==before&&mock$advances==advanced&&is.null(controller$state$pending),"Stale direct actions cannot queue the unchanged constant source")
+ session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda();session$setInputs(rpk_resume=10L)
+ check(mock$saves==before&&mock$advances==advanced&&is.null(controller$state$pending)&&identical(old,brohn_json(mock$intents[[old_id]]$view)),"Removing the source still cannot resume the original refused intent")
+ session$setInputs(rpk_prepare=10L);ack()
+ check(mock$saves==before+1L&&saved()!=old_id&&.brohn_rpv_same(controller$state$intent$request$report_refs,list(rows[[1]]$ref)),"A replacement source can explicitly create a different report")
+})
+scenario("required constant parent and multiple-source recovery remain precise",{
+ mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[3]]$ref));bind_eda();session$setInputs(rpk_prepare=1L);ack()
+ p<-coordinate_failure(rows[[2]]$ref);publish_view("needs_attention","review",p,p$message)
+ check(is.null(output$rpk_prepare_action)&&grepl("paired report can require",output$rpk_feedback$html,fixed=TRUE),"A sole paired source cannot retry a capacity failure of its required parent")
+ session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=NULL));bind_eda();session$setInputs(rpk_prepare=2L);ack();publish_view("needs_attention","review",p,p$message)
+ check(length(controller$state$rows)==2L&&is.null(output$rpk_prepare_action),"Multiple-source constant refusal blocks the unchanged selected source set")
+ session$setInputs(rpk_title="Still the same sources");check(is.null(output$rpk_prepare_action),"A title change does not unlock a multiple-source coordinate refusal")
+ before<-mock$saves;session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda();session$setInputs(rpk_prepare=3L);ack()
+ check(mock$saves==before+1L&&length(controller$state$intent$request$report_refs)==1L,"Changing the selected source set can create a new report after a multiple-source refusal")
+ p$reason_code<-"another_error";publish_view("needs_attention","review",p,p$message)
+ check(!is.null(output$rpk_prepare_action),"Unrelated recovery_scope none errors are not blanket-blocked")
+ p<-coordinate_failure();p$maximum<-600000;publish_view("needs_attention","review",p,p$message)
+ check(!is.null(output$rpk_prepare_action),"An unregistered coordinate limit is not mistaken for the exact current constant capacity rule")
+})
+scenario("new EDA profile cannot substitute latest explicit distribution for absent pinned history",{
+ original_rows<-rows;rows[[2]]$adapters<<-list("eda-continuous","explicit-distribution")
+ tryCatch({mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_prepare=1L);ack();before<-length(mock$catalog_reads)
+  session$setInputs(rpk_selector_open=list(ref=rows[[2]]$ref,adapter="explicit-distribution"))
+  check(isTRUE(controller$state$selector$locked)&&length(mock$catalog_reads)==before&&controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2","Saved 0.2 explicit choices without their pinned prerequisite stay locked instead of reading a current distribution")
+ },finally={rows<<-original_rows})
+})
 brohn_write_json_file(list(passed=all(vapply(scenarios,`[[`,logical(1),"passed")),checks=checks,scenarios=scenarios,
  source_hashes=setNames(lapply(c("platform-report-package-views.R","platform-report-package-server.R"),function(f)digest::digest(file=file.path(candidate,f),algo="sha256")),c("views","server")),
  support_hashes=support_receipt,

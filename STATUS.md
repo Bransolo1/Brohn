@@ -1,5 +1,28 @@
 # Resume here — Brohn
 
+## Exact-constant EDA extension — 30 September 2026
+
+Explicit recipe 1.1 keeps the measured raw level and original support of an
+eligible exactly constant segment. Nine processed estimates remain unavailable;
+there is no fabricated waveform or physiological zero response. New EDA reports
+use profile 0.2, including old scientific sources with their unchanged models.
+Saved old reviews and packages retain exact files and original producer proof.
+
+The [method policy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md) and
+[acceptance record](docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) define the checked
+scope; the [source receipt](docs/qa/EDA-CONSTANT-SIGNAL-SOURCE.json) records exact
+implementation and phase identities. Native six-source packages pass unchanged
+worker limits; final browser reread passes 31 initial and 11 cold checks with
+exact old/new downloads and normal startup. The startup fix also passes 27
+focused, 74 full runtime and 22 acquisition checks in separately bound phases.
+No old source was rescored. Continue the independent
+[ECG/PPG report slice](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md) next.
+Near-constant precision, scientific response criteria and hardware qualification
+remain open; no work package is complete merely because this extension ships.
+
+The dated report checkpoint below retains its original evidence and source
+bindings. It is not a claim that all earlier tests ran on every later revision.
+
 ## Saved EDA report checkpoint — 28 September 2026
 
 The scoped final researcher and cold-restart journey has passed. The same
@@ -45,7 +68,7 @@ large-source and browser attempts remain retained in the phase record. The
 browser used existing genuine synthetic reports; it did not collect new source
 data or establish physical-device, participant or construct validity.
 
-Immediate continuation is the [versioned constant-signal EDA remedy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md),
+The preceding checkpoint prioritized the [versioned constant-signal EDA remedy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md),
 then [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
 The [constant-signal finding](docs/qa/EDA-CONSTANT-SIGNAL-FINDING.md) concerns
 original method 1.0, which this export preserves rather than repairs. Keep

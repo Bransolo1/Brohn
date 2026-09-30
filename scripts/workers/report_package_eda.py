@@ -24,17 +24,21 @@ def load(path, maximum=48*MIB):
 def sha(path): return tables.digest_file(path)
 
 
-def inspect_stream(item, family, source):
+def inspect_stream(item, family, source, profile="0.1"):
     eda.fields(item, ('original','original_verification','path'), 'Complete EDA stream')
     manifest=eda.verifier_manifest(item['original'],item['path'])
     eda.bounded(manifest['bytes'],64*MIB,'stream_bytes',source)
     specs=[]
     def spec(value):
-        eda.check_eda_table(value,family,manifest['kind']);specs.append(value)
+        eda.check_eda_table(value,family,manifest['kind'],profile);specs.append(value)
         eda.bounded(len(specs),256,'source_tables',source)
     rows=0
     def count_rows(table_id,offset,values):
         nonlocal rows
+        selected=next(x for x in specs if x['table_id']==table_id)
+        if family=='continuous' and selected['support']['source']['status']=='descriptive_only':
+            require(manifest['kind']=='physiology-series' and all(all(r[i] is None for i in (2,3,4)) for r in values),
+                    'Constant coordinate tables cannot substitute finite processed values.')
         rows+=len(values);eda.bounded(rows,1000000,'source_rows',source)
     verified=tables.verify_artifact(manifest,on_table=spec,on_rows=count_rows)
     receipt=item['original_verification']
@@ -49,7 +53,7 @@ def inspect_stream(item, family, source):
             record=eda.strict_json(line)
             if record['type']=='header':header=record
             elif record['type']=='table':
-                eda.check_eda_table(record,family,manifest['kind']);exact_specs.append(record)
+                eda.check_eda_table(record,family,manifest['kind'],profile);exact_specs.append(record)
     require(len(exact_specs)==len(specs),'Exact metadata table count changed.')
     specs=exact_specs
     return {'original':item['original'],'original_verification':receipt,'header':header,'tables':specs}
@@ -57,14 +61,16 @@ def inspect_stream(item, family, source):
 
 def inspect(request):
     eda.fields(request,('schema','source_report_ref','source_family','streams'),'EDA stream inspection')
-    require(request['schema']=='brohn-eda-stream-inspection-request/0.1' and request['source_family'] in ('event','continuous'), 'Unsupported inspection profile.')
+    profiles={'brohn-eda-stream-inspection-request/0.1':'0.1','brohn-eda-stream-inspection-request/0.2':'0.2'}
+    require(request['schema'] in profiles and request['source_family'] in ('event','continuous'), 'Unsupported inspection profile.')
+    profile=profiles[request['schema']]
     require(isinstance(request['streams'],list) and len(request['streams']) in (0,2),'Current EDA requires zero or two original streams.')
     source=request['source_report_ref']
-    streams=[inspect_stream(x,request['source_family'],source) for x in request['streams']]
+    streams=[inspect_stream(x,request['source_family'],source,profile) for x in request['streams']]
     require(not streams or sorted(x['original']['kind'] for x in streams)==['physiology-events','physiology-series'],'EDA stream kinds are incomplete or duplicated.')
     counts={'bytes':sum(x['original_verification']['bytes'] for x in streams),'rows':sum(x['original_verification']['rows'] for x in streams),'tables':sum(x['original_verification']['tables'] for x in streams)}
     for k,maximum in [('bytes',96*MIB),('rows',1000000),('tables',256)]:eda.bounded(counts[k],maximum,'source_'+k,source)
-    result={'schema':'brohn-eda-stream-inspection/0.1','source_report_ref':source,'source_family':request['source_family'],'streams':streams,'counts':counts,
+    result={'schema':'brohn-eda-stream-inspection/'+profile,'source_report_ref':source,'source_family':request['source_family'],'streams':streams,'counts':counts,
             'verified_runtime':{'Python':{'implementation':platform.python_implementation(),'version':platform.python_version()}}}
     result['value_hash']=eda.value_hash(result)
     eda.bounded(len(eda.json_bytes(result)),16*MIB,'stream_metadata_bytes',source)
@@ -107,8 +113,10 @@ def descriptor(root,path,media,role):
 
 def project(request,root):
     eda.fields(request,('schema','inspection','source_family','source_report_ref','identifier_mode','streams','projected_metadata','projection_implementation'),'EDA complete projection')
-    require(request['schema']=='brohn-eda-stream-projection-request/0.1' and request['identifier_mode'] in ('package_aliases','source_identifiers'),'Unsupported EDA projection profile.')
-    original=inspect({'schema':'brohn-eda-stream-inspection-request/0.1',**{k:request[k] for k in ('source_family','source_report_ref','streams')}})
+    profiles={'brohn-eda-stream-projection-request/0.1':'0.1','brohn-eda-stream-projection-request/0.2':'0.2'}
+    require(request['schema'] in profiles and request['identifier_mode'] in ('package_aliases','source_identifiers'),'Unsupported EDA projection profile.')
+    profile=profiles[request['schema']]
+    original=inspect({'schema':'brohn-eda-stream-inspection-request/'+profile,**{k:request[k] for k in ('source_family','source_report_ref','streams')}})
     require(eda.value_hash(original)==eda.value_hash(request['inspection']),'Complete stream inspection changed before projection.')
     require(isinstance(request['projected_metadata'],list) and len(request['projected_metadata'])==len(original['streams']),'Projected metadata cardinality changed.')
     require(not root.exists(),'Choose a fresh private projection directory.');root.mkdir(parents=True)
@@ -172,14 +180,14 @@ def project(request,root):
         if request['identifier_mode']=='source_identifiers':require(sha(ndpath)==sha(item['path']),'Original stream bytes changed in source-identifiers mode.')
         for path,media,role in [(stem+'.ndjson','application/x-ndjson','complete_processed_eda_stream'),(stem+'.csv','text/csv; charset=utf-8','complete_processed_eda_rows')]:
             entry=descriptor(root,path,media,role);files.append(entry);total+=entry['bytes']
-        receipts.append({'schema':'brohn-report-eda-stream-projection/0.1','source_report_ref':source,'source_family':request['source_family'],'identifier_mode':request['identifier_mode'],
+        receipts.append({'schema':'brohn-report-eda-stream-projection/'+profile,'source_report_ref':source,'source_family':request['source_family'],'identifier_mode':request['identifier_mode'],
                          'original':orig['original'],'source_verification':orig['original_verification'],'projected':files[-2],
                          'projected_verification':verified,'projection_implementation':request['projection_implementation'],
                          'unchanged_row_record_sha256':rows_hash.hexdigest(),'table_bindings':inventory,
                          'coverage':{'complete':True,'raw_series_included':False,'rows':seen,'tables':table_index}})
-    result={'schema':'brohn-eda-stream-projection-result/0.1','source_report_ref':source,'source_family':request['source_family'],'identifier_mode':request['identifier_mode'],
+    result={'schema':'brohn-eda-stream-projection-result/'+profile,'source_report_ref':source,'source_family':request['source_family'],'identifier_mode':request['identifier_mode'],
             'files':files,'streams':receipts,'coverage':{'complete':True,'original_streams':len(receipts),'raw_series_included':False,'projected_bytes':total,**original['counts']}}
-    require(eda.value_hash(inspect({'schema':'brohn-eda-stream-inspection-request/0.1',**{k:request[k] for k in ('source_family','source_report_ref','streams')}}))==eda.value_hash(original),'Final original stream metadata changed.')
+    require(eda.value_hash(inspect({'schema':'brohn-eda-stream-inspection-request/'+profile,**{k:request[k] for k in ('source_family','source_report_ref','streams')}}))==eda.value_hash(original),'Final original stream metadata changed.')
     return result
 
 

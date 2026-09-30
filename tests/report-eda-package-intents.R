@@ -1,8 +1,13 @@
 # Real SQLite intent/job lifecycle with explicit source and preparation spies.
 # This test does not qualify scientific outputs, decimal parsing, native holds,
 # report rendering, refusal validation, source-graph extraction or UI behavior.
-# Rscript this-file <loader-root> <candidate-root> <fresh-evidence-directory>
-args<-commandArgs(TRUE);stopifnot(length(args)==3L)
+# Rscript this-file <loader-root> <candidate-root> <fresh-evidence-directory> [0.1|0.2]
+args<-commandArgs(TRUE);stopifnot(length(args) %in% c(3L,4L))
+version<-if(length(args)==4L)args[[4L]]else"0.1";stopifnot(version %in% c("0.1","0.2"))
+eda_profile<-paste0("saved-eda-display/",version)
+eda_admission<-paste0("task-choice-eda-findings/",version)
+eda_renderer<-paste0("controlled-gaze-explicit-task-choice-eda-paired/",version)
+eda_plan<-paste0("brohn-eda-report-execution-plan/",version)
 loader<-normalizePath(args[[1L]],winslash="/",mustWork=TRUE)
 candidate<-normalizePath(args[[2L]],winslash="/",mustWork=TRUE)
 out<-args[[3L]];stopifnot(!file.exists(out));dir.create(out,recursive=TRUE)
@@ -17,7 +22,10 @@ check<-function(label,value){checks[[length(checks)+1L]]<<-list(label=label,pass
 reject<-function(expr)tryCatch({force(expr);FALSE},error=function(e)TRUE)
 spy<-new.env();spy$ready<-list();spy$queues<-0L;spy$resolves<-0L;spy$graph_suffix<-"original";spy$metadata<-list()
 implementation<-function(profile)list(profile=profile,hash=brohn_hash(list("lifecycle-boundary-fixture",profile)))
-brohn_eda_display_implementation_ref<-function()implementation("saved-eda-display/0.1")
+brohn_eda_display_implementation_ref<-function(preparation_profile="saved-eda-display/0.1")implementation(preparation_profile)
+# Source profile registry is an explicit boundary spy in this lifecycle test.
+.brohn_edd_profile_spec<-function(profile){stopifnot(profile %in% c("saved-eda-display/0.1","saved-eda-display/0.2"));
+  list(profile=profile,admission=sub("saved-eda-display/","task-choice-eda-findings/",profile,fixed=TRUE))}
 brohn_validate_eda_refusal<-function(refusal)invisible(TRUE)
 brohn_task_display_implementation_ref<-function(preparation_profile="saved-task-display/0.1")implementation(preparation_profile)
 brohn_choice_display_implementation_ref<-function()implementation("saved-choice-display/0.1")
@@ -28,6 +36,7 @@ brohn_choice_display_implementation_ref<-function()implementation("saved-choice-
 .brohn_rpk_renderer_implementation_ref<-function()implementation("static-complete-findings/0.1")
 brohn_report_package_eda_limits<-function(){x<-brohn_report_package_limits();x$profile<-"controlled-task-choice-eda-report-package/0.1";x}
 brohn_report_source_admission<-function(profile)switch(profile,
+  "controlled-gaze-explicit-task-choice-eda-paired/0.2"="task-choice-eda-findings/0.2",
   "controlled-gaze-explicit-task-choice-eda-paired/0.1"="task-choice-eda-findings/0.1",
   "controlled-gaze-explicit-task-choice-paired/0.1"="task-choice-findings/0.1",
   "controlled-gaze-explicit-task-paired/0.1"="task-findings/0.1",
@@ -50,8 +59,10 @@ prepare_request<-function(kind,ref,impl,display_request=NULL,admission=NULL){
   r<-list(project_id=ref$project_id,report_ref=ref,implementation_ref=impl,display_request=display_request,admission=admission)
   r$content_fingerprint<-brohn_hash(r);r
 }
-.brohn_eda_display_request<-function(store,report_ref,display_request=NULL,implementation_ref=NULL)
+.brohn_eda_display_request<-function(store,report_ref,display_request=NULL,implementation_ref=NULL,preparation_profile="saved-eda-display/0.1"){
+  stopifnot(identical(preparation_profile,implementation_ref$profile),identical(preparation_profile,eda_profile))
   prepare_request("eda_display",report_ref,implementation_ref,brohn_normalize_eda_display_request(display_request))
+}
 brohn_find_eda_display<-function(store,report_ref,display_request=NULL,preparation_profile="saved-eda-display/0.1",implementation_ref=brohn_eda_display_implementation_ref()){
   stopifnot(preparation_profile==implementation_ref$profile)
   spy$ready[[key("eda_display",report_ref,brohn_normalize_eda_display_request(display_request))]]
@@ -61,8 +72,8 @@ enqueue<-function(store,kind,r,retry){
   if(!is.null(old)&&(!retry||old$status %in% c("queued","running","succeeded")))return(old)
   spy$queues<-spy$queues+1L;brohn_enqueue_job(store,kind,r,paste0("eda-lifecycle-",spy$queues))
 }
-brohn_queue_eda_display<-function(store,report_ref,display_request=NULL,retry=FALSE,implementation_ref=NULL)
-  enqueue(store,"eda_display",.brohn_eda_display_request(store,report_ref,display_request,implementation_ref),retry)
+brohn_queue_eda_display<-function(store,report_ref,display_request=NULL,retry=FALSE,implementation_ref=NULL,preparation_profile="saved-eda-display/0.1")
+  enqueue(store,"eda_display",.brohn_eda_display_request(store,report_ref,display_request,implementation_ref,preparation_profile),retry)
 .brohn_rpk_distribution_request<-function(store,report_ref,implementation_ref=NULL,source_admission=NULL){
   stopifnot(identical(source_admission,"task-choice-findings/0.1"));r<-prepare_request("explicit_distributions",report_ref,implementation_ref,admission=source_admission);r$content_fingerprint<-NULL;r
 }
@@ -89,7 +100,7 @@ liking<-source_ref("report-liking-fixture","questionnaire")
 pair<-source_ref("report-pair-fixture","multimodal")
 # Graph extraction is an explicit fixture boundary; exact persistence is real.
 .brohn_rpk_eda_requirements<-function(store,report_refs,source_admission){
-  stopifnot(source_admission=="task-choice-eda-findings/0.1")
+  stopifnot(source_admission==eda_admission)
   direct<-Filter(function(r)!is.null(spy$metadata[[brohn_hash(r)]]$eda_source_family),report_refs)
   roots<-Filter(function(r).brohn_rpk_same(r,pair),report_refs)
   related<-if(length(roots)&&!any(vapply(direct,function(r).brohn_rpk_same(r,continuous),logical(1))))list(list(source_ordinal=length(report_refs)+1L,report_ref=continuous,required_by=roots,parent_edges=list()))else list()
@@ -102,14 +113,23 @@ section<-function(ref,adapter="eda-continuous",order=1L)list(id=paste0("section-
 request<-function(refs=list(continuous,liking),sections=list(section(continuous),section(liking,"explicit-distribution",2L)),windows=list())
   list(schema="brohn-report-package-intent-request/0.1",study_id=design$id,project_id="default",title="EDA lifecycle fixture",report_refs=refs,requested_sections=sections,
     eda_display_requests=windows,contents_policy=list(profile="complete-findings/0.1",audience="research_team",identifier_mode="package_aliases",stimulus_images="excluded_by_choice",complete_selected_numerical_evidence=TRUE,include_original_evidence=FALSE,include_raw_recordings=FALSE),
-    limits_profile="controlled-task-choice-eda-report-package/0.1",renderer_profile="controlled-gaze-explicit-task-choice-eda-paired/0.1")
+    limits_profile="controlled-task-choice-eda-report-package/0.1",renderer_profile=eda_renderer)
 create<-function(id,r=request())brohn_save_report_package_intent(store,id,r)
 ready<-function(dep){r<-.brohn_rpk_ref(brohn_put_entity(store,dep$kind,brohn_id("prepared-fixture"),list(schema="explicit-lifecycle-boundary",source=dep$report_ref),0L,"default"))
   spy$ready[[key(dep$kind,dep$report_ref,dep$display_request)]]<-r
 }
 a<-create("first");body<-brohn_get_entity(store,"report_package_intent",a$intent_ref$id)$body;plan<-body$execution_plan
-check("Save pins EDA plan and source requirements before queuing",a$status=="prepared"&&spy$queues==0L&&plan$schema=="brohn-eda-report-execution-plan/0.1"&&length(body$source_requirements$required_eda_refs)==1L)
-check("Plan reuses exact task choice and distribution family versions",plan$task_display_implementation_ref$profile=="saved-task-display/0.2"&&plan$choice_display_implementation_ref$profile=="saved-choice-display/0.1"&&plan$explicit_distribution_implementation_ref$profile=="saved-explicit-distribution/0.2"&&plan$eda_display_implementation_ref$profile=="saved-eda-display/0.1")
+check("Save pins EDA plan and source requirements before queuing",a$status=="prepared"&&spy$queues==0L&&plan$schema==eda_plan&&length(body$source_requirements$required_eda_refs)==1L)
+check("Plan reuses exact task choice and distribution family versions",plan$task_display_implementation_ref$profile=="saved-task-display/0.2"&&plan$choice_display_implementation_ref$profile=="saved-choice-display/0.1"&&plan$explicit_distribution_implementation_ref$profile=="saved-explicit-distribution/0.2"&&plan$eda_display_implementation_ref$profile==eda_profile)
+other<-if(version=="0.1")"0.2"else"0.1"
+bad<-plan;bad$schema<-paste0("brohn-eda-report-execution-plan/",other)
+check("Changing plan schema alone cannot reuse a different admission",reject(.brohn_rpk_plan_valid(bad,request())))
+bad<-plan;bad$eda_display_implementation_ref$profile<-paste0("saved-eda-display/",other)
+check("Changing preparation profile alone cannot cross versions",reject(.brohn_rpk_plan_valid(bad,request())))
+bad_request<-request();bad_request$renderer_profile<-paste0("controlled-gaze-explicit-task-choice-eda-paired/",other)
+check("Internally valid saved plan cannot attach to a different renderer version",reject(.brohn_rpk_plan_valid(plan,bad_request)))
+bad<-plan;bad$schema<-"brohn-eda-report-execution-plan/0.3"
+check("Unknown plan version is refused",reject(.brohn_rpk_plan_valid(bad,request())))
 check("Duplicate command retains exact intent and source snapshot",.brohn_rpk_same(a$intent_ref,create("first")$intent_ref)&&spy$queues==0L)
 bad<-plan;bad$source_admission<-"task-choice-findings/0.1"
 check("EDA execution plan cannot lower source admission",reject(.brohn_rpk_plan_valid(bad,request())))

@@ -315,7 +315,30 @@ def write_physiology_bundle(series_writer,event_writer,modality,identity,bundle,
     time=_column("time_s","float64","s",role="coordinate")
     index=_column("source_sample_index","integer","sample_index",role="index")
     retained=_column("retained","boolean",None,role="support")
-    if modality=="eda": selected=[time,index,*[_column(k,"float64","uS") for k in ("clean_us","tonic_us","phasic_us")],retained]
+    if modality=="eda":
+        descriptive = bundle["parameters"].get("recipe")=="eda-neurokit-highpass/1.1" and source_support.get("status")=="descriptive_only"
+        require(source_support.get("status")!="descriptive_only" or descriptive,
+                "Descriptive-only EDA support requires its explicit 1.1 recipe.")
+        if descriptive:
+            require({"processing_branch","descriptive_status","response_status","response_reason",
+                     "numerical_candidate_count","response_denominator"} <= set(bundle["support"]) and
+                    bundle.get("status")=="descriptive_only" and
+                    bundle["parameters"].get("exact_constant_policy")=="raw_description_only/1.0" and
+                    bundle["support"].get("processing_branch")=="exact_constant_raw_description/1.0" and
+                    bundle["support"].get("descriptive_status")=="computed" and
+                    bundle["support"].get("response_status")=="unavailable" and
+                    bundle["support"].get("response_reason")=="exact_constant_signal" and
+                    type(bundle["support"].get("numerical_candidate_count")) is int and
+                    bundle["support"]["numerical_candidate_count"]==0 and
+                    bundle["support"].get("response_denominator") is None and not bundle["events"],
+                    "Constant EDA coordinates must retain withheld response support and zero emitted candidates.")
+            require(source_support.get("exact_flatline") is True and
+                    type(source_support.get("numerical_candidate_count")) is int and
+                    all(key in source_support and source_support[key]==value for key,value in bundle["support"].items()),
+                    "Constant EDA table source and retained support must agree exactly.")
+            require(all(all(value is None for value in series[k]) for k in ("clean_us","tonic_us","phasic_us")),
+                    "Constant EDA cannot invent finite processed values.")
+        selected=[time,index,*[_column(k,"float64","uS",nullable=descriptive) for k in ("clean_us","tonic_us","phasic_us")],retained]
     elif modality=="emg":
         selected=[time,index,*[_column(k,"float64","uV") for k in ("raw_uv","clean_uv","rms_uv")],retained]
         support={**support,"raw_source_omitted":False,

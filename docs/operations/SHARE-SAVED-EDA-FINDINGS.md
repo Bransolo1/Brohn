@@ -1,7 +1,8 @@
 # Share saved skin-conductance findings
 
-Read [the phase record](../qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) for the
-checked researcher flow and current complete-export limits.
+Read [the original report phase record](../qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md)
+and [the exact-constant extension](../qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) for
+the checked researcher flows and current complete-export limits.
 
 Choose saved EDA and liking findings, then **Prepare report**. Brohn prepares
 missing display views and builds the report using the original calculations.
@@ -13,6 +14,18 @@ adds the complete supported numerical evidence and processed sample/candidate
 streams. Changing figure choices does not trim those complete streams.
 
 ## Understand the figures
+
+With the explicit continuous recipe 1.1, an exactly constant recording shows
+its measured level and an explanation. Tonic and response estimates are
+unavailable; this does not establish an absence of physiological response.
+There is no invented flat waveform or peak count. The evidence download keeps
+all coordinate/support rows, their empty processed values and the original
+bounded raw preview. The original full raw recording remains a separate export.
+
+New EDA packages use this display policy for new results and retain the original
+interpretation of older results. Opening a saved package returns its exact old
+files. **Prepare a new version** explicitly creates a new report; it does not
+recalculate its scientific sources.
 
 Event figures show phasic conductance with the original method windows and
 response markers. A supported nonresponse differs from an event with missing
@@ -39,7 +52,7 @@ window is too large. Exact figure choices become available after preparation;
 select the saved events or segments and processed components to illustrate.
 Numerical pages, candidate-marker pages and figure choices are separate controls.
 
-For a continuous segment, choose **Change display window**, enter source-time
+For an available processed continuous segment, choose **Change display window**, enter source-time
 bounds and choose **Apply display window**. Then **Prepare report** creates the
 new view. **Reset to original window** restores the full segment, while
 **Cancel window edit** keeps the earlier draft choice. Hiding a figure preserves
@@ -48,11 +61,12 @@ its chosen time window.
 A new window needs new display preparation; changing only components or pages
 reuses matching preparation. Whole-segment measurements stay unchanged.
 The report cannot change the original event baseline, exclusions or scoring.
+An exactly constant segment has no processed response window to focus.
 
 ## Recover and return later
 
 When preparation refuses a request, read the explanation before retrying.
-A smaller time window can address a display-sample limit. Fewer figures can
+A smaller time window can address an ordinary processed display-sample limit. Fewer figures can
 address a figure limit. Neither can remove excess complete evidence from a
 package. With several selected sources, removing a source may help.
 If one source alone exceeds the complete-evidence limit, Brohn explains that
@@ -61,6 +75,11 @@ retry. Figure or title edits cannot resolve that limit. Use **Back to study**
 and the original saved report's exports for its separately available evidence;
 this does not create a combined package. Replacing that source allows a new
 report request.
+
+An exactly constant segment that exceeds the coordinate-view capacity also
+needs removal or replacement in this package. Its full support cannot be made
+valid by choosing a smaller response window. Use the original report's separate
+exports when the combined package cannot accommodate it.
 
 Earlier successful versions remain in **Saved report packages**. Open a saved
 report to retrieve its exact choices and downloads without rerunning analysis.

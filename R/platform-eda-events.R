@@ -1,8 +1,11 @@
 # Continuous-context EDA contract. Numerical processing runs outside Shiny.
 brohn_eda_events_recipe_choices <- function() c("Whole-recording tonic and SCR summaries" = "eda-neurokit-highpass/1.0",
+  "Whole-recording summaries with exact-constant handling (1.1)" = "eda-neurokit-highpass/1.1",
   "Stimulus response with continuous filtering" = "eda-event-highpass/1.0",
   "Stimulus response with cvxEDA decomposition" = "eda-event-cvxeda-defaults/1.0")
-brohn_eda_events_is_event <- function(m) !is.null(m$parameters$recipe) && m$parameters$recipe %in% unname(brohn_eda_events_recipe_choices())[-1L]
+brohn_eda_continuous_recipes <- function() c("eda-neurokit-highpass/1.0", "eda-neurokit-highpass/1.1")
+brohn_eda_events_is_event <- function(m) !is.null(m$parameters$recipe) &&
+  m$parameters$recipe %in% c("eda-event-highpass/1.0", "eda-event-cvxeda-defaults/1.0")
 .brohn_eda_events_window <- function(x, label, low = -120, high = 300) {
   brohn_require(brohn_array(x) && length(x) == 2 && all(vapply(x, brohn_number, logical(1), min = low, max = high)) &&
     x[[1]] < x[[2]], paste(label, "needs two increasing finite endpoints in seconds."))
@@ -12,7 +15,7 @@ brohn_validate_eda_events_mapping <- function(m, columns = NULL, source_format =
   brohn_require(is.list(m), "Confirm the EDA source mapping.")
   p <- m$parameters; recipe <- brohn_default(p$recipe, "eda-neurokit-highpass/1.0")
   brohn_require(brohn_text(recipe, 128) && recipe %in% unname(brohn_eda_events_recipe_choices()), "Select an implemented EDA analysis recipe.")
-  if (recipe == "eda-neurokit-highpass/1.0") return(invisible(m))
+  if (recipe %in% brohn_eda_continuous_recipes()) return(invisible(m))
   brohn_require(is.null(source_format) || source_format %in% c("csv", "tsv"), "Event-related EDA accepts calibrated CSV or TSV samples.")
   brohn_require(brohn_number(m$sampling_rate, 8, 2000), "EDA event analysis needs a declared sample rate from 8 to 2,000 Hz.")
   fs <- m$sampling_rate
@@ -109,7 +112,7 @@ brohn_eda_events_input <- function(input, metadata, source_format = "csv") {
   m <- metadata; get <- function(name) input[[paste0("map_eda_event_", name)]]
   recipe <- get("recipe")
   brohn_require(brohn_text(recipe, 128) && recipe %in% unname(brohn_eda_events_recipe_choices()), "Choose an EDA analysis recipe.")
-  if (identical(recipe, "eda-neurokit-highpass/1.0")) {
+  if (recipe %in% brohn_eda_continuous_recipes()) {
     old <- m$parameters
     m$parameters <- if (is.null(old$recipe) || identical(old$recipe, recipe)) brohn_default(old, list()) else list()
     m$parameters$recipe <- recipe; m$event_column <- NULL; m$events <- NULL

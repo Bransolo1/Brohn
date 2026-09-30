@@ -18,6 +18,38 @@ This limitation does not block building or testing independent software routes.
 
 ## Required product and verification work
 
+Exact-constant EDA scoped acceptance, 30 September: explicit recipe 1.1 preserves the
+raw mean of eligible exactly constant conductance, including zero, with all
+nine processed-response features null and an explicit quality reason. Complete
+coordinate evidence remains; no processed waveform, response count or new
+estimator is invented. Review/report preparation 0.2 handles the saved result
+while original 1.0 science and exact 0.1 report history remain unchanged.
+Native original-source and joined historical checks passed. Initial researcher
+acceptance has 30 checks/six scans and cold history has ten checks with exact
+old/new downloads and no new jobs. A separate genuine `-0.0` source preserved
+original CSV bytes and passed 13 standalone-review checks against its saved
+positive-zero mean/preview; the injected signed-zero diagnostic remains retained.
+The initial six-source deadline failure and 324.02-second render diagnostic
+remain retained. The corrected native workload passed 24 checks with ten new
+read-only jobs on attempt 1 under normal 60-second leases and the unchanged
+300-second deadline; mixed/evidence-only runs took 282.557/237.232 seconds.
+Independent original-source oracles passed 171/131 checks over the same 109,863
+scientific leaves, 38,232 identities and 7,000 constant coordinates; a separate
+comparison preserved all 49 complete data/evidence members across variants.
+Phone-table correction checks passed 36 component/nine actual-browser checks.
+Startup checks passed 27 targeted checks, followed by 74 supervisor and 22
+acquisition checks on unchanged joined03 (1,415 source files). Final joined03
+browser acceptance passed 31 initial/11 cold checks after normal full startup,
+preserving exact new 0.2 and old 0.1 downloads, jobs, objects and listed entities.
+All owned services closed. This saved-review/offline/cold phase complements the
+earlier generation/edit/cancel journey; its separate source scope is recorded in
+[the phase record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md). This advances
+PC02/PC03/PC04/PC05/PC13/PC16 and BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17
+without closing them. Next is the
+[separate saved cardiac adapter](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+Near-flat signals, absolute response criteria and broader detector/reference
+qualification remain open, along with the other requirements below.
+
 Choice-report scoped checkpoint, 27 September: complete saved native/imported
 MaxDiff results and mixed task/liking cohorts now have separate source,
 preparation, pure projection, worker and historical-package evidence. The
@@ -25,9 +57,9 @@ preparation, pure projection, worker and historical-package evidence. The
 researcher/mobile, independent complete-export and unchanged restart acceptance.
 It advances PC02/PC05/PC13/PC16 and BWP04/BWP10/BWP13/BWP14/BWP15/BWP17, without
 closing them. Exported task reports gain plain metric labels and explanations
-across all seven profiles while preserving canonical evidence. The next report
-work starts with [complete saved EDA and liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md),
-then a distinct ECG/PPG adapter. Preserve full numerical evidence without
+across all seven profiles while preserving canonical evidence. Its then-next
+[complete saved EDA and liking](architecture/SAVED-PHYSIOLOGICAL-REPORT-NEXT.md)
+now has separate scoped acceptance; ECG/PPG remains a distinct next adapter. Preserve full numerical evidence without
 reanalysis. Other physiological/media adapters, task/choice image context,
 raw bundles, performance and post-collection restrictions remain separate requirements.
 

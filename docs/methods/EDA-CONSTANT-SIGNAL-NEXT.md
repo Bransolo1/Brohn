@@ -1,39 +1,102 @@
-# Constant-signal EDA: versioned remedy contract proposal
+# Continuous EDA: exact-constant recordings
 
-28 September 2026. **BWP09 / PC16 follow-on, not an implemented or qualified method.** This proposal addresses the continuous `eda-neurokit-highpass/1.0` counterexample in [the retained finding](../qa/EDA-CONSTANT-SIGNAL-FINDING.md). Report-export fidelity, device qualification, and scientific detection validity remain separate gates. No scientific code, threshold, source report or historical download has been changed.
+Updated 30 September 2026. Explicit recipe `eda-neurokit-highpass/1.1` adds a descriptive
+branch for exactly constant, eligible recordings. It does not establish a new
+physiological response threshold. The [acceptance record](../qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md)
+separates component, native source, review, export and researcher evidence.
 
-## What the evidence establishes
+## What the researcher receives
 
-The genuine unchanged-producer corpus04 report retained 166,634 candidates from 500,100 exactly constant 5 µS samples. A separate bounded component diagnostic reproduces the issue without rerunning that large job: at 10 Hz, 1,200 constant 5 µS samples acquire a cleaned range of about 8.88e-16 µS and a phasic range of 1.80e-15 µS; the unchanged recipe retains 334 candidates. Constant 0.5 and 500 µS numerical stress cases retain 500 and 333 candidates. Exact zero produces an empty-maximum reduction error. Alternating 5 with its next representable floating-point value retains 250 candidates; this is a numerical boundary witness, not physiological data.
+A constant recording retains its measured raw conductance level, original units,
+sample rate, segment bounds, edge exclusions and source identities. Brohn explains
+that response measurements are unavailable. It does not present a zero SCR count,
+zero response rate or an invented tonic/phasic line. The recording may reflect an
+absence of observed variation or an equipment/contact problem; this policy alone
+cannot distinguish those explanations.
 
-The diagnostic uses CPython 3.12.10, NumPy 2.5.3, SciPy 1.18.1 and NeuroKit2 0.2.13. The [counterexample evidence and reproduction guide](../qa/EDA-CONSTANT-SIGNAL-FINDING.md) records all seven inspected source files, unchanged before/after. Brohn's source hash is `64a98a8b8efa4445543dd9dfe4033285643d5559841d4eceab3d401a7f16a9db`. These are direct function calls on synthetic arrays, not new native publications or a complete numerical error proof.
+Select the new continuous method explicitly when mapping a new analysis. Existing
+mappings, defaults, stream curation and saved recipe 1.0 results keep their original
+behavior. A report preparation cannot silently rerun or repair an old analysis.
+New report packages use the versioned 0.2 display/export profile; old packages
+reopen their original files. See the [report guide](../operations/SHARE-SAVED-EDA-FINDINGS.md).
 
-In that source, `physiology.py:885` records `exact_flatline` but still calls dispatch. Lines 350–397 clean, decompose and detect using relative prominence, then count retained candidates. Installed `signal_findpeaks` divides each prominence by the maximum prominence: an extremely small absolute signal can still pass. Onset-to-peak SCR amplitude is a different quantity, calculated later. The public [NeuroKit detector source](https://neuropsychology.github.io/NeuroKit/_modules/neurokit2/eda/eda_findpeaks.html) and [amplitude extraction source](https://neuropsychology.github.io/NeuroKit/_modules/neurokit2/eda/eda_peaks.html) document that chain; the current web pages identify a development version, so the installed hashes control this diagnosis.
+## Exact method boundary
 
-The short witness establishes that numerical variation exists after cleaning before decomposition. It does not attribute every error contribution to one routine. The installed Butterworth path already uses second-order sections and forward/backward filtering; merely switching to SOS is therefore not a remedy. SciPy describes SOS as reducing numerical problems, not guaranteeing exact constant preservation. [SciPy filtering documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html)
+1. Apply the existing source-unit conversion, physical admissibility, time/gap
+   segmentation, minimum duration and edge-support checks.
+2. Compare every finite converted segment value directly with its first value.
+   There is no epsilon, range subtraction, rounding or amplitude threshold.
+   Signed zeros may compare equal; original source bytes remain retained.
+3. For an eligible exact constant, bypass cleaning, decomposition and detection.
+   The raw mean is the first converted value. This avoids summation noise and
+   overflow without claiming a filtered physiological component.
+4. Preserve the existing exclusion mask and valid-duration definition, even
+   though this branch does not filter. Short or otherwise ineligible segments
+   retain their original unavailable reasons; the branch does not rescue them.
+5. Ordinary and near-constant inputs use the unchanged numerical processing path.
 
-## Three decisions that must remain separate
+The effective parameters record
+`exact_constant_policy="raw_description_only/1.0"`. This is a fixed recipe rule,
+not an adjustable researcher threshold. Recipe 1.0 is unchanged.
 
-| Layer | Proposed boundary | Required evidence |
-|---|---|---|
-| Exact-constant numerical handling | Detect equality of the original finite, unit-normalized segment values before filtering, without a tolerance. Investigate an explicit constant-input branch and safe empty-candidate handling. Do not automatically call its scientific SCR count a valid zero. | Mathematical constant/DC invariant with the declared filter initialization and boundaries; independent tests of zero and nonzero levels, edges, units and segmentation. |
-| Near-flat numerical precision | Do not collapse nonconstant signals using an arbitrary epsilon, range, or multiple of the baseline. Any centering/filtering or error-bound change needs its own version and independent numerical analysis. | Higher-precision or independently derived reference, conditioning/roundoff bounds across admitted rates, lengths and levels, and preservation of small genuine variations. |
-| Scientific response and quality policy | Choose a declared absolute response criterion and separate quality rules only through internal scientific evidence and design review. Define the measured quantity, µS units, processing stage, onset eligibility, artifact handling and denominators. | Protocol/device noise and resolution evidence, independent annotated responses and justified exclusion rules. A flat recording alone does not distinguish absent observable variation from equipment/contact failure. |
+## Output and source preservation
 
-The SPR committee report recommends declaring the minimum conductance change for nonspecific SCRs and discusses 0.01–0.05 µS in relation to equipment noise and experimental conditions. This is a scientific amplitude criterion, not a floating-point tolerance and **not a selected Brohn default**. Relative prominence cannot silently stand in for it. The committee also distinguishes response amplitude from magnitude that includes zero responses; new output denominators must state which is reported. [SPR publication recommendations, sections 3 and 6](https://doi.org/10.1111/j.1469-8986.2012.01384.x)
+| Output | Exact-constant behavior |
+|---|---|
+| Segment status | `descriptive_only`; descriptive status computed, response status unavailable. |
+| Raw conductance mean | Original finite converted level; eligible descriptive value. |
+| Tonic mean, median and slope | Null with `exact_constant_signal`. |
+| SCR count and rate | Null with `exact_constant_signal`, never an inferred physiological zero. |
+| SCR amplitude mean and median | Null values and explicit null denominators. |
+| Signed and positive phasic area | Null with `exact_constant_signal`. |
+| Stored numerical candidates | Zero structural records, distinct from an SCR measurement. |
+| Full sample table | Original time, source index and retained flag; clean/tonic/phasic cells explicitly null. |
+| Candidate stream | A complete valid zero-row table, not a missing artifact. |
+| Preview and source | Original bounded raw preview and source retained; no full raw waveform duplicated in report evidence. |
 
-## Independent witness and release gates
+All ten feature rows keep their names, units, order and scope. Typed evidence
+preserves nulls; CSV processed cells are empty under the existing headers.
+Mixed recordings retain both ordinary computed and constant descriptive segments.
+Quality totals distinguish computed, descriptive-only and unavailable segments.
+Usability of a raw description does not imply usability of a response estimate.
+The existing research-review and unqualified-method flags remain explicit.
 
-1. **Exact constants:** zero and multiple nonzero levels; legal sampling rates and durations around edge exclusions; source units converted to µS; missing samples and gaps split as before. Require no fabricated peaks or unhandled empty-array error. Test full processed streams, descriptive features and statuses, not just the headline count.
-2. **Near-flat inputs:** adjacent representable values, ramps, quantized plateaus and seeded noise. Retain exact inputs and an independent oracle; distinguish numerical suppression from scientific exclusion. Include ordinary signals to detect unintended changes.
-3. **Small responses:** independently generated analytic waveforms with known onset/peak and small amplitudes, followed by licensed real recordings with independently reviewed labels, calibration and noise context. NeuroKit simulation alone is not an independent reference. Once internal scientific evidence and design review establishes a criterion, test just below, at and above it, including overlaps, missing onset/recovery and nonresponses.
-4. **Quality and support:** test available zero response versus unavailable response evidence separately; retain descriptive support where defensible. Exercise valid durations, clipping/quantization, interruptions and all-excluded cases. Counts, rates and amplitude denominators must agree with the reviewed policy.
-5. **Version conservation:** regression fixtures preserve all saved 1.0 values and byte-identical historical artifacts. New analysis produces a new report ref with a reviewed recipe identifier, implementation/runtime hashes, criteria and reason codes. Report preparation never silently rescales, re-detects or repairs old evidence.
+Synthesis may retain the eligible raw mean under its exact method definition.
+The nine unavailable observations remain present with their source reason.
+Different recipes do not silently pool, and matching participant text alone is
+not a cross-source identity proof. No new EDA–liking estimator is introduced.
 
-## Researcher meaning and unresolved BWP09 decisions
+## Views, reports and history
 
-Proposed new-result message: **“The recorded signal is exactly constant. Response measures require review; this does not establish no response.”** Preserve the raw mean and original quality flags where supported. Do not imply calmness, attention, emotion or a stimulus response from a candidate count. If old results are flagged in the application, show that as separate current review context; do not rewrite their published HTML, ZIP or scientific values.
+A saved constant review has a non-null model with an explanatory state, no
+processed points/components/markers, and separate coordinate counts. It uses the
+whole original segment and offers no response-window controls. The 500,000-row
+coordinate-view limit remains; narrowing a response window is not a remedy.
+Reports retain all original numerical evidence even if their figures are hidden.
+See the [versioned report contract](../architecture/SAVED-EDA-REPORT-PACKAGES.md).
 
-Before implementation, internal scientific evidence and design review must settle: (a) exact-constant status and whether inferential count/rate are unavailable while a numerical candidate count is zero; (b) the absolute amplitude definition and protocol settings; (c) near-flat/quantization quality rules and their evidence; (d) the independent numerical oracle and real reference corpus; and (e) the new recipe/schema migration and comparison policy. Event-related EDA has a separate method and needs its own witness assessment before sharing any remedy. No EDA-liking estimator or physical-device qualification is added by this work.
+Old standalone reviews verify the original successful producer and saved source
+under current reader authority. New execution still pins the current code.
+Historical recipe 1.0 models and CSVs, and package 0.1 HTML/ZIP/manifest files,
+remain exact; current readers do not regenerate them.
 
-Reproduce the bounded counterexamples with `python -B tests/eda-flatline-counterexamples.py REPO FRESH_OUT` in the pinned methods environment, following [the reproduction guide](../qa/EDA-CONSTANT-SIGNAL-FINDING.md). A successful diagnostic means known 1.0 failures were reproduced; it is not scientific readiness or acceptance of a replacement. Scientific review in this plan is an internal evidence/design gate, not a request for additional user permission.
+## Work that remains
+
+- **Near-constant numerical behavior:** adjacent representable values, ramps and
+  quantized signals are deliberately unchanged. A future correction needs its own
+  reviewed version and independent conditioning/error evidence.
+- **Scientific response criteria:** relative peak prominence is not an absolute
+  conductance-amplitude criterion. Define the measured quantity, stage, onset
+  support, noise context and denominators before adding an absolute criterion.
+- **Device quality:** calibration, resolution, clipping, contact and motion need
+  device/protocol evidence. A software constant branch does not qualify hardware.
+- **Reference recordings and constructs:** independent reviewed labels and protocol
+  evidence remain necessary for physiological or consumer-research interpretation.
+- **Event-related EDA:** remains a separate method; this branch does not change its
+  baseline windows, exclusions, response definition or nonresponse policy.
+
+The [retained recipe 1.0 counterexamples](../qa/EDA-CONSTANT-SIGNAL-FINDING.md)
+document the numerical fault and its reproducible original results. The SPR
+[publication recommendations](https://doi.org/10.1111/j.1469-8986.2012.01384.x)
+discuss amplitude criteria in relation to equipment and protocol; those values
+have not been adopted as new Brohn defaults.

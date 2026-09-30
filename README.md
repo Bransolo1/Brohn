@@ -1,29 +1,28 @@
 # Brohn - Implicit Research Platform
 
-**Saved EDA report checkpoint, 28 September 2026.** The existing Prepare report
-flow now includes saved event and continuous skin conductance beside liking,
-preserving complete included processed evidence without repeating scientific
-analysis. The scoped researcher/download/restart journey has passed; component,
-native worker, export and presentation evidence remain separate. Read the
-[EDA guide](docs/operations/SHARE-SAVED-EDA-FINDINGS.md),
-[contract](docs/architecture/SAVED-EDA-REPORT-PACKAGES.md),
-[phase record](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md) and
-[source receipt](docs/qa/EDA-REPORT-PACKAGE-SOURCE.json).
-A later UI-only correction has separate final-source saved-history checks:
-single-source capacity refusals explain original exports and do not offer
-ineffective retries. Large complete-evidence packages remain bounded; a smaller
-display does not shrink the full evidence or guarantee package admission.
-
 Brohn is an open-source, R-first workspace for consumer and psychology research:
 design controlled studies, collect or import data, review traceable analyses,
 and reuse study designs. It aims to make these workflows approachable for
 undergraduate researchers and useful to commercial research teams.
 
 **Working local application; active development.** The broader platform remains
-unfinished. Start with [current status](STATUS.md), the
-[ordered workstream](docs/WORKSTREAM.md), [John's handoff](docs/HANDOFF-JOHN.md)
-and the [master architecture](docs/MASTER-ARCHITECTURE.md). The full scope contains
-50 registered capabilities across 17 work packages.
+unfinished, with 50 registered capabilities across 17 work packages.
+
+- Install and run: [quick start below](#install-and-start) and [local installation guide](docs/operations/LOCAL-INSTALLATION.md).
+- Continue development: [current status](STATUS.md), [John's handoff](docs/HANDOFF-JOHN.md) and [ordered workstream](docs/WORKSTREAM.md).
+- Understand the full scope: [master architecture](docs/MASTER-ARCHITECTURE.md).
+
+**Accepted checkpoint, 30 September 2026:** exact-constant EDA can retain a saved
+raw mean, including zero, while processed response measures remain unavailable.
+Saved reports can include that descriptive evidence beside liking without
+repeating science. Historical outputs keep their saved identity. Scoped native, browser and
+cold-restart acceptance passed; see the [scoped acceptance record](docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md).
+
+The earlier [saved EDA checkpoint](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md)
+remains accepted within its recorded scope. The [EDA guide](docs/operations/SHARE-SAVED-EDA-FINDINGS.md)
+and [contract](docs/architecture/SAVED-EDA-REPORT-PACKAGES.md) distinguish complete
+included evidence from focused figures and raw inputs. A smaller display does
+not shrink complete evidence or guarantee package admission.
 
 The [workflow evidence ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) links the
 actual researcher journeys, method checks, exports and restart evidence for
@@ -69,13 +68,12 @@ component, worker, connected researcher, mobile export and cold-restart evidence
 Exported task reports also gain plain labels/explanations across all seven
 profiles; canonical metric keys, values and support remain in the evidence.
 
-The immediate method work is the
-[versioned constant-signal remedy](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md),
-followed by [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
-Faithful export does not qualify the existing detector: a retained synthetic
-constant-signal counterexample needs correction under a new scientific version.
-Task/choice stimulus image context, raw input bundles, broader workloads and the
-wider platform remain unfinished.
+The next report work is [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+The [exact-constant method plan](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md)
+does not set an amplitude floor or qualify near-flat signals and physiological
+response criteria. Those questions remain open. Task/choice stimulus image
+context, raw input bundles, broader workloads and the wider platform also remain
+unfinished.
 
 ## What is connected
 

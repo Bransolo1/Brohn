@@ -1,6 +1,6 @@
 # Known constant-signal EDA counterexamples
 
-28 September 2026. **Open BWP09 / PC16 scientific-method finding.** Reproducing a counterexample is not acceptance of the current detector or a replacement. This evidence does not qualify devices, physical timing, participant inference or an EDA–liking estimator. The [versioned remedy plan](../methods/EDA-CONSTANT-SIGNAL-NEXT.md) remains pending internal scientific evidence/design review.
+28 September 2026. **Historical recipe 1.0 counterexample; wider BWP09 / PC16 method work remains open.** Explicit recipe 1.1 now has an [exact-constant descriptive policy](../methods/EDA-CONSTANT-SIGNAL-NEXT.md): it preserves the measured level and withholds response estimates. Old results and their downloaded files are unchanged. Near-constant precision, response criteria and device evidence remain separate work. See the [new implementation evidence](EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) for its tested scope.
 
 ## Recorded behavior
 

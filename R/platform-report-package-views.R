@@ -11,7 +11,7 @@
 .brohn_rpv_task_adapter <- function(adapter) adapter%in%c("task-scores","task-trials","task-people")
 .brohn_rpv_choice_adapter <- function(adapter) adapter%in%c("choice-counts","choice-utilities")
 .brohn_rpv_eda_adapter <- function(adapter) adapter%in%c("eda-events","eda-continuous")
-.brohn_rpv_eda_profile <- function(profile) identical(profile,"controlled-gaze-explicit-task-choice-eda-paired/0.1")
+.brohn_rpv_eda_profile <- function(profile) isTRUE(profile %in% c("controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
 .brohn_rpv_component <- function(row,component) {
   if(!is.null(row$source_components))return(component%in%unlist(row$source_components,use.names=FALSE))
   # Older catalog fixtures/metadata predate independent components. Their task
@@ -22,7 +22,7 @@
 .brohn_rpv_has_eda <- function(rows) .brohn_rpv_has_component(rows,"eda")||any(vapply(rows,function(row)isTRUE(row$has_required_eda),logical(1)))
 .brohn_rpv_profiles <- function(rows) {
   eda<-.brohn_rpv_has_eda(rows);choice<-.brohn_rpv_has_component(rows,"choice");task<-.brohn_rpv_has_component(rows,"task")
-  list(renderer_profile=if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.1"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1",
+  list(renderer_profile=if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.2"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1",
     limits_profile=if(eda)"controlled-task-choice-eda-report-package/0.1"else if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")
 }
 .brohn_rpv_waiting <- function(dependencies) {
@@ -52,6 +52,21 @@
 .brohn_rpv_single_source_limit_message <- function() {
   "This saved source's complete evidence exceeds the current report-package limit. A smaller display window, fewer figures, or an unchanged retry cannot reduce that complete evidence."
 }
+.brohn_rpv_constant_coordinate_refusal <- function(preparation) {
+  identical(preparation$reason_code,"coordinate_rows_limit")&&identical(preparation$resource,"coordinate_rows")&&
+    identical(preparation$recovery_scope,"none")&&brohn_number(preparation$maximum,500000,500000,TRUE)
+}
+.brohn_rpv_constant_coordinate_limit <- function(intent,rows) {
+  if(is.null(intent)||!identical(intent$request$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.2")||
+     !intent$status%in%c("failed","needs_attention","cancelled","superseded")||
+     !.brohn_rpv_constant_coordinate_refusal(intent$preparation))return(FALSE)
+  original<-intent$request$report_refs
+  if(length(original)==1L)return(any(vapply(rows,function(row).brohn_rpv_same(row$ref,original[[1]]),logical(1))))
+  length(original)==length(rows)&&all(vapply(original,function(ref)any(vapply(rows,function(row).brohn_rpv_same(row$ref,ref),logical(1))),logical(1)))
+}
+.brohn_rpv_constant_coordinate_message <- function() {
+  "The complete coordinates of an exactly constant segment exceed the current review limit. A smaller window, fewer figures, a new title or an unchanged retry cannot repair this capacity limit."
+}
 .brohn_rpv_eda_refusal <- function(preparation,rows,single_source_limit=FALSE) {
   if(is.null(preparation$recovery_scope)||is.null(preparation$resource))return(NULL)
   source<-Filter(function(row).brohn_rpv_same(row$ref,preparation$source),rows)
@@ -64,7 +79,9 @@
       "This affected EDA source is related evidence, not one of your selected findings. Add that exact saved parent report under Saved findings before changing its display window. You can remove its figure sections afterward; its numerical evidence remains included. Related sources that are not selected keep their original whole windows.",
     fewer_figures="Choose fewer figure views, components or candidate marker pages. Complete numerical evidence remains included.",
     repair_source="Review the original saved source and its existing exports. Changing figure pages cannot repair the source evidence.",
-    new_preparation="Review these choices and explicitly prepare a new version with current preparation code.",NULL)
+    new_preparation="Review these choices and explicitly prepare a new version with current preparation code.",
+    none=if(.brohn_rpv_constant_coordinate_refusal(preparation))paste(.brohn_rpv_constant_coordinate_message(),
+      "Remove or replace the affected saved source to prepare a different selection. A selected paired report can require that source as related evidence. Use Back to study for the original saved report and its separate evidence exports.")else NULL,NULL)
   shiny::tagList(if(length(source)==1L)shiny::p(paste("Affected source:",source[[1]]$title)),
     if(!is.null(preparation$message))shiny::p(preparation$message),
     shiny::p(paste("Resource:",gsub("_"," ",preparation$resource,fixed=TRUE),
@@ -170,6 +187,7 @@ brohn_report_package_sources_ui <- function(page,selected) shiny::tagList(
     shiny::textInput(paste0("rpk_eda_markers_",s$id),"Candidate marker pages (blank for all; 50 candidates per page)",
       if(s$display$marker_pages$pages=="all")""else paste(unlist(s$display$marker_pages$page_numbers),collapse=", ")),
     shiny::p("Each phasic figure shows one candidate page over the same full display window. All candidate pages are included by default; tonic and cleaned traces each use one figure. Marker pages require the phasic component."),
+    shiny::p("An exactly constant descriptive-only segment uses one explanatory panel and retains all ten feature rows. It has no processed components or candidate pages; selecting a component cannot make its response estimates available."),
     if(s$adapter=="eda-events")shiny::p("Event windows retain the saved method's baseline and response settings. Trace availability and eligibility for response measurements are reported separately. Selected-response reference markers repeat across candidate pages; they are not additional candidates.")else
       shiny::p("Continuous figures use original segment windows unless you change an exact segment's display window in Choose specific views. Whole-segment measurements remain unchanged."))
 }
@@ -215,6 +233,12 @@ brohn_report_package_figures_ui <- function(sections,labels=list(),task_options=
 .brohn_rpv_eda_details <- function(item,page) {
   d<-item$details;if(!is.list(d)||!.brohn_rpv_eda_adapter(page$adapter))return(NULL)
   bounds<-function(b)if(is.null(b))"Unavailable"else paste(b$start_s,"to",b$end_s,"seconds")
+  if(identical(d$status,"raw_description_only"))return(shiny::tagList(
+    shiny::p(paste("Saved cell",d$source_record_index,"| Recorded conductance level available; response estimates unavailable")),
+    shiny::p("The original samples in this segment are exactly constant. The saved raw mean is retained; the other nine measurements were withheld. This does not mean that no physiological response occurred."),
+    shiny::p(paste(d$feature_count,"original feature rows remain in the numerical evidence. This view uses one explanatory panel, with no processed trace or candidate-marker pages.")),
+    shiny::p(paste("Whole original segment:",bounds(d$original_default_bounds))),
+    shiny::p("A smaller display window cannot restore response support. Complete original coordinate rows and bounded raw previews are retained in the evidence; the complete raw conductance series and input bytes are not included.")))
   shiny::tagList(shiny::p(paste("Saved cell",d$source_record_index,"|",if(identical(d$status,"available"))"Processed trace available"else"Processed trace unavailable")),
     if(!is.null(d$descriptive_status))shiny::p(paste("Descriptive measurements:",d$descriptive_status,brohn_default(d$descriptive_reason,""))),
     if(!is.null(d$scr_status))shiny::p(paste("Skin conductance response measurements:",d$scr_status,brohn_default(d$scr_reason,""))),
@@ -240,11 +264,11 @@ brohn_report_package_eda_window_ui <- function(editor) {
 .brohn_rpv_source_windows_ui <- function(page) {
   windows<-page$source_windows;if(is.null(windows))return(NULL)
   shiny::tagList(shiny::h4("Original recording windows"),
-    shiny::p("These bounds come from the exact saved source metadata; no signal view has been prepared. Change a window here before Prepare report, including after a display-size refusal. Apply changes your draft, not the saved failed preparation or original measurements."),
+    shiny::p("These bounds come from the exact saved source metadata; no signal view has been prepared. Where a window is editable, change it before Prepare report or after a refusal that permits a smaller window. Apply changes your draft, not the saved failed preparation or original measurements."),
     lapply(windows$items,function(item)shiny::div(class="brohn-stack",shiny::strong(item$label),
       if(!is.null(item$original_default_bounds))shiny::p(paste("Original segment bounds:",item$original_default_bounds$start_s,"to",item$original_default_bounds$end_s,"seconds.")),
       if(isTRUE(item$focusable))brohn_command("Change display window","rpk_eda_window_open",list(ref=page$report_ref,key=item$key))else
-        shiny::p(brohn_default(item$focus_reason,"This saved recording has no editable continuous window.")))))
+        shiny::p(if(identical(item$focus_reason,"exact_constant_signal"))"This exactly constant segment keeps its whole original bounds. Its recorded level is available; response estimates are withheld. A smaller window is not a remedy."else brohn_default(item$focus_reason,"This saved recording has no editable continuous window.")))))
 }
 brohn_report_package_selector_ui <- function(page) shiny::div(class="brohn-card",
   shiny::h3("Choose saved views",id="rpk_selector_heading",tabindex="-1"),

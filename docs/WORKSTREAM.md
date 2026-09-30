@@ -1,6 +1,36 @@
 # Brohn workstream and restart checklist
 
-**Saved EDA report checkpoint, 28 September 2026:** the scoped final researcher,
+**Exact-constant EDA scoped acceptance, 30 September 2026:** explicit recipe 1.1 retains
+the raw mean of an eligible exactly constant segment and marks processed-response
+features unavailable, without invented peaks or a synthetic waveform. Saved
+descriptive review and report preparation 0.2 preserve complete coordinate/null
+evidence beside liking. Original 1.0 science and old 0.1 packages remain exact.
+Native scientific-source and joined historical checks passed. The initial
+researcher journey passed 30 checks/six scans and ten cold-restart checks kept
+old/new downloads exact without jobs. A genuine literal `-0.0` source also
+completed standalone 1.1 review: original CSV bytes stayed exact and saved
+mean/preview fields were already positive zero. No generic transport fix was
+needed for that reachable path.
+The initial six-source 300-second failure and 324.02-second direct render
+diagnostic remain retained. The corrected same-source native workload passed
+24 checks: ten new read-only jobs succeeded on attempt 1 under normal 60-second
+leases and the unchanged deadline, taking 282.557/237.232 seconds for mixed and
+evidence-only packages. Independent oracles passed 171/131 checks over identical
+109,863 scientific leaves, 38,232 identity fields and 7,000 constant coordinates;
+a separate proof preserves all 49 complete data/evidence members across variants.
+The phone-table fix passed 36 component/nine actual-browser checks. Startup
+checks passed 27 targeted checks; joined03 passed 74 supervisor/22 acquisition
+checks against its unchanged 1,415-file source. Final joined03 browser acceptance
+passed 31 initial and 11 cold checks with normal full startup on both boots.
+Exact 0.2 mixed/evidence-only and old 0.1 HTML/ZIP/HEAD reopened with unchanged
+jobs, objects and listed entities; every owned port/service closed. This final
+saved-review/offline/cold phase complements the earlier generation/edit/cancel
+journey, not a repeat of that entire journey. All 408 original source files and
+the catalogue remained exact; two earlier sidecars are recorded separately and
+the WAL is empty. The final01 UTF-8 harness failure remains retained. Use [the scoped record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) for current evidence.
+No package or capability closes with this slice.
+
+**Earlier saved EDA report checkpoint, 28 September 2026:** the scoped final researcher,
 download and cold-restart flow passed: 8 queued-cancel, 74 initial / 11 scans and
 9 restart checks. Eight executed jobs succeeded on attempt 1 with normal
 60-second leases; saved HTML/ZIP bytes reopened unchanged without new jobs.
@@ -59,7 +89,8 @@ This file orders the immediate continuation; it does not replace that scope.
 
 | Workstream | Scoped implementation and evidence | Remaining work |
 | --- | --- | --- |
-| Saved event/continuous EDA handoff | One-Prepare flow, original-window metadata, complete included processed evidence, exact history, corrected offline presentation, scoped main researcher/restart acceptance and separate final-source capacity-guidance/history checks. | Versioned constant-signal method repair, saved ECG/PPG, larger complete-evidence capacity, plain EDA labels, field-aware missing-reason wording and print heading placement. |
+| Exact-constant EDA 1.1 / report 0.2 | Explicit raw-description-only branch; native originals/history, initial 30-check/six-scan journey, ten cold checks and signed-zero review; corrected six-source native 24 checks, independent 171/131 oracles and 49-member conservation; phone 36/9 and runtime 27/74/22 checks in separate scopes. | Final joined03 saved-review/offline/normal cold startup passed 31/11 checks; all phases retain their source bindings and failures. Near-flat/absolute response criteria remain open. |
+| Saved event/continuous EDA handoff | One-Prepare flow, original-window metadata, complete included processed evidence, exact history, corrected offline presentation, scoped main researcher/restart acceptance and separate final-source capacity-guidance/history checks. | Accepted exact-constant checkpoint above; saved ECG/PPG, larger complete-evidence capacity, plain EDA labels, field-aware missing-reason wording and print heading placement. |
 | Complete choice/MaxDiff handoff | Complete saved counts/models, mixed task/liking sources, packed/native/import/cohort evidence, guarded workers, exact history, researcher/mobile downloads and unchanged restart; scoped acceptance. | EDA has separate scoped acceptance above; task/choice image context and broader methods remain open. |
 | Saved-download HTTP | Shared finalizer on 19 saved callbacks / 24 export variants and hosted 403; exact bytes, empty HEAD, current authority and native paired/history compatibility. | Framework downloadHandlers, participant/static/range/compressed routes retain separate contracts. |
 | Saved task/liking handoff | Seven enabled native/imported task profiles and saved cohorts, complete numerical evidence, exact prepared history, phone-readable exports and unchanged restart; scoped final acceptance. | Choice/MaxDiff extension now has scoped acceptance; task image context, further report families and wider workloads remain open. |
@@ -95,26 +126,30 @@ independent reference evidence. Do not add their counts into a whole-product cla
 
 ## Active work
 
-1. **Versioned constant-signal EDA remedy, then saved ECG/PPG
-   (PC02/PC05/PC13/PC16; BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17).**
-   Preserve the accepted EDA export source and all failed phase evidence.
-   Implement the independently reviewed, versioned
-   [constant-signal remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md). Keep numerical
-   precision handling separate from scientific SCR thresholds and data quality;
-   do not pick an arbitrary floor. Preserve historical 1.0 results exactly.
-   [Saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md) follow as
-   a separate admission profile, including after-exclusion results and explicit
-   RR/PRV distinctions. Consume saved evidence without new analysis or a new
-   liking estimator. Before broadening EDA presentation, add accurate plain
-   metric labels, distinguish a null missing-reason field from an unavailable
-   measure, and keep print headings with their following content.
+1. **Preserve the exact-constant checkpoint and build saved cardiac reports
+   (PC02/PC03/PC04/PC05/PC13/PC16; BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17).**
+   Preserve the accepted exact-constant source, numerical, native, phone/runtime
+   and final joined03 saved-review/offline/cold evidence under their separate
+   source bindings. Retain the
+   initial 30-check/six-scan journey, ten cold checks, original deadline failure,
+   direct diagnostic and strict cross-variant oracle failure. The separate
+   cross-variant proof verifies full scientific conservation while allowing only
+   the explicitly bound optional presentation companions. The
+   [checkpoint record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) records each phase;
+   do not add overlapping counts into a whole-platform qualification.
+   Implement [saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md)
+   as a separate admission profile, including after-exclusion source closure and
+   explicit RR/PRV meanings. Consume saved evidence without reanalysis or a new
+   liking estimator. The exact-constant remedy does not choose a near-flat or
+   absolute physiological response threshold; those method decisions remain open.
+   Before broadening EDA presentation, add plain metric labels, field-aware
+   missing-reason text and reliable print heading placement.
    Further neural/camera/media adapters remain. Task/choice material definitions
    and hashes are retained, but image bytes/context panels are still separate;
    optional embedded stimulus images cover gaze only. Larger profiles,
-   raw/original bundles and additional choice methods remain open. The large
-   UI source produced a valid focused display but its 201,416,771-byte complete
-   projection exceeded 201,326,592 bytes. Qualify any capacity expansion without
-   trimming evidence or interpreting a narrower view as reduced source volume.
+   raw/original bundles and additional choice methods remain open. Preserve the
+   separate large-source capacity refusal: a smaller figure cannot remove the
+   complete evidence required by the package or justify silent truncation.
 
 2. **Remaining source-open responsiveness (PC02/PC05/PC07).** Preserve the
    accepted source guards, exact outputs and ticket/focus behavior. The current

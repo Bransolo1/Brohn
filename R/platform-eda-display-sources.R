@@ -15,9 +15,10 @@
  m$eda_source_family<-if(identical(m$eda_operation,"eda_events"))"event"else if(is.null(m$eda_operation))"continuous"else NULL
  m$source_components<-c(m$source_components,list("eda"));m
 }
-.brohn_edd_unsupported <- function(m) {
+.brohn_edd_unsupported <- function(m,source_admission="task-choice-eda-findings/0.1") {
+ spec<-.brohn_edd_profile_spec(.brohn_edd_profile_from_admission(source_admission))
  if(!identical(m$kind,"eda")||!identical(m$schema,"brohn-worker-result/1.0")||!identical(m$eda_modality,"eda")||is.null(m$eda_source_family))return("This saved physiological family has no registered complete EDA report adapter.")
- allowed<-if(m$eda_source_family=="event")c("eda-event-highpass/1.0","eda-event-cvxeda-defaults/1.0")else"eda-neurokit-highpass/1.0"
+ allowed<-if(m$eda_source_family=="event")c("eda-event-highpass/1.0","eda-event-cvxeda-defaults/1.0")else spec$continuous_recipes
  if(!brohn_array(m$eda_recipes)||!length(m$eda_recipes)||!all(vapply(m$eda_recipes,function(x)is.character(x)&&length(x)==1L&&x %in% allowed,logical(1))))return("This saved EDA recipe is outside the registered event/continuous report profile.")
  if(!length(m$eda_cell_count)||m$eda_cell_count<1L)return("This original EDA report has no saved cells to interpret.")
  if(!length(m$artifacts) %in% c(0L,2L))return("This EDA source requires its exact original zero-or-two processed-stream inventory.")
@@ -136,14 +137,14 @@
 }
 
 .brohn_rpk_eda_requirements <- function(store,report_refs,source_admission) {
- brohn_require(identical(.brohn_rpk_admission(source_admission),.brohn_edd_admission)&&brohn_array(report_refs)&&length(report_refs)>0L&&length(report_refs)<=8L,"Choose up to eight exact reports for the EDA package profile.")
+ brohn_require(.brohn_edd_is_admission(.brohn_rpk_admission(source_admission))&&brohn_array(report_refs)&&length(report_refs)>0L&&length(report_refs)<=8L,"Choose up to eight exact reports for the EDA package profile.")
  seen<-active<-root_seen<-character();nodes<-edges<-related<-required<-list();study<-NULL
  selected_keys<-vapply(report_refs,brohn_hash,character(1));brohn_require(!anyDuplicated(selected_keys),"Choose each exact report once.")
  parents<-function(m){out<-list();for(i in seq_along(m$sources)){s<-m$sources[[i]];if(identical(s$state,"selected"))out<-c(out,list(list(ref=list(kind="report",id=s$id,revision=s$revision,body_hash=s$hash,project_id=m$ref$project_id),slot="provenance.selection",index=i)))}
   if(identical(m$source_family,"saved_task_cohort"))for(i in seq_along(m$cohort_sources)){s<-m$cohort_sources[[i]];out<-c(out,list(list(ref=list(kind="report",id=s$id,revision=s$revision,body_hash=s$body_hash,project_id=m$ref$project_id),slot="provenance.source_reports",index=i)))};out}
  walk<-function(ref,root){key<-brohn_hash(ref);brohn_require(!key %in% active,"The EDA source identity graph contains a cycle.");if(key %in% root_seen)return(invisible(NULL));root_seen<<-c(root_seen,key)
   active<<-c(active,key);on.exit(active<<-setdiff(active,key),add=TRUE)
-  m<-.brohn_rpk_report_metadata(store,ref);object<-.brohn_rpk_report_proof(store,m,source_admission=.brohn_edd_admission)
+  m<-.brohn_rpk_report_metadata(store,ref);object<-.brohn_rpk_report_proof(store,m,source_admission=source_admission)
   if(is.null(study))study<<-m$study_id;brohn_require(identical(study,m$study_id)&&identical(ref$project_id,report_refs[[1L]]$project_id),"Required EDA sources must belong to the same study and project.")
   first<-!key %in% seen
   if(first){seen<<-c(seen,key);brohn_require(length(seen)<=32L,"The complete source graph exceeds 32 exact reports.")
@@ -173,8 +174,8 @@
  list(original=a,original_verification=report$complete_analysis$artifact_verification$artifacts[[i]],path=brohn_object_path(store,a$hash,FALSE))})
 .brohn_edd_complete_package_sources <- function(store,handle,complete,result,pulse=NULL) {
  .brohn_rpk_source_pulse(pulse)
- m<-handle$metadata;requirements<-.brohn_rpk_eda_requirements(store,m$report_refs,.brohn_edd_admission)
- .brohn_edd_validate_source_edges(complete)
+ m<-handle$metadata;requirements<-.brohn_rpk_eda_requirements(store,m$report_refs,m$source_admission)
+ .brohn_edd_validate_source_edges(complete,m$source_admission)
  graph<-requirements$source_identity_graph_binding
  graph$nodes<-lapply(graph$nodes,function(node){.brohn_rpk_source_pulse(pulse);report<-complete[[brohn_hash(node$ref)]];brohn_require(!is.null(report),"An exact source graph node was not sealed before hydration.")
   p<-report$saved_body$provenance;keys<-intersect(c("selection","source_reports"),names(p))
@@ -195,20 +196,27 @@
  .brohn_rpk_source_pulse(pulse)
  result
 }
-.brohn_edd_validate_observation <- function(o) {
+.brohn_edd_validate_observation <- function(o,source_admission="task-choice-eda-findings/0.1") {
  required<-c("source_report_id","source_report_revision","source_report_hash","source_design_hash","source_container","source_row","source_row_hash","source_participant_id","source_session_id","source_recording_id","source_segment_id","source_exposure_id","stimulus_id","condition_id","modality","metric","outcome_id","unit","value","source_eligible","source_missing_reason","definition_hash","definition","support","origin","exposure_id","eligible")
  brohn_fields(o,required,c("participant_id","session_id","missing_reason"),"Saved combined EDA source observation")
  brohn_require(identical(o$modality,"eda")&&identical(o$source_container,"features")&&brohn_number(o$source_row,1,1e6,TRUE)&&brohn_number(o$source_report_revision,1,1e9,TRUE)&&all(vapply(o[c("source_report_hash","source_design_hash","source_row_hash","definition_hash")],.brohn_rpk_hash,logical(1)))&&identical(brohn_hash(o$definition),o$definition_hash)&&brohn_text(o$metric,200)&&brohn_text(o$unit,120)&&(is.null(o$value)||brohn_number(o$value))&&is.logical(o$source_eligible)&&length(o$source_eligible)==1L&&is.logical(o$eligible)&&length(o$eligible)==1L,"Saved EDA source observation types or provenance hashes changed.")
  brohn_fields(o$definition,c("recipe","dimensions","scope"),label="Original EDA measure definition")
- brohn_require(identical(o$definition$recipe$recipe,"eda-neurokit-highpass/1.0")&&o$definition$scope %in% c("recording","recording_condition")&&!length(o$definition$dimensions),"This saved EDA synthesis definition is not registered.")
+ spec<-.brohn_edd_profile_spec(.brohn_edd_profile_from_admission(source_admission))
+ .brohn_edd_recipe(o$definition$recipe,FALSE,spec)
+ brohn_require(o$definition$scope %in% c("recording","recording_condition")&&!length(o$definition$dimensions),"This saved EDA synthesis definition is not registered.")
+ if(identical(o$support$status,"descriptive_only")){
+  .brohn_edd_constant_support(o$support,o$definition$recipe)
+  raw<-identical(o$metric,"conductance_raw_mean")
+  brohn_require(o$metric %in% c("tonic_mean","tonic_median","tonic_slope","conductance_raw_mean","scr_count","scr_rate","scr_amplitude_mean","scr_amplitude_median","phasic_area_signed","phasic_area_positive")&&identical(o$source_eligible,raw)&&identical(o$source_missing_reason,if(raw)NULL else"exact_constant_signal")&&(if(raw)brohn_number(o$value,0)else is.null(o$value))&&(!isTRUE(o$eligible)||raw),"Constant EDA synthesis changed descriptive versus unavailable response support.")
+ }
  invisible(TRUE)
 }
-.brohn_edd_validate_source_edges <- function(complete) {
+.brohn_edd_validate_source_edges <- function(complete,source_admission="task-choice-eda-findings/0.1") {
  for(report in complete)if(identical(report$complete_analysis$kind,"multimodal")){
   p<-report$saved_body$provenance
   brohn_require(identical(brohn_hash(p$crosswalk),p$crosswalk_hash),"The reviewed source identity crosswalk changed.")
   for(o in report$complete_analysis$observations)if(identical(o$modality,"eda")){
-   .brohn_edd_validate_observation(o)
+   .brohn_edd_validate_observation(o,source_admission)
    parent<-Filter(function(x)identical(x$state,"selected")&&identical(x$id,o$source_report_id)&&x$revision==o$source_report_revision&&identical(x$hash,o$source_report_hash),p$selection)
    brohn_require(length(parent)==1L,"A combined EDA observation has no unique exact selected parent.")
    ref<-list(kind="report",id=parent[[1L]]$id,revision=parent[[1L]]$revision,body_hash=parent[[1L]]$hash,project_id=report$ref$project_id)
@@ -217,6 +225,7 @@
    brohn_require(identical(brohn_hash(f),o$source_row_hash)&&identical(source$saved_body$provenance$design_hash,o$source_design_hash)&&identical(brohn_eda_value_hash(f$value),brohn_eda_value_hash(o$value))&&identical(f$name,o$metric)&&identical(f$unit,o$unit)&&identical(f$recording_id,o$source_recording_id)&&identical(f$segment_id,o$source_segment_id)&&.brohn_rpk_same(f$group$participant_id,o$source_participant_id)&&.brohn_rpk_same(f$group$session_id,o$source_session_id),"Combined EDA value or original row/recording/person identity differs from its exact parent.")
    matching<-Filter(function(r)identical(r$recording_id,f$recording_id)&&(is.null(f$segment_id)||identical(r$segment_id,f$segment_id))&&(is.null(r$channel)||identical(r$channel,f$channel))&&(is.null(f$condition_id)||identical(r$condition_id,f$condition_id)),a$recordings)
    support<-if(length(matching)==1L)matching[[1L]]else list(status="unavailable")
+   if(identical(support$status,"descriptive_only"))brohn_require(identical(o$source_eligible,f$eligible)&&identical(o$source_missing_reason,f$missing_reason),"Combined constant EDA eligibility differs from the original feature row.")
    brohn_require(identical(brohn_eda_value_hash(support),brohn_eda_value_hash(o$support))&&.brohn_rpk_same(o$definition$recipe,a$parameters[[f$recording_id]])&&identical(o$definition$scope,f$scope),"Combined EDA support/recipe differs from its exact original cell.")
    maps<-Filter(function(x)identical(x$report_id,ref$id)&&identical(x$source_participant_id,o$source_participant_id)&&identical(x$source_session_id,o$source_session_id),p$crosswalk)
    brohn_require(length(maps)<=1L,"The original reviewed EDA identity bridge is ambiguous.")
@@ -228,22 +237,23 @@
  .brohn_rpk_ref_catalog(store,ref,"eda_display")
  row<-DBI::dbGetQuery(store$con,"SELECT length(CAST(body_json AS BLOB)) bytes FROM entity_versions WHERE kind='eda_display' AND id=? AND revision=? AND project_id=?",params=list(ref$id,ref$revision,ref$project_id))
  brohn_require(nrow(row)==1L&&row$bytes[[1L]]<=2*1024^2,"Saved EDA metadata exceeds its bounded reader.")
- record<-.brohn_rpk_record(store,ref,"eda_display");b<-record$body
+ record<-.brohn_rpk_record(store,ref,"eda_display");b<-record$body;spec<-.brohn_edd_profile_spec(b$preparation_profile)
  brohn_fields(b,c("schema","study_id","project_id","source_family","source","display_request","preparation_profile","implementation","implementation_hash","input_binding_hash","coverage","catalog","artifact","artifact_schema","retained_document","producer"),label="Saved EDA display")
- brohn_require(identical(b$schema,"brohn-saved-eda-display/0.1")&&identical(b$artifact_schema,"brohn-eda-display-evidence/0.1")&&identical(b$preparation_profile,.brohn_edd_profile)&&identical(b$project_id,ref$project_id)&&b$source_family %in% c("event","continuous")&&identical(b$implementation_hash,brohn_hash(b$implementation))&&.brohn_rpk_same(b$display_request,brohn_normalize_eda_display_request(b$display_request)),"Saved EDA display identity or window request is unsupported.")
- source<-.brohn_rpk_report_metadata(store,b$source$report_ref);.brohn_rpk_report_proof(store,source,source_admission=.brohn_edd_admission)
+ brohn_require(identical(b$schema,spec$body_schema)&&identical(b$artifact_schema,spec$evidence_schema)&&identical(b$preparation_profile,spec$profile)&&identical(b$implementation$profile,spec$profile)&&identical(b$project_id,ref$project_id)&&b$source_family %in% c("event","continuous")&&identical(b$implementation_hash,brohn_hash(b$implementation))&&.brohn_rpk_same(b$display_request,brohn_normalize_eda_display_request(b$display_request)),"Saved EDA display identity or window request is unsupported.")
+ source<-.brohn_rpk_report_metadata(store,b$source$report_ref);.brohn_rpk_report_proof(store,source,source_admission=spec$admission)
  context<-.brohn_edd_source_closure(store,source)
  brohn_require(identical(b$study_id,source$study_id)&&identical(b$source_family,source$eda_source_family)&&.brohn_rpk_same(b$source$result_object,.brohn_td_object_ref(source$result_object))&&.brohn_rpk_same(b$source$dataset_ref,source$eda_dataset_ref)&&.brohn_rpk_same(b$source$original_stream_descriptors,source$artifacts),"Saved EDA preparation lost its exact original source.")
  object<-.brohn_rpk_object(store,b$artifact,24*1024^2);document<-.brohn_rpk_object(store,b$retained_document,2*1024^2)
  p<-b$producer;brohn_fields(p,c("job_id","attempt","request_hash","worker_result_hash"),label="EDA producer proof");j<-brohn_get_job(store,p$job_id)
- brohn_require(!is.null(j)&&identical(j$operation,"eda_display")&&identical(j$status,"succeeded")&&j$attempt==p$attempt&&identical(j$result$eda_display_id,ref$id)&&identical(j$result$output_hash,document$hash)&&identical(brohn_hash(j$request),p$request_hash)&&identical(j$request$schema,"brohn-eda-display-job/0.1")&&.brohn_rpk_same(j$request$report_ref,b$source$report_ref)&&.brohn_rpk_same(j$request$implementation,b$implementation)&&.brohn_rpk_same(j$request$display_request,b$display_request)&&identical(j$request$content_fingerprint,b$input_binding_hash),"Saved EDA display differs from its original successful worker proof.")
- frozen<-.brohn_edd_context(store,b$source$report_ref)$closure
+ brohn_require(!is.null(j)&&identical(j$operation,"eda_display")&&identical(j$status,"succeeded")&&j$attempt==p$attempt&&identical(j$result$eda_display_id,ref$id)&&identical(j$result$output_hash,document$hash)&&identical(brohn_hash(j$request),p$request_hash)&&identical(j$request$schema,"brohn-eda-display-job/0.1")&&identical(j$request$preparation_profile,spec$profile)&&.brohn_rpk_same(j$request$report_ref,b$source$report_ref)&&.brohn_rpk_same(j$request$implementation,b$implementation)&&.brohn_rpk_same(j$request$display_request,b$display_request)&&identical(j$request$content_fingerprint,b$input_binding_hash),"Saved EDA display differs from its original successful worker proof.")
+ frozen<-.brohn_edd_context(store,b$source$report_ref,spec$profile)$closure
  brohn_require(identical(b$source$source_closure_hash,brohn_hash(frozen))&&.brohn_rpk_same(j$request$original_closure,frozen)&&identical(j$request$content_fingerprint,brohn_hash(j$request[setdiff(names(j$request),c("authority","content_fingerprint"))])),"Saved EDA original source closure or producer fingerprint changed.")
- list(ref=ref,record=record,report_ref=b$source$report_ref,object=object,document=document)
+ list(ref=ref,record=record,report_ref=b$source$report_ref,object=object,document=document,source_admission=spec$admission)
 }
-brohn_find_eda_display <- function(store,report_ref,display_request=NULL,preparation_profile=.brohn_edd_profile,implementation_ref=brohn_eda_display_implementation_ref()) {
+brohn_find_eda_display <- function(store,report_ref,display_request=NULL,preparation_profile="saved-eda-display/0.1",implementation_ref=brohn_eda_display_implementation_ref(preparation_profile)) {
  .brohn_rpk_ref_catalog(store,report_ref,"report");request<-brohn_normalize_eda_display_request(display_request)
- brohn_require(identical(preparation_profile,.brohn_edd_profile)&&identical(implementation_ref$profile,preparation_profile)&&.brohn_rpk_hash(implementation_ref$hash),"Choose an exact EDA preparation identity.")
+ spec<-.brohn_edd_profile_spec(preparation_profile)
+ brohn_require(identical(implementation_ref$profile,spec$profile)&&.brohn_rpk_hash(implementation_ref$hash),"Choose an exact EDA preparation identity.")
  rows<-DBI::dbGetQuery(store$con,paste("SELECT v.id,v.revision,v.body_hash,v.body_json FROM entities e JOIN entity_versions v ON e.kind=v.kind AND e.id=v.id AND e.revision=v.revision",
   "WHERE e.kind='eda_display' AND e.project_id=? AND json_extract(v.body_json,'$.source.report_ref.id')=? AND json_extract(v.body_json,'$.source.report_ref.revision')=?",
   "AND json_extract(v.body_json,'$.source.report_ref.body_hash')=? AND json_extract(v.body_json,'$.preparation_profile')=? AND json_extract(v.body_json,'$.implementation_hash')=? AND json_extract(v.body_json,'$.display_request')=json(?) ORDER BY e.updated_at DESC,e.id DESC LIMIT 1"),params=list(report_ref$project_id,report_ref$id,report_ref$revision,report_ref$body_hash,preparation_profile,implementation_ref$hash,brohn_json(request)))
@@ -258,7 +268,7 @@ brohn_eda_display_catalog <- function(store,display_ref,cursor=NULL,limit=25L) {
  list(report_ref=b$source$report_ref,source_family=b$source_family,state="ready",prepared_ref=display_ref,display_request=b$display_request,display_request_hash=brohn_hash(b$display_request),items=items,cursor=cursor,next_cursor=if(offset+length(items)<length(b$catalog))list(scope=scope,offset=offset+length(items))else NULL,requires_display_preparation=FALSE,reason=NULL,dependency=NULL)
 }
 brohn_eda_source_windows <- function(store,report_ref,cursor=NULL,limit=25L) {
- context<-.brohn_edd_context(store,report_ref);m<-context$selected
+ context<-.brohn_edd_context(store,report_ref,"saved-eda-display/0.2");m<-context$selected
  brohn_require(identical(m$eda_source_family,"continuous")&&brohn_number(m$eda_cell_count,1,2000,TRUE)&&brohn_number(limit,1,100,TRUE),"Choose a bounded page from an exact saved continuous EDA source.")
  binding<-brohn_hash(context$closure);scope<-brohn_hash(list(report_ref=report_ref,source_binding_hash=binding));offset<-0L
  if(!is.null(cursor)){brohn_fields(cursor,c("scope","offset"),label="Original EDA window page");brohn_require(identical(cursor$scope,scope)&&brohn_number(cursor$offset,0,m$eda_cell_count,TRUE),"Reopen windows from this exact authorized EDA source.");offset<-cursor$offset}
@@ -271,24 +281,25 @@ brohn_eda_source_windows <- function(store,report_ref,cursor=NULL,limit=25L) {
  scalar<-function(i,k){x<-rows[[k]][[i]];if(is.na(x))NULL else x}
  items<-lapply(seq_len(nrow(rows)),function(i){
   identity<-list(recording_id=scalar(i,"recording_id"),segment_id=scalar(i,"segment_id"),channel=scalar(i,"channel"));status<-scalar(i,"status");reason<-scalar(i,"reason")
-  brohn_require(brohn_text(identity$recording_id,1024)&&brohn_text(identity$channel,1024)&&(is.null(identity$segment_id)||brohn_text(identity$segment_id,1024))&&status %in% c("computed","unavailable"),"Original EDA window identity or status is unregistered.")
+  brohn_require(brohn_text(identity$recording_id,1024)&&brohn_text(identity$channel,1024)&&(is.null(identity$segment_id)||brohn_text(identity$segment_id,1024))&&status %in% c("computed","unavailable","descriptive_only"),"Original EDA window identity or status is unregistered.")
   focusable<-identical(status,"computed");bounds<-NULL
-  if(focusable){start<-scalar(i,"start_time_s");end<-scalar(i,"end_time_s");brohn_require(brohn_number(start)&&brohn_number(end)&&start<end,"Original EDA window bounds are unavailable.")
+  if(status %in% c("computed","descriptive_only")){start<-scalar(i,"start_time_s");end<-scalar(i,"end_time_s");brohn_require(brohn_number(start)&&brohn_number(end)&&start<end,"Original EDA window bounds are unavailable.")
    bounds<-list(start_s=.brohn_edd_decimal_parts(.brohn_ecr_shortest(start))$canonical,end_s=.brohn_edd_decimal_parts(.brohn_ecr_shortest(end))$canonical)}
   list(kind="eda_source_window",key=brohn_eda_value_hash(list(report_ref=report_ref,source_family="continuous",identity=identity)),identity=identity,
    source_record_index=as.integer(rows$source_record_index[[i]]),label=paste(unlist(identity,use.names=FALSE),collapse=" | "),original_default_bounds=bounds,
-   focusable=focusable,focus_reason=if(focusable)NULL else brohn_default(reason,"no_processed_segment"),original_status=status)
+   focusable=focusable,focus_reason=if(focusable)NULL else if(identical(status,"descriptive_only"))"exact_constant_signal"else brohn_default(reason,"no_processed_segment"),original_status=status)
  })
- brohn_require(.brohn_rpk_same(.brohn_edd_context(store,report_ref)$closure,context$closure),"Original EDA source authority changed while reading its window bounds.")
+ brohn_require(.brohn_rpk_same(.brohn_edd_context(store,report_ref,"saved-eda-display/0.2")$closure,context$closure),"Original EDA source authority changed while reading its window bounds.")
  result<-list(schema="brohn-eda-source-windows/0.1",report_ref=report_ref,source_family="continuous",source_binding_hash=binding,total=m$eda_cell_count,
   items=items,cursor=cursor,next_cursor=if(offset+length(items)<m$eda_cell_count)list(scope=scope,offset=offset+length(items))else NULL)
  brohn_require(nchar(brohn_json(result),type="bytes")<=2*1024^2,"The bounded original EDA window page is too large.")
  result
 }
 .brohn_edd_selector_catalog <- function(store,report_ref,adapter,cursor=NULL,limit=25L,prepared_ref=NULL) {
- m<-.brohn_rpk_report_metadata(store,report_ref);.brohn_rpk_report_proof(store,m,source_admission=.brohn_edd_admission)
+ spec<-if(is.null(prepared_ref)).brohn_edd_profile_spec("saved-eda-display/0.2")else .brohn_edd_profile_spec(.brohn_edd_metadata(store,prepared_ref)$record$body$preparation_profile)
+ m<-.brohn_rpk_report_metadata(store,report_ref);.brohn_rpk_report_proof(store,m,source_admission=spec$admission)
  brohn_require(identical(adapter,if(identical(m$eda_source_family,"event"))"eda-events"else"eda-continuous"),"Choose this exact saved EDA family.")
- ref<-if(is.null(prepared_ref))brohn_find_eda_display(store,report_ref)else prepared_ref
+ ref<-if(is.null(prepared_ref))brohn_find_eda_display(store,report_ref,preparation_profile=spec$profile)else prepared_ref
  if(is.null(ref)){brohn_require(is.null(cursor)&&brohn_number(limit,1,100,TRUE),"Prepare this exact EDA source before opening catalog pages.")
   return(list(report_ref=report_ref,adapter=adapter,state="needs_preparation",source_family=m$eda_source_family,items=list(),cursor=NULL,next_cursor=NULL,requires_display_preparation=TRUE,prepared_ref=NULL,reason=NULL,dependency=NULL))}
  c<-brohn_eda_display_catalog(store,ref,cursor,limit);brohn_require(.brohn_rpk_same(c$report_ref,report_ref),"The EDA catalog belongs to another exact report.")
@@ -301,7 +312,7 @@ brohn_release_eda_display_resources <- function(handle) {
 }
 brohn_open_eda_display_resources <- function(store,ref,project_id) {
  brohn_require(identical(ref$project_id,project_id),"Choose the saved EDA display's exact project.")
- meta<-.brohn_edd_metadata(store,ref);m<-.brohn_rpk_source_metadata(store,list(meta$report_ref),source_admission=.brohn_edd_admission,eda_refs=list(ref));handle<-.brohn_rpk_hold_sources(store,m)
+ meta<-.brohn_edd_metadata(store,ref);m<-.brohn_rpk_source_metadata(store,list(meta$report_ref),source_admission=meta$source_admission,eda_refs=list(ref));handle<-.brohn_rpk_hold_sources(store,m)
  ok<-FALSE;on.exit(if(!ok).brohn_rpk_release(handle),add=TRUE);full<-.brohn_rpk_complete_sources(store,handle)$eda_displays[[1L]]
  brohn_require(.brohn_rpk_same(.brohn_edd_metadata(store,ref),meta),"EDA source authority changed while opening its complete evidence.")
  h<-new.env(parent=emptyenv());class(h)<-"brohn_eda_display_resources";h$state<-new.env(parent=emptyenv());h$state$closed<-FALSE;h$ref<-ref;h$metadata<-meta;h$source_handle<-handle;h$workspace_id<-store$workspace_id

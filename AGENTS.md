@@ -1,6 +1,19 @@
 # Brohn working agreement
 
-Current continuation, 28 September 2026: the owner said "keep going". The
+Current continuation, 30 September 2026: explicit continuous EDA recipe 1.1 preserves eligible
+exact-constant raw descriptions and withholds all nine processed estimates.
+New EDA packages use profile 0.2; historical recipe 1.0 and package 0.1 evidence
+remain exact. Read `docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md` for the current
+accepted source-bound phases and `docs/qa/EDA-CONSTANT-SIGNAL-SOURCE.json` for
+exact bytes. Native packages, complete exports and final joined03 saved-result
+reopening (31 initial/11 cold) pass. Both normal startups succeed. The final
+reread complements the earlier generation/edit/cancel journey; do not describe
+it as repeating the entire journey. Do not infer physiological nonresponse from a constant signal,
+zero structural candidate records, successful export or component tests.
+Near-constant processing and scientific amplitude criteria remain open.
+The next independent implementation slice is saved ECG/PPG report packages.
+
+Preceding report checkpoint, 28 September 2026: the owner said "keep going". The
 saved event/continuous EDA report checkpoint has scoped final researcher,
 download and cold-restart acceptance. Read
 `docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md`, its
@@ -25,8 +38,8 @@ refusal points to original exports and blocks ineffective retries while that
 exact source remains selected. Resume checks the original saved intent even
 after source replacement; ordinary Prepare uses the edited draft.
 
-Prioritize the versioned remedy in `docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md`,
-then `docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md`. Keep original EDA 1.0
+Use the implemented boundary in `docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md`,
+then continue `docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md`. Keep original EDA 1.0
 results unchanged. Do not choose an arbitrary numerical floor or label an
 export pass as scientific readiness. Review in these plans means internal
 scientific evidence and design review, not a new user-permission requirement.

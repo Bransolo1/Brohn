@@ -1,6 +1,11 @@
 # Pure typed projection and complete collection export. No store/source lookup.
 .brohn_rp_hash <- function(x) brohn_text(x,64)&&grepl("^[a-f0-9]{64}$",x)
-.brohn_rp_same <- function(a,b) identical(brohn_hash(a),brohn_hash(b))
+.brohn_rp_same <- function(a,b) {
+  # Exact in-memory equality implies equal serialized bytes, but still validate
+  # the complete JSON domain. Signed zero, attributes and types must match.
+  if(identical(a,b,num.eq=FALSE,attrib.as.set=FALSE)){brohn_canonical(a);return(TRUE)}
+  identical(brohn_hash(a),brohn_hash(b))
+}
 .brohn_rp_ref <- function(x,kind=NULL) {
   brohn_fields(x,c("kind","id","revision","body_hash","project_id"),label="Package source reference")
   brohn_require(brohn_valid_id(x$id)&&brohn_valid_id(x$project_id)&&brohn_number(x$revision,1,integer=TRUE)&&
@@ -245,7 +250,7 @@ brohn_report_package_task_limits <- function() {
   brohn_require(a$kind %in% c("gaze","questionnaire","multimodal")&&!brohn_questionnaire_is_artifact(a),"Complete findings require a supported full analysis, not its catalog preview.")
   brohn_require(!length(a$artifacts)&&!length(a$task_scores)&&!length(a$choice_tasks),
     "This complete analysis also contains artifact/task/choice evidence without a package adapter. Keep its original export or choose a report fully supported by this profile.")
-  if(identical(source_admission,"task-choice-eda-findings/0.1")&&identical(a$kind,"multimodal"))brohn_validate_complete_report_analysis(item,source_admission)else .brohn_rp_validate_scientific(a)
+  if(isTRUE(source_admission%in%c("task-choice-eda-findings/0.1","task-choice-eda-findings/0.2"))&&identical(a$kind,"multimodal"))brohn_validate_complete_report_analysis(item,source_admission)else .brohn_rp_validate_scientific(a)
   }else{
     brohn_validate_task_display_evidence(task_evidence,item)
     if(identical(a$kind,"questionnaire")){

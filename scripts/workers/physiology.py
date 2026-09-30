@@ -113,7 +113,8 @@ def parameters(modality, supplied, fs):
     require(isinstance(supplied, dict), "parameters must be an object.")
     result = defaults[modality].copy()
     require(not (set(supplied) - set(result)), f"Unsupported {modality} parameters: {', '.join(sorted(set(supplied) - set(result)))}")
-    require("recipe" not in supplied or supplied["recipe"] == result["recipe"],
+    require("recipe" not in supplied or supplied["recipe"] == result["recipe"] or
+            (modality == "eda" and supplied["recipe"] == "eda-neurokit-highpass/1.1"),
             "Review the original respiration mapping and declare its displacement/volume quantity, inspiration polarity and evidence for the new recipe; historical reports remain unchanged."
             if modality == "respiration" else "The requested recipe is not implemented by this worker.")
     result.update(supplied)
@@ -125,6 +126,8 @@ def parameters(modality, supplied, fs):
         finite(result["amplitude_min_relative_prominence"], "amplitude_min_relative_prominence", .001, 1)
         result.update(cleaner="neurokit", clean_lowpass_hz=3.0, clean_order=4, decomposition="highpass", recovery_fraction=.5,
                       threshold_definition="candidate_prominence_relative_to_maximum_prominence", no_missing_value_imputation=True)
+        if result["recipe"] == "eda-neurokit-highpass/1.1":
+            result["exact_constant_policy"] = "raw_description_only/1.0"
     elif modality == "eeg":
         finite(result["window_s"], "window_s", 1, 30)
         finite(result["overlap_fraction"], "overlap_fraction", 0, .9)
@@ -347,10 +350,54 @@ def feature(name, value, unit, **extra):
     return {"name": name, "value": number(value), "unit": unit, "scope": "recording", **extra}
 
 
+def _eda_constant_description(x, t, fs, p, lo, hi):
+    """Describe an eligible exact constant without inventing processed values.
+
+    This is only the explicit 1.1 branch. The caller has already applied the
+    same duration and edge eligibility as the ordinary numerical pipeline.
+    """
+    names_units = (("tonic_mean", "uS"), ("tonic_median", "uS"),
+                   ("tonic_slope", "uS/s"), ("conductance_raw_mean", "uS"),
+                   ("scr_count", "count"), ("scr_rate", "count/min"),
+                   ("scr_amplitude_mean", "uS"), ("scr_amplitude_median", "uS"),
+                   ("phasic_area_signed", "uS*s"), ("phasic_area_positive", "uS*s"))
+    features = []
+    for name, unit in names_units:
+        descriptive = name == "conductance_raw_mean"
+        extra = dict(eligible=descriptive,
+                     support_status="computed" if descriptive else "unavailable",
+                     missing_reason=None if descriptive else "exact_constant_signal")
+        if name in {"scr_amplitude_mean", "scr_amplitude_median"}:
+            extra["denominator"] = None
+        # Exact equality establishes this mean analytically, without summing
+        # a long array or introducing a numerical filtering convention.
+        features.append(feature(name, x[0] if descriptive else None, unit, **extra))
+    withheld = [None] * len(x)
+    series = {"time_s": t, "raw_us": x, "clean_us": withheld,
+              "tonic_us": withheld, "phasic_us": withheld,
+              "retained": (np.arange(len(x)) >= lo) & (np.arange(len(x)) < hi)}
+    support = {"retained_samples": hi - lo, "retained_duration_s": (hi - lo) / fs,
+               "filter_edge_samples": 2 * lo,
+               "processing_branch": "exact_constant_raw_description/1.0",
+               "descriptive_status": "computed", "response_status": "unavailable",
+               "response_reason": "exact_constant_signal", "numerical_candidate_count": 0,
+               "response_denominator": None}
+    result = output_pack(features, [], series, p, support, [
+        "The recorded conductance is exactly constant. Its recorded level is available, but processed response measures were withheld.",
+        "This does not establish no physiological response or reliable sensor contact.",
+        "Cleaning, decomposition and peak detection were bypassed; no tonic or phasic trace was manufactured.",
+        "Declared edge exclusions are retained as source support even though no filter ran.",
+        "Zero emitted candidate records is not a measured zero SCR count; response values and denominators remain unavailable."])
+    result["status"] = "descriptive_only"
+    return result
+
+
 def eda(x, t, fs, p):
     nk = require_neurokit()
     lo, hi = trim_bounds(len(x), fs, p["edge_exclusion_s"])
     require((hi - lo) / fs >= 20, "EDA needs at least 20 retained seconds after edge exclusions (40 seconds at default settings).")
+    if p["recipe"] == "eda-neurokit-highpass/1.1" and bool(np.all(x == x[0])):
+        return _eda_constant_description(x, t, fs, p, lo, hi)
     clean = np.asarray(nk.eda_clean(x, sampling_rate=fs, method="neurokit"))
     components = nk.eda_phasic(clean, sampling_rate=fs, method="highpass", cutoff=p["phasic_cutoff_hz"])
     tonic, phasic = np.asarray(components["EDA_Tonic"]), np.asarray(components["EDA_Phasic"])
@@ -882,14 +929,16 @@ def _run(request):
                                "source_row_start": recording["source_row_start"] + start, "source_row_end_exclusive": recording["source_row_start"] + end,
                                "start_time_s": float(t[0]), "end_time_s": float(t[-1]), "samples": end-start, "sampling_rate": fs,
                                "unit": recording["unit"], "source_unit": recording["source_unit"], "scale_factor": recording["scale_factor"],
-                               "channel_quality": quality, "exact_flatline": bool(len(x) > 0 and np.ptp(x) == 0)}
+                               "channel_quality": quality, "exact_flatline":
+                               bool(len(x) > 0 and (np.all(x == x[0]) if modality == "eda" and
+                                    p["recipe"] == "eda-neurokit-highpass/1.1" else np.ptp(x) == 0))}
                     try:
                         bundle = dispatch(modality, x, t, fs, p)
                     except (InputError, ValueError, IndexError, ZeroDivisionError) as error:
                         summary.update(status="unavailable", reason=str(error)[:500])
                         output["recordings"].append(summary)
                         continue
-                    summary.update(status="computed", **bundle["support"])
+                    summary.update(status=bundle.get("status", "computed"), **bundle["support"])
                     output["recordings"].append(summary)
                     total_retained += bundle["support"]["retained_samples"]
                     if prepared is not None:
@@ -912,6 +961,7 @@ def _run(request):
                     limitations.update(bundle["limitations"])
                     output["parameters"][recording["id"]] = bundle["parameters"]
         computed = sum(item["status"] == "computed" for item in output["recordings"])
+        descriptive = sum(item["status"] == "descriptive_only" for item in output["recordings"])
         sample_display_total = sum(len(series["time_s"]) for _, series in bundles)
         if all_events:
             selection = np.unique(np.linspace(0, len(all_events)-1, min(MAX_DISPLAY, len(all_events)), dtype=int))
@@ -937,8 +987,13 @@ def _run(request):
             "series_samples_total": sample_display_total, "series_samples_displayed": len(output["series"]),
             "display_sampling": "uniform index selection; all metrics computed on complete retained support",
             "warnings": sorted({str(item.message)[:400] for item in captured})[:100]}
-        if not computed: output["status"] = "insufficient_support"
-        elif computed != len(output["recordings"]): output["status"] = "partial"
+        if modality == "eda" and any(p["recipe"] == "eda-neurokit-highpass/1.1" for p in output["parameters"].values()):
+            output["quality"]["descriptive_channel_segments"] = descriptive
+            output["quality"]["unavailable_channel_segments"] -= descriptive
+            output["quality"]["usable"] = computed + descriptive > 0
+            output["quality"]["display_sampling"] = "uniform index selection; measured descriptions and processed estimates retain their declared support"
+        if not computed + descriptive: output["status"] = "insufficient_support"
+        elif computed + descriptive != len(output["recordings"]): output["status"] = "partial"
         output["limitations"] = sorted(limitations)
         finish_artifacts(output, prepared)
         return output

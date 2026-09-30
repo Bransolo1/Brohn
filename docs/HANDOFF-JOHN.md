@@ -1,6 +1,75 @@
 # John: Brohn development handoff
 
-## Current EDA continuation — 28 September 2026
+## Exact-constant EDA accepted checkpoint — 30 September 2026
+
+The explicit continuous recipe `eda-neurokit-highpass/1.1` handles eligible
+exactly constant conductance without fabricated peaks or a processed waveform.
+It retains the converted raw mean, including zero, and explains why the nine
+processed-response measures are unavailable. Complete coordinate rows and null
+values remain evidence. Short or otherwise ineligible segments keep their
+existing unavailable reasons. This is not a near-flat amplitude threshold or a
+claim that a constant recording demonstrates absent physiological responses.
+
+New EDA report preparation/renderer 0.2 accepts the new saved result and older
+supported science. Reopening an old report keeps its original 0.1 preparation
+and downloads; export and history do not repeat scientific processing.
+Native original-source checks and joined standalone/package history passed.
+The initial actual researcher journey passed 30 checks and six scans, followed
+by ten cold-restart checks with exact old/new HTML and ZIP and no new jobs.
+Those are receipts for the frozen joined candidate, not later corrections.
+
+The initial six-source native deadline failure and direct diagnostic remain
+retained: 109.50 seconds to obtain complete sources and 324.02 seconds to render,
+with no publication through that diagnostic. The corrected same six-source
+workload now passed 24 native checks. Ten new read-only jobs succeeded on attempt
+1 with normal 60-second leases and the unchanged 300-second deadline; mixed and
+evidence-only packages took 282.557 and 237.232 seconds. No smaller source set or
+raised budget was used. Private per-render reuse retains source/file checks;
+independent review and 1,250 equality comparisons remain separate evidence.
+
+Independent original-source oracles passed 171 and 131 checks over the same
+109,863 scientific leaves, 38,232 identity fields and 7,000 constant coordinate
+rows. Cross-variant comparison proves all 49 complete data/evidence members,
+six original report refs and five EDA preparations remain exact. Hiding every
+figure removes only the optional distribution preparation, 25 SVGs and five
+section-bound presentation companions. The strict oracle comparison requires
+the same scientific and prepared source sets; its original failure is retained,
+not relabelled as a pass. Complete questionnaire observations and paired contrast
+remain in the typed report evidence.
+
+Visual inspection also found the direct descriptive-review measurement table
+unreadable on a phone despite clean automated scans. The isolated table fix
+adds readable column widths and keyboard-accessible horizontal scrolling;
+36 component and nine actual-browser checks passed. Startup readiness and owned
+manager cleanup passed 27 targeted checks. Joined03 then passed 74 runtime
+supervisor and 22 acquisition checks with its 1,415 source files unchanged.
+Keep these scoped phases separate from the final joined browser evidence below.
+A genuine literal `-0.0` source retained all original CSV bytes, while
+its persisted scientific mean and raw preview were already positive zero.
+Standalone 1.1 review then passed 13 checks against the exact saved fields, so
+the earlier injected signed-zero transport failure was not reached; generic
+and old 1.0 transport remain unchanged.
+
+Read [the checkpoint record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) before extending
+claims. Preserve failed attempts and keep component, diagnostic, native and
+browser evidence separate. Final joined03 browser acceptance passed 31 initial
+and 11 cold checks on the exact 1,415-file source. Both boots used normal full
+startup without a prestarted manager. New mixed/evidence-only 0.2 and historical
+0.1 HTML/ZIP/HEAD remained exact; jobs, objects and listed entities did not
+change. All owned ports and services closed. This saved-review, offline and cold
+phase complements the earlier generation/edit/cancellation journey rather than
+repeating it. The retained final01 UTF-8 harness failure did not change product
+source. The original catalogue and all 408 preexisting source files remain exact;
+two earlier SQLite sidecars are recorded separately, with an empty WAL.
+
+Continue [saved cardiac reports](architecture/SAVED-CARDIAC-REPORT-NEXT.md),
+including exact after-exclusion provenance and the distinction between ECG RR
+and PPG pulse intervals. Near-flat/absolute EDA response criteria remain open;
+do not alter old 1.0 results or adopt an arbitrary amplitude floor. All 50
+capabilities and 17 package statuses remain in scope. [WORKSTREAM](WORKSTREAM.md)
+orders the remaining work; this checkpoint does not finish the platform.
+
+## Earlier saved EDA checkpoint — 28 September 2026
 
 Saved EDA has scoped final researcher/download and cold-restart acceptance:
 8 queued-cancel, 74 initial / 11 scans and 9 restart checks. Eight executed jobs
@@ -25,8 +94,9 @@ never trim complete selected and required EDA processed evidence, but the
 package is not a complete raw-series/input-byte archive. Original bounded raw
 previews remain where saved. Exporting and reopening do not rerun science.
 
-Prioritize the [versioned constant-signal remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md), then
-[saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+At that checkpoint, the next work was the [versioned constant-signal remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md),
+followed by [saved ECG/PPG packages](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+The accepted checkpoint above records current progress.
 Read the [known counterexample](qa/EDA-CONSTANT-SIGNAL-FINDING.md) before treating
 the existing continuous detector as scientifically ready. Its portable test
 reproduces a known 1.0 problem; a passing diagnostic is not a qualified fix.

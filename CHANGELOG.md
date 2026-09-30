@@ -1,5 +1,49 @@
 # Changes
 
+## Exact-constant EDA 1.1 and saved report 0.2 — scoped acceptance 2026-09-30
+
+- Added an explicit continuous recipe for eligible finite, unit-normalized,
+  exactly constant segments. It preserves the raw mean, including zero, while
+  all nine processed-response features remain null with an explicit reason.
+  No filtering, decomposition, peak detection or synthetic DC trace is used for
+  that branch. Near-constant values follow the existing numerical path.
+- Added descriptive review and report preparation 0.2 support. Complete sample
+  coordinates remain in evidence, with null processed channels and an empty
+  candidate table. No response denominator or absent estimate becomes zero.
+- Kept defaults and original recipe 1.0 results unchanged. Explicit new EDA
+  packages use profile 0.2; reopening old packages retains profile 0.1 and the
+  exact original exports without new analysis.
+- Native original-source and joined historical checks passed separately. The
+  initial actual researcher journey passed 30 checks and six scans; ten cold
+  checks reopened exact old/new HTML and ZIP without new jobs. These receipts
+  do not qualify later source changes or the larger six-source package.
+- A genuine literal `-0.0` CSV retained its original bytes through ingestion and
+  explicit 1.1 science. Saved mean/preview values were already positive zero;
+  standalone 1.1 review passed 13 checks against those saved fields. The earlier
+  injected negative-zero transport counterexample is retained; generic and old
+  transport were not changed.
+- Preserved the initial six-source 300-second deadline failure and separate
+  324.02-second direct render diagnostic. The corrected same-source native run
+  passed 24 checks: ten new read-only jobs succeeded on attempt 1 under normal
+  60-second leases and the unchanged deadline. Mixed/evidence-only packages took
+  282.557/237.232 seconds. Independent original-source oracles passed 171/131
+  checks over the same 109,863 scientific leaves, 38,232 identity fields and
+  7,000 constant coordinate rows. A separate cross-variant proof retained all
+  49 complete data/evidence members, six report refs and five EDA preparations.
+- The direct-review phone table now has readable widths and keyboard scrolling:
+  36 component and nine actual-browser checks passed. Cold startup readiness and
+  owned-manager cleanup passed 27 targeted checks; joined03 runtime qualification
+  passed 74 supervisor and 22 acquisition checks with all 1,415 source files exact.
+  The final joined03 browser phase passed 31 initial and 11 cold checks after
+  normal full startup, with exact six-source 0.2 and historical 0.1 HTML/ZIP/HEAD,
+  unchanged jobs/objects/listed entities, and all owned services closed. This
+  saved-review/offline/restart phase complements the earlier generation/edit/
+  cancellation journey; it does not repeat that whole journey. See
+  [the phase record](docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md).
+- Next: saved cardiac reports. Near-flat/absolute response
+  criteria, physical qualification, capacity, raw bundles and other platform
+  work remain open. All 50 capabilities and 17 package statuses are unchanged.
+
 ## Saved EDA report checkpoint — 2026-09-28
 
 - Added a separate saved event/continuous EDA profile to the existing one-action
@@ -31,8 +75,8 @@
   budget (201,416,771 bytes). No partial package was substituted or full
   large-package recovery claimed.
 - Retained the unchanged method 1.0 constant-signal counterexample, downstream
-  Windows path failure and tiny-chunk review latency finding. Next: versioned
-  EDA remedy, then saved ECG/PPG. All 50 capabilities and 17 package statuses
+  Windows path failure and tiny-chunk review latency finding. At that checkpoint,
+  the next work was the versioned EDA remedy, then saved ECG/PPG. All 50 capabilities and 17 package statuses
   remain in scope and unchanged.
 
 Older entries preserve their acceptance evidence and then-current continuation;

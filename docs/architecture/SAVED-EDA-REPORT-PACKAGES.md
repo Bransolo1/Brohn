@@ -1,5 +1,46 @@
 # Complete saved EDA reports
 
+## Exact-constant extension — 30 September 2026
+
+New EDA report packages use renderer
+`controlled-gaze-explicit-task-choice-eda-paired/0.2`, admission
+`task-choice-eda-findings/0.2` and preparation `saved-eda-display/0.2`.
+The plan, saved display body, evidence and complete-stream helper grammars also
+use their exact 0.2 versions. Existing package and preparation 0.1 histories
+retain their original versions and artifact bytes; opening history schedules
+no replacement work. An explicit new report version uses the new profile.
+
+Recipe `eda-neurokit-highpass/1.1` can produce a `descriptive_only` segment.
+Its review model is `brohn-eda-continuous-review/1.1` with status
+`raw_description_only`. It contains the saved level, support and all ten feature
+rows. Nine processed values are null with `exact_constant_signal` reasons;
+amplitude denominators are explicitly null. It has no processed waveform,
+candidate markers or response denominator. A single explanatory panel replaces
+the chart. Coordinate-only rows retain their original time, source sample index
+and retained mask, with three explicit null processed columns. Complete evidence
+retains these rows and the valid empty candidate table even with no figures.
+
+Coverage 0.2 distinguishes available, unavailable and descriptive-only cells and
+counts coordinate-only rows once per original table. Structural candidate counts
+of zero are not physiological response measurements. Full raw waveforms remain
+excluded; original bounded raw previews remain preserved. Ordinary new-recipe
+segments retain the existing numerical path. Old scientific recipes retain old
+models even inside a new 0.2 package; no source is silently reanalysed or relabelled.
+
+Constant views use the complete segment bounds and do not offer response-window
+controls. More than 500,000 selected coordinate rows produces the typed
+`coordinate_rows_limit` refusal with recovery `none`. Editing the title, figures
+or window cannot fix it. The interface blocks unchanged retries and stale Resume
+events against the original failed intent, while permitting source removal or
+replacement. Other existing capacity behavior remains as described below.
+
+Standalone saved-review containers retain their existing shape. Reads validate
+the original successful producer, request, source and retained bytes under
+current reader authority. Current-code equality remains a new-execution check.
+See the [method policy](../methods/EDA-CONSTANT-SIGNAL-NEXT.md) and
+[implementation evidence](../qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md). The sections
+below record the preceding 0.1 checkpoint and unchanged shared behavior.
+
 Implementation contract, 28 September 2026. Scoped source checkpoint with
 separate component, native, export, researcher, history and restart evidence.
 A targeted final UI check also covers single-source capacity guidance. The

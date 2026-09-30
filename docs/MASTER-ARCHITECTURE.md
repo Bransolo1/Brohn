@@ -1,6 +1,75 @@
 # Brohn master architecture and large-build contract
 
-## Saved EDA report boundary — 28 September 2026
+## Exact-constant EDA accepted boundary — 30 September 2026
+
+Scientific recipe `eda-neurokit-highpass/1.1` is an explicit addition; missing
+recipe/default behavior and saved 1.0 results remain unchanged. The new fixed
+policy applies only after unit conversion, finite/nonnegative admission,
+segmentation and the existing duration/edge eligibility rules, when every
+converted value is exactly equal. It preserves the first converted value as
+the raw mean. It does not use an epsilon, flatten near-constant data or choose
+a physiological response threshold.
+
+That branch is descriptive-only: the nine processed-response features are null,
+with exact-constant support explaining unavailable response interpretation.
+Processed coordinate columns remain null and numerical candidate rows are empty;
+no artificial DC trace is substituted. Response/amplitude denominators stay null
+where originally defined. Nonconstant and otherwise ineligible segments retain
+their existing numerical or unavailable paths.
+
+Standalone continuous review request/model 1.1 and saved EDA preparation/body/
+evidence 0.2 explicitly admit this branch. Every explicitly new EDA package uses
+renderer/admission/plan 0.2; old-science-only new packages may do so without new
+science. Exact stored 0.1 requests/packages keep their own contracts on reopen.
+Selection container 0.3 and existing resource limits remain unchanged. Constant
+cells use the whole original segment, have no processed component or marker
+panels, and cannot advertise a smaller window as a capacity remedy. Full
+coordinate evidence is distinct from complete raw conductance or input bytes.
+
+The [scoped acceptance record](qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md) separates
+native original-source and joined historical reads, the initial 30-check/six-scan
+researcher journey, and ten cold-restart checks with exact old/new downloads.
+A genuine literal `-0.0` source retained its original CSV bytes; persisted
+scientific mean/preview values were already positive zero, and standalone 1.1
+review passed 13 checks against those saved fields. The injected negative-zero
+transport diagnostic remains preserved; this path requires no generic or old
+1.0 transport change.
+
+The six-source native package missed its existing 300-second deadline. Its
+separate direct diagnostic measured 324.02 seconds for rendering alone and
+did not publish a package. The isolated performance change reuses completely
+validated EDA models only within a single render and rechecks source evidence
+size/SHA-256 on every hit; native holds, authority, final publication checks and
+all resource bounds remain required. Independent source review and 1,250 old/new
+equality comparisons passed. The corrected same six-source native workload now
+passed 24 checks: ten new read-only jobs succeeded on attempt 1 with normal
+60-second leases and the unchanged 300-second deadline. Mixed/evidence-only
+packages took 282.557/237.232 seconds. Independent source oracles passed 171/131
+checks over the same 109,863 scientific leaves, 38,232 identity fields and 7,000
+constant coordinate rows. Separate cross-variant proof preserves all 49 complete
+data/evidence members, six report refs and five EDA preparations; omitted
+distribution/paired section companions do not remove original scientific rows.
+The generic strict comparison still requires identical scientific and prepared
+source sets and therefore correctly refuses that optional-preparation removal.
+
+The direct measurement-table correction passed 36 component and nine actual
+phone/desktop browser checks after the visual usability defect. Cold startup
+readiness and owned-manager cleanup passed 27 targeted checks; joined03 runtime
+then passed 74 supervisor and 22 acquisition checks with all 1,415 source files
+unchanged. Final joined03 browser acceptance passed 31 initial and 11 cold
+checks: both boots used normal full startup; exact mixed/evidence-only 0.2 and
+historical 0.1 HTML/ZIP/HEAD reopened without changing jobs, objects or listed
+entities. All owned services closed. This saved-review/offline/cold phase
+complements the earlier generation/edit/cancel journey, not a whole-journey rerun.
+No whole-platform, physical-device or general detector qualification follows
+from this checkpoint.
+It advances BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17 without changing statuses.
+Next is the
+[saved cardiac contract](architecture/SAVED-CARDIAC-REPORT-NEXT.md). Near-flat
+and absolute response criteria, raw bundles, image context, workloads and
+restrictions remain open.
+
+## Earlier saved EDA report boundary — 28 September 2026
 
 The [EDA report contract](architecture/SAVED-EDA-REPORT-PACKAGES.md) extends
 the existing durable Prepare report lifecycle. Its scoped final researcher,
@@ -62,8 +131,9 @@ scientific, preparation and export sources remain identical. Its separate
 correction; the main 8/74/9 journey is retained under its original source binding.
 
 This advances BWP02/BWP04/BWP06/BWP09/BWP13/BWP15/BWP17 without closing any
-package. The [constant-signal method remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md)
-now has priority, followed by the [separate saved ECG/PPG contract](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
+package. At that checkpoint the [constant-signal method remedy](methods/EDA-CONSTANT-SIGNAL-NEXT.md)
+was next; the accepted checkpoint above records current progress before the
+[separate saved ECG/PPG contract](architecture/SAVED-CARDIAC-REPORT-NEXT.md).
 The [retained counterexample](qa/EDA-CONSTANT-SIGNAL-FINDING.md) prevents export
 fidelity from being mistaken for detector qualification. Historical 1.0 results
 stay exact; no arbitrary threshold is introduced here. Source-open latency,

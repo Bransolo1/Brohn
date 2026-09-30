@@ -331,6 +331,10 @@ brohn_report_content <- function(report, results_first = FALSE) {
       shiny::p(paste(a$parameters$analysis_plan$declared_family_size, "comparisons declared;", a$parameters$analysis_plan$hypotheses_in_report, "belong to this report.")),
       shiny::p(if (a$parameters$analysis_plan$timing_evidence == "plan_frozen_before_these_participant_sessions") "This plan was frozen before these participant sessions. It is not external preregistration." else "The plan is saved with the design. Its timing relative to source collection is not established.")),
     if (identical(a$operation, "eda_events")) brohn_eda_events_support_ui(a),
+    if (identical(a$kind,"eda") && any(vapply(a$recordings,function(r).brohn_ecr_raw_recording(a,r),logical(1))))
+      brohn_card(title="Constant segments retain their recorded level",
+        shiny::p("For eligible exactly constant segments under recipe 1.1, the original raw conductance mean is available. Cleaning, tonic/phasic estimates and skin conductance response estimates were withheld; all nine unavailable feature rows remain in the evidence."),
+        shiny::p("Descriptive usability is separate from response support. These results do not establish signal quality, absence of a physiological response, calmness, emotion or attention. Use Review continuous EDA to inspect the complete saved support.")),
     if (identical(a$operation, "peripheral")) brohn_peripheral_report_ui(a),
     if (!brohn_facial_supported(a)) brohn_card(title = if (identical(a$kind,"implicit")) "Trial source coverage" else if (length(a$task_scores)) "Questionnaire coverage" else "What this result covers",
       if (identical(a$kind,"implicit")) shiny::p("These counts describe the retained trial source. Each task result has its own completeness and scoring eligibility.") else

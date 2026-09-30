@@ -151,14 +151,35 @@ def verifier_manifest(original, path):
     return {**original, "sha256": sha, "bytes": size, "path": str(path)}
 
 
-def check_eda_table(spec, family, kind):
+def check_eda_table(spec, family, kind, profile="0.1"):
+    require(profile in ("0.1", "0.2"), "Unsupported EDA preparation grammar.")
     identity = spec["identity"]
     require(set(identity) == {"recording_id", "segment_id", "channel", "group", *( ["origin"] if family == "event" else [])}, "Unsupported EDA table identity fields.")
     require(isinstance(identity["group"], dict) and set(identity["group"]) <=
             {"participant_id", "session_id", "condition_id", "exposure_id", "segment_id", "source_recording_id"}, "Unsupported EDA group identity.")
+    support = spec["support"]
+    constant = family == "continuous" and support.get("source", {}).get("status") == "descriptive_only"
+    if family == "continuous":
+        method = support.get("method", {})
+        recipe = method.get("recipe")
+        require(recipe == "eda-neurokit-highpass/1.0" or
+                (profile == "0.2" and recipe == "eda-neurokit-highpass/1.1"),
+                "EDA table method is outside this exact preparation grammar.")
+        if recipe == "eda-neurokit-highpass/1.1":
+            eda_continuous_review._constant_parameters(method)
+        if constant:
+            require(profile == "0.2", "Constant coordinate support requires preparation 0.2.")
+            eda_continuous_review.constant_support(support["source"], method)
+            retained = support.get("retained_support")
+            expected = {"retained_samples", "retained_duration_s", "filter_edge_samples", *eda_continuous_review.CONSTANT_SUPPORT}
+            require(isinstance(retained, dict) and set(retained) == expected and
+                    all(retained[k] == support["source"][k] for k in retained),
+                    "Constant stream lost its exact withheld-response support.")
+            require(kind != "physiology-events" or spec["expected_rows"] == 0,
+                    "A bypassed detector cannot have stored candidate rows.")
     common = [tables._column("time_s", "float64", "s", role="coordinate"),
               tables._column("source_sample_index", "integer", "sample_index", role="index"),
-              *[tables._column(k, "float64", "uS") for k in COMPONENTS], tables._column("retained", "boolean", None, role="support")]
+              *[tables._column(k, "float64", "uS", constant) for k in COMPONENTS], tables._column("retained", "boolean", None, role="support")]
     if kind == "physiology-series":
         expected = common
     elif family == "event":
@@ -186,7 +207,7 @@ def check_eda_table(spec, family, kind):
 
 class VerifiedIndex:
     """Private verified chunk spool; no source or row arrays enter the catalog."""
-    def __init__(self, streams, family, source, directory):
+    def __init__(self, streams, family, source, directory, profile="0.1"):
         self.entries = {}
         self.family = family
         self.directory = Path(directory)
@@ -211,7 +232,7 @@ class VerifiedIndex:
             with ExitStack() as writer_lifetime:
                 writers={}
                 def on_table(spec):
-                    check_eda_table(spec, family, manifest["kind"])
+                    check_eda_table(spec, family, manifest["kind"], profile)
                     self.table_count += 1
                     bounded(self.table_count, 256, "source_tables", source["report_ref"])
                     path = self.directory/f"t{self.table_count:04d}.jsonl"
@@ -220,6 +241,10 @@ class VerifiedIndex:
                     entry["tables"].append(record)
                     by_id[spec["table_id"]] = record
                 def on_rows(table_id, offset, rows):
+                    spec = by_id[table_id]["spec"]
+                    if family == "continuous" and spec["support"]["source"]["status"] == "descriptive_only":
+                        require(manifest["kind"] == "physiology-series" and all(all(row[i] is None for i in (2,3,4)) for row in rows),
+                                "Constant coordinate tables cannot contain finite processed substitutes.")
                     self.rows += len(rows)
                     bounded(self.rows, 1000000, "source_rows", source["report_ref"])
                 verified = tables.verify_artifact(manifest, on_table=on_table, on_rows=on_rows)
@@ -232,7 +257,7 @@ class VerifiedIndex:
                         bounded(len(line),2*MIB,"stream_line_bytes",source["report_ref"])
                         raw=strict_json(line)
                         if raw["type"]=="table":
-                            check_eda_table(raw,family,manifest["kind"]);by_id[raw["table_id"]]["spec"]=raw
+                            check_eda_table(raw,family,manifest["kind"],profile);by_id[raw["table_id"]]["spec"]=raw
                         elif raw["type"]=="rows":
                             indexed_rows+=len(raw["rows"])
                             writers[raw["table_id"]].write(json_bytes(dict(offset=raw["offset"],rows=raw["rows"]))+b"\n")
@@ -296,6 +321,13 @@ def selected_window_counts(index, family, request, record, selection):
                             recovery=row["time_s"] if row["recovery_time_s"] is None else row["recovery_time_s"]
                             counts["candidates"]+=Decimal(str(onset))<=upper and Decimal(str(recovery))>=lower
     source=request["report"]["ref"];recovery="smaller_window" if family=="continuous" else "fewer_sources"
+    if family == "continuous" and record.get("status") == "descriptive_only":
+        if counts["samples"] > 500000:
+            refusal = Refusal(source,"coordinate_rows",counts["samples"],500000,"none")
+            refusal.detail.update(reason_code="coordinate_rows_limit", message="The complete constant-signal coordinate view exceeds the current 500000-row capacity. A smaller response window cannot repair withheld processing; no evidence was truncated.")
+            raise refusal
+        require(counts["candidates"] == 0, "Constant coordinate support cannot contain detected candidates.")
+        return counts
     # A fixed event method window cannot be narrowed by a figure request.
     bounded(counts["samples"],500000,"window_samples",source,recovery)
     bounded(counts["candidates"],20000 if family=="event" else 5000,"window_candidates",source,recovery)
@@ -310,21 +342,41 @@ def original_models(index, family, request, record, selection, features, directo
     if family == "continuous":
         identity["segment_id"] = record["segment_id"]
     paths = {str(Path(o["path"]).resolve()): o for o in verified_objects}
+    artifact_paths = {str(Path(e["manifest"]["path"]).resolve()): e["manifest"]["sha256"] for e in index.entries.values()}
     def verified_digest(path):
-        found = paths.get(str(Path(path).resolve()))
+        key = str(Path(path).resolve())
+        if key in artifact_paths: return artifact_paths[key]
+        found = paths.get(key)
         require(found is not None, "The read-only model tried to access an unbound source.")
         return found["hash"]
-    proxy = types.SimpleNamespace(require=require, digest_file=verified_digest,
+    proxy = types.SimpleNamespace(require=require, digest_file=verified_digest, _column=tables._column, ArtifactError=tables.ArtifactError,
         verify_artifact=lambda manifest, on_table=None, on_rows=None: index.replay(manifest, identity, on_table, on_rows))
     # Function-local dependency adaptation: the imported modules themselves stay untouched.
     namespace = dict(module.review.__globals__)
+    # Clone module-local helpers too: dispatcher branches must resolve the same
+    # verified local dependencies without modifying imported module globals.
+    for name, function in list(namespace.items()):
+        if isinstance(function, types.FunctionType) and function.__globals__ is module.__dict__:
+            namespace[name] = types.FunctionType(function.__code__, namespace, function.__name__, function.__defaults__, function.__closure__)
     namespace["tables"] = proxy
     namespace["save_csv"] = lambda path, fields, rows: {"rows": len(rows)}
-    namespace["export_csv"] = lambda directory, name, fields, rows: {"rows": len(rows)}
+    namespace["export_csv"] = lambda directory, name, fields, rows: {"rows": len(rows) if hasattr(rows,"__len__") else sum(1 for _ in rows)}
     if family == "continuous":
         def already_checked(source):
             require(paths.get(str(Path(source["path"]).resolve())) == source, "A read-only source descriptor changed.")
         namespace["check_source"] = already_checked
+        def indexed_coordinate_rows(manifest, spec):
+            entry = index.entries[manifest["kind"]]
+            require(manifest == entry["manifest"], "Coordinate export requested an unbound stream.")
+            target = next(t for t in entry["tables"] if t["spec"]["table_id"] == spec["table_id"])
+            require(target["spec"] == spec, "Coordinate export changed its original table.")
+            with target["path"].open("rb") as stream:
+                for line in stream:
+                    part = strict_json(line)
+                    for i, row in enumerate(part["rows"]):
+                        yield {"table_id":spec["table_id"],"table_row_index":part["offset"]+i,
+                               **dict(zip((c["name"] for c in spec["columns"]),row))}
+        namespace["coordinate_csv_rows"] = indexed_coordinate_rows
     review = types.FunctionType(module.review.__code__, namespace, module.review.__name__, module.review.__defaults__)
     analysis = request["report"]["complete_analysis"]
     parameters = analysis["parameters"][record["recording_id"]]
@@ -338,9 +390,11 @@ def original_models(index, family, request, record, selection, features, directo
                     source_events=[e for e in analysis["events"] if e["recording_id"] == record["recording_id"] and e["type"] in ("stimulus_event", "nuisance_event")],
                     source_masks=[m for m in analysis["source_masks"] if m["recording_id"] == record["recording_id"] and m["channel"] == record["channel"]])
     else:
-        base.update(schema="brohn-eda-continuous-review-request/1.0", recording=record, selection=selection)
+        version = "1.1" if parameters["recipe"] == "eda-neurokit-highpass/1.1" else "1.0"
+        base.update(schema="brohn-eda-continuous-review-request/"+version, recording=record, selection=selection)
     model = review(base)
-    require(model["counts"]["selected_rows" if family=="event" else "selected_samples"]==counted["samples"] and
+    count_key = "selected_rows" if family=="event" else "selected_coordinate_rows" if model["status"]=="raw_description_only" else "selected_samples"
+    require(model["counts"][count_key]==counted["samples"] and
             len(model["candidates"])==counted["candidates"],"Bounded selection count differs from the original read-only review.")
     del model["rows"]
     del model["exports"]
@@ -355,9 +409,9 @@ def original_models(index, family, request, record, selection, features, directo
     return model
 
 
-def catalog_item(cell, family):
+def catalog_item(cell, family, profile="0.1"):
     model, support = cell["model"], cell["original_support"]
-    has_trace = model is not None and cell["status"] != "no_processed_samples"
+    has_trace = model is not None and cell["status"] == "available"
     components = list(COMPONENTS) if has_trace else []
     points = {k: dict(points=sum(len(g["points"]) for g in model["series"][k]) if model else 0,
                       groups=len(model["series"][k]) if model else 0) for k in COMPONENTS}
@@ -373,13 +427,18 @@ def catalog_item(cell, family):
         observed = sum(m["in_view"] for m in markers)
     identity = cell["identity"]
     label = " | ".join(str(identity[k]) for k in identity if identity[k] is not None)
+    raw = cell["status"] == "raw_description_only"
+    descriptive_status = support["status"] if family == "event" else ("computed" if support["status"] in ("computed","descriptive_only") else "unavailable") if profile=="0.2" else None
+    descriptive_reason = support.get("reason") if family=="event" else (None if descriptive_status=="computed" else support.get("reason")) if profile=="0.2" else None
+    scr_status = support["scr_status"] if family=="event" else ("computed" if support["status"]=="computed" else "unavailable") if profile=="0.2" else None
+    scr_reason = support.get("scr_reason") if family=="event" else ("exact_constant_signal" if raw else None if scr_status=="computed" else support.get("reason")) if profile=="0.2" else None
     return dict(kind="eda_cell", key=cell["key"], source_family=family, identity=identity, label=label,
         source_record_index=cell["source_record_index"], focusable=family == "continuous" and support["status"] == "computed",
-        focus_reason=None if family == "continuous" and support["status"] == "computed" else "fixed_event_method_window" if family == "event" else support.get("reason", "no_processed_segment"),
+        focus_reason=None if family == "continuous" and support["status"] == "computed" else "fixed_event_method_window" if family == "event" else "exact_constant_signal" if raw else support.get("reason", "no_processed_segment"),
         original_default_bounds=cell["original_default_bounds"], requested_bounds=cell["requested_bounds"],
         status=cell["status"], reason=cell["reason"], original_status=cell["original_status"],
-        descriptive_status=support["status"] if family == "event" else None, descriptive_reason=support.get("reason") if family == "event" else None,
-        scr_status=support["scr_status"] if family == "event" else None, scr_reason=support.get("scr_reason") if family == "event" else None,
+        descriptive_status=descriptive_status, descriptive_reason=descriptive_reason,
+        scr_status=scr_status, scr_reason=scr_reason,
         model_hash=cell["model_hash"], components=components, feature_count=len(cell["feature_indices"]), candidate_count=candidates,
         marker_count=observed+outside+unobserved, observed_marker_count=observed, unobserved_marker_count=unobserved, out_of_view_marker_count=outside,
         component_counts=points, numerical_page_counts=dict(points={k: math.ceil(v["points"]/50) for k, v in points.items()}, candidates=math.ceil(candidates/50)),
@@ -390,13 +449,16 @@ def prepare(request, directory):
     fields(request, ("schema", "report", "source", "display_request", "implementation", "streams", "original_source", "sealed_objects"), "EDA worker request")
     require(request["schema"] == "brohn-eda-display-worker-request/0.1", "Unsupported EDA worker request.")
     report, source = request["report"], request["source"]
+    profiles={"saved-eda-display/0.1":"0.1","saved-eda-display/0.2":"0.2"}
+    require(request["implementation"].get("profile") in profiles, "Choose an exact EDA preparation profile.")
+    profile=profiles[request["implementation"]["profile"]]
     fields(report, ("ref", "saved_body", "complete_analysis"), "Complete saved EDA report")
     analysis = report["complete_analysis"]
     require(analysis == report["saved_body"]["analysis"] and analysis["kind"] == "eda" and analysis["schema"] == "brohn-worker-result/1.0" and
             source["report_ref"] == report["ref"] and source["original_stream_descriptors"] == analysis["artifacts"], "Complete EDA analysis/source binding differs.")
     family = "event" if analysis.get("operation") == "eda_events" else "continuous"
     require(family == "event" or "operation" not in analysis, "Continuous source contains an unsupported operation field.")
-    recipes = {"eda-event-highpass/1.0", "eda-event-cvxeda-defaults/1.0"} if family == "event" else {"eda-neurokit-highpass/1.0"}
+    recipes = {"eda-event-highpass/1.0", "eda-event-cvxeda-defaults/1.0"} if family == "event" else {"eda-neurokit-highpass/1.0", *(["eda-neurokit-highpass/1.1"] if profile=="0.2" else [])}
     require(isinstance(analysis["parameters"], dict) and all(p["recipe"] in recipes for p in analysis["parameters"].values()), "Unsupported saved EDA method.")
     normalized = display_request(request["display_request"])
     require(normalized == request["display_request"], "Display request must already use the shared canonical decimal form.")
@@ -415,7 +477,7 @@ def prepare(request, directory):
     overrides = {r["key"]: r for r in normalized["continuous_windows"]}
     used = set()
     with tempfile.TemporaryDirectory(prefix="eda-index-", dir=directory) as spool:
-        index = VerifiedIndex(request["streams"], family, {"report_ref": report["ref"], "source_hash": analysis["source"]["sha256"]}, spool)
+        index = VerifiedIndex(request["streams"], family, {"report_ref": report["ref"], "source_hash": analysis["source"]["sha256"]}, spool,profile)
         for number, record in enumerate(records, 1):
             keys = ("recording_id", "event_id", "channel") if family == "event" else ("recording_id", "segment_id", "channel")
             identity = {k: record.get(k) for k in keys}
@@ -426,7 +488,7 @@ def prepare(request, directory):
             seen.add(key)
             p = analysis["parameters"][record["recording_id"]]
             default = (dict(start_s=normalized_decimal(str(p["baseline_s"][0])), end_s=normalized_decimal(str(p["recovery_end_s"]))) if family == "event" else
-                       dict(start_s=normalized_decimal(str(record["start_time_s"])), end_s=normalized_decimal(str(record["end_time_s"]))) if record["status"] == "computed" else None)
+                       dict(start_s=normalized_decimal(str(record["start_time_s"])), end_s=normalized_decimal(str(record["end_time_s"]))) if record["status"] in ("computed","descriptive_only") else None)
             bounds = copy.deepcopy(default)
             if key in overrides:
                 require(family == "continuous" and default is not None and record["status"] == "computed", "Unavailable/event cell cannot have a new window.")
@@ -440,25 +502,29 @@ def prepare(request, directory):
             if family == "continuous" and bounds is not None:
                 selection.update(bounds)
             model = None
-            if request["streams"] and (family == "event" or record["status"] == "computed"):
+            if request["streams"] and (family == "event" or record["status"] in ("computed","descriptive_only")):
                 model = original_models(index, family, request, record, selection, features, directory, objects)
             cell = dict(key=key, identity=identity, source_record_index=number, original_status=record["status"],
                 status=model["status"] if model else "unavailable", reason=None if model and model["status"] == "available" else
-                "no_processed_samples_in_saved_window" if model else record.get("reason") or "no_processed_artifacts",
+                "exact_constant_signal" if model and model["status"]=="raw_description_only" else "no_processed_samples_in_saved_window" if model else record.get("reason") or "no_processed_artifacts",
                 selection=selection, original_default_bounds=default, requested_bounds=bounds, original_support=record,
                 feature_indices=feature_indices, model=model, model_hash=value_hash(model) if model is not None else None,
                 coverage=dict(features=len(features), source_record_preserved=True, scientific_processing=False))
             cells.append(cell)
             bounded(len(json_bytes(cells)), 24*MIB, "prepared_evidence_bytes", report["ref"], "smaller_window")
         require(used == set(overrides), "Window request refers to a missing original EDA cell.")
-        catalog = [catalog_item(cell, family) for cell in cells]
+        catalog = [catalog_item(cell, family,profile) for cell in cells]
         bounded(len(json_bytes(catalog)), 2*MIB, "catalog_bytes", report["ref"])
         coverage = dict(cells=len(cells), available_cells=sum(c["status"] == "available" for c in cells),
-                        unavailable_cells=sum(c["status"] != "available" for c in cells), features=len(analysis["features"]),
+                        unavailable_cells=sum(c["status"] in ("unavailable","no_processed_samples") for c in cells), features=len(analysis["features"]),
                         original_artifacts=len(request["streams"]), original_stream_bytes=index.bytes,
                         original_rows=index.rows, original_tables=index.table_count, complete_processed_rows=True,
                         complete_raw_series_included=False, original_raw_preview_preserved=True, scientific_processing=False)
-        evidence = dict(schema="brohn-eda-display-evidence/0.1", source_family=family, source=source,
+        if profile=="0.2":
+            coverage.update(descriptive_only_cells=sum(c["status"]=="raw_description_only" for c in cells),complete_coordinate_rows=True,
+                coordinate_only_rows=sum(t["spec"]["expected_rows"] for e in index.entries.values() if e["manifest"]["kind"]=="physiology-series"
+                    for t in e["tables"] if family=="continuous" and t["spec"]["support"]["source"]["status"]=="descriptive_only"))
+        evidence = dict(schema="brohn-eda-display-evidence/"+profile, source_family=family, source=source,
                         display_request=normalized, implementation=request["implementation"], cells=cells, coverage=coverage)
         bounded(len(json_bytes(evidence)), 24*MIB, "prepared_evidence_bytes", report["ref"], "smaller_window")
         verified = [entry["verified"] for entry in index.entries.values()]
