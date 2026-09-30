@@ -1,5 +1,15 @@
 # Brohn workstream and restart checklist
 
+**Academic evidence requirement, 30 September 2026:** audit every implemented
+and planned analysis option and study-design template against the
+[academic evidence contract](methods/ACADEMIC-EVIDENCE-CONTRACT.md). Build a
+versioned option-level registry with multiple suitable academic sources,
+claim/applicability links, assumptions and open gaps; connect guided explanations,
+design preflight and frozen methods/bibliography export. Initial inventory lives
+in `work/consumer-methods-evidence-20260930`. Existing single-link profiles and
+dispersed method documents do not establish completed option-level coverage.
+No recipe/result or package status changes solely from this requirement.
+
 **Scope reminder, 30 September 2026:** HRV and skin temperature are required
 through the complete researcher journey. The [implementation inventory](research/HRV-SKIN-TEMPERATURE.md)
 records existing detected RR/PRV and calibrated temperature support, plus the

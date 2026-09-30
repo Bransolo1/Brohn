@@ -1,5 +1,14 @@
 # Changes
 
+## Academic evidence and study-design contract — 2026-09-30
+
+- Added the owner's requirement for multiple academic sources at analysis-option
+  and study-template level across contemporary implicit consumer research.
+- Specified a versioned evidence registry, applicability/assumptions, design
+  preflight, accessible method guidance and citation-preserving reports/history.
+- Marked the option-level audit and connected implementation as outstanding;
+  scientific recipes, saved outputs and capability/package statuses are unchanged.
+
 ## HRV and skin-temperature scope inventory — 2026-09-30
 
 - Reaffirmed both measures across study design, import, review, supported

@@ -1,5 +1,15 @@
 # Brohn working agreement
 
+Owner requirement, 30 September 2026: apply academic best practice and multiple
+suitable academic sources to every analytical approach, consequential option
+and study-design template across contemporary implicit consumer research. Read
+`docs/methods/ACADEMIC-EVIDENCE-CONTRACT.md`. Track exact option/recipe/template
+versions, claims, applicability, assumptions and evidence gaps; connect the
+registry to guided method explanations, design checks and frozen report citations.
+Existing single-source pointers, installed libraries and software tests do not
+establish completed scientific qualification. Keep saved methods/results exact;
+changed science needs a new recipe and an explicit rerun.
+
 Current continuation, 30 September 2026: explicit continuous EDA recipe 1.1 preserves eligible
 exact-constant raw descriptions and withholds all nine processed estimates.
 New EDA packages use profile 0.2; historical recipe 1.0 and package 0.1 evidence

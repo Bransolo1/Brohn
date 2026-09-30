@@ -1,5 +1,22 @@
 # Brohn master architecture and large-build contract
 
+## Academic evidence for every method and design option — 30 September 2026
+
+The owner requires multiple academic sources and contemporary consumer-science
+best practice across **every analytical approach, consequential option and
+study-design template**. The [academic evidence contract](methods/ACADEMIC-EVIDENCE-CONTRACT.md)
+defines option-level traceability, a versioned method-evidence registry,
+independent corroboration, explicit applicability/assumptions, design preflight,
+accessible in-app explanations and automatic citation-preserving methods/export.
+An overall bibliography or two sources for a broad modality does not qualify all
+its options. Evidence gaps and Brohn-specific adaptations remain visible.
+
+Audit existing application/worker options as well as planned methods; retain the
+full 50-capability/17-package scope. This requirement does not silently change
+saved recipes/results or count component tests as scientific validation. The
+registry, option coverage and connected UI/export acceptance are active work;
+this section records the requirement, not completed academic qualification.
+
 ## HRV and skin temperature are required end-to-end paths — 30 September 2026
 
 The owner explicitly requires **HRV and skin temperature across the full

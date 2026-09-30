@@ -1,5 +1,14 @@
 # John: Brohn development handoff
 
+Latest owner instruction: each analytical approach, consequential option and
+study-design template must have multiple suitable academic sources and explicit
+consumer-research applicability. Follow the
+[academic evidence contract](methods/ACADEMIC-EVIDENCE-CONTRACT.md), including
+the planned versioned registry, design checks, in-app explanations and automatic
+methods/bibliography export. The option-level audit is underway; do not treat
+existing single source links or numerical QA as completed scientific validation.
+Preserve saved recipe meanings and evidence revisions when adding this layer.
+
 Latest scope reminder, 30 September: keep **HRV and skin temperature** connected
 from study design to review, supported baseline/event analysis, visualization,
 history and complete export. The [implementation inventory](research/HRV-SKIN-TEMPERATURE.md)

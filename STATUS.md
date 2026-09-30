@@ -1,5 +1,13 @@
 # Resume here — Brohn
 
+New owner requirement, 30 September: **multiple academic sources for every
+analytical approach/option and best-practice study design**, covering contemporary
+implicit consumer research across all measures. Read the
+[academic evidence contract](docs/methods/ACADEMIC-EVIDENCE-CONTRACT.md).
+Option-level evidence inventory, registry and connected guidance/export coverage
+are pending; no universal method-validation claim is made. Continue this work
+alongside the active cardiac report/source-performance integration.
+
 The owner explicitly reiterated **HRV and skin temperature** on 30 September.
 Both remain required end-to-end paths. Read the
 [current implementation inventory and remaining gates](docs/research/HRV-SKIN-TEMPERATURE.md)
