@@ -1,6 +1,29 @@
 # Brohn master architecture and large-build contract
 
+## Eye-tracking designs, controls and stimulus versions — 1 October 2026
+
+Support common consumer eye-tracking designs, including shelf/packaging tests,
+search, advertising, digital journeys and physical product use. Control stimuli
+and multiple material versions must coexist within one study with explicit
+assignment, exact presentation identity, AOI correspondence and appropriate
+analysis. The [flexibility requirements and implementation queue](research/EYE-TRACKING-FLEXIBILITY.md)
+separate existing multiple-stimulus support from missing variant allocation,
+dynamic coordinates and other advanced designs. Add-version authoring is now
+implemented with domain/portable, controller and actual researcher acceptance;
+its [release scope](qa/STIMULUS-VERSIONS-ACCEPTANCE.md) preserves the current
+all-stimulus exposure and condition-pooling rules. Use the ordered EF01–EF12
+queue and its [source/depth companion](research/EYE-TRACKING-FLEXIBILITY-SOURCES.md);
+no full-family or scientific acceptance follows from this review. Retain the
+academic evidence contract and all 50-capability/17-package statuses.
+
 ## Academic evidence for every method and design option — 30 September 2026
+
+The [1 October option appraisals](methods/evidence-2026-10-01/README.md) now retain
+reviewed EDA, EEG spectral/time-frequency, gaze/AOI/pupil, study-control and
+multiplicity findings in the repository. Source depth, adaptations, disagreements
+and unresolved applicability are explicit. Apply them to option-level guidance
+and future evidence snapshots; this document bundle does not activate new
+calculations or establish method/device qualification.
 
 The owner requires multiple academic sources and contemporary consumer-science
 best practice across **every analytical approach, consequential option and

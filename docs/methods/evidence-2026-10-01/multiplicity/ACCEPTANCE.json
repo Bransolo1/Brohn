@@ -1,0 +1,39 @@
+{
+  "schema": "brohn-multiplicity-reference-acceptance/0.1",
+  "passed": true,
+  "scope": "Source-bound synthetic numerical integration, not complete recipe scientific qualification.",
+  "source_manifest_sha256": "37c515ef424a09a0d89be13b706bcbda68df053d5ddb49604aadff23277cc485",
+  "source_files_unchanged": 1478,
+  "pre_execution_sha256": "71743cd9ef11c1cd503981971aba4aab90ebb8d8957cfdcef1b275231161d041",
+  "pre_execution_inputs_unchanged": 4,
+  "actual_sha256": "3840622c5ec6b40f930512d621d223bfcb0dd12d84c41f9b61e5dc78ffb4059a",
+  "oracle_sha256": "99271f751d3246b01bf1405ca8419049261881ca13090dc99ec986d654dd8660",
+  "actual_cases": 11,
+  "independent_checks": 287,
+  "runtime": {
+    "R": "R version 4.6.1 (2026-06-24 ucrt)",
+    "platform": "x86_64-w64-mingw32",
+    "stats": "4.6.1"
+  },
+  "scipy_version": "1.18.1",
+  "executions": [
+    {
+      "script": "produce.R",
+      "process_exit_code": 0,
+      "observed_wall_seconds": 3.2128932,
+      "stdout": "PASS: 11 actual analysis-plan cases; no store or jobs"
+    },
+    {
+      "script": "oracle.py",
+      "process_exit_code": 0,
+      "observed_wall_seconds": 2.2219002,
+      "stdout": "PASS: 287 independent numerical/conservation checks across 11 actual cases"
+    }
+  ],
+  "limitations": [
+    "No database, worker, browser, provider or service was opened by this harness.",
+    "The direct R process exited0; this script did not launch child services.",
+    "No recipe, registry, source, saved study, report or UI was changed.",
+    "Academic evidence does not qualify marginal tests for arbitrary consumer data or establish device/population validity."
+  ]
+}

@@ -1,5 +1,18 @@
 # Brohn workstream and restart checklist
 
+**New owner requirement, 1 October 2026:** expand eye-tracking study flexibility,
+including shelf testing, control stimuli and multiple stimulus versions in one
+study. Implement the [flexibility checklist](research/EYE-TRACKING-FLEXIBILITY.md)
+alongside current report/evidence work. Start with explicit add-version authoring
+and condition choice, then version-family assignment, shelf/semantic AOI models,
+task outcomes and further coordinate profiles. Existing every-stimulus delivery
+and condition-level pooling must remain visible until new contracts are enabled.
+The checked-source matrix and EF01–EF12 queue retain scientific/acquisition gaps;
+EF01 authoring is accepted through 36 domain/portable and 28 controller/SQLite
+checks plus the actual keyboard, phone and edit/reopen journey. Read its
+[scoped acceptance](qa/STIMULUS-VERSIONS-ACCEPTANCE.md). EF02–EF12 remain open. Review the
+[actual source depths](research/EYE-TRACKING-FLEXIBILITY-SOURCES.md) before extending claims.
+
 **Academic evidence requirement, 30 September 2026:** audit every implemented
 and planned analysis option and study-design template against the
 [academic evidence contract](methods/ACADEMIC-EVIDENCE-CONTRACT.md). Build a
@@ -9,6 +22,10 @@ design preflight and frozen methods/bibliography export. Initial inventory lives
 in `work/consumer-methods-evidence-20260930`. Existing single-link profiles and
 dispersed method documents do not establish completed option-level coverage.
 No recipe/result or package status changes solely from this requirement.
+The [1 October appraisals](methods/evidence-2026-10-01/README.md) are now retained
+in the repository for EDA, EEG spectral/time-frequency, gaze/AOI/pupil, controls
+and multiplicity. Integrate their exact findings into guidance and saved evidence;
+the authored review bundle itself changes no scientific runtime or saved result.
 The [portable audit](methods/evidence-2026-09-30/README.md) is now in the repository:
 30 bounded option rows, 24 families, 57 screened starting links, a separate
 32-source design bibliography, ten remediation topics and five proposed design

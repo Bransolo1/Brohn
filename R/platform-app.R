@@ -210,6 +210,7 @@ brohn_server <- function(input, output, session, store_root = brohn_workspace_pa
   maxdiff_editor <- brohn_install_maxdiff_ui(input, output, session, current, state, attempt, capture, update_study)
   brohn_install_guidance_ui(input, output, session, store, state, current, attempt, capture, refresh)
   brohn_install_welcome_ui(input, output, session, store, state, current, attempt, capture, update_study)
+  brohn_install_stimulus_versions(input, output, session, store, current, state, capture, update_study, attempt)
   brohn_install_materials(input, output, session, store, current, state, attempt, capture, update_study,
     can_open=function(kind)kind!="maxdiff_item"||is.null(maxdiff_editor$context()))
   shiny::observeEvent(input$brohn_open_study, attempt(function() {capture(); select_study(input$brohn_open_study, "Overview")}))

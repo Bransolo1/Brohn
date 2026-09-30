@@ -1,0 +1,77 @@
+{
+  "schema": "brohn-independent-appraisal-source-recheck/0.1",
+  "date": "2026-10-01",
+  "scope": "Selected primary-source verification; original appraisal depth labels remain unchanged. No complete literature search, numerical replication, data audit or scientific qualification.",
+  "sources": [
+    {
+      "id": "keil-2022",
+      "doi": "10.1111/psyp.14052",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.14052",
+      "checked": "Publisher metadata/authors; selected normalization and band-power text plus reporting checklists.",
+      "locator": "3.1.1 normalization; 3.1.2 band power and relative-power caution; checklist pointers 3.2.4 and 3.2.6",
+      "access": "Initial full-page content and primary indexed excerpts; subsequent full-page fetches timed out. Not every original Table2-4 locator independently reread.",
+      "independence": "Cohen, Fabiani and Gratton overlap the other identified publications; consensus is not an exact-option replication."
+    },
+    {
+      "id": "grandchamp-2011",
+      "doi": "10.3389/fpsyg.2011.00236",
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2011.00236/pdf?isPublishedV2=false",
+      "checked": "Publisher PDF metadata and methods for classical baseline versus full-epoch single-trial normalization, then trial-average baseline; simulation/visual-task scope.",
+      "access": "Publisher PDF retrieved after HTML follow-up failed.",
+      "independence": "Distinct authors; method-development evidence, not validation of Brohn's floor/order."
+    },
+    {
+      "id": "gyurkovics-2021",
+      "doi": "10.1016/j.neuroimage.2021.118192",
+      "url": "https://ueaeprints.uea.ac.uk/id/eprint/96237/1/Gyurkovics_etal_2021_NeuroImage.pdf",
+      "checked": "Author-institution PDF metadata, stated additive/multiplicative distinction and discussion context; not an independent data/estimator replication.",
+      "access": "11-page PDF text retrieved.",
+      "independence": "Fabiani and Gratton overlap Keil2022."
+    },
+    {
+      "id": "van-diepen-2018",
+      "doi": "10.1038/s41598-018-20423-z",
+      "url": "https://www.nature.com/articles/s41598-018-20423-z.pdf",
+      "checked": "Publisher PDF metadata, equation3 and ERP amplitude/latency and power/SNR simulations and interpretation limits.",
+      "access": "9-page PDF text retrieved after HTML follow-up failed.",
+      "independence": "Distinct authors; simulations do not qualify every task or the exact MNE kernel."
+    },
+    {
+      "id": "rawls-2025",
+      "doi": "10.1111/psyp.70073",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.70073",
+      "checked": "Publisher sections2.1,2.4-2.5,4.4-4.5; final64/44 samples attributed to2.1; added ERP subtraction and narrowed gambling contrast explicitly recorded.",
+      "access": "Publisher supporting text retrieved.",
+      "independence": "Distinct authors/empirical study, not Brohn/consumer validation; reported deviations prevent blanket preregistration claim.",
+      "unresolved_paper_prose": "2.1 says three added flanker datasets,4.5 says two. Do not silently reconcile or infer a data defect."
+    },
+    {
+      "id": "donoghue-2020",
+      "doi": "10.1038/s41593-020-00744-x",
+      "url": "https://www.nature.com/articles/s41593-020-00744-x",
+      "checked": "Primary publisher metadata and abstract; confounding and proposed parameterization aim only.",
+      "access": "Indexed publisher abstract available; later direct fetch redirected to unavailable identity endpoint.",
+      "depth": "abstract_only retained",
+      "independence": "Method developers; fitting choices and exact performance not reviewed here."
+    },
+    {
+      "id": "cohen-2019",
+      "doi": "10.1016/j.neuroimage.2019.05.048",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31145982/",
+      "additional_primary_url": "https://www.sciencedirect.com/science/article/pii/S1053811919304409",
+      "checked": "PubMed metadata/abstract and publisher abstract/section snippets on FWHM reporting.",
+      "access": "Direct PubMed retrieval empty; indexed primary text available.",
+      "depth": "Original abstract-only label retained; additional snippets do not establish full paper or exact-kernel review.",
+      "independence": "Cohen also authored Keil2022."
+    },
+    {
+      "id": "welch-1967",
+      "doi": "10.1109/TAU.1967.1161901",
+      "url": "https://research.ibm.com/publications/the-use-of-fast-fourier-transform-for-the-estimation-of-power-spectra-a-method-based-on-time-averaging-over-short-modified-periodograms",
+      "checked": "IBM author-institution indexed metadata/abstract; method origin and periodogram averaging only.",
+      "access": "Direct page error; indexed institution abstract available.",
+      "depth": "indexed_institution_abstract_only retained",
+      "independence": "Original method is not an empirical EEG or consumer study or a rationale for exact current defaults."
+    }
+  ]
+}

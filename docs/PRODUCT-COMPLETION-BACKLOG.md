@@ -1,5 +1,17 @@
 # Brohn completion backlog
 
+**Added 1 October 2026:** deliver common consumer eye-tracking designs, explicitly
+including shelf testing, multiple control/comparator stimuli and multiple stimulus
+versions within one study. Track implementation and end-to-end acceptance in the
+[eye-tracking flexibility checklist](research/EYE-TRACKING-FLEXIBILITY.md).
+EF01 Add-version authoring is implemented with scoped domain, controller and
+actual researcher acceptance. Variant allocation, reproducible shelf arrangements,
+semantic/dynamic AOIs and version-aware analyses remain explicit unfinished work.
+Use the ordered EF01–EF12 requirements and linked checked-source matrix; the
+[acceptance record](qa/STIMULUS-VERSIONS-ACCEPTANCE.md) does not close a wider package.
+The [source/depth companion](research/EYE-TRACKING-FLEXIBILITY-SOURCES.md) separates
+academic evidence, vendor descriptions and unresolved qualification.
+
 **Resumed 24 September 2026:** the owner explicitly requested continued work
 after source publication. The [workstream](WORKSTREAM.md) captures current
 completion and active priorities. The authorized product scope below remains.

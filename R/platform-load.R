@@ -33,7 +33,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   platform <- c(platform, "media-review", "media-history", "facial-review")
   platform <- c(platform, "gaze-traces", "gaze-retention", "gaze-trace-views", "gaze-trace-jobs")
   platform <- c(platform, "signal-annotations", "signal-reuse", "cardiac-review")
-  platform <- c(platform, "materials")
+  platform <- c(platform, "materials", "stimulus-versions")
   platform <- c(platform, "task-import", "gnat-import", "task-import-storage", "task-evidence")
   platform <- c(platform, "task-cohort", "task-cohort-storage", "task-plots")
   if (file.exists("R/platform-scale-comparisons.R")) platform <- c(platform, "scale-comparisons")
@@ -45,6 +45,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
     "task-plot-views", "report-package-tables", "report-package-tasks", "report-package-choice", "report-package-eda-figures", "report-package-eda", "report-package-render", "report-package-authority",
     "task-display-sources", "task-display", "choice-display-sources", "choice-display", "eda-display-sources", "eda-display", "report-package-sources", "report-package-distributions", "report-package", "report-package-preparation")
   for (file in c(paste0("R/", legacy, ".R"), paste0("R/platform-", platform, ".R"))) source(file, local = envir, encoding = "UTF-8")
+  if (ui) source("R/platform-stimulus-version-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-reuse-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-cardiac-review-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-value-views.R", local = envir, encoding = "UTF-8")

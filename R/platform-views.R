@@ -14,7 +14,7 @@ brohn_plan_ui <- function(store, d) {
         shiny::textInput(paste0("condition_label_", i), paste("Condition", i), d$conditions[[i]]$label),
         shiny::selectInput(paste0("condition_role_", i), paste("Role for condition", i), c("Control" = "control", "Test" = "test", "Neutral comparator" = "neutral", "Other" = "other"), d$conditions[[i]]$role)))),
       shiny::actionButton("add_condition", "Add condition")),
-    brohn_card(title = "Stimuli", subtitle = "Use the same viewing policy where the design requires it. Every image and area is versioned.",
+    brohn_card(title = "Stimuli", subtitle = "Add controls and material versions to the same study. Every participant currently sees every stimulus once; saved releases retain the exact materials.",
       shiny::div(class = "brohn-grid", lapply(seq_along(d$stimuli), function(i) {
         s <- d$stimuli[[i]]
         inline_image <- s$type == "image" && !is.null(s$asset) && s$asset$media_type %in% c("image/png", "image/jpeg") && s$asset$size <= 5*1024^2
@@ -28,6 +28,8 @@ brohn_plan_ui <- function(store, d) {
           if (s$type == "text") shiny::textAreaInput(paste0("stimulus_text_", i), paste("Participant text for stimulus", i), s$content, rows = 2),
           shiny::numericInput(paste0("stimulus_duration_", i), paste("Viewing duration", i, "(milliseconds)"), s$duration_ms, min = 100, max = 3600000, step = 100),
           brohn_material_card_ui(d, "stimulus", s),
+          brohn_command("Add version", "duplicate_stimulus", list(study_id = d$id, stimulus_id = s$id),
+            id = paste0("stimulus_version_", s$id), `aria-label` = paste("Add version of", s$title)),
           shiny::div(class = "brohn-toolbar", if (area_ready) brohn_command("Define area", "edit_aoi", s$id),
             if (!is.null(s$asset) && identical(s$asset$media_type, "image/png")) brohn_command("Suggest area", "suggest_aoi", s$id)),
           if (length(s$aois)) shiny::tags$ul(lapply(s$aois, function(a) shiny::tags$li(paste(a$label, "\u00b7", round(100*a$width), "x", round(100*a$height), "%"),

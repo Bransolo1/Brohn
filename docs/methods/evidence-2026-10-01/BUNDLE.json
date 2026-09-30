@@ -1,0 +1,117 @@
+{
+  "schema": "brohn-academic-doc-bundle/0.1",
+  "source_manifest_sha256": "8d1c450b538d071815fcc2bd9c8d6e97bf7593d2957d5984d22c22a0381d88a0",
+  "scope": "Exact authored reviews and provenance only; no downloaded publications, datasets, weights or participant records. This documentation does not activate a method or establish scientific/device qualification.",
+  "files": [
+    {
+      "path": "eda/APPRAISAL.md",
+      "bytes": 11242,
+      "sha256": "38a954e33003185edec435aa9fa0c02c2a31e301a2f8058e24b1bc0095f61750"
+    },
+    {
+      "path": "eda/REVIEW.json",
+      "bytes": 12861,
+      "sha256": "ae7877842a9c99af295efcc0f1006cc88b61eef713f5726ec243b0ab334cc797"
+    },
+    {
+      "path": "eda/REVIEW.md",
+      "bytes": 5596,
+      "sha256": "85aaee6c97790b4b81b5c9b77b9da4555b40bf9b43ccfdc0d8dc18608f278511"
+    },
+    {
+      "path": "gaze-aoi/APPRAISAL.md",
+      "bytes": 8298,
+      "sha256": "b1bf2d085e16d5347b8d6ee156f9262279d65bb9979795ef423092fb1afea335"
+    },
+    {
+      "path": "gaze-aoi/CLAIM-FIELD-MATRIX.md",
+      "bytes": 7700,
+      "sha256": "ab837ab5fd284a7f17bf8d825e85d7befe7975667324422fc137587564f41b98"
+    },
+    {
+      "path": "gaze-aoi/PROPOSED-CHANGES.md",
+      "bytes": 3734,
+      "sha256": "209e406f6005ae4ab93feaa32fa630b3fe1a6b8b10756d65a7e36fcf0217abdc"
+    },
+    {
+      "path": "gaze-aoi/REVIEW.md",
+      "bytes": 2918,
+      "sha256": "c676615c64acad3488cb4fba234631629d68c186aa98fd9b4f2f25a211cf4dcb"
+    },
+    {
+      "path": "gaze-aoi/SOURCES.md",
+      "bytes": 10153,
+      "sha256": "785b645cc95f28af773c49cb535b8be5d2b8cbb30576db5d44edc82839627d0a"
+    },
+    {
+      "path": "multiplicity/ACCEPTANCE.json",
+      "bytes": 1671,
+      "sha256": "d351ec68fc98d0d59ca666c8e5ee12bf621bda3e984263d34f3d5764c20692b2"
+    },
+    {
+      "path": "multiplicity/APPRAISAL.md",
+      "bytes": 5610,
+      "sha256": "40c3f5effde4823f0076bc8d3940bc0f90a465871a582ef58b12026518901468"
+    },
+    {
+      "path": "multiplicity/RESULTS.md",
+      "bytes": 1596,
+      "sha256": "d0d8ce60ed1e1ea659ffe16695303fe5f40af894ae7614ba4ffb52c76b6e3693"
+    },
+    {
+      "path": "neural-spectral/APPRAISAL.md",
+      "bytes": 10666,
+      "sha256": "7d891e5389553cd773d93013a823c5ba0bc9d93995a14186441cb442d87d0392"
+    },
+    {
+      "path": "neural-spectral/REVIEW.json",
+      "bytes": 8234,
+      "sha256": "084c44ad607dea880922ee9dff9f705b8c751b7a83ffcd5fa8c79985ddc01faa"
+    },
+    {
+      "path": "neural-spectral/REVIEW.md",
+      "bytes": 10500,
+      "sha256": "f377a7a44c6c386cb16e1e78e4e97a678fe33560d006b4bfe041496f665d91e6"
+    },
+    {
+      "path": "neural-spectral/SOURCES.json",
+      "bytes": 4961,
+      "sha256": "99ec88cfde819ed7728ee5f0fb34cb75b71a1884cb61d5e21bc53cbea23ec7a7"
+    },
+    {
+      "path": "ORIGINS.json",
+      "bytes": 7335,
+      "sha256": "7e6054d7abe375183c310e53e109fa7d8df55be2152c4600e9cb8ac6e477d689"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3278,
+      "sha256": "269443407ba5bf917a5da281ada14946011d4a12db62f3db3963966566240794"
+    },
+    {
+      "path": "study-control/APPRAISAL.md",
+      "bytes": 6036,
+      "sha256": "535e47b8467baf35804fd4158c230a7291cb572a2893ad65f2204382c2b6e001"
+    },
+    {
+      "path": "study-control/CLAIM-MATRIX.json",
+      "bytes": 6692,
+      "sha256": "e50191924bab2861cbe5c9e42f6ae02cbec86f510c083be64c19f34b4a4918d3"
+    },
+    {
+      "path": "study-control/REVIEW.md",
+      "bytes": 2772,
+      "sha256": "a610dbb04e4cc32ecce5ad48807ce08884ba881500b8f6433da1a91ace0633e7"
+    },
+    {
+      "path": "study-control/SOURCES.json",
+      "bytes": 13383,
+      "sha256": "5537e054d9a1983a37fac5234e1300ae8cf44f06b3030dc19c221d3b5837583b"
+    },
+    {
+      "path": "study-control/WORDING.md",
+      "bytes": 3075,
+      "sha256": "75c8de03caa3c4c835bc13476b1776b935b1facd799b0b224087d59fea250279"
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "schema": "brohn-study-control-claims/0.1",
+  "families": [
+    {
+      "id": "control-versus-recorded-baseline",
+      "fields": [
+        "conditions[].role",
+        "description",
+        "analysis_plan.rationale",
+        "baseline_ms",
+        "legacy study.comparison.control_condition/rationale",
+        "raw gaze mapping.pupil_baseline"
+      ],
+      "implementation": [
+        "R/platform-core.R:58–68,197–206,350–354",
+        "R/comparison.R:1–33,57–65",
+        "R/platform-gaze.R:53–64,267–286"
+      ],
+      "current": "Role labels are separate from baseline phase scheduling. Current condition objects have id/label/role only. Legacy paired comparison has a rationale. Subtractive pupil mapping requires a distinct phase/window, coverage/duration and provenance; no design baseline value is automatically substituted.",
+      "support": [
+        "mathot-2018-baseline",
+        "laborde-2017"
+      ],
+      "status": "under_review",
+      "prospective": [
+        "Versioned control rationale and properties deliberately matched/manipulated",
+        "Recorded baseline identity/context/quality and selected analysis transform, kept separate from a display phase"
+      ],
+      "consumer_transfer": "Choose controls for the particular manipulation and question. Matching all properties is not required when a property is the manipulation; role labels do not establish causality.",
+      "gap": "No independent exact starter/control/blank-baseline validation; no automatic sensor recording or baseline quality guarantee."
+    },
+    {
+      "id": "exposure-settling-recovery",
+      "fields": [
+        "stimuli[].duration_ms",
+        "baseline_ms",
+        "fixation_ms",
+        "questions[].scope",
+        "protocol.timeline[].phase",
+        "EDA event parameters.baseline_s/response_s/recovery_end_s/overlap_policy/settings_source"
+      ],
+      "implementation": [
+        "R/platform-core.R:65–68,206,252,348–354",
+        "R/platform-eda-events.R:33–53",
+        "www/participant/runner.js:903–935"
+      ],
+      "current": "Defaults are 5000/0/500 ms; positive baseline precedes fixation then exposure then after_each response. No separate acclimatisation/washout field in this stimulus-loop schema. Browser events report requestAnimationFrame-before-paint observation, not physical onset. EDA event windows are separately declared and checked.",
+      "support": [
+        "laborde-2017",
+        "barry-2023",
+        "greenwald-1976"
+      ],
+      "status": "under_review",
+      "prospective": [
+        "Separate acclimatisation, recorded baseline, exposure, response and recovery purposes in a new protocol contract",
+        "Method/context-specific duration and overlap rationale; observed onset/offset and deviations"
+      ],
+      "consumer_transfer": "Auditory tone intervals and HRV posture recommendations cannot directly establish advertising/packaging/UX timing. Repetition and questions may alter later response context.",
+      "gap": "No universal duration, physical timing or context-specific physiological settling qualification; after_each self-paced time is not automatically washout."
+    },
+    {
+      "id": "allocation-order-carryover",
+      "fields": [
+        "order",
+        "seed",
+        "allocation_index",
+        "realized_stimulus_order",
+        "delivery_runs.protocol_json",
+        "legacy presentation.order"
+      ],
+      "implementation": [
+        "R/platform-core.R:315–317,362–364",
+        "R/platform-delivery.R:245–274",
+        "R/presentation.R:15–35",
+        "R/protocol.R:24–28"
+      ],
+      "current": "Rotation is over stimuli, not condition labels. Two stimuli give AB/BA across allocation indices, never four-trial ABBA. More stimuli use cyclic rotations. Randomized order is a seeded per-allocation shuffle. Delivery count covers started allocations, not only completions.",
+      "support": [
+        "brooks-2012",
+        "greenwald-1976",
+        "barry-2023"
+      ],
+      "status": "under_review",
+      "prospective": [
+        "Named sequence algorithm with explicit predecessor order/repetition/self-adjacency assumptions",
+        "Separate assigned, completed and usable order counts; dropout/exclusion policy",
+        "Allocation unit and concealment/randomization purpose distinguished from reproducible presentation order"
+      ],
+      "consumer_transfer": "Within-person comparisons can change context and learning. Decide whether sequential comparison matches real consumer exposure; neither rotation nor shuffle removes persistent/asymmetric effects.",
+      "gap": "No general higher-order carryover balance, between-person group assignment, achieved usable balance or concealment claim."
+    },
+    {
+      "id": "participant-stimulus-generalisation",
+      "fields": [
+        "analysis_plan.recipe",
+        "analysis_plan.rationale",
+        "comparisons[].control_id/test_id/outcome_id",
+        "observations.participant_id/session_id/stimulus_id",
+        "contrasts.aggregation/participant_differences"
+      ],
+      "implementation": [
+        "R/platform-analysis-plan.R:3–31,62–111",
+        "R/platform-analysis.R:157–192"
+      ],
+      "current": "paired-consumer-comparisons/1.0-draft averages condition values per session, differences per person and then people. Planned Student t inference uses those person differences. It does not model random stimulus variation. At least two people is a computational eligibility condition, not a sample-size recommendation.",
+      "support": [
+        "judd-2012",
+        "barr-2013"
+      ],
+      "leads": [
+        "westfall-2014",
+        "matuschek-2017"
+      ],
+      "status": "under_review",
+      "prospective": [
+        "Explicit fixed-stimulus versus sampled-stimulus estimand and recruitment/stimulus-sampling rationale",
+        "New versioned participant×stimulus model and uncertainty/precision design when generalisation requires it"
+      ],
+      "consumer_transfer": "A conclusion about the particular presented concepts is narrower than a population of adverts/packages. Repeated visits are not extra independent people, and more people alone need not resolve stimulus uncertainty.",
+      "gap": "Current participant aggregation is not declared erroneous. No automatic mixed-model choice, consumer population inference, universal n or new numerical/scientific qualification follows."
+    }
+  ],
+  "prospective_fields_are_not_current_schema": true,
+  "scientific_status": "under_review",
+  "registry_activated": false
+}

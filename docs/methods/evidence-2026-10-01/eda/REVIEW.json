@@ -1,0 +1,384 @@
+{
+  "schema": "brohn-nonactive-option-appraisal/0.1",
+  "date": "2026-10-01",
+  "active_registry": false,
+  "exhaustive": false,
+  "qualification_supported": false,
+  "sources": [
+    {
+      "id": "boucsein-2012",
+      "doi": "10.1111/j.1469-8986.2012.01384.x",
+      "state": "supporting_text_reviewed",
+      "locator": "Sections3.1,3.2,6",
+      "independence": "committee_consensus"
+    },
+    {
+      "id": "greco-2016",
+      "doi": "10.1109/TBME.2015.2474131",
+      "state": "supporting_text_reviewed",
+      "locator": "Equations2-15;III.D;Figure1caption",
+      "independence": "method_developers"
+    },
+    {
+      "id": "bach-2014",
+      "doi": "10.1016/j.biopsycho.2014.08.006",
+      "state": "supporting_text_reviewed",
+      "locator": "Sections2,4;conflict_statement",
+      "independence": "evaluated_software_developer"
+    },
+    {
+      "id": "kuhn-2022",
+      "doi": "10.1111/psyp.14058",
+      "state": "supporting_text_reviewed",
+      "locator": "Sections3.5-3.6,4.1-4.5",
+      "independence": "independent_comparison_not_Brohn_or_cvxEDA"
+    },
+    {
+      "id": "benedek-2010",
+      "doi": "10.1016/j.jneumeth.2010.04.028",
+      "state": "abstract_only_this_pass",
+      "locator": "PubMed_metadata_and_abstract",
+      "independence": "method_developers"
+    },
+    {
+      "id": "sjouwerman-2019",
+      "doi": "10.1111/psyp.13307",
+      "state": "abstract_only_this_pass",
+      "locator": "Publisher_metadata_and_abstract",
+      "independence": "shares_Lonsdorf_with_Kuhn2022"
+    }
+  ],
+  "options": [
+    {
+      "id": "eda-filter-components",
+      "recipes": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1",
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "parameters",
+        "eda",
+        "decompose"
+      ],
+      "options": [
+        "cleaner",
+        "clean_lowpass_hz",
+        "clean_order",
+        "phasic_cutoff_hz",
+        "decomposition"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "bach-2014",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Separate component definitions and report the actual processing chain.",
+      "unresolved": "No exact qualification for this 3Hz order4 cleaner plus separate .05Hz filter outputs; other GLM pipelines are not equivalent.",
+      "next_step": "Versioned profile rationale and independent filter/reference and empirical agreement work.",
+      "qualified": false
+    },
+    {
+      "id": "eda-relative-candidates",
+      "recipes": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "functions": [
+        "parameters",
+        "eda"
+      ],
+      "options": [
+        "amplitude_min_relative_prominence",
+        "scr_count",
+        "scr_rate",
+        "scr_amplitude_mean",
+        "scr_amplitude_median"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Response definitions and denominators must be specified.",
+      "unresolved": "Relative prominence alone does not implement an absolute conductance response criterion; numeric range/default unqualified.",
+      "next_step": "Candidate wording through all output paths; independently reviewed future response recipe.",
+      "qualified": false
+    },
+    {
+      "id": "eda-edges-and-duration",
+      "recipes": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1",
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "parameters",
+        "eda",
+        "settings",
+        "decompose"
+      ],
+      "options": [
+        "edge_exclusion_s",
+        "minimum_segment_s",
+        "retained_samples",
+        "retained_duration_s"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Report acquisition and processing support specific to method.",
+      "unresolved": "10s edges and 20s retained support are computational rules, not validated universal durations.",
+      "next_step": "Filter transient/segmentation oracle and target-protocol sensitivity study.",
+      "qualified": false
+    },
+    {
+      "id": "eda-constant-and-missing",
+      "recipes": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1",
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "_eda_constant_description",
+        "decompose",
+        "window_support"
+      ],
+      "options": [
+        "exact_constant_policy",
+        "valid_column",
+        "no_missing_value_imputation",
+        "complete_same_continuous_segment"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "No response and uninterpretable measurement are different reporting states.",
+      "unresolved": "The exact-constant safeguard is an engineering support policy; no physiological diagnosis follows.",
+      "next_step": "Retain scoped software acceptance, assess contact/device artifacts independently; no new scientific claim.",
+      "qualified": false
+    },
+    {
+      "id": "eda-cvx-defaults",
+      "recipes": [
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "settings",
+        "decompose"
+      ],
+      "options": [
+        "tau0",
+        "tau1",
+        "delta_knot",
+        "alpha",
+        "gamma",
+        "solver",
+        "reltol",
+        "MAX_CVX_SAMPLES"
+      ],
+      "source_ids": [
+        "greco-2016",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Original cvx model supports a model family; independent comparison supports exact-specification review, not this cvx implementation.",
+      "unresolved": "Fixed tau0, cleaning, input scale, reconstructed output and resource ceiling differ from original study details; no second independent exact-adaptation validation.",
+      "next_step": "Define estimand/units and compare fixed/fitted/scaling scenarios with independent references before new qualification.",
+      "qualified": false
+    },
+    {
+      "id": "eda-event-windows",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "settings",
+        "window_support",
+        "event_summary"
+      ],
+      "options": [
+        "baseline_s",
+        "response_s",
+        "onset_latency_s",
+        "event_tolerance_s",
+        "nuisance_effect_s"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022",
+        "sjouwerman-2019"
+      ],
+      "supported_scope": "Onset and peak windows are different choices; temporal context matters.",
+      "unresolved": "No accepted universal numeric windows; abstract-only latency lead cannot supply exact recommendation.",
+      "next_step": "Protocol-specific primary evidence and measured-clock validation; preserve separate window controls.",
+      "qualified": false
+    },
+    {
+      "id": "eda-event-selection",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "settings",
+        "event_summary"
+      ],
+      "options": [
+        "response_selection",
+        "minimum_scr_amplitude_us",
+        "relative_prominence"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Absolute criterion, first-versus-largest selection and implementation details require disclosure.",
+      "unresolved": "Allowed thresholds .000001-100uS and relative .001-1 are not endorsed recommendation ranges.",
+      "next_step": "Noise/site/protocol rationale and independent annotated onset/amplitude agreement.",
+      "qualified": false
+    },
+    {
+      "id": "eda-event-overlap",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "settings",
+        "event_summary"
+      ],
+      "options": [
+        "overlap_policy",
+        "nuisance_codes",
+        "nuisance_effect_s"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022",
+        "greco-2016"
+      ],
+      "supported_scope": "Overlapping responses and event-model assumptions affect attribution.",
+      "unresolved": "Brohn conservative overlap policies are not empirical causal attribution; cvx completion alone does not resolve event ambiguity.",
+      "next_step": "Expose unavailable attribution separately from descriptives; qualify overlapping-event designs independently.",
+      "qualified": false
+    },
+    {
+      "id": "eda-magnitude-amplitude",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "functions": [
+        "event_summary"
+      ],
+      "options": [
+        "scr_response_magnitude",
+        "scr_responder_amplitude",
+        "scr_qualifying_count",
+        "scr_nonresponse"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Separate eligible nonresponses, responder-only amplitude and unavailable trials.",
+      "unresolved": "Definitions supported; exact Brohn detector accuracy and aggregation across people/stimuli remain separate.",
+      "next_step": "Preserve denominators and independent arithmetic/excluded-support cases; target-context empirical validation.",
+      "qualified": false
+    },
+    {
+      "id": "eda-recovery",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0",
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "functions": [
+        "eda",
+        "event_summary"
+      ],
+      "options": [
+        "recovery_fraction",
+        "recovery_end_s",
+        "scr_half_recovery_time"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022"
+      ],
+      "supported_scope": "Recovery terminology and exact processing specification are required.",
+      "unresolved": "Kuhn supplies general specification context, not independent validation of Brohn half-recovery detection/censoring.",
+      "next_step": "Independent labelled recovery times and event/gap/boundary censoring checks.",
+      "qualified": false
+    },
+    {
+      "id": "eda-areas-and-levels",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0",
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "functions": [
+        "eda",
+        "event_summary"
+      ],
+      "options": [
+        "tonic_mean",
+        "tonic_median",
+        "tonic_slope",
+        "tonic_response_minus_baseline",
+        "phasic_area_signed",
+        "phasic_area_positive"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "greco-2016",
+        "benedek-2010"
+      ],
+      "supported_scope": "Component/driver/level definitions are distinct; integration target must be named.",
+      "unresolved": "Brohn conductance area is not automatically a published latent-driver measure; positive clipping changes estimand.",
+      "next_step": "Exact output dictionary and independent integration support; review stimulus/person hierarchy.",
+      "qualified": false
+    },
+    {
+      "id": "eda-consumer-design",
+      "recipes": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0",
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "functions": [
+        "settings",
+        "load_source"
+      ],
+      "options": [
+        "sensor_site",
+        "calibration",
+        "measured_event_clock",
+        "baseline",
+        "control_stimulus",
+        "order",
+        "recovery",
+        "consumer_construct"
+      ],
+      "source_ids": [
+        "boucsein-2012",
+        "kuhn-2022",
+        "greco-2016"
+      ],
+      "supported_scope": "Protocol/context determine applicability; comparison studies are condition- and population-specific.",
+      "unresolved": "No paper here validates a universal consumer preference score or the generic five-second starter.",
+      "next_step": "Design-specific controls, explicit/behavioural triangulation and direct consumer validation; no invented multimodal score.",
+      "qualified": false
+    }
+  ],
+  "citation_rule": "Distinct source links are context completeness only; roles, access scope and unresolved exact support govern claims."
+}

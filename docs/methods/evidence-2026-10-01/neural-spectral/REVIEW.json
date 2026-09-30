@@ -1,0 +1,257 @@
+{
+  "schema": "brohn-nonactive-option-appraisal/0.1",
+  "date": "2026-10-01",
+  "active_registry": false,
+  "exhaustive": false,
+  "qualification_supported": false,
+  "sources": [
+    {
+      "id": "keil-2022",
+      "doi": "10.1111/psyp.14052",
+      "state": "supporting_text_selected",
+      "locator": "3.1.1-3.1.3;3.2.4;3.2.6;Tables2-4",
+      "independence": "consensus; shares Cohen/Fabiani/Gratton with cited leads",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.14052"
+    },
+    {
+      "id": "grandchamp-2011",
+      "doi": "10.3389/fpsyg.2011.00236",
+      "state": "supporting_text_selected",
+      "locator": "ERSP models;classical approaches;Discussion",
+      "independence": "method developers; distinct authors from other reviewed groups",
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2011.00236/full"
+    },
+    {
+      "id": "gyurkovics-2021",
+      "doi": "10.1016/j.neuroimage.2021.118192",
+      "state": "supporting_text_selected",
+      "locator": "4.2-4.3",
+      "independence": "simulation/method evidence; Fabiani/Gratton also Keil2022",
+      "url": "https://ueaeprints.uea.ac.uk/id/eprint/96237/1/Gyurkovics_etal_2021_NeuroImage.pdf"
+    },
+    {
+      "id": "van-diepen-2018",
+      "doi": "10.1038/s41598-018-20423-z",
+      "state": "supporting_text_selected",
+      "locator": "Equation3;simulations;concluding discussion",
+      "independence": "simulation; distinct authors",
+      "url": "https://www.nature.com/articles/s41598-018-20423-z"
+    },
+    {
+      "id": "rawls-2025",
+      "doi": "10.1111/psyp.70073",
+      "state": "supporting_text_selected",
+      "locator": "2.1;2.5;4.1;4.4",
+      "independence": "registered report; distinct authors; veterans flanker/gambling; not consumer transfer",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.70073"
+    },
+    {
+      "id": "donoghue-2020",
+      "doi": "10.1038/s41593-020-00744-x",
+      "state": "abstract_only",
+      "locator": "publisher abstract",
+      "independence": "method developers; full publisher text restricted; PMC challenge",
+      "url": "https://www.nature.com/articles/s41593-020-00744-x"
+    },
+    {
+      "id": "cohen-2019",
+      "doi": "10.1016/j.neuroimage.2019.05.048",
+      "state": "abstract_only",
+      "locator": "PubMed abstract",
+      "independence": "method author; also Keil2022 author",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31145982/"
+    },
+    {
+      "id": "welch-1967",
+      "doi": "10.1109/TAU.1967.1161901",
+      "state": "indexed_institution_abstract_only",
+      "locator": "IBM indexed abstract; direct fetch timed out",
+      "independence": "original method; not empirical EEG/consumer validation",
+      "url": "https://research.ibm.com/publications/the-use-of-fast-fourier-transform-for-the-estimation-of-power-spectra-a-method-based-on-time-averaging-over-short-modified-periodograms"
+    }
+  ],
+  "options": [
+    {
+      "id": "welch-window",
+      "recipes": [
+        "eeg-welch-channel/1.0"
+      ],
+      "kind": "input_and_fixed_algorithm",
+      "fields": [
+        "window_s",
+        "overlap_fraction",
+        "window",
+        "average",
+        "remove_dc"
+      ],
+      "functions": [
+        "physiology.parameters",
+        "physiology.eeg"
+      ],
+      "source_ids": [
+        "welch-1967",
+        "keil-2022"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Origin and reporting only; exact default/support count unqualified."
+    },
+    {
+      "id": "welch-bands",
+      "recipes": [
+        "eeg-welch-channel/1.0"
+      ],
+      "kind": "input_and_derived_output",
+      "fields": [
+        "bands_hz",
+        "relative_denominator_hz",
+        "relative_power_denominator",
+        "*_absolute_power",
+        "*_relative_power"
+      ],
+      "functions": [
+        "physiology.parameters",
+        "physiology.eeg"
+      ],
+      "source_ids": [
+        "keil-2022",
+        "donoghue-2020",
+        "rawls-2025"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "No periodic/aperiodic separation; numerator need not be a subset of denominator; exact named boundaries not consumer constructs."
+    },
+    {
+      "id": "morlet-kernel",
+      "recipes": [
+        "eeg-morlet-epochs/1.0",
+        "eeg-morlet-epochs/1.1"
+      ],
+      "kind": "input_and_derived_support",
+      "fields": [
+        "frequencies_hz",
+        "n_cycles",
+        "zero_mean",
+        "decimation",
+        "edge_exclusion_samples_each_side"
+      ],
+      "functions": [
+        "neural.analyse_cell"
+      ],
+      "source_ids": [
+        "keil-2022",
+        "cohen-2019"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Finite kernel and smoothing rationale; independent corroboration and exact parameter validation remain."
+    },
+    {
+      "id": "morlet-baseline-model",
+      "recipes": [
+        "eeg-morlet-epochs/1.0",
+        "eeg-morlet-epochs/1.1"
+      ],
+      "kind": "input_and_transform",
+      "fields": [
+        "power_baseline.mode",
+        "power_baseline.window_s",
+        "power_baseline.minimum_power_uv2",
+        "power_normalization_order"
+      ],
+      "functions": [
+        "neural.analyse_cell"
+      ],
+      "source_ids": [
+        "grandchamp-2011",
+        "gyurkovics-2021",
+        "keil-2022"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Mean-power-then-transform; all enabled transforms including subtraction share a strict floor; no universally preferred transform."
+    },
+    {
+      "id": "morlet-baseline-support",
+      "recipes": [
+        "eeg-morlet-epochs/1.1"
+      ],
+      "kind": "input_and_derived_support",
+      "fields": [
+        "power_baseline.adequacy.policy",
+        "power_baseline.adequacy.minimum_cycles",
+        "power_baseline.adequacy.rationale",
+        "baseline_support"
+      ],
+      "functions": [
+        "neural.morlet_baseline_support",
+        "neural.analyse_cell"
+      ],
+      "source_ids": [
+        "keil-2022",
+        "cohen-2019"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Only finite kernels; explicit duration is not scientific qualification; earlier filtering remains a separate concern."
+    },
+    {
+      "id": "morlet-power-phase",
+      "recipes": [
+        "eeg-morlet-epochs/1.0",
+        "eeg-morlet-epochs/1.1"
+      ],
+      "kind": "input_and_derived_output",
+      "fields": [
+        "power",
+        "morlet_power_mean",
+        "morlet_itc_mean",
+        "minimum_phase_trials",
+        "phase_scope"
+      ],
+      "functions": [
+        "neural.analyse_cell"
+      ],
+      "source_ids": [
+        "keil-2022",
+        "van-diepen-2018",
+        "grandchamp-2011"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Induced power and original-signal ITC remain different; no count-bias correction or validated minimum trials."
+    },
+    {
+      "id": "morlet-spectral-composition",
+      "recipes": [
+        "eeg-morlet-epochs/1.0",
+        "eeg-morlet-epochs/1.1"
+      ],
+      "kind": "interpretation_and_planned_extension",
+      "fields": [
+        "power",
+        "summary_window_s",
+        "transformed_power"
+      ],
+      "functions": [
+        "neural.analyse_cell"
+      ],
+      "source_ids": [
+        "gyurkovics-2021",
+        "rawls-2025",
+        "donoghue-2020"
+      ],
+      "exact_option_qualified": false,
+      "unresolved": "Existing recipes do not parameterize background or validate consumer prediction; newer STFT study is not this Morlet implementation."
+    }
+  ],
+  "prerequisites_not_fully_appraised": [
+    "reference",
+    "filter",
+    "voltage_baseline",
+    "artifact_rejection",
+    "event_clock",
+    "overlap",
+    "minimum_trials"
+  ],
+  "excluded_recipes": [
+    "eeg-erp-epochs/1.0",
+    "eeg-frequency-tagging/1.0"
+  ],
+  "policy": "Distinct source links are contextual completeness, not scientific endorsement or proof of independence."
+}

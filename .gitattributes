@@ -3,3 +3,14 @@
 tests/fixtures/task-import/* -text
 # Dated academic audit documents have exact byte fingerprints in SOURCE.json.
 docs/methods/evidence-2026-09-30/** -text whitespace=cr-at-eol
+
+# Preserve tested bytes: producer hashes must survive Git checkout settings.
+/.gitattributes -text whitespace=cr-at-eol
+/R/** -text whitespace=cr-at-eol
+/scripts/** -text whitespace=cr-at-eol
+/www/** -text whitespace=cr-at-eol
+/tests/** -text whitespace=cr-at-eol
+/registry/** -text whitespace=cr-at-eol
+/*.R -text whitespace=cr-at-eol
+/*.ps1 -text whitespace=cr-at-eol
+/docs/methods/evidence-2026-10-01/** -text whitespace=cr-at-eol

@@ -1,5 +1,28 @@
 # Changes
 
+## Retained academic option appraisals — 2026-10-01
+
+- Added authored EDA, EEG spectral/time-frequency, gaze/AOI/pupil, study-control
+  and multiplicity reviews with exact source provenance and reviewed limitations.
+- Linked them from architecture, workstream, status and collaborator handoff.
+  No new scientific method, saved score or device qualification is activated.
+
+## Eye-tracking designs and stimulus-version authoring — 2026-10-01
+
+- Added a sourced nine-family flexibility matrix and ordered EF01–EF12 queue,
+  including shelf tests, controls, variants, assignment, task outcomes and AOIs.
+- Added Add version to Plan, with separate/existing condition choice and explicit
+  control roles. Copies retain exact materials and areas with fresh identities;
+  originals and historical revisions remain unchanged.
+- Passed 36 domain/portable and 28 controller/SQLite checks plus the actual
+  desktop/phone keyboard, image replacement and saved-reopen journey. Shortened
+  the dialog after visual review; six Axe scans report no violations.
+- Added the researcher guide and scoped QA/source records. Git attributes retain
+  tested runtime bytes across checkout settings; associated old-file differences
+  are line endings only, separately checked from the seven implementation/test paths.
+- Kept participant assignment, scientific calculations and whole-platform
+  completion claims separate from this authoring convenience.
+
 ## Bounded academic and study-design audit — 2026-09-30
 
 - Added a code-derived option inventory, measurement evidence matrix and a

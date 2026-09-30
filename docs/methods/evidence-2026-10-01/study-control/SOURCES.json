@@ -1,0 +1,214 @@
+{
+  "schema": "brohn-study-control-sources/0.1",
+  "sources": [
+    {
+      "id": "mathot-2018-baseline",
+      "authors": [
+        "Sebastiaan Mathôt",
+        "Jasper Fabius",
+        "Elle Van Heusden",
+        "Stefan Van der Stigchel"
+      ],
+      "year": 2018,
+      "title": "Safe and sensible preprocessing and baseline correction of pupil-size data",
+      "doi": "10.3758/s13428-017-1007-2",
+      "publication_type": "Original methodological simulation and recorded-data reanalysis",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://link.springer.com/article/10.3758/s13428-017-1007-2"
+      ],
+      "inspected_locator": "Introduction; Simulated data/Data generation; Divisive/Subtractive baseline correction; Real data/Data",
+      "supported_claim": "Recorded baseline values and their quality affect correction; manipulation contrasts are distinct from within-trial baseline subtraction. Position-related measurement differences also require design consideration.",
+      "limits": "Selected sections only. Recorded-data example has 15 participants/2520 trials; not independent replication or validation of this platform, camera, consumer task, blank phase or minimum duration.",
+      "independence": "No shared authors with Laborde, Barry, Brooks, Greenwald, Judd or Barr. This is a different modality and supports a distinction, not independent replication of an HRV baseline policy.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "laborde-2017",
+      "authors": [
+        "Sylvain Laborde",
+        "Emma Mosley",
+        "Julian F. Thayer"
+      ],
+      "year": 2017,
+      "title": "Heart Rate Variability and Cardiac Vagal Tone in Psychophysiological Research – Recommendations for Experiment Planning, Data Analysis, and Data Reporting",
+      "doi": "10.3389/fpsyg.2017.00213",
+      "publication_type": "Primary publication of author recommendations/review; not an original empirical trial",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://doi.org/10.3389/fpsyg.2017.00213"
+      ],
+      "inspected_locator": "Baseline Recording",
+      "supported_claim": "Baseline context, posture, instructions and prior acclimatisation should be documented and comparable to the task; an ideal baseline is not identical in all circumstances.",
+      "limits": "The section recommends at least five minutes in the chosen posture before baseline in its HRV context. That number is not adopted as a universal Brohn threshold. NN/vagal-tone recommendations do not qualify detected RR, PRV or every sensor.",
+      "independence": "Distinct author team; recommendations draw on other studies and are not independent empirical replication of those cited studies.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "barry-2023",
+      "authors": [
+        "Robert J. Barry",
+        "Genevieve Z. Steiner-Lim",
+        "Adele E. Cave",
+        "Frances M. De Blasio",
+        "Brett MacDonald"
+      ],
+      "year": 2023,
+      "title": "Effects of interstimulus interval and significance on electrodermal and central measures of the phasic orienting reflex (OR) in a dishabituation task",
+      "doi": "10.1038/s41598-023-40428-7",
+      "publication_type": "Original empirical auditory study",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC10439882/",
+        "https://www.nature.com/articles/s41598-023-40428-7"
+      ],
+      "inspected_locator": "Methods/Participants and Procedure; Results/Electrodermal responses and Trials effects; Discussion/SCRs",
+      "supported_claim": "In 40 undergraduates, SCRs varied with significance, interval and repetition. Methods distinguish 50-ms tones from short 5–7-s or long 13–15-s SOA groups.",
+      "limits": "Auditory orienting task, not adverts/packages/UX. Faster decrement for significant stimuli was linked to larger initial responses, contrary to a simple universal slower-habituation claim. Neither interval is a universal recovery cutoff.",
+      "independence": "Distinct team from other included sources. Its own earlier Steiner/Barry studies cited in the article are not counted as independent corroboration.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "brooks-2012",
+      "authors": [
+        "Joseph L. Brooks"
+      ],
+      "year": 2012,
+      "title": "Counterbalancing for serial order carryover effects in experimental condition orders",
+      "doi": "10.1037/a0029310",
+      "publication_type": "Original design-method paper and its original publisher supplement",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://kar.kent.ac.uk/33134/",
+        "https://supp.apa.org/psycarticles/supplemental/a0029310/MET-Brooks20100184-R-S1.pdf"
+      ],
+      "inspected_locator": "Main-paper metadata/abstract; original Supplemental Materials pp. 1–2, Programs for generating sequences and input parameters",
+      "supported_claim": "First-order sequence balance counts predecessors; higher-order balance counts longer histories. Repetition and self-adjacency choices are explicit design parameters.",
+      "limits": "Main article full text was not appraised beyond abstract; supplement supporting text was read. No algorithm run or approval of Brohn rotation. Supplement is part of the same source, not a second independent academic source.",
+      "independence": "Distinct author from Greenwald and Barry; methodological corroboration of a structural distinction, not an exact consumer-template replication.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "greenwald-1976",
+      "authors": [
+        "Anthony G. Greenwald"
+      ],
+      "year": 1976,
+      "title": "Within-Subjects Designs: To Use or Not To Use?",
+      "doi": "10.1037/0033-2909.83.2.314",
+      "publication_type": "Original methodological argument/review, not a new empirical comparison",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://faculty.washington.edu/agg/pdf/Gwald_PsychBull_1976.OCR.pdf"
+      ],
+      "inspected_locator": "p. 314 introduction; p. 318 Carry-over and External Validity",
+      "supported_claim": "Repeated-treatment context can change the question. Counterbalancing alone may not remove asymmetric/persistent effects; temporal separation helps only where effects can dissipate.",
+      "limits": "Illustrative drug and persuasion examples are not validations of consumer-template timings. Within-subject designs are not categorically inferior; natural generalisation context matters.",
+      "independence": "Distinct author from Brooks and Barry. Conceptual convergence, not additional empirical replication.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "judd-2012",
+      "authors": [
+        "Charles M. Judd",
+        "Jacob Westfall",
+        "David A. Kenny"
+      ],
+      "year": 2012,
+      "title": "Treating Stimuli as a Random Factor in Social Psychology: A New and Comprehensive Solution to a Pervasive but Largely Ignored Problem",
+      "doi": "10.1037/a0028347",
+      "publication_type": "Original statistical methods with hypothetical and recorded examples",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://doi.org/10.1037/a0028347",
+        "https://experts.colorado.edu/display/pubid_52505",
+        "https://torwager.github.io/ComputationalFoundations/_downloads/62ec54e758b3f7a9fef871892b6c48db/Judd_Westfall_Kenny_2012_JPSP.pdf"
+      ],
+      "inspected_locator": "Introduction and mixed-model random-effects discussion (PDF manuscript pp. 1 and 7); institutional final metadata 103(1),54–69",
+      "supported_claim": "Generalisation over sampled stimuli requires considering stimulus variation as well as participant variation; participant-averaged condition means do not provide that automatically.",
+      "limits": "Primary article text accessed as an academic-hosted reprint, not a separate study. No specific model or sample-size validation for Brohn consumer data; fixed particular-stimulus questions are a narrower estimand.",
+      "independence": "Same three authors as Westfall 2014, so those are related contributions, not independent teams. Barr team is distinct.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "barr-2013",
+      "authors": [
+        "Dale J. Barr",
+        "Roger Levy",
+        "Christoph Scheepers",
+        "Harry J. Tily"
+      ],
+      "year": 2013,
+      "title": "Random effects structure for confirmatory hypothesis testing: Keep it maximal",
+      "doi": "10.1016/j.jml.2012.11.001",
+      "publication_type": "Original theoretical and Monte Carlo study",
+      "review_depth": "metadata_and_selected_supporting_text",
+      "primary_publication_urls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3881361/"
+      ],
+      "inspected_locator": "Linear Mixed-Effects Models; Method/Generating simulated data; General Discussion; Identifying the maximal random effects structure",
+      "supported_claim": "Random-effects structure encodes assumptions about sampled units and within-unit effects. Their simulations examine inference under different structures.",
+      "limits": "Simulation context used one two-level treatment, 24 subjects and 12 or 24 items and assumed no order/practice/fatigue effects. Those are study settings, not minimums. No universal maximal-model recommendation is adopted here.",
+      "independence": "Distinct author team from Judd/Westfall/Kenny; independent methodological corroboration, not Brohn replication. Matuschek supplies a contrary abstract-level lead.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "westfall-2014",
+      "authors": [
+        "Jacob Westfall",
+        "David A. Kenny",
+        "Charles M. Judd"
+      ],
+      "year": 2014,
+      "title": "Statistical power and optimal design in experiments in which samples of participants respond to samples of stimuli",
+      "doi": "10.1037/xge0000014",
+      "publication_type": "Original statistical design/power methods",
+      "review_depth": "metadata_and_abstract_only",
+      "primary_publication_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/25111580/"
+      ],
+      "inspected_locator": "Abstract and publication metadata, 143(5),2020–2045",
+      "supported_claim": "Abstract reports that crossed-design power can be limited by stimulus sampling even as participant count increases.",
+      "limits": "No formulas, numerical recommendations or five design variants qualified from the abstract. Full supporting-text review remains required.",
+      "independence": "Same author team as Judd 2012; explicitly not independent corroboration.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    },
+    {
+      "id": "matuschek-2017",
+      "authors": [
+        "Hannes Matuschek",
+        "Reinhold Kliegl",
+        "Shravan Vasishth",
+        "Harald Baayen",
+        "Douglas Bates"
+      ],
+      "year": 2017,
+      "title": "Balancing Type I error and power in linear mixed models",
+      "doi": "10.1016/j.jml.2017.01.001",
+      "publication_type": "Original simulation study",
+      "review_depth": "metadata_and_abstract_only",
+      "primary_publication_urls": [
+        "https://www.sciencedirect.com/science/article/pii/S0749596X17300013"
+      ],
+      "inspected_locator": "Publisher metadata, Highlights and Abstract; 94,305–315",
+      "supported_claim": "Abstract reports a power cost from unsupported maximal complexity and proposes model selection under its studied conditions.",
+      "limits": "Full simulation conditions/model-selection policy not appraised here; contrary lead prevents treating Barr as a universal automatic prescription.",
+      "independence": "Distinct authors from Barr and Judd; not a replication of the same consumer protocol.",
+      "review_date": "2026-10-01",
+      "exact_brohn_option_qualification": "unresolved"
+    }
+  ],
+  "retrieval_note": "Primary publications only used for claims. Direct-page fetches intermittently timed out or returned challenge pages; indexed primary-publication selected text was used where stated. No paywall bypass, purchased access or complete-paper review is claimed.",
+  "not_promoted_leads": [
+    "Williams 1949 publisher metadata/abstract landing inspected; supporting procedure not reviewed, not used to approve a sequence."
+  ],
+  "selection": "Bounded leads from the existing study-design bibliography; not systematic or exhaustive."
+}

@@ -1,5 +1,21 @@
 # Resume here — Brohn
 
+New owner requirement, 1 October: common consumer **eye-tracking designs**,
+including shelf testing, **control stimuli and multiple stimulus versions within
+one study**. The [flexibility matrix and EF01–EF12 queue](docs/research/EYE-TRACKING-FLEXIBILITY.md)
+separate current capabilities from variant assignment, shelf construction,
+semantic/dynamic AOIs and task outcomes still to build. Its source companion
+records actual academic reading depth and device/software limits.
+
+**Add version is now implemented:** separate control/test/neutral/other or
+existing conditions, exact material/AOI copying, original retention and saved
+reopening. The 36 domain/portable and 28 observer/SQLite checks pass, followed by
+the actual desktop/phone keyboard and edit/reopen journey. Read the
+[scoped acceptance](docs/qa/STIMULUS-VERSIONS-ACCEPTANCE.md) and
+[researcher guide](docs/operations/STIMULUS-VERSIONS-AND-CONTROLS.md).
+Variant assignment and the wider EF02–EF12 requirements remain open. Continue
+the independent cardiac report and academic evidence integration.
+
 New owner requirement, 30 September: **multiple academic sources for every
 analytical approach/option and best-practice study design**, covering contemporary
 implicit consumer research across all measures. Read the
@@ -11,6 +27,9 @@ collections do not complete option-level review. Ten concrete remediation topics
 and five proposed design profiles are documented. The runtime registry and
 connected guidance/export coverage remain active work; no universal validation
 claim is made. Continue alongside the saved cardiac report integration.
+The [1 October appraisals](docs/methods/evidence-2026-10-01/README.md) add retained
+option-level literature/code reviews for five families, with scope and limitations
+preserved. They are documentation, not activation or scientific qualification.
 
 The owner explicitly reiterated **HRV and skin temperature** on 30 September.
 Both remain required end-to-end paths. Read the

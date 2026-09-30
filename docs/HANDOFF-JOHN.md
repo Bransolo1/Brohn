@@ -1,5 +1,16 @@
 # John: Brohn development handoff
 
+New scope, 1 October: support common eye-tracking designs, shelf testing,
+multiple control stimuli and material versions in the same study. Start with
+the [design-flexibility matrix and EF01–EF12 backlog](research/EYE-TRACKING-FLEXIBILITY.md).
+Add-version authoring is implemented and passes domain, controller and actual
+desktop/phone keyboard/edit/reopen checks. Start with the
+[researcher guide](operations/STIMULUS-VERSIONS-AND-CONTROLS.md) and
+[scoped acceptance](qa/STIMULUS-VERSIONS-ACCEPTANCE.md). Every ordinary stimulus
+is still presented once to every participant; order randomization does not
+allocate different variants between participants. Keep versions and analysis
+conditions distinct, and preserve original materials and historical releases.
+
 Latest owner instruction: each analytical approach, consequential option and
 study-design template must have multiple suitable academic sources and explicit
 consumer-research applicability. Follow the
@@ -9,6 +20,10 @@ methods/bibliography export. The option-level audit is underway; do not treat
 existing single source links or numerical QA as completed scientific validation.
 Preserve saved recipe meanings and evidence revisions when adding this layer.
 Start with the [dated audit and implementation gaps](methods/evidence-2026-09-30/README.md).
+The subsequent [option appraisals](methods/evidence-2026-10-01/README.md) retain
+five families of literature/code findings, independent-review scope and numerical
+evidence where available. Keep their source depths and unresolved gaps when
+connecting them to the application; the documents alone activate no new method.
 It includes actual code/defaults, multiple scholarly starting sources, study-design
 evidence and proposed preflight profiles. Its screened literature and bounded
 source inspection are not completed scientific acceptance. The exact registry,

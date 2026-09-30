@@ -11,6 +11,14 @@ unfinished, with 50 registered capabilities across 17 work packages.
 - Install and run: [quick start below](#install-and-start) and [local installation guide](docs/operations/LOCAL-INSTALLATION.md).
 - Continue development: [current status](STATUS.md), [John's handoff](docs/HANDOFF-JOHN.md) and [ordered workstream](docs/WORKSTREAM.md).
 - Understand the full scope: [master architecture](docs/MASTER-ARCHITECTURE.md).
+- Create stimulus versions and controls: [researcher guide](docs/operations/STIMULUS-VERSIONS-AND-CONTROLS.md) and [eye-tracking flexibility roadmap](docs/research/EYE-TRACKING-FLEXIBILITY.md).
+
+**New authoring checkpoint, 1 October 2026:** Plan now offers **Add version**
+with separate control/test/neutral/other or existing conditions. Original assets
+and areas are preserved; edited copies can use new material. Desktop/phone,
+keyboard, save/reopen and focused domain checks passed. Every listed ordinary
+stimulus is still scheduled once per run; between-group variant assignment is
+planned. See the [scoped acceptance](docs/qa/STIMULUS-VERSIONS-ACCEPTANCE.md).
 
 **Accepted checkpoint, 30 September 2026:** exact-constant EDA can retain a saved
 raw mean, including zero, while processed response measures remain unavailable.
