@@ -2,4 +2,4 @@
 # manifest. Checkout line-ending conversion must not rewrite their evidence.
 tests/fixtures/task-import/* -text
 # Dated academic audit documents have exact byte fingerprints in SOURCE.json.
-docs/methods/evidence-2026-09-30/** -text
+docs/methods/evidence-2026-09-30/** -text whitespace=cr-at-eol
