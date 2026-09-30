@@ -1,5 +1,12 @@
 # Resume here — Brohn
 
+The owner explicitly reiterated **HRV and skin temperature** on 30 September.
+Both remain required end-to-end paths. Read the
+[current implementation inventory and remaining gates](docs/research/HRV-SKIN-TEMPERATURE.md)
+alongside the master architecture. The saved cardiac package integration is
+still undergoing native and connected researcher QA; this note does not enable
+a new production method or close any of the 50 capabilities and 17 work packages.
+
 ## Exact-constant EDA extension — 30 September 2026
 
 Explicit recipe 1.1 keeps the measured raw level and original support of an

@@ -1,5 +1,13 @@
 # Brohn workstream and restart checklist
 
+**Scope reminder, 30 September 2026:** HRV and skin temperature are required
+through the complete researcher journey. The [implementation inventory](research/HRV-SKIN-TEMPERATURE.md)
+records existing detected RR/PRV and calibrated temperature support, plus the
+remaining NN review, method-specific baseline/event, temperature source/report
+and connected UX gates. Finish the active saved cardiac adapter, then use that
+inventory when sequencing the next physiological methods and adapters. No
+capability or package status changes with this documentation update.
+
 **Exact-constant EDA scoped acceptance, 30 September 2026:** explicit recipe 1.1 retains
 the raw mean of an eligible exactly constant segment and marks processed-response
 features unavailable, without invented peaks or a synthetic waveform. Saved

@@ -1,5 +1,13 @@
 # John: Brohn development handoff
 
+Latest scope reminder, 30 September: keep **HRV and skin temperature** connected
+from study design to review, supported baseline/event analysis, visualization,
+history and complete export. The [implementation inventory](research/HRV-SKIN-TEMPERATURE.md)
+separates existing RR/PRV and calibrated temperature analysis from the remaining
+method and UX work. Finish the saved cardiac package qualification before
+claiming its joined flow is ready. Existing recipe meanings and historical
+outputs remain unchanged.
+
 ## Exact-constant EDA accepted checkpoint — 30 September 2026
 
 The explicit continuous recipe `eda-neurokit-highpass/1.1` handles eligible

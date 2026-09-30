@@ -1,5 +1,15 @@
 # Changes
 
+## HRV and skin-temperature scope inventory — 2026-09-30
+
+- Reaffirmed both measures across study design, import, review, supported
+  analysis, visualization, history and export in the master architecture.
+- Documented existing detected RR/PRV and calibrated temperature analysis,
+  with explicit remaining NN, baseline/event, source/report and UX gates.
+- Updated the workstream and collaborator handoff. This is a documentation
+  change; scientific recipes and all 50-capability/17-package statuses stay
+  unchanged. Saved cardiac package integration remains in qualification.
+
 ## Exact-constant EDA 1.1 and saved report 0.2 — scoped acceptance 2026-09-30
 
 - Added an explicit continuous recipe for eligible finite, unit-normalized,

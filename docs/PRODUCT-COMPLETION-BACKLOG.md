@@ -18,6 +18,14 @@ This limitation does not block building or testing independent software routes.
 
 ## Required product and verification work
 
+HRV and skin temperature were explicitly reaffirmed on 30 September. Track their
+[complete implementation checklist](research/HRV-SKIN-TEMPERATURE.md): current
+detected RR/PRV and calibrated temperature analysis; remaining NN classification,
+metric-specific duration/baseline/event rules, skin-site/ambient support,
+temperature curation/report adapters and connected researcher acceptance. These
+requirements stay inside the existing 50-capability/17-package scope; no status
+is closed by the inventory.
+
 Exact-constant EDA scoped acceptance, 30 September: explicit recipe 1.1 preserves the
 raw mean of eligible exactly constant conductance, including zero, with all
 nine processed-response features null and an explicit quality reason. Complete

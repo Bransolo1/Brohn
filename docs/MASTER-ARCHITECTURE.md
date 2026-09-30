@@ -1,5 +1,31 @@
 # Brohn master architecture and large-build contract
 
+## HRV and skin temperature are required end-to-end paths — 30 September 2026
+
+The owner explicitly requires **HRV and skin temperature across the full
+platform**, from study/protocol design and declared acquisition through import,
+quality/exclusion review, supported analysis, baseline/event comparison, saved
+visualization, complete reports, history and export. This reinforces the existing
+`ecg.hrv`, `ppg.prv` and `temperature.peripheral` scope; it adds no completion claim
+and does not replace the 50-capability/17-package contract or any package status.
+BWP16 remains planned.
+
+The [implementation inventory and next gates](research/HRV-SKIN-TEMPERATURE.md)
+distinguish current detected ECG RR/PPG PRV measures and calibrated imported
+temperature descriptions from remaining work. ECG detections are not confirmed
+normal-to-normal intervals; PPG PRV is a separate measurement. Temperature has
+complete gap-aware traces and supported interval descriptions, but endpoint
+change is not a physiological baseline contrast. Neither modality supplies a
+stress/emotion score. Protocol duration, exclusions, baseline support, sensor
+placement, calibration, ambient conditions and settling must remain visible.
+
+The active saved cardiac package candidate preserves existing science; it does
+not itself close NN-HRV, nonlinear methods, temperature adapters or physical
+device qualification. BWP03/BWP06/BWP09/BWP13/BWP15/BWP17 share the next connected
+gates. The inventory records the exact production audit separately from external
+candidate progress so that a display/export pass cannot become a broader method
+or end-to-end readiness claim.
+
 ## Exact-constant EDA accepted boundary — 30 September 2026
 
 Scientific recipe `eda-neurokit-highpass/1.1` is an explicit addition; missing
