@@ -1,5 +1,14 @@
 # Changes
 
+## Stimulus assignment work in progress — 2026-10-01
+
+- Updated architecture and the EF02/EF03 queue for shared controls, all/one
+  version sets, explicit allocation arms and preserved assignment/exposure.
+- Recorded the remaining compiler, history, participant material-access,
+  portable-design and UI gates. Group assignment is not enabled by this update.
+- Clarified current multiple-control/version authoring in the historical
+  control-design note and linked the current researcher guide.
+
 ## Retained academic option appraisals — 2026-10-01
 
 - Added authored EDA, EEG spectral/time-frequency, gaze/AOI/pupil, study-control

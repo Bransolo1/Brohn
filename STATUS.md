@@ -15,6 +15,9 @@ the actual desktop/phone keyboard and edit/reopen journey. Read the
 [researcher guide](docs/operations/STIMULUS-VERSIONS-AND-CONTROLS.md).
 Variant assignment and the wider EF02–EF12 requirements remain open. Continue
 the independent cardiac report and academic evidence integration.
+EF02/EF03 have an inactive concept/set/arm implementation in progress; participant
+delivery, history, portable designs and UI integration are still required. The
+released app continues to schedule every listed ordinary stimulus once per run.
 
 New owner requirement, 30 September: **multiple academic sources for every
 analytical approach/option and best-practice study design**, covering contemporary

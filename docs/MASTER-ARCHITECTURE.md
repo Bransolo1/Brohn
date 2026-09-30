@@ -16,6 +16,17 @@ queue and its [source/depth companion](research/EYE-TRACKING-FLEXIBILITY-SOURCES
 no full-family or scientific acceptance follows from this review. Retain the
 academic evidence contract and all 50-capability/17-package statuses.
 
+EF02/EF03 implementation separates the complete study from each session's
+assigned presentation. Version sets declare all/one selection; explicit arms
+declare combinations; ungrouped stimuli can provide shared controls. Preserve
+the full design hash, scheduling policy, chosen arm and observed exposure
+separately. Validate paired-analysis opportunity in every arm. Before enabling
+this profile, connect its compiler, historical reader, clone/portable mapping
+and accessible authoring to a participant view containing only assigned material.
+Both new and existing resource routes must deny unassigned assets for that
+profile. The inactive core does not change current every-stimulus delivery or
+establish completed participant/scientific qualification.
+
 ## Academic evidence for every method and design option — 30 September 2026
 
 The [1 October option appraisals](methods/evidence-2026-10-01/README.md) now retain

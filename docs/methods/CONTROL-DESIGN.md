@@ -1,10 +1,18 @@
 # Control stimuli and presentation design
 
-Current scope, 30 September 2026: the sections below document the original
-paired-authoring slice. Their statements that participant delivery/allocation
-are absent are historical. Current platform delivery stores compiled protocols
-and allocation; see the [current source audit](evidence-2026-09-30/study-design/EVIDENCE.md).
-Recorded allocation is still distinct from achieved usable balance, and cyclic
+Current authoring, 1 October 2026: studies can contain multiple control, test,
+neutral and other conditions, with multiple stimuli in each condition. **Add
+version** creates a separate editable stimulus while preserving the original.
+Use the [current researcher guide](../operations/STIMULUS-VERSIONS-AND-CONTROLS.md)
+for condition choice, planned comparisons, materials and saved-history behavior.
+The released ordinary protocol schedules every listed stimulus once per run;
+version-group assignment is in implementation and remains unavailable.
+
+The sections below preserve the original paired-authoring checkpoint. Their
+one-control limit and absent-delivery statements describe that historical draft,
+not the current platform. Current delivery stores compiled protocols and
+allocation; see the [source audit](evidence-2026-09-30/study-design/EVIDENCE.md).
+Recorded allocation remains distinct from achieved usable balance, and cyclic
 order rotation does not generally balance carryover. The
 [academic evidence contract](ACADEMIC-EVIDENCE-CONTRACT.md) governs new profiles
 and the [proposed design checks](evidence-2026-09-30/study-design/TEMPLATE-PREFLIGHT.md)
@@ -14,7 +22,7 @@ The user requires control stimuli throughout the platform. The first executable
 authoring slice supports one designated control in the existing paired A/B design.
 It records intent; it does not automatically make the comparison causal.
 
-## Implemented authoring
+## Original paired-authoring checkpoint
 
 - Choose no designated control, A as control, or B as control. Save a rationale.
 - Keep stimulus identity separate from order. A remains A even when shown second.
@@ -30,7 +38,7 @@ No participant allocation or timed delivery is active. A sequence preview is not
 an achieved counterbalance, observed exposure, randomization log or baseline.
 The synthetic analysis uses fixed fictional intervals independent of the plan.
 
-## Method requirements for later implementation
+## Original method requirements, retained for traceability
 
 1. Match the control to the research question. Make viewing instructions, image
    display geometry, duration and response opportunity explicit. Record intended

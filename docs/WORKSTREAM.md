@@ -13,6 +13,15 @@ checks plus the actual keyboard, phone and edit/reopen journey. Read its
 [scoped acceptance](qa/STIMULUS-VERSIONS-ACCEPTANCE.md). EF02–EF12 remain open. Review the
 [actual source depths](research/EYE-TRACKING-FLEXIBILITY-SOURCES.md) before extending claims.
 
+EF02/EF03 are now in implementation: connect the inactive concept/set/arm core
+through full protocol compilation and saved validation, participant material
+access and resume, clone/portable mapping, then accessible Plan authoring and
+actual researcher QA. Common controls must remain selectable in every session;
+control role, recorded baseline and version assignment stay separate. Do not
+activate the schema before assigned-only participant content and asset routes
+work together. Broader repetition, shelf layout and analysis requirements remain
+in the same open queue.
+
 **Academic evidence requirement, 30 September 2026:** audit every implemented
 and planned analysis option and study-design template against the
 [academic evidence contract](methods/ACADEMIC-EVIDENCE-CONTRACT.md). Build a

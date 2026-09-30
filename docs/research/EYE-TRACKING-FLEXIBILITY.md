@@ -108,14 +108,30 @@ not create recorded physiological baseline support.
 ## Ordered implementation queue
 
 EF01 authoring is accepted within its recorded scope. EF02–EF12 remain open.
+
+EF02/EF03 are in implementation. The inactive core distinguishes concepts and
+version sets from analysis conditions. A set can show all members or one member;
+ungrouped stimuli are shown in every session, allowing shared controls. Explicit
+allocation arms declare combinations across sets. Balanced blocks count started
+sessions, not completed or usable participants. Full design identity remains
+separate from the scheduling policy, and existing paired comparisons require
+both conditions and the declared AOI outcome in every arm.
+
+This core is not available in the application yet. Remaining integration includes
+full protocol compilation, saved-history validation, clone/portable mapping,
+participant delivery/resume, assigned-only material access, previews and Plan
+authoring. A new participant view must omit unassigned materials; existing asset
+routes must also enforce that restriction. Retain original server protocols and
+actual exposure events. Do not enable subset allocation by only widening the
+current schema validator.
 This queue adds detail within all 50 capabilities and 17 unfinished packages;
 it does not replace their existing individual statuses.
 
 | ID | Required next output | Acceptance/dependency |
 | --- | --- | --- |
 | **EF01 — scoped acceptance passed** | Add stimulus version, above. | Domain/portable36, controller28 and actual desktop/phone researcher journey. No science/schema/assignment claim. |
-| **EF02 — next** | Concept, variant-set and immutable asset/layout revision identities, separate from conditions. | Versioned design/import/export/clone contract; no ID aliasing or historical rewrites. BWP03/BWP15. |
-| **EF03 — next** | Explicit within/between/mixed allocation, variant subset/frequency, mutually exclusive versions and position/order policy. | Seed/algorithm/assigned set/actual sequence and resume semantics; accidental-repeat and allocation checks. Compiler/delivery, BWP03/BWP06. |
+| **EF02 — in implementation; unavailable** | Concept, variant-set and immutable asset/layout revision identities, separate from conditions. | Inactive concept/set core exists; versioned design/import/export/clone and layout integration remain. No ID aliasing or historical rewrites. BWP03/BWP15. |
+| **EF03 — in implementation; unavailable** | Explicit within/between/mixed allocation, variant subset/frequency, mutually exclusive versions and position/order policy. | Inactive all/one-set assignment core exists. Compiler, saved protocol, participant view/assets, enrollment/resume and UI remain; repeats and broader frequency policies remain open. BWP03/BWP06. |
 | **EF04 — next** | Static shelf/packaging builder or validated planogram import with product, placement, facings, size, price and signage. | Reproducible asset/layout, controlled-factor diff, exact coordinates and accessible editing. Factorial generation remains a separately named method. |
 | **EF05 — next** | Reviewed semantic AOI correspondence across versions/layouts and repeated facings. | Meaning versus instance, absent region, overlap and assignment rules; no label-only accidental join. Changed estimands require new recipes. BWP09. |
 | **EF06 — next** | Task-aware target search and ordinary forced choice, distinct from passive viewing/MaxDiff. | Target/choice IDs, success/error/absent/timeout/abandonment, response-triggered offset and actual clocks; new delivery/event protocol. |
