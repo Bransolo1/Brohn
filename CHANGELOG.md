@@ -1,5 +1,15 @@
 # Changes
 
+## Bounded academic and study-design audit — 2026-09-30
+
+- Added a code-derived option inventory, measurement evidence matrix and a
+  separate academic study-design bibliography with supporting-text scope.
+- Recorded ten concrete method/interpretation gaps and five proposed conditional
+  design profiles, retaining exact source fingerprints and evidence limits.
+- Linked the master architecture, workstream and collaborator handoff. These
+  documents do not change calculations, saved results or qualification statuses;
+  runtime evidence guidance and option-level appraisal remain in progress.
+
 ## Academic evidence and study-design contract — 2026-09-30
 
 - Added the owner's requirement for multiple academic sources at analysis-option

@@ -122,7 +122,10 @@ and exact evidence/settings/bibliography through clone, portable design, analysi
 report and historical reopen. Citation-count lint is only a completeness check,
 never an automated scientific endorsement.
 
-Initial audit is in `work/consumer-methods-evidence-20260930`. Existing task
+The [dated portable audit](evidence-2026-09-30/README.md) is retained in this
+repository; original local packets are in `work/consumer-methods-evidence-20260930`.
+It is bounded source inspection and screened literature, not complete option
+appraisal. Existing task
 profiles expose single `source` links and more detailed references are dispersed
 across method documents; a completed option-level registry/UI/export audit is
 still required. The active cardiac integration preserves existing recipes while

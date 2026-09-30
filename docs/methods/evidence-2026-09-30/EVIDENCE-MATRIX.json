@@ -1,0 +1,675 @@
+{
+  "schema": "brohn-method-evidence-screening/0.1",
+  "accessed": "2026-09-30",
+  "search_design": "Purposive bounded primary-publisher/PubMed/author-repository starting search, not systematic review.",
+  "screening_depth": "Bibliographic/abstract or selected-section review; exact full-text option appraisal pending.",
+  "families": [
+    {
+      "family": "EEG/ERP",
+      "screened_evidence": "**M consensus:** Keil et al. 2014, [EEG/MEG publication guidelines](https://onlinelibrary.wiley.com/doi/10.1111/psyp.12147). **M/V methods evaluation, separate team:** Widmann, Schröger & Maess 2015, [Digital filter design for electrophysiological data](https://pubmed.ncbi.nlm.nih.gov/25128257/).",
+      "remaining_work": "Link acquisition/reference, filter, rejection, epochs, electrodes and amplitude/peak windows individually. Numerical synthetic ERP agreement is not empirical component/consumer validity. Use the consumer sources below only for scoped marketing hypotheses.",
+      "sources": [
+        {
+          "label": "EEG/MEG publication guidelines",
+          "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.12147"
+        },
+        {
+          "label": "Digital filter design for electrophysiological data",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25128257/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "EEG spectrum/time-frequency/SSVEP",
+      "screened_evidence": "**M consensus:** Keil et al. 2022, [Frequency and time-frequency analysis recommendations](https://pubmed.ncbi.nlm.nih.gov/35398913/). **M review, independent team:** Norcia et al. 2015, [SSVEP paradigms and analysis](https://pubmed.ncbi.nlm.nih.gov/26024451/). Widmann 2015 additionally informs filtering.",
+      "remaining_work": "Welch bands/denominator, Morlet cycles/total-vs-induced/baseline transforms, SSVEP harmonics/taper/noise bins need direct option-level evidence. Two Keil committee papers are not independent replication. No universal theta/alpha/engagement or purchase-intent mapping.",
+      "sources": [
+        {
+          "label": "Frequency and time-frequency analysis recommendations",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35398913/"
+        },
+        {
+          "label": "SSVEP paradigms and analysis",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26024451/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "EDA",
+      "screened_evidence": "**M consensus:** Boucsein et al. 2012, [Publication recommendations for electrodermal measurements](https://pubmed.ncbi.nlm.nih.gov/22680988/). **M/V original methods, distinct teams:** Benedek & Kaernbach 2010, [Continuous phasic EDA measure](https://pubmed.ncbi.nlm.nih.gov/20451556/); Greco et al. 2016, [cvxEDA convex-optimization method](https://pubmed.ncbi.nlm.nih.gov/26336110/).",
+      "remaining_work": "Deconvolution papers do not validate Brohn's high-pass detector. Review each decomposition, cleaning cutoff, amplitude/prominence threshold, response selection/window, overlap and edge policy. Preserve exact-constant descriptive-only support. Arousal-related measurement does not establish emotion valence or liking.",
+      "sources": [
+        {
+          "label": "Publication recommendations for electrodermal measurements",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/22680988/"
+        },
+        {
+          "label": "Continuous phasic EDA measure",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20451556/"
+        },
+        {
+          "label": "cvxEDA convex-optimization method",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26336110/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Gaze events",
+      "screened_evidence": "**M consensus:** Dunn et al., [Minimal reporting guideline, 2023 edition](https://pubmed.ncbi.nlm.nih.gov/37507649/) (published online 2023; journal issue 2024). **M/V methodological threats, separate team:** Orquin & Holmqvist 2018, [Threats to validity of eye-movement research](https://pure.au.dk/portal/en/publications/threats-to-the-validity-of-eye-movement-research-in-psychology/).",
+      "remaining_work": "Need annotated independent detector/device agreement for the adjacent-ray I-VT draft, including sampling/geometry/gaps/thresholds. Reporting compliance alone is not that agreement. Eye location, fixation candidates and visual attention/consumer preference need distinct claims.",
+      "sources": [
+        {
+          "label": "Minimal reporting guideline, 2023 edition",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37507649/"
+        },
+        {
+          "label": "Threats to validity of eye-movement research",
+          "url": "https://pure.au.dk/portal/en/publications/threats-to-the-validity-of-eye-movement-research-in-psychology/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Pupil and blink",
+      "screened_evidence": "**M/V:** Mathôt et al. 2018, [Safe preprocessing and baseline correction](https://pubmed.ncbi.nlm.nih.gov/29330763/). **M methods guidance, separate team:** Kret & Sjak-Shie 2019, [Preprocessing pupil size data](https://pubmed.ncbi.nlm.nih.gov/29992408/). **M contemporary methods context:** Mathôt & Vilotijević 2023, [Design, preprocessing and statistics](https://pubmed.ncbi.nlm.nih.gov/36028608/).",
+      "remaining_work": "Explicitly review luminance and gaze-angle confounds, positive-value/diameter-area units, external blink labels/edges, baseline support and missingness. Mathôt papers share authorship; do not count them as independent validation. The eye-tracking reporting guideline explicitly excludes incidental pupil/blink measurements from its scope.",
+      "sources": [
+        {
+          "label": "Safe preprocessing and baseline correction",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29330763/"
+        },
+        {
+          "label": "Preprocessing pupil size data",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29992408/"
+        },
+        {
+          "label": "Design, preprocessing and statistics",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36028608/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "ECG HR/HRV",
+      "screened_evidence": "**M current committee guidance:** Quigley et al. 2024, [Publication guidelines, Part 1](https://pubmed.ncbi.nlm.nih.gov/38873876/). **M independent recommendations:** Laborde, Mosley & Thayer 2017, [Experiment planning, analysis and reporting](https://pmc.ncbi.nlm.nih.gov/articles/PMC5316555/).",
+      "remaining_work": "ECG peak detection and RR arithmetic do not establish NN intervals. Review ectopy/artifacts, duration, respiration/posture/activity, feature definitions, PSD interpolation/windows/bands and intended estimand. Neither guideline validates current interval filtering or licenses a stress score.",
+      "sources": [
+        {
+          "label": "Publication guidelines, Part 1",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38873876/"
+        },
+        {
+          "label": "Experiment planning, analysis and reporting",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5316555/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "PPG PRV",
+      "screened_evidence": "**M literature map:** Mejía-Mejía et al. 2020, [PRV and its relationship with HRV](https://pubmed.ncbi.nlm.nih.gov/32498055/). **V primary experiment:** same group 2020, [HRV/PRV responses to cold exposure](https://pubmed.ncbi.nlm.nih.gov/32792970/). **M/V independent perspective:** Yuda et al. 2020, [PRV as a distinct biomarker](https://pubmed.ncbi.nlm.nih.gov/32811571/).",
+      "remaining_work": "The first two are not independent teams. Both the distinction and transfer need direct simultaneous-reference studies for target hardware, placement, motion and consumer context. Current named PRV cannot be relabelled HRV. Broader 2025 clinical study located but full appraisal not completed; not used to qualify options here.",
+      "sources": [
+        {
+          "label": "PRV and its relationship with HRV",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32498055/"
+        },
+        {
+          "label": "HRV/PRV responses to cold exposure",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32792970/"
+        },
+        {
+          "label": "PRV as a distinct biomarker",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32811571/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Skin temperature",
+      "screened_evidence": "**M/V measurement systematic review:** MacRae et al. 2018, [Contact-thermometry setup variables](https://pubmed.ncbi.nlm.nih.gov/29441024/). **V primary experiment, independent team:** Vinkers et al. 2013, [Site-dependent temperature changes under controlled stress](https://pubmed.ncbi.nlm.nih.gov/23790072/).",
+      "remaining_work": "Contact type/pressure/site, environment, settling and sensor calibration need explicit records and suitable reference tests. Stress-task/site findings do not validate a consumer stimulus, thermal imaging transfer or universal change direction. Operational threshold excursions and slopes need separate rationale.",
+      "sources": [
+        {
+          "label": "Contact-thermometry setup variables",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29441024/"
+        },
+        {
+          "label": "Site-dependent temperature changes under controlled stress",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23790072/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Respiration",
+      "screened_evidence": "**M/V primary detector study:** Khodadad et al. 2018, [Optimized breath detection in electrical impedance tomography](https://pubmed.ncbi.nlm.nih.gov/30074906/). **M measurement review, independent team:** Massaroni et al. 2019, [Contact-based respiratory-rate methods](https://pmc.ncbi.nlm.nih.gov/articles/PMC6413190/).",
+      "remaining_work": "Establish transfer from EIT to each admitted belt-displacement/lung-volume source; independently review inspiration polarity, cycle boundaries and known labels. Belt amplitude is not calibrated volume; airflow is a different signal. Consumer relevance and physiological coupling require further studies, not an engine citation.",
+      "sources": [
+        {
+          "label": "Optimized breath detection in electrical impedance tomography",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30074906/"
+        },
+        {
+          "label": "Contact-based respiratory-rate methods",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6413190/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Surface/facial/startle EMG",
+      "screened_evidence": "**M guidance:** Fridlund & Cacioppo 1986, [Human EMG research guidelines](https://pubmed.ncbi.nlm.nih.gov/3809364/) (bibliographic screening; full-text appraisal needed). **M/V independent consensus/evaluation:** Hermens et al. 2000, [SEMG sensors and placement recommendations](https://pubmed.ncbi.nlm.nih.gov/11018445/).",
+      "remaining_work": "Current generic surface EMG needs muscle-specific montage/filter/envelope/threshold validation. Facial/startle/MVC normalization are separate procedures. Startle consensus DOI10.1111/j.1469-8986.2005.00271.x is an existing pointer requiring its own full review, not admission by generic EMG.",
+      "sources": [
+        {
+          "label": "Human EMG research guidelines",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/3809364/"
+        },
+        {
+          "label": "SEMG sensors and placement recommendations",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11018445/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Movement/acceleration",
+      "screened_evidence": "**M/V primary methods experiment:** van Hees et al. 2013, [Movement/gravity separation and ENMO](https://pubmed.ncbi.nlm.nih.gov/23626718/). **M independent measurement recommendations:** Düking et al. 2018, [Reliability, sensitivity and validity of wearable sensors](https://pubmed.ncbi.nlm.nih.gov/29712629/).",
+      "remaining_work": "Need device/placement/rotation validation, calibration, gravity and negative-ENMO policy review. Physical-activity findings do not establish motor approach, psychological arousal, posture or consumer attention.",
+      "sources": [
+        {
+          "label": "Movement/gravity separation and ENMO",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23626718/"
+        },
+        {
+          "label": "Reliability, sensitivity and validity of wearable sensors",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29712629/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Webcam facial AU/category and geometry",
+      "screened_evidence": "**M/V original toolbox/benchmark:** Cheong et al. 2023, [Py-Feat](https://pubmed.ncbi.nlm.nih.gov/38156250/). **M interpretive review, independent team:** Barrett et al. 2019, [Challenges inferring emotion from facial movements](https://www.stacymarsella.org/publications/abstracts/barrett2019emotional-abstract.html).",
+      "remaining_work": "Exact pinned Detectorv1 v2.0.0/model weights/threshold/stride need model-specific validation and population/context checks. Review source training labels separately from experienced emotion. Geometry, blendshapes, action units, category outputs, attention and liking are distinct variables. No automatic emotion/attention inference.",
+      "sources": [
+        {
+          "label": "Py-Feat",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38156250/"
+        },
+        {
+          "label": "Challenges inferring emotion from facial movements",
+          "url": "https://www.stacymarsella.org/publications/abstracts/barrett2019emotional-abstract.html"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Webcam gaze/attention",
+      "screened_evidence": "**V primary experiments:** Van der Cruyssen et al. 2024, [Online webcam eye-tracking replications of cascade, novelty and visual-world effects](https://pmc.ncbi.nlm.nih.gov/articles/PMC11289066/). **V independent multi-lab study:** Steffan et al. 2024, [Remote WebGazer in early childhood](https://pubmed.ncbi.nlm.nih.gov/37850726/).",
+      "remaining_work": "These support feasibility within tested tasks, including quality/exclusion limitations; they do not qualify Brohn's geometry provider or arbitrary adult consumer AOIs. Need exact provider, calibration/validation, drift, spatial/temporal precision, dropout and large/small-AOI applicability. The child study is not evidence for adult population equivalence.",
+      "sources": [
+        {
+          "label": "Online webcam eye-tracking replications of cascade, novelty and visual-world effects",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11289066/"
+        },
+        {
+          "label": "Remote WebGazer in early childhood",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37850726/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Simple/choice RT and attention tasks",
+      "screened_evidence": "**M/V original task study:** Deary, Liewald & Nissan 2011, [Simple/four-choice RT task](https://pubmed.ncbi.nlm.nih.gov/21287123/). **V independent hardware timing study:** Anwyl-Irvine et al. 2021, [Platforms, browsers and devices](https://link.springer.com/article/10.3758/s13428-020-01501-5). **V reliability study:** Hedge et al., [Reliability paradox](https://link.springer.com/article/10.3758/s13428-017-0935-1) (online 2017; issue 2018).",
+      "remaining_work": "Need exact Brohn browser delivery/response timing, trial counts and reliability. Robust average task effects do not imply reliable individual differences. RT is not automatically attention, cognition, liking or a normative classification.",
+      "sources": [
+        {
+          "label": "Simple/four-choice RT task",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21287123/"
+        },
+        {
+          "label": "Platforms, browsers and devices",
+          "url": "https://link.springer.com/article/10.3758/s13428-020-01501-5"
+        },
+        {
+          "label": "Reliability paradox",
+          "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "IAT/BIAT",
+      "screened_evidence": "**M/V scoring:** Greenwald, Nosek & Banaji 2003, [IAT improved algorithm](https://pubmed.ncbi.nlm.nih.gov/12916565/); Nosek et al. 2014, [BIAT scoring studies](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938). **M current guidance:** Greenwald et al. 2022, [IAT best research practices](https://pubmed.ncbi.nlm.nih.gov/34519017/). **V comparative methods study:** Bar-Anan & Nosek 2014, [Seven indirect attitude measures](https://link.springer.com/article/10.3758/s13428-013-0410-6).",
+      "remaining_work": "These have substantial author overlap; an independent replication for each exact consumer profile is still needed. Bind D variant, error handling, exclusions/order, familiarity/materials and reliability. Do not infer a universal individual hidden preference or make all implicit tasks inherit IAT trimming.",
+      "sources": [
+        {
+          "label": "IAT improved algorithm",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12916565/"
+        },
+        {
+          "label": "BIAT scoring studies",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938"
+        },
+        {
+          "label": "IAT best research practices",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34519017/"
+        },
+        {
+          "label": "Seven indirect attitude measures",
+          "url": "https://link.springer.com/article/10.3758/s13428-013-0410-6"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "AAT",
+      "screened_evidence": "**V original multiverse/simulation analysis:** Kahveci et al., [Preprocessing decisions across six datasets](https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/) (online 2023; issue 2024). **V empirical different implementation, overlapping authors:** van Alebeek, Kahveci & Blechert 2021 (version 3), [Touchscreen food AAT and block-order validity](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445824/).",
+      "remaining_work": "The first two sources share authors and are not independent validation. An independent methods comparison is [Krieglmeyer & Deutsch 2010](https://www.tandfonline.com/doi/abs/10.1080/02699930903047298), but it also tests different input representations; none validates the exact Brohn keyboard procedure. Independent exact keyboard-procedure consumer validation remains open. Error/outlier/difference scoring, stimulus relevance and assessment-vs-training require separate bindings.",
+      "sources": [
+        {
+          "label": "Preprocessing decisions across six datasets",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/"
+        },
+        {
+          "label": "Touchscreen food AAT and block-order validity",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10445824/"
+        },
+        {
+          "label": "Krieglmeyer & Deutsch 2010",
+          "url": "https://www.tandfonline.com/doi/abs/10.1080/02699930903047298"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Single-category/GNAT",
+      "screened_evidence": "**M/V primary SC-IAT study:** Karpinski & Steinman 2006, [Single-category IAT](https://pubmed.ncbi.nlm.nih.gov/16834477/), including a soda-brand domain. **M/V primary GNAT:** Nosek & Banaji 2001, [Go/No-Go Association Task](https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf). Bar-Anan & Nosek 2014 adds cross-method comparison.",
+      "remaining_work": "Distinct tasks, not two independent validators of either profile. Brohn SC response-window variant, GNAT deadlines/quotas/extreme-rate correction and consumer stimulus context each need exact evidence. The 2007 proceedings source pointer is insufficient by itself.",
+      "sources": [
+        {
+          "label": "Single-category IAT",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16834477/"
+        },
+        {
+          "label": "Go/No-Go Association Task",
+          "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Additional implicit/attention/inhibition methods",
+      "screened_evidence": "**V comparative start:** Bar-Anan & Nosek 2014 covers multiple indirect tasks. **V caution about task reliability:** Hedge et al. 2018. **V AMP-specific primary study:** Blaison et al. 2012, [AMP affective/nonaffective mechanisms](https://pubmed.ncbi.nlm.nih.gov/22390705/).",
+      "remaining_work": "AMP, priming, Stroop/flanker, stop-signal, VAAST/manikin, relational/agile tasks and learning/memory need individual primary specification plus independent validation and consumer relevance review. This is a discovery backlog, not academic coverage of each proposed method. Vendor manuals are not substitutes.",
+      "sources": [
+        {
+          "label": "AMP affective/nonaffective mechanisms",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/22390705/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Questionnaire instruments and scoring",
+      "screened_evidence": "**M methods primer:** Boateng et al. 2018, [Developing and validating scales](https://doi.org/10.3389/fpubh.2018.00149). **M/V measurement-practice analysis, independent team:** Flake & Fried 2020, [Questionable measurement practices](https://journals.sagepub.com/doi/abs/10.1177/2515245920952393).",
+      "remaining_work": "Generic reverse/sum/mean/proration/conversion arithmetic needs exact instrument-key/missingness sources. Content/translation/administration/population validity and reliability cannot be supplied by these general references. A seven-point liking item is a declared item, not a validated multi-item construct.",
+      "sources": [
+        {
+          "label": "Developing and validating scales",
+          "url": "https://doi.org/10.3389/fpubh.2018.00149"
+        },
+        {
+          "label": "Questionable measurement practices",
+          "url": "https://journals.sagepub.com/doi/abs/10.1177/2515245920952393"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Explicit choice/MaxDiff",
+      "screened_evidence": "**M mathematical primary source:** Marley & Louviere 2005, [Probabilistic best/worst models](https://www.sciencedirect.com/science/article/pii/S0022249605000441). **V/C independent primary consumer study:** Jaeger et al. 2008, [Food preference BWS vs monadic ratings](https://researchprofiles.ku.dk/en/publications/best-worst-scaling-an-introduction-and-initial-comparison-with-mo/).",
+      "remaining_work": "Bind paired-vs-marginal/sequential likelihood, design connectivity/coverage, task burden and missing-pair policy. Study-specific consumer comparison does not support generic market shares or individual utilities. Participant-aware uncertainty/HB/conjoint are unimplemented by the current object-case pack.",
+      "sources": [
+        {
+          "label": "Probabilistic best/worst models",
+          "url": "https://www.sciencedirect.com/science/article/pii/S0022249605000441"
+        },
+        {
+          "label": "Food preference BWS vs monadic ratings",
+          "url": "https://researchprofiles.ku.dk/en/publications/best-worst-scaling-an-introduction-and-initial-comparison-with-mo/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "AOI construction and interpretation",
+      "screened_evidence": "**M/V original methods study:** Hessels et al. 2016, [AOI problem and noise-robust solution](https://pmc.ncbi.nlm.nih.gov/articles/PMC5101255/) (online 2015). **M/V independent threats analysis:** Orquin & Holmqvist 2018, [Eye-movement validity threats](https://pure.au.dk/portal/en/publications/threats-to-the-validity-of-eye-movement-research-in-psychology/).",
+      "remaining_work": "Review exact geometry, noise margin, area/position/content differences, overlap/censoring, denominator and revisions. Labels alone do not make AOIs comparable; neither paper validates every Brohn rectangular/dynamic policy.",
+      "sources": [
+        {
+          "label": "AOI problem and noise-robust solution",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5101255/"
+        },
+        {
+          "label": "Eye-movement validity threats",
+          "url": "https://pure.au.dk/portal/en/publications/threats-to-the-validity-of-eye-movement-research-in-psychology/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Multimodal integration/statistics",
+      "screened_evidence": "**M mathematical source:** Holm 1979, [Sequentially rejective multiple-test procedure](https://www.jstor.org/stable/4615733) (bibliographic verification; full derivation review pending). **M/V distinct estimand:** Bakdash & Marusich 2017, [Repeated-measures correlation](https://pmc.ncbi.nlm.nih.gov/articles/PMC5383908/). **M primary statistical design:** Westfall, Kenny & Judd 2014, [Participant and stimulus sampling](https://pubmed.ncbi.nlm.nih.gov/25111580/).",
+      "remaining_work": "These clarify separate decisions; they do not collectively validate the current entire pipeline. Match between/within-person estimands, repeated visits/stimuli, missingness and multiplicity. Current aggregation must not be presented as repeated-measures correlation. Crosswalk/clock integrity is not construct validity; prediction needs independent held-out evaluation.",
+      "sources": [
+        {
+          "label": "Sequentially rejective multiple-test procedure",
+          "url": "https://www.jstor.org/stable/4615733"
+        },
+        {
+          "label": "Repeated-measures correlation",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5383908/"
+        },
+        {
+          "label": "Participant and stimulus sampling",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25111580/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "fNIRS",
+      "screened_evidence": "**M consensus:** Yücel et al. 2021, [Best practices for fNIRS publications](https://pmc.ncbi.nlm.nih.gov/articles/PMC7793571/). **M confound analysis:** Tachtsidis & Scholkmann 2016, [False positives and negatives](https://pmc.ncbi.nlm.nih.gov/articles/PMC4791590/).",
+      "remaining_work": "Authors overlap with the consensus; seek independent sensor/pipeline reference validation. PPF, wavelengths/geometry, OD reference, coupling, systemic signals and motion choices need individual evidence. Current absence of motion/short-channel correction constrains interpretation; no full neural-activation claim.",
+      "sources": [
+        {
+          "label": "Best practices for fNIRS publications",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7793571/"
+        },
+        {
+          "label": "False positives and negatives",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4791590/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    },
+    {
+      "family": "Audio/acoustics",
+      "screened_evidence": "**M original software paper:** Jadoul, Thompson & de Boer 2018, [Parselmouth interface to Praat](https://researchportal.vub.be/nl/publications/introducing-parselmouth-a-python-interface-to-praat/). **V primary experiment, independent team:** Banse & Scherer 1996, [Acoustic profiles in vocal emotion expression](https://pubmed.ncbi.nlm.nih.gov/8851745/).",
+      "remaining_work": "The interface paper does not validate default pitch/frame settings. Experimental vocal-expression findings do not authorize inference of spontaneous consumer emotion from generic acoustic features. Need microphone/voice/language/noise, exact algorithm and naturalistic consumer validation.",
+      "sources": [
+        {
+          "label": "Parselmouth interface to Praat",
+          "url": "https://researchportal.vub.be/nl/publications/introducing-parselmouth-a-python-interface-to-praat/"
+        },
+        {
+          "label": "Acoustic profiles in vocal emotion expression",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8851745/"
+        }
+      ],
+      "option_review_complete": false,
+      "brohn_scientific_validation_claim": false
+    }
+  ],
+  "sources": [
+    {
+      "label": "EEG/MEG publication guidelines",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.12147"
+    },
+    {
+      "label": "Digital filter design for electrophysiological data",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25128257/"
+    },
+    {
+      "label": "Frequency and time-frequency analysis recommendations",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35398913/"
+    },
+    {
+      "label": "SSVEP paradigms and analysis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26024451/"
+    },
+    {
+      "label": "Publication recommendations for electrodermal measurements",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22680988/"
+    },
+    {
+      "label": "Continuous phasic EDA measure",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20451556/"
+    },
+    {
+      "label": "cvxEDA convex-optimization method",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26336110/"
+    },
+    {
+      "label": "Minimal reporting guideline, 2023 edition",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37507649/"
+    },
+    {
+      "label": "Eye-movement validity threats",
+      "url": "https://pure.au.dk/portal/en/publications/threats-to-the-validity-of-eye-movement-research-in-psychology/"
+    },
+    {
+      "label": "Safe preprocessing and baseline correction",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29330763/"
+    },
+    {
+      "label": "Preprocessing pupil size data",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29992408/"
+    },
+    {
+      "label": "Design, preprocessing and statistics",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36028608/"
+    },
+    {
+      "label": "Publication guidelines, Part 1",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38873876/"
+    },
+    {
+      "label": "Experiment planning, analysis and reporting",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5316555/"
+    },
+    {
+      "label": "PRV and its relationship with HRV",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32498055/"
+    },
+    {
+      "label": "HRV/PRV responses to cold exposure",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32792970/"
+    },
+    {
+      "label": "PRV as a distinct biomarker",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32811571/"
+    },
+    {
+      "label": "Contact-thermometry setup variables",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29441024/"
+    },
+    {
+      "label": "Site-dependent temperature changes under controlled stress",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23790072/"
+    },
+    {
+      "label": "Optimized breath detection in electrical impedance tomography",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30074906/"
+    },
+    {
+      "label": "Contact-based respiratory-rate methods",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6413190/"
+    },
+    {
+      "label": "Human EMG research guidelines",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/3809364/"
+    },
+    {
+      "label": "SEMG sensors and placement recommendations",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11018445/"
+    },
+    {
+      "label": "Movement/gravity separation and ENMO",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23626718/"
+    },
+    {
+      "label": "Reliability, sensitivity and validity of wearable sensors",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29712629/"
+    },
+    {
+      "label": "Py-Feat",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38156250/"
+    },
+    {
+      "label": "Challenges inferring emotion from facial movements",
+      "url": "https://www.stacymarsella.org/publications/abstracts/barrett2019emotional-abstract.html"
+    },
+    {
+      "label": "Online webcam eye-tracking replications of cascade, novelty and visual-world effects",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11289066/"
+    },
+    {
+      "label": "Remote WebGazer in early childhood",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37850726/"
+    },
+    {
+      "label": "Simple/four-choice RT task",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21287123/"
+    },
+    {
+      "label": "Platforms, browsers and devices",
+      "url": "https://link.springer.com/article/10.3758/s13428-020-01501-5"
+    },
+    {
+      "label": "Reliability paradox",
+      "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1"
+    },
+    {
+      "label": "IAT improved algorithm",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12916565/"
+    },
+    {
+      "label": "BIAT scoring studies",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938"
+    },
+    {
+      "label": "IAT best research practices",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34519017/"
+    },
+    {
+      "label": "Seven indirect attitude measures",
+      "url": "https://link.springer.com/article/10.3758/s13428-013-0410-6"
+    },
+    {
+      "label": "Preprocessing decisions across six datasets",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/"
+    },
+    {
+      "label": "Touchscreen food AAT and block-order validity",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10445824/"
+    },
+    {
+      "label": "Krieglmeyer & Deutsch 2010",
+      "url": "https://www.tandfonline.com/doi/abs/10.1080/02699930903047298"
+    },
+    {
+      "label": "Single-category IAT",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16834477/"
+    },
+    {
+      "label": "Go/No-Go Association Task",
+      "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf"
+    },
+    {
+      "label": "AMP affective/nonaffective mechanisms",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22390705/"
+    },
+    {
+      "label": "Developing and validating scales",
+      "url": "https://doi.org/10.3389/fpubh.2018.00149"
+    },
+    {
+      "label": "Questionable measurement practices",
+      "url": "https://journals.sagepub.com/doi/abs/10.1177/2515245920952393"
+    },
+    {
+      "label": "Probabilistic best/worst models",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0022249605000441"
+    },
+    {
+      "label": "Food preference BWS vs monadic ratings",
+      "url": "https://researchprofiles.ku.dk/en/publications/best-worst-scaling-an-introduction-and-initial-comparison-with-mo/"
+    },
+    {
+      "label": "AOI problem and noise-robust solution",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5101255/"
+    },
+    {
+      "label": "Sequentially rejective multiple-test procedure",
+      "url": "https://www.jstor.org/stable/4615733"
+    },
+    {
+      "label": "Repeated-measures correlation",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5383908/"
+    },
+    {
+      "label": "Participant and stimulus sampling",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25111580/"
+    },
+    {
+      "label": "Best practices for fNIRS publications",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7793571/"
+    },
+    {
+      "label": "False positives and negatives",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4791590/"
+    },
+    {
+      "label": "Parselmouth interface to Praat",
+      "url": "https://researchportal.vub.be/nl/publications/introducing-parselmouth-a-python-interface-to-praat/"
+    },
+    {
+      "label": "Acoustic profiles in vocal emotion expression",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8851745/"
+    },
+    {
+      "label": "Bigne et al. 2025",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/mar.70002"
+    },
+    {
+      "label": "Venkatraman et al. 2015",
+      "url": "https://scholarship.miami.edu/esploro/outputs/journalArticle/Predicting-Advertising-success-beyond-Traditional-Measures/991032069208202976"
+    },
+    {
+      "label": "Hartnett et al., How to accurately measure attention to video advertising",
+      "url": "https://www.tandfonline.com/doi/pdf/10.1080/02650487.2024.2435164"
+    }
+  ],
+  "advanced_branches_complete": false
+}

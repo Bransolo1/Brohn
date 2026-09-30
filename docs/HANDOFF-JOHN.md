@@ -8,6 +8,11 @@ the planned versioned registry, design checks, in-app explanations and automatic
 methods/bibliography export. The option-level audit is underway; do not treat
 existing single source links or numerical QA as completed scientific validation.
 Preserve saved recipe meanings and evidence revisions when adding this layer.
+Start with the [dated audit and implementation gaps](methods/evidence-2026-09-30/README.md).
+It includes actual code/defaults, multiple scholarly starting sources, study-design
+evidence and proposed preflight profiles. Its screened literature and bounded
+source inspection are not completed scientific acceptance. The exact registry,
+in-app method explanations and frozen evidence/export bindings are still being built.
 
 Latest scope reminder, 30 September: keep **HRV and skin temperature** connected
 from study design to review, supported baseline/event analysis, visualization,

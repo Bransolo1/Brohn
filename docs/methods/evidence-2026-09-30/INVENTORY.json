@@ -1,0 +1,5830 @@
+{
+  "schema": "brohn-consumer-method-evidence-inventory/0.1",
+  "audited_at": "2026-09-30",
+  "production_commit": "e861399f8cb40fb261855121f7f22baa99096a81",
+  "production_status": "",
+  "scope": "Bounded source/citation inventory; presence does not verify a citation or scientific validity.",
+  "files": [
+    {
+      "path": "docs/MASTER-ARCHITECTURE.md",
+      "bytes": 74037,
+      "sha256": "f1b7342bbcbd4b360dc1ebbb4704a52ad234acc700c138e475baad72f7e90c67"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "bytes": 24103,
+      "sha256": "62eb34a275c35ec902883f80bad44cf827667ea28a23a290f27f354539f84a5a"
+    },
+    {
+      "path": "docs/methods/CONTROL-DESIGN.md",
+      "bytes": 3718,
+      "sha256": "003d49abb05301539b703a0e1c64af7b5c5903e68bedd1840a3aabcc4e18cb66"
+    },
+    {
+      "path": "docs/methods/DECLARATIVE-ANALYSIS-PLANS.md",
+      "bytes": 4243,
+      "sha256": "7ffcd29d988cbd121ae3fd36332537326e51e6b52dfb184591295a631e6cf065"
+    },
+    {
+      "path": "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+      "bytes": 6429,
+      "sha256": "7e88d6c992e82a77ba29f4627c97a05575b08cbc0e76ecc5f9b145a62d3132c7"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "bytes": 16044,
+      "sha256": "d4b71557a27a3300be6c65b6527749855025a45fd29b8c51d54b7de11ba2a7ba"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "bytes": 14199,
+      "sha256": "f818bc38253ae993e1c5cf44f24d519044e8c08b3a5388d4b9444c804bbd7d26"
+    },
+    {
+      "path": "docs/methods/GAZE-REPORT-VIEWS.md",
+      "bytes": 6498,
+      "sha256": "9a3c1fd16fe3e2217429eabfd2fb08733519cc37480df73a5066d941a69650b2"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "bytes": 17173,
+      "sha256": "065151f1a018341bea1f42865a95ed68fbd388f44cff701ebdc4f32324b8ba2e"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "bytes": 19237,
+      "sha256": "d61df391a6b989797507624827f523f161468ec4bdd0223cc0e89a4b250551f7"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TRIAL-IMPORT.md",
+      "bytes": 5075,
+      "sha256": "5e88d86d31436985ae29af5f5e6fd84a26a9d664f31844ee9cf56efa251d2af8"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "bytes": 28503,
+      "sha256": "7caa55b7c9659bae0b5ae4f2336080630314846a660b35c8c9a13a30fac0c4b4"
+    },
+    {
+      "path": "docs/methods/MEDIA-SOURCE-REVIEW.md",
+      "bytes": 6421,
+      "sha256": "c7366556f9ddc1a1f322bd3358ef9b12ec01b0674bc592760a1567eb3a8549f2"
+    },
+    {
+      "path": "docs/methods/MULTIMODAL-REPORTS.md",
+      "bytes": 13149,
+      "sha256": "3772aa7c566d0bb12855e1c648d1343e57d600bd30c365130abc692528caab7a"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "bytes": 11816,
+      "sha256": "dc41dc76e97a3bca5cfb8f5a90f480a756fb1bd18b5f2994c7ca5ac02d283cf1"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "bytes": 7182,
+      "sha256": "a637136e30c35128510d0390ffae19528356bf2b18c06fa22607494f54bc4681"
+    },
+    {
+      "path": "docs/methods/NEURAL-PLOTS.md",
+      "bytes": 8329,
+      "sha256": "58878f1c2e92ddb16256fb9f1b81a8cbe7ffe5e5dd91c387c3b835478e493968"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "bytes": 14653,
+      "sha256": "06cfb21d4361024b511c71975b60cb6a07091c99115d3263718c76e000b9976f"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "bytes": 14146,
+      "sha256": "0ee02c478fdb976489f440ca3f7e42175cbb4d695de30340c0f19a6ab12086ca"
+    },
+    {
+      "path": "docs/methods/PREPARED-CSV.md",
+      "bytes": 4276,
+      "sha256": "56eaf653d4ba02dc75afda29854b0e39da6071564af1be65a9c6cfd3013e6a4a"
+    },
+    {
+      "path": "docs/methods/PREPARED-GAZE.md",
+      "bytes": 6400,
+      "sha256": "ec41f4666b5f7a55d83b8904f789bd7bea99664df66e6638210109370d426514"
+    },
+    {
+      "path": "docs/methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md",
+      "bytes": 10383,
+      "sha256": "c37e04ae202c4148dbc5476d473567c8b50d78478aa06fe1cf01df975e78e4d8"
+    },
+    {
+      "path": "docs/methods/PROTOCOL-SNAPSHOTS.md",
+      "bytes": 4317,
+      "sha256": "15279639263763e0a2b695663d6cf96014971bde4e03ed83e05e32c3b9886fbc"
+    },
+    {
+      "path": "docs/methods/QUESTION-FLOW-BUILDER.md",
+      "bytes": 4015,
+      "sha256": "be832442d3ffeaa6df1d12a5da37a18fbe8fe7fa0a3a2506f0c9b908538f24da"
+    },
+    {
+      "path": "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+      "bytes": 8684,
+      "sha256": "7274c2690227b930702f9bfa7866206268e842307db6a9e60711375ef78ab8cb"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SCALES.md",
+      "bytes": 13415,
+      "sha256": "26bdd1675864c2f4de3eab5958481e6fe8d31dc4181066bda9cfbd6975c2809a"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SECTIONS.md",
+      "bytes": 16791,
+      "sha256": "c2d99c46b5624dc6bac50ea8137ede13aca57aa697311ce087db5320b8379768"
+    },
+    {
+      "path": "docs/methods/RAW-GAZE-ANALYSIS.md",
+      "bytes": 11876,
+      "sha256": "aa1bc7be2c3a7d9f68aef8aa82a213105c9bce5d2d46fee08ccd33fb90fc9365"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "bytes": 10043,
+      "sha256": "83e7fba87571e6b74e8e0f1950bbadfccbc1bcdaab30abaf0c0aa141e10fb6b9"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "bytes": 10264,
+      "sha256": "7a37b51249ad570f21cbcf8741899146dfce3d9cd5ddd6b93caf31e77d7b708e"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "bytes": 8904,
+      "sha256": "1c8735c1373834e478d1696e6c1517e31906a10c2ff76613bb0a346ca752293b"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "bytes": 11056,
+      "sha256": "0029136f67a1cb2e0fe6fd9bb643e3c81684b9705d5558f0d2e22b658f7abd33"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "bytes": 8646,
+      "sha256": "13bfda3a39b8cb5050092a0a837f09b1ba29d32667275506b1549cba75b767b0"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "bytes": 10915,
+      "sha256": "ade66442830e5336d0be5c2090e0d35252b8d1dc0509d87ccd6b518771901348"
+    },
+    {
+      "path": "docs/methods/reuse/README.md",
+      "bytes": 13749,
+      "sha256": "ae7c99b9070dbb12c14bf2bf839a04b3d1dc16e9a511c6e496d92666ccaf585f"
+    },
+    {
+      "path": "docs/methods/RT-SUPPORT-AND-TASK-EXPORTS.md",
+      "bytes": 3842,
+      "sha256": "81acb52e5e710b71dc7efb00ca4b75f3f46a480c459c31b0fbbb957950f050e5"
+    },
+    {
+      "path": "docs/methods/SIGNAL-INTERVAL-REUSE.md",
+      "bytes": 2899,
+      "sha256": "fe943468e6228813112eaacb8725223a46fa4c64be340117e656b3de5ee9aaa5"
+    },
+    {
+      "path": "docs/methods/SIGNAL-INTERVALS.md",
+      "bytes": 2085,
+      "sha256": "4308f4194869ba53b03b41a6c75e7cc8bfae568e26537a02e4b5e6475de39041"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "bytes": 10043,
+      "sha256": "04f7db012c1996c19f3c207b76d850df0c2e7e522c43a1772729de92df5ca8b0"
+    },
+    {
+      "path": "docs/methods/STREAM-CURATION.md",
+      "bytes": 10306,
+      "sha256": "2dd5660b4bbc15c6d6452d4126abc228e47ef7f07ba73c675b87bec8c4bd0714"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "bytes": 15062,
+      "sha256": "071b79b4ed3dcab22a21821b48de688a581caad80af8e5e5ace8104a5efdf6d1"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "bytes": 11404,
+      "sha256": "90e38265621df65fb6509ab14b57067a28da267f3279710af78eaf8085a23e4f"
+    },
+    {
+      "path": "docs/preparation/ARCHITECTURE-READINESS.md",
+      "bytes": 13343,
+      "sha256": "052e2e9c0ada3376ab784d79dfcb34b8602dcef0ab095264d631a601d9d9db6a"
+    },
+    {
+      "path": "docs/preparation/ASTRA-BUILD-BRIEF.md",
+      "bytes": 11266,
+      "sha256": "f8e0a9abab9eafe1e718be92e1149996530b4489d9c3f1528ebd45f7889c229f"
+    },
+    {
+      "path": "docs/preparation/BUILD-READINESS.md",
+      "bytes": 3808,
+      "sha256": "42a799bc79613582d5f8fd0853749f862ef9e6901eea50f6952356e350e3c080"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "bytes": 79184,
+      "sha256": "ae5b6d62f3d3cec02c551e2b2934c4328790e2ce895526387148650675cd3a0c"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "bytes": 16356,
+      "sha256": "53517cf2086fc6d6622fa6b15d98868361bc5e6fc71966f2e4c8a323314517e0"
+    },
+    {
+      "path": "docs/preparation/LARGE-BUILD-READINESS.md",
+      "bytes": 8316,
+      "sha256": "c8889ac8636d305e3b2c746ab744771414d7eb6e4f592fb59d5e415ca143231e"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "bytes": 6510,
+      "sha256": "5a17e43025b7ad761fa44e42ed4aae03e522e580d2d4761d10d6d18db670c5d2"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "bytes": 10125,
+      "sha256": "389e3947565872d84cc80f84018916e6a7a4ae2eb7a4a6f72df9d9d592afb594"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "bytes": 10448,
+      "sha256": "d8b4af6fd0f79c8d89c46442903f060808fe87209a2ef56fc04f45f6c5933d0f"
+    },
+    {
+      "path": "docs/preparation/R-TOOLING.md",
+      "bytes": 7154,
+      "sha256": "e1b46c7bb1957892d3ee1d1c8846b7232c47bbc90ea1ce8c26ac184be38ea1fe"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "bytes": 5635,
+      "sha256": "8f3d44dee5305f10f4ef9b015779f1ea08ec7b0a0bcaa33b64c8c32cd06554a4"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "bytes": 6398,
+      "sha256": "03c8c7d77419bb4fde2c8af050d66d82054bab3e4c0f409692e05e050cf9834d"
+    },
+    {
+      "path": "docs/preparation/UX-READINESS.md",
+      "bytes": 17958,
+      "sha256": "5997be04ce40b5201f9255c8b656313e653e17047fc23b48b353c477eb45d875"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "bytes": 11427,
+      "sha256": "58b7f2d1bfc3ef2e3ca4e8ef878cff24ca9725fc1e49c5177402c0071b0f5fc9"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "bytes": 11531,
+      "sha256": "59ada90fce203fcc8b3899bd614d332db2b1f6efa161c2c73774f2a3998a07ba"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "bytes": 30097,
+      "sha256": "3aecee7950cfe2b79af6840966b4cc23e170ef821ab6338d985e6b2a0ea0be60"
+    },
+    {
+      "path": "R/platform-aoi.R",
+      "bytes": 2395,
+      "sha256": "ac874e70080581678a3e01cbe425eccd3cc59f74ae2c2e7b83b19adc70bb757c"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "bytes": 16119,
+      "sha256": "251343ba69c883259acf08c25402b4e436d029140b51780ea3d2ee55554a9c4e"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "bytes": 15622,
+      "sha256": "91fddb239c7c369bc83a0049867678c2850961723d5423837c5156e98c49cb41"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "bytes": 14692,
+      "sha256": "ba6ff2c57fa819b127a5135991964a3ff3bf5b206e61f290afae0a42087a7c4e"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "bytes": 26087,
+      "sha256": "0b1fc1ce5f2180143e6b7b2dbebb1c6694168b15f494f9e481b8ef4586fbe191"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "bytes": 40357,
+      "sha256": "c51e8f7e6015e59a9054a6cae8561ad3be4937c29058989ca5821113fb500803"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "bytes": 23216,
+      "sha256": "4eca7fec2c95aa3d24e78e4d2053a6fb19f93cbd9244fd62c7338632c274a3ea"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "bytes": 31880,
+      "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "bytes": 36567,
+      "sha256": "c424f8cd6353aeb21655f5ab4e66dc7563ad41000178ea55082dde7e82461a45"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "bytes": 18849,
+      "sha256": "05dacfa09c668098a3c0662efb9e88fc46dd9b9d10e28b91df9eb7315a5784a2"
+    },
+    {
+      "path": "R/platform-peripheral-synthesis.R",
+      "bytes": 3218,
+      "sha256": "0a1585091817b981026b8c9379b0df2ea26e52b414a9922186d252158931836a"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "bytes": 7048,
+      "sha256": "a9fe990de82812c658fb41b4e6cbbf7270aceb4fd48a81cd2e8617963cbe5b40"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "bytes": 18726,
+      "sha256": "6f9a7393412b32a1073502dfd669440b412d71eea049426b62fe3f6f635707bb"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "bytes": 9886,
+      "sha256": "9d8868902c9481d891aad3b8897011848a111fd797f416e1b0b7fd118687ed4d"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "bytes": 18376,
+      "sha256": "c8dd455a85964cb271fc8ffd590256e355759ad59d7d160a4d4a2c6adc7e7a22"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "bytes": 23604,
+      "sha256": "d5d040877a79e8fc3232f2ed7575638e2baefce17d380f34036488d81a6efe47"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "bytes": 28458,
+      "sha256": "78dae24e30137230674cb13c94eec083c87733a6f966e3370d136291f7a2c179"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "bytes": 17786,
+      "sha256": "663d264be112ea13d1d359b756dd2def3fbb1aa235e23cd0ac380d1c775d53e6"
+    },
+    {
+      "path": "scripts/workers/audio_extract.py",
+      "bytes": 14427,
+      "sha256": "2d2691d982a1d0da562048355d73d5811a93a815fad58a8819ed1cd45f0ad40c"
+    },
+    {
+      "path": "scripts/workers/audio_review.py",
+      "bytes": 13256,
+      "sha256": "728a4d7ae363b9e6dbad5d5e9ebbe3a8166b43968762baaf952844b35d0bc09d"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "bytes": 31418,
+      "sha256": "3c80f2460e53d743680ce9192111ad8d3e650988b9214ca3092a29908a0f4d76"
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "bytes": 12171,
+      "sha256": "dc2b45fe429baeeaf78e5959fb49e307616d508d680d7416da6e16cf22db7a2d"
+    },
+    {
+      "path": "scripts/workers/clock_events.py",
+      "bytes": 3836,
+      "sha256": "32f7013d61f381656ca7d5b53311d1ca32cae6dac43139dff60dcf1cf6f65b81"
+    },
+    {
+      "path": "scripts/workers/clock_events_worker.py",
+      "bytes": 1704,
+      "sha256": "d028150c2daa39dc9b0b357105ecf7dd758b5f78755c768f91c1b7470b5f55a1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "bytes": 30281,
+      "sha256": "3822a9f163558a812f3fcc9584ec9bfdec2f6e65959fe322b4c43b451079b175"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "bytes": 14672,
+      "sha256": "1975b35dc5c46b8ae134a437e78a286f43b42ec4734553531dffd94229fecbf1"
+    },
+    {
+      "path": "scripts/workers/clock_preview.py",
+      "bytes": 8572,
+      "sha256": "ab507fb66d22e540371e915c2b41d6997de9063653162116a306e4fe9707edaa"
+    },
+    {
+      "path": "scripts/workers/clock_preview_worker.py",
+      "bytes": 2102,
+      "sha256": "ccdb9812ace6b8abafb1232befa731d785fb338d5599151924bc9e9528b85ea8"
+    },
+    {
+      "path": "scripts/workers/clock_source.py",
+      "bytes": 12963,
+      "sha256": "8b54537faaba214873e720da16955e4505c05c3d95d3b17db8d4dc5691d2e198"
+    },
+    {
+      "path": "scripts/workers/clock_window.py",
+      "bytes": 15721,
+      "sha256": "603785d6b6b5fc6709c11232ab1018ad8e748677dfddaf6cefc5f4d10b7e5d8e"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "bytes": 16799,
+      "sha256": "42ba2980ac10260e5a9c99c62d02964af0bafdfbe935bcc088223cd6b8d63c22"
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "bytes": 38576,
+      "sha256": "263a0051de63b378021d96fbace25076a4c4b0278eb594dea386f307ffc90337"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "bytes": 40728,
+      "sha256": "ec14cc0fac52619f66e0f23c1977743e640368c8c81dd0d62c750c80f9fc7fb0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "bytes": 34940,
+      "sha256": "51ffe3f8d82818df4b9a432532ed53f0b996a7f1759e5606b1aacd19bda429c1"
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "bytes": 12871,
+      "sha256": "ad8369b3a6f64e168b2218b25840a03646ea317fd11b522b54e1e071cda8146b"
+    },
+    {
+      "path": "scripts/workers/emg_review.py",
+      "bytes": 21405,
+      "sha256": "7a6cd13941ba332e5b5085f6d90aaba6338e8c21341110fb8d94ee1a29503474"
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "bytes": 23835,
+      "sha256": "31afd849a4813996c54834d235e454a6aeaab52906840a8e3ff73f705a092c23"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "bytes": 22797,
+      "sha256": "ede057f35d225a91559209ce108014f70f411137c3a14c7ee003083e13bbad7c"
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "bytes": 17954,
+      "sha256": "1383f7257322784a358091393a61fadd13e0d5509021d5e6b10b20684b852d61"
+    },
+    {
+      "path": "scripts/workers/headers.py",
+      "bytes": 25765,
+      "sha256": "9a34f1c9dd0bcfc5fe1e995da35ad43b1175f28c0b1d7dc5e660e3bc8f3ee158"
+    },
+    {
+      "path": "scripts/workers/ingestion_snapshot.py",
+      "bytes": 2862,
+      "sha256": "30756b2270a08f00d75edb940a083fc288568fc15455805e42a2e57d69ed65d3"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "bytes": 42627,
+      "sha256": "2d9b2c2e64f3299c0f12aba9091c42085f52c5ce49a10bb2ef309e60e8b3b9d5"
+    },
+    {
+      "path": "scripts/workers/linked_review.py",
+      "bytes": 12743,
+      "sha256": "c79e5d8d75d8e49831fec2f9eb70d348cc2cf1ca86b08b63fee6c96102e74469"
+    },
+    {
+      "path": "scripts/workers/media_pixels.py",
+      "bytes": 9268,
+      "sha256": "933e188d84404c8700138d75390ec34fda547c9bffb8e7b9093663ed67ba3257"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "bytes": 16489,
+      "sha256": "2d9252ebd9f0628e264bd2295138436b1dd42d445bc58b644659c95e3fca4f65"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "bytes": 39868,
+      "sha256": "341f01d1015f96306936b079505595ad9ec0a6848f5410ac1f4da924543746eb"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "bytes": 30678,
+      "sha256": "f5d40b84a056536c5da0093cbd37e9377a7b6a68e368f1528b09603b941e11b3"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "bytes": 80261,
+      "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "bytes": 36579,
+      "sha256": "462631637b9432f18d311b2dc9ca0750b5f47b6b8fe5dcb523cca189e86ddcce"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "bytes": 15436,
+      "sha256": "bd0aa7ec2402dd2d8d48c86d980db0721f9ba3c9eb3cf3db2f3e62d94b029ff6"
+    },
+    {
+      "path": "scripts/workers/report_package_archive.py",
+      "bytes": 8480,
+      "sha256": "3aaec7536b8e1adecda0de2a233d7e1145a16c7e336036c36026de57a5380627"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "bytes": 15486,
+      "sha256": "5e8b63a2e8121254cef3037d2aeb75b96b86c9cec935fef501589f13027eacd5"
+    },
+    {
+      "path": "scripts/workers/report_package_raster.py",
+      "bytes": 4087,
+      "sha256": "811e8e445c8d62dbb4ab205986e2c72bd172fd7b1b6c1136e75a4f45db15fb00"
+    },
+    {
+      "path": "scripts/workers/respiration_review.py",
+      "bytes": 17649,
+      "sha256": "178992f5416832a50d26be68424fb7c080dfaac288b670d3b0dfb9b1f82af1c6"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "bytes": 27118,
+      "sha256": "e38ef9be724d8917ef4f3a40e6516e21c981e631a7a3a81277e648d367df6115"
+    },
+    {
+      "path": "scripts/workers/signal_values.py",
+      "bytes": 18723,
+      "sha256": "7172a5705eca7ef444a8025a3583a8516eae7677b9f452947c187278d5360ca1"
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "bytes": 11545,
+      "sha256": "6759cb9b6064f850068ed1c850e8778428cfe1c220d26a6b3edd70dd86d681cc"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "bytes": 24326,
+      "sha256": "756910df24931a678d6b18009398003cf2ccbb8df82ea3c1439d18746ab653c4"
+    },
+    {
+      "path": "scripts/workers/validate_clock_preview_math.py",
+      "bytes": 2895,
+      "sha256": "4ad4be22cd94d0858a3285c4f18227e9c149dbb4bce6bf1348f70c35d7bc6cf8"
+    },
+    {
+      "path": "scripts/workers/vision.py",
+      "bytes": 39402,
+      "sha256": "90ca5e1aa92361081a087c9bfe8855cf25ad5a50cd92d4bf0509a6dd5731e9bf"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "bytes": 30004,
+      "sha256": "c0c02ca4e3c18450090d908ca96160190b365cf82183c93dcda4d05931533271"
+    },
+    {
+      "path": "scripts/workers/vision_frame.py",
+      "bytes": 6905,
+      "sha256": "dbad5cd42c01bd18d1a0fc0ca0c7b93369e42c2405726222ebca541a0a2dac61"
+    },
+    {
+      "path": "STATUS.md",
+      "bytes": 57696,
+      "sha256": "3614f142c802dc4090cbd55b75cc3221d45e274e61fc713b015eaf427e2b3e8c"
+    }
+  ],
+  "citations": [
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 15,
+      "url": "https://www.escardio.org/static-file/Escardio/Guidelines/Scientific-Statements/guidelines-Heart-Rate-Variability-FT-1996.pdf"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 16,
+      "url": "https://doi.org/10.1111/psyp.14604"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 17,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5070064/"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 18,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7313264/"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 19,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31314618/"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 20,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20702919/"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 21,
+      "url": "https://neuropsychology.github.io/NeuroKit/_modules/neurokit2/ppg/ppg_clean.html"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 21,
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 113,
+      "url": "https://doi.org/10.5683/SP2/NLB8IT"
+    },
+    {
+      "path": "docs/methods/CONTROL-DESIGN.md",
+      "line": 48,
+      "url": "https://psychopy.org/builder/blocksCounterbalance.html"
+    },
+    {
+      "path": "docs/methods/CONTROL-DESIGN.md",
+      "line": 51,
+      "url": "https://workshops.psychopy.org/3days/day3/builder_parallel/customRandomisation.html"
+    },
+    {
+      "path": "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+      "line": 100,
+      "url": "https://doi.org/10.1111/j.1469-8986.2012.01384.x"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 62,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_clean.py"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 62,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_phasic.py"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 62,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_peaks.py"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 62,
+      "url": "https://github.com/lciti/cvxEDA"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 7,
+      "url": "https://py-feat.org/pages/models/"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 7,
+      "url": "https://github.com/cosanlab/py-feat/blob/v2.0.0/LICENSE"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 17,
+      "url": "https://huggingface.co/py-feat/retinaface_r34"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 17,
+      "url": "https://huggingface.co/py-feat/xgb_au"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 17,
+      "url": "https://huggingface.co/py-feat/resmasknet"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 19,
+      "url": "https://py-feat.org/pages/models/"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 23,
+      "url": "https://pypi.org/project/py-feat/2.0.0/"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 23,
+      "url": "https://github.com/meta-pytorch/torchcodec/blob/v0.11.0/README.md"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 25,
+      "url": "https://www.ffmpeg.org/download.html#build-windows"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 25,
+      "url": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-23-14-55"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 70,
+      "url": "https://py-feat.org/pages/models/"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 70,
+      "url": "https://link.springer.com/article/10.1007/s42761-023-00191-4"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 13,
+      "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 21,
+      "url": "https://www.millisecond.com/library/v7/gnat/gnat/gnat/gnatdemo.manual"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 9,
+      "url": "https://cran.r-project.org/web/packages/support.BWS/support.BWS.pdf"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 9,
+      "url": "https://sawtoothsoftware.com/help/lighthouse-studio/manual/analyzing-maxdiff.html"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 9,
+      "url": "https://info.sawtoothsoftware.com/help/discover/survey-elements/maxdiff/design-settings"
+    },
+    {
+      "path": "docs/methods/MEDIA-SOURCE-REVIEW.md",
+      "line": 70,
+      "url": "https://ffmpeg.org/ffprobe.html"
+    },
+    {
+      "path": "docs/methods/MEDIA-SOURCE-REVIEW.md",
+      "line": 72,
+      "url": "https://ffmpeg.org/ffmpeg.html"
+    },
+    {
+      "path": "docs/methods/MULTIMODAL-REPORTS.md",
+      "line": 185,
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/TDist.html"
+    },
+    {
+      "path": "docs/methods/MULTIMODAL-REPORTS.md",
+      "line": 194,
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "line": 127,
+      "url": "https://github.com/sccn/xdf/wiki/Specifications"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 24,
+      "url": "https://www.edfplus.info/specs/edf.html"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 25,
+      "url": "https://www.edfplus.info/specs/edfplus.html"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 26,
+      "url": "https://mne.tools/stable/generated/mne.io.read_raw_edf.html"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 32,
+      "url": "https://github.com/fNIRS/snirf/blob/master/snirf_specification.md"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 110,
+      "url": "https://www.edfplus.info/specs/edfplus.html"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 134,
+      "url": "https://mne.tools/stable/generated/mne.EpochsArray.html"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 156,
+      "url": "https://mne.tools/stable/generated/mne.time_frequency.tfr_array_morlet.html"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 193,
+      "url": "https://mne.tools/stable/auto_tutorials/time-freq/50_ssvep.html"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 39,
+      "url": "https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-4-two-classes-si-units-and-si-prefixes"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 39,
+      "url": "https://pml.nist.gov/cuu/pdf/sp811.pdf"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 45,
+      "url": "https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 49,
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0061691"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SCALES.md",
+      "line": 90,
+      "url": "https://digital.ahrq.gov/sites/default/files/docs/survey/systemusabilityscale%2528sus%2529_comp%255B1%255D.pdf"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 7,
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2012.01384.x"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 13,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_clean.py"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 14,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_phasic.py"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 15,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/eda.html"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 15,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/signal/signal_findpeaks.py"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 15,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/eda/eda_peaks.py"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 39,
+      "url": "https://github.com/lciti/cvxEDA"
+    },
+    {
+      "path": "docs/methods/reuse/EDA-ANALYSIS.md",
+      "line": 39,
+      "url": "https://bachlab.github.io/PsPM/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 3,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24147581/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 3,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9717489/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 7,
+      "url": "https://mne.tools/stable/auto_tutorials/io/20_reading_eeg_data.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 7,
+      "url": "https://mne.tools/stable/auto_tutorials/simulation/10_array_objs.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 9,
+      "url": "https://mne.tools/stable/auto_tutorials/intro/40_sensor_locations.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 9,
+      "url": "https://mne.tools/stable/auto_tutorials/preprocessing/55_setting_eeg_reference.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 17,
+      "url": "https://mne.tools/stable/auto_tutorials/preprocessing/30_filtering_resampling.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 19,
+      "url": "https://mne.tools/stable/auto_tutorials/preprocessing/40_artifact_correction_ica.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 23,
+      "url": "https://mne.tools/stable/generated/mne.Epochs.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 25,
+      "url": "https://mne.tools/stable/auto_tutorials/evoked/30_eeg_erp.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 31,
+      "url": "https://mne.tools/stable/generated/mne.time_frequency.psd_array_welch.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 32,
+      "url": "https://mne.tools/stable/generated/mne.time_frequency.psd_array_multitaper.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 33,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9717489/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 34,
+      "url": "https://mne.tools/stable/auto_tutorials/time-freq/20_sensors_time_frequency.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 36,
+      "url": "https://mne.tools/stable/generated/mne.baseline.rescale.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 40,
+      "url": "https://mne.tools/mne-connectivity/stable/generated/mne_connectivity.spectral_connectivity_epochs.html"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 40,
+      "url": "https://pure.johnshopkins.edu/en/publications/identifying-true-brain-interaction-from-eeg-data-using-the-imagin-3/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 42,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30657176/"
+    },
+    {
+      "path": "docs/methods/reuse/EEG-ANALYSIS.md",
+      "line": 48,
+      "url": "https://physionet.org/content/eegmmidb/1.0.0/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 11,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker/web_js"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 11,
+      "url": "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20Blendshape%20V2.pdf"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 12,
+      "url": "https://py-feat.org/pages/models/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 12,
+      "url": "https://py-feat.org/pages/changelog/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 13,
+      "url": "https://imotions.com/products/affectiva-facial-coding-sdk/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 13,
+      "url": "https://imotions.com/blog/learning/product-guides/facial-expression-analysis-in-imotions/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 13,
+      "url": "https://imotions.com/products/affectiva-facial-coding-api/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 14,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-9-api-overview-and-usage"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 14,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-10-setup-and-analysis"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 14,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-10-how-does-facereader-work"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 15,
+      "url": "https://github.com/HumeAI/hume-python-sdk/blob/19ab73dca4e199671b5f0a39dfcff3b092b940ae/src/hume/expression_measurement/batch/types/face_prediction.py"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 15,
+      "url": "https://github.com/HumeAI/hume-python-sdk"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 15,
+      "url": "https://dev.hume.ai/intro"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 19,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-9-api-overview-and-usage"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 21,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-10-detailed-log"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 27,
+      "url": "https://arxiv.org/abs/2309.05782"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 28,
+      "url": "https://link.springer.com/article/10.1007/s42761-023-00191-4"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 28,
+      "url": "https://py-feat.org/benchmarks/accuracy/"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 29,
+      "url": "https://arxiv.org/abs/2202.12059"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 29,
+      "url": "https://imotions.com/wp-content/uploads/2026/04/AFFDEX2-vs-Open-Source-Toolkits.pdf"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 29,
+      "url": "https://link.springer.com/article/10.3758/s13428-017-0996-1"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 30,
+      "url": "https://noldus.com/shared/resources/book/noldus-product-documentation/chapter/facereader/page/facereader-10-how-does-facereader-work"
+    },
+    {
+      "path": "docs/methods/reuse/FACIAL-PROVIDERS.md",
+      "line": 30,
+      "url": "https://noldus.com/download/document/white-paper-facereader-action-unit-validation"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 14,
+      "url": "https://github.com/tmalsburg/saccades/tree/bb55d203a09eb6b942058d08f4df697bdb440486/saccades"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 24,
+      "url": "https://raw.githubusercontent.com/tmalsburg/saccades/master/saccades/R/saccade_recognition.R"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 25,
+      "url": "https://raw.githubusercontent.com/tombeesley/eyetools/master/DESCRIPTION"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 26,
+      "url": "https://raw.githubusercontent.com/dmirman/gazer/master/DESCRIPTION"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 26,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7544668/"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 27,
+      "url": "https://raw.githubusercontent.com/samhforbes/eyetrackingR/master/DESCRIPTION"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 27,
+      "url": "https://samhforbes.github.io/eyetrackingR/articles/preparing_your_data_vignette.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 29,
+      "url": "https://tombeesley.github.io/eyetools/reference/fixation_VTI.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 29,
+      "url": "https://raw.githubusercontent.com/tombeesley/eyetools/master/R/saccade_VTI.R"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 31,
+      "url": "https://s3.amazonaws.com/lynx.tobii/TobiiProLab_1_162_UserManual.pdf"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 46,
+      "url": "https://tombeesley.github.io/eyetools/reference/AOI_seq.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 47,
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/survival/html/Surv.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 48,
+      "url": "https://tombeesley.github.io/eyetools/reference/AOI_time.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 48,
+      "url": "https://samhforbes.github.io/eyetrackingR/reference/make_eyetrackingr_data.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 50,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6538573/"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 50,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5809553/"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 56,
+      "url": "https://developer.tobiipro.com/commonconcepts/coordinatesystems.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 56,
+      "url": "https://developer.tobiipro.com/commonconcepts/gaze.html"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 58,
+      "url": "https://github.com/richardandersson/EyeMovementDetectorEvaluation"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 58,
+      "url": "https://github.com/dcnieho/humanFixationClassification"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 60,
+      "url": "https://support.realeye.io/realeye-api"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 60,
+      "url": "https://support.realeye.io/data-export-to-csv?hsLang=en"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 60,
+      "url": "https://support.realeye.io/downloading-csv-files-with-custom-set-minimum-fixation-duration"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 22,
+      "url": "https://faculty.washington.edu/agg/pdf/GN%26B.JPSP.2003.pdf"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 26,
+      "url": "https://CRAN.R-project.org/package=implicitMeasures"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 28,
+      "url": "https://github.com/cran/implicitMeasures/blob/1.0.0/R/compute_iat.R"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 30,
+      "url": "https://CRAN.R-project.org/package=IATscores"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 30,
+      "url": "https://github.com/cran/IATscores/blob/0.2.8/R/RobustScores.R"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 34,
+      "url": "https://github.com/iatgen/iatgen"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 38,
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 44,
+      "url": "https://github.com/jspsych/jsPsych/blob/main/packages/plugin-iat-html/src/index.ts"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 46,
+      "url": "https://CRAN.R-project.org/package=AATtools"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 46,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 13,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/ecg/ecg_process.py"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 15,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/ecg.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 21,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/hrv/hrv_time.py"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 22,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 22,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23431279/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 24,
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00213/full"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 28,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/ppg/ppg_process.py"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 30,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18663635/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 34,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/rsp.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 40,
+      "url": "https://seniam.org/sensor_location.htm"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 40,
+      "url": "https://raw.githubusercontent.com/neuropsychology/NeuroKit/v0.2.13/neurokit2/emg/emg_clean.py"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 40,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/emg.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 46,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15720576/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 51,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/eog.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 52,
+      "url": "https://github.com/ubicomplab/rPPG-Toolbox"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 52,
+      "url": "https://neuropsychology.github.io/NeuroKit/_modules/neurokit2/video/video_ppg.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 53,
+      "url": "https://mne.tools/stable/auto_tutorials/preprocessing/70_fnirs_processing.html"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 53,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7793571/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 55,
+      "url": "https://physionet.org/content/mitdb/1.0.0/"
+    },
+    {
+      "path": "docs/methods/reuse/OTHER-PHYSIOLOGY.md",
+      "line": 55,
+      "url": "https://physionet.org/content/bidmc/1.0.0/"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 23,
+      "url": "https://faculty.washington.edu/agg/pdf/Nosek%26al.BIAT%20scoring%20algorith.PLoS%20ONE.2014.pdf"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 25,
+      "url": "https://www.millisecond.com/library/v7/iat/briefiat/briefiat/briefiat/briefiat.manual"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 55,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37221345/"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 57,
+      "url": "https://www.millisecond.com/library/aat"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 70,
+      "url": "https://www.psytoolkit.org/experiment-library/vaast_images.html"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 109,
+      "url": "https://www.millisecond.com/support/Inquisit%20Programmer%27s%20Manual.pdf"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 109,
+      "url": "https://osdoc.cogsci.nl/4.0/manual/debugging/"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 109,
+      "url": "https://osdoc.cogsci.nl/4.0/tutorials/iat/"
+    },
+    {
+      "path": "docs/planning/IMPLICIT-METHODS-REVIEW.md",
+      "line": 109,
+      "url": "https://www.psytoolkit.org/experiment-library/experiment_iat.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 32,
+      "url": "https://brainflow.readthedocs.io/en/stable/SupportedBoards.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 33,
+      "url": "https://brainflow.readthedocs.io/en/stable/UserAPI.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 60,
+      "url": "https://github.com/BUNPC/pysnirf2"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 61,
+      "url": "https://github.com/mne-tools/mne-nirs"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 92,
+      "url": "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 93,
+      "url": "https://github.com/sccn/xdf/wiki/Specifications"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 100,
+      "url": "https://labstreaminglayer.readthedocs.io/info/lslapicfg.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 111,
+      "url": "https://arrow.apache.org/docs/python/timestamps.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 112,
+      "url": "https://arrow.apache.org/docs/python/parquet.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 119,
+      "url": "https://www.duckdb.org/docs/current/clients/python/data_ingestion"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 127,
+      "url": "https://mne.tools/mne-bids/stable/use.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 128,
+      "url": "https://pybv.readthedocs.io/en/stable/generated/pybv.write_brainvision.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 134,
+      "url": "https://mne.tools/mne-connectivity/stable/auto_examples/compare_connectivity_over_time_over_trial.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 142,
+      "url": "https://mne.tools/mne-nirs/stable/api.html"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 160,
+      "url": "https://github.com/BUNPC/pysnirf2/blob/main/LICENSE"
+    },
+    {
+      "path": "docs/preparation/ACQUISITION-TOOLING.md",
+      "line": 161,
+      "url": "https://github.com/brainflow-dev/brainflow/blob/master/LICENSE"
+    },
+    {
+      "path": "docs/preparation/ASTRA-BUILD-BRIEF.md",
+      "line": 16,
+      "url": "https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices"
+    },
+    {
+      "path": "docs/preparation/ASTRA-BUILD-BRIEF.md",
+      "line": 22,
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 76,
+      "url": "https://mne.tools/stable/api/preprocessing.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 77,
+      "url": "https://github.com/tmalsburg/saccades"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 123,
+      "url": "https://github.com/tmalsburg/saccades"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 124,
+      "url": "https://mne.tools/stable/api/preprocessing.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 183,
+      "url": "https://mne.tools/stable/api/preprocessing.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 232,
+      "url": "https://imotions.com/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 233,
+      "url": "https://docs.psychopy.org/hardware/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 281,
+      "url": "https://mne.tools/stable/auto_tutorials/epochs/10_epochs_overview.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 333,
+      "url": "https://mne.tools/stable/auto_tutorials/time-freq/10_spectrum_class.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 382,
+      "url": "https://mne.tools/stable/generated/mne.Epochs.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 436,
+      "url": "https://mne.tools/1.7/auto_tutorials/time-freq/50_ssvep.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 437,
+      "url": "https://devdocs.psychopy.org/general/timing/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 483,
+      "url": "https://mne.tools/mne-nirs/stable/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 542,
+      "url": "https://mne.tools/mne-connectivity/stable/generated/mne_connectivity.spectral_connectivity_epochs.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 543,
+      "url": "https://mne.tools/stable/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 599,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/eda.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 645,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/ecg.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 646,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 690,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/ppg.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 735,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/rsp.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 778,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 822,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/emg.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 865,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/emg.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 866,
+      "url": "https://docs.psychopy.org/hardware/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 907,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/eog.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 908,
+      "url": "https://mne.tools/stable/api/preprocessing.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 952,
+      "url": "https://www.biopac.com/physiological-signals-biopac/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 996,
+      "url": "https://www.biopac.com/application/cardiovascular-hemodynamics/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 997,
+      "url": "https://www.biopac.com/application/icg-impedance-cardiographycardiac-output/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1047,
+      "url": "https://www.biopac.com/physiological-signals-biopac/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1048,
+      "url": "https://imotions.com/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1092,
+      "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1093,
+      "url": "https://imotions.com/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1144,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1197,
+      "url": "https://github.com/jspsych/jsPsych/blob/main/docs/extensions/webgazer.md"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1238,
+      "url": "https://github.com/phuselab/pyVHR"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1239,
+      "url": "https://imotions.com/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1284,
+      "url": "https://parselmouth.readthedocs.io/en/stable/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1285,
+      "url": "https://praat.org/manual/Harmonicity.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1334,
+      "url": "https://cran.r-project.org/package=IATscores"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1375,
+      "url": "https://faculty.washington.edu/agg/pdf/Nosek%26al.BIAT%20scoring%20algorith.PLoS%20ONE.2014.pdf"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1413,
+      "url": "https://www.millisecond.com/library/categories/implicitattitudes"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1453,
+      "url": "https://www.millisecond.com/library/categories/implicitattitudes"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1494,
+      "url": "https://www.millisecond.com/library/categories/priming"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1495,
+      "url": "https://devdocs.psychopy.org/general/timing/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1533,
+      "url": "https://www.millisecond.com/library/amp"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1576,
+      "url": "https://www.millisecond.com/library/aat"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1614,
+      "url": "https://us.psytoolkit.org/experiment-library/vaast_images.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1659,
+      "url": "https://www.millisecond.com/library/categories/implicitattitudes"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1706,
+      "url": "https://www.millisecond.com/library/v7/dotprobe/dotprobe_macleod/dotprobe_macleod/dotprobe_macleod.manual"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1707,
+      "url": "https://www.psytoolkit.org/library/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1749,
+      "url": "https://www.psytoolkit.org/library/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1791,
+      "url": "https://elifesciences.org/articles/46323"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1836,
+      "url": "https://www.psytoolkit.org/library/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1837,
+      "url": "https://www.millisecond.com/library/categories/implicitattitudes"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1880,
+      "url": "https://www.jspsych.org/v8/overview/plugins/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1881,
+      "url": "https://www.psytoolkit.org/library/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1925,
+      "url": "https://www.jspsych.org/v8/extensions/mouse-tracking/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 1968,
+      "url": "https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/question-types-guide/question-types-overview/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2023,
+      "url": "https://www.qualtrics.com/support/conjoint-project/survey-tab-px/building-additional-survey-content-px/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2080,
+      "url": "https://lavaan.ugent.be/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2081,
+      "url": "https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/question-types-guide/question-types-overview/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2135,
+      "url": "https://cran.r-project.org/web/packages/cbcTools/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2136,
+      "url": "https://cran.r-project.org/web/packages/mlogit/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2180,
+      "url": "https://www.jspsych.org/v8/overview/plugins/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2181,
+      "url": "https://devdocs.psychopy.org/general/timing/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2237,
+      "url": "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2238,
+      "url": "https://docs.psychopy.org/hardware/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2301,
+      "url": "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2302,
+      "url": "https://lavaan.ugent.be/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2356,
+      "url": "https://mne.tools/stable/index.html"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2357,
+      "url": "https://www.jspsych.org/v8/overview/plugins/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2422,
+      "url": "https://www.qualtrics.com/support/conjoint-project/survey-tab-px/building-additional-survey-content-px/"
+    },
+    {
+      "path": "docs/preparation/capability-register.json",
+      "line": 2423,
+      "url": "https://www.jspsych.org/v8/overview/plugins/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 9,
+      "url": "https://imotions.com/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 11,
+      "url": "https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/question-types-guide/question-types-overview/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 11,
+      "url": "https://www.qualtrics.com/support/conjoint-project/survey-tab-px/building-additional-survey-content-px/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 13,
+      "url": "https://www.millisecond.com/library/categories/implicitattitudes"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 13,
+      "url": "https://www.psytoolkit.org/library/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 49,
+      "url": "https://mne.tools/mne-nirs/stable/index.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 51,
+      "url": "https://mne.tools/1.7/auto_tutorials/time-freq/50_ssvep.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 51,
+      "url": "https://mne.tools/mne-connectivity/stable/generated/mne_connectivity.spectral_connectivity_epochs.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 53,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 53,
+      "url": "https://github.com/phuselab/pyVHR"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 55,
+      "url": "https://parselmouth.readthedocs.io/en/stable/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 55,
+      "url": "https://audeering.github.io/opensmile/about.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 57,
+      "url": "https://www.biopac.com/application/cardiovascular-hemodynamics/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 57,
+      "url": "https://www.biopac.com/application/icg-impedance-cardiographycardiac-output/"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 59,
+      "url": "https://elifesciences.org/articles/46323"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 59,
+      "url": "https://us.psytoolkit.org/experiment-library/vaast_images.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 61,
+      "url": "https://cran.r-project.org/web/packages/cbcTools/index.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 61,
+      "url": "https://cran.r-project.org/web/packages/mlogit/index.html"
+    },
+    {
+      "path": "docs/preparation/HOLISTIC-CAPABILITIES.md",
+      "line": 80,
+      "url": "https://labstreaminglayer.readthedocs.io/info/time_synchronization.html"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 84,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 85,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 86,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 87,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/object_detector"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 88,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/interactive_segmenter"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 91,
+      "url": "https://parselmouth.readthedocs.io/en/stable/"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 92,
+      "url": "https://github.com/librosa/librosa"
+    },
+    {
+      "path": "docs/preparation/MEDIA-TOOLING.md",
+      "line": 93,
+      "url": "https://github.com/snakers4/silero-vad/tree/be95df9152c0d7618fa1edfeb296fc3dae32376f"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 42,
+      "url": "https://books.ropensci.org/targets/crew.html"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 43,
+      "url": "https://dbi.r-dbi.org/reference/dbWithTransaction.html"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 60,
+      "url": "https://rvlenth.github.io/emmeans/reference/contrast.html"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 71,
+      "url": "https://surveyjs.io/licensing"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 87,
+      "url": "https://surveyjs.io/form-library/examples/conditional-logic-and-branching-in-surveys/documentation"
+    },
+    {
+      "path": "docs/preparation/PLATFORM-TOOLING.md",
+      "line": 99,
+      "url": "https://www.jspsych.org/v8/overview/plugins/"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 17,
+      "url": "https://www.millisecond.com/library/v7/iat/sc_iat/singlecategoryiat/singlecategory/singlecategoryiat.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 31,
+      "url": "https://www.millisecond.com/library/v7/gnat/gnat/gnat/gnatdemo.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 37,
+      "url": "https://www.millisecond.com/library/v7/evaluativepriming/evaluativepriming/evaluativepriming.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 45,
+      "url": "https://www.millisecond.com/library/v7/amp/amp/amp.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 53,
+      "url": "https://www.millisecond.com/library/v7/drearyliewaldreactiontimetask/dls/dls.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 53,
+      "url": "https://www.millisecond.com/library/v7/drearyliewaldreactiontimetask/dlc/dlc.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 61,
+      "url": "https://www.millisecond.com/library/v7/stroop/colorwordstroop/stroop_keyboard/stroop_keyboard/stroopwithcontrolkeyboard.manual"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 67,
+      "url": "https://www.millisecond.com/library/v7/flankertask/arrowflankertest/arrowflankertest_keyboard/arrowflankertest_keyboard/arrowflankertest_keyboard.manual"
+    },
+    {
+      "path": "docs/preparation/R-TOOLING.md",
+      "line": 45,
+      "url": "https://cloud.r-project.org"
+    },
+    {
+      "path": "docs/preparation/R-TOOLING.md",
+      "line": 53,
+      "url": "https://rstudio.github.io/renv/reference/restore.html"
+    },
+    {
+      "path": "docs/preparation/R-TOOLING.md",
+      "line": 66,
+      "url": "https://rstudio.github.io/renv/reference/snapshot.html"
+    },
+    {
+      "path": "docs/preparation/R-TOOLING.md",
+      "line": 98,
+      "url": "https://cloud.r-project.org`"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "line": 16,
+      "url": "https://github.com/google-ai-edge/mediapipe/blob/v0.10.21/mediapipe/tasks/web/vision/README.md"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "line": 17,
+      "url": "https://github.com/google-ai-edge/mediapipe/blob/v0.10.21/mediapipe/tasks/python/test/vision/interactive_segmenter_test.py"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "line": 43,
+      "url": "https://github.com/google-ai-edge/mediapipe/blob/v0.10.21/mediapipe/tasks/cc/vision/image_segmenter/calculators/tensors_to_segmentation_calculator.cc#L165"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "line": 65,
+      "url": "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MagicTouch.pdf"
+    },
+    {
+      "path": "docs/preparation/SEGMENTATION-TOOLING.md",
+      "line": 84,
+      "url": "https://storage.googleapis.com/mediapipe-models/interactive_segmenter/magic_touch/float32/1/magic_touch.tflite?generation=1683146867404767"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 33,
+      "url": "https://github.com/quarto-dev/quarto-cli/releases/tag/v1.10.18"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 65,
+      "url": "https://playwright.dev/docs/accessibility-testing"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 66,
+      "url": "https://rstudio.github.io/renv/reference/snapshot.html"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 72,
+      "url": "https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 73,
+      "url": "https://webgazer.cs.brown.edu/"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 74,
+      "url": "https://labstreaminglayer.readthedocs.io/info/intro.html"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 77,
+      "url": "https://surveyjs.io/licensing"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 77,
+      "url": "https://surveyjs.io/faq/licensing"
+    },
+    {
+      "path": "docs/preparation/TOOLING.md",
+      "line": 80,
+      "url": "https://www.jspsych.org/latest/overview/timing-accuracy/"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 50,
+      "url": "https://www.escardio.org/static-file/Escardio/Guidelines/Scientific-Statements/guidelines-Heart-Rate-Variability-FT-1996.pdf"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 53,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22350367/"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 70,
+      "url": "https://doi.org/10.1111/psyp.14604"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 73,
+      "url": "https://neuropsychology.github.io/NeuroKit/functions/hrv.html"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 96,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30062610/"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 19,
+      "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 6,
+      "url": "https://faculty.washington.edu/agg/pdf/GN%26B.JPSP.2003.pdf"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 8,
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 10,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 12,
+      "url": "https://doi.org/10.3758/s13428-010-0024-1"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 14,
+      "url": "https://doi.org/10.3758/s13428-010-0024-1"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 16,
+      "url": "https://myscp.org/wp-content/uploads/2023/03/2007-proceedings.pdf#page=149"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 20,
+      "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 15,
+      "url": "https://myscp.org/wp-content/uploads/2023/03/2007-proceedings.pdf#page=149"
+    },
+    {
+      "path": "STATUS.md",
+      "line": 738,
+      "url": "http://127.0.0.1:3838"
+    },
+    {
+      "path": "STATUS.md",
+      "line": 746,
+      "url": "https://github.com/Bransolo1/Brohn"
+    }
+  ],
+  "apis": [
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 3,
+      "name": "brohn_analysis_plan_metrics",
+      "signature": "brohn_analysis_plan_metrics <- function() list("
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 8,
+      "name": "brohn_new_analysis_plan",
+      "signature": "brohn_new_analysis_plan <- function() list(schema = \"brohn-analysis-plan/1.0\", recipe = \"paired-consumer-comparisons/1.0-draft\","
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 10,
+      "name": "brohn_validate_analysis_plan",
+      "signature": "brohn_validate_analysis_plan <- function(plan, design) {"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 44,
+      "name": "brohn_clone_analysis_plan",
+      "signature": "brohn_clone_analysis_plan <- function(plan, condition_map, question_map, scale_map = character()) {"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 57,
+      "name": "brohn_analysis_plan_result",
+      "signature": "brohn_analysis_plan_result <- function(analysis, design, identity_verified = TRUE, timing_evidence = \"source_collection_timing_not_established\") {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 1,
+      "name": "brohn_validate_respiration_parameters",
+      "signature": "brohn_validate_respiration_parameters <- function(parameters, unit) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 17,
+      "name": "brohn_rows",
+      "signature": "brohn_rows <- function(table) lapply(seq_len(nrow(table)), function(i) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 21,
+      "name": "brohn_group",
+      "signature": "brohn_group <- function(table, fields) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 26,
+      "name": "brohn_nullable",
+      "signature": "brohn_nullable <- function(x) if (!length(x) || !is.finite(x)) NULL else unname(x)"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 27,
+      "name": "brohn_numeric",
+      "signature": "brohn_numeric <- function(x, name, missing = FALSE) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 34,
+      "name": "brohn_read_table",
+      "signature": "brohn_read_table <- function(path, format, max_rows = 2000000L) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 59,
+      "name": "brohn_validate_dataset_mapping",
+      "signature": "brohn_validate_dataset_mapping <- function(dataset) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 125,
+      "name": "brohn_queue_dataset",
+      "signature": "brohn_queue_dataset <- function(store, id, revision = NULL, force = FALSE, prepared_id = NULL, camera_mode = \"manual\") {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 150,
+      "name": "brohn_analysis_provenance",
+      "signature": "brohn_analysis_provenance <- function(dataset, revision, design = NULL, design_revision = NULL) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 157,
+      "name": "brohn_paired_contrasts",
+      "signature": "brohn_paired_contrasts <- function(rows, conditions) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 196,
+      "name": "brohn_gaze_analysis",
+      "signature": "brohn_gaze_analysis <- function(data, metadata, design) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 260,
+      "name": "brohn_questionnaire_analysis",
+      "signature": "brohn_questionnaire_analysis <- function(responses, design = NULL) {"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 306,
+      "name": "brohn_import_responses",
+      "signature": "brohn_import_responses <- function(data, m, design = NULL) {"
+    },
+    {
+      "path": "R/platform-aoi.R",
+      "line": 1,
+      "name": "brohn_aoi_editor",
+      "signature": "brohn_aoi_editor <- function(store, stimulus, area = NULL) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 4,
+      "name": "brohn_camera_analysis_notice",
+      "signature": "brohn_camera_analysis_notice <- function() paste("
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 8,
+      "name": "brohn_camera_analysis_policy_hash",
+      "signature": "brohn_camera_analysis_policy_hash <- function(policy) brohn_hash(policy[setdiff(names(policy),\"analysis_policy_hash\")])"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 9,
+      "name": "brohn_camera_analysis_settings",
+      "signature": "brohn_camera_analysis_settings <- function(start_s,end_s,frame_stride,max_support_gap_s) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 12,
+      "name": "brohn_camera_analysis_budget",
+      "signature": "brohn_camera_analysis_budget <- function(policy) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 20,
+      "name": "brohn_camera_analysis_validate_policy",
+      "signature": "brohn_camera_analysis_validate_policy <- function(policy) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 39,
+      "name": "brohn_camera_analysis_policy",
+      "signature": "brohn_camera_analysis_policy <- function(base,settings) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 45,
+      "name": "brohn_camera_analysis_validate_ack",
+      "signature": "brohn_camera_analysis_validate_ack <- function(policy,request) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 57,
+      "name": "brohn_camera_analysis_metadata",
+      "signature": "brohn_camera_analysis_metadata <- function(capture) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 68,
+      "name": "brohn_camera_analysis_eligibility",
+      "signature": "brohn_camera_analysis_eligibility <- function(run,capture,publication=NULL) {"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 85,
+      "name": "brohn_camera_analysis_source",
+      "signature": "brohn_camera_analysis_source <- function(run,capture,publication,dataset,mode=c(\"automatic\",\"manual\")) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 2,
+      "name": "brohn_eda_events_recipe_choices",
+      "signature": "brohn_eda_events_recipe_choices <- function() c(\"Whole-recording tonic and SCR summaries\" = \"eda-neurokit-highpass/1.0\","
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 6,
+      "name": "brohn_eda_continuous_recipes",
+      "signature": "brohn_eda_continuous_recipes <- function() c(\"eda-neurokit-highpass/1.0\", \"eda-neurokit-highpass/1.1\")"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 7,
+      "name": "brohn_eda_events_is_event",
+      "signature": "brohn_eda_events_is_event <- function(m) !is.null(m$parameters$recipe) &&"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 9,
+      "name": ".brohn_eda_events_window",
+      "signature": ".brohn_eda_events_window <- function(x, label, low = -120, high = 300) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 14,
+      "name": "brohn_validate_eda_events_mapping",
+      "signature": "brohn_validate_eda_events_mapping <- function(m, columns = NULL, source_format = NULL, design = NULL) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 81,
+      "name": "brohn_eda_events_worker_request",
+      "signature": "brohn_eda_events_worker_request <- function(m, source_format = NULL, columns = NULL) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 87,
+      "name": "brohn_eda_events_code_map",
+      "signature": "brohn_eda_events_code_map <- function(value) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 97,
+      "name": "brohn_eda_events_event_list",
+      "signature": "brohn_eda_events_event_list <- function(value) {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 111,
+      "name": "brohn_eda_events_input",
+      "signature": "brohn_eda_events_input <- function(input, metadata, source_format = \"csv\") {"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 148,
+      "name": "brohn_eda_events_support",
+      "signature": "brohn_eda_events_support <- function(result) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 6,
+      "name": "brohn_is_facial_profile",
+      "signature": "brohn_is_facial_profile <- function(metadata) identical(metadata$profile, .brohn_facial_profile)"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 7,
+      "name": "brohn_facial_supported",
+      "signature": "brohn_facial_supported <- function(analysis) identical(analysis$schema,\"brohn-facial-expression-result/1.0\") && identical(analysis$kind,\"facial_expression\")"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 8,
+      "name": ".brohn_facial_same",
+      "signature": ".brohn_facial_same <- function(a,b) identical(brohn_hash(a),brohn_hash(b))"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 9,
+      "name": ".brohn_facial_sha",
+      "signature": ".brohn_facial_sha <- function(x) brohn_text(x,64) && grepl(\"^[a-f0-9]{64}$\",x)"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 10,
+      "name": ".brohn_facial_decimal",
+      "signature": ".brohn_facial_decimal <- function(x) brohn_text(x,80) && grepl(\"^(0|[1-9][0-9]*)(\\\\.[0-9]+)?$\",x) &&"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 12,
+      "name": ".brohn_facial_compare",
+      "signature": ".brohn_facial_compare <- function(a,b) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 20,
+      "name": "brohn_validate_facial_mapping",
+      "signature": "brohn_validate_facial_mapping <- function(dataset) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 32,
+      "name": "brohn_facial_expression_request",
+      "signature": "brohn_facial_expression_request <- function(input,scratch) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 41,
+      "name": "brohn_validate_facial_artifact_manifest",
+      "signature": "brohn_validate_facial_artifact_manifest <- function(analysis) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 48,
+      "name": "brohn_validate_facial_result",
+      "signature": "brohn_validate_facial_result <- function(a,request,verify_artifacts=TRUE) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 77,
+      "name": ".brohn_verify_facial_values",
+      "signature": ".brohn_verify_facial_values <- function(a,request) {"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 119,
+      "name": "brohn_run_facial_expression",
+      "signature": "brohn_run_facial_expression <- function(input,scratch) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 3,
+      "name": ".brohn_gaze_boolean",
+      "signature": ".brohn_gaze_boolean <- function(value, name) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 9,
+      "name": ".brohn_gaze_nullable",
+      "signature": ".brohn_gaze_nullable <- function(value) if (!length(value) || !is.finite(value)) NULL else unname(value)"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 10,
+      "name": ".brohn_gaze_runs",
+      "signature": ".brohn_gaze_runs <- function(indices) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 14,
+      "name": ".brohn_gaze_inside",
+      "signature": ".brohn_gaze_inside <- function(x, y, aoi) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 20,
+      "name": ".brohn_gaze_angles",
+      "signature": ".brohn_gaze_angles <- function(x, y, geometry) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 28,
+      "name": "brohn_validate_raw_gaze_mapping",
+      "signature": "brohn_validate_raw_gaze_mapping <- function(metadata, columns = NULL) {"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 69,
+      "name": "brohn_raw_gaze_analysis",
+      "signature": "brohn_raw_gaze_analysis <- function(data, metadata, design, trace_sink = NULL) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 2,
+      "name": "brohn_gnat_profile",
+      "signature": "brohn_gnat_profile <- function() list("
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 22,
+      "name": ".brohn_gnat_text_key",
+      "signature": ".brohn_gnat_text_key <- function(text) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 33,
+      "name": "brohn_gnat_new",
+      "signature": "brohn_gnat_new <- function(title=\"Sample Brohn single-target GNAT\",id=brohn_id(\"task\")) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 48,
+      "name": "brohn_gnat_validate",
+      "signature": "brohn_gnat_validate <- function(block) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 82,
+      "name": "brohn_gnat_compile",
+      "signature": "brohn_gnat_compile <- function(block,allocation_index=1L) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 132,
+      "name": "brohn_gnat_validate_compiled",
+      "signature": "brohn_gnat_validate_compiled <- function(compiled) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 139,
+      "name": ".brohn_gnat_rates",
+      "signature": ".brohn_gnat_rates <- function(hits,misses,false_alarms,correct_rejections) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 154,
+      "name": "brohn_gnat_sensitivity",
+      "signature": "brohn_gnat_sensitivity <- function(hits,misses,false_alarms,correct_rejections) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 163,
+      "name": ".brohn_gnat_bool",
+      "signature": ".brohn_gnat_bool <- function(x)is.logical(x)&&length(x)==1L&&!is.na(x)"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 164,
+      "name": ".brohn_gnat_same",
+      "signature": ".brohn_gnat_same <- function(a,b)if(is.null(a)||is.null(b))is.null(a)&&is.null(b)else"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 169,
+      "name": ".brohn_gnat_ms",
+      "signature": ".brohn_gnat_ms <- function(value) round(value,6L)"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 170,
+      "name": ".brohn_gnat_outcome",
+      "signature": ".brohn_gnat_outcome <- function(action,responded)if(action==\"go\")if(responded)\"hit\"else\"miss\"else if(responded)\"false_alarm\"else\"correct_rejection\""
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 171,
+      "name": ".brohn_gnat_rt",
+      "signature": ".brohn_gnat_rt <- function(rows,outcome) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 177,
+      "name": "brohn_gnat_score",
+      "signature": "brohn_gnat_score <- function(compiled,responses,completed=TRUE,timing_known=TRUE) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 257,
+      "name": ".brohn_gnat_require",
+      "signature": ".brohn_gnat_require <- function(ok,message) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 260,
+      "name": ".brohn_gnat_clock",
+      "signature": ".brohn_gnat_clock <- function(clock,instance=NULL,origin=NULL) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 270,
+      "name": ".brohn_gnat_delivery_new",
+      "signature": ".brohn_gnat_delivery_new <- function()list(cursor=1L,active=NULL,last_clock=NULL,clock_instance=NULL,clock_origin=NULL,"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 273,
+      "name": ".brohn_gnat_release_wait",
+      "signature": ".brohn_gnat_release_wait <- function(wait,onset,boundary,final_held=NULL,interrupted=FALSE) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 306,
+      "name": ".brohn_gnat_contradiction",
+      "signature": ".brohn_gnat_contradiction <- function(contradiction,sealed,now) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 322,
+      "name": ".brohn_gnat_trial_replay",
+      "signature": ".brohn_gnat_trial_replay <- function(data,onset,trial,observed) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 384,
+      "name": ".brohn_gnat_delivery_apply",
+      "signature": ".brohn_gnat_delivery_apply <- function(state,event,step) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 441,
+      "name": ".brohn_gnat_delivery_complete",
+      "signature": ".brohn_gnat_delivery_complete <- function(state,step,event) {"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 448,
+      "name": "brohn_gnat_replay",
+      "signature": "brohn_gnat_replay <- function(compiled,events) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 3,
+      "name": "brohn_maxdiff_new",
+      "signature": "brohn_maxdiff_new <- function(title = \"Sample best-worst exercise\", id = brohn_id(\"maxdiff\")) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 12,
+      "name": ".brohn_md_reach",
+      "signature": ".brohn_md_reach <- function(adjacency) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 17,
+      "name": "brohn_maxdiff_validate",
+      "signature": "brohn_maxdiff_validate <- function(design) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 43,
+      "name": "brohn_maxdiff_design_review",
+      "signature": "brohn_maxdiff_design_review <- function(design) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 67,
+      "name": "brohn_maxdiff_compile",
+      "signature": "brohn_maxdiff_compile <- function(design, allocation_index = 1L) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 81,
+      "name": "brohn_maxdiff_validate_responses",
+      "signature": "brohn_maxdiff_validate_responses <- function(design, responses) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 109,
+      "name": ".brohn_md_problem",
+      "signature": ".brohn_md_problem <- function(design, responses) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 123,
+      "name": ".brohn_md_evaluate",
+      "signature": ".brohn_md_evaluate <- function(problem, beta, information = FALSE, retain_probabilities = FALSE) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 137,
+      "name": "brohn_maxdiff_likelihood",
+      "signature": "brohn_maxdiff_likelihood <- function(design, responses, beta = NULL, information = FALSE) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 143,
+      "name": "brohn_maxdiff_fit",
+      "signature": "brohn_maxdiff_fit <- function(design, responses, maximum_iterations = 500L) {"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 189,
+      "name": "brohn_maxdiff_analysis",
+      "signature": "brohn_maxdiff_analysis <- function(design, responses, source = NULL) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 3,
+      "name": "brohn_task_profiles",
+      "signature": "brohn_task_profiles <- function() {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 25,
+      "name": "brohn_task_profile",
+      "signature": "brohn_task_profile <- function(profile) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 30,
+      "name": "brohn_task_clone",
+      "signature": "brohn_task_clone <- function(block) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 39,
+      "name": "brohn_task_new",
+      "signature": "brohn_task_new <- function(profile = \"iat-gnb2003-d1/1.0\", title = NULL, id = brohn_id(\"task\")) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 58,
+      "name": "brohn_task_validate",
+      "signature": "brohn_task_validate <- function(block) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 96,
+      "name": "brohn_task_compile",
+      "signature": "brohn_task_compile <- function(block, allocation_index=1L) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 210,
+      "name": "brohn_iat_d1",
+      "signature": "brohn_iat_d1 <- function(trials, completed=TRUE, biat=FALSE) {"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 242,
+      "name": "brohn_task_score",
+      "signature": "brohn_task_score <- function(compiled,responses,completed=TRUE) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 3,
+      "name": ".brohn_mm_text",
+      "signature": ".brohn_mm_text <- function(x) if (brohn_text(x, 500)) x else NULL"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 4,
+      "name": ".brohn_mm_key",
+      "signature": ".brohn_mm_key <- function(...) brohn_json(list(...))"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 5,
+      "name": "brohn_measurement_design_hash",
+      "signature": "brohn_measurement_design_hash <- function(design) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 11,
+      "name": ".brohn_mm_design_matches",
+      "signature": ".brohn_mm_design_matches <- function(body, request) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 17,
+      "name": ".brohn_mm_select",
+      "signature": ".brohn_mm_select <- function(store, study_id, report_ids, origin, design_policy = \"exact\") {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 45,
+      "name": ".brohn_mm_validate_crosswalk",
+      "signature": ".brohn_mm_validate_crosswalk <- function(crosswalk, report_ids) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 56,
+      "name": ".brohn_mm_validate_contrasts",
+      "signature": ".brohn_mm_validate_contrasts <- function(contrasts, report_ids, design, multiplicity) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 73,
+      "name": "brohn_prepare_multimodal",
+      "signature": "brohn_prepare_multimodal <- function(store, study_id, report_ids, crosswalk, contrasts, origin,"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 85,
+      "name": "brohn_multimodal_input",
+      "signature": "brohn_multimodal_input <- function(store, request) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 120,
+      "name": ".brohn_mm_eda_constant_feature",
+      "signature": ".brohn_mm_eda_constant_feature <- function(source, recording, recipe) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 147,
+      "name": ".brohn_mm_extract",
+      "signature": ".brohn_mm_extract <- function(body, reference, design) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 230,
+      "name": "brohn_multimodal_catalog",
+      "signature": "brohn_multimodal_catalog <- function(store, study_id, report_ids, origin, design_policy = \"exact\") {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 262,
+      "name": ".brohn_mm_contrast",
+      "signature": ".brohn_mm_contrast <- function(spec, rows, design) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 306,
+      "name": "brohn_analyse_multimodal",
+      "signature": "brohn_analyse_multimodal <- function(input) {"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 392,
+      "name": "brohn_queue_multimodal",
+      "signature": "brohn_queue_multimodal <- function(store, study_id, report_ids, crosswalk, contrasts, origin,"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 2,
+      "name": "brohn_neural_recipe_choices",
+      "signature": "brohn_neural_recipe_choices <- function() c(\"Recording spectrum (Welch)\" = \"eeg-welch-channel/1.0\","
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 5,
+      "name": "brohn_neural_morlet_recipes",
+      "signature": "brohn_neural_morlet_recipes <- function() c(\"eeg-morlet-epochs/1.0\", \"eeg-morlet-epochs/1.1\")"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 6,
+      "name": "brohn_neural_registered_recipes",
+      "signature": "brohn_neural_registered_recipes <- function() unique(c(unname(brohn_neural_recipe_choices()), brohn_neural_morlet_recipes()))"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 7,
+      "name": "brohn_neural_is_epoch",
+      "signature": "brohn_neural_is_epoch <- function(m) !is.null(m$parameters$recipe) && m$parameters$recipe %in% setdiff(brohn_neural_registered_recipes(), \"eeg-welch-channel/1.0\")"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 8,
+      "name": ".brohn_neural_numbers",
+      "signature": ".brohn_neural_numbers <- function(x, label, minimum = -Inf, maximum = Inf, count = NULL, integer = FALSE) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 13,
+      "name": ".brohn_neural_window",
+      "signature": ".brohn_neural_window <- function(x, label, minimum, maximum) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 17,
+      "name": "brohn_validate_neural_mapping",
+      "signature": "brohn_validate_neural_mapping <- function(m, columns = NULL, source_format = NULL) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 125,
+      "name": "brohn_neural_worker_request",
+      "signature": "brohn_neural_worker_request <- function(m, source_format = NULL, columns = NULL) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 132,
+      "name": ".brohn_neural_csv_numbers",
+      "signature": ".brohn_neural_csv_numbers <- function(value, label, integer = FALSE) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 140,
+      "name": "brohn_neural_code_map",
+      "signature": "brohn_neural_code_map <- function(value) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 150,
+      "name": "brohn_neural_event_list",
+      "signature": "brohn_neural_event_list <- function(value) {"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 164,
+      "name": "brohn_neural_input",
+      "signature": "brohn_neural_input <- function(input, metadata, source_format = \"csv\") {"
+    },
+    {
+      "path": "R/platform-peripheral-synthesis.R",
+      "line": 4,
+      "name": "brohn_peripheral_synthesis_features",
+      "signature": "brohn_peripheral_synthesis_features <- function(body) {"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 2,
+      "name": "brohn_peripheral_recipe_choices",
+      "signature": "brohn_peripheral_recipe_choices <- function(modality) {"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 7,
+      "name": "brohn_peripheral_defaults",
+      "signature": "brohn_peripheral_defaults <- function(modality) {"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 12,
+      "name": "brohn_peripheral_parameters",
+      "signature": "brohn_peripheral_parameters <- function(m, modality) {"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 37,
+      "name": "brohn_validate_peripheral_mapping",
+      "signature": "brohn_validate_peripheral_mapping <- function(m, columns = NULL, source_format = NULL, modality) {"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 72,
+      "name": "brohn_peripheral_worker_request",
+      "signature": "brohn_peripheral_worker_request <- function(m, source_format = NULL, columns = NULL, modality) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 3,
+      "name": "brohn_scale_question_bounds",
+      "signature": "brohn_scale_question_bounds <- function(q) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 14,
+      "name": "brohn_validate_scales",
+      "signature": "brohn_validate_scales <- function(scales, design) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 55,
+      "name": "brohn_clone_scales",
+      "signature": "brohn_clone_scales <- function(scales, question_map) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 65,
+      "name": ".brohn_scale_context_key",
+      "signature": ".brohn_scale_context_key <- function(x) brohn_json(list(x$participant_id,x$session_id,x$assessment_id))"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 66,
+      "name": ".brohn_scale_optional_identity",
+      "signature": ".brohn_scale_optional_identity <- function(x) if(is.null(x)||identical(x,\"\")) NULL else x"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 67,
+      "name": ".brohn_scale_context",
+      "signature": ".brohn_scale_context <- function(r, scope) list(participant_id=r$participant_id,session_id=r$session_id,"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 70,
+      "name": "brohn_score_scales",
+      "signature": "brohn_score_scales <- function(responses, design, assessments=NULL, source=list()) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 158,
+      "name": "brohn_scale_run_responses",
+      "signature": "brohn_scale_run_responses <- function(input) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 200,
+      "name": "brohn_score_run_scales",
+      "signature": "brohn_score_run_scales <- function(input) {"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 205,
+      "name": "brohn_scale_scores_csv",
+      "signature": "brohn_scale_scores_csv <- function(result, path) {"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 2,
+      "name": "brohn_sciat_window_profile",
+      "signature": "brohn_sciat_window_profile <- function() list("
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 18,
+      "name": "brohn_sciat_window_new",
+      "signature": "brohn_sciat_window_new <- function(title=\"Sample Brohn response-window SC-IAT\",id=brohn_id(\"task\")) {"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 32,
+      "name": "brohn_sciat_window_validate",
+      "signature": "brohn_sciat_window_validate <- function(block) {"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 67,
+      "name": "brohn_sciat_window_compile",
+      "signature": "brohn_sciat_window_compile <- function(block,allocation_index=1L) {"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 108,
+      "name": "brohn_sciat_window_validate_compiled",
+      "signature": "brohn_sciat_window_validate_compiled <- function(compiled) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 2,
+      "name": "brohn_signal_audio_lineage",
+      "signature": "brohn_signal_audio_lineage <- function(store, report, verify = FALSE) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 29,
+      "name": "brohn_signal_view_source",
+      "signature": "brohn_signal_view_source <- function(store, record) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 37,
+      "name": "brohn_signal_marker_schema",
+      "signature": "brohn_signal_marker_schema <- function(m, column) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 42,
+      "name": "brohn_signal_artifact",
+      "signature": "brohn_signal_artifact <- function(report, kind) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 52,
+      "name": "brohn_queue_signal_view",
+      "signature": "brohn_queue_signal_view <- function(store, report_id, kind, selection = NULL, offset = 0L, max_bins = 800L) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 81,
+      "name": "brohn_signal_input",
+      "signature": "brohn_signal_input <- function(store, job) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 111,
+      "name": "brohn_validate_signal_result",
+      "signature": "brohn_validate_signal_result <- function(result, input) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 161,
+      "name": "brohn_analyse_signal",
+      "signature": "brohn_analyse_signal <- function(input, scratch) {"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 180,
+      "name": "brohn_publish_signal_view",
+      "signature": "brohn_publish_signal_view <- function(store, output, scratch, job, input, output_path) {"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 3,
+      "name": ".brohn_task_cohort_hash",
+      "signature": ".brohn_task_cohort_hash <- function(x) brohn_text(x,64) && grepl(\"^[a-f0-9]{64}$\",x)"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 4,
+      "name": ".brohn_task_cohort_key",
+      "signature": ".brohn_task_cohort_key <- function(...) brohn_hash(list(...))"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 5,
+      "name": ".brohn_task_cohort_bool",
+      "signature": ".brohn_task_cohort_bool <- function(x) is.logical(x) && length(x)==1L && !is.na(x)"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 6,
+      "name": ".brohn_task_cohort_specs",
+      "signature": ".brohn_task_cohort_specs <- function(profile) {"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 19,
+      "name": ".brohn_task_cohort_identity",
+      "signature": ".brohn_task_cohort_identity <- function(a) list(task_id=a$task_id,task_definition_hash=a$task_definition_hash,"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 22,
+      "name": ".brohn_task_cohort_attempt",
+      "signature": ".brohn_task_cohort_attempt <- function(a) {"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 79,
+      "name": "brohn_task_cohort_identity_rows",
+      "signature": "brohn_task_cohort_identity_rows <- function(attempts) {"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 92,
+      "name": "brohn_task_cohort",
+      "signature": "brohn_task_cohort <- function(attempts,plan,identity_map) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 4,
+      "name": ".brohn_task_import_profiles",
+      "signature": ".brohn_task_import_profiles <- function() c(\"iat-gnb2003-d1/1.0\",\"biat-nosek2014-goodfocal/1.0\","
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 6,
+      "name": ".brohn_task_import_columns",
+      "signature": ".brohn_task_import_columns <- function(adapter = NULL) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 15,
+      "name": ".brohn_task_import_hash",
+      "signature": ".brohn_task_import_hash <- function(x) brohn_text(x,64)&&grepl(\"^[a-f0-9]{64}$\",x)"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 16,
+      "name": ".brohn_task_import_registry_ref",
+      "signature": ".brohn_task_import_registry_ref <- function(ref) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 23,
+      "name": ".brohn_task_import_mapping",
+      "signature": ".brohn_task_import_mapping <- function(metadata,columns) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 48,
+      "name": ".brohn_task_import_task",
+      "signature": ".brohn_task_import_task <- function(design,task_id) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 54,
+      "name": ".brohn_task_import_origin",
+      "signature": ".brohn_task_import_origin <- function(task,origin) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 59,
+      "name": "brohn_validate_task_import_mapping",
+      "signature": "brohn_validate_task_import_mapping <- function(dataset,design=NULL) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 76,
+      "name": ".brohn_task_import_registry",
+      "signature": ".brohn_task_import_registry <- function(registry,design,task_id) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 102,
+      "name": "brohn_validate_task_protocol_registry",
+      "signature": "brohn_validate_task_protocol_registry <- function(registry,design,task_id) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 105,
+      "name": ".brohn_task_import_boolean",
+      "signature": ".brohn_task_import_boolean <- function(value,label,row) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 109,
+      "name": ".brohn_task_import_decimal",
+      "signature": ".brohn_task_import_decimal <- function(value,label,row) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 117,
+      "name": ".brohn_task_import_response",
+      "signature": ".brohn_task_import_response <- function(cells,trial,row,timing_known) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 150,
+      "name": ".brohn_task_import_trial_audit",
+      "signature": ".brohn_task_import_trial_audit <- function(trial,response,source_row,profile,timing_known) {"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 168,
+      "name": "brohn_import_task_trials",
+      "signature": "brohn_import_task_trials <- function(data,metadata,design,source,protocols) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 2,
+      "name": "brohn_vision_profiles",
+      "signature": "brohn_vision_profiles <- function() list("
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 8,
+      "name": "brohn_validate_vision_mapping",
+      "signature": "brohn_validate_vision_mapping <- function(dataset) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 29,
+      "name": "brohn_vision_request",
+      "signature": "brohn_vision_request <- function(input, scratch) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 44,
+      "name": "brohn_run_vision",
+      "signature": "brohn_run_vision <- function(input, scratch) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 64,
+      "name": "brohn_queue_aoi_proposal",
+      "signature": "brohn_queue_aoi_proposal <- function(store, study_id, stimulus_id, prompt, revision = NULL) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 79,
+      "name": "brohn_aoi_proposal_input",
+      "signature": "brohn_aoi_proposal_input <- function(store, job) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 91,
+      "name": "brohn_analyse_aoi_proposal",
+      "signature": "brohn_analyse_aoi_proposal <- function(input, scratch) list(title = \"AOI proposal for review\", study_id = input$design$id,"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 97,
+      "name": "brohn_checked_artifact_path",
+      "signature": "brohn_checked_artifact_path <- function(store, path, scratch) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 107,
+      "name": ".brohn_check_worker_artifacts",
+      "signature": ".brohn_check_worker_artifacts <- function(store, analysis, scratch, verify_hashes = TRUE) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 136,
+      "name": ".brohn_worker_artifact_analysis",
+      "signature": ".brohn_worker_artifact_analysis <- function(analysis, promoted) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 153,
+      "name": "brohn_promote_worker_artifacts",
+      "signature": "brohn_promote_worker_artifacts <- function(store, analysis, scratch, job, report = NULL) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 178,
+      "name": "brohn_save_aoi_proposal_result",
+      "signature": "brohn_save_aoi_proposal_result <- function(store, report, job, project_id) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 192,
+      "name": "brohn_aoi_proposals",
+      "signature": "brohn_aoi_proposals <- function(store, study_id, limit = 500) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 197,
+      "name": "brohn_proposal_mask_path",
+      "signature": "brohn_proposal_mask_path <- function(store, proposal_id) {"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 203,
+      "name": "brohn_review_aoi_proposal",
+      "signature": "brohn_review_aoi_proposal <- function(store, proposal_id, action, label = NULL,"
+    }
+  ],
+  "identifiers": [
+    {
+      "path": "docs/MASTER-ARCHITECTURE.md",
+      "line": 31,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "docs/MASTER-ARCHITECTURE.md",
+      "line": 488,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "docs/MASTER-ARCHITECTURE.md",
+      "line": 488,
+      "identifier": "brohn-rt-metric-support/1.0"
+    },
+    {
+      "path": "docs/methods/CARDIAC-ARTIFACT-REANALYSIS-CONTRACT.md",
+      "line": 40,
+      "identifier": "cardiac-source-exclusion/1.0"
+    },
+    {
+      "path": "docs/methods/DECLARATIVE-ANALYSIS-PLANS.md",
+      "line": 3,
+      "identifier": "brohn-analysis-plan/1.0"
+    },
+    {
+      "path": "docs/methods/DECLARATIVE-ANALYSIS-PLANS.md",
+      "line": 9,
+      "identifier": "paired-consumer-comparisons/1.0-draft"
+    },
+    {
+      "path": "docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md",
+      "line": 3,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 13,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 38,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 59,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 60,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "docs/methods/EVENT-RELATED-EDA.md",
+      "line": 107,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 52,
+      "identifier": "brohn-facial-expression-request/1.0"
+    },
+    {
+      "path": "docs/methods/FACIAL-AU-NATIVE-PROFILE.md",
+      "line": 62,
+      "identifier": "brohn-facial-expression-result/1.0"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 4,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 190,
+      "identifier": "gnat-brohn-endpoint005/1.0"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 226,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 246,
+      "identifier": "brohn-gnat-single-target-score/1.0"
+    },
+    {
+      "path": "docs/methods/GNAT-BROHN-PROCEDURE.md",
+      "line": 247,
+      "identifier": "gnat-brohn-endpoint005/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 21,
+      "identifier": "brohn-task-cohort/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 27,
+      "identifier": "brohn-task-attempt/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 37,
+      "identifier": "brohn-task-cohort-plan/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 42,
+      "identifier": "rt-deary-liewald-choice/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 44,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 45,
+      "identifier": "brohn-rt-metric-support/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 54,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 72,
+      "identifier": "brohn-task-cohort-identities/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 203,
+      "identifier": "brohn-task-cohort-request/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 204,
+      "identifier": "brohn-task-cohort-descriptive/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TASK-COHORT.md",
+      "line": 222,
+      "identifier": "brohn-task-cohort-input/1.0"
+    },
+    {
+      "path": "docs/methods/IMPLICIT-TRIAL-IMPORT.md",
+      "line": 33,
+      "identifier": "brohn-implicit-protocol-registry/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 3,
+      "identifier": "object-case-paired-maxdiff/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 18,
+      "identifier": "brohn-maxdiff-design/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 20,
+      "identifier": "object-case-paired-maxdiff/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 39,
+      "identifier": "brohn-maxdiff-protocol/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 80,
+      "identifier": "brohn-maxdiff-result/1.0"
+    },
+    {
+      "path": "docs/methods/MAXDIFF.md",
+      "line": 160,
+      "identifier": "brohn-maxdiff-result/1.0"
+    },
+    {
+      "path": "docs/methods/MEDIA-SOURCE-REVIEW.md",
+      "line": 3,
+      "identifier": "saved-container-media-review/1.0"
+    },
+    {
+      "path": "docs/methods/MULTIMODAL-REPORTS.md",
+      "line": 4,
+      "identifier": "multimodal-explicit-crosswalk/1.0-draft"
+    },
+    {
+      "path": "docs/methods/MULTIMODAL-REPORTS.md",
+      "line": 68,
+      "identifier": "brohn-multimodal-input/1.0"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "line": 16,
+      "identifier": "brohn-interchange-request/1.0"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "line": 36,
+      "identifier": "brohn-interchange-result/1.0"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "line": 45,
+      "identifier": "brohn-imported-stream/1.0"
+    },
+    {
+      "path": "docs/methods/MULTISTREAM-IMPORT.md",
+      "line": 141,
+      "identifier": "brohn-stream-bundle/1.0"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 41,
+      "identifier": "brohn-header-request/1.0"
+    },
+    {
+      "path": "docs/methods/NATIVE-HEADERS.md",
+      "line": 49,
+      "identifier": "brohn-header-result/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 10,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 11,
+      "identifier": "eeg-morlet-epochs/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 12,
+      "identifier": "eeg-frequency-tagging/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 23,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 74,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "docs/methods/NEURAL-RECIPES.md",
+      "line": 202,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 14,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 39,
+      "identifier": "temperature-calibrated-descriptive/1.0"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 45,
+      "identifier": "acceleration-calibrated-triaxial/1.0"
+    },
+    {
+      "path": "docs/methods/PERIPHERAL-FEATURES.md",
+      "line": 72,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "docs/methods/PREPARED-CSV.md",
+      "line": 57,
+      "identifier": "prepared-gaze-report/0.1.0"
+    },
+    {
+      "path": "docs/methods/PREPARED-GAZE.md",
+      "line": 4,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "docs/methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md",
+      "line": 3,
+      "identifier": "brohn-physiology-tables/1.0"
+    },
+    {
+      "path": "docs/methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md",
+      "line": 9,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "docs/methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md",
+      "line": 79,
+      "identifier": "brohn-physiology-artifact-receipt/1.0"
+    },
+    {
+      "path": "docs/methods/PROCESSED-PHYSIOLOGY-ARTIFACTS.md",
+      "line": 86,
+      "identifier": "brohn-physiology-tables/1.0"
+    },
+    {
+      "path": "docs/methods/PROTOCOL-SNAPSHOTS.md",
+      "line": 15,
+      "identifier": "study-protocol/0.1.0"
+    },
+    {
+      "path": "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+      "line": 16,
+      "identifier": "participant-sha256/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+      "line": 17,
+      "identifier": "legacy-timeline-r/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+      "line": 21,
+      "identifier": "brohn-design/1.0.0"
+    },
+    {
+      "path": "docs/methods/QUESTION-OPTION-ASSIGNMENT.md",
+      "line": 52,
+      "identifier": "brohn-option-assignment/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SCALES.md",
+      "line": 3,
+      "identifier": "explicit-questionnaire-scale/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SCALES.md",
+      "line": 20,
+      "identifier": "brohn-questionnaire-scale/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SCALES.md",
+      "line": 135,
+      "identifier": "brohn-questionnaire-scale-results/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SECTIONS.md",
+      "line": 19,
+      "identifier": "brohn-questionnaire-sections/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SECTIONS.md",
+      "line": 20,
+      "identifier": "participant-sha256/1.0"
+    },
+    {
+      "path": "docs/methods/QUESTIONNAIRE-SECTIONS.md",
+      "line": 114,
+      "identifier": "brohn-questionnaire-order/1.0"
+    },
+    {
+      "path": "docs/methods/RAW-GAZE-ANALYSIS.md",
+      "line": 10,
+      "identifier": "brohn-adjacent-ray-ivt/0.1.0"
+    },
+    {
+      "path": "docs/methods/reuse/GAZE-REUSE.md",
+      "line": 3,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "docs/methods/reuse/IMPLICIT-REUSE.md",
+      "line": 9,
+      "identifier": "iat-gnb2003-d1-reference/0.1.0"
+    },
+    {
+      "path": "docs/methods/RT-SUPPORT-AND-TASK-EXPORTS.md",
+      "line": 9,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "docs/methods/RT-SUPPORT-AND-TASK-EXPORTS.md",
+      "line": 10,
+      "identifier": "brohn-rt-metric-support/1.0"
+    },
+    {
+      "path": "docs/methods/RT-SUPPORT-AND-TASK-EXPORTS.md",
+      "line": 37,
+      "identifier": "brohn-task-score-csv/1.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-INTERVALS.md",
+      "line": 3,
+      "identifier": "saved-signal-intervals/1.0.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "line": 41,
+      "identifier": "brohn-signal-preview-request/1.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "line": 48,
+      "identifier": "brohn-physiology-tables/1.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "line": 55,
+      "identifier": "brohn-physiology-artifact-receipt/1.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "line": 78,
+      "identifier": "brohn-signal-catalog/1.0"
+    },
+    {
+      "path": "docs/methods/SIGNAL-PREVIEW.md",
+      "line": 96,
+      "identifier": "brohn-signal-preview/1.0"
+    },
+    {
+      "path": "docs/methods/STREAM-CURATION.md",
+      "line": 55,
+      "identifier": "analogue-stream-curation/1.0"
+    },
+    {
+      "path": "docs/methods/STREAM-CURATION.md",
+      "line": 70,
+      "identifier": "brohn-stream-extract-request/1.0"
+    },
+    {
+      "path": "docs/methods/STREAM-CURATION.md",
+      "line": 73,
+      "identifier": "brohn-stream-selection/1.0"
+    },
+    {
+      "path": "docs/methods/STREAM-CURATION.md",
+      "line": 78,
+      "identifier": "brohn-stream-extract-result/1.0"
+    },
+    {
+      "path": "docs/preparation/ARCHITECTURE-READINESS.md",
+      "line": 70,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 15,
+      "identifier": "sc-iat-ms-corrected/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 23,
+      "identifier": "gnat-configured-sensitivity/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 27,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 35,
+      "identifier": "ep-ms-matched-baseline/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 43,
+      "identifier": "amp-ms-three-prime/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 51,
+      "identifier": "dl-simple/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 51,
+      "identifier": "dl-four-choice/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 59,
+      "identifier": "stroop-keyboard-control/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "line": 65,
+      "identifier": "arrow-flanker-ms-short/0.1-draft"
+    },
+    {
+      "path": "docs/preparation/UX-READINESS.md",
+      "line": 13,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 37,
+      "identifier": "ecg-neurokit-detected-rr/1.0"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 38,
+      "identifier": "ppg-elgendi-detected-prv/1.0"
+    },
+    {
+      "path": "docs/research/HRV-SKIN-TEMPERATURE.md",
+      "line": 79,
+      "identifier": "temperature-calibrated-descriptive/1.0"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 8,
+      "identifier": "brohn-analysis-plan/1.0"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 8,
+      "identifier": "paired-consumer-comparisons/1.0-draft"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 13,
+      "identifier": "brohn-analysis-plan/1.0"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "line": 13,
+      "identifier": "paired-consumer-comparisons/1.0-draft"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 2,
+      "identifier": "respiration-displacement-khodadad/1.0"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 138,
+      "identifier": "brohn-analysis/1.0.0"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 254,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "line": 301,
+      "identifier": "typed-explicit-responses/1.0.0"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 3,
+      "identifier": "brohn-camera-policy/1.1"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 10,
+      "identifier": "brohn-camera-facial-settings/1.0"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 24,
+      "identifier": "brohn-camera-policy/1.0"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 28,
+      "identifier": "brohn-camera-facial-settings/1.0"
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "line": 130,
+      "identifier": "brohn-camera-facial-authority/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 2,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 3,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 4,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 5,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 6,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 6,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 8,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 8,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "line": 16,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 7,
+      "identifier": "brohn-facial-expression-result/1.0"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 38,
+      "identifier": "brohn-facial-expression-request/1.0"
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "line": 44,
+      "identifier": "brohn-facial-observations/1.0"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 256,
+      "identifier": "source-labelled-blink-boundaries/1.1"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 306,
+      "identifier": "brohn-adjacent-ray-ivt/0.1.0"
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "line": 309,
+      "identifier": "source-labelled-blink-boundaries/1.1"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 3,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 14,
+      "identifier": "brohn-gnat-single-target-score/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 14,
+      "identifier": "gnat-brohn-endpoint005/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 40,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 50,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 124,
+      "identifier": "brohn-compiled-task/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 203,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 204,
+      "identifier": "brohn-gnat-single-target-score/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 249,
+      "identifier": "brohn-gnat-single-target-audit/1.0"
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "line": 249,
+      "identifier": "gnat-brohn-endpoint005/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 5,
+      "identifier": "brohn-maxdiff-design/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 5,
+      "identifier": "object-case-paired-maxdiff/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 19,
+      "identifier": "brohn-maxdiff-design/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 19,
+      "identifier": "object-case-paired-maxdiff/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 60,
+      "identifier": "brohn-maxdiff-design-review/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 77,
+      "identifier": "brohn-maxdiff-protocol/1.0"
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "line": 208,
+      "identifier": "brohn-maxdiff-result/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 5,
+      "identifier": "iat-gnb2003-d1/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 7,
+      "identifier": "biat-nosek2014-goodfocal/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 9,
+      "identifier": "aat-keyboard-cue-balanced/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 11,
+      "identifier": "rt-deary-liewald-simple/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 13,
+      "identifier": "rt-deary-liewald-choice/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 15,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 18,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 39,
+      "identifier": "iat-gnb2003-d1/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 40,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 41,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 51,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 59,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 60,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 62,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 97,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 98,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 198,
+      "identifier": "brohn-compiled-task/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 243,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 244,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 245,
+      "identifier": "brohn-compiled-task/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 251,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 257,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 258,
+      "identifier": "brohn-rt-metric-support/1.0"
+    },
+    {
+      "path": "R/platform-methods.R",
+      "line": 262,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 79,
+      "identifier": "brohn-multimodal-request/1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 79,
+      "identifier": "multimodal-explicit-crosswalk/1.0-draft"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 86,
+      "identifier": "brohn-multimodal-request/1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 86,
+      "identifier": "multimodal-explicit-crosswalk/1.0-draft"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 116,
+      "identifier": "brohn-multimodal-input/1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 124,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 171,
+      "identifier": "aoi-valid-gaze-time-share/0.1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 171,
+      "identifier": "brohn-adjacent-ray-ivt/0.1.0"
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "line": 307,
+      "identifier": "brohn-multimodal-input/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 2,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 3,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 3,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 4,
+      "identifier": "eeg-frequency-tagging/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 5,
+      "identifier": "eeg-morlet-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 5,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 7,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 20,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 22,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 38,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 39,
+      "identifier": "eeg-morlet-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 39,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 40,
+      "identifier": "eeg-frequency-tagging/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 93,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 105,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 108,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 110,
+      "identifier": "complete-pre-event-wavelet-support/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 168,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 183,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "R/platform-neural.R",
+      "line": 192,
+      "identifier": "complete-pre-event-wavelet-support/1.0"
+    },
+    {
+      "path": "R/platform-peripheral-synthesis.R",
+      "line": 15,
+      "identifier": "calibrated-peripheral-supported-segments/1.0"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 4,
+      "identifier": "temperature-calibrated-descriptive/1.0"
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "line": 5,
+      "identifier": "acceleration-calibrated-triaxial/1.0"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 2,
+      "identifier": "explicit-questionnaire-scale/1.0"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 19,
+      "identifier": "brohn-questionnaire-scale/1.0"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 149,
+      "identifier": "brohn-questionnaire-scale-results/1.0"
+    },
+    {
+      "path": "R/platform-scales.R",
+      "line": 206,
+      "identifier": "brohn-questionnaire-scale-results/1.0"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 3,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 13,
+      "identifier": "sciat-response-window-im100/0.1-candidate"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 25,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 34,
+      "identifier": "brohn-task-block/1.0"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "line": 101,
+      "identifier": "brohn-compiled-task/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 39,
+      "identifier": "brohn-cardiac-marker-overlay/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 40,
+      "identifier": "brohn-cardiac-marker-overlay/1.1"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 62,
+      "identifier": "processed-signal-view/1.0.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 76,
+      "identifier": "processed-signal-view/1.2.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 87,
+      "identifier": "brohn-analysis-input/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 112,
+      "identifier": "brohn-signal-catalog/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 112,
+      "identifier": "brohn-signal-preview/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 162,
+      "identifier": "brohn-signal-preview-request/1.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 189,
+      "identifier": "brohn-saved-signal-view/1.0.0"
+    },
+    {
+      "path": "R/platform-signal.R",
+      "line": 194,
+      "identifier": "staged-windows-parent-read-seal/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 28,
+      "identifier": "brohn-task-attempt/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 53,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 54,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 55,
+      "identifier": "brohn-sciat-response-window-score/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 56,
+      "identifier": "brohn-task-score/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 57,
+      "identifier": "brohn-gnat-single-target-score/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 58,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 58,
+      "identifier": "brohn-rt-metric-support/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 66,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 67,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 73,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 89,
+      "identifier": "brohn-task-cohort-identities/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 95,
+      "identifier": "brohn-task-cohort-plan/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 117,
+      "identifier": "brohn-task-cohort-identities/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 174,
+      "identifier": "brohn-task-score/1.1"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 219,
+      "identifier": "brohn-task-cohort/1.0"
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "line": 227,
+      "identifier": "brohn-task-cohort-descriptive/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 3,
+      "identifier": "brohn-gnat-trial-summary/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 4,
+      "identifier": "iat-gnb2003-d1/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 4,
+      "identifier": "biat-nosek2014-goodfocal/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 5,
+      "identifier": "aat-keyboard-cue-balanced/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 5,
+      "identifier": "rt-deary-liewald-simple/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 5,
+      "identifier": "rt-deary-liewald-choice/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 5,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 5,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 69,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 78,
+      "identifier": "brohn-implicit-protocol-registry/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 151,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 182,
+      "identifier": "gnat-brohn-single-target/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 246,
+      "identifier": "sciat-brohn-response-window-im100/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 257,
+      "identifier": "brohn-task-attempt/1.0"
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "line": 284,
+      "identifier": "brohn-implicit-csv-import/1.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 39,
+      "identifier": "brohn-vision-request/1.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 54,
+      "identifier": "brohn-vision-result/1.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 75,
+      "identifier": "magictouch-v1-click-proposal/1.0.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 86,
+      "identifier": "brohn-analysis-input/1.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 126,
+      "identifier": "brohn-physiology-tables/1.0"
+    },
+    {
+      "path": "R/platform-vision.R",
+      "line": 183,
+      "identifier": "brohn-aoi-proposal/1.0.0"
+    },
+    {
+      "path": "scripts/workers/audio_extract.py",
+      "line": 25,
+      "identifier": "video-audio-source/1.0"
+    },
+    {
+      "path": "scripts/workers/audio_extract.py",
+      "line": 164,
+      "identifier": "brohn-audio-extract-request/1.0"
+    },
+    {
+      "path": "scripts/workers/audio_extract.py",
+      "line": 186,
+      "identifier": "brohn-audio-extract-result/1.0"
+    },
+    {
+      "path": "scripts/workers/audio_review.py",
+      "line": 26,
+      "identifier": "audio-source-review/1.0"
+    },
+    {
+      "path": "scripts/workers/audio_review.py",
+      "line": 90,
+      "identifier": "brohn-audio-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/audio_review.py",
+      "line": 183,
+      "identifier": "brohn-audio-review-result/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 37,
+      "identifier": "cardiac-source-exclusion/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 87,
+      "identifier": "brohn-cardiac-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 266,
+      "identifier": "brohn-cardiac-exclusion-ledger/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 369,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 433,
+      "identifier": "brohn-cardiac-review-preview/1.0"
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "line": 460,
+      "identifier": "brohn-cardiac-review-error/1.0"
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "line": 15,
+      "identifier": "reviewed-two-event-affine/0.1.0"
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "line": 16,
+      "identifier": "brohn-clock-affine-arithmetic/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "line": 206,
+      "identifier": "brohn-clock-affine-position/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "line": 224,
+      "identifier": "brohn-clock-affine-check/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_events.py",
+      "line": 53,
+      "identifier": "brohn-clock-event-page/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_events_worker.py",
+      "line": 16,
+      "identifier": "brohn-clock-event-request/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 21,
+      "identifier": "original-observation-envelope/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 22,
+      "identifier": "bounded-decimal-display/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 246,
+      "identifier": "brohn-clock-plot-input/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 252,
+      "identifier": "brohn-clock-window-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 253,
+      "identifier": "brohn-clock-window/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "line": 368,
+      "identifier": "brohn-clock-plot/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "line": 137,
+      "identifier": "brohn-clock-plot-input/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "line": 139,
+      "identifier": "brohn-clock-plot-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "line": 150,
+      "identifier": "brohn-clock-plot/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "line": 178,
+      "identifier": "brohn-clock-plot-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "line": 197,
+      "identifier": "brohn-clock-plot-verification/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_preview.py",
+      "line": 16,
+      "identifier": "brohn-clock-preview-input/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_preview.py",
+      "line": 120,
+      "identifier": "brohn-clock-preview/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_source.py",
+      "line": 204,
+      "identifier": "brohn-clock-source-inspection/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window.py",
+      "line": 23,
+      "identifier": "brohn-clock-window-input/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window.py",
+      "line": 219,
+      "identifier": "brohn-clock-window/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 62,
+      "identifier": "brohn-clock-window/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 162,
+      "identifier": "brohn-clock-window-worker-request/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 168,
+      "identifier": "brohn-clock-window-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 190,
+      "identifier": "brohn-clock-window-worker-request/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 192,
+      "identifier": "brohn-clock-window-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "line": 210,
+      "identifier": "brohn-clock-window-verification/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "line": 104,
+      "identifier": "brohn-eda-continuous-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "line": 105,
+      "identifier": "brohn-eda-continuous-review-request/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "line": 295,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "line": 461,
+      "identifier": "brohn-eda-continuous-review/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 29,
+      "identifier": "brohn-eda-value-hash/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 37,
+      "identifier": "brohn-eda-report-refusal/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 122,
+      "identifier": "brohn-eda-display-request/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 165,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 166,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 168,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 389,
+      "identifier": "brohn-eda-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 393,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 450,
+      "identifier": "brohn-eda-display-worker-request/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 452,
+      "identifier": "saved-eda-display/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 452,
+      "identifier": "saved-eda-display/0.2"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 457,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 461,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 461,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 461,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 461,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 563,
+      "identifier": "brohn-eda-display-worker-result/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 566,
+      "identifier": "brohn-eda-display-verification/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "line": 580,
+      "identifier": "brohn-eda-display-worker-error/0.1"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 31,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 31,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 82,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 83,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 84,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 174,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 323,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 333,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 334,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "line": 441,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "line": 74,
+      "identifier": "brohn-eda-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "line": 77,
+      "identifier": "eda-event-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "line": 77,
+      "identifier": "eda-event-cvxeda-defaults/1.0"
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "line": 160,
+      "identifier": "brohn-eda-review/1.0"
+    },
+    {
+      "path": "scripts/workers/emg_review.py",
+      "line": 90,
+      "identifier": "brohn-emg-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/emg_review.py",
+      "line": 94,
+      "identifier": "emg-butterworth-rms/1.0"
+    },
+    {
+      "path": "scripts/workers/emg_review.py",
+      "line": 249,
+      "identifier": "brohn-emg-review/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "line": 52,
+      "identifier": "brohn-facial-expression-request/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "line": 270,
+      "identifier": "brohn-facial-observations/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "line": 320,
+      "identifier": "brohn-facial-expression-result/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "line": 363,
+      "identifier": "brohn-facial-expression-result/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 25,
+      "identifier": "brohn-facial-review-index/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 26,
+      "identifier": "saved-native-facial-review/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 70,
+      "identifier": "brohn-facial-expression-result/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 128,
+      "identifier": "brohn-facial-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 144,
+      "identifier": "brohn-facial-review-result/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 193,
+      "identifier": "brohn-facial-numeric-export/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 200,
+      "identifier": "brohn-facial-frame-request/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 231,
+      "identifier": "brohn-facial-recorded-frame/1.0"
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "line": 239,
+      "identifier": "brohn-facial-review-result/1.0"
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "line": 19,
+      "identifier": "gaze-pupil-source-trace/1.0"
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "line": 20,
+      "identifier": "source-labelled-blink-boundaries/1.1"
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "line": 21,
+      "identifier": "brohn-gaze-trace-exchange/1.0"
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "line": 22,
+      "identifier": "brohn-gaze-trace-preview/1.0"
+    },
+    {
+      "path": "scripts/workers/headers.py",
+      "line": 321,
+      "identifier": "brohn-header-request/1.0"
+    },
+    {
+      "path": "scripts/workers/headers.py",
+      "line": 335,
+      "identifier": "brohn-header-result/1.0"
+    },
+    {
+      "path": "scripts/workers/headers.py",
+      "line": 360,
+      "identifier": "brohn-header-result/1.0"
+    },
+    {
+      "path": "scripts/workers/ingestion_snapshot.py",
+      "line": 25,
+      "identifier": "brohn-ingestion-snapshot-request/1.0"
+    },
+    {
+      "path": "scripts/workers/ingestion_snapshot.py",
+      "line": 40,
+      "identifier": "brohn-ingestion-snapshot-ready/1.0"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "line": 300,
+      "identifier": "brohn-stream-bundle/1.0"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "line": 536,
+      "identifier": "brohn-imported-stream/1.0"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "line": 555,
+      "identifier": "brohn-interchange-request/1.0"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "line": 588,
+      "identifier": "brohn-interchange-result/1.0"
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "line": 628,
+      "identifier": "brohn-interchange-result/1.0"
+    },
+    {
+      "path": "scripts/workers/linked_review.py",
+      "line": 48,
+      "identifier": "brohn-linked-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/linked_review.py",
+      "line": 87,
+      "identifier": "brohn-linked-review/1.0"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "line": 12,
+      "identifier": "saved-container-media-review/1.0"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "line": 91,
+      "identifier": "original-audio-frame-pts-plus-local-sample/1.0"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "line": 148,
+      "identifier": "brohn-media-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "line": 158,
+      "identifier": "brohn-media-review-result/1.0"
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "line": 193,
+      "identifier": "brohn-media-review-result/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 30,
+      "identifier": "eeg-morlet-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 30,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 31,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 31,
+      "identifier": "eeg-frequency-tagging/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 32,
+      "identifier": "complete-pre-event-wavelet-support/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 65,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 66,
+      "identifier": "eeg-morlet-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 67,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 68,
+      "identifier": "eeg-frequency-tagging/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 107,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 123,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 321,
+      "identifier": "eeg-erp-epochs/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 342,
+      "identifier": "eeg-morlet-epochs/1.1"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 415,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 415,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 432,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "line": 496,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "line": 27,
+      "identifier": "temperature-calibrated-descriptive/1.0"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "line": 27,
+      "identifier": "acceleration-calibrated-triaxial/1.0"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "line": 250,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "line": 268,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "line": 376,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 101,
+      "identifier": "eda-neurokit-highpass/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 102,
+      "identifier": "eeg-welch-channel/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 104,
+      "identifier": "ecg-neurokit-detected-rr/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 106,
+      "identifier": "ppg-elgendi-detected-prv/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 108,
+      "identifier": "respiration-displacement-khodadad/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 110,
+      "identifier": "emg-butterworth-rms/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 117,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 129,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 251,
+      "identifier": "brohn-header-request/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 296,
+      "identifier": "native-eeg-declared-calibration/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 399,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 491,
+      "identifier": "brohn-cardiac-interval-spectrum/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 644,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 702,
+      "identifier": "audio-praat-acoustics/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 779,
+      "identifier": "fnirs-od-beer-lambert/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 880,
+      "identifier": "brohn-worker-request/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 895,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 934,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 990,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "line": 1036,
+      "identifier": "brohn-worker-result/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "line": 17,
+      "identifier": "brohn-physiology-tables/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "line": 319,
+      "identifier": "eda-neurokit-highpass/1.1"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "line": 399,
+      "identifier": "brohn-cardiac-interval-spectrum/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "line": 462,
+      "identifier": "brohn-physiology-artifact-receipt/1.0"
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "line": 481,
+      "identifier": "brohn-physiology-artifact-receipt/1.0"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "line": 145,
+      "identifier": "brohn-publication-request/1.0"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "line": 189,
+      "identifier": "brohn-publication-status/1.0"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "line": 246,
+      "identifier": "brohn-publication-ready/1.0"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "line": 249,
+      "identifier": "windows-share-read-deny-write-delete/1.0"
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "line": 283,
+      "identifier": "brohn-publication-status/1.0"
+    },
+    {
+      "path": "scripts/workers/report_package_archive.py",
+      "line": 14,
+      "identifier": "brohn-report-package-archive-request/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_archive.py",
+      "line": 123,
+      "identifier": "brohn-report-package/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_archive.py",
+      "line": 153,
+      "identifier": "brohn-report-package-archive-result/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 64,
+      "identifier": "brohn-eda-stream-inspection-request/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 64,
+      "identifier": "brohn-eda-stream-inspection-request/0.2"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 116,
+      "identifier": "brohn-eda-stream-projection-request/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 116,
+      "identifier": "brohn-eda-stream-projection-request/0.2"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 200,
+      "identifier": "brohn-report-package-runtime-profile/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "line": 206,
+      "identifier": "brohn-eda-stream-error/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_raster.py",
+      "line": 11,
+      "identifier": "brohn-report-package-raster-request/0.1"
+    },
+    {
+      "path": "scripts/workers/report_package_raster.py",
+      "line": 33,
+      "identifier": "brohn-report-package-raster-result/0.1"
+    },
+    {
+      "path": "scripts/workers/respiration_review.py",
+      "line": 91,
+      "identifier": "brohn-respiration-review-request/1.0"
+    },
+    {
+      "path": "scripts/workers/respiration_review.py",
+      "line": 95,
+      "identifier": "respiration-displacement-khodadad/1.0"
+    },
+    {
+      "path": "scripts/workers/respiration_review.py",
+      "line": 217,
+      "identifier": "brohn-respiration-review/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 37,
+      "identifier": "brohn-physiology-artifact-receipt/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 133,
+      "identifier": "brohn-signal-catalog/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 152,
+      "identifier": "gaze-pupil-source-trace/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 185,
+      "identifier": "brohn-signal-preview/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 259,
+      "identifier": "brohn-cardiac-marker-overlay/1.1"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 336,
+      "identifier": "brohn-signal-preview-request/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "line": 369,
+      "identifier": "brohn-signal-view-error/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_values.py",
+      "line": 27,
+      "identifier": "brohn-signal-values/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_values.py",
+      "line": 83,
+      "identifier": "brohn-signal-values-request/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_values.py",
+      "line": 292,
+      "identifier": "brohn-signal-values-error/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "line": 63,
+      "identifier": "brohn-signal-window-request/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "line": 84,
+      "identifier": "gaze-pupil-source-trace/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "line": 132,
+      "identifier": "brohn-signal-window-summary/1.0"
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "line": 161,
+      "identifier": "brohn-signal-window-error/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 101,
+      "identifier": "brohn-stream-extract-request/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 106,
+      "identifier": "brohn-imported-stream/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 110,
+      "identifier": "brohn-stream-selection/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 296,
+      "identifier": "brohn-stream-extract-result/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 298,
+      "identifier": "analogue-stream-curation/1.0"
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "line": 335,
+      "identifier": "brohn-stream-extract-result/1.0"
+    },
+    {
+      "path": "scripts/workers/validate_clock_preview_math.py",
+      "line": 52,
+      "identifier": "brohn-clock-math-check/0.1"
+    },
+    {
+      "path": "scripts/workers/vision.py",
+      "line": 102,
+      "identifier": "brohn-vision-request/1.0"
+    },
+    {
+      "path": "scripts/workers/vision.py",
+      "line": 136,
+      "identifier": "brohn-vision-result/1.0"
+    },
+    {
+      "path": "scripts/workers/vision.py",
+      "line": 638,
+      "identifier": "brohn-vision-result/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 21,
+      "identifier": "brohn-vision-explorer-index/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 22,
+      "identifier": "saved-video-geometry-explorer/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 209,
+      "identifier": "brohn-vision-index-result/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 271,
+      "identifier": "brohn-vision-frame-page/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 286,
+      "identifier": "brohn-vision-frame-detail/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 348,
+      "identifier": "brohn-vision-plot/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 369,
+      "identifier": "brohn-vision-numeric-export/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 379,
+      "identifier": "brohn-vision-explorer-request/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 382,
+      "identifier": "brohn-vision-catalog/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "line": 386,
+      "identifier": "brohn-vision-explorer-error/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_frame.py",
+      "line": 22,
+      "identifier": "brohn-vision-frame-request/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_frame.py",
+      "line": 73,
+      "identifier": "brohn-vision-recorded-frame/1.0"
+    },
+    {
+      "path": "scripts/workers/vision_frame.py",
+      "line": 92,
+      "identifier": "brohn-vision-recorded-frame/1.0"
+    }
+  ]
+}

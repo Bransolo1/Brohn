@@ -1,5 +1,15 @@
 # Control stimuli and presentation design
 
+Current scope, 30 September 2026: the sections below document the original
+paired-authoring slice. Their statements that participant delivery/allocation
+are absent are historical. Current platform delivery stores compiled protocols
+and allocation; see the [current source audit](evidence-2026-09-30/study-design/EVIDENCE.md).
+Recorded allocation is still distinct from achieved usable balance, and cyclic
+order rotation does not generally balance carryover. The
+[academic evidence contract](ACADEMIC-EVIDENCE-CONTRACT.md) governs new profiles
+and the [proposed design checks](evidence-2026-09-30/study-design/TEMPLATE-PREFLIGHT.md)
+remain under review. Preserve the original draft metric's meaning.
+
 The user requires control stimuli throughout the platform. The first executable
 authoring slice supports one designated control in the existing paired A/B design.
 It records intent; it does not automatically make the comparison causal.

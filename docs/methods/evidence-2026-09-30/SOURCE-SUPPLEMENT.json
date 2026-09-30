@@ -1,0 +1,343 @@
+{
+  "schema": "brohn-method-evidence-source-supplement/0.1",
+  "date": "2026-09-30",
+  "production_commit_now": "3aeb27f942f0359e0e7941df1c8a031dff4a28fb",
+  "production_status_now": "",
+  "initial_snapshot": "e861399f8cb40fb261855121f7f22baa99096a81",
+  "files": [
+    {
+      "path": "R/platform-core.R",
+      "bytes": 33987,
+      "sha256": "405910d7b4bf58d5743e2779a526236e9aa8ab6453e570916b9a1f67d0aaa2aa"
+    },
+    {
+      "path": "R/platform-library.R",
+      "bytes": 19290,
+      "sha256": "a93d9ffea6d0b22ffab5015807c5ab44ddb113bb5136830551950e44bb187416"
+    },
+    {
+      "path": "R/platform-guidance-views.R",
+      "bytes": 28082,
+      "sha256": "da1ad772937a70fd5b2b3ee3c1b95a58412b38722b9a6958be5bd1a0cf2124c1"
+    },
+    {
+      "path": "R/study.R",
+      "bytes": 5348,
+      "sha256": "73f1375ff7a9ae264d6013ac8c64c8f92c94b8183282648800040c9ccc0cc2b2"
+    },
+    {
+      "path": "R/protocol.R",
+      "bytes": 7137,
+      "sha256": "e20c000f3771799a4d48d134f1462d5e5f722964d879c5378e355b211052177d"
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "bytes": 9886,
+      "sha256": "9d8868902c9481d891aad3b8897011848a111fd797f416e1b0b7fd118687ed4d"
+    },
+    {
+      "path": "docs/methods/ACADEMIC-EVIDENCE-CONTRACT.md",
+      "bytes": 8065,
+      "sha256": "ea85b00333513847ca0d63465fd216413b38a560371c81295b5105af168022b0"
+    },
+    {
+      "path": "R/platform-views.R",
+      "bytes": 22175,
+      "sha256": "8e18131dfe1162b7670e086a2d158971bb37bd0ae771358078fb7ecec33f7a34"
+    },
+    {
+      "path": "R/platform-signal-views.R",
+      "bytes": 30239,
+      "sha256": "a5fcebd75aac761f6b17c701e5765fc5480331eae5b11fad82e498ab35dd182b"
+    },
+    {
+      "path": "R/platform-cardiac-review-views.R",
+      "bytes": 30382,
+      "sha256": "44455c566ed7642224cf55c9b084751e749bf24aece1e2741c9c0e7b20ea58d3"
+    },
+    {
+      "path": "R/platform-eda-continuous-review-views.R",
+      "bytes": 34525,
+      "sha256": "7801cf009bd6d334c58fcdd634fbf56945d035cfa0d32bb4177b4377bf34c31b"
+    },
+    {
+      "path": "R/platform-facial-expression-views.R",
+      "bytes": 8915,
+      "sha256": "0344f5f15fd19f5b7d17db4dbb9aa04e12b759db824876dc6028d4f1c2fa7192"
+    },
+    {
+      "path": "R/platform-report-package-tasks.R",
+      "bytes": 53283,
+      "sha256": "2b65321410116ecb9482acbc03513762557f053c68b04949f165024389edead4"
+    },
+    {
+      "path": "R/platform-eda-continuous-review.R",
+      "bytes": 37678,
+      "sha256": "b841d3020e0fe15969f4e22631ff62be43fda8143dd246baf0da04e4627bbd00"
+    },
+    {
+      "path": "R/platform-eda-events-views.R",
+      "bytes": 11803,
+      "sha256": "c43c993ab24d6d331e9d445e8927243852a09b364cef0210a9f9dc82720ce448"
+    }
+  ],
+  "initial_code_conservation": [
+    {
+      "path": "R/platform-analysis-plan.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-analysis.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-aoi.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-camera-analysis.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-eda-events.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-facial-expression.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-gaze.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-gnat.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-maxdiff.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-methods.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-multimodal.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-neural.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-peripheral-synthesis.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-peripheral.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-scales.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-sciat-window.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-signal.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-task-cohort.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-task-import.R",
+      "unchanged": true
+    },
+    {
+      "path": "R/platform-vision.R",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/audio_extract.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/audio_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/cardiac_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_affine.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_events.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_events_worker.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_plot.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_plot_worker.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_preview.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_preview_worker.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_source.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_window.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/clock_window_worker.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/eda_continuous_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/eda_display.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/eda_events.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/eda_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/emg_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/facial_expression.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/facial_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/gaze_trace.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/headers.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/ingestion_snapshot.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/interchange.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/linked_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/media_pixels.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/media_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/neural.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/peripheral.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/physiology.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/physiology_artifacts.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/publication.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/report_package_archive.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/report_package_eda.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/report_package_raster.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/respiration_review.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/signal_preview.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/signal_values.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/signal_windows.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/stream_extract.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/validate_clock_preview_math.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/vision.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/vision_explorer.py",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/workers/vision_frame.py",
+      "unchanged": true
+    }
+  ],
+  "scope": "Read-only discovery and citation research only; no stores opened or R/native jobs run."
+}

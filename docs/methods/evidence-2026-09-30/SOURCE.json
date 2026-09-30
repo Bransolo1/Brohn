@@ -1,0 +1,73 @@
+{
+  "schema": "brohn-portable-academic-audit/0.1",
+  "date": "2026-09-30",
+  "status": "bounded_audit_not_scientific_qualification",
+  "original_packet_manifests": {
+    "measurement": "a019e03eb8397d43a9f6dca6ca5925ffbc80d24b767246b9742b759cbbddb0ba",
+    "study_design": "17bb89e429fabdd05f495a30a8913a6f806891e6e4934bc5ca0c235a552a936b"
+  },
+  "files": [
+    {
+      "path": "OPTION-INVENTORY.md",
+      "bytes": 16271,
+      "sha256": "89743cd8b3f3a1b0276cad54ddf8ae815a7790a452be2994958667cf95a871da"
+    },
+    {
+      "path": "EVIDENCE-MATRIX.md",
+      "bytes": 20076,
+      "sha256": "93283897bf66688efb8b7a1f23c622b6683a32a8676b116473645f9d0c4c7a5b"
+    },
+    {
+      "path": "EVIDENCE-MATRIX.json",
+      "bytes": 38453,
+      "sha256": "4cf260e719ac6743fd169b246d1598ec649a32b455d319773b30a0cad677c383"
+    },
+    {
+      "path": "ACTIONABLE-DEPARTURES.md",
+      "bytes": 14383,
+      "sha256": "6f0b4b4060d0470ac3b702c69e9eedb2f1ca973d24e9f0eb781c692160b2bba0"
+    },
+    {
+      "path": "REGISTRY-RECOMMENDATION.md",
+      "bytes": 7066,
+      "sha256": "973f851ff42701fda5f7905acb2a6fb57de7d294058920a4548bb86e9fb75a5e"
+    },
+    {
+      "path": "INVENTORY.json",
+      "bytes": 182743,
+      "sha256": "f1e4ef4d4d82d85dbe36fbd889fcf01659accace7f14fc051c09b371384b26e5"
+    },
+    {
+      "path": "SOURCE-SUPPLEMENT.json",
+      "bytes": 8600,
+      "sha256": "69885bb5da03fe038df0b5f07d47dbd8168739e1dd6e470dc3fcd3a11d5ae2fc"
+    },
+    {
+      "path": "study-design/EVIDENCE.md",
+      "bytes": 12452,
+      "sha256": "f437dfb0c6fc4b19ecc65e58140cd263b0c54d8d3f335233c6de26110766fcd3"
+    },
+    {
+      "path": "study-design/BIBLIOGRAPHY.md",
+      "bytes": 11124,
+      "sha256": "e551c3742bcbc6c9d60a5548b7657699ddf4385e3e0c50d0a95232231daa192a"
+    },
+    {
+      "path": "study-design/REGISTRY.json",
+      "bytes": 39673,
+      "sha256": "e2aa1f4af64cbaf0eb471512d2772db32618a1635b23d2310aecd804d4c31252"
+    },
+    {
+      "path": "study-design/TEMPLATE-PREFLIGHT.md",
+      "bytes": 7948,
+      "sha256": "3b97cde4622d11e0bd4b655a2d717b3da8d2dbf73ae170e0413ca5d2454f9d52"
+    },
+    {
+      "path": "study-design/SOURCE.json",
+      "bytes": 1970,
+      "sha256": "9df7c051c8ca3500bc55dc6f95892796bc8ebdd6cd51657946aa24e4876206e5",
+      "original_sha256": "78d99069250727aac80a473cf8c48dc95e7c690b956f00521c055a0f00b7c53d",
+      "transformation": "Machine-specific production_root replaced with repository-relative dot; source fingerprints unchanged."
+    }
+  ]
+}

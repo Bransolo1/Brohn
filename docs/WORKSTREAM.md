@@ -9,6 +9,13 @@ design preflight and frozen methods/bibliography export. Initial inventory lives
 in `work/consumer-methods-evidence-20260930`. Existing single-link profiles and
 dispersed method documents do not establish completed option-level coverage.
 No recipe/result or package status changes solely from this requirement.
+The [portable audit](methods/evidence-2026-09-30/README.md) is now in the repository:
+30 bounded option rows, 24 families, 57 screened starting links, a separate
+32-source design bibliography, ten remediation topics and five proposed design
+profiles. Full-text option/applicability review and runtime integration remain
+open. Prioritise EDA response criteria, exact keyboard AAT procedure, NN versus
+detected RR/PRV, EEG/pupil support, sensor/model transfer and starter design
+assumptions. Version changed calculations; preserve historical evidence.
 
 **Scope reminder, 30 September 2026:** HRV and skin temperature are required
 through the complete researcher journey. The [implementation inventory](research/HRV-SKIN-TEMPERATURE.md)

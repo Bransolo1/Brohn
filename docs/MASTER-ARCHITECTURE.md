@@ -17,6 +17,15 @@ saved recipes/results or count component tests as scientific validation. The
 registry, option coverage and connected UI/export acceptance are active work;
 this section records the requirement, not completed academic qualification.
 
+The [30 September audit](methods/evidence-2026-09-30/README.md) now makes this work
+concrete: actual option/default inventory, measurement and design references,
+ten remediation topics and five proposed conditional design profiles. Use exact
+method/context evidence rather than universal baseline, threshold or sample-size
+presets. Cyclic order rotation is not general carryover balancing; software
+admission bounds are not scientific recommendations; current detected ECG
+intervals remain distinct from qualified NN-HRV. These gaps guide new versioned
+recipes and understandable preflight, without rewriting previous studies.
+
 ## HRV and skin temperature are required end-to-end paths — 30 September 2026
 
 The owner explicitly requires **HRV and skin temperature across the full

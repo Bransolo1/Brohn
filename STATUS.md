@@ -4,9 +4,13 @@ New owner requirement, 30 September: **multiple academic sources for every
 analytical approach/option and best-practice study design**, covering contemporary
 implicit consumer research across all measures. Read the
 [academic evidence contract](docs/methods/ACADEMIC-EVIDENCE-CONTRACT.md).
-Option-level evidence inventory, registry and connected guidance/export coverage
-are pending; no universal method-validation claim is made. Continue this work
-alongside the active cardiac report/source-performance integration.
+A [bounded code and literature audit](docs/methods/evidence-2026-09-30/README.md)
+now records 30 option-inventory rows, 24 measurement families, 57 screened starting
+links and a separate 32-source study-design bibliography. These overlapping
+collections do not complete option-level review. Ten concrete remediation topics
+and five proposed design profiles are documented. The runtime registry and
+connected guidance/export coverage remain active work; no universal validation
+claim is made. Continue alongside the saved cardiac report integration.
 
 The owner explicitly reiterated **HRV and skin temperature** on 30 September.
 Both remain required end-to-end paths. Read the

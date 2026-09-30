@@ -1,0 +1,55 @@
+{
+  "schema": "brohn-evidence-source-snapshot/1.0",
+  "review_date": "2026-09-30",
+  "production_root": ".",
+  "git_head": "3aeb27f942f0359e0e7941df1c8a031dff4a28fb",
+  "files": [
+    {
+      "path": "docs/methods/ACADEMIC-EVIDENCE-CONTRACT.md",
+      "bytes": 8065,
+      "sha256": "ea85b00333513847ca0d63465fd216413b38a560371c81295b5105af168022b0"
+    },
+    {
+      "path": "R/platform-core.R",
+      "bytes": 33987,
+      "sha256": "405910d7b4bf58d5743e2779a526236e9aa8ab6453e570916b9a1f67d0aaa2aa"
+    },
+    {
+      "path": "R/platform-delivery.R",
+      "bytes": 58617,
+      "sha256": "af2ce4c39f8f501da0befe2986b58efa07ed85682f28a30fe511febce18d0c90"
+    },
+    {
+      "path": "R/platform-views.R",
+      "bytes": 22175,
+      "sha256": "8e18131dfe1162b7670e086a2d158971bb37bd0ae771358078fb7ecec33f7a34"
+    },
+    {
+      "path": "R/platform-analysis-plan.R",
+      "bytes": 11531,
+      "sha256": "59ada90fce203fcc8b3899bd614d332db2b1f6efa161c2c73774f2a3998a07ba"
+    },
+    {
+      "path": "R/platform-library.R",
+      "bytes": 19290,
+      "sha256": "a93d9ffea6d0b22ffab5015807c5ab44ddb113bb5136830551950e44bb187416"
+    },
+    {
+      "path": "docs/methods/CONTROL-DESIGN.md",
+      "bytes": 3718,
+      "sha256": "003d49abb05301539b703a0e1c64af7b5c5903e68bedd1840a3aabcc4e18cb66"
+    },
+    {
+      "path": "docs/preparation/PROTOCOL-TEMPLATES.md",
+      "bytes": 10448,
+      "sha256": "d8b4af6fd0f79c8d89c46442903f060808fe87209a2ef56fc04f45f6c5933d0f"
+    },
+    {
+      "path": "docs/MASTER-ARCHITECTURE.md",
+      "bytes": 75150,
+      "sha256": "d54b230ace2965aabaae46c3d11839ea1c0ffd882d0516364b2b075b1e14e8bd"
+    }
+  ],
+  "scope": "Read-only targeted source inspection, no complete implementation or device qualification.",
+  "source_access": "Primary publisher, author repository and NLM records; supporting text scope recorded per source. No copyrighted full texts copied into packet."
+}
