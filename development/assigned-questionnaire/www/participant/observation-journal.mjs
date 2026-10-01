@@ -49,6 +49,33 @@ function observationValue(value, binding, sending = false) {
   }
   return value;
 }
+// A synchronous closed-field/clock check and the request encoder's synchronous
+// byte snapshot run before its first digest await. This returns a digest promise,
+// not an admission token. Public journal writers always check their own inputs.
+export function captureParticipantObservation(observation, viewHash) {
+  const data = (value, names, label) => {
+    require(value !== null && typeof value === 'object' && !Array.isArray(value) &&
+      [Object.prototype, null].includes(Object.getPrototypeOf(value)), 'journal_shape', `${label} must be plain.`);
+    const keys = Reflect.ownKeys(value);
+    require(keys.length === names.length && keys.every(k => typeof k === 'string' && names.includes(k)),
+      'journal_shape', `${label} has unsupported fields.`);
+    const copy = {};
+    for (const name of keys) {
+      const d = Object.getOwnPropertyDescriptor(value, name);
+      require(d && d.enumerable && Object.hasOwn(d, 'value'), 'journal_shape', `${label} fields must be data properties.`);
+      Object.defineProperty(copy, name, {value: d.value, enumerable: true});
+    }
+    return copy;
+  };
+  require(hash(viewHash), 'journal_binding', 'Keep the exact assigned view hash.');
+  const o = data(observation, ['view_hash', 'event'], 'Observed event');
+  const e = data(o.event, ['id', 'type', 'step_key', 'phase', 'clock', 'payload'], 'Public event');
+  const c = data(e.clock, ['id', 'unit', 'value', 'instance_id', 'time_origin_ms'], 'Observed page clock');
+  const captured = {...o, event: {...e, clock: c}};
+  observationValue(captured, {view_hash: viewHash}, true);
+  return encodeParticipantRequest(captured);
+}
+
 function storedObservation(row) {
   fields(row, ['run_id', 'sequence', 'event_id', 'codec', 'json', 'bytes', 'sha256'], 'Saved observation');
   require(typeof row.json === 'string' && row.json.length <= 4 * 1024 * 1024 && integer(row.bytes, 1, 4 * 1024 * 1024) &&
@@ -402,6 +429,36 @@ export async function openParticipantJournal({binding: supplied, baselineSequenc
     needsCurrentRefresh = true; return settled;
   }
 
+  function writeObservation(preparation, storageOnly) {
+  return queue(async () => {
+        const prepared = await preparation; if (prepared.error) throw prepared.error;
+        const encoded = prepared.value, value = observationValue(JSON.parse(encoded.json), binding, true);
+        return transact(db, 'readwrite', ({runs, events, guard, done}) => {
+          const get = runs.get(runId);
+          get.onsuccess = guard(() => {
+            const meta = inspect(get.result);
+            if (!storageOnly) require(!reconciliation(meta), 'journal_reconcile', 'Reconcile the server confirmation with saved progress before collecting another answer.');
+            const prior = events.index('event_id').get([runId, value.event.id]);
+            prior.onsuccess = guard(() => {
+              const old = prior.result;
+              if (old) {
+                storedObservation(old);
+                require(old.run_id === runId && old.event_id === value.event.id && integer(old.sequence, meta.baseline_sequence + 1, meta.next_sequence - 1) &&
+                  old.json === encoded.json && old.sha256 === encoded.sha256 && old.bytes === encoded.bytes && old.codec === encoded.codec,
+                  'journal_event_conflict', 'This event identity already belongs to different saved evidence.');
+                done({sequence: old.sequence, repeated: true}); return;
+              }
+              require(meta.next_sequence <= LIMIT, 'journal_sequence_limit', 'This study reached its supported event count. Saved responses are retained.');
+              const sequence = meta.next_sequence;
+              events.add({run_id: runId, sequence, event_id: value.event.id, ...encoded});
+              runs.put({...meta, next_sequence: sequence + 1});
+              done({sequence, repeated: false});
+            });
+          });
+        });
+      });
+  }
+
   return Object.freeze({
     prepareOperation(id) {return queue(() => prepareOperation(id));},
     operation(id) {
@@ -433,36 +490,17 @@ export async function openParticipantJournal({binding: supplied, baselineSequenc
     },
     append(observation) {
       require(accepting, 'journal_closed', 'This saved-progress handle is closed.');
-      // Capture now, enqueue now. Waiting for WebCrypto before enqueuing would
-      // allow a later observation's faster digest to steal an earlier sequence.
+      // Preserve the existing strict append admission and immediate queue order.
       const preparation = encodeParticipantRequest(observation).then(value => ({value}), error => ({error}));
-      return queue(async () => {
-        const prepared = await preparation; if (prepared.error) throw prepared.error;
-        const encoded = prepared.value, value = observationValue(JSON.parse(encoded.json), binding, true);
-        return transact(db, 'readwrite', ({runs, events, guard, done}) => {
-          const get = runs.get(runId);
-          get.onsuccess = guard(() => {
-            const meta = inspect(get.result);
-            require(!reconciliation(meta), 'journal_reconcile', 'Reconcile the server confirmation with saved progress before collecting another answer.');
-            const prior = events.index('event_id').get([runId, value.event.id]);
-            prior.onsuccess = guard(() => {
-              const old = prior.result;
-              if (old) {
-                storedObservation(old);
-                require(old.run_id === runId && old.event_id === value.event.id && integer(old.sequence, meta.baseline_sequence + 1, meta.next_sequence - 1) &&
-                  old.json === encoded.json && old.sha256 === encoded.sha256 && old.bytes === encoded.bytes && old.codec === encoded.codec,
-                  'journal_event_conflict', 'This event identity already belongs to different saved evidence.');
-                done({sequence: old.sequence, repeated: true}); return;
-              }
-              require(meta.next_sequence <= LIMIT, 'journal_sequence_limit', 'This study reached its supported event count. Saved responses are retained.');
-              const sequence = meta.next_sequence;
-              events.add({run_id: runId, sequence, event_id: value.event.id, ...encoded});
-              runs.put({...meta, next_sequence: sequence + 1});
-              done({sequence, repeated: false});
-            });
-          });
-        });
-      });
+      return writeObservation(preparation, false);
+    },
+    retainObservation(observation) {
+      require(accepting, 'journal_closed', 'This saved-progress handle is closed.');
+      // Storage only: do not clear the latch, modify ACK, create an operation,
+      // or infer permission to collect/edit from a previously rendered model.
+      const preparation = captureParticipantObservation(observation, binding.view_hash)
+        .then(value => ({value}), error => ({error}));
+      return writeObservation(preparation, true);
     },
     status() {
       return queue(() => transact(db, 'readonly', ({runs, guard, done}) => {

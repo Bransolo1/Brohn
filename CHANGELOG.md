@@ -1,5 +1,15 @@
 # Changes
 
+## Ordered observation retention — 2026-10-02
+
+- Replaced the two inactive browser source snapshots with qualified journal and
+  sender successors.124 Chrome and22 syntax checks pass across two phases.
+- Added local storage ordering independent of HTTP, exact process-local retry
+  handles and separate unresolved-save versus postcommit diagnostic state.
+- Qualified actual camera writer fences with22 direct/25 wrapper checks.
+- Preserved the actual1.2 researcher-resolution failure and recorded its explicit
+  source-bound correction path. No participant profile or new analysis activated.
+
 ## Assigned response recovery and session reuse — 2026-10-02
 
 - Added the inactive sender, literal current reader/helpers and server context

@@ -43,7 +43,7 @@
       "bytes": 6249,
       "sha256": "58a864690a0f099a5f71e652364e4dc19cf7071d1eb67bbbd524312321aaba61",
       "local_source": "work/participant-view-camera-next-20261002/R/platform-participant-view-camera.R",
-      "scope": "Camera1.0 direct45/25 and named1.1 direct35/25 case/wrapper checks pass; terminal/fence phases and actual HTTP/worker/physical capture remain open"
+      "scope": "Camera1.0 direct45/25, named1.1 direct35/25 and writer fences22/25 pass. Actual terminal researcher1.2 resolution fails in legacy context; explicit adapter pending. HTTP/worker/physical capture remain open."
     },
     {
       "path": "R/platform-participant-view-resource.R",
@@ -68,10 +68,10 @@
     },
     {
       "path": "www/participant/observation-journal.mjs",
-      "bytes": 33431,
-      "sha256": "e2223e7b4f09b18e70a389a1fc3b6e11a38b5bfe9ef392870c1dbb951389854c",
-      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/observation-journal.mjs",
-      "scope": "Separate39 compatibility/118 operation/90 joined screen checks and21 raw-row equalities pass; full participant controller and real HTTP qualification remain open"
+      "bytes": 35589,
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356",
+      "local_source": "work/participant-observation-retain-next-20261002/www/participant/observation-journal.mjs",
+      "scope": "New storage-only retain boundary; original85 sender controls and39 focused retain controls pass on these bytes. Earlier standalone journal/component receipts retain their original versions; no full application bootstrap/controller claim."
     },
     {
       "path": "www/participant/operation-result.mjs",
@@ -124,10 +124,10 @@
     },
     {
       "path": "www/participant/operation-sender.mjs",
-      "bytes": 12068,
-      "sha256": "f869025a4e66047dd94355cd9d97d393de1d605b11b7026b310fe397d71e82a2",
-      "local_source": "work/participant-operation-sender-next-20261002/www/participant/operation-sender.mjs",
-      "scope": "85 real Chrome recovery checks and10 syntax pass against synthetic Node authority; ordered writes during in-flight synchronization and actual R/controller remain open"
+      "bytes": 17698,
+      "sha256": "1f297a8851bf0dbecaa88fce82e596216a68906b2673f1b95f7ef9c0f82f82cd",
+      "local_source": "work/participant-operation-sender-retain-next-20261002/www/participant/operation-sender.mjs",
+      "scope": "124 actual Chrome controls and22 repeated syntax checks across compatibility/retention phases; native IDB/network/WebLock tests use synthetic Node authority. Exact process-local retry captures, independent unresolved writes and ordered storage during HTTP; actual R/full controller remain open."
     },
     {
       "path": "www/participant/current-session.mjs",

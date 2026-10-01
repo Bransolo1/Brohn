@@ -1,10 +1,17 @@
 # Brohn workstream and restart checklist
 
-**Latest recovery integration:** 20 exact inactive source files and 48 indexed
+**Ordered-save successor:**124 Chrome controls (85 preserved sender plus39
+focused retention) and22 syntax checks pass in two independently closed phases.
+Next browser work is public-key questionnaire actions and durable drafts, followed
+by original start/restart bootstrap and actual R HTTP/controller integration.
+Preserve camera-terminals04's real researcher1.2 resolution failure; qualify the
+explicit original-source recovery adapter before camera/finish resolution claims.
+
+**Latest recovery integration:** 20 exact inactive source files and 52 indexed
 local evidence entries include sender 85 Chrome/10 syntax, all six pool phases
 (97 case/120 wrapper), camera 1.0 (45 direct/25 wrapper) and assigned resources
 (36 direct/25 wrapper). Named camera 1.1 also passes 35 direct/25 wrapper checks.
-Other camera phases, actual R HTTP and researcher
+Camera writer fences also pass22 direct/25 wrapper. Terminal resolution, actual R HTTP and researcher
 journeys remain open. Retained warm 0.34s does not resolve cold 29.37s or first start.
 
 Next connected work: finish the durable ordered-write boundary and draft store,

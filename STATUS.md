@@ -1,5 +1,16 @@
 # Resume here — Brohn
 
+Latest ordered-save checkpoint: the inactive sender and journal successors pass
+124 actual Chrome controls (85 compatibility plus39 focused retention), with22
+syntax checks across two phases. Observations can commit locally while HTTP is
+pending; exact failed captures retain separate retry handles and unresolved state.
+Those handles are process-local until storage commits. Full application bootstrap,
+durable drafts, actual R/controller integration and dashboard authoring remain.
+
+A real integration failure is retained: protocol1.2 researcher resolution still
+uses a legacy revision validator. An explicit original-source adapter is being
+built; camera/finish resolution order must be qualified through actual decisions.
+
 Latest recovery checkpoint: 20 exact inactive source/dependency files now include
 the real-fetch sender and bounded server context pool. Actual Chrome recovery
 passes 85 controls against a synthetic Node server. All six pool phases pass with
@@ -12,7 +23,7 @@ A new local finalization successor moves replay outside the writer; its direct
 checks remain. Protocol 1.2 analysis
 needs an explicit historical reader/scorer/worker path and later export support.
 Named camera policy 1.1 now passes 35 direct/25 wrapper checks after its separate
-fixture correction. Terminal/fence checks, cold start and full researcher UX stay open.
+fixture correction. Writer fences pass22 direct/25 wrapper checks. Terminal researcher resolution, cold start and full researcher UX stay open.
 
 2 October integration: the [assigned questionnaire collection/recovery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 now records immutable presentation/source binding, ordered submission timing,

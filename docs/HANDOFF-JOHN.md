@@ -1,5 +1,13 @@
 # John: Brohn development handoff
 
+Latest local integration: ordered observation retention passes124 Chrome controls
+against synthetic Node authority; the two exact browser successors are included
+in the development snapshot. A failed capture's retry handle survives only in the
+current process; actual IDB commit is the durability boundary. Durable drafts,
+original application bootstrap and the complete R/controller join remain open.
+Protocol1.2 researcher resolution failed in its legacy revision-context reader;
+the separate explicit source adapter and actual receipt-order checks are pending.
+
 2 October: the [assigned-questionnaire integration contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 explains the active collection/recovery work, its separate local component
 evidence and remaining integration/latency gates. The released application has
@@ -19,7 +27,7 @@ have static review only. Keep original design1.2 revision context during finish;
 large finalization replay and downstream analysis-worker acceptance remain open.
 Camera 1.0 direct collection now passes 45 controls; its original fixture failures
 remain preserved. Named policy 1.1 now passes 35 direct/25 wrapper checks after
-its separate numeric fixture correction; terminal/fence integration remains.
+its separate numeric fixture correction; writer fences additionally pass22 direct/25 wrapper, while terminal researcher resolution remains open.
 The actual browser sender passes 85 recovery checks against synthetic authority;
 this is not yet real R HTTP/controller acceptance. The context-pool response comparisons pass;
 the complete retained response measured 29.37s cold and 0.34s warm. All six pool

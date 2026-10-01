@@ -2,7 +2,7 @@
 
 ## Recovery checkpoint — 2 October 2026
 
-Actual Chrome sender recovery now passes 85 controls against synthetic Node
+Actual Chrome sender recovery/retention now passes124 controls against synthetic Node
 authority; it preserves pending operation bytes through lost replies and restart,
 then refreshes CURRENT before enabling collection. This does not qualify actual
 R HTTP or the questionnaire controller. Browser-internal retransmissions can
@@ -13,8 +13,17 @@ The retained diagnostic was29.37s cold,31.50s first pooled admission and0.34s wa
 All six direct pool phases now pass, including access, mutation, lifetime and
 accounting (97 case/120 wrapper checks). Use by actual coordinators remains a
 separate gate. Assigned PNG resource tests also pass 36 direct checks, while
-HTTP/disconnect/range behavior and cold-resource latency remain unqualified. The sender's in-flight append restriction still needs an explicit
-storage-only observed-event boundary plus a durable draft store.
+HTTP/disconnect/range behavior and cold-resource latency remain unqualified.
+The explicit storage-only observation boundary now passes39 focused controls,
+alongside all85 sender compatibility controls. Its short local storage queue is
+independent of HTTP; exact failed captures have process-local retry handles and
+independent unresolved state. It grants no model/edit/send permission. A durable
+draft store, original bootstrap and actual controller integration remain open.
+Actual camera writer fences pass22 direct/25 wrapper checks. The terminal journey
+exposed a legacy1.2 researcher-review incompatibility; an explicit original-source
+adapter is pending. Startup coordinator qualification first stopped on a misspelled
+harness observer, before any direct check; its separate correction retains that
+failure and does not change runtime bytes.
 
 The new local finish successor prepares full replay and original camera support
 before the writer, with unchanged-source/schema/change-counter fences. It is
@@ -32,7 +41,7 @@ every listed ordinary stimulus. This document does not claim assigned delivery,
 Qualtrics parity or completion of the wider platform.
 
 The [development snapshot](../../development/assigned-questionnaire/README.md)
-now retains16 exact implementation/dependency files with individual identities
+now retains20 exact implementation/dependency files with individual identities
 and scopes. The complete source overlays, fixtures and joined deployment still
 need portable promotion. Do not wire these partial modules into the legacy
 renderer or treat the snapshot as a runnable new participant profile.

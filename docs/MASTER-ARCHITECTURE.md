@@ -19,7 +19,7 @@ The [development source snapshot](../development/assigned-questionnaire/README.m
 contains the current transport/storage implementation for inspection. Its
 manifest distinguishes separately qualified components from remaining media and
 controller joins; it is not registered or a standalone application. Actual browser
-recovery (85 checks), all six pool phases, camera 1.0 (45 direct checks) and
+recovery/ordered retention (124 checks), all six pool phases, camera 1.0 (45 direct checks) and
 assigned PNG resource checks (36) now pass locally.
 The warm retained pool read measured 0.34s, but 29.37s cold remains too slow.
 The API-only router now has50 passing header/route checks, while new opening and
@@ -31,6 +31,13 @@ compiler. Qualify outside-writer replay and original camera support before
 promising good concurrency. Preserve the new local successor's distinction
 between streamed main replay and aggregate camera history outside the writer.
 Server startup must admit the complete receiving schema before any request.
+Storage-only observations may commit during network synchronization; this does
+not authorize a new questionnaire action. Failed captures retain exact
+process-local retry handles and separate unresolved status. Full application
+bootstrap and durable draft/context integration still need their own evidence.
+Actual researcher resolution of1.2 currently fails at its legacy revision reader;
+use an explicit original-source adapter with genuine immutable decisions and
+preserve the participant's original evidence. Resolved-run analysis is separate.
 
 The original analysis worker currently rejects protocol1.2 and constructs legacy
 revision contexts. Its MaxDiff path also regenerates offered sets, and two task

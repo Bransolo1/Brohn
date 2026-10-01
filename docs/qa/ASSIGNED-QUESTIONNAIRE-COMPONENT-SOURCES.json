@@ -552,6 +552,62 @@
         "sha256": "1f5f2e6041da6ba16b4bbb554fde5d0ed087a4612b418130db99ff47912d9162"
       },
       "scope": "35 direct/25 wrapper on actual named policy1.1 consent/private-policy and original receipts/objects/queue; earlier numeric fixture failure retained, terminal/fence/HTTP/worker/physical scopes separate"
+    },
+    {
+      "name": "ordered_observation_retention",
+      "acceptance": {
+        "path": "work/participant-observation-retain-qa-20261002/ACCEPTANCE.json",
+        "bytes": 5878,
+        "sha256": "20b11fbcdf11231d701e4aba8d86e54947b080ce6fb2aca9fb313faf90b71868"
+      },
+      "static_review": {
+        "path": "work/participant-observation-retain-review-20261002/RETRY-REVIEW.json",
+        "bytes": 1825,
+        "sha256": "c3e148f26acb5e33efa5c1f6060cf70fc2fbf38493b6cbbf083185b379001740"
+      },
+      "scope": "124 real Chrome assertions (85 original plus39 focused),22 syntax; synthetic server. Exact commit/retry/unresolved-write behavior, no real R authority or application bootstrap. Both phases naturally closed."
+    },
+    {
+      "name": "camera_terminal04_resolution_failure",
+      "failure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera-terminals-04/FAILURE.json",
+        "bytes": 2405,
+        "sha256": "b60e50a0376d7b74c4039b9b09470680bdbb710968ab9efde45c72b92aab26d7"
+      },
+      "closure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera-terminals-04/AFTER-CLOSED.json",
+        "bytes": 2761,
+        "sha256": "d033fad28b8f479fddde22c45e2a4a4dfe73c777a61c2caa3b5fb18f6e603f80"
+      },
+      "scope": "Actual original1.2 researcher resolution reached legacy revision validator and failed after9 case/22 wrapper checks. No fake decision rows; separate explicit variant-source recovery adapter in progress."
+    },
+    {
+      "name": "assigned_camera_writer_fences03",
+      "acceptance": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera-fences-03/ACCEPTANCE.json",
+        "bytes": 2128,
+        "sha256": "c7d74f76af73e390c523aad6f0af413801d9a482ab7efdc139545369a56b9cb8"
+      },
+      "closure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera-fences-03/AFTER-CLOSED.json",
+        "bytes": 2493,
+        "sha256": "2c430e9bfa0725cff3b012b00376a5a4228d5775e2d529aa3532e1a198f21b66"
+      },
+      "scope": "22 direct/25 wrapper. Actual peer credential/source/progress changes refuse before writing; restored genuine start/interrupted finish succeeds. No job, HTTP, worker or physical camera claim."
+    },
+    {
+      "name": "entry_finish_startup01_observer_failure",
+      "failure": {
+        "path": "work/participant-view-entry-finish-qa-20261002/startup-01/FAILURE.json",
+        "bytes": 2285,
+        "sha256": "860eb3d82c03db060e3f822b7d9fdfd80f42453e6c2329eb011ab094e133bac9"
+      },
+      "closure": {
+        "path": "work/participant-view-entry-finish-qa-20261002/startup-01/AFTER-CLOSED.json",
+        "bytes": 2705,
+        "sha256": "e996034f49e1cc9f10dc09bd13f4d75f637726d6c6514fbc4d5f369eda7d1a6c"
+      },
+      "scope": "Harness misspelled original camera completion function in preservation observer;0 direct/25 wrapper. No startup runtime defect established. Exact failed packet retained; observer-only successor is separate."
     }
   ],
   "root_visual": {
@@ -567,8 +623,9 @@
   "remaining": [
     "Actual separate-writer first-start contention",
     "Genuine large questionnaire collection and current recovery with response-page reduction",
-    "Actual R HTTP/journal/controller join, ordered writes during synchronization and durable drafts",
+    "Actual R HTTP/journal/controller join, durable drafts and complete application start/restart bootstrap",
     "Assigned resources/equipment/finalization and protocol1.2 analysis/export integration",
+    "Original1.2 researcher resolution and camera/finish historical receipt ordering",
     "Full researcher journey and cold/warm latency qualification",
     "QF02-QF08 complete flow, guided analysis and editable dashboards"
   ],
