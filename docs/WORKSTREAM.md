@@ -1,5 +1,15 @@
 # Brohn workstream and restart checklist
 
+**Latest API integration:** reviewed entry/welcome and finalization adapters plus
+an API-only router are now in the inactive development snapshot. Router header
+checks pass50. Qualify actual coordinator/HTTP behavior next, preserve the exact
+assigned revision context at finish, and move full-history replay outside the
+writer with equivalent source/commit fencing. The original downstream worker
+must support actual1.2 protocols before rollout. Browser network recovery and
+bounded context reuse are in separate qualification. Camera/resource fixture01
+failed before release/start on the wrong design validator; preserve it and use
+the explicit variant-validator successor. Production registration stays disabled.
+
 **2 October integration:** follow the [assigned questionnaire delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 for the current QF01/EF02–EF03 collection work. Complete atomic start/current
 authority, real component-to-R timing replay, browser durability, received/derived
@@ -33,7 +43,7 @@ Start/current now passes its five focused cases using one owned admission.
 The operation journal also passes90 question-screen controls and21 exact prior
 observation comparisons. Complete actual HTTP/controller and camera/resource/
 finalization integration next; do not rerun unchanged component suites merely
-to increase counts. All31 local evidence entries retain their individual scope.
+to increase counts. All35 local evidence entries retain their individual scope.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

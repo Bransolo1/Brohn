@@ -8,10 +8,19 @@ every listed ordinary stimulus. This document does not claim assigned delivery,
 Qualtrics parity or completion of the wider platform.
 
 The [development snapshot](../../development/assigned-questionnaire/README.md)
-now retains13 exact implementation/dependency files with individual identities
+now retains16 exact implementation/dependency files with individual identities
 and scopes. The complete source overlays, fixtures and joined deployment still
 need portable promotion. Do not wire these partial modules into the legacy
 renderer or treat the snapshot as a runnable new participant profile.
+
+The inactive API now connects entry/welcome, start/current, events, questionnaire
+paging, assigned media, camera and finish coordinators. Its 50 header/route checks
+pass; actual TCP and coordinator journeys remain. Opening content exposes no
+experimental resource registry. Finish explicitly supplies the admitted design1.2
+revision context to original replay. Its remaining whole-history writer replay
+and downstream1.2 analysis-worker support must be qualified before activation.
+The browser sender and bounded server-context reuse are being tested separately;
+neither changes source authority or enables the new delivery profile.
 
 ## What the researcher and participant should experience
 

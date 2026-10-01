@@ -379,6 +379,57 @@
         "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6"
       },
       "scope": "Five small-source cases,96 actual/34 wrapper controls; one owned admission, original current equality, lost replies, actual peer/source changes and closed handles. No HTTP or large collected journey."
+    },
+    {
+      "name": "assigned_entry_integration",
+      "source": {
+        "path": "work/participant-view-entry-next-20261002/R/platform-participant-view-entry.R",
+        "bytes": 4487,
+        "sha256": "97a8716ca0691ea2edd0a33d5208f21480cc53575fb4f207d7cbf8ce648608bc"
+      },
+      "scope": "Static review and source syntax only; actual entry/welcome coordinator and HTTP ownership tests remain"
+    },
+    {
+      "name": "assigned_finish_integration",
+      "source": {
+        "path": "work/participant-view-finish-next-20261002/R/platform-participant-view-finish.R",
+        "bytes": 4544,
+        "sha256": "bd61cf3df81e06b563d3240074e6e5956a49018366a501b25075b57fd17e0786"
+      },
+      "scope": "Static review and source syntax only; real finalization, streamed replay and downstream design1.2 worker acceptance remain"
+    },
+    {
+      "name": "assigned_router_integration",
+      "source": {
+        "path": "work/participant-view-router-next-20261002/R/platform-participant-view-router.R",
+        "bytes": 6348,
+        "sha256": "5628762828ab0a6caf33a99e733414b236f4f562246f6d94dd5154485cd9709d"
+      },
+      "scope": "50 header/route checks passed; API-only, no actual TCP/coordinator/store/browser journey",
+      "acceptance": {
+        "path": "work/participant-view-router-qa-20261002/headers-01/ACCEPTANCE.json",
+        "bytes": 1253,
+        "sha256": "220f0ab85d687e295a5883b70bd5fa0e0eead9df6377a3f312d537d53d3d53b9"
+      },
+      "review": {
+        "path": "work/participant-view-router-review-20261002/MANIFEST.json",
+        "bytes": 1101,
+        "sha256": "6ee551523034bc8ea25a436b64cdb8394489b6a43be59e1236c97362410df8c6"
+      }
+    },
+    {
+      "name": "camera_resource_fixture01_failure",
+      "failure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera10-01/FAILURE.json",
+        "bytes": 2389,
+        "sha256": "45e8de4a7267d7c8f0c6f9c26be8965921b0891945041939948e00e72b97ed9a"
+      },
+      "closure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera10-01/AFTER-CLOSED.json",
+        "bytes": 2777,
+        "sha256": "6c741095ee4d1c03abebe980dc7a595f01478f1b4ba4c450bf7593f740b4f3e2"
+      },
+      "scope": "Fixture used legacy validator for explicit design1.2; stopped before release/start/camera operation. Original runtime unchanged; successor fixture required."
     }
   ],
   "root_visual": {

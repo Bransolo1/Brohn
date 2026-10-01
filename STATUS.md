@@ -1,5 +1,13 @@
 # Resume here — Brohn
 
+Latest local API work: entry/welcome and finish coordinators are independently
+reviewed, and the API-only router passes50 header/route checks. Sixteen exact
+implementation/dependency files are available in the development snapshot.
+Actual HTTP, coordinator execution, complete participant recovery and downstream
+analysis still need joined acceptance. The camera fixture's first attempt failed
+before release/start because it selected the legacy design validator; that failure
+is preserved while a separate fixture correction is prepared. No new profile is active.
+
 2 October integration: the [assigned questionnaire collection/recovery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 now records immutable presentation/source binding, ordered submission timing,
 exact-byte retries, browser/server durability and actual researcher QA gates.

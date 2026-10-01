@@ -93,6 +93,27 @@
       "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa",
       "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/wire-json.mjs",
       "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
+    },
+    {
+      "path": "R/platform-participant-view-entry.R",
+      "bytes": 4487,
+      "sha256": "97a8716ca0691ea2edd0a33d5208f21480cc53575fb4f207d7cbf8ce648608bc",
+      "local_source": "work/participant-view-entry-next-20261002/R/platform-participant-view-entry.R",
+      "scope": "Static review and source syntax only; actual entry/welcome coordinator and HTTP ownership tests remain"
+    },
+    {
+      "path": "R/platform-participant-view-finish.R",
+      "bytes": 4544,
+      "sha256": "bd61cf3df81e06b563d3240074e6e5956a49018366a501b25075b57fd17e0786",
+      "local_source": "work/participant-view-finish-next-20261002/R/platform-participant-view-finish.R",
+      "scope": "Static review and source syntax only; real finalization, streamed replay and downstream design1.2 worker acceptance remain"
+    },
+    {
+      "path": "R/platform-participant-view-router.R",
+      "bytes": 6348,
+      "sha256": "5628762828ab0a6caf33a99e733414b236f4f562246f6d94dd5154485cd9709d",
+      "local_source": "work/participant-view-router-next-20261002/R/platform-participant-view-router.R",
+      "scope": "50 header/route checks passed; API-only, no actual TCP/coordinator/store/browser journey"
     }
   ]
 }

@@ -8,6 +8,8 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 
 | Component | Executed evidence | Scope still open |
 | --- | --- | --- |
+| Assigned API-only router | 50 route/header checks pass, including finite declared upload limits, transfer-encoding refusal, exact paths/token syntax, original origin and safe error responses. Source syntax includes entry and finish. Natural independent closure and all1533 source files conserved. | No actual TCP, proxy, coordinator, storage or browser journey in this phase. |
+| Entry/welcome and assigned finish | Independent static source review; both sources parse in the header phase. Finish now supplies the actual admitted1.2 revision context and a seven-value scalar envelope. | Direct coordinator execution, actual HTTP resource ownership and completed/withdrawn/interrupted jobs remain. Full-history writer replay and downstream1.2 worker compatibility are explicit activation gates. |
 | Native typed question controls, implementation09 | 744 rule goldens, 37 pure controls, 237 browser assertions and 34 zero-violation Axe scans across baseline, submission and invalid-text phases. All 16 current screenshots reviewed by the component owner; four recovery/completion screens also reviewed independently. | Screen-reader testing, full controller and final combined runtime. Automated accessibility scans are not complete accessibility qualification. |
 | Ordered submission bridge | 60 pure controls. Captures one answer, clock and event ID before waiting; preserves them through an ambiguous retry. | The callback's real storage and receiver behavior are separate dependencies. |
 | Actual question screen + bridge + shared order | Browser03: 43 assertions and three zero-violation Axe/overflow scans. Held save, ambiguous retry, discarded capture and destroyed component exercised. | This phase uses controlled clocks and an explicitly in-memory journal. |
@@ -49,6 +51,13 @@ must separately explain local persistence and service receipt; this correction
 does not make the earlier browser03 replay a test of09 or activate the new UI.
 
 ## Evidence location and preservation
+
+The first camera/resource phase stopped during fixture design validation: its
+explicit1.2 design was mistakenly passed to the legacy validator. Only actual
+PNG registration/setup ran; no release, start or camera operation occurred.
+Failure and natural independent closure are retained. A separate successor uses
+the actual variant validator and fixes a run-specific public frame key in a later
+unrun resolution case. Camera/resource runtime bytes are unchanged.
 
 Detailed source bindings, test outputs, failure records and process-closure
 receipts remain in the local build workspace under `work/participant-*`. This

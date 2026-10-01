@@ -19,6 +19,9 @@ reproduce their test runs. Do not infer that all files were tested together.
 | R/platform-participant-view-receive.R | Atomic event receipt, original-event derivation, saved result and progress; exact retries. |
 | R/platform-participant-operation-documents.R | Consistent model/receipt/result bytes. A historical receipt does not authorize editing. |
 | R/platform-participant-view-http.R | Strict raw request admission and byte-preserving responses. Does not supply a router or network ingress limit. |
+| R/platform-participant-view-router.R | Inactive API-only routing for eleven assigned endpoints; 50 header/route controls pass. Real HTTP and domain integration remain. |
+| R/platform-participant-view-entry.R | Narrow consent/welcome projection and selectorless welcome PNG access. Independently reviewed; direct coordinator tests remain. |
+| R/platform-participant-view-finish.R | Original completion/receipt/job transaction with assigned authorization and admitted revision context. Independently reviewed; direct tests, bounded replay and downstream worker support remain. |
 | R/platform-participant-view-camera.R | Inactive adapter to original camera operations, using assigned policy and step references. Actual camera integration tests remain. |
 | R/platform-participant-view-resource.R | Unrun draft serving only authenticated assigned resources through bounded verified snapshots. Full files only; range/media and HTTP ownership tests remain. |
 | R/platform-participant-received-bytes.R and platform-participant-wire-json.R | Separately checked decoder/encoder optimizations; complete source validation and limits remain. |
@@ -28,8 +31,8 @@ reproduce their test runs. Do not infer that all files were tested together.
 No loader, route, renderer registration or default feature flag points at this
 folder. Never register the legacy participant bundle as compatible with these
 modules. They still need the original compiler/projection/context and method
-overlays, exact implementation registration, browser controller, entry/welcome,
-camera/resource/finalization paths and joined researcher acceptance. Cold study
+overlays, exact implementation registration, browser controller, real HTTP and
+entry/welcome/camera/resource/finalization qualification, plus joined researcher acceptance. Cold study
 loading and extreme request latency remain open.
 
 When promoting a coherent candidate, bind its complete dependencies and repeat

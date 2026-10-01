@@ -1,5 +1,17 @@
 # Changes
 
+## Assigned opening, finalization and API wiring — 2026-10-02
+
+- Added three exact inactive source files to the development snapshot: narrow
+  opening/welcome access, original assigned-session finalization and API routing.
+- Passed50 route/header checks; preserved original security checks and actual
+  request/response byte helpers. Actual TCP and coordinator journeys remain open.
+- Corrected the finish draft to use the admitted1.2 revision context and a bounded
+  scalar request envelope. Direct completion/analysis-worker tests remain.
+- Preserved the first camera/resource fixture failure before release/start; its
+  corrected design validator and run-specific frame-key fixture are separate work.
+  No delivery profile, live device or scientific claim is activated.
+
 ## Assigned-response transaction evidence — 2026-10-02
 
 - Qualified the inactive receiver's small-questionnaire core and independent

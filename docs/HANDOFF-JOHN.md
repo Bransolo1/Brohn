@@ -10,9 +10,16 @@ records the screen-to-R and separate browser-storage passes, retained harness
 failures and remaining joins. Detailed local build evidence still needs portable
 promotion; the public repository does not yet contain an activated new renderer.
 The [development source snapshot](../development/assigned-questionnaire/README.md)
-now includes13 exact implementation/dependency files for review, with individual
+now includes16 exact implementation/dependency files for review, with individual
 status and byte identities. It is not a standalone runnable candidate and does
 not include the complete local QA fixtures or transitive R overlays.
+The newest files add entry/welcome, finish and API-only routing. Router headers
+pass50 controls; this is not an actual HTTP session test. Opening/finalization
+have static review only. Keep original design1.2 revision context during finish;
+large finalization replay and downstream analysis-worker acceptance remain open.
+The first camera/resource fixture stopped before collection because it used the
+legacy validator for a1.2 design. Its failure and closure are preserved; a corrected
+fixture is being prepared without changing the camera/resource implementation.
 The six assigned-store and six bounded current-reader phases pass locally.
 Current recovery preserves original questionnaire history and rejects stale
 responses after actual peer changes. Its complete retained response took 28.91

@@ -19,6 +19,12 @@ The [development source snapshot](../development/assigned-questionnaire/README.m
 contains the current transport/storage implementation for inspection. Its
 manifest distinguishes separately qualified components from unrun camera/media
 drafts and incomplete joins; it is not registered or a standalone application.
+The API-only router now has50 passing header/route checks, while new opening and
+finish coordinators have independent static review. Real HTTP, lifecycle, original
+finalization and downstream analysis remain their own gates. Keep pre-enrolment
+welcome access separate from assigned experimental media. Supply the admitted
+original revision context at finish; never rebuild design1.2 through a legacy
+compiler. Qualify bounded outside-writer replay before promising good concurrency.
 
 The intended advantage is low-click explicit and implicit research in one study:
 correct exposure-linked liking, stimuli/controls/versions, gaze/AOIs and other
