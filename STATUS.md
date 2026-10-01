@@ -1,5 +1,13 @@
 # Resume here — Brohn
 
+New owner requirement, 1 October: questionnaire flow, automatic analysis and
+visualization dashboards must match or exceed Qualtrics for the intended consumer
+research journeys. Use the [current benchmark and QF01–QF08 queue](docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md).
+Existing typed questions, display rules, section ordering, revisions and saved
+exploration are foundations; general routing/repeats, advanced analysis and
+dashboard authoring remain open. QF01 continues with EF02/EF03 participant
+delivery. This is a required build target, not a released parity claim.
+
 New owner requirement, 1 October: common consumer **eye-tracking designs**,
 including shelf testing, **control stimuli and multiple stimulus versions within
 one study**. The [flexibility matrix and EF01–EF12 queue](docs/research/EYE-TRACKING-FLEXIBILITY.md)

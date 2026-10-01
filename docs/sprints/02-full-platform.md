@@ -1,5 +1,18 @@
 # Full platform build — Brohn continuation
 
+## Questionnaire flow and dashboard target — 1 October 2026
+
+- [x] Recheck official Qualtrics flow, Results Dashboards, Stats iQ, Text iQ and
+  accessibility documentation; reconcile with the retained questionnaire blueprint.
+- [x] Record QF01–QF08 requirements, current boundaries and researcher acceptance
+  in the [questionnaire parity contract](../research/QUESTIONNAIRE-QUALTRICS-PARITY.md).
+- [ ] Complete QF01 with version-aware participant delivery and exact typed
+  question/branch/answer-history behavior; inactive components are not release proof.
+- [ ] Deliver general flow routes, bounded repeats, variables/carry-forward,
+  instrument completeness, guided analysis and editable source-bound dashboards.
+- [ ] Qualify complete create/serve/analyse/filter/export/reopen journeys,
+  including keyboard/mobile, errors, independent numerical checks and usability.
+
 ## Exact-constant EDA extension — 30 September 2026
 
 - [x] Preserve eligible raw descriptions in explicit recipe 1.1 and mark all

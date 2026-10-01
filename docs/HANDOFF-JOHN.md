@@ -1,5 +1,13 @@
 # John: Brohn development handoff
 
+Additional owner requirement, 1 October: match or exceed Qualtrics for survey
+flow, automatic analysis and visualization dashboards. Start with the
+[current official-documentation benchmark and QF01–QF08 queue](research/QUESTIONNAIRE-QUALTRICS-PARITY.md),
+which extends the original 16-screen questionnaire inventory. General block
+routing, repeats/variables, advanced analysis and editable dashboards remain
+unfinished. Preserve exact typed answers and old results while connecting this
+work to the current stimulus-assignment and participant-delivery implementation.
+
 New scope, 1 October: support common eye-tracking designs, shelf testing,
 multiple control stimuli and material versions in the same study. Start with
 the [design-flexibility matrix and EF01–EF12 backlog](research/EYE-TRACKING-FLEXIBILITY.md).

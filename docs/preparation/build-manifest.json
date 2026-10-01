@@ -337,6 +337,8 @@
     {
       "id": "BWP04",
       "title": "Questionnaire builder and executor",
+      "questionnaire_parity_contract": "docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md",
+      "questionnaire_parity_scope": "QF01-QF04/QF08: assigned question delivery, whole-study flow, bounded repeats, typed variables and reusable instruments; existing scoped evidence does not establish Qualtrics parity.",
       "wave": 2,
       "depends_on": [
         "BWP03"
@@ -821,6 +823,8 @@
     {
       "id": "BWP13",
       "title": "Multimodal statistics and automated reports",
+      "questionnaire_parity_contract": "docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md",
+      "questionnaire_parity_scope": "QF05-QF08: guided qualified survey analysis, unified saved dashboard/filter definitions, exact tables/exports and advanced segmentation/text recipes; preserve historical sources and results.",
       "wave": 4,
       "depends_on": [
         "BWP02",
@@ -920,6 +924,8 @@
     {
       "id": "BWP15",
       "title": "Guided UX, review and research operations",
+      "questionnaire_parity_contract": "docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md",
+      "questionnaire_parity_scope": "Accessible low-click author/participant flow and dashboard journeys, route explanations, recovery and measured QF08 acceptance; no comparative usability claim from component checks.",
       "wave": 4,
       "depends_on": [
         "BWP02",

@@ -1,5 +1,23 @@
 # Brohn master architecture and large-build contract
 
+## Questionnaire, survey flow and dashboards — 1 October 2026
+
+The owner requires Qualtrics-level or better survey flow, automatic analysis and
+visualization dashboards. The [refreshed benchmark and QF01–QF08 acceptance queue](research/QUESTIONNAIRE-QUALTRICS-PARITY.md)
+extends the existing questionnaire blueprint and its screenshot inventory.
+Keep one typed study definition across flow authoring, participant execution,
+source-preserving analysis and editable dashboards. General block routes,
+bounded repeats, typed variables/piping/carry-forward, analysis assistance and
+saved dashboard/filter definitions require explicit integration and acceptance.
+
+The intended advantage is low-click explicit and implicit research in one study:
+correct exposure-linked liking, stimuli/controls/versions, gaze/AOIs and other
+qualified measurements. Automatic outputs retain denominators, missingness,
+uncertainty, method evidence and exact source history. Dashboard filters must not
+change saved analyses or invent independent participants. Qualtrics documentation
+defines feature expectations; it does not validate Brohn's science or establish
+comparative usability. Existing package statuses remain unchanged.
+
 ## Eye-tracking designs, controls and stimulus versions — 1 October 2026
 
 Support common consumer eye-tracking designs, including shelf/packaging tests,

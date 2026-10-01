@@ -1,5 +1,14 @@
 # Changes
 
+## Questionnaire flow, analysis and dashboard target — 2026-10-01
+
+- Added a refreshed official Qualtrics benchmark and QF01–QF08 implementation
+  queue covering flow changes, reusable content, automatic analysis and dashboards.
+- Connected source-preserving participant execution, explicit/biosignal findings,
+  low-click UX and actual researcher QA to the master plan and handoff.
+- Kept current implementation limits explicit; this requirements update activates
+  no new analysis, flow profile or dashboard and makes no parity claim.
+
 ## Stimulus assignment work in progress — 2026-10-01
 
 - Updated architecture and the EF02/EF03 queue for shared controls, all/one

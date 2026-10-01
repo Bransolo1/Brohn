@@ -1,5 +1,13 @@
 # Brohn completion backlog
 
+**Added 1 October 2026:** match or exceed Qualtrics for questionnaire flow,
+automatic analysis and visualization dashboards. The [QF01–QF08 checklist](research/QUESTIONNAIRE-QUALTRICS-PARITY.md)
+adds concrete flow, analysis, dashboard and actual researcher acceptance gates
+to the existing packages and PC02/03/05/06/07/13/16. A question widget, component
+pass or report table alone cannot close this target. Brohn's differentiator is
+one accessible study-to-findings journey connecting explicit answers to the
+correct stimulus, control/version and supported implicit/biosignal measurements.
+
 **Added 1 October 2026:** deliver common consumer eye-tracking designs, explicitly
 including shelf testing, multiple control/comparator stimuli and multiple stimulus
 versions within one study. Track implementation and end-to-end acceptance in the

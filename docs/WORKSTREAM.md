@@ -1,5 +1,14 @@
 # Brohn workstream and restart checklist
 
+**New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
+and dashboards must match or exceed Qualtrics for the intended research journeys.
+Follow the [QF01–QF08 delivery and acceptance queue](research/QUESTIONNAIRE-QUALTRICS-PARITY.md).
+Continue QF01 alongside EF02/EF03: exact questions, branches and response history
+through assigned-only participant delivery. Then extend whole-study block routes,
+bounded repeats, variable/piping/carry-forward semantics, instrument authoring,
+guided analysis and editable unified dashboards. Existing explorer/distribution
+acceptances are scoped foundations; no parity or package completion is claimed.
+
 **New owner requirement, 1 October 2026:** expand eye-tracking study flexibility,
 including shelf testing, control stimuli and multiple stimulus versions in one
 study. Implement the [flexibility checklist](research/EYE-TRACKING-FLEXIBILITY.md)
