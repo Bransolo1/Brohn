@@ -1,5 +1,14 @@
 # Changes
 
+## Original participant completion and researcher recovery — 2026-10-02
+
+- Published the inactive outside-writer finish and explicit startup-admission
+  successors; six direct phases pass165 direct/168 repeated wrapper checks.
+- Added the separate original1.2 researcher recovery adapter. Core and actual
+  received-completion checks preserve participant evidence and immutable decisions.
+- Preserved both actual HTTP opening failures at the final RNG invariant, despite
+  successful scoped requests. No production profile or automatic worker enabled.
+
 ## Ordered observation retention — 2026-10-02
 
 - Replaced the two inactive browser source snapshots with qualified journal and

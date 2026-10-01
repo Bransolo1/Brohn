@@ -608,6 +608,71 @@
         "sha256": "e996034f49e1cc9f10dc09bd13f4d75f637726d6c6514fbc4d5f369eda7d1a6c"
       },
       "scope": "Harness misspelled original camera completion function in preservation observer;0 direct/25 wrapper. No startup runtime defect established. Exact failed packet retained; observer-only successor is separate."
+    },
+    {
+      "name": "entry_finish_startup_six_phase_aggregate",
+      "acceptance": {
+        "path": "work/participant-view-entry-finish-qa-20261002/aggregate-01/ACCEPTANCE.json",
+        "bytes": 28065,
+        "sha256": "3e9c2b922d0941feddd441be614a30f5510c47c5a560893eb61448f49f76e84a"
+      },
+      "scope": "165 direct/168 repeated wrapper across startup02, entry04, welcome03 and finish-outcomes/camera/fences03. Exact candidate attribution and three failed predecessors retained; not a common identical test tree."
+    },
+    {
+      "name": "resolution_core_01",
+      "acceptance": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-core-01/ACCEPTANCE.json",
+        "bytes": 2117,
+        "sha256": "2d01ac367fb47d16b93766436cb584b7c422c9238573ba4b258189cc1f77b05f"
+      },
+      "closure": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-core-01/AFTER-CLOSED.json",
+        "bytes": 2468,
+        "sha256": "ea6e9e704aaf765cbdbdccf9210766cded400e569dc4c4ce9b1f9f2edac3abe7"
+      },
+      "scope": "Actual original1.2 researcher API and immutable decision; no fake resolution row. Participant evidence remains exact. Camera ordering/writer fences and resolved analysis separate."
+    },
+    {
+      "name": "resolution_received_01",
+      "acceptance": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-received-01/ACCEPTANCE.json",
+        "bytes": 2150,
+        "sha256": "85422e7c4fb5b13c7c4dbcacf70413fc083d0b6e5f2496bfc68951234a39535e"
+      },
+      "closure": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-received-01/AFTER-CLOSED.json",
+        "bytes": 2484,
+        "sha256": "56996e4959b2290fb66b61a98235b4931e2e617bbf10f295766d4355a92e2833"
+      },
+      "scope": "Actual original1.2 researcher API and immutable decision; no fake resolution row. Participant evidence remains exact. Camera ordering/writer fences and resolved analysis separate."
+    },
+    {
+      "name": "actual_http_opening_01_rng_failure",
+      "failure": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-01/FAILURE.json",
+        "bytes": 2502,
+        "sha256": "6e0cef5fee542c04678aa506b5ed13cd2aafb76d32797990a8b1756c2291e1e7"
+      },
+      "closure": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-01/AFTER-CLOSED.json",
+        "bytes": 4398,
+        "sha256": "689a948eed8bfdc07de1f0c63b147a5c1223fbbf24d0c0031e58f3718d9e2c78"
+      },
+      "scope": "All62 real HTTP client/13 fixture checks passed but final wrapper RNG conservation failed. Original run remains failed, with natural process/listener/snapshot closure and inputs exact.02 isolates only QA random-port sampling; further framework diagnosis pending."
+    },
+    {
+      "name": "actual_http_opening_02_rng_failure",
+      "failure": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-02/FAILURE.json",
+        "bytes": 2502,
+        "sha256": "1c69d528d548529773d87745be646bfaee50ad9b94a73179318ff65319bc3b42"
+      },
+      "closure": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-02/AFTER-CLOSED.json",
+        "bytes": 4400,
+        "sha256": "301e4ed3f66702c7294a64464fada53a360d6767791ec1fb16629c5adfa008b3"
+      },
+      "scope": "All62 real HTTP client/13 fixture checks passed but final wrapper RNG conservation failed. Original run remains failed, with natural process/listener/snapshot closure and inputs exact.02 isolates only QA random-port sampling; further framework diagnosis pending."
     }
   ],
   "root_visual": {

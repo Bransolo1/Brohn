@@ -99,21 +99,21 @@
       "bytes": 4487,
       "sha256": "97a8716ca0691ea2edd0a33d5208f21480cc53575fb4f207d7cbf8ce648608bc",
       "local_source": "work/participant-view-entry-next-20261002/R/platform-participant-view-entry.R",
-      "scope": "Static review and source syntax only; actual entry/welcome coordinator and HTTP ownership tests remain"
+      "scope": "Entry04 and welcome03 each pass24 direct/28 wrapper: no allocation on opening, actual PNGs and source/access/status/transaction fences. Actual HTTP attempts remain failed at their final RNG invariant."
     },
     {
       "path": "R/platform-participant-view-finish.R",
-      "bytes": 4544,
-      "sha256": "bd61cf3df81e06b563d3240074e6e5956a49018366a501b25075b57fd17e0786",
-      "local_source": "work/participant-view-finish-next-20261002/R/platform-participant-view-finish.R",
-      "scope": "Static review and source syntax only; real finalization, streamed replay and downstream design1.2 worker acceptance remain"
+      "bytes": 7666,
+      "sha256": "a859a4f8cbe6f85c323d6528cbe72a3cdea28437e5b8b8fc13dfb6bed33d24d4",
+      "local_source": "work/participant-view-entry-finish-qa-20261002/candidate-04/R/platform-participant-view-finish.R",
+      "scope": "Three direct finish phases pass93 direct/84 repeated wrapper: real received completion/interruption/withdrawal, receipt/job atomicity, outside-writer replay/camera support and source/schema/authority fences. Worker and full HTTP/controller remain."
     },
     {
       "path": "R/platform-participant-view-router.R",
-      "bytes": 6348,
-      "sha256": "5628762828ab0a6caf33a99e733414b236f4f562246f6d94dd5154485cd9709d",
-      "local_source": "work/participant-view-router-next-20261002/R/platform-participant-view-router.R",
-      "scope": "50 header/route checks passed; API-only, no actual TCP/coordinator/store/browser journey"
+      "bytes": 6880,
+      "sha256": "22cfde77c4b14d7a5451f520bbe061b17f609d2d9bf9b50eac0e743830650534",
+      "local_source": "work/participant-view-entry-finish-qa-20261002/candidate-04/R/platform-participant-view-router.R",
+      "scope": "Explicit startup schema admission passes24 direct/28 wrapper on startup02. Prior50 header controls bind the prior router source; actual HTTP attempts remain failed at their final RNG invariant."
     },
     {
       "path": "R/platform-participant-context-pool.R",
@@ -142,6 +142,13 @@
       "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba",
       "local_source": "work/participant-operation-sender-next-20261002/www/participant/current-structure.mjs",
       "scope": "Exact extracted typed association helpers used by the scoped browser sender; no independent authority"
+    },
+    {
+      "path": "R/platform-variant-session-resolution.R",
+      "bytes": 7756,
+      "sha256": "89c825fe24949c267b29fe52e456263dc0e5a0ff232f8392e9127a47c39361f4",
+      "local_source": "work/variant-session-resolution-next-20261002/R/platform-variant-session-resolution.R",
+      "scope": "Explicit original1.2 researcher resolution: core27/31 and actual received completion17/31 pass. Original participant evidence and immutable decisions preserved. Camera/writer races and resolved analysis remain separate."
     }
   ]
 }

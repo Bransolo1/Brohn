@@ -1,12 +1,26 @@
 # John: Brohn development handoff
 
-Latest local integration: ordered observation retention passes124 Chrome controls
-against synthetic Node authority; the two exact browser successors are included
-in the development snapshot. A failed capture's retry handle survives only in the
-current process; actual IDB commit is the durability boundary. Durable drafts,
-original application bootstrap and the complete R/controller join remain open.
-Protocol1.2 researcher resolution failed in its legacy revision-context reader;
-the separate explicit source adapter and actual receipt-order checks are pending.
+Current integration checkpoint: all six direct opening, welcome, startup and
+completion phases pass (165 direct/168 repeated wrapper checks). The inactive
+finish successor replays outside the writer and fences changed sources before
+the original completion/receipt/job transaction. Camera history remains aggregated
+outside the writer; no constant-memory or production-latency claim is made.
+
+Explicit original1.2 researcher recovery passes core27/31 and received-completion
+17/31. A separate immutable researcher decision preserves the participant's
+original answers and makes a missing final participant receipt explicit. Camera
+ordering, additional writer races and resolved-run analysis remain separate.
+
+Actual HTTP opening attempts each passed62 client/13 fixture checks, then failed
+the wrapper's RNG invariant. Both failures and natural closures are retained;
+framework initialization is being diagnosed. These are not HTTP acceptance.
+
+The review snapshot contains21 inactive source files and57 local evidence entries.
+Released runtime remains unchanged. Browser ordered retention retains its124
+Chrome controls; public questionnaire actions and durable drafts are being
+qualified. Actual controller/bootstrap, explicit1.2 analysis-worker/publication,
+general survey-flow authoring and editable dashboards remain open. All17 work
+packages and the QF01–QF08 requirements retain their individual unfinished gates.
 
 2 October: the [assigned-questionnaire integration contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 explains the active collection/recovery work, its separate local component
@@ -18,13 +32,13 @@ records the screen-to-R and separate browser-storage passes, retained harness
 failures and remaining joins. Detailed local build evidence still needs portable
 promotion; the public repository does not yet contain an activated new renderer.
 The [development source snapshot](../development/assigned-questionnaire/README.md)
-now includes 20 exact implementation/dependency files for review, with individual
+now includes 21 exact implementation/dependency files for review, with individual
 status and byte identities. It is not a standalone runnable candidate and does
 not include the complete local QA fixtures or transitive R overlays.
-The newest files add entry/welcome, finish and API-only routing. Router headers
-pass 50 controls; this is not an actual HTTP session test. Opening/finalization
-have static review only. Keep original design1.2 revision context during finish;
-large finalization replay and downstream analysis-worker acceptance remain open.
+The newest files add entry/welcome, finish and API-only routing. Earlier router headers
+pass50 controls on their recorded source; the new startup/opening/finalization
+coordinators now pass six separately attributed direct phases. Keep original design1.2 revision context during finish;
+large-workload finalization and downstream analysis-worker acceptance remain open.
 Camera 1.0 direct collection now passes 45 controls; its original fixture failures
 remain preserved. Named policy 1.1 now passes 35 direct/25 wrapper checks after
 its separate numeric fixture correction; writer fences additionally pass22 direct/25 wrapper, while terminal researcher resolution remains open.

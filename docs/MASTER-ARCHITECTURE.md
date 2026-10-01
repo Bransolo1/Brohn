@@ -22,22 +22,25 @@ controller joins; it is not registered or a standalone application. Actual brows
 recovery/ordered retention (124 checks), all six pool phases, camera 1.0 (45 direct checks) and
 assigned PNG resource checks (36) now pass locally.
 The warm retained pool read measured 0.34s, but 29.37s cold remains too slow.
-The API-only router now has50 passing header/route checks, while new opening and
-finish coordinators have independent static review. Real HTTP, lifecycle, original
-finalization and downstream analysis remain their own gates. Keep pre-enrolment
+The prior router has50 header/route checks on its recorded bytes. The current
+startup/opening/welcome/finish sources pass six direct phases (165 direct/168
+repeated wrapper). Actual HTTP attempts remain failed at the wrapper RNG
+invariant; runtime source was unchanged between them. Full controller lifecycle
+and downstream analysis remain their own gates. Keep pre-enrolment
 welcome access separate from assigned experimental media. Supply the admitted
 original revision context at finish; never rebuild design1.2 through a legacy
-compiler. Qualify outside-writer replay and original camera support before
-promising good concurrency. Preserve the new local successor's distinction
+compiler. Outside-writer replay and original camera support pass direct checks;
+large-workload concurrency still needs measurement. Preserve the distinction
 between streamed main replay and aggregate camera history outside the writer.
 Server startup must admit the complete receiving schema before any request.
 Storage-only observations may commit during network synchronization; this does
 not authorize a new questionnaire action. Failed captures retain exact
 process-local retry handles and separate unresolved status. Full application
 bootstrap and durable draft/context integration still need their own evidence.
-Actual researcher resolution of1.2 currently fails at its legacy revision reader;
-use an explicit original-source adapter with genuine immutable decisions and
-preserve the participant's original evidence. Resolved-run analysis is separate.
+The legacy researcher reader still rejects1.2. A separate original-source
+adapter now passes core and received-completion checks with genuine immutable
+decisions and unchanged participant evidence. Camera/finish ordering and writer
+races remain separate, as does resolved-run analysis.
 
 The original analysis worker currently rejects protocol1.2 and constructs legacy
 revision contexts. Its MaxDiff path also regenerates offered sets, and two task

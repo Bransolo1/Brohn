@@ -88,6 +88,16 @@
     envir = environment(.brohn_participant_view_http_app), mode = "function", inherits = TRUE)),
     "The complete assigned participant HTTP implementation is unavailable.", "profile_unavailable", 503L)
   .brohn_pvds_tables(store)
+  .brohn_pvds_require(!RSQLite::sqliteIsTransacting(store$con),
+    "Admit the participant HTTP service outside a caller transaction.", "profile_unavailable", 503L)
+  # Startup initializes these schemas explicitly before constructing the app.
+  # A request must never discover half-installed collection/finalization support
+  # or repair its storage while the participant is trying to save an answer.
+  .brohn_pvds_readonly(store, function() {
+    .brohn_pvr_ready(store)
+    .brohn_pvr_schema_admit(store)
+    invisible(TRUE)
+  })
   list(onHeaders = function(req) tryCatch(.brohn_pvroute_request(store, req, headers_only = TRUE), error = .brohn_pvroute_error),
     call = function(req) tryCatch(.brohn_pvroute_request(store, req), error = .brohn_pvroute_error))
 }

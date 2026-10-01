@@ -19,9 +19,10 @@ reproduce their test runs. Do not infer that all files were tested together.
 | R/platform-participant-view-receive.R | Atomic event receipt, original-event derivation, saved result and progress; exact retries. |
 | R/platform-participant-operation-documents.R | Consistent model/receipt/result bytes. A historical receipt does not authorize editing. |
 | R/platform-participant-view-http.R | Strict raw request admission and byte-preserving responses. Does not supply a router or network ingress limit. |
-| R/platform-participant-view-router.R | Inactive API-only routing for eleven assigned endpoints; 50 header/route controls pass. Real HTTP and domain integration remain. |
-| R/platform-participant-view-entry.R | Narrow consent/welcome projection and selectorless welcome PNG access. Independently reviewed; direct coordinator tests remain. |
-| R/platform-participant-view-finish.R | Original completion/receipt/job transaction with assigned authorization and admitted revision context. Independently reviewed; direct tests, bounded replay and downstream worker support remain. |
+| R/platform-participant-view-router.R | Inactive routing for eleven endpoints with explicit startup storage admission;24 direct startup checks pass. Earlier50 header controls bind the earlier source. Actual HTTP attempts retain their RNG failures. |
+| R/platform-participant-view-entry.R | Narrow consent/welcome and selectorless PNG access; entry24 and welcome24 direct controls pass. Opening does not allocate a participant. |
+| R/platform-participant-view-finish.R | Original completion/receipt/job transaction after outside-writer replay and source fences.93 direct finish controls pass; original camera history still aggregates, downstream worker and full HTTP remain. |
+| R/platform-variant-session-resolution.R | Explicit original1.2 researcher recovery; core27 and received-completion17 direct checks pass, original participant history preserved. Camera/writer races and resolved analysis remain. |
 | R/platform-participant-view-camera.R | Original camera operations with assigned policy/step references. Camera 1.0 passes 45 direct checks and named policy 1.1 passes 35. Writer fences pass22 direct checks; actual terminal researcher resolution is blocked on its1.2 reader. HTTP, worker and physical recording remain. |
 | R/platform-participant-view-resource.R | 36 direct checks pass for authenticated assigned PNGs, bounded verified snapshots, source changes and cleanup. Full files only; actual HTTP, ranges and disconnect ownership remain. |
 | R/platform-participant-received-bytes.R and platform-participant-wire-json.R | Separately checked decoder/encoder optimizations; complete source validation and limits remain. |

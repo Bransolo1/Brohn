@@ -1,25 +1,31 @@
 # Brohn workstream and restart checklist
 
-**Ordered-save successor:**124 Chrome controls (85 preserved sender plus39
-focused retention) and22 syntax checks pass in two independently closed phases.
-Next browser work is public-key questionnaire actions and durable drafts, followed
-by original start/restart bootstrap and actual R HTTP/controller integration.
-Preserve camera-terminals04's real researcher1.2 resolution failure; qualify the
-explicit original-source recovery adapter before camera/finish resolution claims.
+Current integration checkpoint: all six direct opening, welcome, startup and
+completion phases pass (165 direct/168 repeated wrapper checks). The inactive
+finish successor replays outside the writer and fences changed sources before
+the original completion/receipt/job transaction. Camera history remains aggregated
+outside the writer; no constant-memory or production-latency claim is made.
 
-**Latest recovery integration:** 20 exact inactive source files and 52 indexed
-local evidence entries include sender 85 Chrome/10 syntax, all six pool phases
-(97 case/120 wrapper), camera 1.0 (45 direct/25 wrapper) and assigned resources
-(36 direct/25 wrapper). Named camera 1.1 also passes 35 direct/25 wrapper checks.
-Camera writer fences also pass22 direct/25 wrapper. Terminal resolution, actual R HTTP and researcher
-journeys remain open. Retained warm 0.34s does not resolve cold 29.37s or first start.
+Explicit original1.2 researcher recovery passes core27/31 and received-completion
+17/31. A separate immutable researcher decision preserves the participant's
+original answers and makes a missing final participant receipt explicit. Camera
+ordering, additional writer races and resolved-run analysis remain separate.
 
-Next connected work: finish the durable ordered-write boundary and draft store,
-then public-key questionnaire actions/controller and actual R HTTP. Qualify the
-outside-writer finalization successor and explicit startup schema admission.
-Build a separate protocol1.2 worker path preserving historical assignments and
-original scoring; export provenance is another gate. Keep original fixture/runtime
-failures and exact successor evidence. No production registration is enabled.
+Actual HTTP opening attempts each passed62 client/13 fixture checks, then failed
+the wrapper's RNG invariant. Both failures and natural closures are retained;
+framework initialization is being diagnosed. These are not HTTP acceptance.
+
+The review snapshot contains21 inactive source files and57 local evidence entries.
+Released runtime remains unchanged. Browser ordered retention retains its124
+Chrome controls; public questionnaire actions and durable drafts are being
+qualified. Actual controller/bootstrap, explicit1.2 analysis-worker/publication,
+general survey-flow authoring and editable dashboards remain open. All17 work
+packages and the QF01–QF08 requirements retain their individual unfinished gates.
+
+Next: connect public-key actions and durable drafts to actual R HTTP, qualify
+original start/restart bootstrap and the explicit saved-variant worker, then
+complete the researcher author-to-dashboard journeys. Keep all failed fixtures.
+No new production registration is enabled by source publication.
 
 **2 October integration:** follow the [assigned questionnaire delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 for the current QF01/EF02–EF03 collection work. Complete atomic start/current
