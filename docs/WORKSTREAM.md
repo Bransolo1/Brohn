@@ -11,8 +11,13 @@ browser03 and its original R replay pass, and the separate actual Chrome journal
 passes its scoped controls. The actual question/journal browser join and its fresh
 86-check R replay also pass. Complete atomic server receipts/state and integrate
 the separately qualified completion-label correction. First-start core and both
-atomic phases pass; actual separate-writer contention, remaining store phases and
-bounded current-state replay are still open.
+atomic phases pass, followed by authority and both complete-source phases. All
+six store phases are closed with inputs conserved. All six bounded current-reader
+phases also pass, including actual peer changes and original questionnaire replay.
+Separate-writer first-start contention and the authenticated receive transaction
+remain open. The large retained case took 83.82 seconds at first start, 27.55
+seconds on store reopen and 28.91 seconds for the current response; investigate
+these distinct operations before activation, preserving complete validation.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

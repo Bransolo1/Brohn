@@ -9,6 +9,10 @@ The [component evidence summary](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md
 records the screen-to-R and separate browser-storage passes, retained harness
 failures and remaining joins. Detailed local build evidence still needs portable
 promotion; the public repository does not yet contain an activated new renderer.
+The six assigned-store and six bounded current-reader phases pass locally.
+Current recovery preserves original questionnaire history and rejects stale
+responses after actual peer changes. Its complete retained response took 28.91
+seconds; latency and authenticated receipt/controller integration remain open.
 
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the

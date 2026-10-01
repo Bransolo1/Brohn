@@ -89,9 +89,17 @@ Local component qualification found two unresolved performance concerns:
   a duplicate full admission; its predecessor took 42.45 seconds in the same
   comparison. These are individual observations. The existing legacy browser's
   15-second request timeout is incompatible with such a synchronous cold path.
-- The strict raw decoder passed the actual two-million-node boundary, but that
-  extreme request took 77.03 seconds to admit and 37.40 seconds to reject one node
-  beyond the limit. Correct bounded parsing is not acceptable interactive latency.
+  The complete store phase separately took 83.82 seconds for the first-start
+  compile/project/admit-and-commit pipeline and 27.55 seconds for cold reopen.
+  Its writer transaction took 0.09 seconds; a check on an already-held handle
+  took 0.02 seconds. These scopes overlap and must not be added or substituted
+  for one another. Profiling must distinguish first start from context admission.
+- The strict raw decoder passed the actual two-million-node boundary. Its whole
+  admission test took 77.03 seconds, including an extra raw hash and complete-value
+  oracle; the one-node-over refusal check took 37.40 seconds. These are test-case
+  timings, not isolated decoder benchmarks. Separate public-call and oracle timing
+  is required before choosing an optimization. Passing these extreme checks does
+  not establish acceptable interactive latency.
 
 Resolve these before activation through measured implementation improvements or
 an explicit versioned work/scheduling policy with understandable progress and
@@ -104,9 +112,13 @@ need representative workloads as well as single-run correctness tests.
 ## Current integration gates
 
 The [2 October component progress](../qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
-records the executed screen-to-R replay and separately qualified actual Chrome
-observation journal. Their joined durable delivery, current server response and
-complete researcher journey are still required.
+records the executed screen-to-R replay, actual Chrome journal, joined durable
+question screen and independent original R replay. All six assigned-store phases
+and six bounded current-reader phases also pass. The retained current response
+took 28.91 seconds. The authenticated receive/derive transaction, latency work and
+complete researcher journey are still required. The response boundary test uses
+a synthetic projected packet; genuine large questionnaire collection/reopen
+remains a separate integration gate.
 
 The local components have separate scoped checks for typed question projection,
 state/history translation, event replay, exact request encoding/decoding, native

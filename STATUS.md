@@ -10,6 +10,10 @@ now includes actual question-screen-to-R replay and a separately tested Chrome
 observation journal. The question controls also pass their joined durable-browser
 phase and its independent 86-check R replay. Durable server delivery and the joined
 researcher journey remain open; these passes do not activate questionnaire assignment.
+All six assigned-store and all six bounded current-reader phases now pass.
+Current-state recovery includes actual peer changes and original questionnaire
+replay. The complete retained cold response still takes 28.91 seconds; profiling,
+atomic server receipts and the full participant/researcher join remain open.
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer

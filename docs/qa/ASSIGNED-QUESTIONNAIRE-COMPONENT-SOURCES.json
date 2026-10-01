@@ -110,6 +110,29 @@
         "bytes": 5750,
         "sha256": "1e36b28bd1d13fb0811c437a0fbabe661f41dc611f224bc91081907d9a820f4b"
       }
+    },
+    {
+      "name": "assigned_store_six_phase_aggregate02",
+      "acceptance": {
+        "path": "work/participant-view-store-successor02-qa-20261002/aggregate-01/ACCEPTANCE.json",
+        "bytes": 18372,
+        "sha256": "3d9a17a689803842c82ee6281ff8c993c97a8e3841643d1bd175d716e26f2d14"
+      },
+      "scope": "Six closed synthetic-store phases; repeated controls included. No separate-writer or HTTP/controller claim."
+    },
+    {
+      "name": "assigned_current_reader_six_phase01",
+      "acceptance": {
+        "path": "work/participant-view-current-qa-20261002/aggregate-01/ACCEPTANCE.json",
+        "bytes": 6462,
+        "sha256": "e5e11d2091823e534165270d972d2c64f2c7954ab2724bc012a7a0da14915f35"
+      },
+      "source": {
+        "path": "work/participant-view-current-next-20261002/R/platform-participant-view-current.R",
+        "bytes": 14782,
+        "sha256": "a35f43c897ea7ce76222b0eb2fa745234b5795b5a906a0b50ea3c1a6b2d5e9dc"
+      },
+      "scope": "Six closed inactive current-reader phases; repeated setup included. Full retained source positive has no journal. Actual small information-question journal and synthetic outer arithmetic are separate."
     }
   ],
   "root_visual": {
@@ -123,8 +146,8 @@
     "sha256": "611ce086a62bb49452c021da785401a99f0d9cd2f50eb43ab73eaf93243e7c55"
   },
   "remaining": [
-    "Remaining authority/full-source store phases; actual separate-writer contention",
-    "Bounded current-state reader and outer-budget qualification",
+    "Actual separate-writer first-start contention",
+    "Genuine large questionnaire collection and current recovery with response-page reduction",
     "Received/derived transaction and browser ACK/state persistence",
     "Assigned resources/equipment/controller/HTTP integration",
     "Full researcher journey and latency qualification",

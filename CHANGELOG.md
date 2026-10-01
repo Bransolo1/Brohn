@@ -1,5 +1,16 @@
 # Changes
 
+## Assigned-session recovery evidence — 2026-10-02
+
+- Recorded all six assigned-store and six bounded current-reader phases, including
+  peer access/progress/resolution changes and original questionnaire history.
+- Preserved the distinction between complete-source recovery, small real-protocol
+  questionnaire replay and isolated whole-record response-size arithmetic.
+- Recorded the 28.91-second retained current response as an unresolved latency
+  issue; corrected decoder timings to distinguish whole tests from public calls.
+- Updated the evidence index, workstream and handoff. Runtime remains inactive;
+  receiver/controller integration and the broader QF02–QF08 requirements stay open.
+
 ## Assigned questionnaire component evidence — 2026-10-02
 
 - Recorded scoped question-screen-to-R timing/retry checks and a separate actual

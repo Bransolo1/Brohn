@@ -15,7 +15,8 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 | Durable local observation journal | 39 actual Chrome assertions, including a real browser-process restart, two-tab exclusion, real transaction abort, injected storage denial, typed/signed-zero values, sequence/ID reuse, corruption refusal, complete-record count/byte pages and the initialization/version-change race. | Pending HTTP requests, atomic ACK/receipt/questionnaire-state persistence, drafts, first-start recovery and the complete participant controller are not implemented by this storage core. |
 | Question09 + bridge/order + actual durable journal | Browser02: 90 assertions and five zero-violation Axe/overflow scans. All five scenarios used the same original run/view in separate synthetic profiles, then closed and relaunched Chrome. Exact saved rows/cursors survived; aborted and ambiguously committed intermediate states remain independently inspectable. Both reviewers inspected all five current screenshots. | The no-edit reconciliation screen is a harness guard; HTTP receipts and a complete participant recovery controller remain open. |
 | Fresh original R replay of durable browser02 | 86 checks: all 61 original obligations and 25 additions. Independently verified exact saved JSON bytes/hashes, run/renderer binding, restart readback, abort/retry distinctions and source event replay across all five scenarios. | Controlled clocks and the original separately synthetic equipment precondition remain. Actual HTTP receipt/draft/controller behavior is not supplied by these tests. |
-| Atomic assigned-presentation store, successor02 | Core: 50 store and 23 wrapper controls. First rollback phase: 26 store and 23 wrapper controls; all six intended insert failures left every tracked table unchanged. Second atomic phase: 23 store and 23 wrapper controls cover quota, allocation contention, post-commit ambiguity and exact retry. | Contention is exercised by same-process interleaving; actual separate writers remain to qualify. Later authority phases, larger complete-source positives, bounded current replay and HTTP integration remain open. These are separate phases over synthetic registered assets, not a production renderer. |
+| Atomic assigned-presentation store, successor02 | All six phases pass: core 50/23, rollback 26/23, atomic retry 23/23, authority 36/23, complete forward-only source 16/22 and complete retained source 18/22 (store/wrapper assertions). The six intended insert failures preserve all tracked rows; authority changes refuse. Every phase closes naturally with original inputs conserved. | The totals include repeated checks. Contention uses same-process interleaving; separate writers and HTTP integration remain to qualify. Current replay has its separate evidence below. Synthetic registered assets do not establish a production renderer. |
+| Bounded current-session reader | All six phases pass: initial/ending, journal integrity, separate-connection changes, literal resolution, questionnaire/page bounds and complete retained source. 263 case and 157 wrapper assertions include repeated setup. Original source, inputs and RNG remain exact; all phases close naturally. | The complete retained positive has no collected events; the questionnaire journal uses the actual small information-question source. Outer 4 MiB fitting is a separately labelled synthetic packet test. A genuine large design–collection–reopen journey, HTTP and server receive/derive transaction remain open. |
 
 The browser-to-R case retained initial response time100.125 ms for a held
 submission; the deliberately discarded capture followed by a fresh submission
@@ -65,10 +66,30 @@ complete-source and assignment checks. Actual committed retry now passes;
 deliberately changed renderer ID and manifest values still refuse after complete
 admission. The failed run and its original source remain retained.
 
+The complete retained-store case exposed a product latency gap: first-start
+compile/project/admit-and-commit took 83.82 seconds; a separate cold reopen took
+27.55 seconds. The writer transaction itself took 0.09 seconds. These are single
+observations with different timing scopes, not a stable performance benchmark.
+The fast 0.02-second check on an already-held handle does not replace cold
+admission. A frozen profiling plan separates validation and encoding costs before
+choosing an optimization; no validation or supported content limit was removed.
+The separate full current-session response subsequently took 28.91 seconds on
+the complete retained source. It passed correctness checks, not a latency target.
+
+Current-session qualification checks 101 original events with two bounded reads,
+preserves negative zero and refuses incorrect hashes, identities, noncanonical
+bytes, non-text bodies and oversized rows. Actual peer commits during replay
+exercise credential revocation, journal advancement, event-ID corruption and
+researcher resolution. A stale response refuses; a new read sees coherent saved
+state. Information acknowledgement, review/sealing and token-bound page recovery
+use original event replay. These tests neither create physical device evidence
+nor prove the still-absent authenticated receive transaction.
+
 ## Next integration obligations
 
-1. Complete the current atomic first-start/assigned-presentation store tests,
-   then the bounded current-state replay and participant response.
+1. Preserve the qualified current-reader behavior while connecting one owned
+   source context to receive/derive transactions. Add separate-writer first-start
+   contention and genuine large questionnaire collection/reopen evidence.
 2. Connect the qualified durable screen/bridge/order path and its independent R
    replay to the actual participant controller. Both scoped phases pass; neither
    supplies the remaining authenticated receiver, ACK/state or draft recovery.
