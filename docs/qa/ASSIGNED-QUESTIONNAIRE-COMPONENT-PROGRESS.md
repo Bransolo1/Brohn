@@ -8,6 +8,10 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 
 | Component | Executed evidence | Scope still open |
 | --- | --- | --- |
+| Actual browser network recovery |85 Chrome and10 syntax checks pass against a synthetic Node server. All three lost-reply cases preserve pending/ACK0 through two explicit attempts and three observed identical physical POSTs, then recover the same operation and fresh CURRENT after restart. | Actual R HTTP, full controller, durable drafts and ordered writes during in-flight requests remain. Browser retransmission is distinct from the application's bounded retry count. |
+| Context reuse, six phases | Corrected attribute traversal passes 97 case/120 wrapper checks across core, retained, authority, mutation, lifecycle and accounting. Complete response bytes match. Tiny cold/miss/warm: 1.19/1.78/0.22s; retained: 29.37/31.50/0.34s. Fresh access, source changes, LRU/expiry, callback/handle cleanup and conservative memory accounting pass. | Actual HTTP/coordinator integration and first-start latency. Individual diagnostics are not stable production benchmarks. |
+| Assigned resource responses | 36 direct/25 wrapper checks pass on actual PNG objects: selected control/version and question/task/choice resources, exact bytes/headers, foreign/unassigned refusal, source/credential drift, corruption, bounded snapshot reads and cleanup. | Actual HTTP/ranges/disconnect, large-media playback and deployment. Positive cold fetches were about 4s, still too slow. |
+| Camera 1.0 direct operations |45 direct/25 wrapper checks pass: exact original receipts/chunks/observation bytes, public frame mappings, response-loss recovery, conflicts and finalization. One original assembly job remains queued/unclaimed. | Named policy 1.1 separately passes 35 direct/25 wrapper checks after correcting a fixture string/numeric setting; original failure retained. Terminal/fence, worker, video decode and physical recording remain. |
 | Assigned API-only router | 50 route/header checks pass, including finite declared upload limits, transfer-encoding refusal, exact paths/token syntax, original origin and safe error responses. Source syntax includes entry and finish. Natural independent closure and all1533 source files conserved. | No actual TCP, proxy, coordinator, storage or browser journey in this phase. |
 | Entry/welcome and assigned finish | Independent static source review; both sources parse in the header phase. Finish now supplies the actual admitted1.2 revision context and a seven-value scalar envelope. | Direct coordinator execution, actual HTTP resource ownership and completed/withdrawn/interrupted jobs remain. Full-history writer replay and downstream1.2 worker compatibility are explicit activation gates. |
 | Native typed question controls, implementation09 | 744 rule goldens, 37 pure controls, 237 browser assertions and 34 zero-violation Axe scans across baseline, submission and invalid-text phases. All 16 current screenshots reviewed by the component owner; four recovery/completion screens also reviewed independently. | Screen-reader testing, full controller and final combined runtime. Automated accessibility scans are not complete accessibility qualification. |
@@ -57,7 +61,9 @@ explicit1.2 design was mistakenly passed to the legacy validator. Only actual
 PNG registration/setup ran; no release, start or camera operation occurred.
 Failure and natural independent closure are retained. A separate successor uses
 the actual variant validator and fixes a run-specific public frame key in a later
-unrun resolution case. Camera/resource runtime bytes are unchanged.
+unrun resolution case. Camera/resource runtime bytes are unchanged. Subsequent camera1.0 direct checks pass as above;
+named 1.1 then exposed a separate fixture parameter-type error before release.
+Both failed attempts remain distinct from actual camera-operation evidence.
 
 Detailed source bindings, test outputs, failure records and process-closure
 receipts remain in the local build workspace under `work/participant-*`. This

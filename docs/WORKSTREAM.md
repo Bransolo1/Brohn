@@ -1,14 +1,18 @@
 # Brohn workstream and restart checklist
 
-**Latest API integration:** reviewed entry/welcome and finalization adapters plus
-an API-only router are now in the inactive development snapshot. Router header
-checks pass50. Qualify actual coordinator/HTTP behavior next, preserve the exact
-assigned revision context at finish, and move full-history replay outside the
-writer with equivalent source/commit fencing. The original downstream worker
-must support actual1.2 protocols before rollout. Browser network recovery and
-bounded context reuse are in separate qualification. Camera/resource fixture01
-failed before release/start on the wrong design validator; preserve it and use
-the explicit variant-validator successor. Production registration stays disabled.
+**Latest recovery integration:** 20 exact inactive source files and 48 indexed
+local evidence entries include sender 85 Chrome/10 syntax, all six pool phases
+(97 case/120 wrapper), camera 1.0 (45 direct/25 wrapper) and assigned resources
+(36 direct/25 wrapper). Named camera 1.1 also passes 35 direct/25 wrapper checks.
+Other camera phases, actual R HTTP and researcher
+journeys remain open. Retained warm 0.34s does not resolve cold 29.37s or first start.
+
+Next connected work: finish the durable ordered-write boundary and draft store,
+then public-key questionnaire actions/controller and actual R HTTP. Qualify the
+outside-writer finalization successor and explicit startup schema admission.
+Build a separate protocol1.2 worker path preserving historical assignments and
+original scoring; export provenance is another gate. Keep original fixture/runtime
+failures and exact successor evidence. No production registration is enabled.
 
 **2 October integration:** follow the [assigned questionnaire delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 for the current QF01/EF02–EF03 collection work. Complete atomic start/current
@@ -24,8 +28,9 @@ the separately qualified completion-label correction. First-start core and both
 atomic phases pass, followed by authority and both complete-source phases. All
 six store phases are closed with inputs conserved. All six bounded current-reader
 phases also pass, including actual peer changes and original questionnaire replay.
-Separate-writer first-start contention and the authenticated receive transaction
-remain open. The large retained case took 83.82 seconds at first start, 27.55
+Separate-writer first-start contention and the actual authenticated HTTP/controller
+join remain open; the direct receiver transaction now has its scoped evidence.
+The large retained case took 83.82 seconds at first start, 27.55
 seconds on store reopen and 28.91 seconds for the current response; investigate
 these distinct operations before activation, preserving complete validation.
 Paired admission/decoder profiles and a bounded wire-key memo are now qualified
@@ -43,7 +48,7 @@ Start/current now passes its five focused cases using one owned admission.
 The operation journal also passes90 question-screen controls and21 exact prior
 observation comparisons. Complete actual HTTP/controller and camera/resource/
 finalization integration next; do not rerun unchanged component suites merely
-to increase counts. All35 local evidence entries retain their individual scope.
+to increase counts. All 48 indexed local evidence entries retain their individual scope.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

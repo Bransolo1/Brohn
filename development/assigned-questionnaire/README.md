@@ -22,9 +22,11 @@ reproduce their test runs. Do not infer that all files were tested together.
 | R/platform-participant-view-router.R | Inactive API-only routing for eleven assigned endpoints; 50 header/route controls pass. Real HTTP and domain integration remain. |
 | R/platform-participant-view-entry.R | Narrow consent/welcome projection and selectorless welcome PNG access. Independently reviewed; direct coordinator tests remain. |
 | R/platform-participant-view-finish.R | Original completion/receipt/job transaction with assigned authorization and admitted revision context. Independently reviewed; direct tests, bounded replay and downstream worker support remain. |
-| R/platform-participant-view-camera.R | Inactive adapter to original camera operations, using assigned policy and step references. Actual camera integration tests remain. |
-| R/platform-participant-view-resource.R | Unrun draft serving only authenticated assigned resources through bounded verified snapshots. Full files only; range/media and HTTP ownership tests remain. |
+| R/platform-participant-view-camera.R | Original camera operations with assigned policy/step references. Camera 1.0 passes 45 direct checks and named policy 1.1 passes 35. Terminal/fence phases, HTTP, worker and physical recording remain. |
+| R/platform-participant-view-resource.R | 36 direct checks pass for authenticated assigned PNGs, bounded verified snapshots, source changes and cleanup. Full files only; actual HTTP, ranges and disconnect ownership remain. |
 | R/platform-participant-received-bytes.R and platform-participant-wire-json.R | Separately checked decoder/encoder optimizations; complete source validation and limits remain. |
+| R/platform-participant-context-pool.R | Bounded private context reuse with fresh access checks. All six phases pass (97 case/120 wrapper checks); actual HTTP/coordinator integration and deployment remain separate. |
+| www/participant/operation-sender.mjs, current-session.mjs and current-structure.mjs | Actual fetch and literal current admission.85 Chrome recovery checks use synthetic server authority; actual R/controller and in-flight ordered writes remain. |
 | www/participant/observation-journal.mjs | Browser observations, durable pending operations and atomic receipt/model/progress storage. |
 | www/participant/operation-result.mjs, request-bytes.mjs and wire-json.mjs | Typed request encoding and literal received-result checking without recreating R numeric spelling. |
 

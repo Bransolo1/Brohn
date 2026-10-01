@@ -1,5 +1,29 @@
 # Assigned questionnaires: collection and recovery architecture
 
+## Recovery checkpoint — 2 October 2026
+
+Actual Chrome sender recovery now passes 85 controls against synthetic Node
+authority; it preserves pending operation bytes through lost replies and restart,
+then refreshes CURRENT before enabling collection. This does not qualify actual
+R HTTP or the questionnaire controller. Browser-internal retransmissions can
+produce more physical requests than the two explicit application attempts.
+
+The private context pool passes core and full retained-response equivalence.
+The retained diagnostic was29.37s cold,31.50s first pooled admission and0.34s warm.
+All six direct pool phases now pass, including access, mutation, lifetime and
+accounting (97 case/120 wrapper checks). Use by actual coordinators remains a
+separate gate. Assigned PNG resource tests also pass 36 direct checks, while
+HTTP/disconnect/range behavior and cold-resource latency remain unqualified. The sender's in-flight append restriction still needs an explicit
+storage-only observed-event boundary plus a durable draft store.
+
+The new local finish successor prepares full replay and original camera support
+before the writer, with unchanged-source/schema/change-counter fences. It is
+not yet directly qualified. Camera support still aggregates history outside the
+writer; protocol decoding/comparison remains inside. Initialize and admit the
+complete receiver schema at startup. Never repair missing storage in a request.
+Automatic protocol1.2 analysis and later export need explicit historical-reader
+support; queued jobs cannot be presented as completed analyses.
+
 This is the active QF01 / EF02–EF03 integration contract, dated 2 October 2026.
 It extends [questionnaire parity requirements](../research/QUESTIONNAIRE-QUALTRICS-PARITY.md)
 and the [eye-tracking flexibility queue](../research/EYE-TRACKING-FLEXIBILITY.md).

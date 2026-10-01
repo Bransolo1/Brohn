@@ -1,12 +1,18 @@
 # Resume here — Brohn
 
-Latest local API work: entry/welcome and finish coordinators are independently
-reviewed, and the API-only router passes50 header/route checks. Sixteen exact
-implementation/dependency files are available in the development snapshot.
-Actual HTTP, coordinator execution, complete participant recovery and downstream
-analysis still need joined acceptance. The camera fixture's first attempt failed
-before release/start because it selected the legacy design validator; that failure
-is preserved while a separate fixture correction is prepared. No new profile is active.
+Latest recovery checkpoint: 20 exact inactive source/dependency files now include
+the real-fetch sender and bounded server context pool. Actual Chrome recovery
+passes 85 controls against a synthetic Node server. All six pool phases pass with
+97 case checks and 120 wrapper checks; a retained warm read took 0.34s versus
+29.37s cold. Camera 1.0 direct collection passes 45 checks; assigned media passes
+36. None of these activate the profile.
+
+Next: qualify remaining camera paths, real R HTTP/controller and durable drafts.
+A new local finalization successor moves replay outside the writer; its direct
+checks remain. Protocol 1.2 analysis
+needs an explicit historical reader/scorer/worker path and later export support.
+Named camera policy 1.1 now passes 35 direct/25 wrapper checks after its separate
+fixture correction. Terminal/fence checks, cold start and full researcher UX stay open.
 
 2 October integration: the [assigned questionnaire collection/recovery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
 now records immutable presentation/source binding, ordered submission timing,

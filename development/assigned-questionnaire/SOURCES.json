@@ -43,14 +43,14 @@
       "bytes": 6249,
       "sha256": "58a864690a0f099a5f71e652364e4dc19cf7071d1eb67bbbd524312321aaba61",
       "local_source": "work/participant-view-camera-next-20261002/R/platform-participant-view-camera.R",
-      "scope": "Static review only; camera SQL and worker-queue join unrun"
+      "scope": "Camera1.0 direct45/25 and named1.1 direct35/25 case/wrapper checks pass; terminal/fence phases and actual HTTP/worker/physical capture remain open"
     },
     {
       "path": "R/platform-participant-view-resource.R",
       "bytes": 2680,
       "sha256": "2811aefcd785647246f3e41da10d1e76563470a23d39d8d8848205ac6a1d4a48",
       "local_source": "work/participant-view-resource-next-20261002/R/platform-participant-view-resource.R",
-      "scope": "Unrun draft; actual assigned-media and HTTP ownership/range tests remain"
+      "scope": "36 direct/25 wrapper checks pass with actual assigned PNG bytes, source/access fences, bounded copy and cleanup; actual HTTP/ranges/disconnect and performance remain open"
     },
     {
       "path": "R/platform-participant-received-bytes.R",
@@ -114,6 +114,34 @@
       "sha256": "5628762828ab0a6caf33a99e733414b236f4f562246f6d94dd5154485cd9709d",
       "local_source": "work/participant-view-router-next-20261002/R/platform-participant-view-router.R",
       "scope": "50 header/route checks passed; API-only, no actual TCP/coordinator/store/browser journey"
+    },
+    {
+      "path": "R/platform-participant-context-pool.R",
+      "bytes": 13079,
+      "sha256": "2140f132da3cd959ffbc90de94207cd000c3b727a74c1d50cbcd72583e6c76b8",
+      "local_source": "work/participant-context-pool-successor02-20261002/R/platform-participant-context-pool.R",
+      "scope": "Six direct phases97 case/120 wrapper checks pass; exact complete responses, fresh authority, mutations, lifecycle and graph accounting. Actual HTTP/coordinator reuse and latency remain open"
+    },
+    {
+      "path": "www/participant/operation-sender.mjs",
+      "bytes": 12068,
+      "sha256": "f869025a4e66047dd94355cd9d97d393de1d605b11b7026b310fe397d71e82a2",
+      "local_source": "work/participant-operation-sender-next-20261002/www/participant/operation-sender.mjs",
+      "scope": "85 real Chrome recovery checks and10 syntax pass against synthetic Node authority; ordered writes during in-flight synchronization and actual R/controller remain open"
+    },
+    {
+      "path": "www/participant/current-session.mjs",
+      "bytes": 5379,
+      "sha256": "67b93d7e8d7ac6223843236d29117be0b880703c3d21b3a4d74a280f4d7cdaf8",
+      "local_source": "work/participant-operation-sender-next-20261002/www/participant/current-session.mjs",
+      "scope": "Literal current-session admission in the same scoped browser sender qualification; not a complete questionnaire model/controller"
+    },
+    {
+      "path": "www/participant/current-structure.mjs",
+      "bytes": 11343,
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba",
+      "local_source": "work/participant-operation-sender-next-20261002/www/participant/current-structure.mjs",
+      "scope": "Exact extracted typed association helpers used by the scoped browser sender; no independent authority"
     }
   ]
 }

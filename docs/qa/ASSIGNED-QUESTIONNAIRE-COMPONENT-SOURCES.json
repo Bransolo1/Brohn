@@ -430,6 +430,128 @@
         "sha256": "6c741095ee4d1c03abebe980dc7a595f01478f1b4ba4c450bf7593f740b4f3e2"
       },
       "scope": "Fixture used legacy validator for explicit design1.2; stopped before release/start/camera operation. Original runtime unchanged; successor fixture required."
+    },
+    {
+      "name": "assigned_camera10_direct",
+      "acceptance": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera10-03/ACCEPTANCE.json",
+        "bytes": 2089,
+        "sha256": "aec1656f49b0553ab50d7c1a079f863fbb4fc91885bee2f23dece6948a6f6819"
+      },
+      "scope": "45 direct/25 wrapper; actual original operations, exact chunks/observations, lost-response retry and queued unclaimed assembly job; no worker or physical capture"
+    },
+    {
+      "name": "context_pool_core03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/core-03/ACCEPTANCE.json",
+        "bytes": 2643,
+        "sha256": "e08a318043816d162d791c96ae9450b63bcd306a1160d39f0057fee8d58777c8"
+      },
+      "scope": "Corrected attribute traversal;19 case/20 wrapper, tiny response cold1.19s/miss1.78s/warm0.22s; exact complete bytes and fresh snapshots, other phases open",
+      "aggregate": {
+        "path": "work/participant-context-pool-qa-20261002/aggregate-03/ACCEPTANCE.json",
+        "bytes": 10412,
+        "sha256": "05d5a6d89847fec264ab3e4b585915b33edff10726197b44e491fcc865b315ba"
+      }
+    },
+    {
+      "name": "context_pool_retained03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/retained-03/ACCEPTANCE.json",
+        "bytes": 2683,
+        "sha256": "b02e1b46a99201fe05e47174f590e87a9ae86a09da2b40985f233616cf835635"
+      },
+      "scope": "20 case/20 wrapper; retained response cold29.37s/miss31.50s/warm0.34s; exact complete bytes, diagnostic timings not HTTP benchmarks"
+    },
+    {
+      "name": "operation_sender_browser03",
+      "acceptance": {
+        "path": "work/participant-operation-sender-qa-20261002/ACCEPTANCE-03.json",
+        "bytes": 5625,
+        "sha256": "29ac76e3c6587a86f173944e54c348cc5e4030a99a9968ecaa9ee14714de6d9e"
+      },
+      "scope": "85 real Chrome/10syntax with synthetic server; each lost-reply case2 logical attempts/3 identical physical POSTs, pending recovery and fresh CURRENT; no actual R authority"
+    },
+    {
+      "name": "context_pool_core02_failure",
+      "failure": {
+        "path": "work/participant-context-pool-qa-20261002/core-02/FAILURE.json",
+        "bytes": 2751,
+        "sha256": "fd9486dab2d04e85bfa13702dd5ec43fbc4723b488750e6453095b2cb01b4382"
+      },
+      "scope": "Original runtime recursed through attributes of a temporary named metadata list; corrected only in separately qualified2140 successor"
+    },
+    {
+      "name": "sender_browser02_failure",
+      "failure": {
+        "path": "work/participant-operation-sender-qa-20261002/FAILURE-02.json",
+        "bytes": 5438,
+        "sha256": "85cf1152204d0bac69ac15c174774d174a858ce45e31df3fb2da202b698d957b"
+      },
+      "scope": "Harness confused two explicit fetch attempts with physical Chrome retransmission; runtime unchanged in accepted browser03"
+    },
+    {
+      "name": "camera11_fixture03_failure",
+      "failure": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera11-03/FAILURE.json",
+        "bytes": 2389,
+        "sha256": "f90614d509d38463075d36b0c8bfab3c178d3850a99c1d9c053f80fe39e5558f"
+      },
+      "scope": "Named policy fixture supplied text instead of numeric support-gap; stopped before release or camera operations; correction separate"
+    },
+    {
+      "name": "context_pool_authority03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/authority-03/ACCEPTANCE.json",
+        "bytes": 2431,
+        "sha256": "0c65f5d6ebf930cc74cd8aeb149927046202b76ca9b049d5cafe45fe843a9e3d"
+      },
+      "scope": "10 case/20 wrapper; wrong token, revocation, renderer change and fresh ACK refusals; direct inactive composition, no HTTP/production acceptance"
+    },
+    {
+      "name": "context_pool_mutation03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/mutation-03/ACCEPTANCE.json",
+        "bytes": 2423,
+        "sha256": "daf8c3720bcec347bc7d80f9901ee6c7619b76ae05b15b055a2013eec930cfc7"
+      },
+      "scope": "9 case/20 wrapper; changed runtime/view, snapshot-to-handle changes and credential drift refuse without retained invalid entries; direct inactive composition, no HTTP/production acceptance"
+    },
+    {
+      "name": "context_pool_lifecycle03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/lifecycle-03/ACCEPTANCE.json",
+        "bytes": 2432,
+        "sha256": "77ddd2999ced2bf622b2f0323d18a6a89b0d5208114d203dcaef7cf49aa304e3"
+      },
+      "scope": "19 case/20 wrapper; actual3-start LRU/expiry, reentrancy/escape/callback failures, generation retirement and active-borrow/store-close cleanup; direct inactive composition, no HTTP/production acceptance"
+    },
+    {
+      "name": "context_pool_accountant03",
+      "acceptance": {
+        "path": "work/participant-context-pool-qa-20261002/accountant-03/ACCEPTANCE.json",
+        "bytes": 2438,
+        "sha256": "d19b3f24d6e73da3705a6bc32414e909df419e3ca4a62a183ed95f0283ca3e21"
+      },
+      "scope": "20 case/20 wrapper; actual frames/attributes/source bodies charged, bounds/unknown references refuse reuse, credentials and ACK excluded from cached semantic proof; direct inactive composition, no HTTP/production acceptance"
+    },
+    {
+      "name": "assigned_resource_direct03",
+      "acceptance": {
+        "path": "work/participant-view-camera-resource-qa-20261002/resources-03/ACCEPTANCE.json",
+        "bytes": 2096,
+        "sha256": "5a1390c40d3220099a1a1cf9bb06d9fbbb6fbaced52be55ba3666d61fe9dfff1"
+      },
+      "scope": "36 direct/25 wrapper; actual assigned PNG bytes/headers, access and peer changes, corruption/bounded copy/cleanup; no actual HTTP/ranges/disconnect or production latency"
+    },
+    {
+      "name": "assigned_camera11_direct04",
+      "acceptance": {
+        "path": "work/participant-view-camera-resource-qa-20261002/camera11-04/ACCEPTANCE.json",
+        "bytes": 2087,
+        "sha256": "1f5f2e6041da6ba16b4bbb554fde5d0ed087a4612b418130db99ff47912d9162"
+      },
+      "scope": "35 direct/25 wrapper on actual named policy1.1 consent/private-policy and original receipts/objects/queue; earlier numeric fixture failure retained, terminal/fence/HTTP/worker/physical scopes separate"
     }
   ],
   "root_visual": {
@@ -445,9 +567,9 @@
   "remaining": [
     "Actual separate-writer first-start contention",
     "Genuine large questionnaire collection and current recovery with response-page reduction",
-    "Received/derived transaction and browser ACK/state persistence",
-    "Assigned resources/equipment/controller/HTTP integration",
-    "Full researcher journey and latency qualification",
+    "Actual R HTTP/journal/controller join, ordered writes during synchronization and durable drafts",
+    "Assigned resources/equipment/finalization and protocol1.2 analysis/export integration",
+    "Full researcher journey and cold/warm latency qualification",
     "QF02-QF08 complete flow, guided analysis and editable dashboards"
   ],
   "limitations": "Controlled clocks and separately synthetic equipment setup; no physical device, scientific validity, screen-reader, hosting or Qualtrics-parity claim. All17 work-package statuses unchanged."

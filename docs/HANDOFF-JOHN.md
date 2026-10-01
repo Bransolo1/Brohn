@@ -10,16 +10,25 @@ records the screen-to-R and separate browser-storage passes, retained harness
 failures and remaining joins. Detailed local build evidence still needs portable
 promotion; the public repository does not yet contain an activated new renderer.
 The [development source snapshot](../development/assigned-questionnaire/README.md)
-now includes16 exact implementation/dependency files for review, with individual
+now includes 20 exact implementation/dependency files for review, with individual
 status and byte identities. It is not a standalone runnable candidate and does
 not include the complete local QA fixtures or transitive R overlays.
 The newest files add entry/welcome, finish and API-only routing. Router headers
-pass50 controls; this is not an actual HTTP session test. Opening/finalization
+pass 50 controls; this is not an actual HTTP session test. Opening/finalization
 have static review only. Keep original design1.2 revision context during finish;
 large finalization replay and downstream analysis-worker acceptance remain open.
-The first camera/resource fixture stopped before collection because it used the
-legacy validator for a1.2 design. Its failure and closure are preserved; a corrected
-fixture is being prepared without changing the camera/resource implementation.
+Camera 1.0 direct collection now passes 45 controls; its original fixture failures
+remain preserved. Named policy 1.1 now passes 35 direct/25 wrapper checks after
+its separate numeric fixture correction; terminal/fence integration remains.
+The actual browser sender passes 85 recovery checks against synthetic authority;
+this is not yet real R HTTP/controller acceptance. The context-pool response comparisons pass;
+the complete retained response measured 29.37s cold and 0.34s warm. All six pool
+phases now pass (97 case/120 wrapper checks), including access, mutation, lifetime
+and graph accounting. Actual server integration remains. Assigned PNG resource
+checks also pass 36 controls; HTTP/range/disconnect behavior remains separate.
+The snapshot adds these exact sender/current/pool files for review. Local work
+now addresses ordered observations while sending, durable drafts and the assigned
+questionnaire controller. Finish/worker/export compatibility is still required.
 The six assigned-store and six bounded current-reader phases pass locally.
 Current recovery preserves original questionnaire history and rejects stale
 responses after actual peer changes. Its complete retained response took 28.91

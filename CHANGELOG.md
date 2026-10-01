@@ -1,5 +1,24 @@
 # Changes
 
+## Assigned response recovery and session reuse — 2026-10-02
+
+- Added the inactive sender, literal current reader/helpers and server context
+  pool to the source snapshot, bringing it to 20 files with exact local identities.
+- Passed85 actual Chrome recovery checks and10 syntax checks. Three lost-reply
+  cases each observed two explicit attempts but three physical retransmissions;
+  all retained identical bytes and recovered one operation before fresh CURRENT.
+- Passed19 core and20 retained pool checks (plus20 wrapper checks each). Retained
+  response timings were29.37s cold,31.50s first pool admission and0.34s warm;
+  subsequent authority/mutation/lifecycle/accounting phases pass, bringing the
+  total to 97 case/120 wrapper checks. Actual HTTP latency remains unqualified.
+- Passed45 camera1.0 direct checks and25 wrapper checks; assembly stays queued,
+  no worker or physical recording tested. Named policy 1.1 also passes 35 direct/25
+  wrapper checks; its earlier fixture failure remains preserved.
+- Passed 36 direct/25 wrapper assigned-resource checks using actual PNGs,
+  including wrong-source refusal, source drift, bounded copy and cleanup.
+- Tracked remaining ordered-write/draft/controller and protocol1.2 analysis joins.
+  No new participant profile or scientific readiness claim is enabled.
+
 ## Assigned opening, finalization and API wiring — 2026-10-02
 
 - Added three exact inactive source files to the development snapshot: narrow

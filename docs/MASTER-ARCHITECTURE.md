@@ -17,14 +17,28 @@ cold-admission and extreme-request latency issues that must be resolved before
 activation. Local component qualification does not release this profile.
 The [development source snapshot](../development/assigned-questionnaire/README.md)
 contains the current transport/storage implementation for inspection. Its
-manifest distinguishes separately qualified components from unrun camera/media
-drafts and incomplete joins; it is not registered or a standalone application.
+manifest distinguishes separately qualified components from remaining media and
+controller joins; it is not registered or a standalone application. Actual browser
+recovery (85 checks), all six pool phases, camera 1.0 (45 direct checks) and
+assigned PNG resource checks (36) now pass locally.
+The warm retained pool read measured 0.34s, but 29.37s cold remains too slow.
 The API-only router now has50 passing header/route checks, while new opening and
 finish coordinators have independent static review. Real HTTP, lifecycle, original
 finalization and downstream analysis remain their own gates. Keep pre-enrolment
 welcome access separate from assigned experimental media. Supply the admitted
 original revision context at finish; never rebuild design1.2 through a legacy
-compiler. Qualify bounded outside-writer replay before promising good concurrency.
+compiler. Qualify outside-writer replay and original camera support before
+promising good concurrency. Preserve the new local successor's distinction
+between streamed main replay and aggregate camera history outside the writer.
+Server startup must admit the complete receiving schema before any request.
+
+The original analysis worker currently rejects protocol1.2 and constructs legacy
+revision contexts. Its MaxDiff path also regenerates offered sets, and two task
+scorers recompile their assignment tables. Add an explicit historical source and
+post-admission scoring path; do not strip new fields, disguise schema versions or
+rerun prospective allocation. Existing formulas and evidence remain versioned.
+Saved-report export has separate1.2 provenance gates. Durable collection alone
+does not close automatic analysis or dashboard acceptance.
 
 The intended advantage is low-click explicit and implicit research in one study:
 correct exposure-linked liking, stimuli/controls/versions, gaze/AOIs and other
