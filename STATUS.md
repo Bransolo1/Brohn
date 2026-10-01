@@ -5,6 +5,11 @@ now records immutable presentation/source binding, ordered submission timing,
 exact-byte retries, browser/server durability and actual researcher QA gates.
 Local components are in qualification; no new delivery profile is active. Cold
 admission and extreme request-processing latency must be resolved before rollout.
+The [scoped component progress](docs/qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
+now includes actual question-screen-to-R replay and a separately tested Chrome
+observation journal. The question controls also pass their joined durable-browser
+phase and its independent 86-check R replay. Durable server delivery and the joined
+researcher journey remain open; these passes do not activate questionnaire assignment.
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer

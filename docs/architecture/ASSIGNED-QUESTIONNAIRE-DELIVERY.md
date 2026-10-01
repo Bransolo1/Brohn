@@ -103,6 +103,11 @@ need representative workloads as well as single-run correctness tests.
 
 ## Current integration gates
 
+The [2 October component progress](../qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
+records the executed screen-to-R replay and separately qualified actual Chrome
+observation journal. Their joined durable delivery, current server response and
+complete researcher journey are still required.
+
 The local components have separate scoped checks for typed question projection,
 state/history translation, event replay, exact request encoding/decoding, native
 question controls, ordered observations and submission recovery. Those passes

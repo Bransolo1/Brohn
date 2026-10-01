@@ -6,6 +6,13 @@ authority, real component-to-R timing replay, browser durability, received/deriv
 transactions and assigned-resource/camera paths before activation. Preserve the
 documented cold-admission and extreme-parser latency blockers. Local component
 passes do not close the researcher journey or any broader questionnaire package.
+Read the [component progress and remaining join gates](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md):
+browser03 and its original R replay pass, and the separate actual Chrome journal
+passes its scoped controls. The actual question/journal browser join and its fresh
+86-check R replay also pass. Complete atomic server receipts/state and integrate
+the separately qualified completion-label correction. First-start core and both
+atomic phases pass; actual separate-writer contention, remaining store phases and
+bounded current-state replay are still open.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

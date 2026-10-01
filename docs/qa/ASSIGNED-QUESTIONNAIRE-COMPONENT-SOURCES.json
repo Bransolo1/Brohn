@@ -1,0 +1,134 @@
+{
+  "schema": "brohn-local-questionnaire-component-evidence-index/0.1",
+  "date": "2026-10-02",
+  "status": "Local inactive component evidence; no released runtime/profile activation",
+  "released_head_before_documentation": "13f129e9d5d44d9ed72f3eedab63900b507a59da",
+  "released_runtime_head": "f39bd63d7680c09c624189093be2706ca7a360f9",
+  "evidence_locations": "Paths below are relative to the retained local workspace, not files claimed to exist in this public repository.",
+  "components": [
+    {
+      "name": "question_controls09",
+      "acceptance": {
+        "path": "work/participant-question-renderer-next-20261001/acceptance-04/ACCEPTANCE.json",
+        "bytes": 11486,
+        "sha256": "7215fb1db1f97ae7d3a7205a04631221b7c90dd81f411bd4699622bcf4c34459"
+      },
+      "source": {
+        "path": "work/participant-question-renderer-next-20261001/implementation-09/www/participant/view-question.js",
+        "bytes": 37289,
+        "sha256": "0438c63fa1ffaf3deb78485fd480211a8885d8d26a24f20e03bdcbd7ba2151ed"
+      }
+    },
+    {
+      "name": "submit_bridge",
+      "acceptance": {
+        "path": "work/participant-question-submit-next-20261002/qualification-01/ACCEPTANCE.json",
+        "bytes": 1166,
+        "sha256": "763dd368fb26ed0fdb34be050ab3724f3bc910e3eaa75d6efe813daefb40385f"
+      }
+    },
+    {
+      "name": "screen_bridge_order03",
+      "acceptance": {
+        "path": "work/participant-question-renderer-next-20261001/parent-integration-browser-03/acceptance-01/ACCEPTANCE.json",
+        "bytes": 4943,
+        "sha256": "209d38970db45cdcc4c67075db042d0f08a8d8b76871f74737456b72d1f23fe3"
+      }
+    },
+    {
+      "name": "screen_original_replay",
+      "acceptance": {
+        "path": "work/participant-question-submit-replay-qa-20261002/VERIFY-ACCEPTANCE-01.json",
+        "bytes": 4595,
+        "sha256": "102ccdb3d91e0b6936b0876d97dbc2fe39994c7dc5bc8359e45c55587526a1bc"
+      }
+    },
+    {
+      "name": "local_journal",
+      "acceptance": {
+        "path": "work/participant-durable-journal-next-20261002/qualification-01/ACCEPTANCE.json",
+        "bytes": 3545,
+        "sha256": "cb4d8216365e3cd6650e9de4aa203570ef9d87a24fd2310023d7dd5cd4f455e6"
+      },
+      "source": {
+        "path": "work/participant-durable-journal-next-20261002/www/participant/observation-journal.mjs",
+        "bytes": 14652,
+        "sha256": "7ec375fbd54e55de549bc8d19b49104257171067bd02ec9aa1928b6b8d627816"
+      }
+    },
+    {
+      "name": "assigned_store_core02",
+      "acceptance": {
+        "path": "work/participant-view-store-successor02-qa-20261002/core-01/ACCEPTANCE.json",
+        "bytes": 4165,
+        "sha256": "366c408eb68276fb3578602a0c2ca4ac67d420a015aa102339b09a022ac77785"
+      },
+      "source": {
+        "path": "work/participant-view-store-successor02-20261002/R/platform-participant-view-store.R",
+        "bytes": 46122,
+        "sha256": "3839d19ff00cf617783d9ab3aedd35683cb63e1cd77da4b5e8c8299ebdaea4aa"
+      }
+    },
+    {
+      "name": "assigned_store_rollback_a02",
+      "acceptance": {
+        "path": "work/participant-view-store-successor02-qa-20261002/atomic-a-01/ACCEPTANCE.json",
+        "bytes": 4320,
+        "sha256": "3b1679afbdb1d84c1af2f606824d5716a364e4347815f333f3fb2b082b3ae045"
+      }
+    },
+    {
+      "name": "durable_question_browser02",
+      "acceptance": {
+        "path": "work/participant-durable-question-integration-next-20261002/qualification-02/ACCEPTANCE.json",
+        "bytes": 4669,
+        "sha256": "0a41c14d03b951428002f4ad8ba34840a6c0cbb1463905c7b7938639d28bea7f"
+      },
+      "artifact": {
+        "path": "work/participant-durable-question-integration-next-20261002/qualification-02/browser-output/BROWSER-EVENTS.json",
+        "bytes": 137896,
+        "sha256": "739ae51d7a338592a29b26076323e4d989a77a367175e9df4fd7adce3bf6ec59"
+      },
+      "root_visual": {
+        "path": "work/assigned-questionnaire-progress-20261002/ROOT-VISUAL-DURABLE-02.json",
+        "bytes": 2068,
+        "sha256": "f9159cf90b3d2e859122a588a66d8fb79d57d5c1b90023ea4d9db078f676cfab"
+      }
+    },
+    {
+      "name": "durable_question_original_replay02",
+      "acceptance": {
+        "path": "work/participant-durable-question-replay-qa-20261002/ACCEPTANCE-02.json",
+        "bytes": 5205,
+        "sha256": "712fa23199eb92094335a33a750b38f28d479096d4c7c98c6027cfad066a3698"
+      }
+    },
+    {
+      "name": "assigned_store_atomic_b02",
+      "acceptance": {
+        "path": "work/participant-view-store-successor02-qa-20261002/atomic-b-01/ACCEPTANCE.json",
+        "bytes": 5750,
+        "sha256": "1e36b28bd1d13fb0811c437a0fbabe661f41dc611f224bc91081907d9a820f4b"
+      }
+    }
+  ],
+  "root_visual": {
+    "path": "work/assigned-questionnaire-progress-20261002/ROOT-VISUAL-09.json",
+    "bytes": 1706,
+    "sha256": "3e88fe36415440891cacb89005444ec0490d7e3134f7bef1ee06b48c5258137c"
+  },
+  "preserved_failure": {
+    "path": "work/participant-view-store-qa-20261002/core-01/FAILURE.json",
+    "bytes": 2949,
+    "sha256": "611ce086a62bb49452c021da785401a99f0d9cd2f50eb43ab73eaf93243e7c55"
+  },
+  "remaining": [
+    "Remaining authority/full-source store phases; actual separate-writer contention",
+    "Bounded current-state reader and outer-budget qualification",
+    "Received/derived transaction and browser ACK/state persistence",
+    "Assigned resources/equipment/controller/HTTP integration",
+    "Full researcher journey and latency qualification",
+    "QF02-QF08 complete flow, guided analysis and editable dashboards"
+  ],
+  "limitations": "Controlled clocks and separately synthetic equipment setup; no physical device, scientific validity, screen-reader, hosting or Qualtrics-parity claim. All17 work-package statuses unchanged."
+}

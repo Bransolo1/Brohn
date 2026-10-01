@@ -1,5 +1,18 @@
 # Changes
 
+## Assigned questionnaire component evidence — 2026-10-02
+
+- Recorded scoped question-screen-to-R timing/retry checks and a separate actual
+  Chrome observation journal with restart, transaction and tab-ownership tests.
+- Retained component09 recovery/completion wording checks, first-start core and
+  six-site rollback evidence, including the repaired cold-open metadata comparison.
+- Added an exact local evidence index with explicit promotion and integration gaps.
+- Recorded the actual question/journal browser join and independent 86-check R
+  replay, plus the second atomic store phase. HTTP/controller delivery remains open.
+- Kept local build evidence, remaining durable delivery joins, completion-label
+  correction and full researcher QA explicit. No runtime/profile activation or
+  Qualtrics parity claim; all work-package statuses are unchanged.
+
 ## Assigned questionnaire integration contract — 2026-10-02
 
 - Specified atomic first start, assigned presentation preservation, ordered

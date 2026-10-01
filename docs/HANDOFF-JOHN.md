@@ -5,6 +5,10 @@ explains the active collection/recovery work, its separate local component
 evidence and remaining integration/latency gates. The released application has
 not enabled the new assigned-view profile. Do not register the legacy browser
 bundle as compatible or treat component tests as end-to-end acceptance.
+The [component evidence summary](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
+records the screen-to-R and separate browser-storage passes, retained harness
+failures and remaining joins. Detailed local build evidence still needs portable
+promotion; the public repository does not yet contain an activated new renderer.
 
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the
