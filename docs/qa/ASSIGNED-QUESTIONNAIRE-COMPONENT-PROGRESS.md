@@ -20,6 +20,14 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 | Bounded object-key encoding memo | Original 345 R/366 Node/450 Python controls, 26 focused controls and 11 retained-context checks pass. Complete values, encoded bytes and all scoped context lookups match. One constructor pair measured 27.61/24.64 seconds with full source admission retained. | This is one ordered timing pair, not a stable speedup or acceptable loading-time claim. Combined runtime promotion remains separate. |
 | Pure operation receipt/model encoder | 54 R, 10 wrapper and 42 independent Python checks pass. Exact typed values, historical commit interval, whole-record prefix fitting and the complete escaped 4 MiB result are checked. | Inputs are synthetic projected-state declarations; this helper does not admit a request, authorize a source, commit SQL or reconstruct historical receipts. |
 | Browser literal operation-result checker | 122 Node checks: four actual R-encoded synthetic document sets, three typed/copy checks, 97 synthetic refusals, 16 synthetic positives and two conservation checks. Exact model strings, signed zero, association, whole-result/raw-packet boundaries and immutable input capture pass. | No HTTP, browser storage transaction, current authority or editing permission is established. The journal must invoke this checker on actual received bytes and its actual saved pending operation. |
+| Actual assigned-event receiver | Core: 20 case/24 wrapper controls on the original small information questionnaire; independent closed-store Python oracle: 204 controls. Exact received bytes, original events, derivations, model and receipts remain associated. | Broader workloads, equipment and real HTTP/controller integration have separate unfinished checks. Synthetic renderer registration is not production activation. |
+| Receiver atomicity and lost replies | 55 case/34 wrapper controls across five fresh stores. Actual faults at operation/event/relation insertion and ACK update roll back all effects; a response failure after commit recovers the original receipt without duplicate writes. | Counts include repeated setup. This does not prove cross-process contention, physical equipment or the complete browser-to-server journey. |
+| HTTP byte helpers | 63 checks using installed httpuv1.6.17 InputStream and four actual R-encoded result fixtures. Exact raw request/response bytes, body lengths, headers and 4 MiB boundaries pass. | No live HTTP route tested. httpuv buffers before Rook; application bounds are not a hosted ingress limit. |
+| Receiver schema, peer and retained-integrity gates | Schema110/46, fences118/46, rating-questionnaire12/27 and retained-integrity145/47 case/wrapper controls pass. Actual second-connection changes refuse stale commits; exact winners recover. Corrupt retained requests/results/relations refuse without repair. | Counts include repeated setup. Peer interleaving is two connections in one process; physical equipment and whole collected large studies remain separate gates. |
+| Operation-journal compatibility and transactions | The successor passes all39 original Chrome controls, then118 operation controls and7 syntax checks. Actual v1 migration, restart/two-tab ownership, pending-before-send, native transaction abort, atomic result/model/ACK, late receipts and fresh-state fences pass. | Results are synthetic fixtures; this is not an actual R/HTTP roundtrip. Two earlier harness-observer failures remain retained. No combined controller or new profile activation. |
+| Single-digit decoder optimization | Four phases pass: original core259, focused367, original limits5 and full paired comparison15, plus24 wrapper checks. Complete raw/typed values, reference snapshots and newly serialized output bytes agree. | Repeated controls are included in these counts. One sequential public-call pair was74.96/65.45 seconds. This is still too slow and is not a production benchmark; combined runtime remains separate. |
+| Question controls with operation journal | 90 actual browser controls and9 syntax checks pass, with five zero-violation Axe scans. All21 raw-row comparisons match the prior durable02 observations after the declared metadata migration. Owner inspected all five current screenshots; root independently inspected three narrow-layout recovery states. | The reconciliation screen is a harness guard. The earlier86-check R replay was not rerun, and real HTTP/current authority/controller behavior remains open. |
+| Start/current response join | Five small-source cases pass96 case/34 wrapper controls: one owned full admission, exact predecessor current response after actual progress/terminal state, lost reply/retry, revoked access, real peer progress/source drift and handle closure. | Complete collected large studies and actual HTTP remain untested. The earlier binding assertion failed on R object-key order; the corrected fixture compares complete typed objects while retaining exact view bytes and public run key. |
 
 The browser-to-R case retained initial response time100.125 ms for a held
 submission; the deliberately discarded capture followed by a fresh submission
@@ -89,16 +97,29 @@ outputs, with the diagnostic 27.61/24.64-second pair reported above.
 The extreme decoder profile also preserved identical complete values: public
 calls took 75.00/74.94 seconds, with an additional separate 4.20/4.08 seconds for
 the output oracle/snapshot. The instrumented lexical scan took 46.18 seconds and
-decoded-domain checking 21.59 seconds. These costs remain unresolved. Earlier
+decoded-domain checking 21.59 seconds. A separately qualified six-line single-
+digit fast path then preserved all complete outputs and limits; its fresh ordered
+pair measured74.96/65.45 seconds. This is a12.7% reduction in that one diagnostic,
+not acceptable extreme-request latency or a stable speedup estimate. Earlier
 whole-test elapsed time must not be described as isolated decoder time.
 
 A separate two-connection WAL diagnostic passed 46 controls for same-connection
 change observations, read-only restoration and busy behavior. This is controlled
 same-process interleaving, not a completed receiver or separate-process race.
-The receiver draft now admits source-owned required schema/trigger definitions;
+The receiver implementation admits source-owned required schema/trigger definitions;
 merely snapshotting a database with already-missing protections is insufficient.
-Actual receiver transactions, rollback, equipment parity and browser local atomic
-ACK/model persistence still require their own execution evidence.
+Core transactions, rollback, required-schema faults, same-process peer changes,
+retained-receipt integrity and local browser atomic ACK/model persistence now
+have the scoped evidence above. Physical equipment, actual HTTP/controller
+joining and separate-process contention retain their own execution gates.
+
+Failed qualification attempts remain part of the record. The rating fixture
+initially supplied a source number where the public event contract requires an
+assigned option key; the corrected fixture uses the real answer translator and
+retains the same expected source value. Browser harness corrections explicitly
+wait for the native abort listener and test frozen mutation in a strict callback.
+All original behavioral assertions remain, and runtime bytes are unchanged by
+those harness repairs. These failures are not recorded as product passes.
 
 Current-session qualification checks 101 original events with two bounded reads,
 preserves negative zero and refuses incorrect hashes, identities, noncanonical
@@ -106,20 +127,20 @@ bytes, non-text bodies and oversized rows. Actual peer commits during replay
 exercise credential revocation, journal advancement, event-ID corruption and
 researcher resolution. A stale response refuses; a new read sees coherent saved
 state. Information acknowledgement, review/sealing and token-bound page recovery
-use original event replay. These tests neither create physical device evidence
-nor prove the still-absent authenticated receive transaction.
+use original event replay. These reader tests are separate from receiver evidence
+and do not create physical device evidence.
 
 ## Next integration obligations
 
-1. Preserve the qualified current-reader behavior while connecting one owned
-   source context to receive/derive transactions. Add separate-writer first-start
-   contention and genuine large questionnaire collection/reopen evidence.
+1. Preserve the qualified store/current/receiver behavior while connecting the
+   actual router and loader. Add separate-writer first-start contention and genuine
+   large questionnaire collection/reopen evidence.
 2. Connect the qualified durable screen/bridge/order path and its independent R
-   replay to the actual participant controller. Both scoped phases pass; neither
-   supplies the remaining authenticated receiver, ACK/state or draft recovery.
-3. Retain exact pending request bytes before send. Commit server received bytes,
-   derivation, original events and receipt atomically. Commit browser ACK,
-   validated questionnaire state and pending-operation changes together.
+   replay to the actual participant controller. Join the separately tested
+   receiver with browser ACK/state transactions and draft recovery.
+3. Exercise the separately qualified server and browser atomic commits through
+   real HTTP: exact pending bytes before send, lost replies/restarts, current-state
+   refresh, changed branches and immutable historical answers.
 4. Connect assigned resources, actual equipment/camera receipts, interruption
    and ending paths, then run the create–publish–collect–restart–results journey.
 5. Resolve cold-admission latency and qualify representative complete workloads.

@@ -1,0 +1,98 @@
+{
+  "schema": "brohn-development-source-snapshot/0.1",
+  "date": "2026-10-02",
+  "status": "Inactive source review snapshot; incomplete transitive R dependencies and no production registration",
+  "files": [
+    {
+      "path": "R/platform-participant-view-store.R",
+      "bytes": 46122,
+      "sha256": "3839d19ff00cf617783d9ab3aedd35683cb63e1cd77da4b5e8c8299ebdaea4aa",
+      "local_source": "work/participant-view-store-successor02-20261002/R/platform-participant-view-store.R",
+      "scope": "Six scoped store phases passed; no released profile"
+    },
+    {
+      "path": "R/platform-participant-view-current.R",
+      "bytes": 15274,
+      "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6",
+      "local_source": "work/participant-view-response-join-next-20261002/R/platform-participant-view-current.R",
+      "scope": "Start/current factoring passes five scoped cases,96 actual/34 wrapper; full HTTP and large collected workload remain open"
+    },
+    {
+      "path": "R/platform-participant-view-receive.R",
+      "bytes": 37367,
+      "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030",
+      "local_source": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+      "scope": "Scoped actual receiver checks; complete HTTP/controller join unfinished"
+    },
+    {
+      "path": "R/platform-participant-operation-documents.R",
+      "bytes": 13861,
+      "sha256": "dad95ca94f57b08c3446a9dcd93f5dbe837d6d1d2bcf023448a998a8b2d4115f",
+      "local_source": "work/participant-receipt-model-next-20261002/R/platform-participant-operation-documents.R",
+      "scope": "Pure encoder qualified; not an authority mechanism"
+    },
+    {
+      "path": "R/platform-participant-view-http.R",
+      "bytes": 3840,
+      "sha256": "e70552ea2ad52dc703f2d9d6cf39507321393c840d38b21ad4f7eb0c08ad4709",
+      "local_source": "work/participant-view-http-next-20261002/R/platform-participant-view-http.R",
+      "scope": "Installed InputStream helper checks; no live route or ingress acceptance"
+    },
+    {
+      "path": "R/platform-participant-view-camera.R",
+      "bytes": 6249,
+      "sha256": "58a864690a0f099a5f71e652364e4dc19cf7071d1eb67bbbd524312321aaba61",
+      "local_source": "work/participant-view-camera-next-20261002/R/platform-participant-view-camera.R",
+      "scope": "Static review only; camera SQL and worker-queue join unrun"
+    },
+    {
+      "path": "R/platform-participant-view-resource.R",
+      "bytes": 2680,
+      "sha256": "2811aefcd785647246f3e41da10d1e76563470a23d39d8d8848205ac6a1d4a48",
+      "local_source": "work/participant-view-resource-next-20261002/R/platform-participant-view-resource.R",
+      "scope": "Unrun draft; actual assigned-media and HTTP ownership/range tests remain"
+    },
+    {
+      "path": "R/platform-participant-received-bytes.R",
+      "bytes": 8739,
+      "sha256": "231a52d56855e1704052f193ed15e420157cd58e1a997ca383d93b8831e222c8",
+      "local_source": "work/participant-received-bytes-digit-next-20261002/R/platform-participant-received-bytes.R",
+      "scope": "Four original/equivalence/limit/paired phases passed; extreme latency remains"
+    },
+    {
+      "path": "R/platform-participant-wire-json.R",
+      "bytes": 4499,
+      "sha256": "9f28a0f52d32ff0a39bf77ef0f0365bf438f785ca106e616b416f981eaad9a7d",
+      "local_source": "work/participant-wire-key-memo-next-20261002/R/platform-participant-wire-json.R",
+      "scope": "Bounded memo preserves complete original encoding; separate component checks"
+    },
+    {
+      "path": "www/participant/observation-journal.mjs",
+      "bytes": 33431,
+      "sha256": "e2223e7b4f09b18e70a389a1fc3b6e11a38b5bfe9ef392870c1dbb951389854c",
+      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/observation-journal.mjs",
+      "scope": "Separate39 compatibility/118 operation/90 joined screen checks and21 raw-row equalities pass; full participant controller and real HTTP qualification remain open"
+    },
+    {
+      "path": "www/participant/operation-result.mjs",
+      "bytes": 14877,
+      "sha256": "8038f9ccf710af96786746d04e2c897874c719a5313586272faeef19217d735f",
+      "local_source": "work/participant-operation-result-next-20261002/www/participant/operation-result.mjs",
+      "scope": "Node checks on actual R fixtures; journal/HTTP acceptance remains separate"
+    },
+    {
+      "path": "www/participant/request-bytes.mjs",
+      "bytes": 5118,
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9",
+      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/request-bytes.mjs",
+      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
+    },
+    {
+      "path": "www/participant/wire-json.mjs",
+      "bytes": 8157,
+      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa",
+      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/wire-json.mjs",
+      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
+    }
+  ]
+}

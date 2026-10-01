@@ -1,0 +1,3 @@
+# Preserve the exact reviewed component bytes recorded in SOURCES.json.
+R/*.R -text
+www/participant/*.mjs -text

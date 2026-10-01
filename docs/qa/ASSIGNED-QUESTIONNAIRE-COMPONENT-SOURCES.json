@@ -202,6 +202,183 @@
         "sha256": "f85b1f3454da28ce8b198ab46a933e246853f10bfe059d4665b6d4d6bb50bdf2"
       },
       "scope": "Controlled same-process two-connection diagnostic; not receiver or separate-process acceptance."
+    },
+    {
+      "name": "assigned_receiver_core01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/core-01/ACCEPTANCE.json",
+        "bytes": 2123,
+        "sha256": "c77904e1699d918f6a85f0de93dcbadf43adaa529a6f257ed1d893a528c0037d"
+      },
+      "scope": "Actual small questionnaire receive/replay and historical receipt recovery; synthetic registered runtime, no HTTP/browser/physical equipment.",
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      }
+    },
+    {
+      "name": "assigned_receiver_core_oracle01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/oracle-core-01/ACCEPTANCE.json",
+        "bytes": 1348,
+        "sha256": "944f1038993bf35004156f817f6d1f4f84a25ef4c880a02f213896745041fa15"
+      },
+      "scope": "Independent Python inspection of the actual closed core store, retained bytes, hashes, intervals and original-event relationships; not independent scientific validation."
+    },
+    {
+      "name": "assigned_receiver_atomic01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/atomic-01/ACCEPTANCE.json",
+        "bytes": 3455,
+        "sha256": "49bdb08258daafb1bf39441193f8b01bebd74e449cc1cb00fe3ed60e5d31e91d"
+      },
+      "scope": "Actual SQLite operation/event/derivation/ACK rollback and post-commit lost-reply recovery in fresh copied stores; no network/controller claim.",
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      }
+    },
+    {
+      "name": "assigned_http_bytes02",
+      "acceptance": {
+        "path": "work/participant-view-http-qa-20261002/pure-02/ACCEPTANCE.json",
+        "bytes": 1030,
+        "sha256": "718b34024637570d0fbe5843c858902bbe60f73609fe8bb80731de9e6930b666"
+      },
+      "scope": "Actual installed httpuv InputStream with strict headers/body lengths and exact R document fixtures; no live HTTP route or ingress limit qualification.",
+      "source": {
+        "path": "work/participant-view-http-next-20261002/R/platform-participant-view-http.R",
+        "bytes": 3840,
+        "sha256": "e70552ea2ad52dc703f2d9d6cf39507321393c840d38b21ad4f7eb0c08ad4709"
+      }
+    },
+    {
+      "name": "operation_journal_compatibility01",
+      "acceptance": {
+        "path": "work/participant-operation-journal-qa-20261002/COMPATIBILITY-ACCEPTANCE.json",
+        "bytes": 3578,
+        "sha256": "dc25416448d6dff6f2716bc79fedd58bb48034f3af313e51ca14efb08238b86b"
+      },
+      "scope": "Original39 Chrome compatibility checks on successor journal, including real restart; new pending/result transaction checks have separate status.",
+      "source": {
+        "path": "work/participant-operation-journal-implementation01-20261002/www/participant/observation-journal.mjs",
+        "bytes": 33431,
+        "sha256": "e2223e7b4f09b18e70a389a1fc3b6e11a38b5bfe9ef392870c1dbb951389854c"
+      }
+    },
+    {
+      "name": "received_bytes_single_digit03",
+      "acceptance": {
+        "path": "work/participant-received-bytes-digit-successor03-qa-20261002/aggregate-01/ACCEPTANCE.json",
+        "bytes": 10832,
+        "sha256": "85c58247a02121c911c79704395c3ad5445c40d57043884ef9f4e8d8aef9ea86"
+      },
+      "source": {
+        "path": "work/participant-received-bytes-digit-next-20261002/R/platform-participant-received-bytes.R",
+        "bytes": 8739,
+        "sha256": "231a52d56855e1704052f193ed15e420157cd58e1a997ca383d93b8831e222c8"
+      },
+      "scope": "Four separately closed phases; exact original and candidate outputs/limits. One sequential diagnostic pair74.96/65.45s; still unacceptable latency, no route or combined runtime activation."
+    },
+    {
+      "name": "assigned_receiver_schema01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/schema-01/ACCEPTANCE.json",
+        "bytes": 6035,
+        "sha256": "cd5e0053856560a76885338ae30471ddb294080d97235de60db131ff4b0c9b75"
+      },
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      },
+      "scope": "Eleven fresh copied-store schema/trigger/FK/CHECK faults refuse before publication; no actual browser/controller join."
+    },
+    {
+      "name": "assigned_receiver_fences01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/fences-01/ACCEPTANCE.json",
+        "bytes": 5365,
+        "sha256": "b78a55109705034c437043ea522d7945486cadcd1f173b33a2697caa25b10265"
+      },
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      },
+      "scope": "Actual second WAL connection and peer receiver progress/winner, read-only/caller-transaction controls; same process, not separate-process contention."
+    },
+    {
+      "name": "assigned_receiver_questionnaire_none02",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/questionnaire-none-02/ACCEPTANCE.json",
+        "bytes": 2248,
+        "sha256": "e75c0e7c9e227e7bac4696dc4a6468767860103595f24cf29d7a9665cd7361fe"
+      },
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      },
+      "scope": "Actual forward questionnaire rating key maps to original minimum through visit/commit/review/seal; fixture-only predecessor failure retained."
+    },
+    {
+      "name": "assigned_receiver_integrity01",
+      "acceptance": {
+        "path": "work/participant-view-receive-qa-20261002/integrity-01/ACCEPTANCE.json",
+        "bytes": 5575,
+        "sha256": "55f5257052b21e70c1c0eb5e2ae1b96870c30e79b1d999f3757d34ab8838e093"
+      },
+      "source": {
+        "path": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+        "bytes": 37367,
+        "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030"
+      },
+      "scope": "Retained request/implementation/model/receipt/result/derivation/source corruption and immutable protections; exact restoration controls, no automatic repair."
+    },
+    {
+      "name": "operation_journal_operations03",
+      "acceptance": {
+        "path": "work/participant-operation-journal-qa-20261002/OPERATIONS-ACCEPTANCE-03.json",
+        "bytes": 5464,
+        "sha256": "a9f350c19b7b6bba42c9568da973ea02a1c9b74c8af825e14ea5946e67ed3060"
+      },
+      "source": {
+        "path": "work/participant-operation-journal-implementation01-20261002/www/participant/observation-journal.mjs",
+        "bytes": 33431,
+        "sha256": "e2223e7b4f09b18e70a389a1fc3b6e11a38b5bfe9ef392870c1dbb951389854c"
+      },
+      "scope": "118 actual Chrome operation controls plus7 syntax; synthetic result fixtures, no actual R server/HTTP commit. Two earlier harness-observer failures retained."
+    },
+    {
+      "name": "operation_journal_question_join02",
+      "acceptance": {
+        "path": "work/participant-operation-journal-qa-20261002/JOINED-ACCEPTANCE-02.json",
+        "bytes": 4289,
+        "sha256": "e18abc24f2b5eb7e96bdb11ddf24ece248d5f9ef077afed86002eb33f8145e5f"
+      },
+      "source": {
+        "path": "work/participant-operation-journal-implementation01-20261002/www/participant/observation-journal.mjs",
+        "bytes": 33431,
+        "sha256": "e2223e7b4f09b18e70a389a1fc3b6e11a38b5bfe9ef392870c1dbb951389854c"
+      },
+      "scope": "90 actual screen/bridge/order/journal controls, five Axe scans and21 exact original raw-row comparisons; no actual HTTP/current-authority controller or rerun of prior R86."
+    },
+    {
+      "name": "assigned_start_current_join03",
+      "acceptance": {
+        "path": "work/participant-view-response-join-qa-20261002/attempt-03/ACCEPTANCE.json",
+        "bytes": 3548,
+        "sha256": "1f57ace5868eaef5050f882d39542e499388c3bcd442f073153372f24b9e163c"
+      },
+      "source": {
+        "path": "work/participant-view-response-join-next-20261002/R/platform-participant-view-current.R",
+        "bytes": 15274,
+        "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6"
+      },
+      "scope": "Five small-source cases,96 actual/34 wrapper controls; one owned admission, original current equality, lost replies, actual peer/source changes and closed handles. No HTTP or large collected journey."
     }
   ],
   "root_visual": {

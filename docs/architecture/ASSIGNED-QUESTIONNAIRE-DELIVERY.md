@@ -7,6 +7,12 @@ Implementation is local and inactive; the released application still presents
 every listed ordinary stimulus. This document does not claim assigned delivery,
 Qualtrics parity or completion of the wider platform.
 
+The [development snapshot](../../development/assigned-questionnaire/README.md)
+now retains13 exact implementation/dependency files with individual identities
+and scopes. The complete source overlays, fixtures and joined deployment still
+need portable promotion. Do not wire these partial modules into the legacy
+renderer or treat the snapshot as a runnable new participant profile.
+
 ## What the researcher and participant should experience
 
 A researcher can combine shared controls, alternative materials and questions in

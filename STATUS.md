@@ -17,8 +17,19 @@ now identifies full source admission and wire encoding costs. A bounded key-only
 encoding memo preserves complete outputs; one constructor comparison was
 27.61 versus 24.64 seconds. Cold loading remains too slow. The inactive R operation
 document encoder and browser literal-result checker pass separate cross-language
-checks; atomic server receive, browser ACK/model transactions and the full
-participant/researcher join remain open.
+checks. Server receive now passes its small-questionnaire core, independent
+stored-byte oracle, four transaction rollback points, lost-reply recovery, schema
+faults, peer changes, rating replay and retained-byte integrity. Raw HTTP helpers
+pass installed InputStream checks. The successor browser journal retains all39
+compatibility controls and passes118 operation/atomic ACK-model controls with
+synthetic results. Real HTTP, equipment and the full participant/researcher join
+remain open.
+Selected exact implementation files are now available in the
+[development snapshot](development/assigned-questionnaire/README.md), with
+per-file status. This makes the local work inspectable without enabling it.
+The start/current join passes five scoped cases; the successor journal also
+passes the90-control question-screen join and21 original-row comparisons.
+These preserve recovery behavior but do not establish full HTTP delivery.
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer

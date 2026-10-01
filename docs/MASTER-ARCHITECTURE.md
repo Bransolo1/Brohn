@@ -15,6 +15,10 @@ specifies QF01's immutable source/presentation bindings, ordered response timing
 durable retry/recovery and current-access requirements. It also records measured
 cold-admission and extreme-request latency issues that must be resolved before
 activation. Local component qualification does not release this profile.
+The [development source snapshot](../development/assigned-questionnaire/README.md)
+contains the current transport/storage implementation for inspection. Its
+manifest distinguishes separately qualified components from unrun camera/media
+drafts and incomplete joins; it is not registered or a standalone application.
 
 The intended advantage is low-click explicit and implicit research in one study:
 correct exposure-linked liking, stimuli/controls/versions, gaze/AOIs and other

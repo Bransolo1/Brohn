@@ -22,9 +22,18 @@ Paired admission/decoder profiles and a bounded wire-key memo are now qualified
 separately. The memo retains exact outputs; the observed constructor pair was
 27.61/24.64 seconds, not a stable benchmark or acceptable latency result. Pure
 R receipt/model encoding and browser literal result/association checks pass.
-Next connect the actual receive transaction and strict browser pending/ACK/model
-transaction; their required current-state recovery is distinct from a historical
-operation receipt. Extreme public decoder admission remains about 75 seconds.
+Actual receiver core, independent stored-byte inspection, rollback/lost replies,
+schema faults, peer changes, rating replay and retained-integrity phases now pass.
+HTTP byte helpers pass installed InputStream checks; successor browser storage
+passes39 compatibility and118 pending/receipt/model/ACK controls. Join these
+separate components through real HTTP, equipment and participant recovery. Current-state
+recovery remains distinct from a historical operation receipt. Extreme decoder
+admission and complete-source cold loading remain performance blockers.
+Start/current now passes its five focused cases using one owned admission.
+The operation journal also passes90 question-screen controls and21 exact prior
+observation comparisons. Complete actual HTTP/controller and camera/resource/
+finalization integration next; do not rerun unchanged component suites merely
+to increase counts. All31 local evidence entries retain their individual scope.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

@@ -9,6 +9,10 @@ The [component evidence summary](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md
 records the screen-to-R and separate browser-storage passes, retained harness
 failures and remaining joins. Detailed local build evidence still needs portable
 promotion; the public repository does not yet contain an activated new renderer.
+The [development source snapshot](../development/assigned-questionnaire/README.md)
+now includes13 exact implementation/dependency files for review, with individual
+status and byte identities. It is not a standalone runnable candidate and does
+not include the complete local QA fixtures or transitive R overlays.
 The six assigned-store and six bounded current-reader phases pass locally.
 Current recovery preserves original questionnaire history and rejects stale
 responses after actual peer changes. Its complete retained response took 28.91
@@ -16,11 +20,17 @@ seconds; latency and authenticated receipt/controller integration remain open.
 New local evidence covers paired profiling, an output-preserving bounded wire-key
 memo, a pure R operation-document encoder and browser literal-result admission
 using four actual R-encoded synthetic fixtures. The browser accepts exact model
-bytes without reproducing R numeric spelling. These passes do not implement
-atomic local ACK/model storage or the receiver. The latter is now an inactive
-draft requiring executable transaction qualification. Keep historical commit ACK
+bytes without reproducing R numeric spelling. The inactive receiver now passes
+its small-questionnaire core, independent saved-byte inspection, atomic faults/
+lost replies, schema/peer changes, rating replay and retained-integrity phases.
+Raw HTTP helpers pass installed InputStream checks. Browser storage passes39
+compatibility and118 operation/atomic ACK-model controls using synthetic results.
+Actual HTTP/equipment/controller joining remains open. Keep historical commit ACK
 separate from current editable state, and do not bypass the legacy profile guards
 when connecting welcome, camera, resources or finalization.
+The start/current adapter now passes96 case/34 wrapper checks, and the upgraded
+journal passes90 question-screen checks plus21 exact original observation
+comparisons. No combined large-workload or HTTP acceptance follows from these.
 
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the

@@ -1,5 +1,26 @@
 # Changes
 
+## Assigned-response transaction evidence — 2026-10-02
+
+- Qualified the inactive receiver's small-questionnaire core and independent
+  retained-byte inspection, plus rollback at four actual SQLite mutation points
+  and exact recovery after a committed response is lost.
+- Qualified raw request/response helpers against installed httpuv InputStream;
+  retained all39 original Chrome storage controls and passed118 operation/
+  receipt/model/ACK controls on the successor journal.
+- Qualified required-schema refusals, actual peer changes, rating replay and
+  retained-byte corruption gates on the receiver. These remain scoped components.
+- Qualified a single-digit decoder fast path against complete original outputs
+  and limits. One diagnostic pair was74.96/65.45 seconds; latency remains open.
+- Kept equipment, complete-workload and real HTTP/researcher
+  journey gates explicit. Camera/resources and start/current joining continue
+  locally; this documentation checkpoint does not activate a new delivery profile.
+- Added13 exact source files under development/assigned-questionnaire for John
+  and other collaborators to inspect, with individual scope and hash manifest.
+  This review snapshot has incomplete transitive dependencies and is not runnable.
+- Qualified the one-admission start/current adapter and question-screen/journal
+  join separately. Original saved observations remain exact after restart.
+
 ## Questionnaire confirmation and latency components — 2026-10-02
 
 - Qualified a bounded per-call object-key encoding memo against original byte
