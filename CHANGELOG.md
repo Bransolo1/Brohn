@@ -1,5 +1,14 @@
 # Changes
 
+## Assigned questionnaire integration contract — 2026-10-02
+
+- Specified atomic first start, assigned presentation preservation, ordered
+  submission timing, exact-byte retry and browser/server recovery requirements.
+- Connected the active QF01/EF02–EF03 implementation to remaining researcher QA
+  and measured latency gates. Local component passes are distinct from rollout.
+- Updated the master architecture, workstream and John's handoff; no application
+  route, new delivery profile, analytical recipe or package status is activated.
+
 ## Questionnaire flow, analysis and dashboard target — 2026-10-01
 
 - Added a refreshed official Qualtrics benchmark and QF01–QF08 implementation

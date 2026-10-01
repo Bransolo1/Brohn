@@ -7,6 +7,10 @@ claim. It extends the [questionnaire blueprint](../planning/QUESTIONNAIRE-BUILDE
 which already records 16 competitor screen snippets. Preserve its distinction
 between observed screens, documented behavior and proposed Brohn behavior.
 
+The [assigned-questionnaire delivery contract](../architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+tracks QF01's active collection/recovery integration and its remaining performance,
+storage and complete-journey gates. Component qualification does not activate it.
+
 ## Benchmark and current boundary
 
 Official product documentation was rechecked on 1 October 2026. The benchmark

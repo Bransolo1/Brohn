@@ -1,5 +1,11 @@
 # John: Brohn development handoff
 
+2 October: the [assigned-questionnaire integration contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+explains the active collection/recovery work, its separate local component
+evidence and remaining integration/latency gates. The released application has
+not enabled the new assigned-view profile. Do not register the legacy browser
+bundle as compatible or treat component tests as end-to-end acceptance.
+
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the
 [current official-documentation benchmark and QF01–QF08 queue](research/QUESTIONNAIRE-QUALTRICS-PARITY.md),

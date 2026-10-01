@@ -1,5 +1,12 @@
 # Brohn workstream and restart checklist
 
+**2 October integration:** follow the [assigned questionnaire delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+for the current QF01/EF02–EF03 collection work. Complete atomic start/current
+authority, real component-to-R timing replay, browser durability, received/derived
+transactions and assigned-resource/camera paths before activation. Preserve the
+documented cold-admission and extreme-parser latency blockers. Local component
+passes do not close the researcher journey or any broader questionnaire package.
+
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.
 Follow the [QF01–QF08 delivery and acceptance queue](research/QUESTIONNAIRE-QUALTRICS-PARITY.md).

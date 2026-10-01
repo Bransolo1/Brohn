@@ -10,6 +10,12 @@ source-preserving analysis and editable dashboards. General block routes,
 bounded repeats, typed variables/piping/carry-forward, analysis assistance and
 saved dashboard/filter definitions require explicit integration and acceptance.
 
+The [2 October assigned-questionnaire delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+specifies QF01's immutable source/presentation bindings, ordered response timing,
+durable retry/recovery and current-access requirements. It also records measured
+cold-admission and extreme-request latency issues that must be resolved before
+activation. Local component qualification does not release this profile.
+
 The intended advantage is low-click explicit and implicit research in one study:
 correct exposure-linked liking, stimuli/controls/versions, gaze/AOIs and other
 qualified measurements. Automatic outputs retain denominators, missingness,

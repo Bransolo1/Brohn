@@ -338,6 +338,7 @@
       "id": "BWP04",
       "title": "Questionnaire builder and executor",
       "questionnaire_parity_contract": "docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md",
+      "assigned_questionnaire_delivery_contract": "docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md",
       "questionnaire_parity_scope": "QF01-QF04/QF08: assigned question delivery, whole-study flow, bounded repeats, typed variables and reusable instruments; existing scoped evidence does not establish Qualtrics parity.",
       "wave": 2,
       "depends_on": [

@@ -1,5 +1,11 @@
 # Resume here — Brohn
 
+2 October integration: the [assigned questionnaire collection/recovery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+now records immutable presentation/source binding, ordered submission timing,
+exact-byte retries, browser/server durability and actual researcher QA gates.
+Local components are in qualification; no new delivery profile is active. Cold
+admission and extreme request-processing latency must be resolved before rollout.
+
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer
 research journeys. Use the [current benchmark and QF01–QF08 queue](docs/research/QUESTIONNAIRE-QUALTRICS-PARITY.md).
