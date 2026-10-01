@@ -133,6 +133,75 @@
         "sha256": "a35f43c897ea7ce76222b0eb2fa745234b5795b5a906a0b50ea3c1a6b2d5e9dc"
       },
       "scope": "Six closed inactive current-reader phases; repeated setup included. Full retained source positive has no journal. Actual small information-question journal and synthetic outer arithmetic are separate."
+    },
+    {
+      "name": "retained_admission_pair",
+      "acceptance": {
+        "path": "work/participant-admission-latency-profile01-20261002/CONTEXT-RETAINED-ACCEPTANCE.json",
+        "bytes": 3033,
+        "sha256": "711deb340b20ff584d7fe663dbc5641c8a4e1ab9b41a52aac51aafe4179c168e"
+      },
+      "scope": "Paired diagnostic with identical complete values, no source/runtime change."
+    },
+    {
+      "name": "extreme_decoder_pair",
+      "acceptance": {
+        "path": "work/participant-admission-latency-profile01-20261002/DECODER-DEFAULT-ACCEPTANCE.json",
+        "bytes": 2975,
+        "sha256": "ef183286787b50686a7c4fae3ea98e9358aa04a3de3ac2eabc1a9e273e894528"
+      },
+      "scope": "Public admission and separate oracle timings; extreme latency remains unresolved."
+    },
+    {
+      "name": "wire_key_memo01",
+      "acceptance": {
+        "path": "work/participant-wire-key-memo-qa-20261002/ACCEPTANCE.json",
+        "bytes": 7293,
+        "sha256": "327843eec9f40ea8c286ea1d44863f4df14148bb0b11c6a90e2cd6a9fa8eb3c5"
+      },
+      "scope": "Output-preserving bounded per-call key escaping; one timing pair, no product latency acceptance.",
+      "source": {
+        "path": "work/participant-wire-key-memo-next-20261002/R/platform-participant-wire-json.R",
+        "bytes": 4499,
+        "sha256": "9f28a0f52d32ff0a39bf77ef0f0365bf438f785ca106e616b416f981eaad9a7d"
+      }
+    },
+    {
+      "name": "operation_documents01",
+      "acceptance": {
+        "path": "work/participant-receipt-model-qa-20261002/attempt-01/ACCEPTANCE.json",
+        "bytes": 3161,
+        "sha256": "379ade7fb0447c8889f0947458545edf9b0a837ea83f6cd5c0afad550b63869f"
+      },
+      "scope": "Pure R encoder on synthetic state/descriptor declarations, no source/receiver authority.",
+      "source": {
+        "path": "work/participant-receipt-model-next-20261002/R/platform-participant-operation-documents.R",
+        "bytes": 13861,
+        "sha256": "dad95ca94f57b08c3446a9dcd93f5dbe837d6d1d2bcf023448a998a8b2d4115f"
+      }
+    },
+    {
+      "name": "browser_operation_result01",
+      "acceptance": {
+        "path": "work/participant-operation-result-qa-20261002/ACCEPTANCE.json",
+        "bytes": 3778,
+        "sha256": "1cd5f4992fb2a53283df2d77c50af5c2e51f8cb98fa8f7db1daee9f3916bc4a0"
+      },
+      "scope": "Actual R-produced synthetic triads and labelled Node mutants; no HTTP/IDB/current-state authority.",
+      "source": {
+        "path": "work/participant-operation-result-next-20261002/www/participant/operation-result.mjs",
+        "bytes": 14877,
+        "sha256": "8038f9ccf710af96786746d04e2c897874c719a5313586272faeef19217d735f"
+      }
+    },
+    {
+      "name": "two_connection_wal_diagnostic",
+      "acceptance": {
+        "path": "work/participant-receive-fence-probe-next-20261002/qualification-01/ACCEPTANCE.json",
+        "bytes": 1791,
+        "sha256": "f85b1f3454da28ce8b198ab46a933e246853f10bfe059d4665b6d4d6bb50bdf2"
+      },
+      "scope": "Controlled same-process two-connection diagnostic; not receiver or separate-process acceptance."
     }
   ],
   "root_visual": {

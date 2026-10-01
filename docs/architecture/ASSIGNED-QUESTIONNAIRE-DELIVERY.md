@@ -115,10 +115,28 @@ The [2 October component progress](../qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRE
 records the executed screen-to-R replay, actual Chrome journal, joined durable
 question screen and independent original R replay. All six assigned-store phases
 and six bounded current-reader phases also pass. The retained current response
-took 28.91 seconds. The authenticated receive/derive transaction, latency work and
-complete researcher journey are still required. The response boundary test uses
+took 28.91 seconds. Paired profiling and a bounded key-only wire memo now have
+separate exact-output evidence; one retained constructor comparison measured
+27.61/24.64 seconds. This does not qualify product latency. The pure R operation
+document encoder and browser literal-result verifier also pass; they are not
+the atomic receive or browser acknowledgement transaction. The authenticated
+receive/derive transaction, latency work and complete researcher journey are
+still required. The response boundary test uses
 a synthetic projected packet; genuine large questionnaire collection/reopen
 remains a separate integration gate.
+
+An operation confirmation retains its original request identity, committed
+interval and exact model bytes. A lost reply can recover that historical result;
+it must not overwrite a newer local model or imply that a finalized session is
+still editable. Browser storage must commit pending state, ACK, receipt and model
+together, and automatically refresh current state during ambiguous/restarted
+delivery. No extra participant confirmation click is required for that refresh.
+
+The staged legacy guards also block new-profile entry/assets and common camera
+authorization. New welcome/resource/camera/finalization routes need explicit
+assigned access; removing those guards or calling the old camera API with an
+internal run ID is not an integration solution. Preserve the original camera
+receipt, consent, chunk-prefix and clock obligations.
 
 The local components have separate scoped checks for typed question projection,
 state/history translation, event replay, exact request encoding/decoding, native

@@ -1,5 +1,17 @@
 # Changes
 
+## Questionnaire confirmation and latency components — 2026-10-02
+
+- Qualified a bounded per-call object-key encoding memo against original byte
+  suites and complete retained contexts. One constructor pair was 27.61/24.64
+  seconds; original source validation remains and latency is still unresolved.
+- Added local evidence for a pure R receipt/model encoder and browser literal
+  result checker. Four R-produced synthetic document sets preserve exact bytes
+  and typed values across languages; mismatches and oversized results refuse.
+- Recorded immutable historical receipt/current-state separation, measured
+  decoder bottlenecks and remaining server/browser atomic transaction work.
+  No new profile is enabled; QF02–QF08 and all platform packages remain open.
+
 ## Assigned-session recovery evidence — 2026-10-02
 
 - Recorded all six assigned-store and six bounded current-reader phases, including

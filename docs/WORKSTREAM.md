@@ -18,6 +18,13 @@ Separate-writer first-start contention and the authenticated receive transaction
 remain open. The large retained case took 83.82 seconds at first start, 27.55
 seconds on store reopen and 28.91 seconds for the current response; investigate
 these distinct operations before activation, preserving complete validation.
+Paired admission/decoder profiles and a bounded wire-key memo are now qualified
+separately. The memo retains exact outputs; the observed constructor pair was
+27.61/24.64 seconds, not a stable benchmark or acceptable latency result. Pure
+R receipt/model encoding and browser literal result/association checks pass.
+Next connect the actual receive transaction and strict browser pending/ACK/model
+transaction; their required current-state recovery is distinct from a historical
+operation receipt. Extreme public decoder admission remains about 75 seconds.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

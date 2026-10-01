@@ -13,6 +13,14 @@ The six assigned-store and six bounded current-reader phases pass locally.
 Current recovery preserves original questionnaire history and rejects stale
 responses after actual peer changes. Its complete retained response took 28.91
 seconds; latency and authenticated receipt/controller integration remain open.
+New local evidence covers paired profiling, an output-preserving bounded wire-key
+memo, a pure R operation-document encoder and browser literal-result admission
+using four actual R-encoded synthetic fixtures. The browser accepts exact model
+bytes without reproducing R numeric spelling. These passes do not implement
+atomic local ACK/model storage or the receiver. The latter is now an inactive
+draft requiring executable transaction qualification. Keep historical commit ACK
+separate from current editable state, and do not bypass the legacy profile guards
+when connecting welcome, camera, resources or finalization.
 
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the

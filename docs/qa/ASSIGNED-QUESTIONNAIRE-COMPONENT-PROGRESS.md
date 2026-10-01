@@ -17,6 +17,9 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 | Fresh original R replay of durable browser02 | 86 checks: all 61 original obligations and 25 additions. Independently verified exact saved JSON bytes/hashes, run/renderer binding, restart readback, abort/retry distinctions and source event replay across all five scenarios. | Controlled clocks and the original separately synthetic equipment precondition remain. Actual HTTP receipt/draft/controller behavior is not supplied by these tests. |
 | Atomic assigned-presentation store, successor02 | All six phases pass: core 50/23, rollback 26/23, atomic retry 23/23, authority 36/23, complete forward-only source 16/22 and complete retained source 18/22 (store/wrapper assertions). The six intended insert failures preserve all tracked rows; authority changes refuse. Every phase closes naturally with original inputs conserved. | The totals include repeated checks. Contention uses same-process interleaving; separate writers and HTTP integration remain to qualify. Current replay has its separate evidence below. Synthetic registered assets do not establish a production renderer. |
 | Bounded current-session reader | All six phases pass: initial/ending, journal integrity, separate-connection changes, literal resolution, questionnaire/page bounds and complete retained source. 263 case and 157 wrapper assertions include repeated setup. Original source, inputs and RNG remain exact; all phases close naturally. | The complete retained positive has no collected events; the questionnaire journal uses the actual small information-question source. Outer 4 MiB fitting is a separately labelled synthetic packet test. A genuine large design–collection–reopen journey, HTTP and server receive/derive transaction remain open. |
+| Bounded object-key encoding memo | Original 345 R/366 Node/450 Python controls, 26 focused controls and 11 retained-context checks pass. Complete values, encoded bytes and all scoped context lookups match. One constructor pair measured 27.61/24.64 seconds with full source admission retained. | This is one ordered timing pair, not a stable speedup or acceptable loading-time claim. Combined runtime promotion remains separate. |
+| Pure operation receipt/model encoder | 54 R, 10 wrapper and 42 independent Python checks pass. Exact typed values, historical commit interval, whole-record prefix fitting and the complete escaped 4 MiB result are checked. | Inputs are synthetic projected-state declarations; this helper does not admit a request, authorize a source, commit SQL or reconstruct historical receipts. |
+| Browser literal operation-result checker | 122 Node checks: four actual R-encoded synthetic document sets, three typed/copy checks, 97 synthetic refusals, 16 synthetic positives and two conservation checks. Exact model strings, signed zero, association, whole-result/raw-packet boundaries and immutable input capture pass. | No HTTP, browser storage transaction, current authority or editing permission is established. The journal must invoke this checker on actual received bytes and its actual saved pending operation. |
 
 The browser-to-R case retained initial response time100.125 ms for a held
 submission; the deliberately discarded capture followed by a fresh submission
@@ -71,10 +74,31 @@ compile/project/admit-and-commit took 83.82 seconds; a separate cold reopen took
 27.55 seconds. The writer transaction itself took 0.09 seconds. These are single
 observations with different timing scopes, not a stable performance benchmark.
 The fast 0.02-second check on an already-held handle does not replace cold
-admission. A frozen profiling plan separates validation and encoding costs before
-choosing an optimization; no validation or supported content limit was removed.
+admission. Paired profiling now separates validation and encoding costs; no
+validation or supported content limit was removed.
 The separate full current-session response subsequently took 28.91 seconds on
 the complete retained source. It passed correctness checks, not a latency target.
+
+The paired retained profile preserved identical complete snapshots. Public
+constructors took 27.33/28.29 seconds; the instrumented call included 16.23 seconds
+in full source admission and 7.12 seconds in two wire encodings. Nested timings
+must not be added. Repeated questionnaire-map checks were a small cost. The
+separately qualified bounded per-call key memo then preserved all complete
+outputs, with the diagnostic 27.61/24.64-second pair reported above.
+
+The extreme decoder profile also preserved identical complete values: public
+calls took 75.00/74.94 seconds, with an additional separate 4.20/4.08 seconds for
+the output oracle/snapshot. The instrumented lexical scan took 46.18 seconds and
+decoded-domain checking 21.59 seconds. These costs remain unresolved. Earlier
+whole-test elapsed time must not be described as isolated decoder time.
+
+A separate two-connection WAL diagnostic passed 46 controls for same-connection
+change observations, read-only restoration and busy behavior. This is controlled
+same-process interleaving, not a completed receiver or separate-process race.
+The receiver draft now admits source-owned required schema/trigger definitions;
+merely snapshotting a database with already-missing protections is insufficient.
+Actual receiver transactions, rollback, equipment parity and browser local atomic
+ACK/model persistence still require their own execution evidence.
 
 Current-session qualification checks 101 original events with two bounded reads,
 preserves negative zero and refuses incorrect hashes, identities, noncanonical

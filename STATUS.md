@@ -12,8 +12,13 @@ phase and its independent 86-check R replay. Durable server delivery and the joi
 researcher journey remain open; these passes do not activate questionnaire assignment.
 All six assigned-store and all six bounded current-reader phases now pass.
 Current-state recovery includes actual peer changes and original questionnaire
-replay. The complete retained cold response still takes 28.91 seconds; profiling,
-atomic server receipts and the full participant/researcher join remain open.
+replay. The complete retained cold response took 28.91 seconds. Paired profiling
+now identifies full source admission and wire encoding costs. A bounded key-only
+encoding memo preserves complete outputs; one constructor comparison was
+27.61 versus 24.64 seconds. Cold loading remains too slow. The inactive R operation
+document encoder and browser literal-result checker pass separate cross-language
+checks; atomic server receive, browser ACK/model transactions and the full
+participant/researcher join remain open.
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer
