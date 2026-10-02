@@ -13,16 +13,23 @@ The retained diagnostic was29.37s cold,31.50s first pooled admission and0.34s wa
 All six direct pool phases now pass, including access, mutation, lifetime and
 accounting (97 case/120 wrapper checks). Use by actual coordinators remains a
 separate gate. Assigned PNG resource tests also pass 36 direct checks, while
-HTTP/disconnect/range behavior and cold-resource latency remain unqualified.
+actual HTTP full-PNG and ignored-Range behavior now pass in opening03.
+Interrupted transfer, large media and cold-resource latency remain unqualified.
 The explicit storage-only observation boundary now passes39 focused controls,
 alongside all85 sender compatibility controls. Its short local storage queue is
 independent of HTTP; exact failed captures have process-local retry handles and
 independent unresolved state. It grants no model/edit/send permission. A durable
-draft store, original bootstrap and actual controller integration remain open.
+draft store now passes35 Chrome/8 syntax checks as a separate component;
+original bootstrap and actual controller integration remain open. The public
+model passes58 pure checks and current-document handoff27 literal/143 Chrome/39
+syntax. Exact received packet spans, not reserialized objects, feed the model.
+Local drafts remain incomplete values with original visit/dependency context;
+neither a saved draft nor a historical commit receipt grants editing permission.
 Actual camera writer fences pass22 direct/25 wrapper checks. The terminal journey
 exposed a legacy1.2 researcher-review incompatibility; an explicit original-source
-adapter now passes core27/31 and received-completion17/31. Camera ordering and
-writer races remain separate. Startup qualification first stopped on a misspelled
+adapter now passes core27/31 and received-completion17/31, plus camera18/33
+and same-process source/writer fences27/33. Physical camera, HTTP/worker and
+resolved-run analysis remain separate. Startup qualification first stopped on a misspelled
 harness observer, before any direct check; its separate correction retains that
 failure and does not change runtime bytes.
 
@@ -43,15 +50,21 @@ every listed ordinary stimulus. This document does not claim assigned delivery,
 Qualtrics parity or completion of the wider platform.
 
 The [development snapshot](../../development/assigned-questionnaire/README.md)
-now retains21 exact implementation/dependency files with individual identities
+now retains25 exact implementation/dependency files with individual identities
 and scopes. The complete source overlays, fixtures and joined deployment still
 need portable promotion. Do not wire these partial modules into the legacy
 renderer or treat the snapshot as a runnable new participant profile.
 
 The inactive API now connects entry/welcome, start/current, events, questionnaire
 paging, assigned media, camera and finish coordinators. Its 50 header/route checks
-bind their original source. New coordinator phases pass; both actual HTTP
-opening attempts remain failed at final wrapper RNG conservation. Opening content exposes no
+bind their original source. Opening03 passes62 client/13 fixture/30 wrapper
+checks over actual loopback HTTP. Events01 adds84 client/19 fixture/31 wrapper
+checks for two-operation collection, fresh CURRENT/page, lost committed reply,
+exact retry and completed finish. Original-reducer observations remain synthetic;
+the single historical analysis job is queued/unclaimed. Earlier RNG failures
+remain failed. A separate framework diagnostic found absent-seed initialization
+at httpuv startup; the successor fixes its seed before measurement and keeps
+full application RNG conservation checks. No whole-journey restoration is used. Opening content exposes no
 experimental resource registry. Finish explicitly supplies the admitted design1.2
 revision context to original replay, now prepared outside the writer with
 source fences. Large workload and downstream1.2 analysis-worker support remain

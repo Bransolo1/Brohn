@@ -16,6 +16,7 @@ export function createParticipantOperationSender({binding, viewJson, accessToken
   const preparation = encodeParticipantRequest({binding, viewJson, accessToken})
     .then(value => ({value}), error => ({error}));
   let held = null, journal = null, current = null, flight = null, closing = null;
+  let currentGeneration = 0, installedDocument = null;
   let closed = false, requestAbort = null, wakeDelay = null, observerFailed = false;
   let localTail = Promise.resolve(), storageOpened = false, unconfirmedWrites = 0;
   const unresolved = new Map();
@@ -193,6 +194,13 @@ export function createParticipantOperationSender({binding, viewJson, accessToken
     const raw = await request('current', null, deadline); active();
     const admitted = await admitParticipantCurrentSession({currentBytes: raw, binding: held.binding,
       viewJson: held.viewJson, accessToken: held.accessToken}); active();
+    if (currentGeneration >= 10000000) throw failure('sender_generation', 'Reopen this sender before installing another current model.');
+    const packet = admitted.session.resume.questionnaire;
+    const nextDocument = freeze({schema: 'participant-current-document/0.1', current_generation: currentGeneration + 1,
+      binding: held.binding, current_document: admitted.document,
+      view_document: {codec: held.binding.view_codec, json: held.viewJson, bytes: held.binding.view_bytes, sha256: held.binding.view_hash},
+      acknowledged_sequence: admitted.acknowledged_sequence, questionnaire_document: admitted.questionnaire_document,
+      packet_state_token: packet?.packet_state_token ?? null, resume_state_token: packet?.resume_page.resume_state_token ?? null});
     await locally(async () => {
       storage({phase: 'reopening'});
       try {
@@ -201,6 +209,7 @@ export function createParticipantOperationSender({binding, viewJson, accessToken
         // aborts the network meanwhile. Only the final close releases this handle.
         journal = await openParticipantJournal({binding: held.binding, baselineSequence: admitted.acknowledged_sequence});
         storageOpened = true; current = admitted;
+        currentGeneration = nextDocument.current_generation; installedDocument = nextDocument;
         storage({phase: 'open'}); await updateStoredCount(journal);
       } catch (error) {storage({phase: 'unavailable', durable_pending_count: null}); throw error;}
     });
@@ -283,6 +292,8 @@ export function createParticipantOperationSender({binding, viewJson, accessToken
   }
   return Object.freeze({
     synchronize, state: snapshot, close,
+    // Last installed authenticated CURRENT only; this is not editing permission.
+    currentDocument() {active(); return installedDocument;},
     append(observation) {return write(observation, true);},
     retainObservation(observation) {return write(observation, false);}
   });

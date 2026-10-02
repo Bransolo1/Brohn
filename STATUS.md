@@ -1,57 +1,39 @@
 # Resume here — Brohn
 
-Current integration checkpoint: all six direct opening, welcome, startup and
-completion phases pass (165 direct/168 repeated wrapper checks). The inactive
-finish successor replays outside the writer and fences changed sources before
-the original completion/receipt/job transaction. Camera history remains aggregated
-outside the writer; no constant-memory or production-latency claim is made.
+Current inactive checkpoint — 2 October: the public questionnaire model passes
+58 pure checks, and its separate local draft store passes 35 Chrome checks plus
+8 syntax checks. Literal CURRENT handoff passes 27 literal checks and 143 Chrome
+checks (85 compatibility, 39 retention, 19 focused), plus 39 accepted-phase syntax
+checks. These browser tests use synthetic authority; they do not connect the
+complete participant controller or recover the original start credential.
 
-Explicit original1.2 researcher recovery passes core27/31 and received-completion
-17/31. A separate immutable researcher decision preserves the participant's
-original answers and makes a missing final participant receipt explicit. Camera
-ordering, additional writer races and resolved-run analysis remain separate.
+Actual R/httpuv opening now passes 62 client, 13 fixture and 30 wrapper checks.
+Questionnaire collection separately passes 84 client, 19 fixture and 31 wrapper
+checks: two operations, prefix CURRENT/page, lost committed reply, exact retry
+and completed finish. The observations come from the original reducer in a
+synthetic study. One historical analysis job is queued and unclaimed; no worker
+result, physical measurement or browser-to-R controller acceptance is implied.
 
-Actual HTTP opening attempts each passed62 client/13 fixture checks, then failed
-the wrapper's RNG invariant. Both failures and natural closures are retained;
-framework initialization is being diagnosed. These are not HTTP acceptance.
+Both earlier HTTP RNG failures remain failures. A separate framework diagnostic
+localized absent-seed initialization to httpuv startServer; a fixed existing seed
+remained exact. The passing HTTP successor sets its fixture seed before measuring
+the journey and retains the complete final RNG assertion, without restoring the
+application's RNG to manufacture a pass.
 
-The review snapshot contains21 inactive source files and57 local evidence entries.
-Released runtime remains unchanged. Browser ordered retention retains its124
-Chrome controls; public questionnaire actions and durable drafts are being
-qualified. Actual controller/bootstrap, explicit1.2 analysis-worker/publication,
-general survey-flow authoring and editable dashboards remain open. All17 work
-packages and the QF01–QF08 requirements retain their individual unfinished gates.
+The review snapshot contains 25 inactive source/dependency files and 66 scoped
+evidence entries. No active loader, renderer, route or released behavior changes.
+Direct entry/finish and explicit original1.2 researcher core/received recovery
+remain accepted in their recorded scopes. New resolver camera18/33 and writer
+fences27/33 also pass; the latter uses same-process peer/own connections.
+Resolved-run analysis, camera HTTP/worker and physical recording remain open.
 
-2 October integration: the [assigned questionnaire collection/recovery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
-now records immutable presentation/source binding, ordered submission timing,
-exact-byte retries, browser/server durability and actual researcher QA gates.
-Local components are in qualification; no new delivery profile is active. Cold
-admission and extreme request-processing latency must be resolved before rollout.
-The [scoped component progress](docs/qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
-now includes actual question-screen-to-R replay and a separately tested Chrome
-observation journal. The question controls also pass their joined durable-browser
-phase and its independent 86-check R replay. Durable server delivery and the joined
-researcher journey remain open; these passes do not activate questionnaire assignment.
-All six assigned-store and all six bounded current-reader phases now pass.
-Current-state recovery includes actual peer changes and original questionnaire
-replay. The complete retained cold response took 28.91 seconds. Paired profiling
-now identifies full source admission and wire encoding costs. A bounded key-only
-encoding memo preserves complete outputs; one constructor comparison was
-27.61 versus 24.64 seconds. Cold loading remains too slow. The inactive R operation
-document encoder and browser literal-result checker pass separate cross-language
-checks. Server receive now passes its small-questionnaire core, independent
-stored-byte oracle, four transaction rollback points, lost-reply recovery, schema
-faults, peer changes, rating replay and retained-byte integrity. Raw HTTP helpers
-pass installed InputStream checks. The successor browser journal retains all39
-compatibility controls and passes118 operation/atomic ACK-model controls with
-synthetic results. Real HTTP, equipment and the full participant/researcher join
-remain open.
-Selected exact implementation files are now available in the
-[development snapshot](development/assigned-questionnaire/README.md), with
-per-file status. This makes the local work inspectable without enabling it.
-The start/current join passes five scoped cases; the successor journal also
-passes the90-control question-screen join and21 original-row comparisons.
-These preserve recovery behavior but do not establish full HTTP delivery.
+Next: join model, drafts, current-generation/page loading and question controls
+through the actual service; finish original start/restart bootstrap and the
+explicit1.2 analysis worker/publication journey. Cold loading, representative
+large workloads, hosted ingress and joined researcher UX remain open. All 17
+work packages and QF01–QF08 retain their individual unfinished gates.
+
+Read the [delivery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and [scoped evidence](docs/qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md) for exact source attribution and remaining gates.
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer

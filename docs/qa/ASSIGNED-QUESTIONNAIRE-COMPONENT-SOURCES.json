@@ -673,6 +673,151 @@
         "sha256": "301e4ed3f66702c7294a64464fada53a360d6767791ec1fb16629c5adfa008b3"
       },
       "scope": "All62 real HTTP client/13 fixture checks passed but final wrapper RNG conservation failed. Original run remains failed, with natural process/listener/snapshot closure and inputs exact.02 isolates only QA random-port sampling; further framework diagnosis pending."
+    },
+    {
+      "name": "explicit_resolver_camera01",
+      "acceptance": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-camera-01/ACCEPTANCE.json",
+        "bytes": 2195,
+        "sha256": "d63eb95ffe116af086c60a648aa9ced468ddb4e217e472137e8694d2f177382b"
+      },
+      "scope": "18 direct/33 wrapper controls on original camera1.1 bytes and real researcher decisions. Historical camera/participant receipts remain exact; new late operations refuse. Synthetic recording bytes, no device/codec/worker/HTTP claim.",
+      "closure": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-camera-01/AFTER-CLOSED.json",
+        "bytes": 2477,
+        "sha256": "740d61e79151547114489041c7eed293ef1cf59aca824e9962d9203c8a20c555"
+      }
+    },
+    {
+      "name": "explicit_resolver_fences01",
+      "acceptance": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-fences-01/ACCEPTANCE.json",
+        "bytes": 2194,
+        "sha256": "1e0d56d04cb4f9e956e5c70312d0bf37469db088171196a9e5df6bc0dfc84e3b"
+      },
+      "scope": "27 direct/33 wrapper controls. Actual same-process peer connection and own-connection source/authority changes refuse; exact restoration, zero extra decision writes. One synthetic processing-gate job queued/unclaimed; no parallel-process/hosted/worker claim.",
+      "closure": {
+        "path": "work/variant-session-resolution-qa-20261002/resolution-fences-01/AFTER-CLOSED.json",
+        "bytes": 2476,
+        "sha256": "2fdc67978fc40701bd2b7a4dfbf7bdbcd8ef76d710c3b62195b5d5df1de1ff2e"
+      }
+    },
+    {
+      "name": "questionnaire_model58",
+      "acceptance": {
+        "path": "work/participant-questionnaire-model-qa-20261002/ACCEPTANCE.json",
+        "bytes": 2501,
+        "sha256": "24d8358d5220086fdc9b7154f4d9de2af57cc960c131fdd0c3254ba312b9cb19"
+      },
+      "scope": "58 pure Node controls; original retained R literals plus labelled synthetic actions/drafts and encoded64MiB aggregate boundary. No heap/mobile/current-authority/controller claim.",
+      "closures": [
+        {
+          "path": "work/participant-questionnaire-model-qa-20261002/core-01/CLOSED.json",
+          "bytes": 1244,
+          "sha256": "d7fd21d639be292b341ee8aac885ebcf3f99f52f3b2ecf4787d3845a460f5393"
+        },
+        {
+          "path": "work/participant-questionnaire-model-qa-20261002/limits-01/CLOSED.json",
+          "bytes": 1251,
+          "sha256": "ea1458ca8e942454f1dde3fb6952b72c8a22016d420c79637ab349d10b3b1f24"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire_drafts35",
+      "acceptance": {
+        "path": "work/participant-questionnaire-drafts-qa-20261002/ACCEPTANCE.json",
+        "bytes": 2197,
+        "sha256": "87384d7a2d014b20c0cabd7da460730045853d485792f76932f1149e77ce943e"
+      },
+      "scope": "35 actual Chrome controls,8 syntax; native local transactions/restart/generation/locks/versionchange. Separate draft database; not submitted answers, ACK, HTTP or bootstrap.",
+      "closure": {
+        "path": "work/participant-questionnaire-drafts-qa-20261002/browser-01/INDEPENDENT-CLOSURE.json",
+        "bytes": 368,
+        "sha256": "2d66144c3f500da2824651ef2b3585480d0c11bf82e9d8d9bd98dc4257d651c4"
+      }
+    },
+    {
+      "name": "literal_current_handoff170",
+      "acceptance": {
+        "path": "work/participant-current-document-qa-20261002/ACCEPTANCE-02.json",
+        "bytes": 5067,
+        "sha256": "22bfb0b7f5fc143bc0b619fbc12afc96efdb05817ea2f0d656148353d78b5f5a"
+      },
+      "scope": "27 literal controls plus143 Chrome (85 original sender,39 retention,19 focused),39 accepted-phase syntax. Synthetic HTTP/current envelopes; not actual R/page/controller/bootstrap. Prior incomplete attempt retained separately.",
+      "closures": [
+        {
+          "path": "work/participant-current-document-qa-20261002/literal-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 237,
+          "sha256": "76cf52bea1667589d06312301d80b35196c2a869a6972fdae81622c89ac0a4d6"
+        },
+        {
+          "path": "work/participant-current-document-qa-20261002/compatibility-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 369,
+          "sha256": "7d88f7f3f2e29a7995383332253060303a8646b8702e8e777a5a1dc998da0282"
+        },
+        {
+          "path": "work/participant-current-document-qa-20261002/retain-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 368,
+          "sha256": "593b960c7478388387a51d17256ad69d1bbff290006ccc1c64e65519d02d4f87"
+        },
+        {
+          "path": "work/participant-current-document-qa-20261002/document-02/INDEPENDENT-CLOSURE.json",
+          "bytes": 368,
+          "sha256": "44a04679da00034a15d01e588d87cfb19923cd52437539ef75975b9440058bec"
+        }
+      ]
+    },
+    {
+      "name": "framework_rng_two_seed_diagnostic",
+      "acceptance": {
+        "path": "work/participant-http-framework-rng-next-20261002/closure-02/COMPOSITE-ACCEPTANCE.json",
+        "bytes": 2224,
+        "sha256": "9bd07f5e468b49ad935d7842f813b18ccdc0840dcd3a9cd54cdcbc5776a74f19"
+      },
+      "scope": "Two fresh framework-only R processes: absent seed initializes at httpuv startServer; existing104729 seed exact at all41 checkpoints per process.18 operational checks total. Reporter correction only; no application RNG proof or runtime change.",
+      "closure": {
+        "path": "work/participant-http-framework-rng-next-20261002/qualification-01/AFTER-CLOSED.json",
+        "bytes": 9124,
+        "sha256": "fcfd17070ecc2abfd4a77bd4593183c531c117184eedabd496c116ca03c3b3ab"
+      }
+    },
+    {
+      "name": "actual_http_opening03",
+      "acceptance": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-03/ACCEPTANCE.json",
+        "bytes": 2427,
+        "sha256": "45687965d20d20f902530e2ba3d0a5786971f82e7d5acda0a3bb0f6ed2841d39"
+      },
+      "scope": "Actual loopback httpuv opening/start/lost-reply/exact-retry/current/PNG/interrupted finish:62 client,13 fixture,30 wrapper. Fixed seed before baseline; full journey RNG assertion retained. Old failed attempts remain failed. No browser/controller/hosted ingress.",
+      "closure": {
+        "path": "work/participant-view-http-join-qa-20261002/opening-03/AFTER-CLOSED.json",
+        "bytes": 4324,
+        "sha256": "a2752ea9a9951e2b0ac089f93fe576fa3700ef91a7e33d1be40b145a9ab37863"
+      }
+    },
+    {
+      "name": "actual_http_questionnaire_events01",
+      "acceptance": {
+        "path": "work/participant-view-http-events-qa-20261002/events-01/ACCEPTANCE.json",
+        "bytes": 2502,
+        "sha256": "21d91214a92308fd2144ccd52b064284f549479099d083cc2275d06d315547ad"
+      },
+      "scope": "Actual loopback two-operation collection:84 client,19 fixture,31 wrapper. Prefix CURRENT/page, lost committed suffix reply, exact retry and completed finish; original-reducer synthetic observations. One historical analysis job queued/unclaimed. No UI/controller/bootstrap/worker/scientific/device claim.",
+      "closure": {
+        "path": "work/participant-view-http-events-qa-20261002/events-01/AFTER-CLOSED.json",
+        "bytes": 4332,
+        "sha256": "e5831af68f1b73a923b42b4e196ca8c8c1c27f8caf341ca6bf4f6d128d9f5233"
+      }
+    },
+    {
+      "name": "literal_current_handoff_prior_incomplete01",
+      "incomplete_outcome": {
+        "path": "work/participant-current-document-qa-20261002/OUTCOME-01.json",
+        "bytes": 4627,
+        "sha256": "c946ad3df2faf9be33b0ac6106b1bea4b1b6a1814c85b2d0073ed51e1ab83b0e"
+      },
+      "scope": "Focused document01 failed on a missing fixture configuration field; original output remains incomplete. Successor02 repairs setup only and retains identical runtime/assertions. Its13 syntax checks are not included in the accepted39."
     }
   ],
   "root_visual": {

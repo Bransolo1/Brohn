@@ -1,74 +1,48 @@
 # John: Brohn development handoff
 
-Current integration checkpoint: all six direct opening, welcome, startup and
-completion phases pass (165 direct/168 repeated wrapper checks). The inactive
-finish successor replays outside the writer and fences changed sources before
-the original completion/receipt/job transaction. Camera history remains aggregated
-outside the writer; no constant-memory or production-latency claim is made.
+Current inactive checkpoint — 2 October: the public questionnaire model passes
+58 pure checks, and its separate local draft store passes 35 Chrome checks plus
+8 syntax checks. Literal CURRENT handoff passes 27 literal checks and 143 Chrome
+checks (85 compatibility, 39 retention, 19 focused), plus 39 accepted-phase syntax
+checks. These browser tests use synthetic authority; they do not connect the
+complete participant controller or recover the original start credential.
 
-Explicit original1.2 researcher recovery passes core27/31 and received-completion
-17/31. A separate immutable researcher decision preserves the participant's
-original answers and makes a missing final participant receipt explicit. Camera
-ordering, additional writer races and resolved-run analysis remain separate.
+Actual R/httpuv opening now passes 62 client, 13 fixture and 30 wrapper checks.
+Questionnaire collection separately passes 84 client, 19 fixture and 31 wrapper
+checks: two operations, prefix CURRENT/page, lost committed reply, exact retry
+and completed finish. The observations come from the original reducer in a
+synthetic study. One historical analysis job is queued and unclaimed; no worker
+result, physical measurement or browser-to-R controller acceptance is implied.
 
-Actual HTTP opening attempts each passed62 client/13 fixture checks, then failed
-the wrapper's RNG invariant. Both failures and natural closures are retained;
-framework initialization is being diagnosed. These are not HTTP acceptance.
+Both earlier HTTP RNG failures remain failures. A separate framework diagnostic
+localized absent-seed initialization to httpuv startServer; a fixed existing seed
+remained exact. The passing HTTP successor sets its fixture seed before measuring
+the journey and retains the complete final RNG assertion, without restoring the
+application's RNG to manufacture a pass.
 
-The review snapshot contains21 inactive source files and57 local evidence entries.
-Released runtime remains unchanged. Browser ordered retention retains its124
-Chrome controls; public questionnaire actions and durable drafts are being
-qualified. Actual controller/bootstrap, explicit1.2 analysis-worker/publication,
-general survey-flow authoring and editable dashboards remain open. All17 work
-packages and the QF01–QF08 requirements retain their individual unfinished gates.
+The review snapshot contains 25 inactive source/dependency files and 66 scoped
+evidence entries. No active loader, renderer, route or released behavior changes.
+Direct entry/finish and explicit original1.2 researcher core/received recovery
+remain accepted in their recorded scopes. New resolver camera18/33 and writer
+fences27/33 also pass; the latter uses same-process peer/own connections.
+Resolved-run analysis, camera HTTP/worker and physical recording remain open.
 
-2 October: the [assigned-questionnaire integration contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
-explains the active collection/recovery work, its separate local component
-evidence and remaining integration/latency gates. The released application has
-not enabled the new assigned-view profile. Do not register the legacy browser
-bundle as compatible or treat component tests as end-to-end acceptance.
-The [component evidence summary](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
-records the screen-to-R and separate browser-storage passes, retained harness
-failures and remaining joins. Detailed local build evidence still needs portable
-promotion; the public repository does not yet contain an activated new renderer.
-The [development source snapshot](../development/assigned-questionnaire/README.md)
-now includes 21 exact implementation/dependency files for review, with individual
-status and byte identities. It is not a standalone runnable candidate and does
-not include the complete local QA fixtures or transitive R overlays.
-The newest files add entry/welcome, finish and API-only routing. Earlier router headers
-pass50 controls on their recorded source; the new startup/opening/finalization
-coordinators now pass six separately attributed direct phases. Keep original design1.2 revision context during finish;
-large-workload finalization and downstream analysis-worker acceptance remain open.
-Camera 1.0 direct collection now passes 45 controls; its original fixture failures
-remain preserved. Named policy 1.1 now passes 35 direct/25 wrapper checks after
-its separate numeric fixture correction; writer fences additionally pass22 direct/25 wrapper, while terminal researcher resolution remains open.
-The actual browser sender passes 85 recovery checks against synthetic authority;
-this is not yet real R HTTP/controller acceptance. The context-pool response comparisons pass;
-the complete retained response measured 29.37s cold and 0.34s warm. All six pool
-phases now pass (97 case/120 wrapper checks), including access, mutation, lifetime
-and graph accounting. Actual server integration remains. Assigned PNG resource
-checks also pass 36 controls; HTTP/range/disconnect behavior remains separate.
-The snapshot adds these exact sender/current/pool files for review. Local work
-now addresses ordered observations while sending, durable drafts and the assigned
-questionnaire controller. Finish/worker/export compatibility is still required.
-The six assigned-store and six bounded current-reader phases pass locally.
-Current recovery preserves original questionnaire history and rejects stale
-responses after actual peer changes. Its complete retained response took 28.91
-seconds; latency and authenticated receipt/controller integration remain open.
-New local evidence covers paired profiling, an output-preserving bounded wire-key
-memo, a pure R operation-document encoder and browser literal-result admission
-using four actual R-encoded synthetic fixtures. The browser accepts exact model
-bytes without reproducing R numeric spelling. The inactive receiver now passes
-its small-questionnaire core, independent saved-byte inspection, atomic faults/
-lost replies, schema/peer changes, rating replay and retained-integrity phases.
-Raw HTTP helpers pass installed InputStream checks. Browser storage passes39
-compatibility and118 operation/atomic ACK-model controls using synthetic results.
-Actual HTTP/equipment/controller joining remains open. Keep historical commit ACK
-separate from current editable state, and do not bypass the legacy profile guards
-when connecting welcome, camera, resources or finalization.
-The start/current adapter now passes96 case/34 wrapper checks, and the upgraded
-journal passes90 question-screen checks plus21 exact original observation
-comparisons. No combined large-workload or HTTP acceptance follows from these.
+Next: join model, drafts, current-generation/page loading and question controls
+through the actual service; finish original start/restart bootstrap and the
+explicit1.2 analysis worker/publication journey. Cold loading, representative
+large workloads, hosted ingress and joined researcher UX remain open. All 17
+work packages and QF01–QF08 retain their individual unfinished gates.
+
+John: inspect the [development source snapshot](../development/assigned-questionnaire/README.md),
+[delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and
+[scoped evidence](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md). The snapshot
+is not a standalone runnable candidate; complete transitive R overlays and local
+QA fixtures remain separately retained. Do not relabel the legacy renderer.
+
+Retained-source diagnostics remain unresolved UX evidence: first start 83.82s,
+store reopen 27.55s and current response 28.91s. A separate pool diagnostic was
+29.37s cold and 0.34s warm. These different operations are not stable benchmarks
+or proof of acceptable loading. Keep source validation and original answers exact.
 
 Additional owner requirement, 1 October: match or exceed Qualtrics for survey
 flow, automatic analysis and visualization dashboards. Start with the

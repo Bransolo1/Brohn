@@ -37,9 +37,12 @@ export async function admitParticipantCurrentSession({currentBytes, binding: sup
     ['sample','pilot','live'].includes(session.origin) && ['open','paused','closed'].includes(session.release_status), 'Invalid current session progress.');
   const ack = session.expected_sequence - 1;
   resume(session.resume, held.binding, ack);
+  let questionnaireDocument = null;
   if (session.resume.questionnaire !== null) {
     const span = memberSpan(json, ['resume','questionnaire']);
-    require(new TextEncoder().encode(json.slice(...span)).byteLength <= 3 * 1024 * 1024, 'Current questionnaire packet exceeds its exact byte limit.');
+    const literal = json.slice(...span), packetRaw = new TextEncoder().encode(literal);
+    require(packetRaw.byteLength <= 3 * 1024 * 1024, 'Current questionnaire packet exceeds its exact byte limit.');
+    questionnaireDocument = {codec: PARTICIPANT_JSON_CODEC, json: literal, bytes: packetRaw.byteLength, sha256: await digest(packetRaw)};
   }
   const resources = view.presentation?.resources;
   require(Array.isArray(resources) && resources.every(x => x && key(x.resource_key, 'pvr')) &&
@@ -58,5 +61,5 @@ export async function admitParticipantCurrentSession({currentBytes, binding: sup
   }
   // Deliberately omit the credential and whole current JSON from public state.
   const {access_token, ...publicSession} = session;
-  return freeze({document, session: publicSession, acknowledged_sequence: ack});
+  return freeze({document, session: publicSession, acknowledged_sequence: ack, questionnaire_document: questionnaireDocument});
 }

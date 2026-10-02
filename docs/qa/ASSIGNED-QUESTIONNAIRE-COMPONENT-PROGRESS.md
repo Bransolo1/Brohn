@@ -1,11 +1,15 @@
 # Assigned questionnaire collection: component evidence
 
-Latest unresolved integration: camera-terminals04 reached the real researcher
-resolution path and failed because its original1.2 protocol entered a legacy
-revision validator.9 case/22 wrapper checks preceded failure; original inputs and
-natural process closure are retained. The separate explicit source-bound adapter now passes core27/31 and actual
-received-completion17/31. These genuine decisions do not close camera ordering,
-writer races or resolved-run analysis; the original failure remains preserved.
+Latest checkpoint: public model58, local drafts35 Chrome/8 syntax and literal
+CURRENT handoff27 literal/143 Chrome/39 syntax pass in separate scopes. Actual
+HTTP opening03 and collection events01 also pass, with original synthetic study
+observations. No complete participant controller, start bootstrap or analysis
+worker has been qualified by these joins.
+
+The camera-terminals04 failure remains exact: its legacy revision reader rejects
+original1.2. The new explicit resolver core27/31 and received17/31 pass separately;
+camera18/33 and same-process peer/own fences27/33 now pass. Resolved-run
+analysis, camera HTTP/worker and physical recording remain open.
 
 Updated 2 October 2026. This records local implementation progress toward
 [assigned delivery](../architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and
@@ -15,14 +19,20 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 
 | Component | Executed evidence | Scope still open |
 | --- | --- | --- |
-| Actual browser network recovery and ordered retention | Successors pass124 Chrome controls (all85 sender controls plus39 focused retention),22 syntax across two phases. Actual IDB abort/commit, WebLock reopen gaps, HTTP-in-flight retention, independent failed A/B retry, postcommit diagnostic separation, close drain and committed browser restart recovery pass. | Synthetic Node authority; actual R HTTP, controller, durable drafts and full original bootstrap remain. Tests resupply the held run/view/credential after restart. Unconfirmed captures and their process-local retry handles are not crash-durable. |
+| Actual browser network recovery and ordered retention | Successors pass124 Chrome controls (all85 sender controls plus39 focused retention),22 syntax across two phases. Actual IDB abort/commit, WebLock reopen gaps, HTTP-in-flight retention, independent failed A/B retry, postcommit diagnostic separation, close drain and committed browser restart recovery pass. | Synthetic Node authority; its join to actual R HTTP/controller and the separately tested draft store, plus full original bootstrap, remain. Tests resupply the held run/view/credential after restart. Unconfirmed captures and their process-local retry handles are not crash-durable. |
 | Context reuse, six phases | Corrected attribute traversal passes 97 case/120 wrapper checks across core, retained, authority, mutation, lifecycle and accounting. Complete response bytes match. Tiny cold/miss/warm: 1.19/1.78/0.22s; retained: 29.37/31.50/0.34s. Fresh access, source changes, LRU/expiry, callback/handle cleanup and conservative memory accounting pass. | Actual HTTP/coordinator integration and first-start latency. Individual diagnostics are not stable production benchmarks. |
-| Assigned resource responses | 36 direct/25 wrapper checks pass on actual PNG objects: selected control/version and question/task/choice resources, exact bytes/headers, foreign/unassigned refusal, source/credential drift, corruption, bounded snapshot reads and cleanup. | Actual HTTP/ranges/disconnect, large-media playback and deployment. Positive cold fetches were about 4s, still too slow. |
-| Camera 1.0 direct operations |45 direct/25 wrapper checks pass: exact original receipts/chunks/observation bytes, public frame mappings, response-loss recovery, conflicts and finalization. One original assembly job remains queued/unclaimed. | Named policy 1.1 separately passes 35 direct/25 wrapper checks after correcting a fixture string/numeric setting; original failure retained. Writer fences separately pass22 direct/25 wrapper checks. Terminal researcher1.2 resolution failed; worker, video decode and physical recording remain. |
+| Assigned resource responses | 36 direct/25 wrapper checks pass on actual PNG objects: selected control/version and question/task/choice resources, exact bytes/headers, foreign/unassigned refusal, source/credential drift, corruption, bounded snapshot reads and cleanup. | Opening03 separately passes actual HTTP full-PNG/ignored-Range behavior. Interrupted transfer, large-media playback and deployment remain. Positive direct cold fetches were about4s, still too slow. |
+| Camera 1.0 direct operations |45 direct/25 wrapper checks pass: exact original receipts/chunks/observation bytes, public frame mappings, response-loss recovery, conflicts and finalization. One original assembly job remains queued/unclaimed. | Named policy 1.1 separately passes 35 direct/25 wrapper checks after correcting a fixture string/numeric setting; original failure retained. Writer fences separately pass22 direct/25 wrapper checks. Terminal04 failed in the legacy1.2 reader. Separate explicit resolver camera18/33 now verifies receipt ordering and late-operation refusal. Worker, video decode, physical recording and camera HTTP remain. |
 | Assigned API-only router | 50 route/header checks pass, including finite declared upload limits, transfer-encoding refusal, exact paths/token syntax, original origin and safe error responses. Source syntax includes entry and finish. Natural independent closure and all1533 source files conserved. | No actual TCP, proxy, coordinator, storage or browser journey in this phase. |
 | Entry/welcome/startup and assigned finish | Six direct phases pass165 direct/168 repeated wrapper: startup02, entry04, welcome03 and three finish03 phases. Actual received liking/review/seal/ending, original receipts/jobs, outside-writer replay, caller transaction and source/schema/authority fences. | Exact candidates differ by documented fixture corrections; not one identical test tree. Original camera history aggregates outside writer; large workloads, actual HTTP/controller and downstream worker remain. |
-| Explicit original1.2 researcher resolution | Core27/31 and received-completion17/31 pass through actual researcher decisions, original source reader and received questionnaire. Historical exact retry remains; new events after resolution refuse. | Camera/finish ordering, further writer races and resolved-run analysis remain. |
-| Actual HTTP opening attempts | Each reached62 client/13 fixture passes over real loopback requests, lost committed start reply, exact retry/current, registered PNG and interrupted finish. Both failed final wrapper RNG conservation and are preserved as failures with natural closure. | Framework RNG diagnosis required before acceptance; no participant controller, received-questionnaire HTTP, interrupted PNG transfer or hosted ingress claim. |
+| Explicit resolver camera and source fences | Camera18/33 and fences27/33 direct/wrapper checks pass. Actual named-camera bytes and original decisions, historical receipt retry, late-operation refusal and peer/own source/authority changes are preserved. All phases close naturally. | Synthetic recording bytes; one synthetic processing-gate job remains unclaimed. No camera HTTP, container/device validation, worker execution, parallel-process race or resolved-run analysis. |
+| Explicit original1.2 researcher resolution | Core27/31 and received-completion17/31 pass through actual researcher decisions, original source reader and received questionnaire. Historical exact retry remains; new events after resolution refuse. | Camera18/33 and peer/own fences27/33 now pass in separately pinned phases. Same-process interleaving is not parallel-process contention. Resolved-run analysis remains open. |
+| Actual HTTP opening03 and preserved predecessors |62 client/13 fixture/30 wrapper checks pass on real loopback opening/start, lost committed reply, exact retry/current, registered full PNG and interrupted finish. Both earlier attempts remain failed at final RNG conservation. | Synthetic study/renderer; no browser controller, interrupted PNG transfer or hosted ingress. The separate framework diagnostic distinguishes absent-seed initialization from application behavior. |
+| Actual HTTP questionnaire collection events01 |84 client/19 fixture/31 wrapper checks pass: real two-operation prefix/suffix, CURRENT/page, lost committed suffix response, exact retry, original event bytes/effective liking and completed finish. | Original-reducer synthetic observations; one historical analysis job queued/unclaimed. No participant UI/bootstrap, worker execution or scientific/device acceptance. |
+| Framework RNG diagnostic |Two fresh R processes,18 operational checks total,41 checkpoints each. Absent seed initializes at startServer; existing104729 seed stays exact. Additive closure reporter correction, no R rerun. | Framework-only evidence. Opening03 sets the fixture seed before its measurement baseline and retains full final application RNG checks; old failures are never relabelled. |
+| Public questionnaire model |58 pure Node controls on original retained R literal view/packet inputs, labelled synthetic actions/draft associations and encoded aggregate page bounds. | No authority, page fetcher, controller, scoring or mobile/heap performance claim.64MiB is an encoded aggregate admission bound. |
+| Local questionnaire drafts |35 Chrome/8 syntax checks: native transaction completion, incomplete typed values, generation/CAS, rollback/retry, restart, WebLock and11 included versionchange checks. | Original public first-question fixture plus synthetic profiles. Separate from observation journal/ACK; no UI, full bootstrap or actual R/controller integration. |
+| Literal CURRENT document handoff |170 checks:27 literal,85 original sender,39 retain and19 focused fresh-generation controls;39 accepted-phase syntax. Retained R view/packet bytes are inside synthetic CURRENT envelopes. |143 actual Chrome checks use synthetic HTTP authority. No actual R authorization, page loading or controller. Focused01 setup failure and its13 syntax checks remain separate from accepted successor02. |
 | Native typed question controls, implementation09 | 744 rule goldens, 37 pure controls, 237 browser assertions and 34 zero-violation Axe scans across baseline, submission and invalid-text phases. All 16 current screenshots reviewed by the component owner; four recovery/completion screens also reviewed independently. | Screen-reader testing, full controller and final combined runtime. Automated accessibility scans are not complete accessibility qualification. |
 | Ordered submission bridge | 60 pure controls. Captures one answer, clock and event ID before waiting; preserves them through an ambiguous retry. | The callback's real storage and receiver behavior are separate dependencies. |
 | Actual question screen + bridge + shared order | Browser03: 43 assertions and three zero-violation Axe/overflow scans. Held save, ambiguous retry, discarded capture and destroyed component exercised. | This phase uses controlled clocks and an explicitly in-memory journal. |
@@ -37,7 +47,7 @@ Qualtrics parity, scientific validation or a completed researcher journey.
 | Browser literal operation-result checker | 122 Node checks: four actual R-encoded synthetic document sets, three typed/copy checks, 97 synthetic refusals, 16 synthetic positives and two conservation checks. Exact model strings, signed zero, association, whole-result/raw-packet boundaries and immutable input capture pass. | No HTTP, browser storage transaction, current authority or editing permission is established. The journal must invoke this checker on actual received bytes and its actual saved pending operation. |
 | Actual assigned-event receiver | Core: 20 case/24 wrapper controls on the original small information questionnaire; independent closed-store Python oracle: 204 controls. Exact received bytes, original events, derivations, model and receipts remain associated. | Broader workloads, equipment and real HTTP/controller integration have separate unfinished checks. Synthetic renderer registration is not production activation. |
 | Receiver atomicity and lost replies | 55 case/34 wrapper controls across five fresh stores. Actual faults at operation/event/relation insertion and ACK update roll back all effects; a response failure after commit recovers the original receipt without duplicate writes. | Counts include repeated setup. This does not prove cross-process contention, physical equipment or the complete browser-to-server journey. |
-| HTTP byte helpers | 63 checks using installed httpuv1.6.17 InputStream and four actual R-encoded result fixtures. Exact raw request/response bytes, body lengths, headers and 4 MiB boundaries pass. | No live HTTP route tested. httpuv buffers before Rook; application bounds are not a hosted ingress limit. |
+| HTTP byte helpers | 63 checks using installed httpuv1.6.17 InputStream and four actual R-encoded result fixtures. Exact raw request/response bytes, body lengths, headers and 4 MiB boundaries pass. | No live route tested by this helper phase; actual HTTP has separate rows above. httpuv buffers before Rook; application bounds are not a hosted ingress limit. |
 | Receiver schema, peer and retained-integrity gates | Schema110/46, fences118/46, rating-questionnaire12/27 and retained-integrity145/47 case/wrapper controls pass. Actual second-connection changes refuse stale commits; exact winners recover. Corrupt retained requests/results/relations refuse without repair. | Counts include repeated setup. Peer interleaving is two connections in one process; physical equipment and whole collected large studies remain separate gates. |
 | Operation-journal compatibility and transactions | The successor passes all39 original Chrome controls, then118 operation controls and7 syntax checks. Actual v1 migration, restart/two-tab ownership, pending-before-send, native transaction abort, atomic result/model/ACK, late receipts and fresh-state fences pass. | Results are synthetic fixtures; this is not an actual R/HTTP roundtrip. Two earlier harness-observer failures remain retained. No combined controller or new profile activation. |
 | Single-digit decoder optimization | Four phases pass: original core259, focused367, original limits5 and full paired comparison15, plus24 wrapper checks. Complete raw/typed values, reference snapshots and newly serialized output bytes agree. | Repeated controls are included in these counts. One sequential public-call pair was74.96/65.45 seconds. This is still too slow and is not a production benchmark; combined runtime remains separate. |
@@ -70,7 +80,7 @@ explicit1.2 design was mistakenly passed to the legacy validator. Only actual
 PNG registration/setup ran; no release, start or camera operation occurred.
 Failure and natural independent closure are retained. A separate successor uses
 the actual variant validator and fixes a run-specific public frame key in a later
-unrun resolution case. Camera/resource runtime bytes are unchanged. Subsequent camera1.0 direct checks pass as above;
+then-unrun resolution case. Camera/resource runtime bytes are unchanged. Subsequent camera1.0 direct checks pass as above;
 named 1.1 then exposed a separate fixture parameter-type error before release.
 Both failed attempts remain distinct from actual camera-operation evidence.
 
@@ -134,8 +144,9 @@ The receiver implementation admits source-owned required schema/trigger definiti
 merely snapshotting a database with already-missing protections is insufficient.
 Core transactions, rollback, required-schema faults, same-process peer changes,
 retained-receipt integrity and local browser atomic ACK/model persistence now
-have the scoped evidence above. Physical equipment, actual HTTP/controller
-joining and separate-process contention retain their own execution gates.
+have the scoped evidence above. Physical equipment, browser-to-R controller
+joining and separate-process contention retain their own execution gates; the
+separate backend HTTP cases above do not close them.
 
 Failed qualification attempts remain part of the record. The rating fixture
 initially supplied a source number where the public event contract requires an
@@ -162,9 +173,10 @@ and do not create physical device evidence.
 2. Connect the qualified durable screen/bridge/order path and its independent R
    replay to the actual participant controller. Join the separately tested
    receiver with browser ACK/state transactions and draft recovery.
-3. Exercise the separately qualified server and browser atomic commits through
-   real HTTP: exact pending bytes before send, lost replies/restarts, current-state
-   refresh, changed branches and immutable historical answers.
+3. Connect the separately qualified browser atomic commits to the now-tested
+   R HTTP backend: exact pending bytes, lost replies/restarts, current-state and
+   page loading, changed branches and immutable historical answers. Backend
+   synthetic event generation is not this controller acceptance.
 4. Connect assigned resources, actual equipment/camera receipts, interruption
    and ending paths, then run the create–publish–collect–restart–results journey.
 5. Resolve cold-admission latency and qualify representative complete workloads.

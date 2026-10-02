@@ -15,14 +15,14 @@
       "bytes": 15274,
       "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6",
       "local_source": "work/participant-view-response-join-next-20261002/R/platform-participant-view-current.R",
-      "scope": "Start/current factoring passes five scoped cases,96 actual/34 wrapper; full HTTP and large collected workload remain open"
+      "scope": "Start/current direct96/34 plus actual HTTP opening/current and events-prefix page on unchanged source. Synthetic study, no browser controller or large collected workload."
     },
     {
       "path": "R/platform-participant-view-receive.R",
       "bytes": 37367,
       "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030",
       "local_source": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
-      "scope": "Scoped actual receiver checks; complete HTTP/controller join unfinished"
+      "scope": "Direct core/fault/integrity checks plus actual HTTP two-operation events01 with exact retry and original derived rows. Browser-to-R controller, broad workloads and physical equipment remain open."
     },
     {
       "path": "R/platform-participant-operation-documents.R",
@@ -36,21 +36,21 @@
       "bytes": 3840,
       "sha256": "e70552ea2ad52dc703f2d9d6cf39507321393c840d38b21ad4f7eb0c08ad4709",
       "local_source": "work/participant-view-http-next-20261002/R/platform-participant-view-http.R",
-      "scope": "Installed InputStream helper checks; no live route or ingress acceptance"
+      "scope": "Installed InputStream63 and separate actual loopback opening03/events01 scopes pass. Exact response bytes retained; hosted ingress/controller and interrupted media remain open."
     },
     {
       "path": "R/platform-participant-view-camera.R",
       "bytes": 6249,
       "sha256": "58a864690a0f099a5f71e652364e4dc19cf7071d1eb67bbbd524312321aaba61",
       "local_source": "work/participant-view-camera-next-20261002/R/platform-participant-view-camera.R",
-      "scope": "Camera1.0 direct45/25, named1.1 direct35/25 and writer fences22/25 pass. Actual terminal researcher1.2 resolution fails in legacy context; explicit adapter pending. HTTP/worker/physical capture remain open."
+      "scope": "Direct camera1.0 45/25, named1.1 35/25 and fences22/25 pass. Preserved terminal04 failed in the legacy1.2 reader; separate explicit resolver camera18/33 now passes actual receipt ordering and late-operation refusal. No camera HTTP/worker/physical capture claim."
     },
     {
       "path": "R/platform-participant-view-resource.R",
       "bytes": 2680,
       "sha256": "2811aefcd785647246f3e41da10d1e76563470a23d39d8d8848205ac6a1d4a48",
       "local_source": "work/participant-view-resource-next-20261002/R/platform-participant-view-resource.R",
-      "scope": "36 direct/25 wrapper checks pass with actual assigned PNG bytes, source/access fences, bounded copy and cleanup; actual HTTP/ranges/disconnect and performance remain open"
+      "scope": "36 direct/25 wrapper controls plus actual HTTP opening03 registered full PNG and ignored-Range behavior. Interrupted transfer, large media and performance remain open."
     },
     {
       "path": "R/platform-participant-received-bytes.R",
@@ -99,21 +99,21 @@
       "bytes": 4487,
       "sha256": "97a8716ca0691ea2edd0a33d5208f21480cc53575fb4f207d7cbf8ce648608bc",
       "local_source": "work/participant-view-entry-next-20261002/R/platform-participant-view-entry.R",
-      "scope": "Entry04 and welcome03 each pass24 direct/28 wrapper: no allocation on opening, actual PNGs and source/access/status/transaction fences. Actual HTTP attempts remain failed at their final RNG invariant."
+      "scope": "Entry24 and welcome24 direct controls, plus actual HTTP opening03 on unchanged source. No allocation on opening; synthetic study/renderer and no whole controller/bootstrap."
     },
     {
       "path": "R/platform-participant-view-finish.R",
       "bytes": 7666,
       "sha256": "a859a4f8cbe6f85c323d6528cbe72a3cdea28437e5b8b8fc13dfb6bed33d24d4",
       "local_source": "work/participant-view-entry-finish-qa-20261002/candidate-04/R/platform-participant-view-finish.R",
-      "scope": "Three direct finish phases pass93 direct/84 repeated wrapper: real received completion/interruption/withdrawal, receipt/job atomicity, outside-writer replay/camera support and source/schema/authority fences. Worker and full HTTP/controller remain."
+      "scope": "93 direct finish controls and actual HTTP interrupted/completed finish pass separately. Original camera history aggregates outside writer; historical analysis job remains unclaimed, worker/full controller/performance open."
     },
     {
       "path": "R/platform-participant-view-router.R",
       "bytes": 6880,
       "sha256": "22cfde77c4b14d7a5451f520bbe061b17f609d2d9bf9b50eac0e743830650534",
       "local_source": "work/participant-view-entry-finish-qa-20261002/candidate-04/R/platform-participant-view-router.R",
-      "scope": "Explicit startup schema admission passes24 direct/28 wrapper on startup02. Prior50 header controls bind the prior router source; actual HTTP attempts remain failed at their final RNG invariant."
+      "scope": "Startup24 direct/28 wrapper and separately scoped actual HTTP opening03 plus questionnaire events01 pass. Earlier50 header controls bind prior source; no production registration/ingress or browser controller."
     },
     {
       "path": "R/platform-participant-context-pool.R",
@@ -124,17 +124,17 @@
     },
     {
       "path": "www/participant/operation-sender.mjs",
-      "bytes": 17698,
-      "sha256": "1f297a8851bf0dbecaa88fce82e596216a68906b2673f1b95f7ef9c0f82f82cd",
-      "local_source": "work/participant-operation-sender-retain-next-20261002/www/participant/operation-sender.mjs",
-      "scope": "124 actual Chrome controls and22 repeated syntax checks across compatibility/retention phases; native IDB/network/WebLock tests use synthetic Node authority. Exact process-local retry captures, independent unresolved writes and ordered storage during HTTP; actual R/full controller remain open."
+      "bytes": 18763,
+      "sha256": "997890934ea19aeb15a2d3a2d59d480cf991763456e8aa27040a5d7759189b8c",
+      "local_source": "work/participant-current-document-next-20261002/www/participant/operation-sender.mjs",
+      "scope": "Literal handoff successor passes143 Chrome controls (85 compatibility,39 retention,19 focused), plus27 literal and39 accepted-phase syntax in aggregate. Synthetic HTTP authority; exact generation differs from historical ACK. Controller/page loader/bootstrap remain open."
     },
     {
       "path": "www/participant/current-session.mjs",
-      "bytes": 5379,
-      "sha256": "67b93d7e8d7ac6223843236d29117be0b880703c3d21b3a4d74a280f4d7cdaf8",
-      "local_source": "work/participant-operation-sender-next-20261002/www/participant/current-session.mjs",
-      "scope": "Literal current-session admission in the same scoped browser sender qualification; not a complete questionnaire model/controller"
+      "bytes": 5652,
+      "sha256": "58abfbd291525497f52b3cd21c909ea6a5be1eedcfe861339a17b99585bb63dd",
+      "local_source": "work/participant-current-document-next-20261002/www/participant/current-session.mjs",
+      "scope": "Literal CURRENT handoff:27 Node controls use retained R view/packet bytes in synthetic envelopes; actual fresh-generation installation has separate Chrome coverage. No actual R service/controller join."
     },
     {
       "path": "www/participant/current-structure.mjs",
@@ -148,7 +148,35 @@
       "bytes": 7756,
       "sha256": "89c825fe24949c267b29fe52e456263dc0e5a0ff232f8392e9127a47c39361f4",
       "local_source": "work/variant-session-resolution-next-20261002/R/platform-variant-session-resolution.R",
-      "scope": "Explicit original1.2 researcher resolution: core27/31 and actual received completion17/31 pass. Original participant evidence and immutable decisions preserved. Camera/writer races and resolved analysis remain separate."
+      "scope": "Four separately attributed direct scopes: core27/31, received17/31, camera18/33 and fences27/33. Genuine original decisions and bytes retained; writer tests use same-process peer/own connections. No resolved analysis/HTTP/physical/worker acceptance."
+    },
+    {
+      "path": "www/participant/questionnaire-model.mjs",
+      "bytes": 24165,
+      "sha256": "7ecb785c08e3835799fbf06c6b36cf4ae0e57177ff8ba7a6c3a72349455a9aa7",
+      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/questionnaire-model.mjs",
+      "scope": "58 pure Node controls on original retained R view/packet bytes plus labelled synthetic actions, draft applicability and encoded page bounds. No current authority, page fetcher, controller or scoring."
+    },
+    {
+      "path": "www/participant/questionnaire-drafts.mjs",
+      "bytes": 13318,
+      "sha256": "16000b595b99befd546c119ec73d4e77531c70eaf522ee1381798500dd8a3d28",
+      "local_source": "work/participant-questionnaire-drafts-next-20261002/www/participant/questionnaire-drafts.mjs",
+      "scope": "35 actual Chrome controls and8 syntax checks: typed incomplete drafts, local generation/CAS, rollback, restart, WebLock and versionchange. Separate from answers/ACK; no full app bootstrap or draft-to-controller join."
+    },
+    {
+      "path": "www/participant/question-domain.mjs",
+      "bytes": 11458,
+      "sha256": "6b843ace4a5268d0de1a1b94c059b237c66e417bbab1ecafd86bc97e1ed05985",
+      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/question-domain.mjs",
+      "scope": "Exact accepted component09 pure question/rule/answer-domain extraction, shared by the qualified model and local draft store; no DOM or authority."
+    },
+    {
+      "path": "www/participant/packet-structure.mjs",
+      "bytes": 11351,
+      "sha256": "68cebc08976283cc2a8409df5d261fbb7dbf24615b1644a7e7cc9ca2d92d596c",
+      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/packet-structure.mjs",
+      "scope": "Exact existing current-structure function bodies with only the packet helper export added; model dependency, not independent source authority."
     }
   ]
 }

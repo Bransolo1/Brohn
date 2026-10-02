@@ -1,5 +1,22 @@
 # Changes
 
+## Inactive questionnaire model, drafts and backend HTTP — 2026-10-02
+
+- Added the qualified public-key model and local draft store with their exact
+  domain/packet dependencies; updated only sender/current literal handoff sources.
+  All files remain under the inactive development snapshot, with no registration.
+- Recorded model58, drafts35 Chrome/8 syntax and current handoff27 literal/143
+  Chrome/39 syntax. Synthetic authority and incomplete controller/bootstrap
+  integration remain explicit; the focused predecessor failure is retained.
+- Recorded actual R/httpuv opening03 (62/13/30 client/fixture/wrapper) and
+  collection events01 (84/19/31). Lost replies and exact retry pass; the historical
+  analysis job stays queued/unclaimed. No worker or participant UI claim follows.
+- Preserved both earlier HTTP RNG failures and the framework-only diagnostic;
+  the passing fixture seed precedes the unchanged full-journey RNG assertion.
+- Clarified legacy camera1.2 failure versus the separate accepted researcher
+  resolver core/received scopes. All17 package and QF01–QF08 gates remain.
+
+
 ## Original participant completion and researcher recovery — 2026-10-02
 
 - Published the inactive outside-writer finish and explicit startup-admission
