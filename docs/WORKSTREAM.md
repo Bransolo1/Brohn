@@ -1,11 +1,18 @@
 # Brohn workstream and restart checklist
 
-Before promoting the participant host, fix and qualify the four
-[storage/retry/close recovery findings](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md).
-Finish-network component checks now pass separately; this does not close the
-full participant-to-analysis journey or change the released runtime.
+Latest recovery work passes separately against actual R and controlled host
+authority; see the [source-specific checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
+The selected draft-flush/image component and recovery controller now pass together
+in the held R journey. UI06 removes stale Finish and permanent recovery controls.
+Full entry-to-finish/report integration remains open and the runtime is inactive.
 
-Current development checkpoint — 5 October 2026. Brohn is unfinished. This
+Current next work: durable [timed-sequence delivery](architecture/ASSIGNED-TIMED-SEQUENCES.md),
+actual full-host qualification using a valid study with stimuli, plain participant
+error wording, and separate survey-only design/release support. Do not bypass the
+current variant schema by dropping required stimulus screens. All wider package,
+scientific, device, survey-flow/dashboard and deployment gates remain.
+
+Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned
 PNG loading, durable finish custody and saved-variant worker/Retry source. The
 released application remains at runtime f39bd63; this checkpoint does not enable

@@ -1,11 +1,16 @@
 # Resume here — Brohn
 
-Later 5 October review: the inactive host has four concrete storage/retry/close
-defects to fix and qualify before promotion. See the
-[recovery review](docs/qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md). Separate finish-network
-checks now pass; the full participant host is still unqualified and inactive.
+Latest 5 October checkpoint: real-R questionnaire recovery and the ordinary-host
+UI now have separate passing acceptance. The [recovery checkpoint](docs/qa/PARTICIPANT-RECOVERY-CHECKPOINT.md)
+records the detected missing draft API, its tested successor, genuine phone-width
+finishing/retry checks and the remaining full-host join. The inactive snapshot
+now includes 72 exact source files. Released behavior remains unchanged.
 
-Current development checkpoint — 5 October 2026. Brohn is unfinished. This
+Next: connect [timed sequences](docs/architecture/ASSIGNED-TIMED-SEQUENCES.md),
+complete actual entry-to-finish/report acceptance, and add honest questionnaire-only
+release support. The complete 50-capability/17-package scope remains unfinished.
+
+Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned
 PNG loading, durable finish custody and saved-variant worker/Retry source. The
 released application remains at runtime f39bd63; this checkpoint does not enable

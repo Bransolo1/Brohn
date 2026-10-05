@@ -1,6 +1,17 @@
 # Assigned questionnaire collection: component evidence
 
-## Current scoped checkpoint — 5 October 2026
+## Latest recovery checkpoint — 5 October 2026
+
+The [new recovery acceptance](PARTICIPANT-RECOVERY-CHECKPOINT.md) supersedes the
+source-selection and pending-status statements in the earlier table below.
+Selected controller3d947/component3bd8a4d1 pass real-R recovery02 (19 browser,
+30 R,33 wrapper; two zero-Axe scans). Ordinary host UI06 separately passes
+24 focused browser/27 syntax/four zero-Axe scans. Finish networking and stimulus
+preparation also have their separately scoped browser/timeout acceptance.
+The inactive snapshot has 72 exact sources; no full-host or production claim.
+Preserve the failed missing-flush composition and all earlier identities.
+
+## Earlier scoped checkpoint — 5 October 2026
 
 The new sources remain inactive. The machine-readable
 [source/evidence index](ASSIGNED-QUESTIONNAIRE-COMPONENT-SOURCES.json) adds exact

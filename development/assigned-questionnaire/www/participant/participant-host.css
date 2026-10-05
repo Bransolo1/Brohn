@@ -1,0 +1,12 @@
+.brohn-participant-host { --participant-bg: #fff; --participant-fg: #111; color: var(--participant-fg); background: var(--participant-bg); min-height: 100%; font: 1rem/1.5 system-ui, sans-serif; padding: clamp(1rem, 4vw, 3rem); box-sizing: border-box; }
+.brohn-participant-host > section { max-width: 54rem; margin-inline: auto; }
+.brohn-participant-host [hidden] { display: none !important; }
+.brohn-participant-host h1 { font-size: clamp(1.5rem, 4vw, 2.25rem); line-height: 1.2; overflow-wrap: anywhere; }
+.brohn-host-copy { white-space: pre-wrap; overflow-wrap: anywhere; }
+.brohn-participant-host nav { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1.5rem 1rem; }
+.brohn-participant-host button { font: inherit; min-height: 2.75rem; padding: .625rem 1rem; border: 1px solid currentColor; border-radius: .5rem; color: inherit; background: transparent; cursor: pointer; }
+.brohn-participant-host button:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.brohn-participant-host button.brohn-host-primary { color: var(--participant-bg); background: var(--participant-fg); border-color: var(--participant-fg); font-weight: 600; }
+.brohn-participant-host button.brohn-host-primary:focus-visible { outline-color: var(--participant-fg); }
+.brohn-participant-host [role="alert"] { border-inline-start: .25rem solid currentColor; padding-inline-start: .75rem; }
+.brohn-participant-host button:disabled { cursor: wait; opacity: .65; }

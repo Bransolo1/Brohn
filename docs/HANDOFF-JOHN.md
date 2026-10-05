@@ -1,10 +1,18 @@
 # John: Brohn development handoff
 
-Start with the [5 October recovery review](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md)
-before integrating the new participant host. It identifies four concrete cases
-outside earlier test coverage; local successor fixes are not yet qualified.
+Start with the [latest recovery checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
+The inactive source snapshot now includes 72 files. A real missing draft API was
+found and repaired; the corrected question component/controller pass actual-R
+recovery. Ordinary-host finishing/retry UI passes separately at desktop and phone
+width. The exact assembled host still needs entry-to-report qualification.
 
-Current development checkpoint — 5 October 2026. Brohn is unfinished. This
+Use the main README for the released app; no development source is activated.
+Next integration is [timed presentation](architecture/ASSIGNED-TIMED-SEQUENCES.md),
+with original study controls/versions and no hidden replay on restart. Standalone
+questionnaire releases and simpler participant error wording remain on the queue.
+The historical snapshot notes below describe their original, earlier selections.
+
+Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned
 PNG loading, durable finish custody and saved-variant worker/Retry source. The
 released application remains at runtime f39bd63; this checkpoint does not enable

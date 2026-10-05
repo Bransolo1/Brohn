@@ -169,7 +169,7 @@
     let live = true, completing = false, completed = false, revision = 0, savedRevision = 0, invalidEditing = false, controlsEdited = false;
     let latest = {revision: 0, value: copy(initial)}, pending = null, inFlight = null, draftError = null, waiters = [];
     let submitIntent = null, releaseFailure = null;
-    let editIssue = null, errorOrigin = null;
+    let editIssue = null, errorOrigin = null, draining = false, flushPromise = null;
     const fatalMessage = 'Your pending submission needs recovery before you can continue.';
     let imageHandle = null, imageReady = !q.illustration, imageError = null, readControls = () => null;
     const listeners = [], controls = [];
@@ -186,9 +186,9 @@
     const next = el('button', q.type === 'information' ? 'Continue' : 'Save and continue', 'bvq-primary'); next.type = 'submit'; form.append(next);
     function listen(node, type, callback) { node.addEventListener(type, callback); listeners.push(() => node.removeEventListener(type, callback)); }
     function control(node, boundary = () => false) { controls.push({node, boundary}); node.setAttribute('aria-describedby', error.id); return node; }
-    const answerLocked = () => completing || completed || !!releaseFailure || submitIntent?.phase === 'handed_off';
+    const answerLocked = () => draining || completing || completed || !!releaseFailure || submitIntent?.phase === 'handed_off';
     function primaryLabel() { next.textContent = completed ? 'Completed' : submitIntent?.phase === 'handed_off' ? 'Retry submission' : q.type === 'information' ? 'Continue' : 'Save and continue'; }
-    function enabled() { for (const c of controls) c.node.disabled = answerLocked() || c.boundary(); next.disabled = completing || completed || !!releaseFailure; retry.disabled = answerLocked(); primaryLabel(); }
+    function enabled() { for (const c of controls) c.node.disabled = answerLocked() || c.boundary(); next.disabled = draining || completing || completed || !!releaseFailure; retry.disabled = answerLocked(); primaryLabel(); }
     function showError(message, target = null, {focus = true, origin = null} = {}) {
       if (!live) return; errorOrigin = origin; error.textContent = message; error.hidden = false;
       for (const c of controls) c.node.removeAttribute('aria-invalid');
@@ -368,7 +368,7 @@
       draftError = null; pending = latest; clearError(); updateStatus(); pump();
     });
     listen(form, 'submit', async event => {
-      event.preventDefault(); if (!live || completing || completed || releaseFailure) return;
+      event.preventDefault(); if (!live || draining || completing || completed || releaseFailure) return;
       let item = submitIntent, payload;
       const result = item?.phase === 'handed_off' ? null : completeValue();
       if (result && !result.valid) { showError(result.message, result.control, {origin: result.origin}); return; }
@@ -443,6 +443,20 @@
         if (live) { imageError = true; illustration.replaceChildren(el('p', 'The question illustration could not be loaded.', 'bvq-error')); const again = el('button', 'Retry illustration'); again.type = 'button'; listen(again, 'click', prepareImage); illustration.append(again); }
       } finally { preparing = false; refreshIllustrationError(); }
     }
+    function flushDraft() {
+      if (!live) return Promise.reject(new Error('Question closed.'));
+      if (flushPromise) return flushPromise;
+      // Drain captured revisions only. Do not read controls, recapture a value,
+      // allocate a revision, clear an error or silently discard an invalid edit.
+      if (invalidEditing || editIssue) return Promise.reject(Object.assign(new Error(editIssue?.message || 'The current edit is not a valid saved draft.'), {code: 'question_draft_invalid'}));
+      draining = true; enabled();
+      const promise = new Promise((resolve, reject) => {waiters.push({resolve, reject}); pump(); settleWaiters();});
+      flushPromise = promise.finally(() => {
+        draining = false; flushPromise = null;
+        if (live) {enabled(); updateStatus();}
+      });
+      return flushPromise;
+    }
     function destroy() {
       if (!live) return; live = false;
       try { discardIntent('destroy'); }
@@ -455,7 +469,7 @@
     container.append(root); enabled();
     if (signal) signal.addEventListener('abort', destroy, {once: true});
     if (signal && signal.aborted) destroy(); else if (q.illustration) prepareImage();
-    return Object.freeze({readDraft() { require(live, 'Question is closed.'); const value = readControls(); answerShape(q, value); return copy(value); }, validateComplete() { const r = completeValue(); return r.valid ? {valid: true, value: copy(r.value)} : {valid: false, message: r.message}; }, focus() { if (live) heading.focus(); }, destroy});
+    return Object.freeze({flushDraft, readDraft() { require(live, 'Question is closed.'); const value = readControls(); answerShape(q, value); return copy(value); }, validateComplete() { const r = completeValue(); return r.valid ? {valid: true, value: copy(r.value)} : {valid: false, message: r.message}; }, focus() { if (live) heading.focus(); }, destroy});
   }
   require(!own(global, 'BrohnViewQuestion'), 'Question component is already registered.');
   Object.defineProperty(global, 'BrohnViewQuestion', {value: Object.freeze({mount, evaluate}), writable: false, configurable: false});

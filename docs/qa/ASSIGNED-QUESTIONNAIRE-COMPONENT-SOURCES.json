@@ -1220,6 +1220,42 @@
           "sha256": "ac29a77f9865baeb968abcc6fc9ecf8285c2249c6f6bf51343441a58f631395c"
         }
       ]
+    },
+    {
+      "name": "questionnaire_recovery02",
+      "acceptance": {
+        "path": "work/participant-questionnaire-recovery-successor02-20261005/actual-02/ACCEPTANCE.json",
+        "bytes": 2710,
+        "sha256": "5870f1a95ed15fa756884591191c034f01622b3f5120dd89c3b2349f2058a2f9"
+      },
+      "scope": "See PARTICIPANT-RECOVERY-CHECKPOINT.md; separate scoped acceptance, not full-host or product completion."
+    },
+    {
+      "name": "host_ui06",
+      "acceptance": {
+        "path": "work/participant-host-ui-acceptance-20261005/ACCEPTANCE.json",
+        "bytes": 6145,
+        "sha256": "3e4201756528d29fe1b0120797c5d199670093143f97c70cd2ce4b45beed9cb0"
+      },
+      "scope": "See PARTICIPANT-RECOVERY-CHECKPOINT.md; separate scoped acceptance, not full-host or product completion."
+    },
+    {
+      "name": "finish_network",
+      "acceptance": {
+        "path": "work/participant-finish-network-qa-20261002/acceptance-01/ACCEPTANCE.json",
+        "bytes": 6673,
+        "sha256": "3e074feea73a2797f8498fcb55b65ee22c31b0602b653e5444493e10af8634dc"
+      },
+      "scope": "See PARTICIPANT-RECOVERY-CHECKPOINT.md; separate scoped acceptance, not full-host or product completion."
+    },
+    {
+      "name": "stimulus_preparation",
+      "acceptance": {
+        "path": "work/participant-stimulus-media-qa-successor02-20261005/acceptance-01/ACCEPTANCE.json",
+        "bytes": 7967,
+        "sha256": "ed03554afaee4a5e79d00eb7cffd6a014f889921002d4510901f3ce0a765d2c7"
+      },
+      "scope": "See PARTICIPANT-RECOVERY-CHECKPOINT.md; separate scoped acceptance, not full-host or product completion."
     }
   ],
   "root_visual": {
@@ -1241,5 +1277,16 @@
     "Full researcher journey and cold/warm latency qualification",
     "QF02-QF08 complete flow, guided analysis and editable dashboards"
   ],
-  "limitations": "Controlled clocks and separately synthetic equipment setup; no physical device, scientific validity, screen-reader, hosting or Qualtrics-parity claim. All17 work-package statuses unchanged."
+  "limitations": "Controlled clocks and separately synthetic equipment setup; no physical device, scientific validity, screen-reader, hosting or Qualtrics-parity claim. All17 work-package statuses unchanged.",
+  "current_recovery_checkpoint": {
+    "document": "PARTICIPANT-RECOVERY-CHECKPOINT.md",
+    "preserved_actual01_failure": {
+      "path": "work/participant-questionnaire-recovery-tests-next-20261005/actual-01/FAILURE.json",
+      "bytes": 3253,
+      "sha256": "f95ae65abf8f23cb53fc4c442beaa5712dad6267851674672411ab27060cb6f5"
+    },
+    "controller_sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a",
+    "component_sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
+    "status": "Inactive, scoped qualification only; full current selection still needs actual-R host and assigned-provider join."
+  }
 }

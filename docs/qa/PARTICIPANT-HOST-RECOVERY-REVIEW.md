@@ -1,7 +1,13 @@
 # Participant host recovery review — 5 October 2026
 
-The assigned participant host is still an inactive local candidate. It is not
-included in the public source snapshot or enabled in the released application.
+Later follow-up: the [recovery checkpoint](PARTICIPANT-RECOVERY-CHECKPOINT.md)
+records scoped successor fixes, real-R questionnaire recovery and ordinary-host
+UI06 acceptance. It also preserves the later missing-draft-API integration failure
+and corrected component. The original findings below remain historical evidence;
+they are not the current source selection. Full actual-R host integration is open.
+
+At the time of this initial review, the assigned participant host was an inactive
+local candidate, outside the public snapshot and the released application.
 Independent static review found four recovery defects before host qualification:
 
 1. A failed first opening of finish storage cached a rejected promise. Reusing

@@ -5,6 +5,20 @@ Participant host promotion also requires the
 The original capture must survive failure between each ownership/storage boundary;
 component passes alone do not prove the assembled journey.
 
+The [latest recovery checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) records
+actual-R questionnaire recovery and separately accepted ordinary-host UI06.
+Their exact sources are retained in the inactive snapshot. Next connect the
+[timed-sequence architecture](architecture/ASSIGNED-TIMED-SEQUENCES.md): preloaded
+assigned media, prospective durable arming, continuous frame-boundary presentation,
+original ordered observations and authenticated reconciliation outside exposures.
+Cold recovery must not silently repeat a stimulus. Media callback evidence needs
+its own versioned receiver/export contract; browser events are not physical onset.
+
+Support questionnaire-only studies as an explicit authoring/compiler/release
+mode within BWP03/04/05 and QF01. The current variant-only admission requires
+stimulus sets, so this remains unfinished. Do not fabricate placeholder stimuli
+or delete compiled timeline steps to make a survey-only demonstration pass.
+
 ## Questionnaire, survey flow and dashboards — 5 October 2026
 
 The target remains Qualtrics-level or better survey flow, automatic analysis and

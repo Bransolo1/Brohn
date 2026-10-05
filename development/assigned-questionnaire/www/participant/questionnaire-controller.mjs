@@ -37,7 +37,7 @@ export function createHeldParticipantQuestionnaireController({container, binding
   const recovery = document.createElement('button'), actions = document.createElement('nav'), body = document.createElement('div');
   root.className = 'brohn-held-questionnaire'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   recovery.type = 'button'; recovery.textContent = 'Retry recovery'; recovery.hidden = true;
-  actions.setAttribute('aria-label', 'Questionnaire navigation'); root.append(status, recovery, actions, body); container.append(root);
+  actions.setAttribute('aria-label', 'Questionnaire navigation'); root.append(status, recovery, body, actions); container.append(root);
   let sender = null;
   const senderState = () => sender?.state() ?? null;
   const active = () => need(!closed && !closing, 'questionnaire_closed', 'This questionnaire controller is closed or closing.');
@@ -386,15 +386,31 @@ export function createHeldParticipantQuestionnaireController({container, binding
   }
   async function retry() {
     active();
-    if (failedHead) {const retained = failedHead; problem = null; await retained.retry(); return;}
+    if (flight && flightKind === 'recovery') return flight;
+    if (failedHead) {
+      const retained = failedHead;
+      return run('recovery', async () => {
+        // Open CURRENT/storage without installing pages or consuming the
+        // blocked original reservation. This flight disables duplicate UI
+        // actions and joins programmatic retry while the same recovery runs.
+        const recovered = await sender.synchronize();
+        need(recovered.storage.phase === 'open', recovered.error?.code || 'questionnaire_storage',
+          'The saved-response store could not be reopened. Keep and retry the original capture.');
+        await retained.retry();
+      });
+    }
     return synchronize();
   }
   recovery.addEventListener('click', () => {retry().catch(error => {problem = errorSummary(error); publish();});});
   function close() {
     if (closed) return Promise.resolve(); if (closing) return closing;
     const next = Promise.resolve().then(async () => {
+      need(!order.state().failed && failedHead === null, 'questionnaire_unsaved',
+        'Retry the original observed response before closing this questionnaire.');
       if (automatic !== null) {window.clearTimeout(automatic); automatic = null;}
       await flushComponent();
+      need(!order.state().failed && failedHead === null, 'questionnaire_unsaved',
+        'Retry the original observed response before closing this questionnaire.');
       // Destroy releases an unhanded submit intent; already handed writes remain
       // in the shared order and must reach transactioncomplete before close.
       retireComponent();

@@ -11,12 +11,19 @@ the selected component successor and identifies unchanged native-worker files.
 [delivery contract](../../docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and
 [workstream](../../docs/WORKSTREAM.md) distinguish what ran from what remains.
 
+Latest checkpoint: 72 source files, including scoped ordinary-host, finish-network
+and media-preparation implementations. Read the
+[recovery acceptance](../../docs/qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) before joining
+these sources. The full selected host still needs actual-R entry-to-report testing.
+
 | Source group | Purpose and boundary |
 | --- | --- |
 | entry-screen, start-controller and start-session | Consent/alias, exact original start custody/retry, restart and fresh CURRENT handoff. Actual R entry tested separately; no whole participant host. |
 | questionnaire-controller, pages, model, drafts, question-submit and event-order | Owned current-generation/page/answer flow, typed local drafts, exact observation retention and one-click continue after fresh commit evidence. Actual held R journey passes. |
-| view-question and assigned-illustrations | Accessible question controls and assigned authenticated PNG loading with native decode, retry and owned cleanup. Corrected image-alert state passes separately from the controller's actual R journey. |
-| finish-session | Durable exact ending request and receipt custody with strict native transactions/CAS/lock. Storage-only qualification; finish networking is excluded here. |
+| view-question and assigned-illustrations | Combined draft-flush/image-alert component passes the actual held R recovery journey with a test-only image adapter. Assigned authenticated PNG loading has separate native preparation/cleanup acceptance; its full-host R join remains open. |
+| participant-host, participant-host.css and host-ending | Single ordinary owner, instructions, ending custody and focused finishing/recovery UI. Scoped native storage and controlled-authority browser evidence; complete real-R host still open. |
+| finish-session and finish-controller | Original ending request/receipt custody plus authenticated recovery and exact retry. Separate storage and controlled-authority network acceptance, not a full R host. |
+| stimulus-media | Exact assigned text/image/audio/video preparation, cancellation and native decode/readiness. No exposure, physical onset, timed renderer or actual R-resource claim. |
 | current-session, operation-sender, observation-journal and literal helpers | Fresh CURRENT admission, exact durable operation retry, separate typed drafts/observations/ACK and original literal response bytes. |
 | R/platform-participant-view-* and original operation/context helpers | Assigned source storage, current/receive, entry/welcome, camera/resource, finish and HTTP/router contracts. Existing scoped backend evidence retained; complete server dependency closure remains outside this snapshot. |
 | R/platform-variant-* and method/evidence history helpers | Read original saved revision/protocol/assignment/event evidence and invoke unchanged analysis algorithms. Completed-run profile; resolved partial runs and wider export remain open. |
@@ -26,17 +33,21 @@ the selected component successor and identifies unchanged native-worker files.
 
 ## Exact composition still requires integration
 
-Controllerac929's real R actual06 test used component5799542f and a test-only image
-adapter. This snapshot selects the separately repaired component5abe, which passed
-with provider6196. The mismatch is explicit in DEPENDENCIES.json; common modules
-agree byte-for-byte. Do not claim the full selected composition has run. Historical
-failures and previous component identities remain in the local evidence index.
+This snapshot selects controller3d947 and component3bd8a4d1. They pass together in
+real-R recovery02 with a test-only image adapter. Actual01 exposed a missing
+flushDraft API in component5abe; the successor combines the original draft drain
+with that component's image-alert repair. Historical combinations and their
+failures remain in the evidence index. Provider6196 still has separate acceptance.
+
+The selected ordinary host is UI06. Its focused tests exercised instructions and
+ending recovery with the older component present but no questionnaire transitions.
+Those passes cannot establish the new complete host/component/provider composition.
 
 Entry/start, held questionnaire, finish/backend, native worker and Retry are
 individually scoped. A single entry-to-collection-to-finish participant host,
 ordinary/timed/task/MaxDiff/equipment/camera renderers, actual R-provider join and
-the researcher author-to-report journey remain to implement or qualify. New host
-and finish-network work is deliberately excluded pending its own qualification.
+the researcher author-to-report journey remain to implement or qualify. The added
+host and finish-network sources retain their separate scoped qualification.
 The accepted sender's combined held-declaration4MiB limit remains narrower than
 the public view's16MiB schema ceiling.
 

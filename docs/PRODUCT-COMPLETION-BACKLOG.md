@@ -1,5 +1,13 @@
 # Brohn completion backlog
 
+5 October continuation: [recovery acceptance](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md)
+advances participant draft/retry/close and finishing UI without closing a package.
+The [timed-sequence contract](architecture/ASSIGNED-TIMED-SEQUENCES.md) now specifies
+network-independent presentation, durable arming and no silent replay. Complete
+its real-R/media/host/report join. Also implement questionnaire-only authoring,
+compile/release, collection and analysis as an explicit mode; current variant
+admission still requires stimulus sets. Preserve timed studies and saved history.
+
 **Added 1 October 2026:** match or exceed Qualtrics for questionnaire flow,
 automatic analysis and visualization dashboards. The [QF01–QF08 checklist](research/QUESTIONNAIRE-QUALTRICS-PARITY.md)
 adds concrete flow, analysis, dashboard and actual researcher acceptance gates

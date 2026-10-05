@@ -1,5 +1,18 @@
 # Changes
 
+## Participant recovery and timed-delivery contract — 2026-10-05
+
+- Added the inactive ordinary host, ending recovery, finish-network and ordinary
+  media-preparation sources; selected the combined draft-flush/image component
+  and repaired questionnaire controller. The snapshot now contains 72 files.
+- Preserved the missing-flush integration failure and recorded its real-R
+  successor pass: 19 browser/30 R/33 wrapper checks and two zero-violation scans.
+- Recorded focused host UI06 acceptance: one primary action, exact ending retry,
+  genuine phone geometry, keyboard focus and four zero-violation scans.
+- Added the timed-sequence architecture and survey-only admission gap to the
+  master/workstream/backlog. Full-host activation, portable tests, advanced
+  survey/dashboard, device and scientific gates remain open.
+
 ## Inactive participant orchestration and automatic analysis — 2026-10-05
 
 - Recorded four new host recovery findings and the separate passing finish-network

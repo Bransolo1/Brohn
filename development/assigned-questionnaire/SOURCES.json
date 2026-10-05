@@ -1,7 +1,7 @@
 {
   "schema": "brohn-development-source-snapshot/0.1",
   "date": "2026-10-05",
-  "status": "Inactive source review snapshot. Frontend relative imports are present; full server, host and portable QA remain incomplete.",
+  "status": "Inactive source review snapshot including scoped recovery, ordinary host and media preparation. Full host, timed delivery, server closure and portable QA remain incomplete.",
   "files": [
     {
       "path": "R/platform-evidence-run-source.R",
@@ -354,11 +354,25 @@
       "scope": "Exact ordered event coordinator dependency of selected controller."
     },
     {
+      "path": "www/participant/finish-controller.mjs",
+      "bytes": 11328,
+      "sha256": "13d35ea5a394dfb0bd7b96be41c215cd0bae7364c5db383c63e6745d31469a38",
+      "local_source": "work/participant-finish-network-next-20261002/www/participant/finish-controller.mjs",
+      "scope": "Exact finish request/receipt recovery and fresh CURRENT against controlled Node authority; separate actual-R host gate."
+    },
+    {
       "path": "www/participant/finish-session.mjs",
       "bytes": 12009,
       "sha256": "ba42e0e31a364d8e46e0aa2fb571fb59152340cf3409e6ef6923eec12abb87a6",
       "local_source": "work/participant-finish-custody-next-20261002/www/participant/finish-session.mjs",
       "scope": "Selected durable finish custodyba42e0e3:31 Chrome/6 syntax. Storage-only qualification; network controller and full participant finish remain excluded."
+    },
+    {
+      "path": "www/participant/host-ending.mjs",
+      "bytes": 9100,
+      "sha256": "a724bbd0acb8ce5a2f00d8c1ee15b06d36ba883bf956fec774d8413e1bdb0859",
+      "local_source": "work/participant-host-successor05-next-20261005/www/participant/host-ending.mjs",
+      "scope": "Durable original terminal capture, strict custody and same-owner storage recovery; scoped native custody/host checks."
     },
     {
       "path": "www/participant/observation-journal.mjs",
@@ -389,6 +403,20 @@
       "scope": "Exact existing current-structure function bodies with only the packet helper export added; model dependency, not independent source authority."
     },
     {
+      "path": "www/participant/participant-host.css",
+      "bytes": 1463,
+      "sha256": "13586c392ab52c5d3573e6a074261100bbf28175c13de3b47214c48806e95bd0",
+      "local_source": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.css",
+      "scope": "Protocol-color host action styling qualified by focused UI06; study appearance unchanged."
+    },
+    {
+      "path": "www/participant/participant-host.mjs",
+      "bytes": 25659,
+      "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0",
+      "local_source": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
+      "scope": "Ordinary host UI06; scoped instructions/ending/storage/keyboard/mobile checks against controlled Node authority. Full actual-R host join remains open."
+    },
+    {
       "path": "www/participant/question-domain.mjs",
       "bytes": 11458,
       "sha256": "6b843ace4a5268d0de1a1b94c059b237c66e417bbab1ecafd86bc97e1ed05985",
@@ -404,10 +432,10 @@
     },
     {
       "path": "www/participant/questionnaire-controller.mjs",
-      "bytes": 28368,
-      "sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167",
-      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-controller.mjs",
-      "scope": "Selected ac929b0f controller: actual06 R28/Chrome16/wrapper33 pass with older component5799542f and a test-only illustration adapter. New component/provider composition is not yet qualified."
+      "bytes": 29704,
+      "sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a",
+      "local_source": "work/participant-host-successor05-next-20261005/www/participant/questionnaire-controller.mjs",
+      "scope": "Actual-R recovery02 controller; original captured head/follower retry and prompt close refusal."
     },
     {
       "path": "www/participant/questionnaire-drafts.mjs",
@@ -452,6 +480,13 @@
       "scope": "Exact durable original start request and response custody; native browser27 plus actual entry R join in separate scopes."
     },
     {
+      "path": "www/participant/stimulus-media.mjs",
+      "bytes": 14750,
+      "sha256": "6effb5ff9a1fa2694adc2b543a2000056357efc904a62678e9f458c9553ec7ae",
+      "local_source": "work/participant-stimulus-media-next-20261005/www/participant/stimulus-media.mjs",
+      "scope": "Original assigned ordinary media preparation and native lifecycle; no presentation, timing, host or actual-R resource qualification."
+    },
+    {
       "path": "www/participant/view-question.css",
       "bytes": 2319,
       "sha256": "14efaa583790c5f27264e369de56ce6780bb06d39e0f6c3070b76de00f29675e",
@@ -460,10 +495,10 @@
     },
     {
       "path": "www/participant/view-question.js",
-      "bytes": 38101,
-      "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
-      "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
-      "scope": "Selected component5abea8b2:37 Chrome/8 syntax/8 Axe scans with assigned PNG provider. Preserves unrelated errors; not the component in controller actual06."
+      "bytes": 38558,
+      "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
+      "local_source": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
+      "scope": "Combines exact draft flush/drain with illustration-alert ownership; actual-R recovery02 passes using test-only illustration adapter."
     },
     {
       "path": "www/participant/wire-json.mjs",
@@ -473,5 +508,21 @@
       "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
     }
   ],
-  "composition_notice": "Selected controller actual06 used component5799542f and a test-only illustration adapter. Selected component5abe/provider6196 pass separately. No complete selected composition has run."
+  "composition_notice": "Selected controller3d947 and component3bd8a4d1 pass together in actual-R recovery02 with a test-only illustration adapter. UI06 host passes separately with older component5abe present but no questionnaire transitions. Assigned provider6196 has separate acceptance. The complete selected host/component/provider composition has not run.",
+  "previous_recovery_sources": [
+    {
+      "path": "www/participant/questionnaire-controller.mjs",
+      "bytes": 28368,
+      "sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167",
+      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-controller.mjs",
+      "scope": "Selected ac929b0f controller: actual06 R28/Chrome16/wrapper33 pass with older component5799542f and a test-only illustration adapter. New component/provider composition is not yet qualified."
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "bytes": 38101,
+      "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
+      "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
+      "scope": "Selected component5abea8b2:37 Chrome/8 syntax/8 Axe scans with assigned PNG provider. Preserves unrelated errors; not the component in controller actual06."
+    }
+  ]
 }

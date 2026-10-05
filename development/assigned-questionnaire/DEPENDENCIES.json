@@ -49,6 +49,26 @@
       "sha256": "1d421022e486b1433b23bfcd39cfc77992be09a78e6140458e34f7d70104aacd"
     },
     {
+      "source": "www/participant/finish-controller.mjs",
+      "imported": "www/participant/finish-session.mjs",
+      "sha256": "ba42e0e31a364d8e46e0aa2fb571fb59152340cf3409e6ef6923eec12abb87a6"
+    },
+    {
+      "source": "www/participant/finish-controller.mjs",
+      "imported": "www/participant/operation-sender.mjs",
+      "sha256": "997890934ea19aeb15a2d3a2d59d480cf991763456e8aa27040a5d7759189b8c"
+    },
+    {
+      "source": "www/participant/finish-controller.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/finish-controller.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
       "source": "www/participant/finish-session.mjs",
       "imported": "www/participant/request-bytes.mjs",
       "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
@@ -60,6 +80,21 @@
     },
     {
       "source": "www/participant/finish-session.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
+      "source": "www/participant/host-ending.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/host-ending.mjs",
+      "imported": "www/participant/observation-journal.mjs",
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356"
+    },
+    {
+      "source": "www/participant/host-ending.mjs",
       "imported": "www/participant/current-structure.mjs",
       "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
     },
@@ -114,9 +149,59 @@
       "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
     },
     {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/entry-screen.mjs",
+      "sha256": "9275c5cbb1211b7ad6dac0bf94a56114e6475ed0a480226d7da0625d2ab07054"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/operation-sender.mjs",
+      "sha256": "997890934ea19aeb15a2d3a2d59d480cf991763456e8aa27040a5d7759189b8c"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/questionnaire-controller.mjs",
+      "sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/assigned-illustrations.mjs",
+      "sha256": "6196c5ebcada6d6ab33152bf04944bd9e9b72181776a30c387c7e482a172b848"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/finish-controller.mjs",
+      "sha256": "13d35ea5a394dfb0bd7b96be41c215cd0bae7364c5db383c63e6745d31469a38"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/host-ending.mjs",
+      "sha256": "a724bbd0acb8ce5a2f00d8c1ee15b06d36ba883bf956fec774d8413e1bdb0859"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/observation-journal.mjs",
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/event-order.mjs",
+      "sha256": "a84c5d317b7e3b748405e64a45ee46659694fbb46aee634c3d1ebd36f7df7233"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
       "source": "www/participant/questionnaire-controller.mjs",
       "imported": "www/participant/view-question.js",
-      "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5"
+      "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4"
     },
     {
       "source": "www/participant/questionnaire-controller.mjs",
@@ -250,6 +335,21 @@
     },
     {
       "source": "www/participant/start-session.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
+      "source": "www/participant/stimulus-media.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/stimulus-media.mjs",
+      "imported": "www/participant/wire-json.mjs",
+      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa"
+    },
+    {
+      "source": "www/participant/stimulus-media.mjs",
       "imported": "www/participant/current-structure.mjs",
       "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
     }
@@ -594,9 +694,9 @@
     ],
     "www/participant/questionnaire-controller.mjs": [
       {
-        "path": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-controller.mjs",
-        "bytes": 28368,
-        "sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167"
+        "path": "work/participant-host-successor05-next-20261005/www/participant/questionnaire-controller.mjs",
+        "bytes": 29704,
+        "sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a"
       }
     ],
     "www/participant/questionnaire-pages.mjs": [
@@ -620,14 +720,9 @@
     ],
     "www/participant/view-question.js": [
       {
-        "path": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/view-question.js",
-        "bytes": 38222,
-        "sha256": "5799542f211416a8c479f5b3c86d9f0dd1640f9741e3a49aa46ac4c198bc727e"
-      },
-      {
-        "path": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
-        "bytes": 38101,
-        "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5"
+        "path": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
+        "bytes": 38558,
+        "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4"
       }
     ],
     "www/participant/assigned-illustrations.mjs": [
@@ -858,6 +953,41 @@
         "bytes": 9093,
         "sha256": "4c1bbf01fc03282ebfd26be94fe10790d5107992f495d50f35f5f16a3b5ea483"
       }
+    ],
+    "www/participant/participant-host.mjs": [
+      {
+        "path": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
+        "bytes": 25659,
+        "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0"
+      }
+    ],
+    "www/participant/participant-host.css": [
+      {
+        "path": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.css",
+        "bytes": 1463,
+        "sha256": "13586c392ab52c5d3573e6a074261100bbf28175c13de3b47214c48806e95bd0"
+      }
+    ],
+    "www/participant/host-ending.mjs": [
+      {
+        "path": "work/participant-host-successor05-next-20261005/www/participant/host-ending.mjs",
+        "bytes": 9100,
+        "sha256": "a724bbd0acb8ce5a2f00d8c1ee15b06d36ba883bf956fec774d8413e1bdb0859"
+      }
+    ],
+    "www/participant/finish-controller.mjs": [
+      {
+        "path": "work/participant-finish-network-next-20261002/www/participant/finish-controller.mjs",
+        "bytes": 11328,
+        "sha256": "13d35ea5a394dfb0bd7b96be41c215cd0bae7364c5db383c63e6745d31469a38"
+      }
+    ],
+    "www/participant/stimulus-media.mjs": [
+      {
+        "path": "work/participant-stimulus-media-next-20261005/www/participant/stimulus-media.mjs",
+        "bytes": 14750,
+        "sha256": "6effb5ff9a1fa2694adc2b543a2000056357efc904a62678e9f458c9553ec7ae"
+      }
     ]
   },
   "explicit_successors": [
@@ -865,7 +995,20 @@
       "path": "www/participant/view-question.js",
       "earlier_sha256": "5799542f211416a8c479f5b3c86d9f0dd1640f9741e3a49aa46ac4c198bc727e",
       "selected_sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
-      "reason": "Explicit separately qualified component successor; no claim earlier controller tests used selected component."
+      "reason": "Explicit separately qualified component successor; no claim earlier controller tests used selected component.",
+      "status": "historical selection superseded by recovery02"
+    },
+    {
+      "path": "www/participant/questionnaire-controller.mjs",
+      "earlier_sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167",
+      "selected_sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a",
+      "reason": "Actual-R recovery02 controller; original captured head/follower retry and prompt close refusal."
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "earlier_sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
+      "selected_sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
+      "reason": "Combines exact draft flush/drain with illustration-alert ownership; actual-R recovery02 passes using test-only illustration adapter."
     }
   ],
   "worker_calculation_identity": [
@@ -1227,9 +1370,30 @@
   ],
   "open": [
     "Full participant compiler/projection/context and server dependency closure remains unpublished.",
-    "Final Retry loader loads the worker dependencies; it does not install the participant HTTP router or selected frontend.",
-    "Source19 base, complete native fixtures/toolchain and local QA supervisors are not a portable public test kit.",
-    "Finish network and new host implementations are excluded pending their own qualification.",
-    "Requalify the selected controller/component/provider combination through the actual R service."
-  ]
+    "Worker loader does not install the participant HTTP router or selected frontend; no production activation.",
+    "Complete native fixtures/toolchain and bounded local QA are not yet a portable public test kit.",
+    "Host UI06 was tested with component5abe but without questionnaire transitions; selected component3bd/controller3d947 pass actual-R held recovery separately, using a test-only illustration adapter.",
+    "Join actual entry, selected questionnaire/provider, ordinary and timed/task/equipment/camera renderers, ending and native worker/report; preserve all scoped evidence."
+  ],
+  "historical_source_origins": {
+    "www/participant/questionnaire-controller.mjs": [
+      {
+        "path": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-controller.mjs",
+        "bytes": 28368,
+        "sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167"
+      }
+    ],
+    "www/participant/view-question.js": [
+      {
+        "path": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/view-question.js",
+        "bytes": 38222,
+        "sha256": "5799542f211416a8c479f5b3c86d9f0dd1640f9741e3a49aa46ac4c198bc727e"
+      },
+      {
+        "path": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
+        "bytes": 38101,
+        "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5"
+      }
+    ]
+  }
 }

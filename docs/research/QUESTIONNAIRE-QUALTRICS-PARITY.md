@@ -11,6 +11,12 @@ The [assigned-questionnaire delivery contract](../architecture/ASSIGNED-QUESTION
 tracks QF01's active collection/recovery integration and its remaining performance,
 storage and complete-journey gates. Component qualification does not activate it.
 
+5 October implementation gap: QF01 must also support genuine questionnaire-only
+studies through authoring, compilation, release, participant execution and saved
+analysis. Current variant release admission requires stimulus concepts/sets.
+Add an explicit supported study mode; do not manufacture dummy exposures or skip
+compiled steps. This remains part of Qualtrics parity, not an accepted capability.
+
 ## Benchmark and current boundary
 
 Official product documentation was rechecked on 1 October 2026. The benchmark

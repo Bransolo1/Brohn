@@ -1,6 +1,23 @@
 # Assigned questionnaires: collection and recovery architecture
 
-## Current integration contract — 5 October 2026
+## Latest integration update — 5 October 2026
+
+The [recovery checkpoint](../qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) records the
+current exact selection: repaired controller3d947 plus combined draft/image
+component3bd8a4d1 passed real-R held recovery. Ordinary host UI06, finish networking
+and stimulus preparation retain separate browser acceptance. They are now in
+the inactive snapshot; the complete assembled host is not yet qualified.
+
+Integrate the [timed-sequence contract](ASSIGNED-TIMED-SEQUENCES.md) without waits
+inside controlled exposures or replay after restart. Keep versioned media
+evidence and original clocks through the R receiver and exports. A survey-only
+study needs explicit compiler/release support; the current variant admission
+requires stimulus sets and must not be bypassed for demonstrations.
+
+The earlier checkpoint below retains its historical source selections and
+acceptance boundaries; it does not override the new selection above.
+
+## Earlier integration contract — 5 October 2026
 
 This section supersedes pending-status statements in the dated component history
 below. Actual R entry-to-CURRENT and a separate held-questionnaire controller
