@@ -1,3 +1,6 @@
-# Preserve the exact reviewed component bytes recorded in SOURCES.json.
+# Preserve exact reviewed source bytes recorded in SOURCES.json.
 R/*.R -text
+scripts/*.R -text
 www/participant/*.mjs -text
+www/participant/*.js -text
+www/participant/*.css -text

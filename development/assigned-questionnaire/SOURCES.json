@@ -1,28 +1,77 @@
 {
   "schema": "brohn-development-source-snapshot/0.1",
-  "date": "2026-10-02",
-  "status": "Inactive source review snapshot; incomplete transitive R dependencies and no production registration",
+  "date": "2026-10-05",
+  "status": "Inactive source review snapshot. Frontend relative imports are present; full server, host and portable QA remain incomplete.",
   "files": [
     {
-      "path": "R/platform-participant-view-store.R",
-      "bytes": 46122,
-      "sha256": "3839d19ff00cf617783d9ab3aedd35683cb63e1cd77da4b5e8c8299ebdaea4aa",
-      "local_source": "work/participant-view-store-successor02-20261002/R/platform-participant-view-store.R",
-      "scope": "Six scoped store phases passed; no released profile"
+      "path": "R/platform-evidence-run-source.R",
+      "bytes": 8876,
+      "sha256": "bd09e70750fccf8f3b9491e8bcd931ed9ae21f4f74bb7a72c445112074a09665",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-evidence-run-source.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
     },
     {
-      "path": "R/platform-participant-view-current.R",
-      "bytes": 15274,
-      "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6",
-      "local_source": "work/participant-view-response-join-next-20261002/R/platform-participant-view-current.R",
-      "scope": "Start/current direct96/34 plus actual HTTP opening/current and events-prefix page on unchanged source. Synthetic study, no browser controller or large collected workload."
+      "path": "R/platform-jobs.R",
+      "bytes": 68181,
+      "sha256": "1ee1df40db40d1902475a94154751a509d873b1f2dce612e4765f73340526bef",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-jobs.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
     },
     {
-      "path": "R/platform-participant-view-receive.R",
-      "bytes": 37367,
-      "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030",
-      "local_source": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
-      "scope": "Direct core/fault/integrity checks plus actual HTTP two-operation events01 with exact retry and original derived rows. Browser-to-R controller, broad workloads and physical equipment remain open."
+      "path": "R/platform-load.R",
+      "bytes": 10231,
+      "sha256": "83e1bebc1a08388acfdd5c16e22cfe0300b9a515b4b5d7f16bebf3328ef113c2",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-load.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence-ancestry.R",
+      "bytes": 9768,
+      "sha256": "2e6638ac0588a60ed3ccf2c553adfd8b47ba09f803711c3be52ca2966c2593e5",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence-ancestry.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence-binding.R",
+      "bytes": 20735,
+      "sha256": "b42e378fd47fcf3e0bd752c07fbde0bc5fa740403b3fedd381b1d1d84404f846",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence-binding.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence-domain.R",
+      "bytes": 7856,
+      "sha256": "711a0427341cb518536248b87a9ce8ff6858599fe51c9d579a0704b0e021de42",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence-domain.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence-identity.R",
+      "bytes": 13225,
+      "sha256": "e70bed9311a88481a066ef04118a5c3bccd58201dae9d3e167f5049b83407e0a",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence-identity.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence-protocol-history.R",
+      "bytes": 16707,
+      "sha256": "b098990c344feec299c6ccab6cf5ce54401bedaeb233097e965d084547f43e98",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence-protocol-history.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-method-evidence.R",
+      "bytes": 18398,
+      "sha256": "2abe64b0bc094ad2bef187e51e711fc157932aec2854e120f57a0f5948f79e96",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-method-evidence.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-participant-context-pool.R",
+      "bytes": 13079,
+      "sha256": "2140f132da3cd959ffbc90de94207cd000c3b727a74c1d50cbcd72583e6c76b8",
+      "local_source": "work/participant-context-pool-successor02-20261002/R/platform-participant-context-pool.R",
+      "scope": "Six direct phases97 case/120 wrapper checks pass; exact complete responses, fresh authority, mutations, lifecycle and graph accounting. Actual HTTP/coordinator reuse and latency remain open"
     },
     {
       "path": "R/platform-participant-operation-documents.R",
@@ -32,11 +81,18 @@
       "scope": "Pure encoder qualified; not an authority mechanism"
     },
     {
-      "path": "R/platform-participant-view-http.R",
-      "bytes": 3840,
-      "sha256": "e70552ea2ad52dc703f2d9d6cf39507321393c840d38b21ad4f7eb0c08ad4709",
-      "local_source": "work/participant-view-http-next-20261002/R/platform-participant-view-http.R",
-      "scope": "Installed InputStream63 and separate actual loopback opening03/events01 scopes pass. Exact response bytes retained; hosted ingress/controller and interrupted media remain open."
+      "path": "R/platform-participant-received-bytes.R",
+      "bytes": 8739,
+      "sha256": "231a52d56855e1704052f193ed15e420157cd58e1a997ca383d93b8831e222c8",
+      "local_source": "work/participant-received-bytes-digit-next-20261002/R/platform-participant-received-bytes.R",
+      "scope": "Four original/equivalence/limit/paired phases passed; extreme latency remains"
+    },
+    {
+      "path": "R/platform-participant-variant-finish.R",
+      "bytes": 9093,
+      "sha256": "4c1bbf01fc03282ebfd26be94fe10790d5107992f495d50f35f5f16a3b5ea483",
+      "local_source": "work/participant-variant-finish-integration-successor02-20261002/R/platform-participant-variant-finish.R",
+      "scope": "Actual finish-created saved-variant job transaction and preserved legacy exact retry. Queue35/31 and native36/14 pass separately; actual browser finish remains open."
     },
     {
       "path": "R/platform-participant-view-camera.R",
@@ -46,53 +102,11 @@
       "scope": "Direct camera1.0 45/25, named1.1 35/25 and fences22/25 pass. Preserved terminal04 failed in the legacy1.2 reader; separate explicit resolver camera18/33 now passes actual receipt ordering and late-operation refusal. No camera HTTP/worker/physical capture claim."
     },
     {
-      "path": "R/platform-participant-view-resource.R",
-      "bytes": 2680,
-      "sha256": "2811aefcd785647246f3e41da10d1e76563470a23d39d8d8848205ac6a1d4a48",
-      "local_source": "work/participant-view-resource-next-20261002/R/platform-participant-view-resource.R",
-      "scope": "36 direct/25 wrapper controls plus actual HTTP opening03 registered full PNG and ignored-Range behavior. Interrupted transfer, large media and performance remain open."
-    },
-    {
-      "path": "R/platform-participant-received-bytes.R",
-      "bytes": 8739,
-      "sha256": "231a52d56855e1704052f193ed15e420157cd58e1a997ca383d93b8831e222c8",
-      "local_source": "work/participant-received-bytes-digit-next-20261002/R/platform-participant-received-bytes.R",
-      "scope": "Four original/equivalence/limit/paired phases passed; extreme latency remains"
-    },
-    {
-      "path": "R/platform-participant-wire-json.R",
-      "bytes": 4499,
-      "sha256": "9f28a0f52d32ff0a39bf77ef0f0365bf438f785ca106e616b416f981eaad9a7d",
-      "local_source": "work/participant-wire-key-memo-next-20261002/R/platform-participant-wire-json.R",
-      "scope": "Bounded memo preserves complete original encoding; separate component checks"
-    },
-    {
-      "path": "www/participant/observation-journal.mjs",
-      "bytes": 35589,
-      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356",
-      "local_source": "work/participant-observation-retain-next-20261002/www/participant/observation-journal.mjs",
-      "scope": "New storage-only retain boundary; original85 sender controls and39 focused retain controls pass on these bytes. Earlier standalone journal/component receipts retain their original versions; no full application bootstrap/controller claim."
-    },
-    {
-      "path": "www/participant/operation-result.mjs",
-      "bytes": 14877,
-      "sha256": "8038f9ccf710af96786746d04e2c897874c719a5313586272faeef19217d735f",
-      "local_source": "work/participant-operation-result-next-20261002/www/participant/operation-result.mjs",
-      "scope": "Node checks on actual R fixtures; journal/HTTP acceptance remains separate"
-    },
-    {
-      "path": "www/participant/request-bytes.mjs",
-      "bytes": 5118,
-      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9",
-      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/request-bytes.mjs",
-      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
-    },
-    {
-      "path": "www/participant/wire-json.mjs",
-      "bytes": 8157,
-      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa",
-      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/wire-json.mjs",
-      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
+      "path": "R/platform-participant-view-current.R",
+      "bytes": 15274,
+      "sha256": "40b46b41defe822fcd5152dfa8d78cbb900c027fb0570a24db36aae9f75e47e6",
+      "local_source": "work/participant-view-response-join-next-20261002/R/platform-participant-view-current.R",
+      "scope": "Start/current direct96/34 plus actual HTTP opening/current and events-prefix page on unchanged source. Synthetic study, no browser controller or large collected workload."
     },
     {
       "path": "R/platform-participant-view-entry.R",
@@ -109,6 +123,27 @@
       "scope": "93 direct finish controls and actual HTTP interrupted/completed finish pass separately. Original camera history aggregates outside writer; historical analysis job remains unclaimed, worker/full controller/performance open."
     },
     {
+      "path": "R/platform-participant-view-http.R",
+      "bytes": 3840,
+      "sha256": "e70552ea2ad52dc703f2d9d6cf39507321393c840d38b21ad4f7eb0c08ad4709",
+      "local_source": "work/participant-view-http-next-20261002/R/platform-participant-view-http.R",
+      "scope": "Installed InputStream63 and separate actual loopback opening03/events01 scopes pass. Exact response bytes retained; hosted ingress/controller and interrupted media remain open."
+    },
+    {
+      "path": "R/platform-participant-view-receive.R",
+      "bytes": 37367,
+      "sha256": "1bf18797e3acc32a947be92fbeea16606cc530ffca1a1fbfea6a93ad4b87f030",
+      "local_source": "work/participant-view-receive-next-20261002/R/platform-participant-view-receive.R",
+      "scope": "Direct core/fault/integrity checks plus actual HTTP two-operation events01 with exact retry and original derived rows. Browser-to-R controller, broad workloads and physical equipment remain open."
+    },
+    {
+      "path": "R/platform-participant-view-resource.R",
+      "bytes": 2680,
+      "sha256": "2811aefcd785647246f3e41da10d1e76563470a23d39d8d8848205ac6a1d4a48",
+      "local_source": "work/participant-view-resource-next-20261002/R/platform-participant-view-resource.R",
+      "scope": "36 direct/25 wrapper controls plus actual HTTP opening03 registered full PNG and ignored-Range behavior. Interrupted transfer, large media and performance remain open."
+    },
+    {
       "path": "R/platform-participant-view-router.R",
       "bytes": 6880,
       "sha256": "22cfde77c4b14d7a5451f520bbe061b17f609d2d9bf9b50eac0e743830650534",
@@ -116,18 +151,172 @@
       "scope": "Startup24 direct/28 wrapper and separately scoped actual HTTP opening03 plus questionnaire events01 pass. Earlier50 header controls bind prior source; no production registration/ingress or browser controller."
     },
     {
-      "path": "R/platform-participant-context-pool.R",
-      "bytes": 13079,
-      "sha256": "2140f132da3cd959ffbc90de94207cd000c3b727a74c1d50cbcd72583e6c76b8",
-      "local_source": "work/participant-context-pool-successor02-20261002/R/platform-participant-context-pool.R",
-      "scope": "Six direct phases97 case/120 wrapper checks pass; exact complete responses, fresh authority, mutations, lifecycle and graph accounting. Actual HTTP/coordinator reuse and latency remain open"
+      "path": "R/platform-participant-view-store.R",
+      "bytes": 46122,
+      "sha256": "3839d19ff00cf617783d9ab3aedd35683cb63e1cd77da4b5e8c8299ebdaea4aa",
+      "local_source": "work/participant-view-store-successor02-20261002/R/platform-participant-view-store.R",
+      "scope": "Six scoped store phases passed; no released profile"
     },
     {
-      "path": "www/participant/operation-sender.mjs",
-      "bytes": 18763,
-      "sha256": "997890934ea19aeb15a2d3a2d59d480cf991763456e8aa27040a5d7759189b8c",
-      "local_source": "work/participant-current-document-next-20261002/www/participant/operation-sender.mjs",
-      "scope": "Literal handoff successor passes143 Chrome controls (85 compatibility,39 retention,19 focused), plus27 literal and39 accepted-phase syntax in aggregate. Synthetic HTTP authority; exact generation differs from historical ACK. Controller/page loader/bootstrap remain open."
+      "path": "R/platform-participant-wire-json.R",
+      "bytes": 4499,
+      "sha256": "9f28a0f52d32ff0a39bf77ef0f0365bf438f785ca106e616b416f981eaad9a7d",
+      "local_source": "work/participant-wire-key-memo-next-20261002/R/platform-participant-wire-json.R",
+      "scope": "Bounded memo preserves complete original encoding; separate component checks"
+    },
+    {
+      "path": "R/platform-processing-retry-dispatch.R",
+      "bytes": 908,
+      "sha256": "47d646a35c9bbe1427853cd8d5f67c3963b90c8717824c7c58a8c2a74e1f6e67",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-processing-retry-dispatch.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-question-revision.R",
+      "bytes": 34291,
+      "sha256": "65b378fe11470481c7c659ef7593679d00c575ebed252857d32fe58f4a9dacf0",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-question-revision.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-task-protocol-history.R",
+      "bytes": 25273,
+      "sha256": "6396717408c4c3f343d5d1126513eefd68f8f829e9f7abb41ee6ef64c7523266",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-task-protocol-history.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-claim.R",
+      "bytes": 1723,
+      "sha256": "4ee9284f8ee53f60696ff7755511b5cdf11c9518d040cda4763900b124f44a4b",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-claim.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-identity.R",
+      "bytes": 3061,
+      "sha256": "56aac4511415458f695408a993f123b0f81573f848224444f618831ed9290f44",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-identity.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-index.R",
+      "bytes": 2396,
+      "sha256": "81625664e4903bbdd012c914cec9f2e168421748fa49b26802df0086c170939e",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-index.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-process.R",
+      "bytes": 21548,
+      "sha256": "1a1a5243e982e04982f17d979fb1450c9cc66cbcf9bc99681e14fdd745b33903",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-process.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-publication-schema.R",
+      "bytes": 3925,
+      "sha256": "f8ec8fbe435f49b078d9bc257fd150ceb10d82ace86f73519158adc4a638e2ee",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-publication-schema.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-publication.R",
+      "bytes": 13071,
+      "sha256": "e0ede17edb043c04ce7aad0a7b0d7a02160a6678c331d12ae626e76118b6ae28",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-publication.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-queue.R",
+      "bytes": 9750,
+      "sha256": "4e9f876437d8d1bb71e157b2ec6d676e1e493b82f86ae19b848ab39188ac1cc3",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-queue.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis-values.R",
+      "bytes": 37352,
+      "sha256": "c587cd47d1679dc180811880fff88e69833447ceddf627752d739a29e5c0ddd8",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis-values.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-analysis.R",
+      "bytes": 10199,
+      "sha256": "e3fbd3ff8a80c9464c7e3806b4de71063b66a5dcb9232bda0da216df6c5f9f9a",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-analysis.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-design.R",
+      "bytes": 12097,
+      "sha256": "29ba8ba2e30a5b0913c4b3265a21592362a537d02345bb7b940fa2ff11a94748",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-design.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-protocol-history.R",
+      "bytes": 7102,
+      "sha256": "52e4f2c0a541205b7b323d5bb34515179e29948557f5ffad4f12f11ae2dd9c49",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-protocol-history.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-run-reader.R",
+      "bytes": 5966,
+      "sha256": "9cef10acc0091c0dd2f7d91f534acdcff1c4bb17ae18df2c262a091e9e059c7a",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-run-reader.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-run-source.R",
+      "bytes": 287,
+      "sha256": "b49437ddd29302216062234be4f987e41c2b403f2ecc5d80b43e651423b0c9ec",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-run-source.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-run-transport.R",
+      "bytes": 9055,
+      "sha256": "cd4fd9611b641ae51234856d6bf3e10dc9ceb37752ef4d170d51230b897a2327",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-variant-run-transport.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "R/platform-variant-session-resolution.R",
+      "bytes": 7756,
+      "sha256": "89c825fe24949c267b29fe52e456263dc0e5a0ff232f8392e9127a47c39361f4",
+      "local_source": "work/variant-session-resolution-next-20261002/R/platform-variant-session-resolution.R",
+      "scope": "Four separately attributed direct scopes: core27/31, received17/31, camera18/33 and fences27/33. Genuine original decisions and bytes retained; writer tests use same-process peer/own connections. No resolved analysis/HTTP/physical/worker acceptance."
+    },
+    {
+      "path": "R/platform-worker-dispatch.R",
+      "bytes": 3602,
+      "sha256": "7dd19c2d2869f89bc5a31556368d1b33f59e3d8d751aeae6de29de0b70097925",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/R/platform-worker-dispatch.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "scripts/run-worker.R",
+      "bytes": 951,
+      "sha256": "87e234faba7ab180182b301ba80f2d9fea7351f008bd28a6c63de588d51378be",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/scripts/run-worker.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "scripts/variant-analysis-worker.R",
+      "bytes": 5294,
+      "sha256": "009a52f7c49b7177ff2e7b87ddf46fa6a5f745bb17e2d4b551179054a61ae9d8",
+      "local_source": "work/participant-processing-retry-qa-20261002/joined-checkout-01/scripts/variant-analysis-worker.R",
+      "scope": "Exact final ordinary Retry/native-worker checkout source. Source-preserving saved-variant analysis/dispatch integration; formula/native identity unchanged. Inactive overlay, not standalone server or production registration."
+    },
+    {
+      "path": "www/participant/assigned-illustrations.mjs",
+      "bytes": 9601,
+      "sha256": "6196c5ebcada6d6ab33152bf04944bd9e9b72181776a30c387c7e482a172b848",
+      "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/assigned-illustrations.mjs",
+      "scope": "Selected provider6196c5eb:63 Chrome/8 syntax/6 Axe scans against controlled Node authority; later corrected component join37 Chrome separately. No actual R-resource/provider join."
     },
     {
       "path": "www/participant/current-session.mjs",
@@ -144,25 +333,60 @@
       "scope": "Exact extracted typed association helpers used by the scoped browser sender; no independent authority"
     },
     {
-      "path": "R/platform-variant-session-resolution.R",
-      "bytes": 7756,
-      "sha256": "89c825fe24949c267b29fe52e456263dc0e5a0ff232f8392e9127a47c39361f4",
-      "local_source": "work/variant-session-resolution-next-20261002/R/platform-variant-session-resolution.R",
-      "scope": "Four separately attributed direct scopes: core27/31, received17/31, camera18/33 and fences27/33. Genuine original decisions and bytes retained; writer tests use same-process peer/own connections. No resolved analysis/HTTP/physical/worker acceptance."
+      "path": "www/participant/entry-screen.css",
+      "bytes": 1941,
+      "sha256": "f421058bf810fe07c1794210f048a5484632da6d7cd9fdb5805c1c04df21a962",
+      "local_source": "work/participant-entry-screen-successor02-20261002/www/participant/entry-screen.css",
+      "scope": "Exact selected entry UI style; participant appearance remains protocol-owned."
     },
     {
-      "path": "www/participant/questionnaire-model.mjs",
-      "bytes": 24165,
-      "sha256": "7ecb785c08e3835799fbf06c6b36cf4ae0e57177ff8ba7a6c3a72349455a9aa7",
-      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/questionnaire-model.mjs",
-      "scope": "58 pure Node controls on original retained R view/packet bytes plus labelled synthetic actions, draft applicability and encoded page bounds. No current authority, page fetcher, controller or scoring."
+      "path": "www/participant/entry-screen.mjs",
+      "bytes": 8541,
+      "sha256": "9275c5cbb1211b7ad6dac0bf94a56114e6475ed0a480226d7da0625d2ab07054",
+      "local_source": "work/participant-entry-screen-successor02-20261002/www/participant/entry-screen.mjs",
+      "scope": "Selected entry status successor9275c5cb: focused status repair and separately qualified actual R entry/start/CURRENT handoff. No complete host."
     },
     {
-      "path": "www/participant/questionnaire-drafts.mjs",
-      "bytes": 13318,
-      "sha256": "16000b595b99befd546c119ec73d4e77531c70eaf522ee1381798500dd8a3d28",
-      "local_source": "work/participant-questionnaire-drafts-next-20261002/www/participant/questionnaire-drafts.mjs",
-      "scope": "35 actual Chrome controls and8 syntax checks: typed incomplete drafts, local generation/CAS, rollback, restart, WebLock and versionchange. Separate from answers/ACK; no full app bootstrap or draft-to-controller join."
+      "path": "www/participant/event-order.mjs",
+      "bytes": 3248,
+      "sha256": "a84c5d317b7e3b748405e64a45ee46659694fbb46aee634c3d1ebd36f7df7233",
+      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/event-order.mjs",
+      "scope": "Exact ordered event coordinator dependency of selected controller."
+    },
+    {
+      "path": "www/participant/finish-session.mjs",
+      "bytes": 12009,
+      "sha256": "ba42e0e31a364d8e46e0aa2fb571fb59152340cf3409e6ef6923eec12abb87a6",
+      "local_source": "work/participant-finish-custody-next-20261002/www/participant/finish-session.mjs",
+      "scope": "Selected durable finish custodyba42e0e3:31 Chrome/6 syntax. Storage-only qualification; network controller and full participant finish remain excluded."
+    },
+    {
+      "path": "www/participant/observation-journal.mjs",
+      "bytes": 35589,
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356",
+      "local_source": "work/participant-observation-retain-next-20261002/www/participant/observation-journal.mjs",
+      "scope": "New storage-only retain boundary; original85 sender controls and39 focused retain controls pass on these bytes. Earlier standalone journal/component receipts retain their original versions; no full application bootstrap/controller claim."
+    },
+    {
+      "path": "www/participant/operation-result.mjs",
+      "bytes": 14877,
+      "sha256": "8038f9ccf710af96786746d04e2c897874c719a5313586272faeef19217d735f",
+      "local_source": "work/participant-operation-result-next-20261002/www/participant/operation-result.mjs",
+      "scope": "Node checks on actual R fixtures; journal/HTTP acceptance remains separate"
+    },
+    {
+      "path": "www/participant/operation-sender.mjs",
+      "bytes": 18763,
+      "sha256": "997890934ea19aeb15a2d3a2d59d480cf991763456e8aa27040a5d7759189b8c",
+      "local_source": "work/participant-current-document-next-20261002/www/participant/operation-sender.mjs",
+      "scope": "Literal handoff successor passes143 Chrome controls (85 compatibility,39 retention,19 focused), plus27 literal and39 accepted-phase syntax in aggregate. Synthetic HTTP authority; exact generation differs from historical ACK. Controller/page loader/bootstrap remain open."
+    },
+    {
+      "path": "www/participant/packet-structure.mjs",
+      "bytes": 11351,
+      "sha256": "68cebc08976283cc2a8409df5d261fbb7dbf24615b1644a7e7cc9ca2d92d596c",
+      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/packet-structure.mjs",
+      "scope": "Exact existing current-structure function bodies with only the packet helper export added; model dependency, not independent source authority."
     },
     {
       "path": "www/participant/question-domain.mjs",
@@ -172,11 +396,82 @@
       "scope": "Exact accepted component09 pure question/rule/answer-domain extraction, shared by the qualified model and local draft store; no DOM or authority."
     },
     {
-      "path": "www/participant/packet-structure.mjs",
-      "bytes": 11351,
-      "sha256": "68cebc08976283cc2a8409df5d261fbb7dbf24615b1644a7e7cc9ca2d92d596c",
-      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/packet-structure.mjs",
-      "scope": "Exact existing current-structure function bodies with only the packet helper export added; model dependency, not independent source authority."
+      "path": "www/participant/question-submit.mjs",
+      "bytes": 10211,
+      "sha256": "8dc5938709ad4860a7658b6d37a4168bd60a5d10e1991a2e5422fb108ac5eb77",
+      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/question-submit.mjs",
+      "scope": "Exact durable question-submit dependency of selected controller; new navigation clocks do not replace original answer timestamps."
+    },
+    {
+      "path": "www/participant/questionnaire-controller.mjs",
+      "bytes": 28368,
+      "sha256": "ac929b0f548f8a9683c549ea817f26416a04da4d64c6ace585ee00303be20167",
+      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-controller.mjs",
+      "scope": "Selected ac929b0f controller: actual06 R28/Chrome16/wrapper33 pass with older component5799542f and a test-only illustration adapter. New component/provider composition is not yet qualified."
+    },
+    {
+      "path": "www/participant/questionnaire-drafts.mjs",
+      "bytes": 13318,
+      "sha256": "16000b595b99befd546c119ec73d4e77531c70eaf522ee1381798500dd8a3d28",
+      "local_source": "work/participant-questionnaire-drafts-next-20261002/www/participant/questionnaire-drafts.mjs",
+      "scope": "35 actual Chrome controls and8 syntax checks: typed incomplete drafts, local generation/CAS, rollback, restart, WebLock and versionchange. Separate from answers/ACK; no full app bootstrap or draft-to-controller join."
+    },
+    {
+      "path": "www/participant/questionnaire-model.mjs",
+      "bytes": 24165,
+      "sha256": "7ecb785c08e3835799fbf06c6b36cf4ae0e57177ff8ba7a6c3a72349455a9aa7",
+      "local_source": "work/participant-questionnaire-model-next-20261002/www/participant/questionnaire-model.mjs",
+      "scope": "58 pure Node controls on original retained R view/packet bytes plus labelled synthetic actions, draft applicability and encoded page bounds. No current authority, page fetcher, controller or scoring."
+    },
+    {
+      "path": "www/participant/questionnaire-pages.mjs",
+      "bytes": 8773,
+      "sha256": "1713986ffd402b2bea7c20f8bf4611c57735ee0ead886f948adc5d49a63a6ab1",
+      "local_source": "work/participant-questionnaire-controller-draft-adapter-next-20261002/www/participant/questionnaire-pages.mjs",
+      "scope": "Exact page-loader dependency of selected controller; literal/current generation checks. Scope derives from recorded controller phases, not a whole application."
+    },
+    {
+      "path": "www/participant/request-bytes.mjs",
+      "bytes": 5118,
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9",
+      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/request-bytes.mjs",
+      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
+    },
+    {
+      "path": "www/participant/start-controller.mjs",
+      "bytes": 12529,
+      "sha256": "1d421022e486b1433b23bfcd39cfc77992be09a78e6140458e34f7d70104aacd",
+      "local_source": "work/participant-entry-screen-successor02-20261002/www/participant/start-controller.mjs",
+      "scope": "Exact durable start retry and fresh-network orchestration; controlled-authority35 plus actual entry R join separately."
+    },
+    {
+      "path": "www/participant/start-session.mjs",
+      "bytes": 12942,
+      "sha256": "f59de512c4cc3bd5a4c259f7ab2e4df4cf51251910c27f369e30d76a43f4b739",
+      "local_source": "work/participant-entry-screen-successor02-20261002/www/participant/start-session.mjs",
+      "scope": "Exact durable original start request and response custody; native browser27 plus actual entry R join in separate scopes."
+    },
+    {
+      "path": "www/participant/view-question.css",
+      "bytes": 2319,
+      "sha256": "14efaa583790c5f27264e369de56ce6780bb06d39e0f6c3070b76de00f29675e",
+      "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.css",
+      "scope": "Exact question-control style dependency; no premium full-host UX acceptance."
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "bytes": 38101,
+      "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
+      "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
+      "scope": "Selected component5abea8b2:37 Chrome/8 syntax/8 Axe scans with assigned PNG provider. Preserves unrelated errors; not the component in controller actual06."
+    },
+    {
+      "path": "www/participant/wire-json.mjs",
+      "bytes": 8157,
+      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa",
+      "local_source": "work/participant-operation-journal-implementation01-20261002/www/participant/wire-json.mjs",
+      "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
     }
-  ]
+  ],
+  "composition_notice": "Selected controller actual06 used component5799542f and a test-only illustration adapter. Selected component5abe/provider6196 pass separately. No complete selected composition has run."
 }

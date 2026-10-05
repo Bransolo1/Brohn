@@ -1,5 +1,48 @@
 # Assigned questionnaires: collection and recovery architecture
 
+## Current integration contract — 5 October 2026
+
+This section supersedes pending-status statements in the dated component history
+below. Actual R entry-to-CURRENT and a separate held-questionnaire controller
+journey now pass. Original completed-run analysis, composed finish-to-job,
+ordinary worker selection/publication and ordinary Retry also pass in distinct
+scopes. The [evidence ledger](../qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md)
+binds exact source versions and records the boundaries.
+
+The host must own only one active run journal/controller at a time. Entry passes
+its admitted original session to a host that fetches fresh CURRENT. Questionnaire
+handoff waits for pending work to settle, releases locks/listeners, then allows
+the next renderer to open. Other renderers must implement public assigned-step
+contracts; the legacy full-protocol runner is not a compatible substitute.
+
+The selected controllerac929 actual06 test used component5799542f and a fixture
+image adapter. The selected component5abe and provider6196 instead have their own
+focused joint test. Shared module hashes agree, but this does not prove the new
+whole composition. Actual R-provider/selected-controller integration remains open.
+The provider admits assigned PNGs through current bearer authority, bounded stream
+and native decode; its5MiB/4096-side/8Mp-per-image/64Mp-active-handles guards are
+admission limits, not mobile heap or performance qualification. Main view literals
+can be16MiB in the schema, but the accepted sender's combined held declaration
+still has a4MiB admission limit. Resolve this mismatch before larger-study claims.
+
+Finish custody preserves the original ending request before send, exact received
+receipt separately and an immutable ending decision under native transactions/CAS
+and an owned run lock. Its31 Chrome/6 syntax pass is storage-only. The finish
+network module and full host are not included in this checkpoint; they require
+their own accepted original ACK/event/camera/reply/current reconciliation.
+
+The explicit saved-variant profile handles completed runs from their original
+source, preserves existing calculation code and publishes under current authority.
+Ordinary Retry must preserve the failed/cancelled immutable request and create the
+profile-compatible key. The qualifying chain used a synthetic leased failure;
+no researcher Shiny click was covered. Known-profile preclaim queue-head repair,
+resolved partial analysis, wider workloads and full downstream export remain open.
+
+The inactive snapshot has complete relative JS imports and explicit worker
+overlays, but not the complete participant server dependency/test kit. Preserve
+prior receipts and failed attempts, requalify the exact promoted composition and
+complete the researcher author-to-report journey before any release claim.
+
 ## Recovery checkpoint — 2 October 2026
 
 Actual Chrome sender recovery/retention now passes124 controls against synthetic Node

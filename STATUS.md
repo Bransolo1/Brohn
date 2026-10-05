@@ -1,39 +1,46 @@
 # Resume here — Brohn
 
-Current inactive checkpoint — 2 October: the public questionnaire model passes
-58 pure checks, and its separate local draft store passes 35 Chrome checks plus
-8 syntax checks. Literal CURRENT handoff passes 27 literal checks and 143 Chrome
-checks (85 compatibility, 39 retention, 19 focused), plus 39 accepted-phase syntax
-checks. These browser tests use synthetic authority; they do not connect the
-complete participant controller or recover the original start credential.
+Later 5 October review: the inactive host has four concrete storage/retry/close
+defects to fix and qualify before promotion. See the
+[recovery review](docs/qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md). Separate finish-network
+checks now pass; the full participant host is still unqualified and inactive.
 
-Actual R/httpuv opening now passes 62 client, 13 fixture and 30 wrapper checks.
-Questionnaire collection separately passes 84 client, 19 fixture and 31 wrapper
-checks: two operations, prefix CURRENT/page, lost committed reply, exact retry
-and completed finish. The observations come from the original reducer in a
-synthetic study. One historical analysis job is queued and unclaimed; no worker
-result, physical measurement or browser-to-R controller acceptance is implied.
+Current development checkpoint — 5 October 2026. Brohn is unfinished. This
+checkpoint adds inactive participant entry, questionnaire orchestration, assigned
+PNG loading, durable finish custody and saved-variant worker/Retry source. The
+released application remains at runtime f39bd63; this checkpoint does not enable
+the new profile or change normal launching.
 
-Both earlier HTTP RNG failures remain failures. A separate framework diagnostic
-localized absent-seed initialization to httpuv startServer; a fixed existing seed
-remained exact. The passing HTTP successor sets its fixture seed before measuring
-the journey and retains the complete final RNG assertion, without restoring the
-application's RNG to manufacture a pass.
+Actual R/Chrome entry-to-CURRENT and a separate held-questionnaire journey now
+pass. The latter covers saved-draft restart, exact lost-reply recovery, one-click
+continuation, edit-to-new-branch, review/seal and released host handoff. A fresh
+finish-created job also passed ordinary worker selection, native publication and
+cold report reopening. Ordinary Retry is separately checked through the API used
+by the UI, including cancelled/failed jobs; its injected failure is synthetic.
 
-The review snapshot contains 25 inactive source/dependency files and 66 scoped
-evidence entries. No active loader, renderer, route or released behavior changes.
-Direct entry/finish and explicit original1.2 researcher core/received recovery
-remain accepted in their recorded scopes. New resolver camera18/33 and writer
-fences27/33 also pass; the latter uses same-process peer/own connections.
-Resolved-run analysis, camera HTTP/worker and physical recording remain open.
+These are separate scoped compositions. The selected controller was tested with
+an older question component and a test-only image adapter. The repaired image
+component and assigned PNG provider pass their own browser scope. Finish custody
+passes native storage checks; finish networking and the connected participant
+host are excluded from this snapshot pending their own qualification. Neither
+stored credentials nor historical receipts grant current editing authority.
 
-Next: join model, drafts, current-generation/page loading and question controls
-through the actual service; finish original start/restart bootstrap and the
-explicit1.2 analysis worker/publication journey. Cold loading, representative
-large workloads, hosted ingress and joined researcher UX remain open. All 17
-work packages and QF01–QF08 retain their individual unfinished gates.
+Next: join entry, fresh CURRENT, the corrected questionnaire/image components,
+non-question renderers and finish in one participant host, then qualify the full
+researcher author-to-participant-to-report journey. Keep ordinary instructions,
+timed exposure, behavioural tasks, MaxDiff, equipment/camera and withdrawal/restart
+in scope. Fix measured cold-loading latency and known-profile queue-head repair;
+complete portable QA and complete server dependency publication before promotion.
 
-Read the [delivery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and [scoped evidence](docs/qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md) for exact source attribution and remaining gates.
+All 50 capabilities, all 17 build packages and QF01–QF08 retain their individual
+unfinished gates. Qualtrics parity, advanced analyses/dashboards, live devices,
+named providers, hosting and scientific qualification are not established by this
+checkpoint. Existing method recipes, original source data and saved results remain
+unchanged.
+
+Read the [current delivery contract](docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md),
+[source snapshot](development/assigned-questionnaire/README.md) and
+[scoped evidence ledger](docs/qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md).
 
 New owner requirement, 1 October: questionnaire flow, automatic analysis and
 visualization dashboards must match or exceed Qualtrics for the intended consumer

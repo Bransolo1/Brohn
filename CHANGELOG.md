@@ -1,5 +1,24 @@
 # Changes
 
+## Inactive participant orchestration and automatic analysis — 2026-10-05
+
+- Recorded four new host recovery findings and the separate passing finish-network
+  scope. Host successor fixes remain unqualified; released behavior is unchanged.
+
+- Added exact entry/start, questionnaire controller, page/order/submit dependencies,
+  repaired image component, assigned PNG provider and finish-custody source.
+- Added completed saved-variant analysis, composed finish-to-job, ordinary worker
+  dispatch and Retry overlays, with exact worker dependencies and source identities.
+- Recorded16 separately scoped evidence entries, including actual R entry and held
+  questionnaire, ordinary native worker/report and Retry. Preserved prior failures.
+- Made the selected-controller/image-component mismatch explicit: their accepted
+  compositions differ; no full joined runtime or participant host claim follows.
+- Added a read-only portable source/import verifier. Full server/test dependency
+  publication and runnable public QA remain open. No participant data, credentials,
+  raw QA logs or runtime activation are included.
+- Refreshed architecture, workstream and John's handoff. Full50-capability,
+  17-package and QF01–QF08 scope remains unfinished.
+
 ## Inactive questionnaire model, drafts and backend HTTP — 2026-10-02
 
 - Added the qualified public-key model and local draft store with their exact

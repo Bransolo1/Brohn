@@ -1,7 +1,7 @@
 {
   "schema": "brohn-local-questionnaire-component-evidence-index/0.1",
-  "date": "2026-10-02",
-  "status": "Local inactive component evidence; no released runtime/profile activation",
+  "date": "2026-10-05",
+  "status": "Inactive review snapshot with individually scoped local evidence; no joined host or release activation",
   "released_head_before_documentation": "13f129e9d5d44d9ed72f3eedab63900b507a59da",
   "released_runtime_head": "f39bd63d7680c09c624189093be2706ca7a360f9",
   "evidence_locations": "Paths below are relative to the retained local workspace, not files claimed to exist in this public repository.",
@@ -818,6 +818,408 @@
         "sha256": "c946ad3df2faf9be33b0ac6106b1bea4b1b6a1814c85b2d0073ed51e1ab83b0e"
       },
       "scope": "Focused document01 failed on a missing fixture configuration field; original output remains incomplete. Successor02 repairs setup only and retains identical runtime/assertions. Its13 syntax checks are not included in the accepted39."
+    },
+    {
+      "name": "participant_start_custody",
+      "acceptance": {
+        "path": "work/participant-start-bootstrap-qa-20261002/storage-01/browser-CLOSED.json",
+        "bytes": 2803,
+        "sha256": "f80fe1f60e5c7683eaea3593628102f3c18cfbbccddce3d78fb0a5fb60b78351"
+      },
+      "scope": "27 Chrome and 6 separate syntax checks; native IndexedDB, exact pending start/response custody, locks and cold restart. No live R authority.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-start-bootstrap-qa-20261002/storage-01/syntax-CLOSED.json",
+          "bytes": 5069,
+          "sha256": "62458b98d626acdfee1d5d1164520ea6294cb1fc5d65a36263678d67e726276a"
+        },
+        {
+          "path": "work/participant-start-bootstrap-qa-20261002/storage-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 368,
+          "sha256": "e6c33b2f8503f8505eed3a71015e3d42f0ba100e5c35d6506ab551205d490681"
+        },
+        {
+          "path": "work/participant-start-bootstrap-qa-20261002/storage-01/RUN-MANIFEST.json",
+          "bytes": 40394,
+          "sha256": "84231d688b4b214457acce221ca05c7eee907f766c8092a22533059a9d3e0352"
+        }
+      ]
+    },
+    {
+      "name": "participant_start_network",
+      "acceptance": {
+        "path": "work/participant-start-network-qa-20261002/network-01/browser-CLOSED.json",
+        "bytes": 3405,
+        "sha256": "0104a47975d2590c61643822e7367d4bbc786bd800ae9cff086fc5919bc3e2a7"
+      },
+      "scope": "35 Chrome and 7 separate syntax checks; real fetch/native storage with controlled Node authority serving retained R bytes. Exact durable retry; no actual R service in this scope.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-start-network-qa-20261002/network-01/syntax-CLOSED.json",
+          "bytes": 5839,
+          "sha256": "1cde7ca85423b0680c21862c7f6302da456541b8cd72663f6ee186452e568c6f"
+        },
+        {
+          "path": "work/participant-start-network-qa-20261002/network-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 368,
+          "sha256": "a576845b625ac8884abb23e5f8758fe8cc32a4aada188942c832329f6b6abee2"
+        },
+        {
+          "path": "work/participant-start-network-qa-20261002/network-01/RUN-MANIFEST.json",
+          "bytes": 41422,
+          "sha256": "67b21219f2ce7a30e8b58c322e75a06dfaf1d6ebac95a55c5ba7c3078ed2afb2"
+        }
+      ]
+    },
+    {
+      "name": "participant_entry_initial_ui",
+      "acceptance": {
+        "path": "work/participant-entry-screen-qa-20261002/acceptance-01/ACCEPTANCE.json",
+        "bytes": 5482,
+        "sha256": "f09bc0e1148531558f25b27bba04d58a6977b708ec2281e343853b2e65c654ec"
+      },
+      "scope": "31 Chrome, 9 syntax and 3 zero-violation Axe scans on the original entry UI. Visual review found stale loading status; this predecessor is not the selected entry source."
+    },
+    {
+      "name": "participant_entry_status_repair",
+      "acceptance": {
+        "path": "work/participant-entry-screen-status-qa-20261002/acceptance-01/ACCEPTANCE.json",
+        "bytes": 4921,
+        "sha256": "447ee87c5e157d81a1b1817c16fe08ae8e22e423455b65d270d770f6a3ca89da"
+      },
+      "scope": "8 Chrome and 9 syntax checks on selected entry source 9275c5cb; focused ready/network/host-error status repair. No claim of repeating the original full UI scope."
+    },
+    {
+      "name": "participant_entry_actual_r",
+      "acceptance": {
+        "path": "work/participant-entry-screen-r-join-qa-20261002/entry-01/ACCEPTANCE.json",
+        "bytes": 2478,
+        "sha256": "45a7f36bf5e01f25ab6e7b440f8665a7851baf014901d0fcdcb2cfe01036d17f"
+      },
+      "scope": "17 R, 15 Chrome and 33 wrapper checks: actual R/httpuv start, consent and Unicode alias, committed lost reply/exact retry, full Chrome restart and authenticated CURRENT. ACK0; no collected events, finish or jobs. Engineering handoff host only.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-entry-screen-r-join-qa-20261002/entry-01/AFTER-CLOSED.json",
+          "bytes": 40635,
+          "sha256": "212229d9d41bebde582584987d3b2dcbbc6ae3db7747fb25c2279e730f1182b6"
+        },
+        {
+          "path": "work/participant-entry-screen-r-join-qa-20261002/entry-01/RUN-FREEZE.json",
+          "bytes": 53772,
+          "sha256": "2d95b3bb49f53e81340b9efbb3773b2305da56a264c3cdb9544aa5f4247958b1"
+        },
+        {
+          "path": "work/participant-entry-screen-r-join-qa-20261002/entry-01/MANIFEST.json",
+          "bytes": 1238,
+          "sha256": "b115d546ab1d9d66e91de29bb5bcc1489075e75069f2d1c085eac4aedeef795f"
+        }
+      ]
+    },
+    {
+      "name": "participant_questionnaire_controller_focused",
+      "acceptance": {
+        "path": "work/participant-questionnaire-controller-qa-20261002/ACCEPTANCE-01.json",
+        "bytes": 6432,
+        "sha256": "1a6fb644170ecfd0d663d25fe8674aca18217af47653098876ad31c171dfe9e5"
+      },
+      "scope": "43 Chrome (flush19/pages18/review6) and 72 syntax executions on the earlier controller. Does not retrospectively qualify the selected one-click/draft-adapter successor.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-questionnaire-controller-qa-20261002/RUN-FREEZE-01.json",
+          "bytes": 40193,
+          "sha256": "26a7f7664eb42b0beacb8c98c4a25f153863d7af4777f1f75958fea6a223696b"
+        }
+      ]
+    },
+    {
+      "name": "participant_questionnaire_controller_actual06",
+      "acceptance": {
+        "path": "work/participant-questionnaire-controller-r-join-successor06-qa-20261002/actual-06/ACCEPTANCE.json",
+        "bytes": 2795,
+        "sha256": "199732ea9369c6e2158f182589c992f5dde290d6d69dd4096da7451fe38cc790"
+      },
+      "scope": "28 R, 16 Chrome, 33 wrapper checks and 2 zero-violation Axe scans: draft recovery/cold restart, exact lost-reply recovery, one-click continuation, edit-to-new-branch, review/seal and released asynchronous host handoff. Original prefix/held setup and test-only illustration adapter; selected controller ac929b0f, older component 5799542f. No entry, finish, tasks or full host.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-questionnaire-controller-r-join-successor06-qa-20261002/actual-06/AFTER-CLOSED.json",
+          "bytes": 41550,
+          "sha256": "75bc261cdf7b76233e70faf3eb5dbe704543179ae31ff71bdfe07e65b6026da8"
+        },
+        {
+          "path": "work/participant-questionnaire-controller-r-join-successor06-qa-20261002/actual-06/RUN-FREEZE.json",
+          "bytes": 54976,
+          "sha256": "612d5a81d87c0f6f1f5b0b30ea662ea7d4962ce73dbcf54c642fca7132b6ffe0"
+        },
+        {
+          "path": "work/participant-questionnaire-controller-r-join-successor06-qa-20261002/actual-06/MANIFEST.json",
+          "bytes": 1097,
+          "sha256": "2531cd0e8634384d244e59232d645c95798cd4b0ca832c0e74b614c830b81dec"
+        }
+      ]
+    },
+    {
+      "name": "participant_assigned_png_provider",
+      "acceptance": {
+        "path": "work/participant-assigned-illustrations-qa-20261002/attempt-02/browser-CLOSED.json",
+        "bytes": 19210,
+        "sha256": "081d807d9d89eae03ebb5df77977f63199b970eff354e494f23fd3f18673d3ff"
+      },
+      "scope": "63 Chrome, 8 syntax and 6 zero-violation Axe scans: real PNG decoding, bearer fetch, cancellation/retry, pixel-capacity admission and actual60-second timeout against controlled Node authority. Original component visual defect retained separately. Not actual R-resource/provider integration or mobile performance.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-assigned-illustrations-qa-20261002/attempt-02/syntax-CLOSED.json",
+          "bytes": 2020,
+          "sha256": "b6d60fd34bc27a943882320c88c8cc621ba513b51664dd840e70663f81648fb8"
+        },
+        {
+          "path": "work/participant-assigned-illustrations-qa-20261002/attempt-02/browser-MANIFEST.json",
+          "bytes": 7955,
+          "sha256": "1180b5f0320f40b20567eb796ee7b8e1be25a421153820ec7ce9156c332f0977"
+        }
+      ]
+    },
+    {
+      "name": "participant_illustration_state_repair",
+      "acceptance": {
+        "path": "work/participant-question-illustration-state-qa-20261002/ACCEPTANCE.json",
+        "bytes": 5713,
+        "sha256": "a3c56aa8bb128b979895ee1576b8454eb34ea9498d35ef605ede485c5dbf7807"
+      },
+      "scope": "37 Chrome, 8 syntax and 8 zero-violation Axe scans: selected component5abea8b2 with selected provider6196c5eb. Removes stale image-loading alerts after success/failure/retry while preserving unrelated draft/ambiguous-submit failures. No selected-controller join.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
+          "bytes": 38101,
+          "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5"
+        },
+        {
+          "path": "work/participant-question-illustration-state-qa-20261002/attempt-01/syntax-CLOSED.json",
+          "bytes": 2020,
+          "sha256": "721271dcd913ab23e29de91d7d86088b59d2d939908ca3f0c11bf613b13db59d"
+        },
+        {
+          "path": "work/participant-question-illustration-state-qa-20261002/attempt-01/browser-CLOSED.json",
+          "bytes": 6556,
+          "sha256": "6f894ab13902decc3680d8dc570effea9396480c87988e162487bcd6c78a9e9d"
+        },
+        {
+          "path": "work/participant-question-illustration-state-qa-20261002/attempt-01/browser-MANIFEST.json",
+          "bytes": 7743,
+          "sha256": "30fb0e548ee0f3c4e2be8fa8001ebd648546fe67c4118c9ee73342d4d5c77117"
+        }
+      ]
+    },
+    {
+      "name": "participant_finish_custody",
+      "acceptance": {
+        "path": "work/participant-finish-custody-qa-20261002/acceptance-01/ACCEPTANCE.json",
+        "bytes": 3364,
+        "sha256": "ec4051345beba13c4741e3b7241ab2ccf06c0be40c1d98084308bb58761fedb5"
+      },
+      "scope": "31 Chrome and 6 syntax checks: strict native IndexedDB transaction ordering, immutable exact request/receipt custody, CAS, corruption refusal, cold restart, locks and versionchange. Retained original R bytes and labelled synthetic receipt controls; no live finish HTTP, CURRENT, event/camera flush or host.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-finish-custody-next-20261002/SOURCE.json",
+          "bytes": 764,
+          "sha256": "9e6fdd4fc4f76e1694805eab8ef393ff35445e3521a170236de73ecd87e2789f"
+        },
+        {
+          "path": "work/participant-finish-custody-next-20261002/MANIFEST.json",
+          "bytes": 1747,
+          "sha256": "2d279d50656d51e15e55b843efa61200cdfd34ebad1a4008e27d540e94991f23"
+        },
+        {
+          "path": "work/participant-finish-custody-tests-next-20261002/MANIFEST.json",
+          "bytes": 1180,
+          "sha256": "f7f0d3efe96833a507552c883d8bcbaa8c8c20c4d82a3d3290d8259de8ccf95c"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/PREPARATION-MANIFEST.json",
+          "bytes": 2992,
+          "sha256": "8b2007eb212e5e1b07b70aa6b93d6d7a893a809cf7c023f77c036afbabea1614"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/syntax-CLOSED.json",
+          "bytes": 5042,
+          "sha256": "883849f8b1e01e9171f91cf2516cb90fb2ea81e1a810d239f26b409256e1d022"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/SYNTAX-INDEPENDENT-CLOSURE.json",
+          "bytes": 548,
+          "sha256": "718ed8cfa5a14dc7a3fe77d2bd1e978bad0e95abb8da9ca8004801e008f44743"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/browser-CLOSED.json",
+          "bytes": 6235,
+          "sha256": "f33318699b60b68394fe0ac6b2dce3c9263f2080c89423d616f45afc45a72f01"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/INDEPENDENT-CLOSURE.json",
+          "bytes": 368,
+          "sha256": "3bc6003a4ee1ef825dcd11691ec6f897c16199a48254d8fdb11b946c8af979ef"
+        },
+        {
+          "path": "work/participant-finish-custody-qa-20261002/storage-01/RUN-MANIFEST.json",
+          "bytes": 40391,
+          "sha256": "38b6e745e661765681244720d2c4459bad0e1b080afdf4adcd58ec28f9d2f81d"
+        }
+      ]
+    },
+    {
+      "name": "saved_variant_native_analysis",
+      "acceptance": {
+        "path": "work/participant-variant-analysis-native-qa-20261002/native-completed-01/ACCEPTANCE.json",
+        "bytes": 3095,
+        "sha256": "f7f473618ba573c29f929a834c31f3eb599d1d1106c58a10f2dfbe7d46d2ae45"
+      },
+      "scope": "35 case and 12 wrapper checks: explicit native saved-variant analysis, unchanged55 calculation identities, Windows publication and cold report reopen. Small synthetic unchanged-algorithm oracle, not independent science.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-variant-analysis-native-qa-20261002/native-completed-01/AFTER-CLOSED.json",
+          "bytes": 6645,
+          "sha256": "05af0ed5c20d7606a946bbad7b29a9717936e7091af95345d5966838fc520e4c"
+        },
+        {
+          "path": "work/participant-variant-analysis-native-qa-20261002/native-completed-01/RUN-FREEZE.json",
+          "bytes": 7776,
+          "sha256": "adce3a4ac8971ae059a2f1df2a0fe312684acd32c4781437fd0dea9ffa50b2c8"
+        },
+        {
+          "path": "work/participant-variant-analysis-native-qa-20261002/native-completed-01/MANIFEST.json",
+          "bytes": 1284,
+          "sha256": "11f80f0a5d1f95def3658a130a9266d4e4d52e71e3633074c6c663b1efff3ecf"
+        }
+      ]
+    },
+    {
+      "name": "participant_finish_variant_queue",
+      "acceptance": {
+        "path": "work/participant-variant-finish-integration-qa-20261002/queue-01/ACCEPTANCE.json",
+        "bytes": 2063,
+        "sha256": "f3f0fee77db1f45f4a1485ec52e1f2c7e9cac1d888f90a7cd19191a71d981715"
+      },
+      "scope": "35 direct and 31 wrapper checks: actual finish/queue transaction, legacy receipt retry, write rollback and committed lost-reply exact retry, no duplicate job, no job for interrupted/withdrawn completion. No automatic worker in this scope.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-variant-finish-integration-qa-20261002/queue-01/AFTER-CLOSED.json",
+          "bytes": 2492,
+          "sha256": "286d4f84cf98a9f5a58a2f1bfd57e5e005cd646695124ace717e98e163b4c43f"
+        },
+        {
+          "path": "work/participant-variant-finish-integration-qa-20261002/queue-01/RUN-FREEZE.json",
+          "bytes": 6304,
+          "sha256": "443643e6d5f6eba4027de51c22f1f1744ef68db827f08cb23be551254a32f03f"
+        },
+        {
+          "path": "work/participant-variant-finish-integration-qa-20261002/queue-01/MANIFEST.json",
+          "bytes": 1321,
+          "sha256": "8676f2d16c54b02910091e8262725bc47914ee7c3500862836f4e7044af942bf"
+        }
+      ]
+    },
+    {
+      "name": "participant_finish_native_report",
+      "acceptance": {
+        "path": "work/participant-variant-finish-native-qa-20261002/native-completed-01/ACCEPTANCE.json",
+        "bytes": 2977,
+        "sha256": "363969a4457c551a83a69714f6a4c283b83cb3139da2a1e79771829a1aadb9b8"
+      },
+      "scope": "36 direct and 14 wrapper checks: named worker consumed an actual finish-created job and sealed/cold-reopened its report. Synthetic unchanged-algorithm differential, not browser finish or science.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-variant-finish-native-qa-20261002/native-completed-01/AFTER-CLOSED.json",
+          "bytes": 6608,
+          "sha256": "4c80bb8e7257abe4d654b1891b4ecb3a6294fcaf841708c0b46f3d87332432c5"
+        },
+        {
+          "path": "work/participant-variant-finish-native-qa-20261002/native-completed-01/RUN-FREEZE.json",
+          "bytes": 7653,
+          "sha256": "2b8563b53f34ae515cf5cd56dd2374d5b54e02de76769a664f56e0a08cc70627"
+        },
+        {
+          "path": "work/participant-variant-finish-native-qa-20261002/native-completed-01/MANIFEST.json",
+          "bytes": 1027,
+          "sha256": "97c7c740980e1275de4491cf78b166457a170b729f27c60e67f18dfd68a9a529"
+        }
+      ]
+    },
+    {
+      "name": "ordinary_variant_worker_routing",
+      "acceptance": {
+        "path": "work/participant-variant-worker-dispatch-qa-20261002/routing-01/ACCEPTANCE.json",
+        "bytes": 1224,
+        "sha256": "2a8c9ae3b0c4310f1865a030e59dc3a2b787ec4e43d598a82e3351e695136fbc"
+      },
+      "scope": "33 direct and 6 wrapper checks through actual loader and mixed queue, leases/audit/reclaim. Named admission/calculation spies are explicitly labelled; not native processing in this scope.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-variant-worker-dispatch-qa-20261002/routing-01/AFTER-CLOSED.json",
+          "bytes": 1599,
+          "sha256": "706c3e76a8912e3bf175e688a8228bc83585ac489c8b7fc50c5cba0f9d1d313b"
+        },
+        {
+          "path": "work/participant-variant-worker-dispatch-qa-20261002/routing-01/RUN-FREEZE.json",
+          "bytes": 3150,
+          "sha256": "5c0e9208bf8fd415d55dc29342562024efddc67b6b946f52023cfbfaaf30d2dd"
+        },
+        {
+          "path": "work/participant-variant-worker-dispatch-qa-20261002/routing-01/MANIFEST.json",
+          "bytes": 1175,
+          "sha256": "53ac78f0f3a9d4ca99ddeceb7e5e152b1a53c8c317792fcc55710b6a7bfb164c"
+        }
+      ]
+    },
+    {
+      "name": "ordinary_variant_worker_native",
+      "acceptance": {
+        "path": "work/participant-variant-worker-automatic-qa-20261002/automatic-01/ACCEPTANCE.json",
+        "bytes": 1402,
+        "sha256": "1a67e76b2390318454a1fb0c79e5279d04c607079b1e0f7ab792b64c3cb4a205"
+      },
+      "scope": "13 setup, 20 result and 37 wrapper checks: ordinary run-worker.R --once selected a fresh actual finish-created job without job-ID/manual claim, invoked native analysis/publication and cold-reopened the exact report. Synthetic liking1 and10.25ms oracle; original source/PNG identities conserved.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-variant-worker-automatic-qa-20261002/automatic-01/AFTER-CLOSED.json",
+          "bytes": 6323,
+          "sha256": "24f6aa18fcaf30745ac04a0a83187ed445b1a20522a543d0c3c56c29a5f72f69"
+        },
+        {
+          "path": "work/participant-variant-worker-automatic-qa-20261002/automatic-01/RUN-FREEZE.json",
+          "bytes": 7978,
+          "sha256": "5a87f9c1f6b932a46748f49b71be4264da1c9010a7858bcf72e6e8379d84c787"
+        },
+        {
+          "path": "work/participant-variant-worker-automatic-qa-20261002/automatic-01/MANIFEST.json",
+          "bytes": 1174,
+          "sha256": "e477585fa2b675ecf240da92593130a1a4288de157e18dfe2c12fc0a3999a12d"
+        }
+      ]
+    },
+    {
+      "name": "ordinary_processing_retry_native",
+      "acceptance": {
+        "path": "work/participant-processing-retry-qa-20261002/retry-01/ACCEPTANCE.json",
+        "bytes": 1435,
+        "sha256": "dddafba806d55f06bf80b76c8a607cd7e7d6e54f4723c31b46299a6fc75ea4b5"
+      },
+      "scope": "13 setup, 31 Retry-worker, 15 legacy and 39 wrapper checks: real cancellation/ordinary Retry/claim, explicitly synthetic leased failure, failed Retry then one ordinary native report and cold read. Actual API used by UI; no Shiny Retry click qualified.55 calculation files unchanged.",
+      "supporting_receipts": [
+        {
+          "path": "work/participant-processing-retry-qa-20261002/retry-01/AFTER-CLOSED.json",
+          "bytes": 6820,
+          "sha256": "2531485927626de0b79f0ee7b620ed919865093d600e756531f41018c157a622"
+        },
+        {
+          "path": "work/participant-processing-retry-qa-20261002/retry-01/RUN-FREEZE.json",
+          "bytes": 8605,
+          "sha256": "4ea118bedc6f468fa4a45e410e82399cd390e1fc6e3b74bb97f5d0fcfc0e6e56"
+        },
+        {
+          "path": "work/participant-processing-retry-qa-20261002/retry-01/MANIFEST.json",
+          "bytes": 1275,
+          "sha256": "ac29a77f9865baeb968abcc6fc9ecf8285c2249c6f6bf51343441a58f631395c"
+        }
+      ]
     }
   ],
   "root_visual": {

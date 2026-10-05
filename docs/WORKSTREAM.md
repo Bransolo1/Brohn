@@ -1,39 +1,66 @@
 # Brohn workstream and restart checklist
 
-Current inactive checkpoint — 2 October: the public questionnaire model passes
-58 pure checks, and its separate local draft store passes 35 Chrome checks plus
-8 syntax checks. Literal CURRENT handoff passes 27 literal checks and 143 Chrome
-checks (85 compatibility, 39 retention, 19 focused), plus 39 accepted-phase syntax
-checks. These browser tests use synthetic authority; they do not connect the
-complete participant controller or recover the original start credential.
+Before promoting the participant host, fix and qualify the four
+[storage/retry/close recovery findings](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md).
+Finish-network component checks now pass separately; this does not close the
+full participant-to-analysis journey or change the released runtime.
 
-Actual R/httpuv opening now passes 62 client, 13 fixture and 30 wrapper checks.
-Questionnaire collection separately passes 84 client, 19 fixture and 31 wrapper
-checks: two operations, prefix CURRENT/page, lost committed reply, exact retry
-and completed finish. The observations come from the original reducer in a
-synthetic study. One historical analysis job is queued and unclaimed; no worker
-result, physical measurement or browser-to-R controller acceptance is implied.
+Current development checkpoint — 5 October 2026. Brohn is unfinished. This
+checkpoint adds inactive participant entry, questionnaire orchestration, assigned
+PNG loading, durable finish custody and saved-variant worker/Retry source. The
+released application remains at runtime f39bd63; this checkpoint does not enable
+the new profile or change normal launching.
 
-Both earlier HTTP RNG failures remain failures. A separate framework diagnostic
-localized absent-seed initialization to httpuv startServer; a fixed existing seed
-remained exact. The passing HTTP successor sets its fixture seed before measuring
-the journey and retains the complete final RNG assertion, without restoring the
-application's RNG to manufacture a pass.
+Actual R/Chrome entry-to-CURRENT and a separate held-questionnaire journey now
+pass. The latter covers saved-draft restart, exact lost-reply recovery, one-click
+continuation, edit-to-new-branch, review/seal and released host handoff. A fresh
+finish-created job also passed ordinary worker selection, native publication and
+cold report reopening. Ordinary Retry is separately checked through the API used
+by the UI, including cancelled/failed jobs; its injected failure is synthetic.
 
-The review snapshot contains 25 inactive source/dependency files and 66 scoped
-evidence entries. No active loader, renderer, route or released behavior changes.
-Direct entry/finish and explicit original1.2 researcher core/received recovery
-remain accepted in their recorded scopes. New resolver camera18/33 and writer
-fences27/33 also pass; the latter uses same-process peer/own connections.
-Resolved-run analysis, camera HTTP/worker and physical recording remain open.
+These are separate scoped compositions. The selected controller was tested with
+an older question component and a test-only image adapter. The repaired image
+component and assigned PNG provider pass their own browser scope. Finish custody
+passes native storage checks; finish networking and the connected participant
+host are excluded from this snapshot pending their own qualification. Neither
+stored credentials nor historical receipts grant current editing authority.
 
-Next: join model, drafts, current-generation/page loading and question controls
-through the actual service; finish original start/restart bootstrap and the
-explicit1.2 analysis worker/publication journey. Cold loading, representative
-large workloads, hosted ingress and joined researcher UX remain open. All 17
-work packages and QF01–QF08 retain their individual unfinished gates.
+Next: join entry, fresh CURRENT, the corrected questionnaire/image components,
+non-question renderers and finish in one participant host, then qualify the full
+researcher author-to-participant-to-report journey. Keep ordinary instructions,
+timed exposure, behavioural tasks, MaxDiff, equipment/camera and withdrawal/restart
+in scope. Fix measured cold-loading latency and known-profile queue-head repair;
+complete portable QA and complete server dependency publication before promotion.
 
-Read the [delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and [scoped evidence](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md) for exact source attribution and remaining gates.
+All 50 capabilities, all 17 build packages and QF01–QF08 retain their individual
+unfinished gates. Qualtrics parity, advanced analyses/dashboards, live devices,
+named providers, hosting and scientific qualification are not established by this
+checkpoint. Existing method recipes, original source data and saved results remain
+unchanged.
+
+Immediate integration order:
+
+1. Complete a single host with owned handoff: entry closes before the next owner;
+   the questionnaire controller settles and releases its journal lock before
+   another renderer acquires it. Fresh CURRENT governs every editing transition.
+2. Join selected component5abe/provider6196/controllerac929 against the real R
+   resource and operation routes; preserve the component-version mismatch in
+   historical evidence. Qualify browser finish/recovery separately and then join it.
+3. Add the remaining assigned-view renderers and method-specific timing/camera
+   lifecycle. Do not mount or relabel the legacy full-protocol runner.
+4. Exercise one real researcher journey: author controls/versions and survey flow,
+   publish, consent, collect/restart/edit, finish, automatically analyse, inspect
+   uncertainty/denominators, export and reopen historical results.
+5. Resolve known-profile preclaim failures that currently leave a queued head and
+   stop the loop, using a visible repair/quarantine policy that preserves evidence.
+6. Ship the complete dependency/test kit and qualify the exact promoted composition
+   on representative workloads. Do not use small synthetic cases as scalability,
+   scientific or device evidence.
+
+The [snapshot dependency audit](../development/assigned-questionnaire/DEPENDENCIES.json)
+records exact shared JS bytes and the explicit component successor. The
+[evidence ledger](qa/ASSIGNED-QUESTIONNAIRE-COMPONENT-PROGRESS.md) retains prior
+failures and separates backend, browser, worker and scientific claims.
 
 **New owner requirement, 1 October 2026:** questionnaire flow, automatic analysis
 and dashboards must match or exceed Qualtrics for the intended research journeys.

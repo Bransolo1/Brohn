@@ -1,5 +1,57 @@
 # Assigned questionnaire collection: component evidence
 
+## Current scoped checkpoint — 5 October 2026
+
+The new sources remain inactive. The machine-readable
+[source/evidence index](ASSIGNED-QUESTIONNAIRE-COMPONENT-SOURCES.json) adds exact
+local receipt identities without publishing raw process records or workspaces.
+No tests were rerun merely to prepare this source checkpoint. Counts below belong
+to separate runs, overlap reused assertions and must not be summed into a product
+coverage score.
+
+| Scope | Accepted evidence | Boundary |
+| --- | --- | --- |
+| Start custody |27 Chrome/6 syntax | Native IndexedDB/lock, original pending request/response, restart; no live R. |
+| Start network |35 Chrome/7 syntax | Controlled Node authority with retained R bytes; not actual R service. |
+| Entry UI and status | Original31 Chrome/9 syntax/3 Axe; status successor8 Chrome/9 syntax | Original stale loading text was found visually and repaired. Focused repair is not a full original-scope rerun. |
+| Actual R entry |17 R/15 Chrome/33 wrapper | Actual consent/Unicode alias, committed lost reply/exact retry, Chrome restart and fresh CURRENT; ACK0/no collection or finish. |
+| Earlier held controller |43 Chrome/72 syntax | Earlier flush/pages/review source; successor actual06 has its own evidence. |
+| Actual held controller06 |28 R/16 Chrome/33 wrapper/2 zero-Axe scans | Draft restart, one-click continue, lost reply, edit-to-new-branch, review/seal, released asynchronous host handoff. Fixture-held prefix and image adapter; no original entry/full host. |
+| Assigned PNG provider |63 Chrome/8 syntax/6 zero-Axe scans | Controlled Node authority, native PNG decode, cancellation, pixel admission and actual60-second timeout. Not actual R-resource integration or mobile performance. |
+| Corrected image state |37 Chrome/8 syntax/8 zero-Axe scans | Component5abe with provider6196; stale image-loading alerts clear while unrelated errors remain. Not controller actual06's component. |
+| Finish custody |31 Chrome/6 syntax | Native transaction/CAS/corruption/restart/lock/versionchange; no finish network/current or event/camera flush. |
+| Saved-variant native analysis |35 case/12 wrapper | Explicit native worker,55 calculation/native identity, Windows publication/cold report. Small synthetic same-algorithm oracle. |
+| Finish-to-job transaction |35 direct/31 wrapper | Actual receiver/queue, legacy retry, rollback and committed lost reply, no duplicate/aborted job. |
+| Named finish-created-job worker |36 direct/14 wrapper | Actual finish-created job → named worker → native report/cold read; not ordinary selection in this scope. |
+| Ordinary worker routing |33 direct/6 wrapper | Real mixed queue/leases/audit with labelled admission/calculator spies. |
+| Ordinary native worker |13 setup/20 result/37 wrapper | Fresh finish-created job selected by normal --once without job-ID/manual claim; native publication and cold read. |
+| Ordinary Retry |13 setup/31 Retry-worker/15 legacy/39 wrapper | Cancelled and failed ordinary API Retry, injected synthetic leased failure, one ordinary native report/cold read. No Shiny Retry click. |
+
+All checks have separately retained closure evidence. The selected controller
+usesac929; actual06's component is5799542f and image adapter is test-only. Selected
+component5abe/provider6196 have their own pass, not an actual06 rerun. Full selected
+composition, R-provider integration, browser finish and complete host remain open.
+
+The controller's earlier actual01–05 failures remain preserved: encoded-document
+test setup, a real draft descriptor mismatch, missing host heading, image-readiness
+test timing and duplicated fixture descriptor. Only the one-line draft adapter
+changed product controller behavior; later fixture/observer repairs did not weaken
+the original flow checks. The image loading alert and original entry-status visual
+findings also remain in their historical evidence; their successors are separately
+attributed. Existing HTTP RNG/legacy camera failures below remain failures.
+
+Remaining: full researcher author-to-report and participant entry-to-finish
+journeys; public test reproducibility; complete R-server dependencies; instructions,
+timed/task/MaxDiff/camera renderers; known-profile queue-head repair; resolved partial
+analysis, broader workload/latency/export; scientific/device/provider/hosting
+qualification. All17 packages and QF01–QF08 keep their individual unfinished gates.
+
+## Earlier component checkpoint — 2 October 2026
+
+The dated history below describes the earlier25-source snapshot and its individual
+run boundaries. Its statements about unrun successors are superseded by the table
+above; earlier tests are not relabelled as testing the later sources.
+
 Latest checkpoint: public model58, local drafts35 Chrome/8 syntax and literal
 CURRENT handoff27 literal/143 Chrome/39 syntax pass in separate scopes. Actual
 HTTP opening03 and collection events01 also pass, with original synthetic study
