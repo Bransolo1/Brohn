@@ -18,6 +18,14 @@ its read-only Python audit verifies 76 file identities and 81 relative imports.
 The complete R/test dependency kit and production activation are still pending.
 Do not overlay the directory onto active code and assume everything is joined.
 
+There is a concrete publishing gap: normal **Publish study** still pins the
+legacy runner. The new host test uses fixture-created deployments and synthetic
+renderer registration. Implement the explicit versioned assigned runtime,
+bootstrap, manifest, registration and serving path before connecting ordinary
+publishing and qualifying the complete journey. Keep historical runtime bundles
+unchanged; the [delivery contract](architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md)
+records this requirement.
+
 Next: complete authenticated A/V admission/custody/receive/export and the actual
 researcher author-to-report journey. CURRENT latency and duplicated success copy
 remain concrete UX work. Real focus/page hiding, broader designs, survey-only

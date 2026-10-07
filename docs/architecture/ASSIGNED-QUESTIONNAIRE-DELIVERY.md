@@ -164,6 +164,19 @@ compatible. Until the new renderer and routes are connected, registration refuse
 Legacy routes must also refuse marked new-profile runs rather than expose their
 full private protocol or another arm's assets through an older endpoint.
 
+The 7 October integration inventory makes this boundary concrete: ordinary
+`brohn_publish` preserves the legacy bundle, while `platform-runner-assets.R`
+validates the legacy manifest and `platform-delivery.R` serves its allowlisted
+assets. The new module closure needs an explicitly versioned manifest, real
+entry bootstrap, complete relative-import and stylesheet closure, renderer
+registration and a compatible serving adapter. Historical manifests and assets
+remain unchanged. Expose the supported profile through the ordinary researcher
+publishing flow only after these parts are connected. Existing host fixtures
+insert their deployment and use synthetic renderer registration; they do not
+prove that ordinary publication works. The next complete journey must use the
+actual publication action and carry that release through participant execution,
+its finish-created ordinary worker job, saved report and cold reopening.
+
 Before fetching large stored bodies, participant reads check credentials, current
 workspace/hosted policy, source ownership, runtime binding and actual SQL byte
 lengths. They then verify raw hashes and admit the complete original/view/map

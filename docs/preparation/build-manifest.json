@@ -3,6 +3,20 @@
   "prepared_at": "2026-09-08",
   "product": "Brohn",
   "checkpoint": {
+    "assigned_publishing_join": {
+      "status": "required_integration",
+      "architecture": "docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md",
+      "current_gap": "Ordinary Publish study preserves the legacy runner. Assigned host acceptance uses fixture-created deployments and synthetic renderer registration; it does not qualify ordinary publication.",
+      "implementation_required": [
+        "Explicit versioned assigned runtime manifest with complete module and stylesheet closure",
+        "Actual entry bootstrap and server renderer registration",
+        "Pinned runtime serving adapter and ordinary researcher publishing selection",
+        "Actual published release through participants, finish-created ordinary worker job, saved report and cold reopening"
+      ],
+      "historical_policy": "Preserve original legacy runtime bytes, manifests and readers; never relabel the legacy runner as the assigned profile.",
+      "work_packages": ["BWP04", "BWP05", "BWP13", "BWP17"],
+      "product_requirements": ["EF02", "EF03", "QF01"]
+    },
     "status": "implementing",
     "date": "2026-09-30",
     "publication_handoff": "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",

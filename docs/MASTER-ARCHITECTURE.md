@@ -7,6 +7,19 @@ boundaries and ending/recovery ran together. Two jobs were queued; downstream
 worker/report acceptance remains separate. The exact 76-file snapshot preserves
 historical source selections and does not activate a production participant profile.
 
+The ordinary publishing path is a specific remaining integration gate. Its
+preserved runtime packages the legacy runner; the current manifest and serving
+allowlists do not admit the assigned host's module closure. The host acceptance
+uses real saved designs and compilation but fixture-created deployments and a
+synthetic renderer registration. It therefore does not qualify ordinary **Publish
+study**. Add an explicit versioned assigned-runtime publisher, complete bootstrap
+and module/stylesheet manifest, renderer registration and serving adapter, then
+connect the researcher publishing UI. Preserve historical runtime bytes and
+legacy readers. Acceptance must create the release through the real publishing
+action, run its participants, execute its actual finish-created analysis job and
+reopen the resulting saved report after restart. A relabelled legacy runner or
+manually inserted deployment cannot satisfy this gate.
+
 The [storage/retry/close contract](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md) continues
 to govern ownership changes: retain the original capture across every boundary,
 settle and release the previous owner, and admit fresh CURRENT before advancing.

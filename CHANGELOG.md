@@ -1,5 +1,14 @@
 # Changes
 
+## Ordinary assigned-study publishing gap — 2026-10-07
+
+- Record the missing versioned publisher, runtime manifest, entry bootstrap,
+  registration and serving connection in the master architecture, workstream,
+  build manifest and John handoff. Current host fixtures do not qualify normal
+  Publish study. Require actual publication through participant execution,
+  finish-created analysis, saved report and cold reopening before closing this
+  integration gate; historical runtime bundles remain unchanged.
+
 ## Inactive text/image host and media spool — 2026-10-07
 
 - Select exact host09 and required-image readiness component in the development

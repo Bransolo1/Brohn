@@ -19,6 +19,15 @@ remove duplicate success copy, and qualify real headed focus/page hiding. Retain
 survey-only releases, timed tasks/MaxDiff, equipment/camera, broader workloads,
 portable QA, all 50 capabilities, 17 packages and QF01–QF08.
 
+Ordinary publication is an explicit prerequisite for that complete journey:
+implement the versioned assigned runtime/manifest, bootstrap, renderer registration
+and serving integration, then connect the researcher publishing action. Current
+host acceptance uses fixture-created deployments with synthetic registration;
+normal Publish still packages the legacy runner. Preserve legacy bundles and
+readers, and require actual publishing → participants → finish-created worker
+job → saved report/cold reopening. Track this under BWP04/BWP05/BWP13/BWP17 and
+EF02/EF03/QF01; do not count isolated component passes as closing it.
+
 The following dated checkpoint retains historical selections. Its pending
 text/image-host statements are superseded by actual04, not its broader gates.
 
