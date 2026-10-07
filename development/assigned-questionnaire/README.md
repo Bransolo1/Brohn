@@ -11,8 +11,9 @@ the selected component successor and identifies unchanged native-worker files.
 [delivery contract](../../docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md) and
 [workstream](../../docs/WORKSTREAM.md) distinguish what ran from what remains.
 
-Latest checkpoint: 72 source files, including scoped ordinary-host, finish-network
-and media-preparation implementations. Read the
+Latest checkpoint: 75 source files, including the separately accepted timed arm
+and renderer. Read the [timed component acceptance](../../docs/qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md)
+and the
 [recovery acceptance](../../docs/qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) before joining
 these sources. The full selected host still needs actual-R entry-to-report testing.
 
@@ -24,6 +25,7 @@ these sources. The full selected host still needs actual-R entry-to-report testi
 | participant-host, participant-host.css and host-ending | Single ordinary owner, instructions, ending custody and focused finishing/recovery UI. Scoped native storage and controlled-authority browser evidence; complete real-R host still open. |
 | finish-session and finish-controller | Original ending request/receipt custody plus authenticated recovery and exact retry. Separate storage and controlled-authority network acceptance, not a full R host. |
 | stimulus-media | Exact assigned text/image/audio/video preparation, cancellation and native decode/readiness. No exposure, physical onset, timed renderer or actual R-resource claim. |
+| timed-arm and timed-sequence | Prospective durable presentation intent and protocol-controlled timed presentation. Separate native component acceptance; the snapshot's ordinary host remains UI06 and does not integrate these modules. Full-host integration and R media admission remain open. |
 | current-session, operation-sender, observation-journal and literal helpers | Fresh CURRENT admission, exact durable operation retry, separate typed drafts/observations/ACK and original literal response bytes. |
 | R/platform-participant-view-* and original operation/context helpers | Assigned source storage, current/receive, entry/welcome, camera/resource, finish and HTTP/router contracts. Existing scoped backend evidence retained; complete server dependency closure remains outside this snapshot. |
 | R/platform-variant-* and method/evidence history helpers | Read original saved revision/protocol/assignment/event evidence and invoke unchanged analysis algorithms. Completed-run profile; resolved partial runs and wider export remain open. |

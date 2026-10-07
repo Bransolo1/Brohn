@@ -1,0 +1,145 @@
+{
+  "schema": "brohn-scoped-timed-renderer-evidence/0.1",
+  "date": "2026-10-07",
+  "status": "inactive_component_accepted",
+  "production_activated": false,
+  "public_source_snapshot_updated": true,
+  "source_files": [
+    {
+      "path": "www/participant/timed-sequence.css",
+      "bytes": 1919,
+      "sha256": "137b2f82de02c6182de41c188f3762a5e41c60053bf4042d992fd14bbd6be6fe"
+    },
+    {
+      "path": "www/participant/timed-sequence.mjs",
+      "bytes": 24494,
+      "sha256": "2eb20a483ad3b5a67acbb047329093e75fcb06024f9903492b3a64a35f5a466a"
+    }
+  ],
+  "receipt_identity": {
+    "bytes": 6698,
+    "sha256": "8b1b51f354090564975cd165df411a48992b62426dd2a8dd296b15074ec39c26"
+  },
+  "retained_local_evidence": {
+    "schema": "participant-timed-renderer-component-acceptance/0.1",
+    "passed": true,
+    "date": "2026-10-07",
+    "scope": "Source-bound renderer component only: actual Chrome/native rAF/layout/text/original PNG/media observations; controlled synthetic host custody, fault and grouped-media capability. Not actual R receive, arm/journal qualification, physical timing or full-platform completion.",
+    "source": {
+      "path": "SOURCE.json",
+      "bytes": 843,
+      "sha256": "1cf31b457ac95c5e02de1b2bf742926ac01cc31fc64dff930bc6c854a00289fd"
+    },
+    "source_manifest": {
+      "path": "MANIFEST.json",
+      "bytes": 3228,
+      "sha256": "eb10c8b804a19bfab7aa4d6162389a3b8748a4c3d6a0ee3b2fa4dc3e7ffa4e60"
+    },
+    "tests": {
+      "path": "MANIFEST.json",
+      "bytes": 2251,
+      "sha256": "801fa0fee394ab42cbd7c98841ed3843d6eacab229a700f0e20de6d7c319dfda"
+    },
+    "qa_binding": {
+      "path": "BINDING.json",
+      "bytes": 1479,
+      "sha256": "88011eb2bd4d030fd3092c1cfb16f465ed381cd68950dcee4b438820b391a512"
+    },
+    "phase": {
+      "path": "PREPARATION-MANIFEST.json",
+      "bytes": 4311,
+      "sha256": "2caecbb55923770f4e667c6731b7561306fcd6839f8d779b021882fe90e8091a"
+    },
+    "syntax": {
+      "path": "syntax-CLOSED.json",
+      "bytes": 6599,
+      "sha256": "8d3b2a5f2f214b1ce036775cb306daa96f48009e65048eeb23c95e78f8848fe9"
+    },
+    "browser": {
+      "path": "browser-CLOSED.json",
+      "bytes": 1802398,
+      "sha256": "5f30f0579c837e1db90599538a9b1f3a2cd50845e43a130fac27551a626dd80e"
+    },
+    "independent": {
+      "path": "INDEPENDENT-CLOSURE.json",
+      "bytes": 393,
+      "sha256": "603980e9623872f49aa991bab7d457373f75993d3dbe5c5647f1549e41af63e7"
+    },
+    "run": {
+      "path": "RUN-MANIFEST.json",
+      "bytes": 7728,
+      "sha256": "d85052e60051dea5841b053c99476693af6fb101b151e1b473eaa42ddc77b238"
+    },
+    "checks": {
+      "syntax": 8,
+      "browser": 58
+    },
+    "elapsed_browser_s": 25.375,
+    "observed_owned_identities": 33,
+    "original_fixtures": {
+      "path": "FIXTURES.json",
+      "bytes": 5440,
+      "sha256": "0068905e1269cfaea1e4b4b41f2e425c8f5715a055c821d026a054234e351c76"
+    },
+    "retained_failed_phase": {
+      "path": "browser-CLOSED.json",
+      "bytes": 2545023,
+      "sha256": "e1ce0a46e2592a45973da16eebe51f5fc1b5fa73e050a43acb12e7f82234dde9"
+    },
+    "retained_failed_closure": {
+      "path": "INDEPENDENT-CLOSURE.json",
+      "bytes": 394,
+      "sha256": "19878186e5473fb14b5e045d7c9de91ddc0bea0bb03b4e44cd44bae184bf82f6"
+    },
+    "screenshots": [
+      {
+        "path": "desktop-original-image.png",
+        "bytes": 12171,
+        "sha256": "1b096346772a450e3bd1ffb5d927b8c36406f978faf2fa790a9a43e8f837d999",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "path": "mobile-literal-text.png",
+        "bytes": 33508,
+        "sha256": "f21b6ff6f59f1ca2cff193650e2f661b11879c49f781df656cfbc79ba081ebcf",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "path": "mobile-legacy-text.png",
+        "bytes": 33508,
+        "sha256": "f21b6ff6f59f1ca2cff193650e2f661b11879c49f781df656cfbc79ba081ebcf",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "path": "mobile-keyboard-withdraw.png",
+        "bytes": 15709,
+        "sha256": "fdbe0d0a91f3ef83cc885fc69d7919ef143fba3e0f9d3b65474ccfc67df6d202",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "visual_review": {
+      "inspected": true,
+      "reviewer": "finish_network_qualify",
+      "notes": "Final desktop original image is contained without clipping. Phone text remains literal/readable and wraps exactly like the complete released legacy CSS/DOM; screenshot bytes are identical. Keyboard withdrawal is visible with clear focus outline and a usable button. This checks participant protocol presentation, not researcher UI or all accessibility conformance.",
+      "mobile_legacy_png_bytes_equal": true
+    },
+    "open_gates": [
+      "Actual headed browser focus-loss and hidden-page qualification",
+      "Actual R receiver/arm/journal and live media admission",
+      "Physical display/acoustic timing"
+    ],
+    "evidence_separation": [
+      "Original R session/PNG bytes are unchanged; altered text/baseline/fixation/media declarations and host acknowledgements are explicitly synthetic.",
+      "Native rAF and play observations are software evidence, not calibrated physical display/acoustic onset.",
+      "Synthetic blur dispatch verifies the listener only. First failed headless-tab blur assumption is retained; actual headed focus/hidden-page qualification stays open.",
+      "Negative-zero snapshot/retained-custody cases use an explicitly synthetic exact-codec corpus, not a fabricated native reading.",
+      "No participant exposure replay, actual R admission or study completion is inferred from this component receipt."
+    ]
+  },
+  "evidence_note": "Names identify retained local receipts; raw browser/process evidence is not published. This index does not itself make the tests portable or activate source.",
+  "public_source_snapshot": "development/assigned-questionnaire"
+}

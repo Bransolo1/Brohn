@@ -1,5 +1,19 @@
 # Resume here — Brohn
 
+7 October timed renderer: [58 Chrome and eight syntax checks pass](docs/qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md)
+for the inactive component. The complete R-backed host journey is next. A real
+focus-loss test remains open after a failed headless-tab assumption; the passing
+successor explicitly uses synthetic blur. No production activation is claimed.
+The inactive snapshot now has 75 exact source files, adding the separately
+accepted timed arm and renderer; its ordinary host remains UI06.
+
+7 October continuation: recovery checkpoint `b28de54` is published on `main`.
+Timed text/image host integration and its original-entry R journey are in
+progress. The [media evidence boundary](docs/architecture/ASSIGNED-TIMED-SEQUENCES.md)
+now specifies grouped late observations, original-record storage, immutable
+server admission and complete source exports. New media code remains inactive
+and unqualified; no new end-to-end pass or production activation is claimed.
+
 Latest 5 October checkpoint: real-R questionnaire recovery and the ordinary-host
 UI now have separate passing acceptance. The [recovery checkpoint](docs/qa/PARTICIPANT-RECOVERY-CHECKPOINT.md)
 records the detected missing draft API, its tested successor, genuine phone-width

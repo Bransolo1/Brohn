@@ -1,6 +1,6 @@
 {
   "schema": "brohn-development-dependency-review/0.1",
-  "date": "2026-10-05",
+  "date": "2026-10-07",
   "status": "Static identity/import audit only, not runtime or science qualification",
   "javascript_imports": [
     {
@@ -350,6 +350,26 @@
     },
     {
       "source": "www/participant/stimulus-media.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
+      "source": "www/participant/timed-arm.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/timed-arm.mjs",
+      "imported": "www/participant/wire-json.mjs",
+      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa"
+    },
+    {
+      "source": "www/participant/timed-arm.mjs",
+      "imported": "www/participant/observation-journal.mjs",
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356"
+    },
+    {
+      "source": "www/participant/timed-arm.mjs",
       "imported": "www/participant/current-structure.mjs",
       "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
     }
@@ -987,6 +1007,27 @@
         "path": "work/participant-stimulus-media-next-20261005/www/participant/stimulus-media.mjs",
         "bytes": 14750,
         "sha256": "6effb5ff9a1fa2694adc2b543a2000056357efc904a62678e9f458c9553ec7ae"
+      }
+    ],
+    "www/participant/timed-sequence.mjs": [
+      {
+        "path": "work/participant-timed-renderer-next-20261005/www/participant/timed-sequence.mjs",
+        "bytes": 24494,
+        "sha256": "2eb20a483ad3b5a67acbb047329093e75fcb06024f9903492b3a64a35f5a466a"
+      }
+    ],
+    "www/participant/timed-sequence.css": [
+      {
+        "path": "work/participant-timed-renderer-next-20261005/www/participant/timed-sequence.css",
+        "bytes": 1919,
+        "sha256": "137b2f82de02c6182de41c188f3762a5e41c60053bf4042d992fd14bbd6be6fe"
+      }
+    ],
+    "www/participant/timed-arm.mjs": [
+      {
+        "path": "work/participant-timed-sequence-next-20261005/www/participant/timed-arm.mjs",
+        "bytes": 19669,
+        "sha256": "deee49c5ac89bc0d04294067d5d6dfdc8cec8e2ffc2b4dd546f1d81f00b98a7e"
       }
     ]
   },

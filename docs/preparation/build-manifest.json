@@ -212,6 +212,24 @@
           "cause": "Harness source configuration read UTF-8 JSON with the Windows default code page, so the old title expected mojibake while the actual UI displayed the correct em dash. Final02 uses explicit UTF-8 source reads and helper pipes on a fresh store copy. No product source changed."
         }
       }
+    },
+    "timed_delivery_checkpoint": {
+      "date": "2026-10-07",
+      "status": "inactive_component_acceptance_and_full_host_integration",
+      "architecture": "docs/architecture/ASSIGNED-TIMED-SEQUENCES.md",
+      "acceptance": "docs/qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md",
+      "source_receipt": "docs/qa/ASSIGNED-TIMED-RENDERER-SOURCE.json",
+      "snapshot_source_files": 75,
+      "renderer_checks": {
+        "chrome": 58,
+        "syntax": 8
+      },
+      "arm_checks": {
+        "chrome": 36,
+        "syntax": 9
+      },
+      "scope": "Separate native components. Snapshot ordinary host remains UI06; no new runtime activated. Full-host actual-R integration, media spool/receiver/export and real headed focus/hidden-page checks remain open. Browser clocks are not physical onset.",
+      "remaining_scope": "All 50 capabilities, all 17 packages and QF01-QF08 retain their individual unfinished gates."
     }
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",

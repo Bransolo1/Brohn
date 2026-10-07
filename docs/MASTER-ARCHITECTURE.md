@@ -14,6 +14,11 @@ original ordered observations and authenticated reconciliation outside exposures
 Cold recovery must not silently repeat a stimulus. Media callback evidence needs
 its own versioned receiver/export contract; browser events are not physical onset.
 
+The 7 October media contract groups late observations by original arm, preserves
+exact clocks and numerical records, and binds admission to an immutable server
+release capability. Browser custody, R translation and complete researcher
+exports must be qualified together before this profile is enabled.
+
 Support questionnaire-only studies as an explicit authoring/compiler/release
 mode within BWP03/04/05 and QF01. The current variant-only admission requires
 stimulus sets, so this remains unfinished. Do not fabricate placeholder stimuli

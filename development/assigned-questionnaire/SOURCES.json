@@ -1,7 +1,7 @@
 {
   "schema": "brohn-development-source-snapshot/0.1",
-  "date": "2026-10-05",
-  "status": "Inactive source review snapshot including scoped recovery, ordinary host and media preparation. Full host, timed delivery, server closure and portable QA remain incomplete.",
+  "date": "2026-10-07",
+  "status": "Inactive review snapshot including separately accepted timed arm and renderer. Ordinary host source remains UI06; full-host successor testing and media evidence integration are unfinished. No production activation.",
   "files": [
     {
       "path": "R/platform-evidence-run-source.R",
@@ -485,6 +485,27 @@
       "sha256": "6effb5ff9a1fa2694adc2b543a2000056357efc904a62678e9f458c9553ec7ae",
       "local_source": "work/participant-stimulus-media-next-20261005/www/participant/stimulus-media.mjs",
       "scope": "Original assigned ordinary media preparation and native lifecycle; no presentation, timing, host or actual-R resource qualification."
+    },
+    {
+      "path": "www/participant/timed-arm.mjs",
+      "bytes": 19669,
+      "sha256": "deee49c5ac89bc0d04294067d5d6dfdc8cec8e2ffc2b4dd546f1d81f00b98a7e",
+      "local_source": "work/participant-timed-sequence-next-20261005/www/participant/timed-arm.mjs",
+      "scope": "Prospective durable timed intent and original journal boundary proof; 36 Chrome/nine syntax checks with synthetic caller admission, no actual R/host claim."
+    },
+    {
+      "path": "www/participant/timed-sequence.css",
+      "bytes": 1919,
+      "sha256": "137b2f82de02c6182de41c188f3762a5e41c60053bf4042d992fd14bbd6be6fe",
+      "local_source": "work/participant-timed-renderer-next-20261005/www/participant/timed-sequence.css",
+      "scope": "Exact protocol-controlled presentation CSS from the renderer acceptance, including phone/legacy geometry."
+    },
+    {
+      "path": "www/participant/timed-sequence.mjs",
+      "bytes": 24494,
+      "sha256": "2eb20a483ad3b5a67acbb047329093e75fcb06024f9903492b3a64a35f5a466a",
+      "local_source": "work/participant-timed-renderer-next-20261005/www/participant/timed-sequence.mjs",
+      "scope": "Renderer component: 58 Chrome/eight syntax checks with controlled host custody. Real host/R/media admission and physical timing remain separate."
     },
     {
       "path": "www/participant/view-question.css",

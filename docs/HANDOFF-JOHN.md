@@ -1,5 +1,15 @@
 # John: Brohn development handoff
 
+Latest source checkpoint: 75 inactive files, including the separately accepted
+timed arm and [renderer](qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md). The snapshot's
+ordinary host is still UI06; do not assume that copying the timed modules enables
+the full participant journey. The new connected host is undergoing real-R tests.
+
+7 October: recovery checkpoint `b28de54` is published. Current work connects
+timed text/image exposure to the participant host and real R recovery journey,
+with [audio/video evidence integration](architecture/ASSIGNED-TIMED-SEQUENCES.md)
+developing alongside it. New media implementation is not yet qualified or active.
+
 Start with the [latest recovery checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
 The inactive source snapshot now includes 72 files. A real missing draft API was
 found and repaired; the corrected question component/controller pass actual-R

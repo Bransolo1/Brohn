@@ -1,5 +1,16 @@
 # Brohn workstream and restart checklist
 
+7 October renderer acceptance: [58 Chrome/eight syntax checks](qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md)
+cover the timed component. The full-host candidate now fences the first frame
+after the durable arm commit; qualify that composition against actual R next.
+Real headed focus loss and hidden-page behavior remain separate open checks.
+
+7 October: continue the original-entry timed text/image host join and its real-R
+recovery tests. In parallel, implement the [versioned media evidence path](architecture/ASSIGNED-TIMED-SEQUENCES.md)
+from actual browser observations through original storage, server admission and
+complete researcher exports. Its new source is inactive and has no native or
+joined acceptance yet. Keep earlier passing component scopes distinct.
+
 Latest recovery work passes separately against actual R and controlled host
 authority; see the [source-specific checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
 The selected draft-flush/image component and recovery controller now pass together

@@ -1288,5 +1288,18 @@
     "controller_sha256": "3d947a1d7f39bd880decd5286385821db7bacb1c89512f5b3c1b31fc7faf4a6a",
     "component_sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
     "status": "Inactive, scoped qualification only; full current selection still needs actual-R host and assigned-provider join."
+  },
+  "timed_components_20261007": {
+    "renderer": {
+      "path": "work/participant-timed-renderer-qa-successor02-20261007/acceptance-01/ACCEPTANCE.json",
+      "bytes": 6698,
+      "sha256": "8b1b51f354090564975cd165df411a48992b62426dd2a8dd296b15074ec39c26"
+    },
+    "arm": {
+      "path": "work/participant-timed-arm-acceptance-20261005/ACCEPTANCE.json",
+      "bytes": 3061,
+      "sha256": "6ca66b0742ae10e378b6b2de4c50051bb5d569bd5e6ac6fe00ad27074b86ed8c"
+    },
+    "scope": "Separate native components, not full host or physical timing; historical earlier source selections retained."
   }
 }

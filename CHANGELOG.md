@@ -1,5 +1,17 @@
 # Changes
 
+## Timed media integration work — 2026-10-07
+
+- Added the exact accepted timed arm and renderer to the inactive source snapshot
+  (75 files), retaining the ordinary UI06 host and unchanged released runtime.
+  Renderer acceptance records 58 Chrome/eight syntax checks and the preserved
+  failed headless-focus assumption; real focus and full-host gates remain open.
+- Specified grouped native playback observations, durable original-record
+  linkage, immutable release admission and complete researcher exports.
+- Continued timed participant host and original-entry R recovery integration.
+  New implementation remains inactive pending browser, receiver and full-journey
+  qualification; the released application is unchanged.
+
 ## Participant recovery and timed-delivery contract — 2026-10-05
 
 - Added the inactive ordinary host, ending recovery, finish-network and ordinary

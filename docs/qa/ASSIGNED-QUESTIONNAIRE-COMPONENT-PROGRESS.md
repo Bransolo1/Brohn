@@ -1,5 +1,13 @@
 # Assigned questionnaire collection: component evidence
 
+## Timed renderer — 7 October 2026
+
+The [scoped renderer acceptance](ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md) records
+58 Chrome/eight syntax checks, original exposures, native media observations,
+phone presentation and recovery. It preserves the failed headless focus-test
+assumption and the passing explicitly synthetic listener successor. Full-host
+R collection, durable media admission and physical onset remain open.
+
 ## Latest recovery checkpoint — 5 October 2026
 
 The [new recovery acceptance](PARTICIPANT-RECOVERY-CHECKPOINT.md) supersedes the
