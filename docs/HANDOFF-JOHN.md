@@ -1,26 +1,31 @@
 # John: Brohn development handoff
 
-Latest source checkpoint: 75 inactive files, including the separately accepted
-timed arm and [renderer](qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md). The snapshot's
-ordinary host is still UI06; do not assume that copying the timed modules enables
-the full participant journey. The new connected host is undergoing real-R tests.
+Latest checkpoint: 76 inactive implementation files. The selected host09 and
+required-image readiness component pass an [actual R participant journey](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md):
+50 Chrome/48 R/33 wrapper checks and six Axe scans. It begins at invitation and
+consent, collects illustrated branching questions and allocated control/version
+image exposures, then finishes and recovers original pending state. Analysis
+jobs are queued only; this phase does not execute the worker or reopen reports.
 
-7 October: recovery checkpoint `b28de54` is published. Current work connects
-timed text/image exposure to the participant host and real R recovery journey,
-with [audio/video evidence integration](architecture/ASSIGNED-TIMED-SEQUENCES.md)
-developing alongside it. New media implementation is not yet qualified or active.
+The separate [media spool](qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md) passes
+52 Chrome/10 syntax checks on real local storage with synthetic media/clocks/
+admission. Host09 does not import it yet. R media receive/export also has separate
+local software acceptance, but its source is not included in this checkpoint.
 
-Start with the [latest recovery checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
-The inactive source snapshot now includes 72 files. A real missing draft API was
-found and repaired; the corrected question component/controller pass actual-R
-recovery. Ordinary-host finishing/retry UI passes separately at desktop and phone
-width. The exact assembled host still needs entry-to-report qualification.
+Use the main README to run the released app. The
+[source snapshot](../development/assigned-questionnaire/README.md) is for review;
+its read-only Python audit verifies 76 file identities and 81 relative imports.
+The complete R/test dependency kit and production activation are still pending.
+Do not overlay the directory onto active code and assume everything is joined.
 
-Use the main README for the released app; no development source is activated.
-Next integration is [timed presentation](architecture/ASSIGNED-TIMED-SEQUENCES.md),
-with original study controls/versions and no hidden replay on restart. Standalone
-questionnaire releases and simpler participant error wording remain on the queue.
-The historical snapshot notes below describe their original, earlier selections.
+Next: complete authenticated A/V admission/custody/receive/export and the actual
+researcher author-to-report journey. CURRENT latency and duplicated success copy
+remain concrete UX work. Real focus/page hiding, broader designs, survey-only
+support, tasks/MaxDiff, camera/equipment, devices and scientific qualification
+remain open alongside all 50 capabilities, 17 packages and QF01–QF08.
+
+The dated records below preserve earlier source selections and failures. Current
+actual04 supersedes their pending text/image-host statements only.
 
 Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned

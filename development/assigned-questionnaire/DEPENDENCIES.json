@@ -180,6 +180,21 @@
     },
     {
       "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/timed-arm.mjs",
+      "sha256": "deee49c5ac89bc0d04294067d5d6dfdc8cec8e2ffc2b4dd546f1d81f00b98a7e"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/stimulus-media.mjs",
+      "sha256": "6effb5ff9a1fa2694adc2b543a2000056357efc904a62678e9f458c9553ec7ae"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
+      "imported": "www/participant/timed-sequence.mjs",
+      "sha256": "2eb20a483ad3b5a67acbb047329093e75fcb06024f9903492b3a64a35f5a466a"
+    },
+    {
+      "source": "www/participant/participant-host.mjs",
       "imported": "www/participant/observation-journal.mjs",
       "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356"
     },
@@ -201,7 +216,7 @@
     {
       "source": "www/participant/questionnaire-controller.mjs",
       "imported": "www/participant/view-question.js",
-      "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4"
+      "sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc"
     },
     {
       "source": "www/participant/questionnaire-controller.mjs",
@@ -370,6 +385,26 @@
     },
     {
       "source": "www/participant/timed-arm.mjs",
+      "imported": "www/participant/current-structure.mjs",
+      "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
+    },
+    {
+      "source": "www/participant/timed-media-spool.mjs",
+      "imported": "www/participant/request-bytes.mjs",
+      "sha256": "10b029832c1db5789569ac1f284a8b593c19880e5731c71abcd4be0c32929df9"
+    },
+    {
+      "source": "www/participant/timed-media-spool.mjs",
+      "imported": "www/participant/wire-json.mjs",
+      "sha256": "806df487e222fe2a84ab393f82676dd6826ddb59bad6832ef15eab54353e81aa"
+    },
+    {
+      "source": "www/participant/timed-media-spool.mjs",
+      "imported": "www/participant/observation-journal.mjs",
+      "sha256": "cf8fb8e3b5c6ed3b38c9d0ed05e0ac901a22857f20bd7092c1b80d6bf2377356"
+    },
+    {
+      "source": "www/participant/timed-media-spool.mjs",
       "imported": "www/participant/current-structure.mjs",
       "sha256": "daab321bf2280ede3537d7f7b9f96f12d927351eb81f51dd0dcf27c16652faba"
     }
@@ -740,9 +775,9 @@
     ],
     "www/participant/view-question.js": [
       {
-        "path": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
-        "bytes": 38558,
-        "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4"
+        "path": "work/participant-host-readiness-successor09-20261007/www/participant/view-question.js",
+        "bytes": 38822,
+        "sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc"
       }
     ],
     "www/participant/assigned-illustrations.mjs": [
@@ -976,9 +1011,9 @@
     ],
     "www/participant/participant-host.mjs": [
       {
-        "path": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
-        "bytes": 25659,
-        "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0"
+        "path": "work/participant-host-readiness-successor09-20261007/www/participant/participant-host.mjs",
+        "bytes": 39849,
+        "sha256": "5d184407ed98846982178023d6759a9c5c5a63de18756ea3e8f6c68ec694e771"
       }
     ],
     "www/participant/participant-host.css": [
@@ -1029,6 +1064,13 @@
         "bytes": 19669,
         "sha256": "deee49c5ac89bc0d04294067d5d6dfdc8cec8e2ffc2b4dd546f1d81f00b98a7e"
       }
+    ],
+    "www/participant/timed-media-spool.mjs": [
+      {
+        "path": "work/participant-timed-media-spool-successor02-20261007/www/participant/timed-media-spool.mjs",
+        "bytes": 29324,
+        "sha256": "b6b44ff910c424e6305a74e86e661b3bf77f555f2a284a195d7eaac03933d31b"
+      }
     ]
   },
   "explicit_successors": [
@@ -1050,6 +1092,20 @@
       "earlier_sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
       "selected_sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
       "reason": "Combines exact draft flush/drain with illustration-alert ownership; actual-R recovery02 passes using test-only illustration adapter."
+    },
+    {
+      "path": "www/participant/participant-host.mjs",
+      "earlier_sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0",
+      "selected_sha256": "5d184407ed98846982178023d6759a9c5c5a63de18756ea3e8f6c68ec694e771",
+      "reason": "Inactive host09; actual04 original-entry R text/image journey passes 50 Chrome/48 R/33 wrapper/six Axe checks. Two jobs queued, no worker run; A/V and full researcher-to-report remain open.",
+      "status": "selected_host09_actual04"
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "earlier_sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
+      "selected_sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc",
+      "reason": "Exact image-readiness successor in host09/actual04. Required-image loading or failure disables Save/Continue; original local draft, flush and intent behavior retained. Earlier component evidence remains source-specific.",
+      "status": "selected_host09_actual04"
     }
   ],
   "worker_calculation_identity": [
@@ -1413,8 +1469,9 @@
     "Full participant compiler/projection/context and server dependency closure remains unpublished.",
     "Worker loader does not install the participant HTTP router or selected frontend; no production activation.",
     "Complete native fixtures/toolchain and bounded local QA are not yet a portable public test kit.",
-    "Host UI06 was tested with component5abe but without questionnaire transitions; selected component3bd/controller3d947 pass actual-R held recovery separately, using a test-only illustration adapter.",
-    "Join actual entry, selected questionnaire/provider, ordinary and timed/task/equipment/camera renderers, ending and native worker/report; preserve all scoped evidence."
+    "Host09 has scoped actual-R original-entry text/image acceptance. Analysis jobs were only queued; complete researcher author-to-report and wider workloads remain open.",
+    "Spool successor02 is independently qualified on synthetic media/clocks/admission. Authenticated media admission, original A/V observations, R receiver/export and host custody still need their connected join.",
+    "Real headed focus/page hiding, timed tasks/MaxDiff, equipment/camera, physical timing, named devices, scientific qualification and latency remain open."
   ],
   "historical_source_origins": {
     "www/participant/questionnaire-controller.mjs": [
@@ -1434,7 +1491,24 @@
         "path": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
         "bytes": 38101,
         "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5"
+      },
+      {
+        "path": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
+        "bytes": 38558,
+        "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4"
       }
-    ]
+    ],
+    "www/participant/participant-host.mjs": [
+      {
+        "path": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
+        "bytes": 25659,
+        "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0"
+      }
+    ],
+    "www/participant/timed-media-spool.mjs": []
+  },
+  "expected_snapshot": {
+    "source_files": 76,
+    "relative_imports": 81
   }
 }

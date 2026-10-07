@@ -215,11 +215,11 @@
     },
     "timed_delivery_checkpoint": {
       "date": "2026-10-07",
-      "status": "inactive_component_acceptance_and_full_host_integration",
+      "status": "inactive_text_image_host_and_separate_media_components_accepted",
       "architecture": "docs/architecture/ASSIGNED-TIMED-SEQUENCES.md",
       "acceptance": "docs/qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md",
       "source_receipt": "docs/qa/ASSIGNED-TIMED-RENDERER-SOURCE.json",
-      "snapshot_source_files": 75,
+      "snapshot_source_files": 76,
       "renderer_checks": {
         "chrome": 58,
         "syntax": 8
@@ -228,8 +228,34 @@
         "chrome": 36,
         "syntax": 9
       },
-      "scope": "Separate native components. Snapshot ordinary host remains UI06; no new runtime activated. Full-host actual-R integration, media spool/receiver/export and real headed focus/hidden-page checks remain open. Browser clocks are not physical onset.",
-      "remaining_scope": "All 50 capabilities, all 17 packages and QF01-QF08 retain their individual unfinished gates."
+      "scope": "Host09 actual04 qualifies original-entry illustrated questionnaire and timed text/image participant collection/finish with actual R; jobs only queued. Spool successor02 separately qualifies original journal/arm/IDB using synthetic media/clocks/admission. No A/V host join, production activation or physical onset claim.",
+      "remaining_scope": "All 50 capabilities, all 17 packages and QF01-QF08 retain their individual unfinished gates.",
+      "host_acceptance": "docs/qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md",
+      "host_source_receipt": "docs/qa/ASSIGNED-PARTICIPANT-HOST-SOURCE.json",
+      "host_checks": {
+        "chrome": 50,
+        "R": 48,
+        "wrapper": 33,
+        "axe": 6
+      },
+      "host_jobs": {
+        "completed_runs_queued_jobs": 2,
+        "interrupted_run_queued_jobs": 0,
+        "worker_executed": false
+      },
+      "spool_acceptance": "docs/qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md",
+      "spool_source_receipt": "docs/qa/ASSIGNED-TIMED-MEDIA-SPOOL-SOURCE.json",
+      "spool_checks": {
+        "chrome": 52,
+        "syntax": 10
+      },
+      "separate_unpublished_R_media": {
+        "status": "scoped_local_acceptance_source_not_in_snapshot",
+        "fixture_checks": 287,
+        "wrapper_checks": 31,
+        "cold_checks": 107,
+        "scope": "Actual R with synthetic media; zero HTTP/browser evidence. Connected host/HTTP/export qualification remains separate."
+      }
     }
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
@@ -422,7 +448,8 @@
         "docs/architecture/SAVED-EDA-REPORT-PACKAGES.md",
         "docs/operations/SHARE-SAVED-EDA-FINDINGS.md",
         "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
-        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json"
+        "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
+        "docs/qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Question types, branches, validation, randomization, back navigation and response history agree in R/browser fixtures.",
@@ -465,7 +492,9 @@
         "docs/qa/MIXED-STUDY-JOURNEY.md",
         "docs/architecture/PARTICIPANT-RUNTIME-PRESERVATION.md",
         "docs/qa/PARTICIPANT-RUNTIME-BROWSER-ACCEPTANCE.md",
-        "docs/qa/PARTICIPANT-PREFERRED-BATCH-ACCEPTANCE.md"
+        "docs/qa/PARTICIPANT-PREFERRED-BATCH-ACCEPTANCE.md",
+        "docs/qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md",
+        "docs/qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md"
       ],
       "acceptance": [
         "Preload, focus loss, failed asset, reload, disconnect and duplicate event delivery have declared outcomes.",

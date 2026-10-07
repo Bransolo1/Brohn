@@ -188,7 +188,7 @@
     function control(node, boundary = () => false) { controls.push({node, boundary}); node.setAttribute('aria-describedby', error.id); return node; }
     const answerLocked = () => draining || completing || completed || !!releaseFailure || submitIntent?.phase === 'handed_off';
     function primaryLabel() { next.textContent = completed ? 'Completed' : submitIntent?.phase === 'handed_off' ? 'Retry submission' : q.type === 'information' ? 'Continue' : 'Save and continue'; }
-    function enabled() { for (const c of controls) c.node.disabled = answerLocked() || c.boundary(); next.disabled = draining || completing || completed || !!releaseFailure; retry.disabled = answerLocked(); primaryLabel(); }
+    function enabled() { for (const c of controls) c.node.disabled = answerLocked() || c.boundary(); next.disabled = !imageReady || draining || completing || completed || !!releaseFailure; retry.disabled = answerLocked(); primaryLabel(); }
     function showError(message, target = null, {focus = true, origin = null} = {}) {
       if (!live) return; errorOrigin = origin; error.textContent = message; error.hidden = false;
       for (const c of controls) c.node.removeAttribute('aria-invalid');
@@ -201,7 +201,7 @@
       if (!live) return;
       primaryLabel();
       retry.hidden = !draftError;
-      const message = releaseFailure ? fatalMessage : submitIntent?.phase === 'handed_off' ? completing ? 'Submitting your answer…' : 'Your answer is waiting for confirmation. Retry submission to confirm this same answer.' : editIssue ? editIssue.message : draftError ? 'Your latest answer has not been saved. Retry saving.' : invalidEditing ? 'Enter a valid number. Your current edit has not been saved.' : completing ? intentHooks ? 'Saving your answer before submitting…' : 'Saving your answer…' : pending || inFlight || savedRevision < revision ? 'Saving changes…' : revision ? 'Changes saved.' : '';
+      const message = releaseFailure ? fatalMessage : submitIntent?.phase === 'handed_off' ? completing ? 'Submitting your answer…' : 'Your answer is waiting for confirmation. Retry submission to confirm this same answer.' : editIssue ? editIssue.message : draftError ? 'Your latest answer has not been saved. Retry saving.' : invalidEditing ? 'Enter a valid number. Your current edit has not been saved.' : !imageReady ? imageError ? 'The question illustration is unavailable. Retry the illustration to continue.' : 'Loading the question illustration. You can continue when it is ready.' : completing ? intentHooks ? 'Saving your answer before submitting…' : 'Saving your answer…' : pending || inFlight || savedRevision < revision ? 'Saving changes…' : revision ? 'Changes saved.' : '';
       // The blocking alert is the single error announcement. Do not announce an
       // older save or duplicate recovery wording from the polite live region.
       status.hidden = !error.hidden; status.textContent = status.hidden ? '' : message;
@@ -426,7 +426,7 @@
     }
     let preparing = false;
     async function prepareImage() {
-      if (!live || preparing) return; preparing = true; imageReady = false; imageError = null;
+      if (!live || preparing) return; preparing = true; imageReady = false; imageError = null; enabled(); updateStatus();
       illustration.replaceChildren(el('p', 'Loading question illustration…', 'bvq-help')); refreshIllustrationError();
       let handle = null;
       try {
@@ -441,7 +441,7 @@
       } catch (_) {
         if (handle && typeof handle.release === 'function') release(handle);
         if (live) { imageError = true; illustration.replaceChildren(el('p', 'The question illustration could not be loaded.', 'bvq-error')); const again = el('button', 'Retry illustration'); again.type = 'button'; listen(again, 'click', prepareImage); illustration.append(again); }
-      } finally { preparing = false; refreshIllustrationError(); }
+      } finally { preparing = false; if (live) {enabled(); refreshIllustrationError(); updateStatus();} }
     }
     function flushDraft() {
       if (!live) return Promise.reject(new Error('Question closed.'));

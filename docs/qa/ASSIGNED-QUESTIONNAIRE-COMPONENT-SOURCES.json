@@ -1269,13 +1269,13 @@
     "sha256": "611ce086a62bb49452c021da785401a99f0d9cd2f50eb43ab73eaf93243e7c55"
   },
   "remaining": [
-    "Actual separate-writer first-start contention",
-    "Genuine large questionnaire collection and current recovery with response-page reduction",
-    "Actual R HTTP/journal/controller join, durable drafts and complete application start/restart bootstrap",
-    "Assigned resources/equipment/finalization and protocol1.2 analysis/export integration",
-    "Original1.2 researcher resolution and camera/finish historical receipt ordering",
-    "Full researcher journey and cold/warm latency qualification",
-    "QF02-QF08 complete flow, guided analysis and editable dashboards"
+    "Complete portable server/test dependency kit and explicit runtime promotion.",
+    "Connected A/V original-record spool, authenticated release capability, actual receiver and complete export.",
+    "Complete researcher author-to-participant-to-automatic-analysis/report journey; host04 jobs were queued only.",
+    "Real headed focus/page hiding, broader question types and workloads, separate-writer first-start contention.",
+    "Survey-only authoring/compiler/release, timed tasks/MaxDiff, equipment/camera and resolved-run analysis/export.",
+    "Interaction/cold loading performance, success-copy cleanup, physical timing and scientific/device evidence.",
+    "QF01-QF08, all 50 capabilities and 17 packages retain individual unfinished gates."
   ],
   "limitations": "Controlled clocks and separately synthetic equipment setup; no physical device, scientific validity, screen-reader, hosting or Qualtrics-parity claim. All17 work-package statuses unchanged.",
   "current_recovery_checkpoint": {
@@ -1301,5 +1301,44 @@
       "sha256": "6ca66b0742ae10e378b6b2de4c50051bb5d569bd5e6ac6fe00ad27074b86ed8c"
     },
     "scope": "Separate native components, not full host or physical timing; historical earlier source selections retained."
-  }
+  },
+  "current_host_checkpoint": {
+    "document": "ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md",
+    "source_receipt": "ASSIGNED-PARTICIPANT-HOST-SOURCE.json",
+    "receipt": {
+      "path": "work/participant-host-full-r-acceptance-20261007/ACCEPTANCE.json",
+      "bytes": 6911,
+      "sha256": "387569ea805dbbff27a4cc599fab0648513a0c4be3e15e13b58ff7b4faf3af1e"
+    },
+    "checks": {
+      "chrome": 50,
+      "R": 48,
+      "wrapper": 33,
+      "axe": 6
+    },
+    "scope": "Original-entry text/image participant join; two analysis jobs queued only. Inactive, no A/V or complete researcher report claim."
+  },
+  "current_media_spool_checkpoint": {
+    "document": "ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md",
+    "source_receipt": "ASSIGNED-TIMED-MEDIA-SPOOL-SOURCE.json",
+    "receipt": {
+      "path": "work/participant-timed-media-spool-acceptance-20261007/ACCEPTANCE.json",
+      "bytes": 5744,
+      "sha256": "5f4b90ce53797f735d1e07cd219c87f1eb646eadb4b8a035cd8a35382566ecbe"
+    },
+    "checks": {
+      "chrome": 52,
+      "syntax": 10
+    },
+    "scope": "Actual native Chrome IndexedDB and Web Locks with original journal, timed-arm and spool transactions. Synthetic media observations, clocks and caller admission descriptors. No playback, R receiver, physical timing, science or full-host qualification."
+  },
+  "previous_remaining_before_host04": [
+    "Actual separate-writer first-start contention",
+    "Genuine large questionnaire collection and current recovery with response-page reduction",
+    "Actual R HTTP/journal/controller join, durable drafts and complete application start/restart bootstrap",
+    "Assigned resources/equipment/finalization and protocol1.2 analysis/export integration",
+    "Original1.2 researcher resolution and camera/finish historical receipt ordering",
+    "Full researcher journey and cold/warm latency qualification",
+    "QF02-QF08 complete flow, guided analysis and editable dashboards"
+  ]
 }

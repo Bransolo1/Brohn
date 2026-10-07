@@ -1,27 +1,26 @@
 # Brohn workstream and restart checklist
 
-7 October renderer acceptance: [58 Chrome/eight syntax checks](qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md)
-cover the timed component. The full-host candidate now fences the first frame
-after the durable arm commit; qualify that composition against actual R next.
-Real headed focus loss and hidden-page behavior remain separate open checks.
+7 October completed slice: [host09/actual04](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md)
+passes 50 Chrome/48 R/33 wrapper checks and six Axe scans through actual original
+entry, illustrated branching questions, control/version image exposures, Finish
+and recovery. Its two completed runs only queue analysis jobs. The independently
+accepted [spool](qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md) passes 52 Chrome/
+10 syntax checks using synthetic media observations and admission.
 
-7 October: continue the original-entry timed text/image host join and its real-R
-recovery tests. In parallel, implement the [versioned media evidence path](architecture/ASSIGNED-TIMED-SEQUENCES.md)
-from actual browser observations through original storage, server admission and
-complete researcher exports. Its new source is inactive and has no native or
-joined acceptance yet. Keep earlier passing component scopes distinct.
+The inactive 76-source snapshot contains those exact host/component/spool bytes.
+It does not enable a production route or profile. R media translation and export
+have separate local 287 fixture/31 wrapper/107 cold checks with synthetic media;
+their source is not included here and browser/HTTP integration remains open.
 
-Latest recovery work passes separately against actual R and controlled host
-authority; see the [source-specific checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md).
-The selected draft-flush/image component and recovery controller now pass together
-in the held R journey. UI06 removes stale Finish and permanent recovery controls.
-Full entry-to-finish/report integration remains open and the runtime is inactive.
+Current priorities: connect the capability-gated A/V host, preserve every original
+late record and boundary through storage/retry/export, then qualify the complete
+researcher author-to-report journey. Reduce CURRENT latency and repeated calls,
+remove duplicate success copy, and qualify real headed focus/page hiding. Retain
+survey-only releases, timed tasks/MaxDiff, equipment/camera, broader workloads,
+portable QA, all 50 capabilities, 17 packages and QF01–QF08.
 
-Current next work: durable [timed-sequence delivery](architecture/ASSIGNED-TIMED-SEQUENCES.md),
-actual full-host qualification using a valid study with stimuli, plain participant
-error wording, and separate survey-only design/release support. Do not bypass the
-current variant schema by dropping required stimulus screens. All wider package,
-scientific, device, survey-flow/dashboard and deployment gates remain.
+The following dated checkpoint retains historical selections. Its pending
+text/image-host statements are superseded by actual04, not its broader gates.
 
 Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned
@@ -56,24 +55,22 @@ named providers, hosting and scientific qualification are not established by thi
 checkpoint. Existing method recipes, original source data and saved results remain
 unchanged.
 
-Immediate integration order:
+Current integration order:
 
-1. Complete a single host with owned handoff: entry closes before the next owner;
-   the questionnaire controller settles and releases its journal lock before
-   another renderer acquires it. Fresh CURRENT governs every editing transition.
-2. Join selected component5abe/provider6196/controllerac929 against the real R
-   resource and operation routes; preserve the component-version mismatch in
-   historical evidence. Qualify browser finish/recovery separately and then join it.
-3. Add the remaining assigned-view renderers and method-specific timing/camera
-   lifecycle. Do not mount or relabel the legacy full-protocol runner.
-4. Exercise one real researcher journey: author controls/versions and survey flow,
+1. Join the independently accepted media spool and renderer to authenticated
+   immutable release capability, fresh CURRENT, exact original boundary custody,
+   R receive and complete export. Recover unresolved arms before new exposure.
+2. Exercise a real researcher journey: author controls/versions and survey flow,
    publish, consent, collect/restart/edit, finish, automatically analyse, inspect
-   uncertainty/denominators, export and reopen historical results.
-5. Resolve known-profile preclaim failures that currently leave a queued head and
-   stop the loop, using a visible repair/quarantine policy that preserves evidence.
-6. Ship the complete dependency/test kit and qualify the exact promoted composition
-   on representative workloads. Do not use small synthetic cases as scalability,
-   scientific or device evidence.
+   support/uncertainty, export and cold reopen. Actual04 stopped at queued jobs.
+3. Reduce redundant CURRENT calls and admission latency without weakening source
+   validation; remove duplicate confirmation copy in a checked successor.
+4. Qualify real headed focus/page hiding, larger studies and wider question types;
+   add timed tasks/MaxDiff, equipment/camera and explicit survey-only releases.
+5. Resolve known-profile preclaim queue failures using visible repair/quarantine
+   that preserves evidence; complete resolved-run analysis and export.
+6. Ship the complete dependency/test kit and qualify the exact promoted runtime.
+   Keep software, scientific, physical timing and device evidence separate.
 
 The [snapshot dependency audit](../development/assigned-questionnaire/DEPENDENCIES.json)
 records exact shared JS bytes and the explicit component successor. The

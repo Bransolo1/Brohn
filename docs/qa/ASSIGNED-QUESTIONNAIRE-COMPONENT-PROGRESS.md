@@ -1,5 +1,20 @@
 # Assigned questionnaire collection: component evidence
 
+## Current host and media spool — 7 October 2026
+
+The [host09/actual04 acceptance](ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md) records
+50 Chrome/48 R/33 wrapper checks and six Axe scans through original entry,
+illustrated conditional questions, assigned control/version image exposure,
+Finish and recovery. It supersedes earlier pending text/image-host statements.
+Two jobs were queued; no worker/report ran in this phase.
+
+The [spool successor02/test03 acceptance](ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md)
+records 52 Chrome/10 syntax checks on real IDB/journal/arm with synthetic media,
+clocks and admission. The selected host does not import it. A/V custody/admission/
+R receive/export still needs connected acceptance. The 76-source snapshot is
+inactive. Counts below are scoped historical evidence, not a cumulative coverage
+score; earlier failed phases and exact source selections remain preserved.
+
 ## Timed renderer — 7 October 2026
 
 The [scoped renderer acceptance](ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md) records

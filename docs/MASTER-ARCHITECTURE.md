@@ -1,28 +1,42 @@
 # Brohn master architecture and large-build contract
 
-Participant host promotion also requires the
-[5 October storage/retry/close recovery checks](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md).
-The original capture must survive failure between each ownership/storage boundary;
-component passes alone do not prove the assembled journey.
+The selected inactive host09 now has [original-entry R text/image acceptance](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md):
+50 Chrome/48 R/33 wrapper checks and six Axe scans. Entry/consent, illustrated
+branching questions, Edit/review/seal, assigned control/version images, timed
+boundaries and ending/recovery ran together. Two jobs were queued; downstream
+worker/report acceptance remains separate. The exact 76-file snapshot preserves
+historical source selections and does not activate a production participant profile.
 
-The [latest recovery checkpoint](qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) records
-actual-R questionnaire recovery and separately accepted ordinary-host UI06.
-Their exact sources are retained in the inactive snapshot. Next connect the
-[timed-sequence architecture](architecture/ASSIGNED-TIMED-SEQUENCES.md): preloaded
-assigned media, prospective durable arming, continuous frame-boundary presentation,
-original ordered observations and authenticated reconciliation outside exposures.
-Cold recovery must not silently repeat a stimulus. Media callback evidence needs
-its own versioned receiver/export contract; browser events are not physical onset.
+The [storage/retry/close contract](qa/PARTICIPANT-HOST-RECOVERY-REVIEW.md) continues
+to govern ownership changes: retain the original capture across every boundary,
+settle and release the previous owner, and admit fresh CURRENT before advancing.
+The [timed architecture](architecture/ASSIGNED-TIMED-SEQUENCES.md) requires a
+prospective durable arm, a post-commit clock fence, original frame observations
+and no hidden stimulus replay on cold recovery. Browser clocks are not physical
+display or acoustic onset evidence.
 
-The 7 October media contract groups late observations by original arm, preserves
-exact clocks and numerical records, and binds admission to an immutable server
-release capability. Browser custody, R translation and complete researcher
-exports must be qualified together before this profile is enabled.
+The [spool](qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md) separately passes 52 Chrome/
+10 syntax checks over real journal/arm/IndexedDB with synthetic media/clocks/
+admission. The next join must retain every native A/V record before attachment,
+link it only to the actual original journal entry, recover interrupted cross-store
+linkage, and preserve grouped late observations across arms and pages. An immutable
+server release capability binds the original renderer and derivation. Capability
+metadata never replaces fresh CURRENT, current completion/ACK/cursor authority or
+unresolved-arm recovery. Complete exports retain all original source records.
+
+R media receive/export has separate local acceptance with synthetic observations
+(287 fixture/31 wrapper/107 cold checks); its implementation is not added to this
+public snapshot. Browser/network/host/receiver/export composition remains pending.
+Fix duplicate confirmation copy and measured CURRENT latency before claiming a
+premium responsive flow; keep complete researcher author-to-report, real headed
+focus/page hiding, wider workloads and physical/scientific/device gates open.
 
 Support questionnaire-only studies as an explicit authoring/compiler/release
 mode within BWP03/04/05 and QF01. The current variant-only admission requires
-stimulus sets, so this remains unfinished. Do not fabricate placeholder stimuli
-or delete compiled timeline steps to make a survey-only demonstration pass.
+stimulus sets; do not fabricate placeholder stimuli or delete compiled steps.
+All 50 capabilities, 17 packages and QF01–QF08 retain their unfinished statuses.
+The dated sections below preserve earlier component evidence; current actual04
+supersedes their pending text/image-host composition only.
 
 ## Questionnaire, survey flow and dashboards — 5 October 2026
 
@@ -52,14 +66,15 @@ authorize editing. Fresh generation, current authority, original visit/dependenc
 context and unresolved local writes must agree. Pre-enrolment welcome access
 remains separate from assigned experimental media.
 
-Actual entry/start/CURRENT passes17 R/15 Chrome/33 wrapper checks; no collection
+Earlier entry/start/CURRENT passes17 R/15 Chrome/33 wrapper checks; no collection
 or finish occurs in that scope. Held questionnaire actual06 passes28 R/16 Chrome/
 33 wrapper controls, including cold draft recovery, one-click continuation,
 lost-reply retry, edit-to-new-branch and review/seal. It starts from a fixture-held
-run and uses an older component plus a test-only image adapter. Selected component
-5abe and provider6196 pass separately; their selected controller composition
-still needs qualification. Durable finish custody passes31 native-browser/6 syntax
-checks; its network/controller and complete host are outside this checkpoint.
+run and uses an older component plus a test-only image adapter. That checkpoint's
+component5abe and provider6196 passes did not qualify their assembled controller.
+Durable finish custody separately passed31 native-browser/6 syntax checks. Preserve
+those exact historical scopes; current host09/component05964 actual04 supplies the
+later original-entry text/image join described above.
 
 Completed assigned runs have an explicit saved-variant analysis profile. It uses
 original released revision/protocol/assignment/event evidence rather than
@@ -79,8 +94,8 @@ large workloads and physical devices remain separately unqualified. Existing
 formulas, evidence and saved methods remain versioned; changed science requires
 a new recipe and explicit rerun.
 
-Complete the host across ordinary instructions, timed exposure, behavioural
-tasks, MaxDiff, equipment/camera and finishing. Then qualify authoring-to-analysis
+Extend the qualified text/image host through A/V, behavioural tasks, MaxDiff and
+equipment/camera. Then qualify authoring-to-analysis
 and dashboards through actual researcher and participant controls. Preserve
 all controls/versions, exposure-linked liking, gaze/AOI and other qualified
 measurements. Reports retain denominators, missingness, uncertainty, method

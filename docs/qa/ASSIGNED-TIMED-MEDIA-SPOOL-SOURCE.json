@@ -1,0 +1,125 @@
+{
+  "schema": "brohn-scoped-timed-media-spool-evidence/0.1",
+  "date": "2026-10-07",
+  "status": "inactive_scoped_acceptance",
+  "production_activated": false,
+  "source_files": [
+    {
+      "path": "www/participant/timed-media-spool.mjs",
+      "bytes": 29324,
+      "sha256": "b6b44ff910c424e6305a74e86e661b3bf77f555f2a284a195d7eaac03933d31b"
+    }
+  ],
+  "receipt_identity": {
+    "path": "work/participant-timed-media-spool-acceptance-20261007/ACCEPTANCE.json",
+    "bytes": 5744,
+    "sha256": "5f4b90ce53797f735d1e07cd219c87f1eb646eadb4b8a035cd8a35382566ecbe"
+  },
+  "retained_local_evidence": {
+    "schema": "brohn-component-qualification/0.1",
+    "passed": true,
+    "component": "timed-media-spool",
+    "source_module": {
+      "path": "work/participant-timed-media-spool-successor02-20261007/www/participant/timed-media-spool.mjs",
+      "bytes": 29324,
+      "sha256": "b6b44ff910c424e6305a74e86e661b3bf77f555f2a284a195d7eaac03933d31b"
+    },
+    "source_manifest": {
+      "path": "work/participant-timed-media-spool-successor02-20261007/MANIFEST.json",
+      "bytes": 1874,
+      "sha256": "4e9dd56eba6b06a2710ef2e0088712f587fe54ae49f92a73c0cb35380b1f0c5c"
+    },
+    "syntax_checks": 10,
+    "browser_checks": 52,
+    "browser_cases": 14,
+    "elapsed_seconds": 10.905999999959022,
+    "scope": "Actual native Chrome IndexedDB and Web Locks with original journal, timed-arm and spool transactions. Synthetic media observations, clocks and caller admission descriptors. No playback, R receiver, physical timing, science or full-host qualification.",
+    "original_evidence": {
+      "PREPARATION-MANIFEST.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/PREPARATION-MANIFEST.json",
+        "bytes": 3240,
+        "sha256": "6dfb38134b609d4596cc036202ec095326198b57ec7c47a06407d1ea2a8e5d5f"
+      },
+      "PRE-EXECUTION.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/PRE-EXECUTION.json",
+        "bytes": 298651,
+        "sha256": "0276ce3ab830f7bc846440afce4432f26d972753cb093158516d97cbf2ee10eb"
+      },
+      "syntax-CLOSED.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/syntax-CLOSED.json",
+        "bytes": 8225,
+        "sha256": "d5baa30022ba23e6ec31fc9660ed13a5469d123beb48f9b58f5318f12e71c6cc"
+      },
+      "browser-output/RESULTS.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/browser-output/RESULTS.json",
+        "bytes": 154041,
+        "sha256": "61574e0f90748a86c8ca0f60106d9813d69d776662b78edb96016f285324df8a"
+      },
+      "browser-CLOSED.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/browser-CLOSED.json",
+        "bytes": 163897,
+        "sha256": "1bbc5f14b39ad9dd53e20fb09923cf2cb7212d25d5eb63c8d44e9f4cbb5df985"
+      },
+      "INDEPENDENT-CLOSURE.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/INDEPENDENT-CLOSURE.json",
+        "bytes": 393,
+        "sha256": "aea6eba0b98923fcade780c3c24c7f0f49c6e207e38afe0082a6ea2e835c2880"
+      },
+      "RUN-MANIFEST.json": {
+        "path": "work/participant-timed-media-spool-tests-successor03-20261007/spool-03/RUN-MANIFEST.json",
+        "bytes": 84383,
+        "sha256": "15fc01d9035bef251b78cc44195a0a0e74d81c1153d7eba632590219379fa808"
+      }
+    },
+    "closure": {
+      "passed": true,
+      "process_identities_closed": 53,
+      "listener_closed": true,
+      "no_forced_termination": true,
+      "inputs_exact": true,
+      "page_errors": 0,
+      "cleanup_errors": 0
+    },
+    "preserved_first_failure": {
+      "path": "work/participant-timed-media-spool-tests-successor02-20261007/spool-02/browser-output/RESULTS.json",
+      "bytes": 38142,
+      "sha256": "1b6b245214d9cd84de2cc1322fae87ff3c8c992bbc54a032c3a48894c2a61568"
+    },
+    "first_failure_reason": "Test02 compared primary-key ID order with capture order. Test-only successor03 explicitly checks stored order and full unchanged original documents; runtime unchanged.",
+    "source_binding": {
+      "path": "work/participant-timed-media-spool-successor02-20261007/SOURCE.json",
+      "bytes": 785,
+      "sha256": "f2a6395be52565d0e50e0f6db4bcceb96167c5e6c79ee5c1754790531be57c91"
+    },
+    "test_binding": {
+      "path": "work/participant-timed-media-spool-tests-successor03-20261007/BINDING.json",
+      "bytes": 3389,
+      "sha256": "e8cb03b8723a87c301593bd7e8ab6e8e1305714699b3151b6fc241f554e0a30d"
+    },
+    "test_owner_manifest": {
+      "path": "work/participant-timed-media-spool-tests-successor03-20261007/MANIFEST.json",
+      "bytes": 3128,
+      "sha256": "fabae8128b01764f73b6631d5e247ff400a36611d12e3776e5c0e71dcfc24188"
+    },
+    "runtime_manifest": {
+      "path": "work/participant-timed-media-spool-tests-successor03-20261007/runtime/MANIFEST.json",
+      "bytes": 1542,
+      "sha256": "eb7c08a3a825596840c860dda389d49ef60305607368e29cd5a27e8e2f67721a"
+    },
+    "original01": {
+      "status": "preserved_unrun",
+      "preparation_manifest": {
+        "path": "work/participant-timed-media-spool-tests-next-20261007/spool-01/PREPARATION-MANIFEST.json",
+        "bytes": 3239,
+        "sha256": "e42c94fe74f6e875f91c74cd87ca12c5962d711301606124dafdfd69199e2d63"
+      },
+      "no_syntax_or_browser_exit": true
+    },
+    "failed02_closure": {
+      "path": "work/participant-timed-media-spool-tests-successor02-20261007/spool-02/INDEPENDENT-CLOSURE.json",
+      "bytes": 393,
+      "sha256": "77dc6814bcc6653de9cea2b6e63832342e2fa19712f9269d0e4052da119cca1b"
+    }
+  },
+  "publication_boundary": "Receipt identities and scoped summaries only. Original workspaces, participant/credential values, browser profiles, process records and screenshots are not bundled."
+}

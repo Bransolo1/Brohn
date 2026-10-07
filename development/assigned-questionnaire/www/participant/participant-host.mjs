@@ -6,6 +6,9 @@ import {createHeldParticipantQuestionnaireController} from './questionnaire-cont
 import {createAssignedIllustrations} from './assigned-illustrations.mjs';
 import {createParticipantFinishController} from './finish-controller.mjs';
 import {openParticipantHostEnding} from './host-ending.mjs';
+import {openParticipantTimedArms} from './timed-arm.mjs';
+import {createAssignedStimulusMedia} from './stimulus-media.mjs';
+import {createTimedSequence} from './timed-sequence.mjs';
 import {captureParticipantObservation} from './observation-journal.mjs';
 import {createParticipantEventOrder} from './event-order.mjs';
 import {encodeParticipantRequest} from './request-bytes.mjs';
@@ -25,49 +28,88 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
   const originNumber = window.performance.timeOrigin;
   need(Number.isFinite(originNumber) && originNumber >= 0, 'host_clock', 'The original page clock is unavailable.');
   const pageClock = freeze({instance_id: id('page'), time_origin_ms: originNumber.toFixed(3)});
-  const observeClock = () => {
-    const value = now();
+  let clockFence = 0;
+  const pageValue = value => {
     need(Number.isFinite(value) && value >= 0 && value <= 1e12 && window.performance.timeOrigin === originNumber,
       'host_clock', 'The original page clock changed. Keep saved progress and reopen the study link.');
     return freeze({id: 'browser-monotonic', unit: 'ms', value: value.toFixed(6), ...pageClock});
   };
+  const reserveClock = clock => {
+    need(clock.id === 'browser-monotonic' && clock.unit === 'ms' && clock.instance_id === pageClock.instance_id &&
+      clock.time_origin_ms === pageClock.time_origin_ms && Number.isFinite(Number(clock.value)) && Number(clock.value) >= clockFence,
+      'host_clock', 'Keep the original order of observed browser clocks.');
+    clockFence = Number(clock.value); return clock;
+  };
+  const observeClock = () => reserveClock(pageValue(now()));
   const root = document.createElement('section'), entryBox = document.createElement('div'), session = document.createElement('section');
   const title = document.createElement('h1'), status = document.createElement('p'), error = document.createElement('p');
   const body = document.createElement('div'), actions = document.createElement('nav');
+  const presentationBox = document.createElement('div');
   root.className = 'brohn-participant-host'; session.hidden = true; title.tabIndex = -1;
   status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   error.setAttribute('role', 'alert'); error.hidden = true; error.tabIndex = -1;
   actions.setAttribute('aria-label', 'Study controls'); session.append(title, status, error, body, actions);
-  root.append(entryBox, session); container.append(root); owners.add(container);
+  root.append(entryBox, session, presentationBox); container.append(root); owners.add(container);
   let entry, held = null, view = null, steps = null, ending = null, illustrations = null;
   let sender = null, questionnaire = null, finish = null, current = null;
   let phase = 'entry', problem = null, observerFailed = false, closed = false, closing = null;
   let tail = Promise.resolve(), jobs = 0, visibilityStep = null, visit = null, failedHead = null;
   let endingCapture = null, endingDurable = null, ownerKind = 'entry';
+  let arms = null, activeArm = null, timedRenderer = null, stimulusMedia = null, preparedMaterials = null;
+  let timedCloseDiagnostic = null, interruptionTask = null, pendingTimedInterruption = null;
+  const adoptedBoundaries = new Set();
+  const materialAbort = new window.AbortController();
   const order = createParticipantEventOrder(), writes = new Set();
   const active = () => need(!closed, 'host_closed', 'This study page is closed. Reopen its original link to recover progress.');
   const summary = () => freeze({schema: 'participant-host-state/0.1', phase, owner: ownerKind,
     busy: jobs > 0 || !!closing, error: problem, observer_failed: observerFailed,
     acknowledged_sequence: sender?.state().acknowledged_sequence ?? finish?.state().acknowledged_sequence ?? null,
-    pending_observations: order.state().pending, ending_captured: endingCapture !== null});
+    pending_observations: order.state().pending, ending_captured: endingCapture !== null,
+    active_timed_arm: activeArm?.arm_id ?? null, timed_close_diagnostic: timedCloseDiagnostic});
+  function participantError() {
+    if (!problem) return '';
+    const code = problem.code;
+    // Technical codes/messages remain in state() for diagnostics. Participant
+    // text is deliberately chosen here, never copied from a backend exception.
+    if (code === 'host_storage_newer' || code === 'arm_storage_newer')
+      return 'This browser’s saved-data format has changed. Keep this page open and contact your researcher.';
+    if (code === 'host_ending_integrity' || code === 'host_ending_conflict' ||
+        /(?:integrity|conflict|reconciliation|mismatch)$/.test(code))
+      return 'We need help checking your saved progress. Keep this page open and contact your researcher.';
+    if (/^(?:sender|finish|current)_http_(?:401|403)$/.test(code))
+      return 'Access to this session could not be confirmed. Keep this page open and contact your researcher.';
+    if (/storage|journal|unsaved|draft/.test(code))
+      return 'We couldn’t save your latest action on this device. Keep this page open and retry.';
+    if (/network|timeout|_http_/.test(code))
+      return 'We couldn’t reach the study service. Keep this page open and retry.';
+    if (endingCapture || ownerKind === 'finish')
+      return 'The study service could not confirm your submission. Keep this page open and retry.';
+    return 'We couldn’t continue this session. Keep this page open and retry, or contact your researcher if this continues.';
+  }
   function publish() {
     root.setAttribute('aria-busy', String(jobs > 0 || !!closing));
     actions.inert = jobs > 0 || !!closing || closed;
     for (const button of actions.querySelectorAll('button')) button.disabled = jobs > 0 || !!closing || closed;
-    error.hidden = problem === null; error.textContent = problem?.message || '';
-    status.textContent = problem ? (endingCapture || ownerKind === 'finish' ? 'The study ending is not yet confirmed.' : 'Your saved progress is retained. Review the message below.') :
+    error.hidden = problem === null; error.textContent = participantError();
+    status.textContent = problem ? (endingCapture || ownerKind === 'finish' ? 'Your submission still needs confirmation.' : 'Your session needs attention.') :
       ({entry: '', opening: 'Recovering your current study progress…', instructions: 'Read the instructions, then continue.',
         resume: 'Continue from the saved instruction screen.', questionnaire: '', unsupported: 'This study needs another presentation component.',
-        ending: 'Save your responses to finish this study.', saving: 'Saving your study ending…', finished: 'Your study ending is confirmed.',
-        resolved: 'The researcher has closed this session.', closed: 'This study page is closed.'})[phase] || 'Recovering saved progress…';
+        preparing: 'Preparing the study materials…', presenting: '', reconciling: 'Saving this part of your study…',
+        ending: 'Your responses are ready to submit.', saving: 'Saving…', finished: 'Your responses have been saved.',
+        resolved: 'The researcher has closed this session.', closed: 'This study page is closed.'})[phase] ?? 'Recovering saved progress…';
+    status.hidden = status.textContent.length === 0;
     if (onState) try {onState(summary());} catch (_) {observerFailed = true;}
   }
   function report(errorValue) {
+    // No recovery chrome may replace an active exposure. The renderer halts
+    // synchronously before the host samples its original interruption ending.
+    if (timedRenderer && ['waiting_frame', 'presenting'].includes(timedRenderer.state().phase))
+      timedRenderer.interrupt('timed_host_failure', 'interrupted', errorValue);
     problem = {code: typeof errorValue?.code === 'string' ? errorValue.code : 'host_failed',
       message: errorValue?.message || 'The study could not continue. Keep browser storage and retry.'};
     if (held && ending && !closed) {
       if (endingCapture || ownerKind === 'finish') endingScreen(true);
-      else {actions.replaceChildren(); button('Retry recovery', retry, true);}
+      else {actions.replaceChildren(); button('Retry', retry, true);}
     }
     publish(); error.focus({preventScroll: true});
   }
@@ -90,26 +132,44 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     title.focus({preventScroll: true});
   }
   function endingScreen(recovering = false) {
-    screen(recovering ? 'Your study ending needs another try' : 'Saving your study ending', recovering ?
-      'Your original finish action is kept on this page. Retry saving to confirm that same ending. Keep this page open until it is confirmed.' :
-      'Please keep this page open while your original study ending is saved and confirmed.');
-    if (recovering) button('Retry saving', retry, true);
+    screen(recovering ? 'We couldn’t confirm your submission' : 'Saving your session', recovering ?
+      'We’ll retry the same submission. Please keep this page open.' :
+      'Keep this page open until your submission is confirmed.');
+    if (recovering) button('Retry', retry, true);
   }
   const clean = value => value?.phase === 'ready' && value.collection_transport_ready &&
     value.current?.completion_status === 'in_progress' && value.current.researcher_resolution === null &&
     value.storage.phase === 'open' && value.storage.unresolved_writes === 0 && value.storage.unconfirmed_writes === 0 &&
     value.storage.durable_pending_count === 0;
   function observed(type, step, payload, clock = observeClock()) {
-    return {view_hash: held.binding.view_hash, event: {id: id('event'), type, step_key: step?.step_key ?? null,
-      phase: step?.phase ?? 'session', clock, payload: {...payload, clock_segment_id: clock.instance_id, time_origin_ms: clock.time_origin_ms}}};
+    reserveClock(clock);
+    return freeze({view_hash: held.binding.view_hash, event: {id: id('event'), type, step_key: step?.step_key ?? null,
+      phase: step?.phase ?? 'session', clock, payload: {...payload, clock_segment_id: clock.instance_id, time_origin_ms: clock.time_origin_ms}}});
   }
-  function retainCaptured(observation) {
+  function retainCaptured(observation, armId = null) {
     // Capture and reserve synchronously in the originating UI/visibility event.
-    const captured = captureParticipantObservation(observation, held.binding.view_hash); captured.catch(() => {});
-    const ticket = order.reserve(); let original = null, retryHandle = null;
+    const ticket = order.reserve(); let captured;
+    try {captured = captureParticipantObservation(observation, held.binding.view_hash);}
+    catch (errorValue) {captured = Promise.reject(errorValue);}
+    captured.catch(() => {});
+    let original = null, retryHandle = null, journalResult = null;
     const write = async () => {
-      if (!original) original = JSON.parse((await captured).json);
-      try {const result = await (retryHandle ? retryHandle.retry() : sender.retainObservation(original)); retryHandle = null; return result;}
+      if (!original) {
+        // The immutable host-owned event/ID/clock and ticket survive even a
+        // synchronous snapshot or later digest failure. Retrying only encodes
+        // that same value; it does not sample or reserve a replacement.
+        if (!captured) captured = captureParticipantObservation(observation, held.binding.view_hash);
+        try {original = JSON.parse((await captured).json);}
+        catch (errorValue) {captured = null; throw errorValue;}
+      }
+      try {
+        if (!journalResult) journalResult = await (retryHandle ? retryHandle.retry() : sender.retainObservation(original));
+        retryHandle = null;
+        // The same ordered reservation covers both actual journal durability
+        // and its arm note. On a note failure, retry the original journal result.
+        if (armId !== null) await arms.remember({armId, observation: original, sequence: journalResult.sequence});
+        return journalResult;
+      }
       catch (errorValue) {if (errorValue.retry_handle) retryHandle = errorValue.retry_handle; throw errorValue;}
     };
     const track = promise => {
@@ -122,7 +182,7 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     return track(order.fill(ticket, write));
   }
   function visibility() {
-    if (closed || closing || !visibilityStep || !sender || endingCapture) return;
+    if (closed || closing || timedRenderer || !visibilityStep || !sender || endingCapture) return;
     try {
       retainCaptured(observed('visibility', visibilityStep, {reason: 'visibilitychange', hidden: document.hidden,
         focused: document.hasFocus(), viewport: {width: window.innerWidth, height: window.innerHeight}})).then(() => {
@@ -157,9 +217,146 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     need(/^#[0-9a-f]{6}$/i.test(appearance?.background) && /^#[0-9a-f]{6}$/i.test(appearance?.foreground),
       'host_appearance', 'The study appearance is incomplete.');
     const nextIllustrations = illustrations || createAssignedIllustrations({...held, document});
+    const nextStimulusMedia = stimulusMedia || createAssignedStimulusMedia({...held, document});
     // Commit installed state only after all synchronous validation/preparation.
-    view = nextView; steps = nextSteps; illustrations = nextIllustrations;
+    view = nextView; steps = nextSteps; illustrations = nextIllustrations; stimulusMedia = nextStimulusMedia;
     root.style.setProperty('--participant-bg', appearance.background); root.style.setProperty('--participant-fg', appearance.foreground);
+  }
+  const timedStep = step => ['baseline', 'fixation', 'stimulus'].includes(step?.type);
+  const rendererActive = () => timedRenderer && ['waiting_frame', 'presenting'].includes(timedRenderer.state().phase);
+  function restoreOrdinaryChrome() {session.hidden = false; session.inert = false; entryBox.hidden = true;}
+  function timedAdmission(value) {
+    const original = sender?.currentDocument();
+    need(clean(value) && original && original.acknowledged_sequence === value.acknowledged_sequence &&
+      same(original.binding, held.binding) && value.current.resume.active_step_key === null,
+      'host_timed_current', 'Recover the original inactive presentation boundary.');
+    const document = original.current_document;
+    return freeze({acknowledged_sequence: value.acknowledged_sequence,
+      next_step_key: value.current.resume.next_step_key, active_step_key: null,
+      current_document: {codec: document.codec, bytes: document.bytes, sha256: document.sha256}});
+  }
+  async function ensureArms() {
+    if (!arms) arms = await openParticipantTimedArms({binding: held.binding, viewJson: held.viewJson});
+    return arms;
+  }
+  async function closeTimedRenderer() {
+    if (!timedRenderer) return;
+    need(!rendererActive(), 'host_timed_active', 'Stop presentation and retain its actual ending before closing.');
+    await drain();
+    const prior = timedRenderer;
+    try {await prior.close();}
+    catch (errorValue) {
+      // The renderer remembers its first failed promise even after the host
+      // retries that exact ordered capture. Host durability is the authority:
+      // accept retirement only after its queue drains and renderer close has
+      // actually removed ownership with no unowned media or pending writes.
+      const state = prior.state();
+      need(state.phase === 'closed' && state.pending_writes === 0 && state.capture_bridges === 0 && state.unowned_media_records === 0 &&
+        prior.unownedBoundaryRecords().every(record => adoptedBoundaries.has(record)) &&
+        order.state().pending === 0 && !order.state().failed,
+        'host_timed_unsaved', 'Keep the original presentation observations before closing.');
+      timedCloseDiagnostic = {code: errorValue?.code || 'timed_close', message: errorValue?.message || 'Original renderer failure retained.'};
+    }
+    timedRenderer = null; adoptedBoundaries.clear(); pendingTimedInterruption = null;
+    if (ownerKind === 'timed') ownerKind = 'ordinary'; restoreOrdinaryChrome();
+  }
+  function capturedEnding(outcome, reason) {
+    need(!endingCapture && ['completed', 'interrupted', 'withdrawn'].includes(outcome),
+      'host_ending_captured', 'Recover the original ending rather than creating another.');
+    endingCapture = observed(outcome === 'withdrawn' ? 'withdrawal' : 'run_finished', null, {outcome, reason});
+    visibilityStep = null; phase = 'saving'; restoreOrdinaryChrome(); endingScreen();
+  }
+  function interruptedTimed(value) {
+    // Keep the exact stopped renderer's originals reachable even if adopting a
+    // pre-custody tuple cannot yet succeed. Do not sample a later terminal first.
+    pendingTimedInterruption = value;
+    need(activeArm && value.arm_id === activeArm.arm_id && !rendererActive() && value.unowned_media_records.length === 0,
+      'host_timed_owner', 'Stop the original presentation before retaining its interruption.');
+    if (endingCapture) return interruptionTask || Promise.resolve();
+    visibilityStep = null;
+    for (const record of value.unowned_boundary_records) {
+      if (adoptedBoundaries.has(record)) continue;
+      const observation = observed(record.type, record.step, record.payload, record.clock);
+      const durability = retainCaptured(observation, activeArm.arm_id);
+      adoptedBoundaries.add(record); durability.catch(() => {});
+    }
+    if (['visibilitychange', 'blur', 'resize', 'pagehide', 'timed_step_without_window_focus', 'timed_step_started_without_window_focus'].includes(value.reason)) {
+      retainCaptured(observed('visibility', value.step, {reason: value.reason, hidden: document.hidden,
+        focused: document.hasFocus(), viewport: {width: window.innerWidth, height: window.innerHeight}})).catch(() => {});
+    }
+    // Called only after the renderer's synchronous halt. No old onset/finish
+    // is manufactured, including interruption before the first presentation.
+    capturedEnding(value.outcome, value.reason);
+    interruptionTask = enqueue(recoverEnding); interruptionTask.catch(() => {}); return interruptionTask;
+  }
+  async function recoverTimedArm(value, saved) {
+    activeArm = saved;
+    const resume = value.current.resume;
+    if (resume.active_step_key === null && resume.next_step_key === saved.boundary_step_key) {
+      try {
+        await arms.settle({armId: saved.arm_id, admission: timedAdmission(value)});
+        activeArm = null; return false;
+      } catch (errorValue) {
+        if (errorValue?.code !== 'arm_incomplete') throw errorValue;
+        // Missing exact ledger evidence is not permission to replay exposure.
+      }
+    }
+    capturedEnding('interrupted', 'timed_sequence_reopened_without_complete_boundary');
+    await recoverEnding(); return true;
+  }
+  async function beginTimed(step) {
+    need(!timedRenderer && !activeArm && clean(sender?.state()), 'host_timed_owner', 'Recover the existing presentation before arming another.');
+    visibilityStep = null; visit = null; phase = 'preparing';
+    screen('Preparing your study', 'Please keep this page open while the study materials load.'); publish();
+    if (!preparedMaterials) preparedMaterials = await stimulusMedia.prepareAll({signal: materialAbort.signal});
+    active();
+    const value = await freshCurrent();
+    need(value.current.resume.next_step_key === step.step_key, 'host_timed_current', 'The assigned presentation boundary changed during preparation.');
+    const admission = timedAdmission(value);
+    await ensureArms();
+    need(await arms.inspect() === null, 'host_timed_replay', 'An original armed sequence must be recovered without replay.');
+    activeArm = await arms.arm({arm_id: id('arm'), first_step_key: step.step_key, page_clock: pageClock, admission});
+    active();
+    try {
+      const arm = activeArm;
+      timedRenderer = createTimedSequence({container: presentationBox,
+        sequence: arm.step_keys.map(key => steps.get(key)), preparedHandles: preparedMaterials,
+        appearance: view.presentation.appearance, armId: arm.arm_id, pageClock,
+        frameClock: raw => pageValue(raw), eventClockFence: () => clockFence,
+        observeMediaClock: () => pageValue(now()),
+        capture({type, step, payload, clock}) {
+          need(activeArm?.arm_id === arm.arm_id && !endingCapture, 'host_timed_owner', 'Retain the original active timed sequence.');
+          const observation = observed(type, step, payload, clock);
+          return {durability: retainCaptured(observation, arm.arm_id)};
+        },
+        onBoundary(value) {
+          return enqueue(async () => {
+            need(activeArm?.arm_id === value.arm_id && !endingCapture && value.pending_play_settlements === 0,
+              'host_timed_boundary', 'Recover the original presentation boundary before continuing.');
+            phase = 'reconciling'; restoreOrdinaryChrome(); screen('Saving your progress'); publish();
+            await drain();
+            const current = await freshCurrent();
+            await arms.settle({armId: value.arm_id, admission: timedAdmission(current)});
+            activeArm = null; await closeTimedRenderer(); await route();
+          });
+        },
+        onInterrupt: interruptedTimed});
+      ownerKind = 'timed'; phase = 'presenting'; session.inert = true; session.hidden = true;
+      // A queued first rAF can carry a timestamp older than the arm's actual
+      // transactioncomplete. Fence after that commit and synchronous setup;
+      // the renderer defers such a frame instead of clamping its timestamp.
+      observeClock();
+      timedRenderer.start(); publish();
+    } catch (errorValue) {
+      if (timedRenderer) {
+        timedRenderer.interrupt('timed_presentation_failed', 'interrupted', errorValue);
+        throw errorValue;
+      }
+      // The arm exists but construction failed before any observed exposure.
+      // Retain an actual new interruption; never remove/rearm that sequence.
+      presentationBox.replaceChildren();
+      capturedEnding('interrupted', 'timed_presentation_unavailable'); await recoverEnding();
+    }
   }
   async function showFinish(savedIntent = null) {
     await closeSender(); ownerKind = 'finish'; phase = 'saving'; endingScreen(); publish();
@@ -169,7 +366,9 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     active(); phase = result.phase === 'resolved' ? 'resolved' : 'finished';
     screen(phase === 'resolved' ? 'This session has been closed' : 'Thank you', phase === 'resolved' ?
       'The researcher has closed this session. Keep this browser’s saved progress until they confirm it is no longer needed.' :
-      result.outcome === 'completed' ? view.presentation.debrief || 'Your responses have been saved.' : 'Your partial session has been saved.');
+      result.outcome === 'completed' ? view.presentation.debrief || 'Your responses have been saved.' :
+        result.outcome === 'withdrawn' ? 'You have withdrawn from this study. Your partial session has been saved.' :
+          'This session was interrupted. Your saved responses have been kept. Contact your researcher before starting again.');
     publish();
   }
   async function recoverEnding() {
@@ -177,7 +376,8 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     const saved = endingCapture ? await ending.prepare(endingCapture) : await ending.read();
     need(saved !== null, 'host_ending_missing', 'An actual ending must be saved before finalization.');
     endingCapture = saved.observation; endingDurable = saved.document; visibilityStep = null; phase = 'saving'; publish();
-    if (!sender) await freshCurrent();
+    await drain(); await closeTimedRenderer();
+    await freshCurrent();
     need(clean(sender.state()), 'host_ending_current', 'Recover the original session before saving its ending.');
     // Repeating the same original ID/document recovers its actual sequence even
     // after a crash between journal transactioncomplete and sequence custody.
@@ -193,8 +393,7 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
       'host_ending_not_ready', 'Recover the actual completed study boundary first.');
     // This participant activation is the terminal observation. Null cursor only
     // offers the action; it never silently creates a terminal event or outcome.
-    endingCapture = observed('run_finished', null, {outcome: 'completed', reason: null});
-    visibilityStep = null; phase = 'saving'; endingScreen();
+    capturedEnding('completed', null);
     return enqueue(recoverEnding);
   }
   function instructionAction(resume) {
@@ -215,28 +414,41 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
     return enqueue(async () => {await saved; await route();});
   }
   async function route() {
+    need(!rendererActive(), 'host_timed_active', 'Wait for the current presentation boundary.');
     problem = null; const value = await freshCurrent(); active();
     if (!view || !steps) installView(value);
     if (value.phase === 'closed_by_server') {
       visibilityStep = null; phase = value.current.researcher_resolution ? 'resolved' : 'finished';
       screen('This session has ended', 'Keep this browser’s saved data. The current study status is confirmed by the study service.'); publish(); return;
     }
+    const savedEnding = await ending.read();
+    if (savedEnding || endingCapture) {await recoverEnding(); return;}
+    await ensureArms();
+    const savedArm = await arms.inspect();
+    if (savedArm && await recoverTimedArm(value, savedArm)) return;
     if (view.presentation.camera !== null || view.presentation.equipment !== null) {
       visibilityStep = null; phase = 'unsupported';
       screen('Equipment setup is required',
         'This study requires an equipment or camera setup component that is not connected in this version. Your session is saved; contact your researcher.');
       await closeSender(); publish(); return;
     }
-    const savedEnding = await ending.read();
-    if (savedEnding || endingCapture) {await recoverEnding(); return;}
+    // Whole-study admission, before any instruction/questionnaire observation.
+    // Provider decoding alone does not qualify a media evidence/receiver profile.
+    if (view.steps.some(step => step.type === 'stimulus' && !['text', 'image'].includes(step.material?.type))) {
+      visibilityStep = null; phase = 'unsupported';
+      screen('This study needs another presentation component',
+        'This study includes media that is not connected in this version. Your saved progress is retained. Contact your researcher before continuing.');
+      await closeSender(); publish(); return;
+    }
     const nextKey = value.current.resume.next_step_key;
     if (nextKey === null) {
       visibilityStep = null; visit = null; phase = 'ending';
-      screen('Ready to finish', 'Your saved responses are ready. Select Finish study to confirm the ending.');
+      screen('Ready to finish', 'Select Finish study to submit your responses.');
       button('Finish study', finishClick, true); publish(); return;
     }
     const step = steps.get(nextKey);
     need(step, 'host_step', 'The received next screen is not part of this assigned study.');
+    if (timedStep(step)) {await beginTimed(step); return;}
     if (['question', 'questionnaire_review'].includes(step.type)) {
       need(value.current.resume.questionnaire !== null, 'host_questionnaire', 'This questionnaire needs its original navigation packet.');
       await closeSender(); visit = null; phase = 'questionnaire'; ownerKind = 'questionnaire'; screen(view.presentation.title);
@@ -283,12 +495,20 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
   }
   function retry() {
     need(held !== null && ending !== null, 'host_session', 'Open the original study invitation before recovering its session.');
+    need(!timedRenderer || ['interrupted', 'closed'].includes(timedRenderer.state().phase),
+      'host_timed_active', 'Wait for the current presentation to stop before recovering saved progress.');
     return enqueue(async () => {
       problem = null;
       if (endingCapture || ownerKind === 'finish') {endingScreen(); publish();}
       // Reopen ending custody under its existing lifetime lock. This remains
       // possible even while an original terminal capture is only in memory.
       if (ending) await ending.recover();
+      if (arms) await arms.recover();
+      if (pendingTimedInterruption && !endingCapture) {
+        // Adoption is synchronous and may queue the original ending behind this
+        // retry. Never await that queued job from inside its own predecessor.
+        interruptedTimed(pendingTimedInterruption); return;
+      }
       if (failedHead) {
         // Reopen CURRENT/journal without draining or replacing the blocked
         // original reservation. A failed journal reopen cannot be healed by
@@ -348,8 +568,14 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
   }
   function close() {
     if (closing) return closing; if (closed) return Promise.resolve();
+    if (timedRenderer?.state().phase === 'boundary')
+      return Promise.reject(fail('host_timed_boundary', 'Wait for this presentation boundary to finish saving before closing.'));
+    if (rendererActive()) timedRenderer.interrupt('timed_owner_closed', 'interrupted');
     visibilityStep = null;
+    materialAbort.abort();
     const task = tail.then(async () => {
+      need(!pendingTimedInterruption || endingCapture !== null, 'host_timed_unsaved',
+        'The original presentation interruption is not yet retained. Keep this page open and retry.');
       if (endingCapture && !endingDurable) {
         // The terminal UI activation can exist before any journal reservation.
         // Empty event order is therefore not proof that this capture is saved.
@@ -360,8 +586,9 @@ export function mountParticipantHost({container, releaseToken, rendererIdentity,
         endingDurable = saved.document;
       }
       await drain(); await questionnaire?.close(); questionnaire = null;
+      await closeTimedRenderer();
       await closeSender(); await finish?.close(); finish = null;
-      await illustrations?.close(); await ending?.close(); await entry?.close();
+      await stimulusMedia?.close(); await arms?.close(); await illustrations?.close(); await ending?.close(); await entry?.close();
       closed = true; phase = 'closed'; document.removeEventListener('visibilitychange', visibility); owners.delete(container); root.remove();
     });
     closing = task; publish();

@@ -1,28 +1,28 @@
 # Resume here — Brohn
 
-7 October timed renderer: [58 Chrome and eight syntax checks pass](docs/qa/ASSIGNED-TIMED-RENDERER-ACCEPTANCE.md)
-for the inactive component. The complete R-backed host journey is next. A real
-focus-loss test remains open after a failed headless-tab assumption; the passing
-successor explicitly uses synthetic blur. No production activation is claimed.
-The inactive snapshot now has 75 exact source files, adding the separately
-accepted timed arm and renderer; its ordinary host remains UI06.
+7 October: the inactive [host09 text/image participant journey](docs/qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md)
+passes 50 Chrome/48 R/33 wrapper checks and six Axe scans. Original invitation,
+consent, illustrated conditional questions, Edit, review/seal, allocated control
+and version images, timed exposures, Finish and recovery ran together against R.
+Two analysis jobs were queued; no worker ran in this phase.
 
-7 October continuation: recovery checkpoint `b28de54` is published on `main`.
-Timed text/image host integration and its original-entry R journey are in
-progress. The [media evidence boundary](docs/architecture/ASSIGNED-TIMED-SEQUENCES.md)
-now specifies grouped late observations, original-record storage, immutable
-server admission and complete source exports. New media code remains inactive
-and unqualified; no new end-to-end pass or production activation is claimed.
+The [media spool](docs/qa/ASSIGNED-TIMED-MEDIA-SPOOL-ACCEPTANCE.md) separately passes
+52 Chrome/10 syntax checks with real journal/arm/IndexedDB and synthetic media,
+clocks and admission. The [snapshot](development/assigned-questionnaire/README.md)
+now contains 76 exact source files, selecting host09 and the image-readiness
+component. It remains inactive; normal launching and released behavior are unchanged.
 
-Latest 5 October checkpoint: real-R questionnaire recovery and the ordinary-host
-UI now have separate passing acceptance. The [recovery checkpoint](docs/qa/PARTICIPANT-RECOVERY-CHECKPOINT.md)
-records the detected missing draft API, its tested successor, genuine phone-width
-finishing/retry checks and the remaining full-host join. The inactive snapshot
-now includes 72 exact source files. Released behavior remains unchanged.
+Next: join A/V observations and custody to authenticated release admission, R
+receive and complete export; qualify authoring-to-participant-to-analysis/report.
+The R media receiver/export has separate local acceptance (287 fixture/31 wrapper/
+107 cold checks, synthetic media, no HTTP/browser evidence); its implementation
+is not part of this checkpoint. Fix redundant CURRENT work and duplicate success
+copy, then qualify broader workloads and real focus/page hiding. The complete
+50-capability/17-package and QF01–QF08 scope remains unfinished.
 
-Next: connect [timed sequences](docs/architecture/ASSIGNED-TIMED-SEQUENCES.md),
-complete actual entry-to-finish/report acceptance, and add honest questionnaire-only
-release support. The complete 50-capability/17-package scope remains unfinished.
+The dated notes below preserve earlier source selections and evidence. The current
+host acceptance supersedes their pending text/image-host statements; it does not
+turn earlier worker/component results into one complete platform acceptance.
 
 Earlier development checkpoint — 5 October 2026. Brohn is unfinished. This
 checkpoint adds inactive participant entry, questionnaire orchestration, assigned

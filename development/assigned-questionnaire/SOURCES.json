@@ -1,7 +1,7 @@
 {
   "schema": "brohn-development-source-snapshot/0.1",
   "date": "2026-10-07",
-  "status": "Inactive review snapshot including separately accepted timed arm and renderer. Ordinary host source remains UI06; full-host successor testing and media evidence integration are unfinished. No production activation.",
+  "status": "Inactive 76-file review snapshot. Host09 text/image participant journey and media spool have separate scoped acceptance; A/V host join and researcher-to-report remain unfinished. No production activation.",
   "files": [
     {
       "path": "R/platform-evidence-run-source.R",
@@ -411,10 +411,10 @@
     },
     {
       "path": "www/participant/participant-host.mjs",
-      "bytes": 25659,
-      "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0",
-      "local_source": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
-      "scope": "Ordinary host UI06; scoped instructions/ending/storage/keyboard/mobile checks against controlled Node authority. Full actual-R host join remains open."
+      "bytes": 39849,
+      "sha256": "5d184407ed98846982178023d6759a9c5c5a63de18756ea3e8f6c68ec694e771",
+      "local_source": "work/participant-host-readiness-successor09-20261007/www/participant/participant-host.mjs",
+      "scope": "Inactive host09; actual04 original-entry R text/image journey passes 50 Chrome/48 R/33 wrapper/six Axe checks. Two jobs queued, no worker run; A/V and full researcher-to-report remain open."
     },
     {
       "path": "www/participant/question-domain.mjs",
@@ -494,6 +494,13 @@
       "scope": "Prospective durable timed intent and original journal boundary proof; 36 Chrome/nine syntax checks with synthetic caller admission, no actual R/host claim."
     },
     {
+      "path": "www/participant/timed-media-spool.mjs",
+      "bytes": 29324,
+      "sha256": "b6b44ff910c424e6305a74e86e661b3bf77f555f2a284a195d7eaac03933d31b",
+      "local_source": "work/participant-timed-media-spool-successor02-20261007/www/participant/timed-media-spool.mjs",
+      "scope": "Separately qualified spool successor02/test03: 52 Chrome/10 syntax checks over real IDB/Web Locks and original journal/arm. Synthetic media/clocks/admission; not joined to host09, playback or R receiver."
+    },
+    {
       "path": "www/participant/timed-sequence.css",
       "bytes": 1919,
       "sha256": "137b2f82de02c6182de41c188f3762a5e41c60053bf4042d992fd14bbd6be6fe",
@@ -516,10 +523,10 @@
     },
     {
       "path": "www/participant/view-question.js",
-      "bytes": 38558,
-      "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
-      "local_source": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
-      "scope": "Combines exact draft flush/drain with illustration-alert ownership; actual-R recovery02 passes using test-only illustration adapter."
+      "bytes": 38822,
+      "sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc",
+      "local_source": "work/participant-host-readiness-successor09-20261007/www/participant/view-question.js",
+      "scope": "Exact image-readiness successor in host09/actual04. Required-image loading or failure disables Save/Continue; original local draft, flush and intent behavior retained. Earlier component evidence remains source-specific."
     },
     {
       "path": "www/participant/wire-json.mjs",
@@ -529,7 +536,7 @@
       "scope": "Exact dependency copied with the reviewed journal; not a standalone application"
     }
   ],
-  "composition_notice": "Selected controller3d947 and component3bd8a4d1 pass together in actual-R recovery02 with a test-only illustration adapter. UI06 host passes separately with older component5abe present but no questionnaire transitions. Assigned provider6196 has separate acceptance. The complete selected host/component/provider composition has not run.",
+  "composition_notice": "Host09/component05964 with unchanged controller3d947/provider6196/timed arm/renderer pass actual04 original-entry text/image collection and finish against R. That phase queues two jobs but runs no worker. Spoolb6b is separately qualified with synthetic media/clocks/admission and is not imported by host09. Earlier held-questionnaire, UI06 and worker evidence retains its original scope.",
   "previous_recovery_sources": [
     {
       "path": "www/participant/questionnaire-controller.mjs",
@@ -544,6 +551,22 @@
       "sha256": "5abea8b20fbc8702a75d197490c5b9f64af94374e8dd4c9c09860ba0fbcce6f5",
       "local_source": "work/participant-question-illustration-state-next-20261002/www/participant/view-question.js",
       "scope": "Selected component5abea8b2:37 Chrome/8 syntax/8 Axe scans with assigned PNG provider. Preserves unrelated errors; not the component in controller actual06."
+    }
+  ],
+  "previous_host_sources": [
+    {
+      "path": "www/participant/participant-host.mjs",
+      "bytes": 25659,
+      "sha256": "226ef8cccf7e7554b673a9bb8206780ddf352b4aeba209e770793828b5e339b0",
+      "local_source": "work/participant-host-ui-successor06-next-20261005/www/participant/participant-host.mjs",
+      "scope": "Ordinary host UI06; scoped instructions/ending/storage/keyboard/mobile checks against controlled Node authority. Full actual-R host join remains open."
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "bytes": 38558,
+      "sha256": "3bd8a4d1d4fc2f67eb3632e4e762e6e4129af1452c002268e940739ce1826ec4",
+      "local_source": "work/participant-question-component-flush-successor-20261005/www/participant/view-question.js",
+      "scope": "Combines exact draft flush/drain with illustration-alert ownership; actual-R recovery02 passes using test-only illustration adapter."
     }
   ]
 }

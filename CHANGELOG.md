@@ -1,5 +1,20 @@
 # Changes
 
+## Inactive text/image host and media spool — 2026-10-07
+
+- Select exact host09 and required-image readiness component in the development
+  snapshot; add the separately qualified media spool, for 76 sources/81 imports.
+  Released loaders, routes, scientific recipes and saved results are unchanged.
+- Record original-entry R host actual04: 50 Chrome/48 R/33 wrapper checks and six
+  Axe scans, including illustrated branching, control/version exposures and
+  durable ending/arm recovery. Two jobs were queued; no worker ran in this phase.
+- Record spool successor02/test03: 52 Chrome/10 syntax checks with real local
+  journal/arm/storage and synthetic media/clocks/admission. Preserve failed test02,
+  unrun test01 and all earlier host failures and source-specific receipts.
+- Keep A/V host admission/receive/export, full researcher-to-report integration,
+  latency, real focus/page hiding, wider survey/device/scientific gates open.
+  R media's separately accepted implementation is not published in this slice.
+
 ## Timed media integration work — 2026-10-07
 
 - Added the exact accepted timed arm and renderer to the inactive source snapshot

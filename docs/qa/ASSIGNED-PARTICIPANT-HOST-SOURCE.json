@@ -1,0 +1,178 @@
+{
+  "schema": "brohn-scoped-participant-host-evidence/0.1",
+  "date": "2026-10-07",
+  "status": "inactive_scoped_acceptance",
+  "production_activated": false,
+  "source_files": [
+    {
+      "path": "www/participant/participant-host.mjs",
+      "bytes": 39849,
+      "sha256": "5d184407ed98846982178023d6759a9c5c5a63de18756ea3e8f6c68ec694e771"
+    },
+    {
+      "path": "www/participant/view-question.js",
+      "bytes": 38822,
+      "sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc"
+    }
+  ],
+  "receipt_identity": {
+    "path": "work/participant-host-full-r-acceptance-20261007/ACCEPTANCE.json",
+    "bytes": 6911,
+    "sha256": "387569ea805dbbff27a4cc599fab0648513a0c4be3e15e13b58ff7b4faf3af1e"
+  },
+  "retained_local_evidence": {
+    "schema": "participant-full-host-additive-acceptance/0.1",
+    "passed": true,
+    "status": "qualified_original_R_inactive_with_open_UX_and_performance_debt",
+    "source": {
+      "path": "work/participant-host-readiness-successor09-20261007/SOURCE.json",
+      "bytes": 6938,
+      "sha256": "ce77c4b7cf12ef26279ebaf1bf33a6c7841aee95cfded0194105e551b95c1ac4"
+    },
+    "source_manifest": {
+      "path": "work/participant-host-readiness-successor09-20261007/MANIFEST.json",
+      "bytes": 6237,
+      "sha256": "5bc75a5eb91889be1432a824cc1c9b51bc2230fe6babe3621f7ee75c632c0c31"
+    },
+    "component": {
+      "path": "work/participant-question-image-readiness-successor-20261007/SOURCE.json",
+      "bytes": 1242,
+      "sha256": "548edc79fbf20ffb3777f99c6dead9ee8e3163428abec596f392d51e7fd96ef4"
+    },
+    "component_manifest": {
+      "path": "work/participant-question-image-readiness-successor-20261007/MANIFEST.json",
+      "bytes": 802,
+      "sha256": "b2172617e2053c3accc61cd61adafa94b90ef3cd789a4d6f2906e4cf3ca175cd"
+    },
+    "qualification": {
+      "path": "work/participant-host-full-r-successor04-20261007/actual-04/ACCEPTANCE.json",
+      "bytes": 2658,
+      "sha256": "01221d5c2274953b683c05ec6aed785995e5a99ac87f802e2af70215e28e91ea"
+    },
+    "independent_closure": {
+      "path": "work/participant-host-full-r-successor04-20261007/actual-04/AFTER-CLOSED.json",
+      "bytes": 74371,
+      "sha256": "a7a8aca4d73d93a1e90e7c2a204766f9e748e7dba40ec73b1428b73657c4605e"
+    },
+    "run_freeze": {
+      "path": "work/participant-host-full-r-successor04-20261007/actual-04/RUN-FREEZE.json",
+      "bytes": 153611,
+      "sha256": "94c7ed953d31cdbe8a3b6a5153bdb277b97c5a36ff45f1c3cd0151b368200e83"
+    },
+    "visual": {
+      "path": "work/participant-host-full-r-acceptance-20261007/VISUAL-REVIEW.json",
+      "bytes": 5908,
+      "sha256": "e8965c54afeaf12d2710644fbad284ebfcaf685759739fdaea603a96c354ab14"
+    },
+    "runtime_host": {
+      "path": "work/participant-host-readiness-successor09-20261007/www/participant/participant-host.mjs",
+      "bytes": 39849,
+      "sha256": "5d184407ed98846982178023d6759a9c5c5a63de18756ea3e8f6c68ec694e771"
+    },
+    "runtime_component": {
+      "path": "work/participant-host-readiness-successor09-20261007/www/participant/view-question.js",
+      "bytes": 38822,
+      "sha256": "05964fd279d969fcd534234ec6a1a4d2d2e5ffa6035cd7476119ab70b7855dfc"
+    },
+    "checks": {
+      "browser": 50,
+      "actual_R": 48,
+      "wrapper": 33,
+      "axe": 6,
+      "closed_process_identities": 44,
+      "protected_files": 2509
+    },
+    "scope": [
+      "Actual original invitation and consent allocate3 runs; no manually injected session or event prefix.",
+      "Original literal instructions, illustrated rating, low-answer hidden branch, Edit7 and branch reveal, explicit review/seal, allocated control/version images, end question and actual Finish.",
+      "Required image loading and failed delivery/Retry preserve original native local answer; disabled early Save and one later enabled activation. Exact original successful image bytes.",
+      "Native strict arm precedes original rAF onset; four original boundaries for2 stimuli; zero HTTP during exposure; original shared offset/onset frame clock and settled interactive boundary.",
+      "A committed finish with disrupted response retries exact original request/receipt.",
+      "A native finish-store abort survives browser close/reopen with original terminal ID/clock/sequence and no replay or extra allocation.",
+      "A native arm-note abort retains original already-journaled onset; retry stores that same note before original interrupted ending; no invented offset/successor.",
+      "Every original browser event independently replays through actual R, original source/PNG bytes conserved, completed sessions queue2 jobs and interrupted session none; no worker executes."
+    ],
+    "latency": {
+      "start": {
+        "count": 3,
+        "original_call_ms": {
+          "min": 1420,
+          "median": 2120,
+          "max": 2890
+        },
+        "observer_elapsed_ms_total": 2080,
+        "individual_original_call_ms": [
+          2890,
+          2120,
+          1420
+        ],
+        "individual_observer_ms": [
+          970,
+          540,
+          570
+        ]
+      },
+      "current": {
+        "count": 130,
+        "original_call_ms": {
+          "min": 530,
+          "median": 800.0,
+          "max": 1100
+        },
+        "observer_elapsed_ms_total": 0
+      },
+      "events": {
+        "count": 47,
+        "original_call_ms": {
+          "min": 780,
+          "median": 1140,
+          "max": 1430
+        },
+        "observer_elapsed_ms_total": 170
+      },
+      "resources": {
+        "count": 12,
+        "original_call_ms": {
+          "min": 470,
+          "median": 505.0,
+          "max": 550
+        },
+        "observer_elapsed_ms_total": 0
+      },
+      "finish": {
+        "count": 4,
+        "original_call_ms": {
+          "min": 680,
+          "median": 725.0,
+          "max": 810
+        },
+        "observer_elapsed_ms_total": 0
+      }
+    },
+    "open": [
+      "Success duplicate sentence should be removed in a source-preserving follow-up.",
+      "Startup and interaction latency remain a product defect:130 CURRENT calls median800ms in these3 journeys; no performance acceptance.",
+      "Question response clocks retain visit semantics; image-load readiness is not a new scientific response-time qualification.",
+      "A/V pipeline, timed tasks/MaxDiff, camera/equipment, headed focus/hidden lifecycle, live devices, physical timing and scientific interpretation remain separately gated.",
+      "This is an inactive full participant text/image join, not complete platform or all-question-type qualification."
+    ],
+    "preserved_failures": [
+      {
+        "path": "work/participant-host-full-r-next-20261005/actual-01/FAILURE.json",
+        "bytes": 3354,
+        "sha256": "6af1dc7da807fef26d7ccebf64eaf17228842c9f0747765c9f207e2054025267"
+      },
+      {
+        "path": "work/participant-host-full-r-successor02-20261007/actual-02/FAILURE.json",
+        "bytes": 3403,
+        "sha256": "9c8c281d729348d26032e109855bd9d912975907431f1d4eb5acc332c2787030"
+      },
+      {
+        "path": "work/participant-host-full-r-successor03-20261007/actual-03/FAILURE.json",
+        "bytes": 3404,
+        "sha256": "703f823219111da8c699f799384f284128eee9023d50bcee6f0d9760ca191124"
+      }
+    ]
+  },
+  "publication_boundary": "Receipt identities and scoped summaries only. Original workspaces, participant/credential values, browser profiles, process records and screenshots are not bundled."
+}
