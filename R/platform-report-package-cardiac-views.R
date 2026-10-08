@@ -104,8 +104,8 @@ brohn_report_package_cardiac_summary_ui <- function(summary,sections,requests=li
     })
     shiny::div(shiny::h3(title(r$report_ref)),if(!length(cells))shiny::p("No recording from this report is in the selected chapters; complete evidence remains included."),cells)
   })
-  shiny::tagList(shiny::p(paste0(chapter_text,": ",p$selected_cells," of ",p$total_cells," original recordings across ",length(summary$reports)," saved reports.")),
-    shiny::p(if(length(active))paste("Figures include",active_count,"recording outcomes. Complete saved evidence stays included.")else"No cardiac figures are selected. Complete saved evidence stays included."),
+  shiny::tagList(shiny::p(paste0(chapter_text,": ",p$selected_cells," of ",.brohn_guidance_count(p$total_cells,"original recording")," across ",.brohn_guidance_count(length(summary$reports),"saved report"),".")),
+    shiny::p(if(length(active))paste0("Figures include ",.brohn_guidance_count(active_count,"recording outcome"),". Complete saved evidence stays included.")else"No cardiac figures are selected. Complete saved evidence stays included."),
     lapply(summary$empty_outcomes,function(x)shiny::p(paste(title(x$report_ref),"has no surviving saved recording records.",brohn_default(x$reason,"Its saved outcome and complete exclusion/source evidence remain included.")))),
     shiny::tags$details(shiny::tags$summary("Exact recordings and view choices"),
       shiny::p("Chapters count original recording/run records in selected-report order. ECG shows detected RR intervals; PPG shows detected pulse intervals (PRV). Neither establishes normal-to-normal beats or a stress score."),membership),

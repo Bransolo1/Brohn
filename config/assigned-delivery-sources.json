@@ -1183,8 +1183,8 @@
     },
     {
       "path": "R/platform-report-package-cardiac-views.R",
-      "bytes": 11792,
-      "sha256": "1842af45436d120985978266e4a19852c60bc7d1a864bf0f98dcfb3f33938517"
+      "bytes": 11867,
+      "sha256": "a8d347855911c9111ac7fec3f745a706e452dfa8128d5e3fcab24852aa51da4e"
     },
     {
       "path": "R/platform-report-package-cardiac.R",
@@ -1233,8 +1233,8 @@
     },
     {
       "path": "R/platform-report-package-server.R",
-      "bytes": 61952,
-      "sha256": "46905bf4b4b196d27e24967fb39e12a85ae305f29d619e999c66e7aab00ca388"
+      "bytes": 62000,
+      "sha256": "efb8305ca4b0919052964b024066ee02c409e1dc90593887c3d12c64f321d3cd"
     },
     {
       "path": "R/platform-report-package-source-catalog.R",
@@ -1263,8 +1263,8 @@
     },
     {
       "path": "R/platform-report-package-views.R",
-      "bytes": 33185,
-      "sha256": "a4ee62aa7385201ea539f2053449113ad4dd8db700bdcddd914f33f87b851482"
+      "bytes": 33305,
+      "sha256": "d87e39b31904bb24fdca6b0a2fb2e608b781d319d38af2b1cc19799995e27943"
     },
     {
       "path": "R/platform-report-package.R",

@@ -5,8 +5,9 @@ This map separates inherited acceptance from newer integration evidence. It is a
 ## Current composition boundary
 
 The later [saved-findings catalogue checkpoint](REPORT-SOURCE-CATALOG-ACCEPTANCE.md)
-is now active. Its [1,310-file inventory](REPORT-SOURCE-CATALOG-SOURCE.json)
-preserves the original 1,307-file inventory below as predecessor evidence.
+is now active, including its [presentation successor](REPORT-CATALOGUE-PRESENTATION-SOURCE.json).
+The [earlier catalogue inventory](REPORT-SOURCE-CATALOG-SOURCE.json) and original
+1,307-file inventory below remain predecessor evidence.
 Read the new acceptance for component/browser/service scopes. The earlier
 connected journey below was not repeated by that narrower presentation change.
 

@@ -1,6 +1,8 @@
 # Brohn documentation map
 
 Current checkpoint: [9 October source/workflow evidence](qa/SOURCE-EVIDENCE-MAP-20261009.md).
+The later [saved-findings catalogue update](qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md)
+adds faster selection, edit preservation and a [six-test guide](../tests/REPORT-SOURCE-CATALOG-REPRODUCE.md).
 Start with the [assigned-study workflow](operations/ASSIGNED-STUDY-WORKFLOW.md),
 [saved cardiac guide](operations/SHARE-SAVED-CARDIAC-FINDINGS.md),
 [method references in the app](research/METHOD-EVIDENCE-RUNTIME.md) and

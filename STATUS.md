@@ -32,6 +32,11 @@ downloads/cold reopening and unattended Prepare-to-worker continuation remain
 open. Read the
 [updated architecture contract](docs/architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md).
 
+The full cardiac retry still exceeded its original bound: history-to-ready
+173.95 seconds and HTML GET 30.93 seconds. Original HTML bytes and 35 conservation
+checks passed separately; HEAD/ZIP, accessibility and cold workflow remain
+incomplete. The catalogue improvement does not resolve that bottleneck.
+
 The following dated entries are historical, including their earlier private or
 pending descriptions. This current checkpoint supersedes those source-promotion
 and connected text/questionnaire pending statements only.

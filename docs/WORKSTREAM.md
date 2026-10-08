@@ -14,13 +14,17 @@
   preserve explicitly required setup and original design revisions.
 - [ ] Complete the cardiac researcher/browser/cold journey and improve the observed
   large saved-history/report latency before claiming that experience is ready.
+  The source03 retry also failed its original bound: exact HTML and 35 conservation
+  checks passed, but HEAD/ZIP/Axe/cold did not complete. Use retained stage timings
+  to target reading/current/download costs; do not widen limits or retry unchanged.
 - [x] Promote the qualified lazy findings list and edit-safe feedback. Four
   controller suites pass 239 checks / 47 scenarios; the composed browser passes
   14 checks, two accessibility scans and original-data checks. Fresh participant
   registration, original replay and one synthetic next event pass 24 checks.
   Preserve source01/02/03 scopes; restart complete services after updating.
-- [ ] Tighten report presentation after the functional checkpoint: singular
-  summary wording and repeated per-card explanations still need polish.
+- [x] Tighten singular summary wording and replace repeated card explanations
+  with shared guidance. Source04 passes the focused browser/data checks and
+  two accessibility scans; source-specific names and description targets remain.
 - [ ] Activate owned background report reading only after its asynchronous
   download/stream lifetime contract is demonstrated.
 - [ ] Add durable report-intent advancement to the ordinary worker; prove actual

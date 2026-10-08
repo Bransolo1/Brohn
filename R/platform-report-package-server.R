@@ -617,7 +617,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     shiny::actionButton("rpk_prepare","Prepare report",class="btn-primary",disabled=if(source_pending())"disabled"else NULL)})
   output$rpk_contents<-shiny::renderUI({if(!active())return(NULL)
     task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
-    shiny::tagList(shiny::p(paste(length(v$rows),"saved reports and",length(v$sections),"figure sections selected. Complete numerical collections stay included, even when only selected figure pages are shown.")),
+    shiny::tagList(shiny::p(paste(.brohn_guidance_count(length(v$rows),"saved report"),"and",.brohn_guidance_count(length(v$sections),"figure section"),"selected. Complete numerical collections stay included, even when only selected figure pages are shown.")),
       if(choice)shiny::tagList(shiny::p("Saved best-worst results and choice models, task views, liking and other answers are included where applicable. Every selected source's complete numerical evidence stays included, even when a figure section is hidden."),
         shiny::p("These findings are shown together; no relationship between choice results, task scores and liking has been calculated. Saved models are displayed without refitting."))else if(task)shiny::tagList(shiny::p("Task scores and response patterns, liking and other answers, and saved comparisons are included where applicable. Task details are checked during preparation."),
         shiny::p("These findings are shown together; no relationship between task scores and liking has been calculated.")),

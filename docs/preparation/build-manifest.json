@@ -3,6 +3,19 @@
   "prepared_at": "2026-09-08",
   "product": "Brohn",
   "checkpoint": {
+    "saved_findings_catalogue": {
+      "status": "scoped_promoted_source_checkpoint",
+      "date": "2026-10-09",
+      "commit": "489534d2950d739763431c8317a4266677966b7b",
+      "evidence": "docs/qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md",
+      "source_receipt": "docs/qa/REPORT-SOURCE-CATALOG-SOURCE.json",
+      "presentation_successor": "docs/qa/REPORT-CATALOGUE-PRESENTATION-SOURCE.json",
+      "architecture": "docs/architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md",
+      "portable_tests": "tests/REPORT-SOURCE-CATALOG-REPRODUCE.md",
+      "verified": "Source01: 27 SQLite and 34 controlled Shiny checks. Source02: 239 controller checks in 47 scenarios. Source03: 14 browser, five R, 37 saved-data checks and two clean Axe scans. Fresh participant restart: 24 checks with exact old-operation replay and one labelled synthetic visibility event.",
+      "preserved": "Original data, worker59 and report-renderer103 files; all 17 work-package and 50 capability statuses unchanged.",
+      "remaining": "Large saved cardiac history/download/cold workflow, background read/download ownership, durable unattended preparation and broader scientific/device/hosting acceptance. Restart complete local services after updating source."
+    },
     "assigned_publishing_join": {
       "status": "scoped_connected_source_checkpoint",
       "architecture": "docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md",

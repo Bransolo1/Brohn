@@ -14,6 +14,24 @@ The journey exceeded its existing 240-second application/browser bound. It did
 not complete downloads, accessibility scans or a fresh-process reopening.
 The failed attempt is retained. Increasing that bound is not a product fix.
 
+A full retry on the promoted catalogue runtime also failed the unchanged bound.
+Entry improved to 1.93 seconds in this observation, but history-to-ready took
+173.95 seconds, followed by 7.70 seconds to idle. The genuine HTML GET took
+30.93 seconds and saved exactly the original 737,297 bytes. Its HEAD request
+started without a retained response; ZIP, five accessibility scans and cold
+reopening were not reached. The R guard stopped the browser; all 30 observed
+processes and the listener subsequently closed. This was not natural successful
+completion. A separate 35-check inspection conserved original rows/files and
+the exact permitted startup additions. Independent failure review: `97c6d606`.
+
+Incremental same-clock browser observations separated approximately 30.26
+seconds from preparation feedback to exact-report opening, then 143.03 seconds
+to ready. These include acknowledgement, scheduling and client/flush work;
+they are not R function timings. The successful HTML and conservation evidence
+do not make the overall run or download suite pass. Retain the original failed
+run in `cardiac-researcher-ui-successor02-qa-20261009`; do not start a cold run
+or repeat unchanged source merely to seek a better outcome.
+
 The predecessor source catalogue built complete scientific choices while listing
 findings. Saved-history hydration, report opening, periodic current checks and
 download checks also run synchronously in the Shiny process. The initial browser
@@ -72,6 +90,20 @@ Each download requires fresh access/source checks after that request, plus a
 defined file-hold lifetime through the completed response. A returned path or
 earlier status check is insufficient. The asynchronous HTTP response and stream
 ownership seam is an explicit unresolved activation gate.
+
+Source inspection narrows that gate: Shiny's data-object response can pass a
+promise through its [middleware](https://github.com/rstudio/shiny/blob/v1.14.0/R/middleware.R#L330-L423),
+and [httpuv 1.6.17](https://github.com/rstudio/httpuv/blob/v1.6.17/R/httpuv.R#L62-L143)
+resolves it before response conversion. Heavy work must still run in a separate
+process. This source evidence is not a successful browser transport test.
+httpuv's Windows file source acquires its own deny-write/delete read handle,
+but the current R API offers no verified handle-transfer or response-completion
+notification. Its promise cleanup closes request input, not the response stream.
+Qualify overlapping ownership through GET/HEAD conversion, disconnect and error
+cleanup before releasing Brohn's hold. An immutable raw snapshot is a possible
+bounded small-response alternative; it must not silently remove large-archive
+support. See the [native conversion](https://github.com/rstudio/httpuv/blob/v1.6.17/src/webapplication.cpp#L183-L260)
+and [Windows file source](https://github.com/rstudio/httpuv/blob/v1.6.17/src/filedatasource-win.cpp).
 
 Cancellation invalidates UI adoption and download keys immediately. Child and
 parent shutdown must release the exact owned handles/processes within bounded

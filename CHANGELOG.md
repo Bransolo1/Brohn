@@ -1,5 +1,16 @@
 # Changes
 
+## Full cardiac follow-up and restart guidance — 2026-10-09
+
+- Correct singular counts and share Add guidance; qualify the presentation
+  successor with 14 browser/five R/37 data checks and two clean Axe scans.
+- Record the second bounded full-history failure on the improved catalogue:
+  original HTML and data conserved, remaining downloads/cold flow unqualified.
+- Capture durable stage timings; narrow the asynchronous response/file-ownership
+  design using upstream sources without claiming an implemented transport.
+- Add the checkpoint to the sprint/build manifest and clarify current Add,
+  service restart and UI-dependent preparation in the researcher guide.
+
 ## Responsive saved-findings selection — 2026-10-09
 
 - List authorized findings without opening every scientific result; validate

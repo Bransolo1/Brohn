@@ -12,6 +12,16 @@ Brohn can assemble supported saved gaze, questionnaire and paired findings into 
 3. Choose **Prepare report**. Brohn saves your choices first, prepares the required saved displays and response distributions if needed, then assembles the report. Existing distributions are reused when they match the exact selected report.
 4. When the report is ready, choose **Download report** for its standalone HTML, or **Download report + evidence** for the ZIP.
 
+When entering from study Results, choose **Add** beside each saved finding you
+want. Brohn checks that exact version before including it; listing an item does
+not mean it has passed that check. A failed Add keeps your draft. **Remove** also
+works if an included finding becomes unavailable. The contents panel stays open
+while you make changes. See the [catalogue checkpoint](../qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md).
+
+Keep the researcher page open while preparation advances, or use the existing
+explicit Resume action after returning. Fully unattended advancement after
+closing the UI is still being implemented.
+
 The initial profile supports complete compatible gaze, questionnaire and paired findings. Known unsupported report families or embedded collections explain why their package adapter is unavailable; their existing reports and exports remain available. A package does not silently drop an unsupported scientific collection.
 
 ## Adding task findings

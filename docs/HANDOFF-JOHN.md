@@ -32,6 +32,12 @@ now uses the qualified lazy findings catalogue; read its
 local services after pulling. Do not assume preparation completes unattended
 after closing the researcher UI.
 
+Presentation source04 also corrects singular counts and shares the Add explanation
+across the list, with separate focused browser/DOM/accessibility evidence. The
+full source03 cardiac retry still failed its original bound after the exact HTML
+download; HEAD/ZIP and cold qualification remain open. Use the measured breakdown
+in the implementation contract before selecting performance work.
+
 Historical update before source promotion, 9 October: the real normal launcher → researcher release →
 participant completion → automatic report browser journey now passes. Its later
 deliberate-corruption test hit a read-only fixture, so that complete phase remains

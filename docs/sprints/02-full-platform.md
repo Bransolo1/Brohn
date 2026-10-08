@@ -1,5 +1,22 @@
 # Full platform build — Brohn continuation
 
+## Saved-findings selection checkpoint — 9 October 2026
+
+- [x] Publish the authorized catalogue, exact-version Add and edit-preserving
+  controls, with keyboard/phone checks and retained contents-panel state.
+- [x] Preserve existing participant runs across full service restart; qualify
+  original replay and one labelled synthetic next event without duplicate data.
+- [x] Publish six portable tests and the successor source inventory while
+  preserving original worker and report-renderer bytes.
+- [x] Qualify the presentation successor's singular counts, shared Add explanation
+  and accessible descriptions without changing scientific or selection logic.
+- [ ] Complete the full saved cardiac history/download/cold journey under the
+  existing time bounds; then address remaining measured delays.
+- [ ] Implement responsive owned reading and durable unattended preparation.
+
+See [scoped acceptance](../qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md). All package
+and capability statuses remain unchanged.
+
 ## Connected local study checkpoint — 9 October 2026
 
 - [x] Activate the complete reviewed assigned design/release/participant/worker/report route.
