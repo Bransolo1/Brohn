@@ -4,6 +4,18 @@
   window.brohnReportPackageFeedbackInstalled = true;
   const acknowledged = new Set(), focused = new Set(), completed = new Set();
   let scheduled = false, owner = null, lastFocus = null, yielded = false;
+  let contentsRoot = null, contentsNode = null;
+  function preserveContents() {
+    const root = document.querySelector('#rpk_root');
+    if (root !== contentsRoot) { contentsRoot = root; contentsNode = null; }
+    if (!root) return;
+    const fresh = root.querySelector('#rpk_contents_details');
+    if (!fresh || fresh === contentsNode) return;
+    // The detached prior node retains the latest deliberate open/close toggle.
+    // Only this disclosure survives a render within the same mounted page.
+    if (contentsNode) fresh.open = contentsNode.open;
+    contentsNode = fresh;
+  }
   const remember = (set, value) => { set.add(value); if (set.size > 128) set.delete(set.values().next().value); };
   function reveal(node, block) {
     node.setAttribute('tabindex', '-1'); lastFocus = node;
@@ -25,6 +37,7 @@
       phase: node.getAttribute('data-rpk-phase'), passive: node.getAttribute('data-rpk-passive') === 'true'};
   }
   function schedule() {
+    preserveContents();
     const initial = current(); if (!initial) return;
     if (initial.phase !== 'preparing') {
       if (initial.focus && initial.focus === owner && !completed.has(owner) && ['ready', 'failed'].includes(initial.phase)) {

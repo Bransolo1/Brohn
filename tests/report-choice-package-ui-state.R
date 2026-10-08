@@ -9,7 +9,7 @@ stopifnot(file.exists(file.path(loader,"R","platform-load.R")))
 folder<-args[[2]];stopifnot(!file.exists(folder));dir.create(folder,recursive=TRUE)
 folder<-normalizePath(folder,winslash="/",mustWork=TRUE)
 setwd(loader);source("R/platform-load.R",encoding="UTF-8");brohn_load(ui=TRUE)
-for(f in c("platform-report-package-views.R","platform-report-package-server.R"))source(file.path(candidate,f),encoding="UTF-8")
+for(f in c("platform-report-package-source-catalog.R","platform-report-package-views.R","platform-report-package-server.R"))source(file.path(candidate,f),encoding="UTF-8")
 checks<-list();scenarios<-list();check<-function(ok,label){checks[[length(checks)+1L]]<<-list(label=label,passed=isTRUE(ok));cat(if(isTRUE(ok))"PASS"else"FAIL",label,"\n");if(!isTRUE(ok))stop(label,call.=FALSE)}
 mock<-new.env();mock$intents<-list();mock$saves<-0L;mock$advances<-0L;mock$opens<-0L;mock$releases<-0L;mock$authority<-TRUE;mock$reader<-TRUE;mock$session_checks<-0L;mock$current_reads<-0L;mock$cancels<-0L;mock$lookups<-list()
 ref<-function(id,kind="report",revision=1L)list(kind=kind,id=id,revision=revision,body_hash=brohn_hash(list(id,revision)),project_id="default")
@@ -18,6 +18,31 @@ rows<-list(list(ref=ref("gaze-original"),title="Saved controlled gaze",origin="s
  list(ref=ref("gaze-history",revision=2L),title="Earlier gaze report",origin="sample",kind="gaze",design_hash="design-older",adapters=list("gaze-context"),status="available",reason=NULL),
  list(ref=ref("combined-original"),title="Reviewed combined report",origin="sample",kind="multimodal",design_hash="design-older",adapters=list("paired-findings"),status="available",reason=NULL))
 mock$recommendations<-list()
+# Controlled catalogue-only seams. These rows confer no scientific admission.
+# The real new admission wrapper still calls the original full-choice spy below.
+mock$descriptor_reads<-0L;mock$descriptor_checks<-0L;mock$project_authority<-TRUE
+.brohn_rpk_study<-function(store,id,project_id){
+ stopifnot(mock$project_authority,mock$reader,identical(id,"study"),identical(project_id,"default"))
+ list(id=id,project_id=project_id,body=list(title="Study"))}
+.brohn_rpk_choice_descriptor<-function(store,ref,study_id,project_id,allow_unavailable=FALSE){
+ .brohn_rpk_study(store,study_id,project_id);mock$descriptor_checks<-mock$descriptor_checks+1L
+ found<-Filter(function(r).brohn_rpv_same(r$ref,ref),rows);stopifnot(length(found)==1L)
+ row<-found[[1]];list(schema="brohn-report-package-choice-descriptor/0.1",ref=ref,
+  title=row$title,origin=row$origin,availability="unchecked",reason=NULL)}
+brohn_report_package_choice_descriptors<-function(store,study_id,project_id,cursor=NULL,limit=25L){
+ .brohn_rpk_study(store,study_id,project_id);mock$descriptor_reads<-mock$descriptor_reads+1L
+ stopifnot(identical(limit,25L),is.null(cursor))
+ list(schema="brohn-report-package-choice-page/0.1",
+  study=list(id=study_id,title="Mixed choice research",project_id=project_id),
+  reports=lapply(rows,function(r).brohn_rpk_choice_descriptor(store,r$ref,study_id,project_id)),
+  cursor=cursor,next_cursor=NULL,recommended_refs=list(),needs_choice=TRUE)}
+# This deliberately populated fixture uses direct report entry and the unchanged
+# full-choice recommendation spy. Ordinary descriptor-only entry remains empty.
+# Restore recommendations before other scenarios/direct entries can observe them.
+fixture_enter<-function(session){prior<-mock$recommendations;on.exit(mock$recommendations<-prior)
+ refs<-list(rows[[1]]$ref)
+ mock$recommendations[[rows[[1]]$ref$id]]<-list(refs=refs,reason=NULL)
+ session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[1]]$ref))}
 brohn_hosted_require_session<-function(store){mock$session_checks<-mock$session_checks+1L;stopifnot(mock$reader)}
 brohn_report_package_choices<-function(store,study_id,project_id,cursor=NULL,limit=25L)list(study=list(id=study_id,title="Original packaging study",project_id=project_id),reports=if(is.null(cursor))rows[1:2]else rows[3],cursor=cursor,next_cursor=if(is.null(cursor))"page2"else NULL,recommended_refs=lapply(rows[1:2],`[[`,"ref"),needs_choice=FALSE)
 brohn_report_package_report_choice<-function(store,report_ref){mock$lookups<-c(mock$lookups,list(report_ref));found<-Filter(function(r).brohn_rpv_same(r$ref,report_ref),rows);stopifnot(length(found)==1L);row<-found[[1]]
@@ -57,12 +82,28 @@ scenario<-function(label,code){cat("SCENARIO",label,"\n");failure<-NULL
  tryCatch(eval(expr,envir=parent.frame()),error=function(e){failure<<-conditionMessage(e);cat("ERROR",failure,"\n")})
  scenarios[[length(scenarios)+1L]]<<-list(label=label,passed=is.null(failure),failure=failure)}
 setup<-quote({
- session$flushReact();session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=NULL))
+ session$flushReact();fixture_enter(session)
  bind<-function(){x<-list(rpk_form_identity=controller$state$form_identity,rpk_title=controller$state$draft$title,rpk_source_identifiers=FALSE,rpk_images=FALSE)
   for(s in controller$state$sections){if(s$adapter=="paired-findings")x[[paste0("rpk_charts_",s$id)]]<-unlist(s$display$charts)
    if(s$adapter%in%c("paired-findings","explicit-distribution"))x[[paste0("rpk_pages_",s$id)]]<-""}
   do.call(session$setInputs,x)}
  bind();ack<-function()session$setInputs(rpk_prepare_ack=controller$state$pending$ticket)
+
+ add_source<-function(report_ref){
+  refs<-lapply(controller$state$rows,`[[`,"ref");reads<-length(mock$lookups);saves<-mock$saves;advances<-mock$advances
+  stopifnot(!any(vapply(refs,function(r).brohn_rpv_same(r,report_ref),logical(1))))
+  session$setInputs(rpk_source_toggle=report_ref)
+  check(identical(controller$state$pending$action,"include_source")&&
+   .brohn_rpv_same(controller$state$pending$payload$ref,report_ref)&&length(mock$lookups)==reads&&
+   .brohn_rpv_same(lapply(controller$state$rows,`[[`,"ref"),refs),
+   "Add sets pending feedback before the original full-choice spy and leaves selected sources unchanged")
+  ack()
+  check(is.null(controller$state$pending)&&length(mock$lookups)==reads+1L&&
+   .brohn_rpv_same(tail(mock$lookups,1L)[[1]],report_ref)&&
+   .brohn_rpv_same(lapply(controller$state$rows,`[[`,"ref"),c(refs,list(report_ref)))&&
+   mock$saves==saves&&mock$advances==advances,
+   "Acknowledged Add invokes the original full-choice spy once and adds the exact source without saving or queuing")
+ }
  saved<-function()controller$state$intent$intent_ref$id
  set_status<-function(status,action){id<-saved();mock$intents[[id]]$view$status<-status;mock$intents[[id]]$view$next_action<-action
   if(status=="succeeded")mock$intents[[id]]$view$package_ref<-ref(paste0("package-",id),"report_package");session$elapse(1001);session$flushReact()}
@@ -172,13 +213,13 @@ scenario("panel recovery binding, history and profile changes",{
  read<-tail(mock$catalog_reads,1)[[1]]
  check(is.null(read$cursor)&&.brohn_rpv_same(read$prepared_ref,choice_ref(rows[[1]]$ref,2L))&&identical(original,brohn_json(controller$state$sections)),"Panel recovery resets only stale catalog pagination and retains original default policies")
  n<-length(mock$catalog_reads);session$setInputs(rpk_selector_previous=1L);check(length(mock$catalog_reads)==n,"A prior-page cursor cannot cross to a new prepared artifact")
- old_id<-saved();old_request<-brohn_json(controller$state$intent$request);session$setInputs(rpk_history_open=controller$state$intent$intent_ref);bind_choice()
+ old_id<-saved();old_request<-brohn_json(controller$state$intent$request);session$setInputs(rpk_history_open=controller$state$intent$intent_ref);ack();bind_choice()
  session$setInputs(rpk_selector_open=list(ref=rows[[1]]$ref,adapter="choice-counts"))
  check(.brohn_rpv_same(tail(mock$catalog_reads,1)[[1]]$prepared_ref,choice_ref(rows[[1]]$ref,2L))&&identical(old_request,brohn_json(controller$state$intent$request)),"History restores the exact prepared choice ref and original requested renderer/defaults")
  for(adapter in c("choice-counts","choice-utilities"))session$setInputs(rpk_section_remove=section(adapter)$id)
  session$setInputs(rpk_prepare=2L);ack()
  check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-paired/0.1","Hiding both choice figures cannot downgrade complete choice-source admission")
- session$setInputs(rpk_source_toggle=rows[[3]]$ref);session$setInputs(rpk_source_toggle=rows[[1]]$ref)
+ add_source(rows[[3]]$ref);session$setInputs(rpk_source_toggle=rows[[1]]$ref)
  before<-mock$saves;session$setInputs(rpk_prepare=3L)
  check(mock$saves==before&&controller$state$pending$payload$request$renderer_profile=="controlled-gaze-explicit-task-paired/0.1","Only explicit new Prepare derives the task profile after removing the last choice-bearing source")
  ack();check(identical(old_request,brohn_json(mock$intents[[old_id]]$request)),"Creating a different-profile version never rewrites the historical request")
@@ -194,6 +235,6 @@ scenario("explicit retry and new-version review preserve choice request",{
  ack();check(identical(old,brohn_json(controller$state$intent$request))&&mock$full_reads==0L,"Retry does not edit choice defaults or read full scientific arrays in the UI")
 })
 brohn_write_json_file(list(passed=all(vapply(scenarios,`[[`,logical(1),"passed")),checks=checks,scenarios=scenarios,
- source_hashes=setNames(lapply(c("platform-report-package-views.R","platform-report-package-server.R"),function(f)digest::digest(file=file.path(candidate,f),algo="sha256")),c("views","server")),
+ source_hashes=setNames(lapply(c("platform-report-package-source-catalog.R","platform-report-package-views.R","platform-report-package-server.R"),function(f)digest::digest(file=file.path(candidate,f),algo="sha256")),c("catalog","views","server")),
  scope="Choice controller/views with explicit in-memory bounded catalog, intent and resource spies. No actual source preparation, scientific resolution, native authority, worker or browser qualification."),file.path(folder,"results.json"))
 if(any(!vapply(scenarios,`[[`,logical(1),"passed")))quit(status=1L)

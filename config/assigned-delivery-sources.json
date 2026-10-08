@@ -1233,8 +1233,13 @@
     },
     {
       "path": "R/platform-report-package-server.R",
-      "bytes": 55436,
-      "sha256": "fefb482c0e17f40311c09e74f42c8ffc57d5c438b48232f4c69df3374ae92772"
+      "bytes": 61952,
+      "sha256": "46905bf4b4b196d27e24967fb39e12a85ae305f29d619e999c66e7aab00ca388"
+    },
+    {
+      "path": "R/platform-report-package-source-catalog.R",
+      "bytes": 4475,
+      "sha256": "90e19eaaf2aeabbe8153d5b755486b8a7b87d63751c4a7f8e5098e965d378db0"
     },
     {
       "path": "R/platform-report-package-sources.R",
@@ -1258,8 +1263,8 @@
     },
     {
       "path": "R/platform-report-package-views.R",
-      "bytes": 32508,
-      "sha256": "628a8901003e332ee3cc355fb1ec7855b0da8e397822b2e48fa9aab17014d34f"
+      "bytes": 33185,
+      "sha256": "a4ee62aa7385201ea539f2053449113ad4dd8db700bdcddd914f33f87b851482"
     },
     {
       "path": "R/platform-report-package.R",

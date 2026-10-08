@@ -24,7 +24,18 @@ The historical sections below retain design decisions and earlier failures.
 Their earlier private/pending activation wording is superseded by this boundary.
 The complete 17-package/50-capability scope remains in force.
 
-## Current qualification — 9 October 2026
+## Report responsiveness and unattended preparation — 9 October 2026
+
+The actual large cardiac history journey failed its existing time bound. The
+[report responsiveness and continuation contract](architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md)
+records the measured problem and remaining gates. Cheap authorized listing and
+edit-safe feedback are now active with scoped browser and fresh-service evidence;
+see [catalogue acceptance](qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md). Prioritize
+owned background reading and durable worker continuation. Keep fresh download
+authority and original science. The separate memo candidate is not promoted;
+its modest gain does not resolve saved-history latency.
+
+## Historical qualification before the connected checkpoint — 9 October 2026
 
 The normal-launcher browser journey now covers researcher release, the actual
 cross-port participant link, collection, the continuous worker and saved report.
@@ -42,7 +53,7 @@ timing. Activity and report-list context still need the small visual follow-up
 identified by this researcher journey. All broader modality, questionnaire,
 device, science and hosting gates retain their existing statuses.
 
-## Current local integration — 8 October 2026
+## Historical local integration — 8 October 2026
 
 Connect versioned designs through an explicit authoring facade while preserving
 the original schema validators and compilers. Save the complete design 1.0, 1.1

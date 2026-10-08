@@ -1,5 +1,23 @@
 # Changes
 
+## Responsive saved-findings selection — 2026-10-09
+
+- List authorized findings without opening every scientific result; validate
+  the exact saved version on Add and preserve drafts on failure.
+- Add source-specific accessible controls and retain contents-panel state,
+  with keyboard/desktop/phone checks and two clean accessibility scans.
+- Preserve historical participant replay after full service restart and retain
+  exact legacy workers/renderers. Include six portable tests and updated handoff.
+- Large-history latency and unattended preparation remain open.
+
+## Report responsiveness investigation and implementation contract — 2026-10-09
+
+- Record the failed large cardiac browser journey and its measured delays.
+- Separate private lazy-list/feedback and reader-cache evidence from active
+  application qualification; no runtime candidate is promoted by this entry.
+- Define remaining background-reader/download ownership and durable ordinary
+  worker continuation gates; update architecture, workstream and handoff.
+
 ## Connected assigned studies and source-bound handoff — 2026-10-09
 
 - Enable versioned authoring, controls/groups, clone/template/portable reuse and

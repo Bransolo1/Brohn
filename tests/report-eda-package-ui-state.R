@@ -18,7 +18,7 @@ if(length(args)==5L){
   source(saved_support,encoding="UTF-8")
  }
 }
-for(f in c("platform-report-package-views.R","platform-report-package-server.R"))source(file.path(candidate,f),encoding="UTF-8")
+for(f in c("platform-report-package-source-catalog.R","platform-report-package-views.R","platform-report-package-server.R"))source(file.path(candidate,f),encoding="UTF-8")
 checks<-list();scenarios<-list();check<-function(ok,label){checks[[length(checks)+1L]]<<-list(label=label,passed=isTRUE(ok));cat(if(isTRUE(ok))"PASS"else"FAIL",label,"\n");if(!isTRUE(ok))stop(label,call.=FALSE)}
 mock<-new.env();mock$intents<-list();mock$saves<-0L;mock$advances<-0L;mock$opens<-0L;mock$releases<-0L;mock$authority<-TRUE;mock$reader<-TRUE;mock$session_checks<-0L;mock$current_reads<-0L;mock$cancels<-0L;mock$lookups<-list()
 ref<-function(id,kind="report",revision=1L)list(kind=kind,id=id,revision=revision,body_hash=brohn_hash(list(id,revision)),project_id="default")
@@ -27,6 +27,31 @@ rows<-list(list(ref=ref("gaze-original"),title="Saved controlled gaze",origin="s
  list(ref=ref("gaze-history",revision=2L),title="Earlier gaze report",origin="sample",kind="gaze",design_hash="design-older",adapters=list("gaze-context"),status="available",reason=NULL),
  list(ref=ref("combined-original"),title="Reviewed combined report",origin="sample",kind="multimodal",design_hash="design-older",adapters=list("paired-findings"),status="available",reason=NULL))
 mock$recommendations<-list()
+# Controlled catalogue-only seams. These rows confer no scientific admission.
+# The real new admission wrapper still calls the original full-choice spy below.
+mock$descriptor_reads<-0L;mock$descriptor_checks<-0L;mock$project_authority<-TRUE
+.brohn_rpk_study<-function(store,id,project_id){
+ stopifnot(mock$project_authority,mock$reader,identical(id,"study"),identical(project_id,"default"))
+ list(id=id,project_id=project_id,body=list(title="Study"))}
+.brohn_rpk_choice_descriptor<-function(store,ref,study_id,project_id,allow_unavailable=FALSE){
+ .brohn_rpk_study(store,study_id,project_id);mock$descriptor_checks<-mock$descriptor_checks+1L
+ found<-Filter(function(r).brohn_rpv_same(r$ref,ref),rows);stopifnot(length(found)==1L)
+ row<-found[[1]];list(schema="brohn-report-package-choice-descriptor/0.1",ref=ref,
+  title=row$title,origin=row$origin,availability="unchecked",reason=NULL)}
+brohn_report_package_choice_descriptors<-function(store,study_id,project_id,cursor=NULL,limit=25L){
+ .brohn_rpk_study(store,study_id,project_id);mock$descriptor_reads<-mock$descriptor_reads+1L
+ stopifnot(identical(limit,25L),is.null(cursor))
+ list(schema="brohn-report-package-choice-page/0.1",
+  study=list(id=study_id,title="EDA research",project_id=project_id),
+  reports=lapply(rows,function(r).brohn_rpk_choice_descriptor(store,r$ref,study_id,project_id)),
+  cursor=cursor,next_cursor=NULL,recommended_refs=list(),needs_choice=TRUE)}
+# This deliberately populated fixture uses direct report entry and the unchanged
+# full-choice recommendation spy. Ordinary descriptor-only entry remains empty.
+# Restore recommendations before other scenarios/direct entries can observe them.
+fixture_enter<-function(session){prior<-mock$recommendations;on.exit(mock$recommendations<-prior)
+ refs<-lapply(rows[1:2],`[[`,"ref")
+ mock$recommendations[[rows[[1]]$ref$id]]<-list(refs=refs,reason=NULL)
+ session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[1]]$ref))}
 brohn_hosted_require_session<-function(store){mock$session_checks<-mock$session_checks+1L;stopifnot(mock$reader)}
 brohn_report_package_choices<-function(store,study_id,project_id,cursor=NULL,limit=25L)list(study=list(id=study_id,title="Original packaging study",project_id=project_id),reports=if(is.null(cursor))rows[1:2]else rows[3],cursor=cursor,next_cursor=if(is.null(cursor))"page2"else NULL,recommended_refs=lapply(rows[1:2],`[[`,"ref"),needs_choice=FALSE)
 brohn_report_package_report_choice<-function(store,report_ref){mock$lookups<-c(mock$lookups,list(report_ref));found<-Filter(function(r).brohn_rpv_same(r$ref,report_ref),rows);stopifnot(length(found)==1L);row<-found[[1]]
@@ -66,12 +91,28 @@ scenario<-function(label,code){cat("SCENARIO",label,"\n");failure<-NULL
  tryCatch(eval(expr,envir=parent.frame()),error=function(e){failure<<-conditionMessage(e);cat("ERROR",failure,"\n")})
  scenarios[[length(scenarios)+1L]]<<-list(label=label,passed=is.null(failure),failure=failure)}
 setup<-quote({
- session$flushReact();session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=NULL))
+ session$flushReact();fixture_enter(session)
  bind<-function(){x<-list(rpk_form_identity=controller$state$form_identity,rpk_title=controller$state$draft$title,rpk_source_identifiers=FALSE,rpk_images=FALSE)
   for(s in controller$state$sections){if(s$adapter=="paired-findings")x[[paste0("rpk_charts_",s$id)]]<-unlist(s$display$charts)
    if(s$adapter%in%c("paired-findings","explicit-distribution"))x[[paste0("rpk_pages_",s$id)]]<-""}
   do.call(session$setInputs,x)}
  bind();ack<-function()session$setInputs(rpk_prepare_ack=controller$state$pending$ticket)
+
+ add_source<-function(report_ref){
+  refs<-lapply(controller$state$rows,`[[`,"ref");reads<-length(mock$lookups);saves<-mock$saves;advances<-mock$advances
+  stopifnot(!any(vapply(refs,function(r).brohn_rpv_same(r,report_ref),logical(1))))
+  session$setInputs(rpk_source_toggle=report_ref)
+  check(identical(controller$state$pending$action,"include_source")&&
+   .brohn_rpv_same(controller$state$pending$payload$ref,report_ref)&&length(mock$lookups)==reads&&
+   .brohn_rpv_same(lapply(controller$state$rows,`[[`,"ref"),refs),
+   "Add sets pending feedback before the original full-choice spy and leaves selected sources unchanged")
+  ack()
+  check(is.null(controller$state$pending)&&length(mock$lookups)==reads+1L&&
+   .brohn_rpv_same(tail(mock$lookups,1L)[[1]],report_ref)&&
+   .brohn_rpv_same(lapply(controller$state$rows,`[[`,"ref"),c(refs,list(report_ref)))&&
+   mock$saves==saves&&mock$advances==advances,
+   "Acknowledged Add invokes the original full-choice spy once and adds the exact source without saving or queuing")
+ }
  saved<-function()controller$state$intent$intent_ref$id
  set_status<-function(status,action){id<-saved();mock$intents[[id]]$view$status<-status;mock$intents[[id]]$view$next_action<-action
   if(status=="succeeded")mock$intents[[id]]$view$package_ref<-ref(paste0("package-",id),"report_package");session$elapse(1001);session$flushReact()}
@@ -182,7 +223,7 @@ scenario("history pins exact prep and canonical request",{
  publish_view("needs_attention","review",prepared_summary(2L,"panel_limit"),"Too many panels")
  last<-tail(mock$catalog_reads,1)[[1]]
  check(is.null(last$cursor)&&.brohn_rpv_same(last$prepared_ref,eda_ref(rows[[2]]$ref,2L))&&.brohn_rpv_same(old,controller$state$intent$request),"Prepared-ref refresh resets only cursor, preserving requested windows and figure policies")
- session$setInputs(rpk_history_latest=1L);session$setInputs(rpk_history_open=controller$state$intent$intent_ref);bind_eda()
+ session$setInputs(rpk_history_latest=1L);session$setInputs(rpk_history_open=controller$state$intent$intent_ref);ack();bind_eda()
  check(!isTRUE(controller$state$dirty)&&.brohn_rpv_same(controller$state$eda_display_requests,old$eda_display_requests),"Historical hydration restores canonical windows without immediately marking them edited")
  before<-mock$saves;session$setInputs(rpk_prepare_new=1L);check(mock$saves==before,"Code-drift renewal paints before saving");ack()
  check(.brohn_rpv_same(old,controller$state$intent$request),"Explicit new-code review retains exact requested EDA policies")
@@ -289,11 +330,11 @@ scenario("single complete-source capacity refusal blocks ineffective retries and
  check(is.null(output$rpk_prepare_action)&&length(controller$state$sections)==0L,"Hiding every figure does not unlock complete-source capacity")
  open_window();apply_window("1","2")
  check(is.null(output$rpk_prepare_action)&&length(controller$state$eda_display_requests)==1L&&identical(old,brohn_json(mock$intents[[old_id]]$view)),"A smaller display changes the draft without claiming capacity recovery or rewriting failed history")
- session$setInputs(rpk_source_toggle=rows[[1]]$ref);bind_eda()
+ add_source(rows[[1]]$ref);bind_eda()
  check(length(controller$state$rows)==2L&&is.null(output$rpk_prepare_action),"Adding another source cannot bypass the known offending single-source bound")
- session$setInputs(rpk_history_open=old_ref);bind_eda()
+ session$setInputs(rpk_history_open=old_ref);ack();bind_eda()
  check(length(controller$state$rows)==1L&&is.null(output$rpk_prepare_action)&&identical(old,brohn_json(mock$intents[[old_id]]$view))&&!isTRUE(controller$state$dirty),"Reopening the historical failed intent restores exact choices and the same capacity guidance without mutation")
- session$setInputs(rpk_source_toggle=rows[[1]]$ref);bind_eda();session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda()
+ add_source(rows[[1]]$ref);bind_eda();session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda()
  check(length(controller$state$rows)==1L&&.brohn_rpv_same(controller$state$rows[[1]]$ref,rows[[1]]$ref)&&grepl('id="rpk_prepare"',output$rpk_prepare_action$html,fixed=TRUE),"Replacing the exact offending source restores ordinary preparation controls")
  session$setInputs(rpk_prepare=10L);ack()
  check(mock$saves==before+1L&&saved()!=old_id&&mock$intents[[old_id]]$view$status=="superseded","Explicit preparation after source replacement creates one new intent through the existing lifecycle")
@@ -307,7 +348,7 @@ scenario("multiple-source budgets and old smaller-window history keep valid reco
  check(mock$saves==before+1L&&length(controller$state$intent$request$report_refs)==1L,"Removing a source from a multi-source refusal can prepare the reduced request")
  p$resource<-"display_samples";p$measured<-500100;p$maximum<-500000;p$recovery_scope<-"smaller_window";p$source<-rows[[2]]$ref;p$message<-"The default display exceeds the sample limit."
  publish_view("superseded","none",p,p$message);old<-brohn_json(controller$state$intent);old_ref<-controller$state$intent$intent_ref
- session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[1]]$ref));bind_eda();session$setInputs(rpk_history_open=old_ref);bind_eda()
+ session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[1]]$ref));bind_eda();session$setInputs(rpk_history_open=old_ref);ack();bind_eda()
  check(grepl("Change display window",output$rpk_feedback$html,fixed=TRUE)&&grepl('id="rpk_prepare"',output$rpk_prepare_action$html,fixed=TRUE),"Superseded original smaller-window history retains applicable window guidance and ordinary Prepare")
  open_window();session$setInputs(rpk_eda_window_cancel=1L)
  check(identical(old,brohn_json(controller$state$intent))&&is.null(controller$state$window_editor),"Opening and cancelling the original window editor does not alter saved historical choices or failure")
@@ -320,7 +361,7 @@ scenario("stale resume after source replacement still binds the original refused
  publish_view("needs_attention","review",p,p$message);old_id<-saved()
  session$setInputs(rpk_cancel=1L);old<-brohn_json(mock$intents[[old_id]]$view);before<-mock$saves;advanced<-mock$advances
  check(controller$state$intent$status=="cancelled"&&controller$state$intent$next_action=="retry","Normal cancellation retains the old capacity refusal on a retryable historical intent")
- session$setInputs(rpk_source_toggle=rows[[1]]$ref);bind_eda();session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda()
+ add_source(rows[[1]]$ref);bind_eda();session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda()
  check(grepl('id="rpk_prepare"',output$rpk_prepare_action$html,fixed=TRUE),"Replacing the oversized source enables preparation of the new draft")
  session$setInputs(rpk_resume=1L)
  if(!is.null(controller$state$pending))ack()else session$setInputs(rpk_prepare_ack="stale-original-resume")
@@ -330,13 +371,29 @@ scenario("stale resume after source replacement still binds the original refused
 })
 scenario("new profile choice and exact old intent reopening",{
  mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_prepare=1L);ack();id<-saved()
- check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2","A new old-science-only EDA package explicitly uses renderer 0.2")
+ check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.3","A new old-science-only EDA package explicitly uses outer renderer 0.3")
  old<-mock$intents[[id]];old$request$renderer_profile<-"controlled-gaze-explicit-task-choice-eda-paired/0.1";old$view$request<-old$request;old$view$status<-"needs_attention";old$view$next_action<-"review";mock$intents[[id]]<-old
- session$setInputs(rpk_history_open=old$view$intent_ref);bind_eda();before<-mock$saves;advanced<-mock$advances
+ session$setInputs(rpk_history_open=old$view$intent_ref);ack();bind_eda();before<-mock$saves;advanced<-mock$advances
  check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.1"&&!isTRUE(controller$state$dirty)&&mock$saves==before,"Opening exact historical 0.1 choices does not migrate or mark them unsaved")
  session$setInputs(rpk_prepare_new=1L);ack()
- check(mock$saves==before+1L&&mock$advances==advanced+1L&&controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2"&&mock$intents[[id]]$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.1","Explicit new-version action creates 0.2 while keeping the original request's 0.1 identity")
+ check(mock$saves==before+1L&&mock$advances==advanced+1L&&controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.3"&&mock$intents[[id]]$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.1","Explicit new-version action creates outer 0.3 while keeping the original request's 0.1 identity")
 })
+
+scenario("exact historical outer 0.2 stays unchanged on reopening",{
+ mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_prepare=1L);ack()
+ legacy<-mock$intents[[saved()]];legacy$command_id<-"retained-eda-02"
+ legacy$request$renderer_profile<-"controlled-gaze-explicit-task-choice-eda-paired/0.2"
+ legacy$view$request<-legacy$request;legacy$view$intent_ref<-ref("retained-eda-02","report_package_intent")
+ legacy$view$status<-"needs_attention";legacy$view$next_action<-"review"
+ mock$intents[["retained-eda-02"]]<-legacy;original<-brohn_json(legacy);before<-mock$saves;advanced<-mock$advances
+ session$setInputs(rpk_history_latest=1L);session$setInputs(rpk_history_open=legacy$view$intent_ref);ack();bind_eda()
+ check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2"&&
+   identical(controller$state$intent$intent_ref,legacy$view$intent_ref)&&!isTRUE(controller$state$dirty),
+   "Opening exact historical outer 0.2 restores its original profile and reference without migration")
+ check(mock$saves==before&&mock$advances==advanced&&identical(brohn_json(mock$intents[["retained-eda-02"]]),original),
+   "Historical outer 0.2 reopening leaves its complete retained intent unchanged and queues no work")
+})
+
 coordinate_failure<-function(source=NULL)list(prepared_sources=list(),reason_code="coordinate_rows_limit",source=source,resource="coordinate_rows",measured=500100,maximum=500000,recovery_scope="none",message="The complete constant-signal coordinate view exceeds current capacity; a smaller response window is not a repair.")
 scenario("constant coordinate limit blocks ineffective edits and stale original resume",{
  mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[2]]$ref));bind_eda();session$setInputs(rpk_prepare=1L);ack()
@@ -345,7 +402,7 @@ scenario("constant coordinate limit blocks ineffective edits and stale original 
  check(is.null(output$rpk_prepare_action)&&!grepl('id="rpk_prepare_new"',output$rpk_feedback$html,fixed=TRUE)&&!grepl('id="rpk_resume"',output$rpk_feedback$html,fixed=TRUE)&&grepl("separate evidence exports",output$rpk_feedback$html,fixed=TRUE),"Constant coordinate refusal hides ineffective actions and points to original evidence exports")
  session$setInputs(rpk_title="Different title");session$setInputs(rpk_section_remove=controller$state$sections[[1]]$id);open_window();apply_window("1","2")
  check(is.null(output$rpk_prepare_action)&&identical(old,brohn_json(mock$intents[[old_id]]$view)),"Title, hidden figures and synthetic stale window edits cannot change constant capacity or saved history")
- session$setInputs(rpk_source_toggle=rows[[1]]$ref);bind_eda()
+ add_source(rows[[1]]$ref);bind_eda()
  check(is.null(output$rpk_prepare_action),"Adding another source does not evade a known single-source constant bound")
  for(input_id in c("rpk_prepare","rpk_prepare_new","rpk_resume"))do.call(session$setInputs,setNames(list(9L),input_id))
  check(mock$saves==before&&mock$advances==advanced&&is.null(controller$state$pending),"Stale direct actions cannot queue the unchanged constant source")
@@ -358,7 +415,7 @@ scenario("required constant parent and multiple-source recovery remain precise",
  mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=rows[[3]]$ref));bind_eda();session$setInputs(rpk_prepare=1L);ack()
  p<-coordinate_failure(rows[[2]]$ref);publish_view("needs_attention","review",p,p$message)
  check(is.null(output$rpk_prepare_action)&&grepl("paired report can require",output$rpk_feedback$html,fixed=TRUE),"A sole paired source cannot retry a capacity failure of its required parent")
- session$setInputs(rpk_enter=list(study_id="study",project_id="default",report_ref=NULL));bind_eda();session$setInputs(rpk_prepare=2L);ack();publish_view("needs_attention","review",p,p$message)
+ fixture_enter(session);bind_eda();session$setInputs(rpk_prepare=2L);ack();publish_view("needs_attention","review",p,p$message)
  check(length(controller$state$rows)==2L&&is.null(output$rpk_prepare_action),"Multiple-source constant refusal blocks the unchanged selected source set")
  session$setInputs(rpk_title="Still the same sources");check(is.null(output$rpk_prepare_action),"A title change does not unlock a multiple-source coordinate refusal")
  before<-mock$saves;session$setInputs(rpk_source_toggle=rows[[2]]$ref);bind_eda();session$setInputs(rpk_prepare=3L);ack()
@@ -372,11 +429,13 @@ scenario("new EDA profile cannot substitute latest explicit distribution for abs
  original_rows<-rows;rows[[2]]$adapters<<-list("eda-continuous","explicit-distribution")
  tryCatch({mock$prepared<-TRUE;eval(eda_setup);session$setInputs(rpk_prepare=1L);ack();before<-length(mock$catalog_reads)
   session$setInputs(rpk_selector_open=list(ref=rows[[2]]$ref,adapter="explicit-distribution"))
-  check(isTRUE(controller$state$selector$locked)&&length(mock$catalog_reads)==before&&controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.2","Saved 0.2 explicit choices without their pinned prerequisite stay locked instead of reading a current distribution")
+  check(isTRUE(controller$state$selector$locked),"New outer 0.3 explicit choices without their pinned prerequisite remain locked")
+  check(length(mock$catalog_reads)==before,"Missing pinned history does not read a current explicit distribution")
+  check(controller$state$intent$request$renderer_profile=="controlled-gaze-explicit-task-choice-eda-paired/0.3","New EDA requests retain the current outer renderer 0.3")
  },finally={rows<<-original_rows})
 })
 brohn_write_json_file(list(passed=all(vapply(scenarios,`[[`,logical(1),"passed")),checks=checks,scenarios=scenarios,
- source_hashes=setNames(lapply(c("platform-report-package-views.R","platform-report-package-server.R"),function(f)digest::digest(file=file.path(candidate,f),algo="sha256")),c("views","server")),
+ source_hashes=setNames(lapply(c("platform-report-package-source-catalog.R","platform-report-package-views.R","platform-report-package-server.R"),function(f)digest::digest(file=file.path(candidate,f),algo="sha256")),c("catalog","views","server")),
  support_hashes=support_receipt,
  scope="EDA controller/views with explicit bounded metadata, intent and resource spies; real shared pure decimal and sidecar normalizers. No scientific source preparation, native authority, worker or browser qualification."),file.path(folder,"results.json"))
 if(any(!vapply(scenarios,`[[`,logical(1),"passed")))quit(status=1L)

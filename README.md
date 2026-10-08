@@ -10,6 +10,12 @@ Brohn is an open-source, R-first workspace for consumer and psychology research:
 
 ## Current checkpoint
 
+Saved-findings selection now uses a quicker authorized list, checks exact versions
+on Add, preserves drafts and retains the contents panel through edits. Read its
+[scoped acceptance](docs/qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md) and
+[portable tests](tests/REPORT-SOURCE-CATALOG-REPRODUCE.md). Restart all local
+services after pulling an update. Large saved-history operations remain slow.
+
 **9 October 2026: assigned study delivery is connected in the normal application.** Design version groups and shared controls, release the study, collect supported participant responses, process the completed session automatically and review the saved report. The final relocated Git checkout passed the real launcher/Release-button/participant/worker/report journey, 38 document-access checks and independent complete-data inspection. Separate researcher checks cover reuse, manual analysis/recovery and desktop/phone report cards. See the [evidence map](docs/qa/SOURCE-EVIDENCE-MAP-20261009.md) for source-specific limits.
 
 The [assigned-study guide](docs/operations/ASSIGNED-STUDY-WORKFLOW.md) explains **Who sees each version?**, shared controls, participant setup, answer review, **Analyse saved run**, **Analyse release**, clone/templates and design exchange. This scoped route uses supported text/PNG stimuli and questionnaires. Assigned A/V delivery, camera/equipment collection and other study formats retain separate gates. The older ordinary authoring route schedules each listed stimulus; do not infer between-group assignment from a version label alone.

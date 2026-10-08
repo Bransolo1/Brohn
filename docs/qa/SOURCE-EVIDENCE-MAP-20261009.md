@@ -4,9 +4,15 @@ This map separates inherited acceptance from newer integration evidence. It is a
 
 ## Current composition boundary
 
+The later [saved-findings catalogue checkpoint](REPORT-SOURCE-CATALOG-ACCEPTANCE.md)
+is now active. Its [1,310-file inventory](REPORT-SOURCE-CATALOG-SOURCE.json)
+preserves the original 1,307-file inventory below as predecessor evidence.
+Read the new acceptance for component/browser/service scopes. The earlier
+connected journey below was not repeated by that narrower presentation change.
+
 Final candidate03 source receipt: SHA-256 `8a28dd38d3b22f2547e1bc533b70c3595e7ca8b0a3c00ec5b3d8f7f98d8b4559`. The complete source inventory contains 1,754 files, with 55 ordered assigned-loader pins and 337 registered R/script source records. Composition preserves the accepted worker's 59 implementation files and both complete legacy/assigned participant asset trees. Relative to candidate02 it selects the local assigned document-entry correction, two card presenters and portable connected test sources; regenerated pins bind their actual bytes.
 
-**Candidate03 is now the selected application implementation.** A real local Git round trip preserved all 1,307 runtime/dependency/test files. The relocated checkout passed the final normal-launcher journey: 11 browser checks, eight lifecycle checks, 38 document/access/no-write checks and 24 independent saved-source checks. All 25 observed processes stopped naturally and both listeners closed; source bytes and original saved files remained unchanged. This test used the actual configured Windows installation with existing pinned dependencies; it was not a new dependency download/install test.
+**Candidate03 underlies the later catalogue update.** A real local Git round trip preserved all 1,307 runtime/dependency/test files. The relocated checkout passed the final normal-launcher journey: 11 browser checks, eight lifecycle checks, 38 document/access/no-write checks and 24 independent saved-source checks. All 25 observed processes stopped naturally and both listeners closed; source bytes and original saved files remained unchanged. This test used the actual configured Windows installation with existing pinned dependencies; it was not a new dependency download/install test.
 
 The final focused card UI phase separately passed 19 browser, 13 presenter, nine R and 28 saved-data checks, with four zero-violation Axe scans. Desktop/phone screenshots show distinct session/release contexts, readable complete identifiers and the original Retry control. All 18 observed processes closed. No analysis jobs or scientific reruns were created by this presentation check.
 

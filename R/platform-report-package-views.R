@@ -144,7 +144,7 @@ brohn_report_package_editor_ui <- function(draft) {
     shiny::textInput("rpk_title","Report title",draft$title),
     shiny::uiOutput("rpk_contents"),
     brohn_report_package_cardiac_draft_ui(draft),
-    shiny::tags$details(shiny::tags$summary("Change contents"),
+    shiny::tags$details(id="rpk_contents_details",shiny::tags$summary("Change contents"),
       shiny::h2("Saved findings"),shiny::p("Choose exact saved results. Different collections are kept separate."),
       .brohn_rpk_pending_output("rpk_sources","Loading saved findings..."),shiny::uiOutput("rpk_selected"),
       shiny::h2("Figures"),shiny::p("Figure choices change what is illustrated. Complete numerical collections remain included."),
@@ -157,14 +157,24 @@ brohn_report_package_editor_ui <- function(draft) {
       shiny::p("Complete original byte evidence and raw recordings are not included in this report profile. Original scientific exports remain available from their saved reports.")),
     .brohn_rpk_pending_output("rpk_prepare_action","Checking report readiness..."))
 }
-brohn_report_package_sources_ui <- function(page,selected) shiny::tagList(
-  lapply(page$reports,function(row){chosen<-any(vapply(selected,function(r).brohn_rpv_same(r$ref,row$ref),logical(1)))
+brohn_report_package_sources_ui <- function(page,selected,outcomes=list()) shiny::tagList(
+  lapply(page$reports,function(row){chosen_rows<-Filter(function(r).brohn_rpv_same(r$ref,row$ref),selected);chosen<-length(chosen_rows)==1L
+    descriptor<-identical(row$schema,"brohn-report-package-choice-descriptor/0.1")&&identical(row$availability,"unchecked")
+    outcome<-outcomes[[.brohn_rpv_key(row$ref)]]
+    if(!is.null(outcome)&&!.brohn_rpv_same(outcome$ref,row$ref))outcome<-NULL
+    action<-function(label)htmltools::tagAppendAttributes(brohn_command(label,"rpk_source_toggle",row$ref),
+      `aria-label`=paste(label,row$title,"saved version",row$ref$revision))
+    shown<-if(chosen)chosen_rows[[1L]]else row
+    reason<-if(!is.null(outcome))outcome$reason else row$reason
     shiny::div(class="brohn-card",shiny::h3(row$title),
       shiny::p(paste(row$origin,"| saved version",row$ref$revision)),
-      if(length(row$adapters))shiny::p(paste(vapply(row$adapters,.brohn_rpv_adapter_label,character(1)),collapse=", ")),
-      if(!is.null(row$reason))shiny::p(row$reason),
-      if(length(row$adapters))brohn_command(if(chosen)"Remove from report"else"Include findings","rpk_source_toggle",row$ref)else
-        shiny::p(if(is.null(row$reason))"These saved findings need a report adapter. Their existing report and exports remain available."else
+      if(length(shown$adapters))shiny::p(paste(vapply(shown$adapters,.brohn_rpv_adapter_label,character(1)),collapse=", ")),
+      if(!is.null(reason))shiny::p(reason),
+      if(chosen)action("Remove")else if(descriptor)shiny::tagList(
+        shiny::p("Findings are checked when you add them."),
+        action("Add"))else if(length(row$adapters))
+        action("Add")else
+        shiny::p(if(is.null(reason))"These saved findings need a report adapter. Their existing report and exports remain available."else
           "These saved findings cannot be included for the reason above. Their existing report and exports remain available."))}),
   shiny::div(class="brohn-toolbar",shiny::actionButton("rpk_sources_previous","Newer findings"),
     if(!is.null(page$next_cursor))shiny::actionButton("rpk_sources_next","Older findings")))

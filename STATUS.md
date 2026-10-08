@@ -22,11 +22,21 @@ history/report operations, A/V integration, broad study-format/questionnaire
 coverage, scientific/device agreement and production hosting remain open.
 All 17 packages and 50 capabilities retain their individual unfinished statuses.
 
+Current report work: the lazy findings catalogue and edit-preserving controls
+are now active, with scoped browser and fresh participant-service compatibility
+checks. See the [acceptance](docs/qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md) and
+[portable tests](tests/REPORT-SOURCE-CATALOG-REPRODUCE.md). Restart complete
+services after updating. The earlier large cardiac journey exceeded its time
+bound; the separate reader memo is not included. Responsive owned reading,
+downloads/cold reopening and unattended Prepare-to-worker continuation remain
+open. Read the
+[updated architecture contract](docs/architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md).
+
 The following dated entries are historical, including their earlier private or
 pending descriptions. This current checkpoint supersedes those source-promotion
 and connected text/questionnaire pending statements only.
 
-Latest local continuation, 9 October: the genuine normal-launcher browser journey
+Historical continuation before source promotion, 9 October: the genuine normal-launcher browser journey
 now reaches release, participant completion and the automatic saved report. A
 scoped document-navigation fix resolves the confirmed cross-port invitation 403;
 participant API and write restrictions remain separate. The complete test phase

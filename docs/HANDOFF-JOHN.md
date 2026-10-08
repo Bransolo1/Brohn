@@ -24,7 +24,15 @@ separate. All 17 packages/50 capabilities remain open at their existing statuses
 Earlier notes below are historical; their private-only and inactive-publication
 statements no longer describe this current connected checkpoint.
 
-Latest local update, 9 October: the real normal launcher → researcher release →
+The latest [report implementation contract](architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md)
+records a failed large cardiac browser run and remaining work. The ordinary app
+now uses the qualified lazy findings catalogue; read its
+[acceptance](qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md) and
+[six-test guide](../tests/REPORT-SOURCE-CATALOG-REPRODUCE.md). Restart complete
+local services after pulling. Do not assume preparation completes unattended
+after closing the researcher UI.
+
+Historical update before source promotion, 9 October: the real normal launcher → researcher release →
 participant completion → automatic report browser journey now passes. Its later
 deliberate-corruption test hit a read-only fixture, so that complete phase remains
 failed pending the corrected portable test. Original results and source are kept.

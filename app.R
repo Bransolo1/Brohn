@@ -3,6 +3,7 @@ if (identical(Sys.getenv("BROHN_APP_MODE", "platform"), "platform")) {
   brohn_load(environment())
   source("R/platform-assigned-delivery-load.R", local = TRUE, encoding = "UTF-8")
   brohn_load_assigned_delivery(environment())
+  source("R/platform-report-package-source-catalog.R", local = TRUE, encoding = "UTF-8")
   shiny::shinyApp(ui = brohn_shell_ui(), server = brohn_server)
 } else {
 for (path in c("R/study.R", "R/comparison.R", "R/presentation.R", "R/presentation-ui.R", "R/records.R", "R/json.R", "R/storage.R", "R/drafts.R", "R/assets.R", "R/aois.R", "R/aoi-ui.R", "R/analysis.R", "R/sample-analysis.R", "R/gaze-import.R", "R/import-report.R", "R/import-ui.R", "R/protocol.R", "R/protocol-storage.R", "R/app.R")) {

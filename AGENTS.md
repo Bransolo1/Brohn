@@ -1,5 +1,13 @@
 # Brohn working agreement
 
+Latest report checkpoint, 9 October: the lazy findings catalogue and edit-safe
+controls are active. Read `docs/qa/REPORT-SOURCE-CATALOG-ACCEPTANCE.md` and its
+successor inventory. Source01 component, source02 controller and source03 browser
+evidence remain distinct. Fresh participant registration/replay passed; restart
+complete services after updates. Keep worker59/report103 and original loader
+bytes exact. Large cardiac history/download/cold and unattended continuation
+remain open; the private reader memo is not included. Continue the full workstream.
+
 Current source checkpoint, 9 October 2026: the ordinary application now loads
 and serves the complete assigned-study composition. Read STATUS,
 `docs/qa/SOURCE-EVIDENCE-MAP-20261009.md` and `docs/WORKSTREAM.md` before selecting

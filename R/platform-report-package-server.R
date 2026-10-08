@@ -32,7 +32,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     opened=NULL,urls=list(),open_attempt_key=NULL,request_command=NULL,request_snapshot=NULL,recommendation_note=NULL,
     task_options=list(),metadata_key=NULL,eda_display_requests=list(),window_editor=NULL,
     cardiac_display_requests=list(),cardiac_figure_chapters=brohn_normalize_cardiac_figure_chapters(),
-    cardiac_summary=NULL,cardiac_issue=NULL,cardiac_editor=NULL)
+    cardiac_summary=NULL,cardiac_issue=NULL,cardiac_editor=NULL,source_outcomes=list())
   native<-new.env(parent=emptyenv());native$handle<-NULL
   cursors<-new.env(parent=emptyenv());cursors$sources<-list();cursors$history<-list();cursors$selector<-list()
   active<-function()identical(state$page,"report_package")&&!is.null(v$scope)
@@ -47,7 +47,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   ref_key<-function(ref).brohn_rpv_key(ref)
   require_form<-function()brohn_require(identical(input$rpk_form_identity,v$form_identity),"Wait for the current report choices to appear.")
   load_history<-function(cursor=NULL){v$history<-brohn_report_package_catalog(store,v$scope$study_id,v$scope$project_id,cursor=cursor)}
-  load_choices<-function(cursor=NULL){v$choices<-brohn_report_package_choices(store,v$scope$study_id,v$scope$project_id,cursor=cursor)}
+  load_choices<-function(cursor=NULL){if(source_pending())restore_source_pending();v$choices<-brohn_report_package_choice_descriptors(store,v$scope$study_id,v$scope$project_id,cursor=cursor)}
   normalize_sections<-function(sections)lapply(seq_along(sections),function(i){s<-sections[[i]];s$order<-as.integer(i);s})
   make_draft<-function(title,policy=.brohn_rpv_policy())list(title=title,contents_policy=policy,cardiac_identifier_confirmed=FALSE)
   editor<-function(){v$form_identity<-brohn_token();v$editor_tick<-v$editor_tick+1L}
@@ -122,6 +122,82 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     result<-list(draft=d,sections=normalize_sections(sections))
     if(commit){v$draft<-d;v$sections<-result$sections};result}
   dirty<-function(){clear_view();v$dirty<-TRUE;v$issue<-NULL;v$phase<-"idle";v$request_command<-NULL;v$request_snapshot<-NULL;v$recommendation_note<-NULL}
+  history_form_values<-function(){
+    # Compare raw editor values, including invalid drafts, without validating or
+    # capturing them. Command buttons and acknowledgements are not form edits.
+    values<-shiny::reactiveValuesToList(input)
+    pattern<-paste0("^rpk_(title$|form_identity$|source_identifiers$|images$|",
+      "limit_|pages_|charts_|task_scope_|task_measure_|task_mode_|task_charts_|",
+      "eda_components_|eda_markers_|cardiac_components_|cardiac_intervals_|",
+      "cardiac_spectrum_|cardiac_source_identifiers$|cardiac_chapter_mode$|cardiac_chapter_numbers$)")
+    keys<-sort(names(values)[grepl(pattern,names(values))]);values[keys]
+  }
+  history_edited<-function(p)!identical(history_form_values(),p$payload$form_values)
+  preserve_history_edit<-function(){dirty();v$issue<-"Your edits are kept. Select the saved preparation again to replace them."}
+  source_pending<-function()!is.null(v$pending)&&identical(v$pending$action,"include_source")
+  restore_source_pending<-function(note=NULL){p<-v$pending
+    if(!source_pending())return(invisible(NULL))
+    v$pending<-NULL;v$phase<-p$payload$prior_phase;v$focus_token<-p$payload$prior_focus
+    v$issue<-if(is.null(note))p$payload$prior_issue else note
+    invisible(NULL)}
+  source_scope_current<-function(){require_active();.brohn_rpk_study(store,v$scope$study_id,v$scope$project_id)
+    if(!is.null(native$handle)){
+      fresh<-brohn_report_package_resources_current(store,native$handle)
+      brohn_require(.brohn_rpv_same(fresh$record,v$opened),"The currently opened report changed. Reopen its saved history.")
+    };invisible(NULL)}
+  source_safe<-function(fn,admission=FALSE)tryCatch({require_active();.brohn_rpk_study(store,v$scope$study_id,v$scope$project_id);fn()},error=function(e){
+    # Preserve the old view only after its original current authority still holds.
+    # Source/domain failures must not hide revoked session/project/reader access.
+    tryCatch({source_scope_current();note<-substr(conditionMessage(e),1L,1000L)
+      if(source_pending()){
+        if(admission){ref<-v$pending$payload$ref;key<-ref_key(ref);outcomes<-v$source_outcomes
+          outcomes[[key]]<-NULL;outcomes[[key]]<-list(ref=ref,reason=note)
+          # Display-only failures are bounded; none confer source admission.
+          v$source_outcomes<-tail(outcomes,100L)}
+        restore_source_pending(note)
+      }else v$issue<-note
+    },error=fail)
+  })
+  begin_source<-function(ref){
+    found<-Filter(function(row).brohn_rpv_same(row$ref,ref),v$choices$reports)
+    brohn_require(length(found)==1L,"Choose findings from the current catalogue page.")
+    brohn_require(length(v$rows)<8L,"This report supports up to eight saved sources.")
+    brohn_require(is.null(v$window_editor)&&is.null(v$cardiac_editor),"Apply or cancel the open recording-view edit before including findings.")
+    captured<-capture(FALSE)
+    if(source_pending()){
+      if(.brohn_rpv_same(v$pending$payload$ref,ref)&&!history_edited(v$pending))return(invisible(NULL))
+      restore_source_pending()
+    }
+    brohn_require(is.null(v$pending),"Wait for the current preparation step before including findings.")
+    payload<-list(ref=ref,scope=v$scope,cursor=v$choices$cursor,form_values=history_form_values(),
+      captured=captured,prior_phase=v$phase,prior_focus=v$focus_token,prior_issue=v$issue)
+    v$issue<-NULL;v$focus_token<-brohn_token()
+    v$pending<-list(ticket=brohn_token(),generation=v$generation,action="include_source",payload=payload,
+      label="Checking these saved findings before adding them.",passive=FALSE)
+    v$phase<-"preparing"
+  }
+  include_source<-function(p){
+    if(!is.null(v$window_editor)||!is.null(v$cardiac_editor)){
+      restore_source_pending("Your recording-view edit is kept. Apply or cancel it before adding findings.");return(invisible(NULL))
+    }
+    brohn_require(.brohn_rpv_same(p$payload$scope,v$scope)&&.brohn_rpv_same(p$payload$cursor,v$choices$cursor)&&
+      any(vapply(v$choices$reports,function(row).brohn_rpv_same(row$ref,p$payload$ref),logical(1))),
+      "The source catalogue changed. Select these findings again.")
+    if(history_edited(p)){dirty();v$issue<-"Your edits are kept. Select the findings again to include them.";return(invisible(NULL))}
+    row<-brohn_report_package_admit_catalog_choice(store,p$payload$ref,v$scope$study_id,v$scope$project_id)
+    brohn_require(length(row$adapters)>0L,brohn_default(row$reason,"These saved findings need a supported report adapter. Their existing report and exports remain available."))
+    brohn_require(!any(vapply(v$rows,function(x).brohn_rpv_same(x$ref,row$ref),logical(1)))&&length(v$rows)<8L,
+      "The selected findings changed. Review the current report choices.")
+    had_cardiac<-.brohn_rpcv_has(v$rows);next_rows<-c(v$rows,list(row))
+    next_sections<-normalize_sections(c(p$payload$captured$sections,.brohn_rpv_default_sections(list(row))))
+    summary<-brohn_report_package_cardiac_editor_summary(store,next_rows,v$cardiac_figure_chapters,v$cardiac_display_requests)
+    .brohn_rpk_choice_descriptor(store,row$ref,v$scope$study_id,v$scope$project_id)
+    brohn_require(is.null(v$window_editor)&&is.null(v$cardiac_editor),"Apply or cancel the open recording-view edit before including findings.")
+    dirty();v$draft<-p$payload$captured$draft;v$rows<-next_rows;v$sections<-next_sections;v$selector<-NULL
+    v$source_outcomes[[ref_key(row$ref)]]<-NULL;v$cardiac_summary<-summary;v$cardiac_issue<-NULL
+    if(!had_cardiac&&.brohn_rpcv_has(next_rows))v$draft$cardiac_identifier_confirmed<-FALSE
+    if(had_cardiac||.brohn_rpcv_has(next_rows))editor()
+  }
   request<-function(commit=TRUE,new_profile=FALSE){captured<-capture(commit);brohn_require(length(v$rows)>0L&&length(v$rows)<=8L,"Choose between one and eight saved reports.")
     # Reads/history retain their original version. Only an explicit new intent
     # derives a profile from the independent components of its selected sources.
@@ -239,7 +315,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     v$intent<-NULL;v$rows<-list();v$sections<-list();v$labels<-list();v$selector<-NULL;v$dirty<-FALSE;v$issue<-NULL;v$open_attempt_key<-NULL
     v$task_options<-list();v$metadata_key<-NULL;v$eda_display_requests<-list();v$window_editor<-NULL
     v$cardiac_display_requests<-list();v$cardiac_figure_chapters<-brohn_normalize_cardiac_figure_chapters();v$cardiac_editor<-NULL
-    cursors$sources<-list();cursors$history<-list();load_choices();load_history()
+    v$source_outcomes<-list();cursors$sources<-list();cursors$history<-list();load_choices();load_history()
     entry<-if(!is.null(command$report_ref))brohn_report_package_report_choice(store,command$report_ref)else NULL
     refs<-if(is.null(entry))v$choices$recommended_refs else if(is.null(entry$recommended_refs))list(command$report_ref)else entry$recommended_refs
     v$recommendation_note<-if(is.null(entry))NULL else entry$recommendation_reason
@@ -251,6 +327,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   source_limit<-function(rows=v$rows).brohn_rpv_single_source_limit(v$intent,rows)||.brohn_rpv_constant_coordinate_limit(v$intent,rows)
   source_limit_message<-function()if(.brohn_rpv_constant_coordinate_refusal(v$intent$preparation)).brohn_rpv_constant_coordinate_message()else .brohn_rpv_single_source_limit_message()
   prepare<-function(new_version=FALSE){
+    if(source_pending())return(invisible(NULL))
     brohn_require(!source_limit(),source_limit_message())
     r<-request(new_profile=new_version||isTRUE(v$dirty)||is.null(v$intent))
     if(new_version)brohn_require(!is.null(v$intent)&&identical(v$intent$next_action,"review"),"Review this preparation before creating a new version.")
@@ -268,11 +345,22 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   shiny::observeEvent(input$rpk_prepare_new,safe(function()prepare(TRUE)))
   shiny::observeEvent(input$rpk_prepare_ack,{p<-v$pending
     if(!active()||is.null(p)||p$generation!=v$generation||!identical(p$ticket,input$rpk_prepare_ack)||v$phase!="preparing")return()
-    safe(function(){v$pending<-NULL
+    if(p$action=="include_source"){source_safe(function()include_source(p),admission=TRUE);return()}
+    safe(function(){
+      if(p$action=="history"&&history_edited(p)){preserve_history_edit();return()}
+      v$pending<-NULL
       if(p$action=="save"){
         x<-p$payload;view<-brohn_save_report_package_intent(store,x$command_id,x$request,
           expected_revision=if(is.null(x$prior))NULL else x$prior$revision,prior_intent_ref=x$prior)
         adopt(view);v$automatic<-TRUE;advance("advance");load_history()
+      }else if(p$action=="history"){
+        # History hydration can read large saved sources. Let the ordinary
+        # feedback acknowledgement arrive before starting that work. The
+        # ticket/generation/session checks above apply to this step as well.
+        view<-brohn_read_report_package_intent(store,p$payload$ref$id,v$scope$project_id)
+        adopt(view);hydrate(view);v$selector<-NULL
+        if(view$status=="succeeded")start("open",view,"Opening the exact saved report.")
+        else{v$focus_token<-NULL;v$automatic<-FALSE}
       }else if(p$action=="open")open_package(p$payload)
       else if(p$action%in%c("resume","retry")){v$automatic<-TRUE;advance(brohn_default(p$payload$action,p$action));load_history()}
     })})
@@ -294,23 +382,21 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   shiny::observeEvent(input$rpk_reopen,safe(function(){brohn_require(!is.null(v$intent)&&v$intent$status=="succeeded","Choose a completed saved report.")
     start("open",v$intent,"Reopening the saved report and checking current access.")}))
   shiny::observeEvent(input$rpk_cancel,safe(function(){
+    if(source_pending()){source_scope_current();restore_source_pending("Findings were not added. Your current choices are unchanged.");return()}
     if(!is.null(v$pending)){clear_view();v$phase<-"idle";v$issue<-"This preparation step was cancelled. Saved history is unchanged.";return()}
     brohn_require(!is.null(v$intent),"There is no saved preparation to cancel yet.")
     clear_view();adopt(brohn_cancel_report_package_intent(store,v$intent$intent_ref));load_history()}))
   shiny::observeEvent(input$rpk_back,safe(function(){id<-v$scope$study_id;study<-brohn_study(store,id);clear_view();current$study<-study;state$study_id<-id;state$page<-"study";state$stage<-"Results"
     if(is.function(refresh))refresh();session$sendCustomMessage("brohn-focus","brohn-main")}))
-  shiny::observeEvent(input$rpk_source_toggle,safe(function(){capture();ref<-input$rpk_source_toggle;had_cardiac<-.brohn_rpcv_has(v$rows)
-    found<-which(vapply(v$rows,function(r).brohn_rpv_same(r$ref,ref),logical(1)))
-    row<-Filter(function(r).brohn_rpv_same(r$ref,ref),v$choices$reports)
-    brohn_require(length(found)==1L||(length(row)==1L&&length(row[[1]]$adapters)>0L),"Choose selected findings or findings from the current catalog page.")
-    dirty()
-    if(length(found)){v$rows<-v$rows[-found];v$sections<-Filter(function(s)!.brohn_rpv_same(s$source_report_ref,ref),v$sections)
-      v$eda_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)
-      v$cardiac_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$cardiac_display_requests)}else{
-      brohn_require(length(v$rows)<8L,"This report supports up to eight saved sources.");v$rows<-c(v$rows,row);v$sections<-c(v$sections,.brohn_rpv_default_sections(row))}
-    v$sections<-normalize_sections(v$sections);v$selector<-NULL
-    if(!had_cardiac&&.brohn_rpcv_has(v$rows))v$draft$cardiac_identifier_confirmed<-FALSE
-    refresh_cardiac();if(had_cardiac||.brohn_rpcv_has(v$rows))editor()
+  shiny::observeEvent(input$rpk_source_toggle,source_safe(function(){ref<-input$rpk_source_toggle
+    found<-which(vapply(v$rows,function(row).brohn_rpv_same(row$ref,ref),logical(1)))
+    if(!length(found)){begin_source(ref);return(invisible(NULL))}
+    brohn_require(length(found)==1L,"Choose one selected saved source.")
+    capture();had_cardiac<-.brohn_rpcv_has(v$rows);dirty()
+    v$rows<-v$rows[-found];v$sections<-normalize_sections(Filter(function(section)!.brohn_rpv_same(section$source_report_ref,ref),v$sections))
+    v$eda_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)
+    v$cardiac_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$cardiac_display_requests)
+    v$selector<-NULL;refresh_cardiac();if(had_cardiac||.brohn_rpcv_has(v$rows))editor()
   }))
   shiny::observeEvent(input$rpk_section_remove,safe(function(){capture();brohn_require(input$rpk_section_remove%in%vapply(v$sections,`[[`,character(1),"id"),"Choose a current figure section.")
     dirty();v$sections<-normalize_sections(Filter(function(s)s$id!=input$rpk_section_remove,v$sections))}))
@@ -504,11 +590,19 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   shiny::observeEvent(input$rpk_history_latest,safe(function(){cursors$history<-list();load_history()}))
   shiny::observeEvent(input$rpk_history_open,safe(function(){ref<-input$rpk_history_open
     brohn_require(any(vapply(v$history$items,function(item).brohn_rpv_same(item$intent_ref,ref),logical(1))),"Choose a preparation from the current history page.")
-    clear_view();view<-brohn_read_report_package_intent(store,ref$id,v$scope$project_id);adopt(view);hydrate(view);v$selector<-NULL
-    if(view$status=="succeeded")start("open",view,"Opening the exact saved report.")else{v$focus_token<-NULL;v$automatic<-FALSE}
+    clear_view();start("history",list(ref=ref,form_values=history_form_values()),"Opening this saved preparation.")
   }))
   shiny::observe({
-    if(!active()||isTRUE(v$dirty)||!is.null(v$cardiac_editor)||!identical(input$rpk_form_identity,v$form_identity))return()
+    if(!active())return()
+    if(source_pending()){
+      if(history_edited(v$pending)){dirty();v$issue<-"Your edits are kept. Select the findings again to include them."}
+      return()
+    }
+    if(!is.null(v$pending)&&v$pending$action=="history"){
+      if(history_edited(v$pending))preserve_history_edit()
+      return()
+    }
+    if(isTRUE(v$dirty)||!is.null(v$cardiac_editor)||!identical(input$rpk_form_identity,v$form_identity))return()
     expected<-if(!is.null(v$pending)&&v$pending$action=="save")v$pending$payload$request else if(!is.null(v$intent))v$intent$request else NULL
     if(is.null(expected))return()
     fresh<-tryCatch(request(FALSE,new_profile=!is.null(v$pending)&&v$pending$action=="save"),error=function(e)NULL)
@@ -520,7 +614,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     shiny::isolate({if(is.null(v$draft))NULL else{d<-v$draft;d$form_identity<-v$form_identity
       d$cardiac_active<-.brohn_rpcv_has(v$rows);d$cardiac_figure_chapters<-v$cardiac_figure_chapters;brohn_report_package_editor_ui(d)}})})
   output$rpk_prepare_action<-shiny::renderUI({if(!active()||is.null(v$draft)||source_limit())return(NULL)
-    shiny::actionButton("rpk_prepare","Prepare report",class="btn-primary")})
+    shiny::actionButton("rpk_prepare","Prepare report",class="btn-primary",disabled=if(source_pending())"disabled"else NULL)})
   output$rpk_contents<-shiny::renderUI({if(!active())return(NULL)
     task<-.brohn_rpv_has_component(v$rows,"task");choice<-.brohn_rpv_has_component(v$rows,"choice")
     shiny::tagList(shiny::p(paste(length(v$rows),"saved reports and",length(v$sections),"figure sections selected. Complete numerical collections stay included, even when only selected figure pages are shown.")),
@@ -532,7 +626,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
         shiny::p("Complete raw conductance series and raw input bytes are excluded. Any bounded raw preview and raw-derived measurements already in the saved analysis remain included."),
         shiny::p("Saved measurements are displayed without repeating decomposition or peak detection. This report does not calculate a new EDA-liking relationship.")),
       if(!is.null(v$recommendation_note))shiny::p(v$recommendation_note))})
-  output$rpk_sources<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL);brohn_report_package_sources_ui(v$choices,v$rows)})
+  output$rpk_sources<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL);brohn_report_package_sources_ui(v$choices,v$rows,v$source_outcomes)})
   output$rpk_selected<-shiny::renderUI({if(!active())return(NULL);shiny::tags$ul(lapply(v$rows,function(row)shiny::tags$li(row$title," | ",row$origin," | saved version ",row$ref$revision,
     brohn_command(paste("Remove",row$title),"rpk_source_toggle",row$ref),
     if(.brohn_rpcv_row(row))brohn_command("Include cardiac figures","rpk_cardiac_section_add",row$ref),

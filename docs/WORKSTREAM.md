@@ -14,6 +14,17 @@
   preserve explicitly required setup and original design revisions.
 - [ ] Complete the cardiac researcher/browser/cold journey and improve the observed
   large saved-history/report latency before claiming that experience is ready.
+- [x] Promote the qualified lazy findings list and edit-safe feedback. Four
+  controller suites pass 239 checks / 47 scenarios; the composed browser passes
+  14 checks, two accessibility scans and original-data checks. Fresh participant
+  registration, original replay and one synthetic next event pass 24 checks.
+  Preserve source01/02/03 scopes; restart complete services after updating.
+- [ ] Tighten report presentation after the functional checkpoint: singular
+  summary wording and repeated per-card explanations still need polish.
+- [ ] Activate owned background report reading only after its asynchronous
+  download/stream lifetime contract is demonstrated.
+- [ ] Add durable report-intent advancement to the ordinary worker; prove actual
+  Prepare, leave, worker completion and fresh-browser reopening.
 - [ ] Join assigned A/V admission, custody, R receiving and complete export.
 - [ ] Reduce participant click-to-ready delays while retaining current authority,
   source, journal and acknowledgement checks.
@@ -26,7 +37,11 @@ Use the [evidence map](qa/SOURCE-EVIDENCE-MAP-20261009.md) for actual source sco
 The dated lists below are historical; current checkmarks above supersede their
 pending activation/manual-UI/card-presentation items. They do not close a package.
 
-Current local continuation (not yet a published source checkpoint):
+The [report responsiveness contract](architecture/REPORT-RESPONSIVENESS-AND-CONTINUATION.md)
+records the failed large-history browser run, promoted catalogue scope and
+separate private reader candidate. No work package is completed by this change.
+
+Historical local continuation before the connected source checkpoint:
 
 - [x] Complete the actual saved-run recovery/release-analysis UI, normal workers
   and fresh report/export journey. Queue: 11 browser checks and two Axe scans;
