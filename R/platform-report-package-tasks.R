@@ -198,19 +198,19 @@ brohn_resolve_task_report_section <- function(section,catalog) {
     lapply(seq_along(lines),function(i)shiny::tags$text(x=24,y=76+i*22,fill="#edf2f2",`font-size`=14,lines[[i]])),
     shiny::tags$text(x=24,y=194,fill="#b7c4c9",`font-size`=13,"Complete saved evidence remains in the numerical companions."))
 }
-.brohn_rpt_write_complete <- function(entry,item,projection,aliases,ns,json,csv) {
+.brohn_rpt_write_complete <- function(entry,item,projection,aliases,ns,json,csv,file_key=ns) {
   projected<-.brohn_rpt_project_display(entry,item,aliases,ns)
   relationships<-if(identical(entry$evidence$source_family,"saved_task_cohort")) .brohn_rpt_cohort_context(item,aliases,ns)$relationships else list()
   portable<-list(schema="brohn-portable-task-display/0.1",source_ref=entry$ref,source_report_ref=item$ref,
     original_artifact=entry$body$artifact,identifier_mode=aliases$mode,evidence=projected,identity_relationships=relationships,material_coverage=.brohn_rpt_material_coverage(item),
     projection_policy="Full saved scientific/prepared evidence; named identity fields use package labels. Original hashes identify original bytes, not transformed projections. No scorer or inference was run.")
-  json(portable,paste0("evidence/tasks/",ns,".json"),"complete_task_display_projection")
+  json(portable,paste0("evidence/tasks/",file_key,".json"),"complete_task_display_projection")
   a<-projection$analysis
   for(field in intersect(c("task_scores","task_attempts","source_rows","membership","attempt_metrics","per_session","per_person","summaries"),names(a)))
-    csv(a[[field]],paste0("data/tasks/",ns,"-",gsub("_","-",field),".csv"),paste0("complete_",field))
-  if(length(relationships))csv(relationships,paste0("data/tasks/",ns,"-identity-relationships.csv"),"complete_exact_source_identity_relationships")
+    csv(a[[field]],paste0("data/tasks/",file_key,"-",gsub("_","-",field),".csv"),paste0("complete_",field))
+  if(length(relationships))csv(relationships,paste0("data/tasks/",file_key,"-identity-relationships.csv"),"complete_exact_source_identity_relationships")
   for(i in seq_along(projected$administrations)){
-    adm<-projected$administrations[[i]];stem<-paste0("data/tasks/",ns,"-administration-",sprintf("%04d",i))
+    adm<-projected$administrations[[i]];stem<-paste0("data/tasks/",file_key,"-administration-",sprintf("%04d",i))
     csv(adm$plot_model$rows,paste0(stem,"-positions.csv"),"complete_expected_task_positions")
     csv(.brohn_rpt_score_rows(a$task_scores[[adm$score_binding$index]],adm$key),paste0(stem,"-metrics.csv"),"complete_saved_metric_support")
     if(!is.null(adm$terminal_evidence))csv(adm$terminal_evidence$rows,paste0(stem,"-terminal.csv"),"complete_native_terminal_records")
@@ -221,7 +221,7 @@ brohn_resolve_task_report_section <- function(section,catalog) {
     }
   }
   for(i in seq_along(projected$cohort_models))csv(projected$cohort_models[[i]]$plot_model$rows,
-    paste0("data/tasks/",ns,"-metric-",sprintf("%04d",i),"-people.csv"),"complete_saved_task_person_values")
+    paste0("data/tasks/",file_key,"-metric-",sprintf("%04d",i),"-people.csv"),"complete_saved_task_person_values")
   list(entry=entry,projected=projected)
 }
 .brohn_rpt_section <- function(s,p,prefix,figure,json,csv,friendly) {

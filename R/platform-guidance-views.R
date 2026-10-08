@@ -1,7 +1,7 @@
 # Guided researcher entry and study overview. These views describe saved state;
 # they never qualify a device, release a study or create participant observations.
 .brohn_guidance_measure_labels <- c(gaze = "Eye tracking", questionnaire = "Questions", eeg = "EEG", eda = "Skin response",
-  ecg = "ECG / HRV", ppg = "PPG", respiration = "Breathing", emg = "Muscle activity", eog = "Eye movement signals", fnirs = "fNIRS",
+  ecg = "ECG / detected RR", ppg = "PPG", respiration = "Breathing", emg = "Muscle activity", eog = "Eye movement signals", fnirs = "fNIRS",
   temperature = "Temperature", movement = "Movement", webcam_gaze = "Webcam gaze", facial_geometry = "Face geometry",
   facial_expression = "Facial expression", pose = "Body geometry", voice = "Voice", rt = "Reaction time", iat = "IAT", biat = "Brief IAT", aat = "Approach / avoidance", sciat_window = "Response-window SC-IAT", gnat = "Go/No-Go association")
 .brohn_guidance_stages <- c("Overview", "Plan", "Questions", "Tasks", "Collect", "Review", "Results", "History")

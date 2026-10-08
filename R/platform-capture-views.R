@@ -33,7 +33,7 @@ brohn_install_camera_plan_ui <- function(input, output, session, current, state,
     id <- brohn_id("camera-policy"); draft$active <- list(id = id, study_id = d$id, hash = brohn_hash(d))
     p <- brohn_default(d$camera, list(required = FALSE, audio = FALSE, consent_text = "This study records your camera video while you take part. Recording is stored with your participant session for the research described in the study information.",
       retention_text = "", width = 640L, height = 480L, frame_rate = 15, max_duration_s = 300, max_bytes = 64*1024^2, analysis_profile = "face_geometry_v1"))
-    shiny::showModal(shiny::modalDialog(title = "Set up session recording", size = "l", easyClose = FALSE,
+    shiny::showModal(shiny::modalDialog(title = "Participant checks and recording", size = "l", easyClose = FALSE,
       shiny::tags$input(id = "camera_policy_form", type = "text", class = "shiny-input-text", value = id, style = "display:none", `aria-hidden` = "true", tabindex = "-1"),
       shiny::checkboxInput("camera_policy_enabled", "Request camera recording in this study", !is.null(d$camera)),
       shiny::checkboxInput("participant_equipment_enabled", "Check requested camera recording and required task keys before the study", !is.null(d$participant_equipment)),

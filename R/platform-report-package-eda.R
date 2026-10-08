@@ -1,11 +1,14 @@
 # Pure saved EDA projection, catalog resolution and report assembly support.
 # No source lookup, queue, scientific estimator or source-time process.
-.brohn_rpe_profile <- function(selection) isTRUE(selection$renderer_profile%in%c("controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+.brohn_rpe_profile <- function(selection) .brohn_rpk_eda_report_profile(selection$renderer_profile)
 .brohn_rpe_version <- function(selection) {
   brohn_require(.brohn_rpe_profile(selection),"Choose an exact registered EDA report profile.")
-  if(identical(selection$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.2"))"0.2"else"0.1"
+  .brohn_rpk_profile_spec(selection$renderer_profile)$eda_version
 }
-.brohn_rpe_admission <- function(selection)paste0("task-choice-eda-findings/",.brohn_rpe_version(selection))
+.brohn_rpe_admission <- function(selection) {
+  brohn_require(.brohn_rpe_profile(selection),"Choose an exact registered EDA report profile.")
+  .brohn_rpk_profile_spec(selection$renderer_profile)$admission
+}
 brohn_report_package_eda_limits <- function() {
   x<-brohn_report_package_limits();x$profile<-"controlled-task-choice-eda-report-package/0.1"
   c(x,list(max_eda_stream_bytes=64*1024^2,max_eda_line_bytes=2*1024^2,
@@ -343,7 +346,8 @@ brohn_resolve_eda_report_section <- function(section,catalog) {
 
 .brohn_rpe_projection <- function(item,state,aliases,ns,source_admission="task-choice-eda-findings/0.1") {
   body<-item$saved_body;a<-item$complete_analysis
-  brohn_require(source_admission%in%c("task-choice-eda-findings/0.1","task-choice-eda-findings/0.2"),"Choose an exact EDA source admission.")
+  spec<-.brohn_rpk_admission_spec(source_admission)
+  brohn_require(!isTRUE(spec$cardiac)&&!is.null(spec$eda_version),"Choose an exact EDA source admission.")
   brohn_validate_complete_report_analysis(item,source_admission)
   provenance<-body$provenance
   if(!is.null(provenance$source))provenance$source<-provenance$source[intersect(c("hash","size","bytes","media_type","format"),names(provenance$source))]

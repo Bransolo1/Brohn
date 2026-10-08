@@ -176,9 +176,7 @@ brohn_ingest_dataset <- function(store, path, title, modality = "gaze", study_id
       # Curate the exact captured source, not a mutable upload path read before
       # or after the object copy. A preview failure rolls back its catalog row.
       source_path <- brohn_object_path(store, object$hash)
-      table <- utils::read.table(source_path, header = TRUE, sep = if (ext == "csv") "," else "\t",
-        nrows = 20, colClasses = "character", check.names = FALSE, comment.char = "", quote = "\"", fileEncoding = "UTF-8", na.strings = character())
-      brohn_require(ncol(table) > 0 && ncol(table) <= 1024 && !anyDuplicated(names(table)) && all(nzchar(names(table))), "Data columns must have unique nonempty names.")
+      table <- brohn_tabular_preview(source_path, ext, blank_lines_skip = TRUE)
       columns <- as.list(names(table))
       preview <- lapply(seq_len(nrow(table)), function(i) as.list(table[i, , drop = FALSE]))
     }

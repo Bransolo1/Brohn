@@ -1,5 +1,139 @@
 # Brohn master architecture and large-build contract
 
+## Active implementation boundary — 9 October 2026
+
+The reviewed complete assigned-study composition is now active through ordinary
+startup, renderer/receiver registration, researcher release, participant events,
+Finish, named worker dispatch and saved report presentation. The relocated
+checkout passes the original browser journey, corrected document guard matrix
+and independent saved-data inspection. [Source-specific evidence](qa/SOURCE-EVIDENCE-MAP-20261009.md)
+records the separate lifecycle, manual recovery/export and final card UI checks.
+
+The local cross-port exception applies only to admitted assigned document
+navigation. APIs, writes, tokens, frozen protocols and source integrity keep their
+own guards. Historical workers/runtimes remain exact. Camera/equipment requirements
+are explicit capability conflicts in this assigned route, not silently discarded.
+
+[Saved cardiac packages](architecture/SAVED-CARDIAC-REPORT-PACKAGES.md) preserve
+supported existing ECG/PPG findings without scientific reruns. Their independent
+native/archive evidence does not close cardiac browser/cold/performance work.
+[Method guidance](research/METHOD-EVIDENCE-RUNTIME.md) remains screened evidence;
+option-level scientific appraisal and frozen-result citation coverage remain open.
+
+The historical sections below retain design decisions and earlier failures.
+Their earlier private/pending activation wording is superseded by this boundary.
+The complete 17-package/50-capability scope remains in force.
+
+## Current qualification — 9 October 2026
+
+The normal-launcher browser journey now covers researcher release, the actual
+cross-port participant link, collection, the continuous worker and saved report.
+The document-entry correction retains exact invitation/runtime checks and limits
+the exception to local assigned document navigation; participant APIs and writes
+keep their existing guards. The full phase remains failed at a later deliberate
+corruption test on a read-only fixture. Complete the corrected matrix and final
+configured checkout before promoting this composition.
+
+Actual saved-run and release-analysis actions now pass queue, normal workers,
+fresh report review and six complete exports. Explicit recovery preserves the
+earlier failed request; repeated actions reuse their existing named analysis.
+Report presentation distinguishes recorded IDs from people and preserves missing
+timing. Activity and report-list context still need the small visual follow-up
+identified by this researcher journey. All broader modality, questionnaire,
+device, science and hosting gates retain their existing statuses.
+
+## Current local integration — 8 October 2026
+
+Connect versioned designs through an explicit authoring facade while preserving
+the original schema validators and compilers. Save the complete design 1.0, 1.1
+or 1.2 document; operational projections are temporary values. Clones remap the
+complete stimulus/question/condition/assignment graph and retain the full source
+lineage. Evidence-bound tasks retain their exact block inputs and local IDs with
+a new ancestry edge; changed task inputs need the existing trusted evidence
+preparation workflow. Ordinary Save cannot replace evidence or bypass Archive.
+
+The Plan experience groups alternatives with explicit “all versions” or “one
+version per participant” choices. Ungrouped stimuli remain visible to everyone,
+including shared controls. Add version exposes its assignment choice. All-arm
+control and planned comparison checks apply before saving; do not silently drop
+comparisons or unreachable alternatives. Researcher actions use supported saved
+schema dispatch rather than a technical runtime selector. Overview and preview
+must use the same complete design semantics as publishing.
+
+Portable package 1.0 retains its design 1.0 interpretation. Package 1.1 explicitly
+supports complete evidence/assignment designs with matched provenance. Both
+Python and R check the schema relationship. Imports remain declarative designs
+and referenced media, with no executable runtime, renderer registration or
+dependency installation. The local lifecycle suite passes 36 R/ZIP checks; source
+publication and broader workloads remain open. A concrete ordinary researcher
+journey now passes creation, grouping, review, preview, cloning, templates and
+portable reuse; 25 read-only checks compare complete downloaded and saved designs.
+This does not close other study formats or the participant-to-report composition.
+
+The ordinary application must load the authoring/assigned modules at startup;
+manual test loading is insufficient. Its participant service must install the
+trusted renderer **and** real receiving implementation descriptor before it is
+ready. Keep the legacy worker namespace intact and bind any new reader code to
+its actual implementation inventory. Current installation candidates implement
+these connections. Ordinary API publication through real participant Finish now
+passes; its actual worker exposed an omitted version-aware finalizer. The corrected
+installation now passes the real worker, fresh-process saved-report reopening and
+a fresh researcher session's review/export journey. Complete JSON, observation CSV
+and offline HTML preserve the actual report and original saved data. These phases
+do not yet prove the full normal launcher and researcher Publish-button handoff.
+
+Actual normal startup now starts all three services and passes their real health
+checks. Publication must also explain capability conflicts before the final
+action: the default equipment-check policy currently exceeds the assigned
+player's supported setup, even for a design with no requested devices. Preserve
+that policy and its history. For an intentionally device-free study, the
+researcher can explicitly disable it through the existing setup form; never
+strip a declared requirement in the publisher or weaken only one side of the
+publisher/player contract. Make the setting and its consequences easy to find.
+
+Invitation navigation must also work when researcher and participant pages use
+different origins. Keep that document-entry decision separate from permission
+to read participant API state or submit events. A correction must retain original
+token, release, manifest and stored-object checks; do not rewrite browser headers
+or generally allow cross-origin API requests. Browser metadata distinguishes
+document navigation, embedded resources and fetches, and redirect chains affect
+the site relationship. These headers provide context, not study authorization.
+See the [W3C Fetch Metadata draft](https://www.w3.org/TR/2026/WD-fetch-metadata-20260921/).
+The actual researcher-button journey must retain original navigation evidence
+through the redirect and stored runtime document before this is qualified.
+
+Finish must enqueue the analysis profile matching the retained protocol inside
+the existing finalization transaction. A missing profile intentionally selects
+the legacy reader; never reinterpret historical requests or weaken that reader's
+protocol identity guard. Install the accepted assigned finalizer on the actual
+HTTP route, including its original-receipt recovery behavior. Verify both the
+real Finish-created job request and its ordinary worker output. If a historical
+job was created with the wrong route, retain it and its receipt exactly and offer
+an explicit new analysis of the original saved run, with visible lineage. Ordinary
+Retry must not silently change the failed request's method.
+
+Report presentation must distinguish recorded identifiers from established unique
+people. Preserve the saved field names and values in complete exports; use clear
+display labels and explain whether IDs represent sessions or linked people. Count
+grammar and phone spacing are presentation changes, not new scientific recipes.
+The current screenshot review identified small improvements now prepared separately.
+
+Normal Shiny startup must use Brohn's declared module order. The local installation
+uses the documented app-local `R/_disable_autoload.R` marker because Shiny's
+automatic alphabetical pass otherwise evaluates a retry adapter before its
+dependency. Test the actual `runApp()` path as well as explicit source loading.
+Saved-sequence presentation must use exact nested protocol fields: R's partial
+matching of `question` to `questionnaire_occurrence_id` caused an actual review-step
+preview error. Presentation fixes retain the original full compiled protocol.
+
+Real httpuv delivery compresses metadata and may omit Content-Length. The browser
+client therefore bounds decoded original bytes while accepting supported gzip or
+identity transport; compressed byte lengths are not decoded lengths. Preserve
+the original timeout, cancellation, exact document checks and fresh collection
+authority. Actual R/Chrome admission and the separate adverse transport matrix
+pass; the complete multimedia host join remains unfinished. These local changes do not
+activate the published participant profile or close any of the 17 build packages.
+
 The selected inactive host09 now has [original-entry R text/image acceptance](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md):
 50 Chrome/48 R/33 wrapper checks and six Axe scans. Entry/consent, illustrated
 branching questions, Edit/review/seal, assigned control/version images, timed

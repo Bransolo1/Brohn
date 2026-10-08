@@ -1,5 +1,12 @@
 # Assigned timed presentation and recovery
 
+Current implementation pointer, 9 October: read the
+[source/workflow evidence map](../qa/SOURCE-EVIDENCE-MAP-20261009.md) and
+[current master architecture](../MASTER-ARCHITECTURE.md). The dated plan below
+preserves earlier implementation boundaries; its inactive/pending descriptions
+do not supersede the current normal assigned route or native cardiac package
+implementation. Broader formats and cardiac browser/cold/performance remain open.
+
 Implementation contract, 5 October 2026. Timed delivery remains inactive and
 requires joined acceptance. This extends BWP03/05/06/15 and the existing
 study-design requirements without changing scientific formulas or saved recipes.

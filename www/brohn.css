@@ -379,3 +379,6 @@
   .brohn-qx .brohn-qx-table td::before { content: attr(data-label); display: block; font-weight: 650; margin-bottom: 6px; }
   .brohn-qx .brohn-qx-detail { padding: 12px; }
 }
+
+/* Separate the study-level action from the final stimulus card. */
+.brohn-app #add_stimulus { margin-top: 20px; }

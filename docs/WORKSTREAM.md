@@ -1,5 +1,132 @@
 # Brohn workstream and restart checklist
 
+## Active queue after the 9 October connected checkpoint
+
+- [x] Promote the complete reviewed assigned-study implementation to normal startup.
+- [x] Pass the relocated launcher → researcher release → participant completion →
+  automatic worker → saved report flow, including corrected access guards and
+  original-data preservation. Keep all preceding failed attempts intact.
+- [x] Qualify manual saved-run/release analysis and failure recovery through the UI,
+  normal workers and six complete report exports.
+- [x] Clarify Activity and Results session/release context; qualify 19 browser,
+  13 presenter and 28 data-preservation checks plus four accessibility scans.
+- [x] Surface the assigned player's camera/equipment limitations during planning;
+  preserve explicitly required setup and original design revisions.
+- [ ] Complete the cardiac researcher/browser/cold journey and improve the observed
+  large saved-history/report latency before claiming that experience is ready.
+- [ ] Join assigned A/V admission, custody, R receiving and complete export.
+- [ ] Reduce participant click-to-ready delays while retaining current authority,
+  source, journal and acknowledgement checks.
+- [ ] Expand group editing/removal, survey-only studies, correlated/multiple groups,
+  broader assets/AOIs/scales/tasks and cold/wider-workload researcher acceptance.
+- [ ] Continue QF01–QF08, contemporary method/option evidence, named devices and
+  deployment operations across all 17 packages and 50 capabilities.
+
+Use the [evidence map](qa/SOURCE-EVIDENCE-MAP-20261009.md) for actual source scopes.
+The dated lists below are historical; current checkmarks above supersede their
+pending activation/manual-UI/card-presentation items. They do not close a package.
+
+Current local continuation (not yet a published source checkpoint):
+
+- [x] Complete the actual saved-run recovery/release-analysis UI, normal workers
+  and fresh report/export journey. Queue: 11 browser checks and two Axe scans;
+  workers: 18 checks; report: 17 browser/five R/68 independent checks, four Axe
+  scans and six exact exports. Old failure/data retained. Original report01
+  failed on a transition selector; report02 scopes the exact saved report page.
+- [ ] Finish the final configured-checkout qualification. Connected05's real
+  normal-launcher-to-report browser journey passes; its later guard fixture
+  failed because stored objects are read-only. Preserve the failure, correct
+  only that disposable fixture and run the portable successor on final source.
+- [ ] Clarify Activity operation labels, job identities and structured errors;
+  distinguish saved session and release reports while preserving stored titles,
+  calculations, original jobs and Retry semantics.
+
+The detailed preceding checklist below retains earlier phase scopes. The three
+items above supersede its pending manual-UI and initial navigation investigation
+statements; they do not imply source promotion or completion of a work package.
+
+- [x] Implement and qualify version-aware library save/read/history, clone,
+  templates, archive/restore and portable designs: 36 real R/ZIP checks, including
+  original evidence/task preservation and legacy import compatibility.
+- [x] Fix actual browser admission of httpuv gzip/chunked metadata without
+  changing decoded source values, body bounds or the original timeout: 23 browser,
+  49 fixture and 49 wrapper checks. Adverse transport testing is separate.
+- [x] Qualify the concrete ordinary researcher UI journey: create, group controls/versions, enable
+  answer review, preview, clone, save a template, export and reimport; inspect
+  phone/desktop accessibility and saved catalogue values.
+  Fixed automatic Shiny module ordering and review-step preview lookup defects.
+  The final installed journey passes 13 browser/five R/25 downloaded-design and
+  catalogue checks plus two Axe scans. Keep earlier failed attempts as regression
+  evidence; this is one concrete text/questionnaire design, not all study types.
+- [x] Qualify actual installed API publication, normal renderer/receiver
+  registration and stored participant document through consent, branching,
+  edit/review, allocated controls/versions and Finish. This is not a Publish-button
+  UI test or downstream worker acceptance.
+- [x] Complete actual Finish → ordinary worker → saved report/fresh-process
+  reopening on the corrected local installation. The actual worker found an omitted version-aware Finish
+  adapter: profile-less requests deliberately select the legacy reader, which
+  refuses assigned protocol1.2. Preserve that failed job and original data; wire
+  the accepted adapter and verify the real named-profile job and repeated Finish
+  receipt. The corrected worker passes 25 checks and four fresh-reader checks,
+  plus preservation of an earlier 55-file report identity.
+- [x] Open that actual report in a fresh normal researcher app and verify keyboard
+  navigation, desktop/phone, three downloads and offline HTML. Ten browser/five R/
+  17 independent saved-data/export checks and two Axe scans pass. Preserve the
+  first failed UI test; its successor waits for actual asynchronous Results content.
+- [ ] Qualify the full normal launcher and researcher Publish-button handoff,
+  then promote complete source and portable regression tests to the repository.
+  The latest browser attempt saved the explicit device-free setting and created
+  the release, but the generated participant link did not reach Start. The next
+  browser capture confirms HTTP 403 at invitation entry: the real researcher link
+  is a same-site document navigation between two local ports, rejected by the
+  original origin gate. Qualify a narrowly scoped document-entry correction while
+  preserving participant API/write restrictions and release/source checks.
+- [x] Start the ordinary launcher with its actual participant service, acquisition
+  manager and continuous worker; verify real health/readiness. This is startup
+  evidence, not a completed publication journey or device qualification.
+- [ ] Surface participant-player capability conflicts during planning. A new
+  comparison study retains an equipment-check policy, which the assigned player
+  currently refuses. There is an explicit UI setting to disable it; the connected
+  no-device journey must use that setting and retain the earlier design revision.
+  Do not silently discard equipment requirements to make publication succeed.
+- [ ] Connect the normal Results **Analyse release** action to the correct saved
+  protocol profile. Preserve the legacy queue; add explicit researcher-facing
+  recovery and lineage for already-collected assigned runs whose historical job
+  used the old route. Test both actions through the ordinary worker and report UI.
+  The manual dispatch/recovery core now passes on the original failed collection,
+  including a new named report, repeat-action behavior, atomic lineage, legacy
+  compatibility and separate-process reading. The integrated UI remains open.
+- [ ] Integrate and visually verify the presentation-only report polish: singular
+  counts, recorded IDs versus unique people, and space above Add stimulus. Keep
+  all saved numeric values, original fields and method identities unchanged.
+- [x] Qualify adverse gzip/chunked/oversized/cancellation/deadline checks: 89
+  browser checks and eight syntax checks, with the actual 60-second deadline.
+- [ ] Connect media admission, rendering, durable records and R export end to end.
+- [ ] Extend assignment editing/removal, survey-only delivery and evidence-bound
+  task editing; qualify multiple groups, correlated arms, assets/AOIs/scales,
+  cold reopening and the wider researcher workloads.
+- [ ] Improve phone spacing between the adjacent Add version and Add stimulus
+  controls observed in the actual researcher screenshot review.
+- [ ] Profile and reduce actual participant Start/CURRENT latency. The published
+  Start request took about 4.9 seconds before separate test-observer overhead;
+  longer test convergence waits do not qualify that response time as acceptable UX.
+  Measure repeated source checks before optimizing; preserve current authority.
+- [x] Measure a genuine unprofiled first/second Start pair with observer work
+  deferred: 3.83s then 2.18s in this local diagnostic. Full click-to-usable
+  instructions still took 9.83s and 7.82s. These two observations are not a
+  percentile benchmark or isolated JIT result; the earlier profiler showed
+  substantial compilation cost, while the warm path also spends time on event
+  receipt and repeated CURRENT requests.
+- [ ] Reduce the whole instruction-readiness wait, including warm event receipt
+  and state reads. Establish which work can be reused within an authorized
+  operation; preserve each authority, source, journal and acknowledgement check.
+  Similar-looking repeated requests are not automatically redundant.
+
+The local authoring and installation candidates remain separate from the public
+76-source snapshot below. Preserve all original failed tests and exact source
+versions. All 50 capabilities, 17 packages and QF01–QF08 retain their unfinished
+statuses; component/library acceptance is not complete platform acceptance.
+
 7 October completed slice: [host09/actual04](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md)
 passes 50 Chrome/48 R/33 wrapper checks and six Axe scans through actual original
 entry, illustrated branching questions, control/version image exposures, Finish

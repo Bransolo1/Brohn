@@ -27,10 +27,12 @@ brohn_question_revision_report_ui <- function(analysis) {
   result <- analysis$questionnaire_revision
   if (is.null(result)) return(NULL)
   rows <- unlist(lapply(result$runs, function(run) run$effective_records), recursive = FALSE)
+  count <- function(n, singular, plural = paste0(singular, "s")) paste(n, if (n == 1) singular else plural)
   edits <- sum(vapply(rows, function(r) r$revision_count, numeric(1)))
   invalidations <- sum(vapply(result$runs, function(run) length(run$invalidations), integer(1)))
   brohn_card(title = "Reviewed questionnaire answers", subtitle = "Each question contributes its final effective answer within that assessment.",
-    shiny::p(paste(length(result$runs), "sessions;", length(rows), "question records;", edits, "answer revisions;", invalidations, "recorded dependent-answer invalidations.")),
+    shiny::p(paste0(paste(count(length(result$runs), "session"), count(length(rows), "question record"),
+      count(edits, "answer revision"), count(invalidations, "event clearing dependent answers", "events clearing dependent answers"), sep = "; "), ".")),
     shiny::p("Hidden and unsubmitted questions remain explicit in the evidence. Revised or resumed answers do not claim an initial uninterrupted response time."),
     shiny::tags$details(shiny::tags$summary("Review final answers and revision counts"),
       shiny::p(class = "brohn-muted", paste("Showing", min(100L, length(rows)), "of", length(rows), "records. Full report JSON contains every final record and the complete acknowledged questionnaire event history.")),

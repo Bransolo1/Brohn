@@ -8,7 +8,7 @@ sources <- c(sources, "R/platform-participant-equipment.R")
 sources <- c(sources, "R/platform-sciat-window-candidate.R", "R/platform-sciat-window.R", "R/platform-sciat-window-delivery.R", "R/platform-sciat-window-score.R")
 sources <- c(sources, "R/platform-gnat.R")
 sources <- c(sources, "R/platform-peripheral.R", "R/platform-peripheral-synthesis.R")
-sources <- c(sources, "R/platform-ingestion.R")
+sources <- c(sources, "R/platform-tabular-preview.R", "R/platform-ingestion.R")
 if (file.exists("R/platform-scales.R")) sources <- c(sources, "R/platform-scales.R")
 sources <- c(sources, "R/platform-question-sections.R")
 sources <- c(sources, "R/platform-question-revision.R", "R/platform-question-revision-delivery.R")
@@ -27,16 +27,20 @@ hash_sources <- function(paths) setNames(lapply(paths, function(p) digest::diges
 identity <- hash_sources(c("scripts/analysis-worker.R", sources))
 for (path in sources) source(path, encoding = "UTF-8")
 input <- brohn_read_json_file(arg("--request"))
-if (input$operation %in% c("report_package","task_display","choice_display","eda_display") || isTRUE(input$report_package_distribution)) {
+if (input$operation %in% c("report_package","task_display","choice_display","eda_display","cardiac_display") || isTRUE(input$report_package_distribution)) {
   paths <- c("R/platform-hosted-profile.R", "R/platform-paired-plots.R", "R/platform-task-evidence.R", "R/platform-task-plots.R",
     "R/platform-gaze-report-views.R", "R/platform-explicit-distribution-views.R", "R/platform-paired-plot-views.R",
-    "R/platform-task-plot-views.R", "R/platform-maxdiff-plots.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-choice.R", "R/platform-report-package-eda-figures.R", "R/platform-report-package-eda.R", "R/platform-report-package-render.R",
+    "R/platform-task-plot-views.R", "R/platform-maxdiff-plots.R", "R/platform-report-package-profiles.R", "R/platform-report-package-raw-gaze.R", "R/platform-report-package-tables.R", "R/platform-report-package-tasks.R", "R/platform-report-package-choice.R", "R/platform-report-package-eda-figures.R", "R/platform-report-package-eda.R", "R/platform-report-package-render.R",
     "R/platform-report-package-authority.R", "R/platform-task-display-sources.R", "R/platform-task-display.R", "R/platform-choice-display-sources.R", "R/platform-choice-display.R", "R/platform-eda-continuous-review.R", "R/platform-eda-display-sources.R", "R/platform-eda-display.R", "R/platform-report-package-sources.R",
-    "R/platform-report-package-distributions.R", "R/platform-report-package.R", "R/platform-report-package-preparation.R")
+    "R/platform-report-package-distributions.R", "R/platform-report-package.R", "R/platform-report-package-preparation.R", "R/platform-report-package-transactions.R",
+    "R/platform-cardiac-display-sources.R", "R/platform-cardiac-display.R", "R/platform-cardiac-display-validation.R",
+    "R/platform-cardiac-display-jobs.R", "R/platform-cardiac-display-chapters.R", "R/platform-cardiac-display-identity.R",
+    "R/platform-cardiac-display-history.R", "R/platform-report-package-cardiac.R", "R/platform-report-package-cardiac-preparation.R", "R/platform-cardiac-source-reader.R", "R/platform-report-package-cardiac-sources.R", "R/platform-report-package-cardiac-figures.R", "R/platform-report-package-cardiac-render.R", "R/platform-report-package-cardiac-provenance.R", "R/platform-report-package-cardiac-session.R")
   identity <- c(identity,hash_sources(setdiff(paths,names(identity))))
   for (path in paths) source(path,encoding="UTF-8")
   identity <- c(identity,hash_sources(setdiff(.brohn_rpk_files,names(identity))))
   identity <- c(identity,hash_sources(setdiff(.brohn_edd_files,names(identity))))
+  if(identical(input$operation,"cardiac_display"))identity <- c(identity,hash_sources(setdiff(.brohn_cdd_files,names(identity))))
 }
 if(!is.null(input$camera_analysis_authority)) {
   identity<-c(identity,hash_sources("R/platform-camera-analysis-store.R"))
@@ -151,9 +155,13 @@ native_sources <- if (identical(input$operation,"analyse_dataset") && identical(
       if (identical(input$dataset$modality, "eda") && brohn_eda_events_is_event(input$dataset$metadata)) "scripts/workers/eda_events.py")
   } else character()
 identity <- c(identity, hash_sources(unique(c(native_sources, "scripts/workers/publication.py", "src/publication_guard.c"))))
-result <- tryCatch(brohn_analyse_input(input, arg("--scratch")), brohn_eda_refusal=function(e) {
+result <- tryCatch(brohn_analyse_input(input, arg("--scratch")), brohn_cardiac_refusal=function(e) {
+  brohn_require(identical(input$operation,"cardiac_display"),"A cardiac refusal belongs only to its registered operation.")
+  brohn_validate_cardiac_refusal(e$refusal)
+  list(cardiac_display=e$refusal)
+}, brohn_eda_refusal=function(e) {
   brohn_require(identical(input$operation,"eda_display")||
-    (identical(input$operation,"report_package")&&identical(input$limits$profile,"controlled-task-choice-eda-report-package/0.1")),
+    (identical(input$operation,"report_package")&&input$limits$profile %in% c("controlled-task-choice-eda-report-package/0.1","controlled-task-choice-eda-cardiac-report-package/0.1")),
     "A typed EDA refusal belongs only to its registered operation.")
   brohn_validate_eda_refusal(e$refusal)
   setNames(list(e$refusal),input$operation)

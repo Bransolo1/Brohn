@@ -1,7 +1,7 @@
 brohn_tasks_ui <- function(design) {
   profiles <- brohn_task_profiles()
   choices <- setNames(names(profiles), vapply(profiles, `[[`, character(1), "label"))
-  shiny::tagList(brohn_maxdiff_summary_ui(design), brohn_card(title = "Implicit and reaction-time tasks", subtitle = "Each task uses a named procedure with its own trial structure and scoring rules. Timed tasks run after the stimulus sequence, followed by best-worst exercises and end-of-study questions.",
+  shiny::tagList(brohn_method_evidence_task_style(), brohn_maxdiff_summary_ui(design), brohn_card(title = "Implicit and reaction-time tasks", subtitle = "Each task uses a named procedure with its own trial structure and scoring rules. Timed tasks run after the stimulus sequence, followed by best-worst exercises and end-of-study questions.",
     shiny::selectInput("task_profile", "Research procedure", choices), shiny::actionButton("add_task", "Add procedure", class = "btn-primary")),
     if (!length(design$blocks)) brohn_empty("A procedure that fits your question", "Choose a task, review the target/control relationship, and replace demonstration materials before research use."),
     lapply(seq_along(design$blocks), function(i) {
@@ -10,6 +10,7 @@ brohn_tasks_ui <- function(design) {
         actions = brohn_command(paste("Remove", task$title), "remove_task", task$id),
         shiny::textInput(paste0("task_title_", i), paste("Task", i, "name"), task$title),
         shiny::p(profile$scoring),
+        brohn_method_evidence_task_ui(task$profile, profile$source),
         shiny::selectInput(paste0("task_origin_", i), paste("Task", i, "materials"), c("Original demonstration / synthetic" = "synthetic", "Researcher-supplied and reviewed" = "researcher_supplied"), task$origin),
         shiny::textAreaInput(paste0("task_control_", i), paste("Task", i, "comparison and control rationale"), task$settings$control_rationale, rows = 3),
         shiny::textAreaInput(paste0("task_rights_", i), paste("Task", i, "materials provenance and permission"), task$materials_rights, rows = 2),

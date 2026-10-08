@@ -1,6 +1,65 @@
 # John: Brohn development handoff
 
-Latest checkpoint: 76 inactive implementation files. The selected host09 and
+## Start here — 9 October checkpoint
+
+Clone/pull this repository and follow the [README](../README.md) and
+[local setup guide](operations/LOCAL-INSTALLATION.md). Assigned studies now run
+through ordinary startup: create controls/versions, choose assignment groups,
+review participant setup, release, participate, then open the automatic saved
+report. The [workflow guide](operations/ASSIGNED-STUDY-WORKFLOW.md) covers reuse,
+manual analysis and preserved failure history. Do not manually overlay the older
+inactive development snapshot onto the application.
+
+The final relocated checkout and focused card UI passed. Read the
+[evidence map](qa/SOURCE-EVIDENCE-MAP-20261009.md) for exact scope and the portable
+[connected test instructions](../tests/connected/README.md) to reproduce with your
+own installed dependencies and disposable workspace. No local data or libraries
+are bundled. Never use a real research workspace as the test destination.
+
+Next: finish cardiac researcher/cold checks and large-history responsiveness;
+connect assigned A/V admission through complete export; reduce participant
+readiness delay; expand assignment editing, survey-only delivery and broader
+formats/flow/dashboard coverage. Keep scientific/physical/hosting qualification
+separate. All 17 packages/50 capabilities remain open at their existing statuses.
+Earlier notes below are historical; their private-only and inactive-publication
+statements no longer describe this current connected checkpoint.
+
+Latest local update, 9 October: the real normal launcher → researcher release →
+participant completion → automatic report browser journey now passes. Its later
+deliberate-corruption test hit a read-only fixture, so that complete phase remains
+failed pending the corrected portable test. Original results and source are kept.
+Saved-run recovery and release analysis separately pass the real UI, normal
+workers, fresh reports and exact JSON/CSV/HTML exports. UI labels and the final
+relocated source composition remain under review. Nothing in this update activates
+the private implementation in the published application. See STATUS and the
+current checklist before working from the older notes below.
+
+Local continuation, 8 October: the connected implementation is still being
+qualified outside the published application. Ordinary API publication now serves
+the stored assigned participant runtime, collects controls/versions and editable
+branching questionnaire answers, and queues the correct analysis profile at Finish.
+The normal worker and a fresh researcher session have opened the resulting saved
+report; complete JSON/CSV and offline HTML downloads preserve its saved data.
+
+The ordinary launcher also starts the real participant service, acquisition
+manager and continuous worker. The full researcher-button journey is still under
+test: the latest attempt created a release through the real button, but opening
+its participant link did not reach Start. Navigation diagnostics and the origin
+boundary are being investigated. This is not a completed author-to-report UI check.
+The saved-run recovery core now passes against the original failed collection,
+including a new report and preservation of the earlier attempt. Its ordinary UI,
+portable regression entry points and promotion of the complete dependency set
+remain in progress. Keep the
+published run instructions until those changes are promoted. Do not combine
+private modules or infer that a reviewed snapshot is an activated application.
+
+Participant readiness took roughly 8–10 seconds in two local observations;
+responsiveness remains an open UX defect. These observations do not establish a
+performance percentile. See [STATUS](../STATUS.md) and
+[WORKSTREAM](WORKSTREAM.md) for current work and scope. All 17 work packages and
+50 capabilities remain tracked; this checkpoint is not platform completion.
+
+Published checkpoint: 76 inactive implementation files. The selected host09 and
 required-image readiness component pass an [actual R participant journey](qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md):
 50 Chrome/48 R/33 wrapper checks and six Axe scans. It begins at invitation and
 consent, collects illustrated branching questions and allocated control/version

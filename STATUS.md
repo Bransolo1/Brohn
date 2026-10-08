@@ -1,5 +1,78 @@
 # Resume here — Brohn
 
+## Current checkpoint — 9 October 2026
+
+The normal application now connects version groups/shared controls, reusable
+study designs, genuine Release-button publication, participant completion,
+automatic named analysis and saved reports. The final relocated checkout passed
+11 browser/eight lifecycle/38 document guard/24 independent saved-source checks.
+All services closed naturally. Manual session/release analysis, recovery,
+complete exports and final desktop/phone card UI have separate passed evidence.
+Read the [source and workflow map](docs/qa/SOURCE-EVIDENCE-MAP-20261009.md) and
+[researcher guide](docs/operations/ASSIGNED-STUDY-WORKFLOW.md).
+
+This is the tested local text/PNG/questionnaire route. Camera/equipment checks
+remain explicitly unsupported by the assigned player; retain required checks
+and use an appropriate route rather than silently disabling them. The ordinary
+launcher and legacy saved runtime/worker identities are preserved.
+
+Saved ECG/PPG report packaging and screened method guidance are included with
+their own scoped evidence. Cardiac browser/cold-workflow completion, slow large
+history/report operations, A/V integration, broad study-format/questionnaire
+coverage, scientific/device agreement and production hosting remain open.
+All 17 packages and 50 capabilities retain their individual unfinished statuses.
+
+The following dated entries are historical, including their earlier private or
+pending descriptions. This current checkpoint supersedes those source-promotion
+and connected text/questionnaire pending statements only.
+
+Latest local continuation, 9 October: the genuine normal-launcher browser journey
+now reaches release, participant completion and the automatic saved report. A
+scoped document-navigation fix resolves the confirmed cross-port invitation 403;
+participant API and write restrictions remain separate. The complete test phase
+still failed later when its deliberate corruption fixture was read-only. Its
+original result is retained; the corrected fixture and final portable checkout
+still require qualification.
+
+Saved-run recovery and release analysis now pass their actual researcher UI,
+ordinary workers, fresh report views and six JSON/CSV/HTML downloads. Repeated
+actions reuse the original job; old failed requests and saved data remain intact.
+Desktop/phone report checks pass with four clean automated accessibility scans.
+Activity and report-list labels are being clarified after visual review found
+indistinguishable session/release cards. Complete source promotion is still
+pending; the public runtime and all 17 package statuses remain unchanged.
+
+The dated notes below preserve preceding source selections and evidence scopes.
+
+Local continuation, 8 October: version-aware study authoring/library and portable
+design code has passed 36 real R/ZIP lifecycle checks. This covers controls and
+assigned versions through save/history, clone, templates, archive/restore and
+design export/import, including retained task evidence and legacy imports. The
+new source is still a private integration candidate, outside the published
+76-source snapshot. The ordinary installed researcher journey now passes 13 browser,
+five R supervision and 25 saved-download/catalogue checks, with two clean Axe scans.
+It covers controls/versions, review, preview, clone, template and portable reuse.
+Actual ordinary API publication through the stored participant page, consent,
+branching questions, answer editing, allocated controls/versions and Finish now
+passes. The next real worker step exposed a missing Finish adapter: an assigned
+run was queued without its analysis profile and correctly refused by the legacy
+reader. The corrected installation now passes actual Finish-to-worker processing
+and fresh-process report reopening, preserving the earlier failed job. A fresh
+normal researcher session passes report review, keyboard navigation, desktop/phone
+checks and complete JSON/CSV plus offline HTML downloads; saved rows and source
+files remain unchanged. Explicit recovery of a historical failed request now
+passes through the normal worker; its integrated UI remains open. Normal launching
+starts all services, and the real Publish button creates a release after explicit
+participant setup, but opening that link still needs investigation. These are private candidates;
+the public runtime has not been promoted and no build package is complete.
+
+The media client now admits real httpuv gzip/chunked responses with a bounded
+decoded body. Actual R/Chrome passed 23 browser, 49 fixture and 49 wrapper checks;
+adverse transport now passes 89 browser and eight syntax checks, including the
+original 60-second timeout and a fresh retry. Metadata admission is
+separate from permission to collect, playback, physical timing or scientific
+validation. See the current tasks in [WORKSTREAM](docs/WORKSTREAM.md).
+
 7 October: the inactive [host09 text/image participant journey](docs/qa/ASSIGNED-PARTICIPANT-HOST-ACCEPTANCE.md)
 passes 50 Chrome/48 R/33 wrapper checks and six Axe scans. Original invitation,
 consent, illustrated conditional questions, Edit, review/seal, allocated control

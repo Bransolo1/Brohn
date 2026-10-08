@@ -1,0 +1,26 @@
+.bvq { color:#172b3a; background:#fff; max-width:48rem; margin:0 auto; padding:1.25rem; font:1rem/1.55 system-ui,sans-serif; overflow-wrap:anywhere; }
+.bvq *, .bvq *::before, .bvq *::after { box-sizing:border-box; }
+.bvq h2 { margin:0 0 .4rem; font-size:1.6rem; line-height:1.25; font-weight:650; }
+.bvq .bvq-help { color:#415569; margin:.4rem 0 1.2rem; }
+.bvq .bvq-fields { display:grid; gap:1rem; }
+.bvq fieldset { min-width:0; border:1px solid #8799a8; border-radius:.5rem; padding:.75rem; }
+.bvq legend { max-width:100%; padding:0 .3rem; font-weight:600; }
+.bvq label { display:block; }
+.bvq .bvq-choice { display:flex; gap:.7rem; align-items:flex-start; padding:.55rem .35rem; cursor:pointer; }
+.bvq .bvq-choice input { flex:0 0 auto; margin-top:.4rem; width:1.15rem; height:1.15rem; accent-color:#135e71; }
+.bvq input:not([type=radio]):not([type=checkbox]), .bvq select, .bvq textarea { display:block; width:100%; max-width:100%; margin-top:.35rem; border:1px solid #647c90; border-radius:.35rem; padding:.65rem; font:inherit; color:inherit; background:#fff; }
+.bvq input[type=range] { min-height:2.8rem; }
+.bvq button { max-width:100%; min-height:2.75rem; border:1px solid #49667b; border-radius:.4rem; padding:.6rem .9rem; margin:.3rem .5rem .3rem 0; background:#edf4f7; color:#173d52; font:inherit; font-weight:600; white-space:normal; cursor:pointer; }
+.bvq .bvq-primary { display:block; margin-top:1rem; background:#135e71; color:white; border-color:#135e71; }
+.bvq button:disabled { color:#546675; background:#e7ecef; border-color:#99a6ae; cursor:default; }
+.bvq :focus-visible { outline:3px solid #a34e00; outline-offset:3px; }
+.bvq [aria-invalid=true] { border-color:#9b2424 !important; }
+.bvq .bvq-error { color:#9b2424; font-weight:600; }
+.bvq .bvq-status, .bvq .bvq-total { min-height:1.5em; }
+.bvq .bvq-ranking { padding-left:1.8rem; margin:0; }
+.bvq .bvq-ranking li { padding:.5rem 0; border-bottom:1px solid #ccd8df; }
+.bvq .bvq-ranking li > span:first-child { display:block; }
+.bvq .bvq-move { display:flex; flex-wrap:wrap; gap:.25rem; }
+.bvq .bvq-illustration img { display:block; max-width:100%; height:auto; margin:.8rem auto 1.2rem; }
+.bvq [hidden] { display:none !important; }
+@media (max-width:420px) { .bvq { padding:1rem; } .bvq h2 { font-size:1.35rem; } .bvq fieldset { padding:.5rem; } }

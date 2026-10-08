@@ -1,5 +1,5 @@
 # Pure original choice projection and presentation. No store, replay or fitting.
-.brohn_rpc_profile <- function(selection)isTRUE(selection$renderer_profile%in%c("controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+.brohn_rpc_profile <- function(selection)identical(selection$renderer_profile,"controlled-gaze-explicit-task-choice-paired/0.1")||.brohn_rpk_eda_report_profile(selection$renderer_profile)
 brohn_report_package_choice_limits <- function(){x<-brohn_report_package_limits();x$profile<-"controlled-task-choice-report-package/0.1";x}
 .brohn_rpc_model <- function(exercise,kind)exercise[[if(kind=="adjusted")"counts_model"else"utilities_model"]]
 .brohn_rpc_catalog_model <- function(item,kind)item[[if(kind=="adjusted")"counts"else"utilities"]]
@@ -99,14 +99,14 @@ brohn_resolve_choice_report_section <- function(section,catalog) {
     })
   };projected
 }
-.brohn_rpc_write_complete <- function(entry,item,projection,aliases,ns,json,csv) {
+.brohn_rpc_write_complete <- function(entry,item,projection,aliases,ns,json,csv,file_key=ns) {
   evidence<-entry$evidence;projected<-evidence;collections<-list()
   projected$exercises<-lapply(seq_along(evidence$exercises),function(i){e<-evidence$exercises[[i]];e$original_result<-projection$analysis$choice_tasks[[i]];e})
   json(list(schema="brohn-portable-choice-display/0.1",source_ref=entry$ref,source_report_ref=item$ref,original_artifact=entry$body$artifact,
     identifier_mode=aliases$mode,evidence=projected,projection_policy="Complete original scientific values with named person/session/exposure/step/clock aliases. Opaque producer response IDs and all original hash bindings remain unchanged; projection bytes have their own manifest hashes. No fit or score was rerun."),
-    paste0("evidence/choices/",ns,".json"),"complete_choice_display_projection")
+    paste0("evidence/choices/",file_key,".json"),"complete_choice_display_projection")
   for(i in seq_along(projected$exercises)){
-    r<-projected$exercises[[i]]$original_result;stem<-paste0("data/choices/",ns,"-exercise-",sprintf("%03d",i))
+    r<-projected$exercises[[i]]$original_result;stem<-paste0("data/choices/",file_key,"-exercise-",sprintf("%03d",i))
     values<-list(items=r$items,exposures=r$exposures,utilities=r$model$utilities)
     if("probabilities"%in%names(r$model))values["probabilities"]<-list(r$model$probabilities)
     if("collection_evidence"%in%names(r))values["timing"]<-list(r$collection_evidence)
@@ -116,7 +116,7 @@ brohn_resolve_choice_report_section <- function(section,catalog) {
       collections[[length(collections)+1L]]<-list(exercise_index=i,collection=field,state=if(!present)"absent_by_schema"else if(!length(values[[field]]))"present_empty"else"complete",rows=if(present)length(values[[field]])else NULL,path=path)
     }
   }
-  if("source_rows"%in%names(projection$analysis))csv(projection$analysis$source_rows,paste0("data/choices/",ns,"-source-rows.csv"),"complete_choice_source_rows")
+  if("source_rows"%in%names(projection$analysis))csv(projection$analysis$source_rows,paste0("data/choices/",file_key,"-source-rows.csv"),"complete_choice_source_rows")
   list(entry=entry,projected=projected,collections=collections)
 }
 .brohn_rpc_explanation <- function(model) {

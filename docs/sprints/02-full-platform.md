@@ -1,5 +1,17 @@
 # Full platform build — Brohn continuation
 
+## Connected local study checkpoint — 9 October 2026
+
+- [x] Activate the complete reviewed assigned design/release/participant/worker/report route.
+- [x] Pass a final relocated Git checkout journey and document/refusal matrix.
+- [x] Qualify manual analysis, complete exports and accessible session/release cards.
+- [x] Preserve old failed jobs, historical report identities and source/data bytes.
+- [ ] Complete wider QF01–QF08 and eye-tracking flexibility, assigned A/V and devices.
+- [ ] Finish cardiac browser/cold and performance gates, broader workloads and
+  option-level scientific evidence. See [current workstream](../WORKSTREAM.md).
+
+These scoped passes do not close any of the 17 packages or 50 capabilities.
+
 ## Questionnaire flow and dashboard target — 1 October 2026
 
 - [x] Recheck official Qualtrics flow, Results Dashboards, Stats iQ, Text iQ and

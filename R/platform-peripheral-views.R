@@ -31,6 +31,8 @@ brohn_peripheral_settings_ui <- function(metadata, columns, modality) {
         shiny::p(class = "brohn-muted", "ENMO requires gravity-included data and subtracts one standard g from vector magnitude. It is not a complete separation of gravity and movement.")),
       shiny::numericInput("map_peripheral_min_duration", "Minimum observed duration per continuous segment (seconds; blank is automatic)", brohn_default(m$parameters$minimum_duration_s, NA_real_), min = .0001, max = 86400, step = .1),
       shiny::p(class = "brohn-muted", "Automatic uses one second or one sample interval, whichever is longer. The resolved duration is saved with your mapping."),
+      if (modality == "temperature") brohn_method_evidence_config_ui(brohn_peripheral_defaults(modality)$recipe,
+        "Current temperature procedure used by Confirm mapping and analyse. The chosen minimum duration still needs study-specific review."),
       shiny::p(class = "brohn-muted", "This is a computation support setting. It does not establish that a recording is long enough for the research question. Gaps and invalid selected samples always break support.")),
     shiny::tags$fieldset(shiny::tags$legend("Optional threshold excursions"),
       shiny::checkboxInput("map_peripheral_threshold", "Detect protocol-defined threshold excursions", value = !is.null(threshold)),

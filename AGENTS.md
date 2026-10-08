@@ -1,5 +1,16 @@
 # Brohn working agreement
 
+Current source checkpoint, 9 October 2026: the ordinary application now loads
+and serves the complete assigned-study composition. Read STATUS,
+`docs/qa/SOURCE-EVIDENCE-MAP-20261009.md` and `docs/WORKSTREAM.md` before selecting
+work. The relocated normal-launcher-to-report journey and final card UI pass;
+legacy runtimes/worker identities remain exact. The inherited saved cardiac
+package implementation has separate native/archive evidence, with cardiac
+browser/cold/performance still open. Earlier dated instructions below are history;
+their private/inactive/next-to-implement cardiac wording does not supersede this
+checkpoint. Preserve the academic-evidence contract and full 17-package/50-capability
+scope. Publication alone never establishes scientific or physical qualification.
+
 Owner requirement, 30 September 2026: apply academic best practice and multiple
 suitable academic sources to every analytical approach, consequential option
 and study-design template across contemporary implicit consumer research. Read

@@ -1,5 +1,12 @@
 # Assigned questionnaires: collection and recovery architecture
 
+Current implementation pointer, 9 October: read the
+[source/workflow evidence map](../qa/SOURCE-EVIDENCE-MAP-20261009.md) and
+[current master architecture](../MASTER-ARCHITECTURE.md). The dated plan below
+preserves earlier implementation boundaries; its inactive/pending descriptions
+do not supersede the current normal assigned route or native cardiac package
+implementation. Broader formats and cardiac browser/cold/performance remain open.
+
 ## Latest integration update — 5 October 2026
 
 The [recovery checkpoint](../qa/PARTICIPANT-RECOVERY-CHECKPOINT.md) records the

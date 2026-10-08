@@ -53,6 +53,7 @@
   invisible(section)
 }
 .brohn_rpk_request <- function(store,request) {
+  if(.brohn_rpk_cardiac_profile(request))return(.brohn_rpcc_request(store,request))
   brohn_fields(request,c("schema","study_id","project_id","title","report_refs","requested_sections","contents_policy","limits_profile","renderer_profile",if(.brohn_rpk_eda_profile(request))"eda_display_requests"),label="Saved report preparation")
   brohn_require(identical(request$schema,"brohn-report-package-intent-request/0.1")&&brohn_text(request$title,500)&&
     ((identical(request$limits_profile,"controlled-report-package/0.1")&&identical(request$renderer_profile,"controlled-gaze-explicit-paired/0.1"))||
@@ -112,7 +113,11 @@ brohn_read_report_package_intent <- function(store,intent_id,project_id) {
 }
 brohn_save_report_package_intent <- function(store,command_id,request,expected_revision=NULL,prior_intent_ref=NULL) {
   brohn_require(brohn_text(command_id,256),"Retain this preparation command identity for retry.")
-  if(.brohn_rpk_eda_profile(request)){
+  if(.brohn_rpk_cardiac_profile(request)){
+    request$cardiac_display_requests<-.brohn_rpcc_normalize_requests(request$cardiac_display_requests,request$report_refs)
+    request$cardiac_figure_chapters<-brohn_normalize_cardiac_figure_chapters(request$cardiac_figure_chapters)
+  }
+  if(.brohn_rpk_eda_profile(request)||.brohn_rpk_cardiac_profile(request)){
     request$eda_display_requests<-.brohn_rpk_normalize_eda_requests(request$eda_display_requests,request$report_refs)
     request$requested_sections<-lapply(request$requested_sections,function(s)
       if(s$adapter %in% c("eda-events","eda-continuous")) .brohn_rpk_eda_section(s) else s)
@@ -124,6 +129,7 @@ brohn_save_report_package_intent <- function(store,command_id,request,expected_r
   }else brohn_require(is.null(expected_revision),"An edit revision requires its prior preparation reference.")
   fingerprint<-brohn_hash(list(request=request,prior_intent_ref=prior_intent_ref))
   id<-paste0("report-intent-",substr(brohn_hash(list(project_id=request$project_id,command_id=command_id)),1,40))
+  if(.brohn_rpk_cardiac_profile(request))return(.brohn_rptx_save(store,command_id,request,fingerprint,id,prior_intent_ref))
   brohn_store_batch(store,function(){
     old<-brohn_get_entity(store,"report_package_intent",id)
     if(!is.null(old)){brohn_require(identical(old$project_id,request$project_id)&&identical(old$body$command_fingerprint,fingerprint),"This preparation command already belongs to different contents.")
@@ -137,6 +143,7 @@ brohn_save_report_package_intent <- function(store,command_id,request,expected_r
     body<-list(schema=.brohn_rpk_intent_schema,id=id,generation=generation,status="prepared",request=request,
       command_id=command_id,command_fingerprint=fingerprint,prior_intent_ref=prior_intent_ref,dependencies=list(),
       selection_ref=NULL,job_ref=NULL,package_ref=NULL,reason=NULL,superseded_by=NULL,created_at=brohn_now())
+    if(.brohn_rpk_cardiac_profile(request))body$source_requirements<-.brohn_rpcc_requirements(store,request)
     if(.brohn_rpk_eda_profile(request))body$source_requirements<-.brohn_rpk_eda_requirements(store,request$report_refs,brohn_report_source_admission(request$renderer_profile))
     if(.brohn_rpk_prepared_profile(request)){body$execution_plan<-.brohn_rpk_execution_plan(request);body["preparation"]<-list(NULL)}
     .brohn_rpk_intent_view(brohn_put_entity(store,"report_package_intent",id,body,0L,request$project_id))
@@ -166,6 +173,8 @@ brohn_report_package_catalog <- function(store,study_id,project_id,cursor=NULL,l
   "R/platform-eda-display.R","R/platform-eda-display-sources.R","R/platform-eda-continuous-review.R","R/platform-report-package-eda.R","R/platform-report-package-eda-figures.R",
   "scripts/workers/eda_display.py","scripts/workers/report_package_eda.py","scripts/workers/eda_review.py","scripts/workers/eda_continuous_review.py","scripts/workers/physiology_artifacts.py",
   "R/platform-report-package-distributions.R","R/platform-report-package-render.R","R/platform-report-package-tables.R",
+  "R/platform-report-package-cardiac-preparation.R","R/platform-report-package-cardiac.R",
+  "R/platform-cardiac-display-history.R","R/platform-cardiac-display-chapters.R","R/platform-cardiac-display.R",
   "scripts/workers/report_package_archive.py","scripts/workers/report_package_raster.py","R/platform-jobs.R","scripts/analysis-worker.R",
   "R/platform-explicit-distributions.R","R/platform-explicit-distribution-views.R","R/platform-gaze-report-views.R",
   "R/platform-paired-plots.R","R/platform-paired-plot-views.R","R/platform-questionnaire-artifacts.R","R/platform-questionnaire-index.R",
@@ -176,6 +185,55 @@ brohn_report_package_catalog <- function(store,study_id,project_id,cursor=NULL,l
   "R/platform-library.R","R/platform-task-cohort-storage.R","R/platform-questionnaire-explorer.R","R/platform-hosted-profile.R",
   "R/platform-publication.R","R/platform-signal-values.R","R/platform-clock-map.R","R/platform-run-evidence.R","R/platform-task-evidence.R",
   "R/platform-task-plots.R","R/platform-task-plot-views.R","R/platform-task-import.R","R/platform-gnat-import.R","scripts/readiness/report-package-runtime.json")
+.brohn_rpk_files <- unique(c(.brohn_rpk_files,
+  "R/platform-cardiac-display.R",
+  "R/platform-cardiac-display-jobs.R",
+  "R/platform-cardiac-display-identity.R",
+  "R/platform-cardiac-display-validation.R",
+  "R/platform-cardiac-display-sources.R",
+  "R/platform-cardiac-display-chapters.R",
+  "R/platform-core.R",
+  "R/platform-store.R",
+  "R/platform-catalog.R",
+  "R/platform-publication.R",
+  "R/platform-jobs.R",
+  "R/platform-vision.R",
+  "R/platform-hosted-profile.R",
+  "R/platform-report-package-authority.R",
+  "R/platform-report-package-sources.R",
+  "R/platform-task-display.R",
+  "R/platform-eda-display.R",
+  "R/platform-eda-display-sources.R",
+  "R/platform-eda-continuous-review.R",
+  "R/platform-signal.R",
+  "R/platform-signal-values.R",
+  "R/platform-cardiac-review.R",
+  "R/platform-stream-curation.R",
+  "R/platform-interchange.R",
+  "R/platform-acquisition.R",
+  "R/platform-acquisition-quality.R",
+  "R/platform-ingestion.R",
+  "R/platform-questionnaire-explorer.R",
+  "R/platform-clock-map.R",
+  "R/platform-clock-authority.R",
+  "scripts/analysis-worker.R",
+  "scripts/workers/cardiac_display.py",
+  "scripts/workers/cardiac_display_core.py",
+  "scripts/workers/cardiac_display_geometry.py",
+  "scripts/workers/cardiac_display_lineage.py",
+  "scripts/workers/cardiac_display_policy.py",
+  "scripts/workers/cardiac_values.py",
+  "scripts/workers/physiology_artifacts.py",
+  "scripts/readiness/report-package-runtime.json",
+  "R/platform-report-package-cardiac-sources.R",
+  "R/platform-report-package-cardiac-figures.R",
+  "R/platform-report-package-cardiac-render.R",
+  "R/platform-report-package-cardiac-provenance.R",
+  "R/platform-report-package-cardiac-session.R",
+  "scripts/workers/report_package_cardiac.py"))
+.brohn_rpk_files <- unique(c(.brohn_rpk_files, "R/platform-cardiac-source-reader.R"))
+.brohn_rpk_files <- unique(c(.brohn_rpk_files, "R/platform-report-package-profiles.R", "R/platform-report-package-raw-gaze.R"))
+.brohn_rpk_files <- unique(c(.brohn_rpk_files, "R/platform-report-package-transactions.R"))
 .brohn_rpk_loaded <- setNames(lapply(.brohn_rpk_files,function(p)digest::digest(file=p,algo="sha256")),.brohn_rpk_files)
 .brohn_rpk_runtime <- brohn_read_json_file("scripts/readiness/report-package-runtime.json",maximum=8192)
 brohn_require(identical(.brohn_rpk_runtime$schema,"brohn-report-package-runtime-profile/0.1")&&
@@ -236,7 +294,8 @@ brohn_cancel_report_package_intent <- function(store,intent_ref) {
     if(b$status %in% c("cancelled","superseded","succeeded"))return(.brohn_rpk_intent_view(r))
     b$status<-"cancelled";b$reason<-"Preparation cancelled. Earlier saved packages remain available."
     r<-.brohn_rpk_put_intent(store,r,b)
-    for(d in b$dependencies)if(isTRUE(d$created_for_intent)&&!is.null(d$job_id)&&.brohn_rpk_dependency_users(store,d$job_id,r$id)==0L){j<-brohn_get_job(store,d$job_id);if(!is.null(j)&&j$status %in% c("queued","running"))brohn_cancel_job(store,j$id)}
+    for(d in b$dependencies)if(!is.null(d$job_id)&&.brohn_rpk_dependency_users(store,d$job_id,r$id)==0L&&
+      (isTRUE(d$created_for_intent)||.brohn_rpk_dependency_created_by_intent(store,d$job_id))){j<-brohn_get_job(store,d$job_id);if(!is.null(j)&&j$status %in% c("queued","running"))brohn_cancel_job(store,j$id)}
     if(!is.null(b$job_ref)){j<-brohn_get_job(store,b$job_ref$id);if(!is.null(j)&&j$status %in% c("queued","running"))brohn_cancel_job(store,j$id)}
     .brohn_rpk_intent_view(r)
   })
@@ -274,6 +333,7 @@ brohn_queue_report_package <- function(store,selection_ref,retry=FALSE) {
 brohn_continue_report_package_intent <- function(store,intent_ref,action="advance") {
   brohn_require(action %in% c("advance","resume","retry"),"Choose Continue, Resume or Retry explicitly.")
   original<-.brohn_rpk_intent(store,intent_ref)
+  if(.brohn_rpk_cardiac_profile(original$body$request))return(.brohn_rptx_continue(store,intent_ref,action))
   if(.brohn_rpk_prepared_profile(original$body$request))return(.brohn_rpk_continue_task_intent(store,intent_ref,action))
   brohn_store_batch(store,function(){
     r<-.brohn_rpk_intent(store,intent_ref);r<-.brohn_rpk_reconcile(store,r);b<-r$body
@@ -299,7 +359,10 @@ brohn_continue_report_package_intent <- function(store,intent_ref,action="advanc
       old<-Filter(function(d)identical(d$slot,key),b$dependencies);old<-if(length(old))old[[1L]]else NULL
       if(!is.null(saved)){deps[[length(deps)+1L]]<-list(slot=key,report_ref=ref,job_id=if(is.null(old))NULL else old$job_id,created_for_intent=if(is.null(old))FALSE else old$created_for_intent,result_ref=saved);next}
       before<-.brohn_rpk_distribution_request(store,ref);fingerprint<-brohn_hash(before[setdiff(names(before),"authority")]);existing<-.brohn_rpk_latest_job(store,"explicit_distributions",fingerprint)
-      j<-brohn_queue_explicit_distributions_ref(store,ref,retry=retrying)
+      # Do not inherit a cancelled prerequisite from another preparation.
+      # A dependency already attached here retains explicit Retry semantics.
+      retry_dependency<-retrying||(is.null(old)&&!is.null(existing)&&identical(existing$status,"cancelled"))
+      j<-brohn_queue_explicit_distributions_ref(store,ref,retry=retry_dependency)
       created<-if(!is.null(old)&&identical(old$job_id,j$id))isTRUE(old$created_for_intent)else is.null(existing)||!identical(existing$id,j$id)
       deps[[length(deps)+1L]]<-list(slot=key,report_ref=ref,job_id=j$id,created_for_intent=created,result_ref=NULL)
       if(j$status %in% c("failed","cancelled")){b$status<-"failed";b$dependencies<-deps;b$reason<-.brohn_rpk_job_error(j,"The saved distribution prerequisite stopped. Explicitly retry when ready.");return(.brohn_rpk_intent_view(.brohn_rpk_put_intent(store,r,b)))}
@@ -348,24 +411,24 @@ brohn_prepare_report_package_execution <- function(store,job,input,scratch,pulse
   .brohn_rpk_check_code(job$request$implementation$sources);s<-.brohn_rpk_selection_live(store,input$selection_ref,job)$selection$body
   .brohn_rpk_runtime_check(input$implementation,scratch)
   .brohn_rpk_source_pulse(pulse)
-  m<-.brohn_rpk_selection_sources(store,s);handle<-.brohn_rpk_hold_sources(store,m,pulse=pulse);ok<-FALSE
+  m<-.brohn_rpk_selection_sources(store,s,pulse=pulse);handle<-.brohn_rpk_hold_sources(store,m,pulse=pulse);ok<-FALSE
   on.exit(if(!ok).brohn_rpk_release(handle),add=TRUE)
   sources<-.brohn_rpk_complete_sources(store,handle,pulse=pulse)
   # Historical renderer inputs keep their original closed schema. The shared
   # reader's empty task collection is applicable only to the task profile.
   if(!.brohn_rpk_prepared_profile(s))sources$task_displays<-NULL
-  if(!.brohn_rpk_choice_profile(s))sources$choice_displays<-NULL
-  if(!.brohn_rpk_eda_profile(s))for(field in c("eda_displays","related_eda_sources","source_identity_graph"))sources[[field]]<-NULL
+  if(!.brohn_rpk_choice_profile(s)&&!.brohn_rpk_cardiac_profile(s))sources$choice_displays<-NULL
+  if(!.brohn_rpk_eda_profile(s)&&!.brohn_rpk_cardiac_profile(s))for(field in c("eda_displays","related_eda_sources","source_identity_graph"))sources[[field]]<-NULL
   bundle<-c(list(schema="brohn-report-package-render-input/0.1",selection=s),sources,list(implementation=input$implementation,limits=input$limits))
   path<-file.path(scratch,"report-package-bundle.json");brohn_require(!file.exists(path),"The assembly scratch bundle already exists.")
-  if(.brohn_rpk_eda_profile(s))brohn_eda_write_json_file(bundle,path,maximum=input$limits$max_model_bytes)
+  if(.brohn_rpk_eda_profile(s)||.brohn_rpk_cardiac_profile(s))brohn_eda_write_json_file(bundle,path,maximum=input$limits$max_model_bytes)
   else brohn_write_json_file(bundle,path,maximum=input$limits$max_model_bytes)
   .brohn_rpk_source_pulse(pulse)
   seal<-.brohn_qexplorer_hold(path,file.info(path)$size);state<-handle$state;state$extra_guards<-list(seal)
   input$bundle<-list(schema=bundle$schema,path=normalizePath(path,winslash="/",mustWork=TRUE),sha256=digest::digest(file=path,algo="sha256"),bytes=as.numeric(file.info(path)$size),max_bytes=input$limits$max_model_bytes)
   input$source_binding<-brohn_hash(m)
   .brohn_rpk_source_pulse(pulse)
-  brohn_report_package_sources_current(store,handle);brohn_report_package_job_authorize(store,job);ok<-TRUE;list(input=input,handle=handle)
+  brohn_report_package_sources_current(store,handle,pulse=pulse);brohn_report_package_job_authorize(store,job);ok<-TRUE;list(input=input,handle=handle)
 }
 brohn_analyse_report_package <- function(input,scratch) {
   brohn_fields(input$bundle,c("schema","path","sha256","bytes","max_bytes"),label="Sealed complete report bundle")
@@ -375,7 +438,7 @@ brohn_analyse_report_package <- function(input,scratch) {
     identical(digest::digest(file=b$path,algo="sha256"),b$sha256),"The sealed report bundle is unavailable or changed.")
   root<-normalizePath(scratch,winslash="/",mustWork=TRUE);path<-normalizePath(b$path,winslash="/",mustWork=TRUE)
   brohn_require(identical(dirname(path),root)&&identical(basename(path),"report-package-bundle.json"),"The report bundle is outside this worker's owned scratch.")
-  bundle<-if(identical(input$limits$profile,"controlled-task-choice-eda-report-package/0.1"))
+  bundle<-if(input$limits$profile %in% c("controlled-task-choice-eda-report-package/0.1","controlled-task-choice-eda-cardiac-report-package/0.1"))
     brohn_eda_read_json_file(path,maximum=b$max_bytes)else brohn_read_json_file(path,maximum=b$max_bytes)
   brohn_require(.brohn_rpk_same(bundle$implementation,input$implementation)&&.brohn_rpk_same(bundle$limits,input$limits)&&identical(brohn_hash(bundle$selection),input$selection_ref$body_hash),"The bundle differs from its frozen selection or implementation.")
   list(report_package=brohn_render_report_package(bundle,file.path(scratch,"artifacts")))
@@ -388,7 +451,7 @@ brohn_publish_report_package <- function(store,output,scratch,job,input,output_p
   brohn_require(.brohn_rpk_same(base,brohn_report_package_input(store,job,FALSE)),"The package no longer matches its queued input.")
   .brohn_rpk_source_pulse(pulse)
   live<-.brohn_rpk_selection_live(store,input$selection_ref,job);s<-live$selection$body
-  m<-.brohn_rpk_selection_sources(store,s)
+  m<-.brohn_rpk_selection_sources(store,s,pulse=pulse)
   brohn_require(identical(brohn_hash(m),input$source_binding),"Source authority changed since the complete evidence was prepared.")
   .brohn_rpk_source_pulse(pulse)
   source_guards<-brohn_hold_signal_value_sources(store,list(source_objects=lapply(m$objects,function(o)o[c("hash","bytes")])))
@@ -397,7 +460,7 @@ brohn_publish_report_package <- function(store,output,scratch,job,input,output_p
   brohn_require(.brohn_rpk_same(brohn_read_json_file(output_path),output),"The worker output changed before publication.")
   .brohn_rpk_source_pulse(pulse)
   result<-output$report$report_package
-  if(.brohn_rpk_eda_profile(s)&&identical(result$schema,"brohn-eda-report-refusal/0.1"))
+  if((.brohn_rpk_eda_profile(s)||.brohn_rpk_cardiac_profile(s))&&identical(result$schema,"brohn-eda-report-refusal/0.1"))
     return(.brohn_rpk_publish_eda_refusal(store,result,job,input,s,source_guards,output_guard))
   if(.brohn_rpk_prepared_profile(s)&&identical(result$schema,"brohn-report-package-refusal/0.1"))
     return(.brohn_rpk_publish_panel_refusal(store,result,job,input,s,source_guards,output_guard))
@@ -429,7 +492,7 @@ brohn_publish_report_package <- function(store,output,scratch,job,input,output_p
   document<-.brohn_publication_stage_json(store,job,body,file.path(scratch,"published-report-package.json"));on.exit(brohn_close_publication(document$guard,committed),add=TRUE)
   .brohn_rpk_source_pulse(pulse)
   receipt<-brohn_store_batch(store,function(){
-    current<-.brohn_rpk_selection_sources(store,s)
+    current<-.brohn_rpk_selection_sources(store,s,pulse=pulse)
     brohn_require(identical(brohn_hash(current),input$source_binding),"Sources or permission changed before atomic package publication.")
     .brohn_cm_guard_check(c(source_guards,list(output_guard)));brohn_report_package_job_fence(store,job)
     current_intent<-.brohn_rpk_selection_live(store,input$selection_ref,job)$intent

@@ -18,6 +18,7 @@ brohn_neural_settings_ui <- function(m, columns = character(), source_format = "
   baseline_on <- !is.null(p$baseline_s)
   shiny::tagList(shiny::h3("What would you like to measure?"),
     select("recipe", "EEG analysis", brohn_neural_recipe_choices(), recipe, "eeg-welch-channel/1.0"),
+    brohn_method_evidence_selector_ui(id("recipe"), unname(brohn_neural_recipe_choices())),
     if (legacy_morlet) shiny::p("The saved Morlet 1.0 result keeps its original settings. Saving a new mapping uses Morlet 1.1: review baseline duration and event separation before running it."),
     condition("input.map_neural_recipe === 'eeg-welch-channel/1.0'",
       shiny::p("Summarise channel spectra across usable recording segments. This route does not need event markers and keeps the acquisition reference.")),

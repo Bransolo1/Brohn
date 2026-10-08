@@ -36,16 +36,12 @@ output <- normalizePath(output, winslash = "/", mustWork = TRUE)
 if (identical(tolower(output), tolower(project)) || startsWith(tolower(output), paste0(tolower(project), "/")))
   stop("The resolved QA directory is inside the source repository. Choose an external directory.", call. = FALSE)
 rscript <- file.path(R.home("bin"), if (.Platform$OS.type == "windows") "Rscript.exe" else "Rscript")
-implementation_hashes <- function() {
-  folders <- c("R", "src", "scripts", "scripts/workers", "scripts/acquisition", "www", "www/participant")
-  paths <- unique(c(unlist(lapply(folders, function(folder) file.path(folder,
-    list.files(file.path(project, folder), pattern = "\\.(R|py|js|mjs|css|json|c|h|ps1)$", recursive = FALSE))), use.names = FALSE), "renv.lock"))
-  paths <- sort(paths[file.exists(file.path(project, paths)) & !dir.exists(file.path(project, paths))])
-  stats::setNames(lapply(paths, function(path) digest::digest(file = file.path(project, path), algo = "sha256")), paths)
-}
+source(file.path(project, "scripts/qa-source-inventory.R"), local = TRUE)
+implementation_hashes <- function() brohn_qa_source_inventory(project)
 code_identity <- implementation_hashes()
 manifest <- list(schema = "brohn-qa-run/1.0", scope = catalog$scope, started_at = format(Sys.time(), tz = "UTC", usetz = TRUE),
   catalog_hash = digest::digest(file = file.path(project, "scripts/qa-catalog.json"), algo = "sha256"),
+  source_inventory_profile = "brohn-qa-source-inventory/1.0",
   r_version = as.character(getRversion()), library = .libPaths()[1L], implementation_hashes = code_identity,
   selected = lapply(selected, `[[`, "id"), results = list(), status = "running")
 save_results <- function() writeLines(enc2utf8(jsonlite::toJSON(manifest, auto_unbox = TRUE, pretty = TRUE, null = "null")), file.path(output, "results.json"), useBytes = TRUE)
@@ -67,7 +63,9 @@ for (test in selected) {
   outcome <- tryCatch(processx::run(rscript, c("--vanilla", test$path), wd = project, timeout = test$timeout_s,
     stdout = stdout, stderr = stderr, error_on_status = FALSE, cleanup_tree = TRUE, windows_hide_window = TRUE,
     env = c("current", R_LIBS_USER = .libPaths()[1L], BROHN_QA_EVIDENCE_PARENT = evidence_parent)), error = function(e) list(status = NULL, error = conditionMessage(e)))
-  unchanged <- identical(source_hash, digest::digest(file = test_path, algo = "sha256")) && identical(code_identity, implementation_hashes())
+  # A missing or unreadable source is a retained failed check, not a lost results receipt.
+  after_identity <- tryCatch(implementation_hashes(), error = function(e) e)
+  unchanged <- !inherits(after_identity, "error") && identical(code_identity, after_identity)
   passed <- !is.null(outcome$status) && outcome$status == 0L && unchanged
   result <- list(id = test$id, path = test$path, status = if (passed) "passed" else "failed", exit_code = outcome$status,
     error = if (!unchanged) "The check or application source changed during execution; rerun against a stable checkout." else outcome$error,

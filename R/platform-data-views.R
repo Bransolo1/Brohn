@@ -140,11 +140,13 @@ brohn_dataset_detail_ui <- function(store, id) {
       if (gaze) brohn_raw_gaze_settings_ui(m, columns),
       if (d$modality == "eeg") brohn_neural_settings_ui(m, columns, d$source$format),
       if (d$modality == "eda") brohn_eda_events_settings_ui(m, columns, d$source$format),
+      if (d$modality %in% c("ecg", "ppg")) brohn_method_evidence_cardiac_mapping_ui(d$modality),
       if (d$modality == "respiration") brohn_respiration_settings_ui(m$parameters),
       if (d$modality == "emg") brohn_emg_settings_ui(m$parameters),
       if (peripheral) brohn_peripheral_settings_ui(m, columns, d$modality),
       shiny::textAreaInput("map_origin", "Recording provenance and collection notes", brohn_default(m$origin_statement, ""), width = "100%", rows = 3,
         placeholder = "Device/export, collection setting, identity scheme, preprocessing already applied and known gaps."),
+      if (d$modality %in% c("eda", "eeg", "ecg", "ppg", "temperature", "gaze", "prepared_gaze")) brohn_method_evidence_mapping_actions_ui(),
       shiny::actionButton("accept_dataset", "Confirm mapping and analyse", class = "btn-primary"),
       if (d$status %in% c("accepted", "analysed")) shiny::actionButton("analyse_dataset", "Run a new analysis")),
     shiny::uiOutput("dataset_reports"))
@@ -339,14 +341,18 @@ brohn_report_content <- function(report, results_first = FALSE) {
     if (!brohn_facial_supported(a)) brohn_card(title = if (identical(a$kind,"implicit")) "Trial source coverage" else if (length(a$task_scores)) "Questionnaire coverage" else "What this result covers",
       if (identical(a$kind,"implicit")) shiny::p("These counts describe the retained trial source. Each task result has its own completeness and scoring eligibility.") else
         if (length(a$task_scores)) shiny::p("These counts describe explicit questionnaire answers. The task cards above retain their own trial counts and scoring eligibility."),
+      if (identical(a$kind, "questionnaire")) shiny::p("Recorded IDs may identify sessions or people. Their count alone does not establish how many different people took part."),
       if (identical(a$kind, "multimodal")) .brohn_multimodal_coverage_ui(a) else
         if (brohn_measurement_coverage_supported(a)) brohn_measurement_coverage_ui(a) else
-        brohn_table(list(a$quality), label = if (identical(a$kind,"implicit")) "Trial source coverage and eligibility" else if (length(a$task_scores)) "Questionnaire coverage and eligibility" else "Coverage and eligibility")),
+        brohn_table(list(a$quality), labels = if (identical(a$kind, "questionnaire"))
+          vapply(names(a$quality), function(key) switch(key, missing_response_count = "Missing responses",
+            participant_count = "Recorded IDs", response_count = "Responses", gsub("_", " ", key, fixed = TRUE)), character(1)) else NULL,
+          label = if (identical(a$kind,"implicit")) "Trial source coverage and eligibility" else if (length(a$task_scores)) "Questionnaire coverage and eligibility" else "Coverage and eligibility")),
     if (length(a$features) && a$kind == "questionnaire") lapply(a$features, function(q) brohn_card(title = q$prompt,
       subtitle = paste(brohn_default(q$condition_label, q$condition_id), "\u00b7", brohn_default(q$scale_description, "Explicit responses")),
       shiny::p(paste(q$answered_count, "answered;", q$missing_count, "missing")),
       if (!is.null(q$numeric_response_mean)) shiny::p(paste("Mean response:", format(signif(q$numeric_response_mean, 4), trim = TRUE))),
-      shiny::tags$ul(lapply(q$counts, function(option) shiny::tags$li(paste(brohn_default(option$label, brohn_json(option$value)), "\u2014", option$count, "responses")))))),
+      shiny::tags$ul(lapply(q$counts, function(option) shiny::tags$li(paste(brohn_default(option$label, brohn_json(option$value)), "\u2014", option$count, if (option$count == 1) "response" else "responses")))))),
     if (length(a$features) && a$kind != "questionnaire" && !brohn_facial_supported(a)) shiny::tags$details(shiny::tags$summary(paste("Inspect recording features", paste0("(", length(a$features), " rows)"))),
       brohn_table(a$features, maximum = 100, label = "Recording features")),
     if (length(a$observations)) shiny::tags$details(shiny::tags$summary(paste("Inspect retained observations", paste0("(", length(a$observations), " rows)"))),

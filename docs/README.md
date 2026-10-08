@@ -1,5 +1,11 @@
 # Brohn documentation map
 
+Current checkpoint: [9 October source/workflow evidence](qa/SOURCE-EVIDENCE-MAP-20261009.md).
+Start with the [assigned-study workflow](operations/ASSIGNED-STUDY-WORKFLOW.md),
+[saved cardiac guide](operations/SHARE-SAVED-CARDIAC-FINDINGS.md),
+[method references in the app](research/METHOD-EVIDENCE-RUNTIME.md) and
+[remaining work](WORKSTREAM.md). Earlier dated evidence below keeps its own scope.
+
 This is the map for John and future contributors, updated for the
 [27 September 2026 saved-findings checkpoint](qa/PUBLICATION-REPORT-HANDOFF-20260927.md).
 Development resumed at the owner's request after the September 24 checkpoint; see the

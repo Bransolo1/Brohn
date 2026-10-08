@@ -15,6 +15,7 @@ brohn_eda_events_settings_ui <- function(m, columns = character(), source_format
   if (!source_format %in% c("csv", "tsv")) return(shiny::p("Event-related EDA requires a calibrated continuous CSV or TSV recording with measured event timing."))
   shiny::tagList(shiny::h3("Which EDA response do you want to describe?"),
     select("recipe", "EDA analysis", brohn_eda_events_recipe_choices(), p$recipe, "eda-neurokit-highpass/1.0"),
+    brohn_method_evidence_selector_ui(id("recipe"), unname(brohn_eda_events_recipe_choices())),
     condition("input.map_eda_event_recipe === 'eda-neurokit-highpass/1.0'",
       shiny::p("Summarise tonic activity and response candidates within each declared recording segment. Select a stimulus-response recipe to compare explicit baseline and event windows.")),
     condition("input.map_eda_event_recipe === 'eda-neurokit-highpass/1.1'",

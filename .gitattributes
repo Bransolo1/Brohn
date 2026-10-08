@@ -14,3 +14,18 @@ docs/methods/evidence-2026-09-30/** -text whitespace=cr-at-eol
 /*.R -text whitespace=cr-at-eol
 /*.ps1 -text whitespace=cr-at-eol
 /docs/methods/evidence-2026-10-01/** -text whitespace=cr-at-eol
+
+# Complete QA inventory and installed delivery descriptors use literal bytes.
+/config/** -text whitespace=cr-at-eol
+/src/** -text whitespace=cr-at-eol
+/examples/** -text whitespace=cr-at-eol
+/.gitignore -text whitespace=cr-at-eol
+/renv.lock -text whitespace=cr-at-eol
+/package.json -text whitespace=cr-at-eol
+/pnpm-lock.yaml -text whitespace=cr-at-eol
+/package-lock.json -text whitespace=cr-at-eol
+/yarn.lock -text whitespace=cr-at-eol
+/*.js -text whitespace=cr-at-eol
+/*.mjs -text whitespace=cr-at-eol
+/*.py -text whitespace=cr-at-eol
+/*.css -text whitespace=cr-at-eol

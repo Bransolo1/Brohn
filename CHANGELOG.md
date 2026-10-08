@@ -1,5 +1,55 @@
 # Changes
 
+## Connected assigned studies and source-bound handoff — 2026-10-09
+
+- Enable versioned authoring, controls/groups, clone/template/portable reuse and
+  assigned participant delivery through the normal local application.
+- Connect Finish to its named analysis; preserve legacy workers and failed jobs.
+  Add explicit saved-run/release analysis and visible session/release context.
+- Correct local participant document navigation without relaxing API/write guards.
+- Pass the relocated end-to-end study journey and independent full saved-data
+  inspection; qualify final desktop/phone cards and four accessibility scans.
+- Include saved cardiac package implementation and screened method guidance with
+  separate native/archive evidence and explicit unfinished UX/scientific gates.
+- Publish reproducible configured tests and updated README, architecture,
+  workstream and collaborator handoff. The full platform remains unfinished.
+
+## Local integration in progress — 9 October 2026
+
+- Confirmed the normal-launcher researcher-to-participant-to-report browser
+  journey after correcting local invitation document entry. Full test-phase
+  acceptance remains pending its read-only corruption-fixture correction.
+- Qualified actual saved-run recovery and release analysis through the ordinary
+  worker, fresh report UI and complete saved downloads. Earlier failed requests
+  and original results remain unchanged.
+- Preparing clearer Activity/report-list context and a portable configured
+  checkout check. This note does not promote runtime source or establish full
+  platform, device, scientific or questionnaire parity.
+
+## Local authoring and publishing integration in progress — 2026-10-08
+
+- Implement explicit version grouping and version-aware study/library/template/
+  portable lifecycle in a private integration candidate. Real R/ZIP tests pass
+  36 checks, including legacy imports, full assignment references, archive
+  protections and preserved task evidence/ancestry. The installed researcher
+  journey now passes 13 browser/five R/25 saved-download and catalogue checks plus
+  two Axe scans. Fix automatic Shiny loading and exact review-step preview lookup
+  from the original failed journeys. Publication of this source remains pending.
+- Prepare ordinary researcher/participant startup connections, a trusted assigned
+  runtime and real receiving implementation registration. Actual API publication
+  and stored participant entry through branching, review, controls/versions and
+  Finish pass. The real worker exposed an omitted assigned Finish adapter;
+  connect the accepted adapter while preserving the original failed job/receipt.
+  Corrected Finish, repeated Finish, ordinary worker, fresh report reopening and
+  researcher review/export now pass in their scoped phases. Complete JSON/CSV,
+  offline HTML and original saved-data preservation are checked. The full launcher/
+  Publish-button handoff and explicit saved-run recovery remain open.
+- Fix the browser media client's actual httpuv compression mismatch. Real R/Chrome
+  metadata admission passes 23 browser/49 fixture/49 wrapper checks; preserve its
+  earlier failures. The separate adverse transport suite now passes 89 browser
+  and eight syntax checks, including the actual 60-second deadline. Full media
+  host/playback/receive/export integration remains open.
+
 ## Ordinary assigned-study publishing gap — 2026-10-07
 
 - Record the missing versioned publisher, runtime manifest, entry bootstrap,

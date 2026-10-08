@@ -3,7 +3,7 @@ source("R/platform-load.R");brohn_load(ui=FALSE);source("R/platform-ingestion.R"
 mode<-args[[1]]
 if(mode=="analyse") {
   input<-brohn_read_json_file(args[[2]]);scratch<-args[[3]];output<-args[[4]]
-  paths<-c("R/platform-ingestion.R","R/platform-publication.R","scripts/workers/ingestion_snapshot.py","scripts/workers/publication.py","src/publication_guard.c")
+  paths<-c("R/platform-tabular-preview.R","R/platform-ingestion.R","R/platform-publication.R","scripts/workers/ingestion_snapshot.py","scripts/workers/publication.py","src/publication_guard.c")
   identity<-setNames(lapply(paths,function(p)digest::digest(file=p,algo="sha256")),paths)
   report<-brohn_analyse_ingestion(input,scratch)
   stopifnot(identical(identity,setNames(lapply(paths,function(p)digest::digest(file=p,algo="sha256")),paths)))

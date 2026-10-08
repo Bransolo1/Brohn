@@ -1,0 +1,2477 @@
+{
+  "schema": "brohn-method-evidence/0.1",
+  "registry_id": "brohn-consumer-method-evidence",
+  "revision": "0.2.0-screened",
+  "created_on": "2026-10-01",
+  "audit_ref": {
+    "path": "academic-physiology-appraisal-20261001/MANIFEST.json",
+    "sha256": "e9b3a3e58ce90f7fe990343a929594113a3ea08d1fbc0f69bf98ddeb691ab252"
+  },
+  "coverage": {
+    "status": "partial_option_inventory",
+    "exhaustive": false,
+    "qualification_supported": false,
+    "omitted_scope": [
+      "Study-design has only a bounded constructor/order claim; remaining template bindings stay in the separate frozen audit",
+      "Remaining options in the 30-row inventory",
+      "Other physiological, gaze, camera, audio and advanced capability options",
+      "Full supporting-text, independent empirical and consumer applicability review"
+    ]
+  },
+  "sources": [
+    {
+      "id": "boucsein-2012",
+      "publication_id": "doi:10.1111/j.1469-8986.2012.01384.x",
+      "title": "Publication recommendations for electrodermal measurements",
+      "authors": "Boucsein, Fowles, Grimnes, Ben-Shakhar, Roth, Dawson and Filion",
+      "year": 2012,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22680988/",
+      "kind": "consensus",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/22680988/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "benedek-2010",
+      "publication_id": "pmid:20451556",
+      "title": "A continuous measure of phasic electrodermal activity",
+      "authors": "Benedek and Kaernbach",
+      "year": 2010,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20451556/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/20451556/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "greco-2016",
+      "publication_id": "doi:10.1109/tbme.2015.2474131",
+      "title": "cvxEDA: A Convex Optimization Approach to Electrodermal Activity Processing",
+      "authors": "Greco, Valenza, Lanata, Scilingo and Citi",
+      "year": 2016,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26336110/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/26336110/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "quigley-2024",
+      "publication_id": "doi:10.1111/psyp.14604",
+      "title": "Publication guidelines for human heart rate and heart rate variability studies in psychophysiology—Part 1: Physiological underpinnings and foundations of measurement",
+      "authors": "Karen S. Quigley; Peter J. Gianaros; Greg J. Norman; J. Richard Jennings; Gary G. Berntson; Eco J. C. de Geus",
+      "year": 2024,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38873876/",
+      "kind": "consensus",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://onlinelibrary.wiley.com/doi/10.1111/psyp.14604",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Publisher full-text HTML; selected sections read, not whole-paper review. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "laborde-2017",
+      "publication_id": "doi:10.3389/fpsyg.2017.00213",
+      "title": "Heart Rate Variability and Cardiac Vagal Tone in Psychophysiological Research—Recommendations for Experiment Planning, Data Analysis, and Data Reporting",
+      "authors": "Sylvain Laborde; Emma Mosley; Julian F. Thayer",
+      "year": 2017,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5316555/",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://public-pages-files-2025.frontiersin.org/articles/10.3389/fpsyg.2017.00213/pdf",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Publisher PDF selected sections. HTML/PMC attempts also encountered errors or browser checks; no bypass. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "mejia-2020",
+      "publication_id": "pmid:32498055",
+      "title": "Pulse rate variability in cardiovascular health: a review on its applications and relationship with heart rate variability",
+      "authors": "Elisa Mejía-Mejía; James M. May; Robinson Torres; Panayiotis A. Kyriacou",
+      "year": 2020,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32498055/",
+      "kind": "review",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/32498055/",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Official indexed PubMed abstract; direct opens sometimes returned empty pages. University manuscript identified but not reviewed. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "yuda-2020",
+      "publication_id": "pmid:32811571",
+      "title": "Pulse rate variability: a new biomarker, not a surrogate for heart rate variability",
+      "authors": "Emi Yuda; Muneichi Shibata; Yuki Ogata; Norihiro Ueda; Tomoyuki Yambe; Makoto Yoshizawa; Junichiro Hayano",
+      "year": 2020,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32811571/",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7437069/",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Official PMC article. Publication is a letter with an illustrative observation, not a broad device-validation cohort. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "keil-2022",
+      "publication_id": "doi:10.1111/psyp.14052",
+      "title": "Recommendations and publication guidelines for studies using frequency domain and time-frequency domain analyses of neural time series",
+      "authors": "Keil et al.",
+      "year": 2022,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35398913/",
+      "kind": "consensus",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/35398913/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "widmann-2015",
+      "publication_id": "doi:10.1016/j.jneumeth.2014.08.002",
+      "title": "Digital filter design for electrophysiological data—a practical approach",
+      "authors": "Widmann, Schröger and Maess",
+      "year": 2015,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25128257/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/25128257/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "mathot-2018",
+      "publication_id": "pmid:29330763",
+      "title": "Safe and sensible preprocessing and baseline correction of pupil-size data",
+      "authors": "Mathôt, Fabius, van Heusden and Van der Stigchel",
+      "year": 2018,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29330763/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/29330763/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "kret-2019",
+      "publication_id": "doi:10.3758/s13428-018-1075-y",
+      "title": "Preprocessing pupil size data: Guidelines and code",
+      "authors": "Kret and Sjak-Shie",
+      "year": 2019,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29992408/",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/29992408/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "kahveci-2024",
+      "publication_id": "doi:10.3758/s13428-023-02109-1",
+      "title": "How pre-processing decisions affect the reliability and validity of the approach–avoidance task: Evidence from simulations and multiverse analyses with six datasets",
+      "authors": "Kahveci, Rinck, van Alebeek and Blechert",
+      "year": 2024,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10990989/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "krieglmeyer-2010",
+      "publication_id": "doi:10.1080/02699930903047298",
+      "title": "Comparing measures of approach–avoidance behaviour: The manikin task vs. two versions of the joystick task",
+      "authors": "Krieglmeyer and Deutsch",
+      "year": 2010,
+      "url": "https://www.tandfonline.com/doi/abs/10.1080/02699930903047298",
+      "kind": "primary_experiment",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://www.tandfonline.com/doi/abs/10.1080/02699930903047298",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "boateng-2018",
+      "publication_id": "doi:10.3389/fpubh.2018.00149",
+      "title": "Best Practices for Developing and Validating Scales for Health, Social, and Behavioral Research: A Primer",
+      "authors": "Boateng et al.",
+      "year": 2018,
+      "url": "https://doi.org/10.3389/fpubh.2018.00149",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://doi.org/10.3389/fpubh.2018.00149",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "flake-2020",
+      "publication_id": "doi:10.1177/2515245920952393",
+      "title": "Measurement Schmeasurement: Questionable Measurement Practices and How to Avoid Them",
+      "authors": "Flake and Fried",
+      "year": 2020,
+      "url": "https://journals.sagepub.com/doi/abs/10.1177/2515245920952393",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://journals.sagepub.com/doi/abs/10.1177/2515245920952393",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "marley-2005",
+      "publication_id": "doi:10.1016/j.jmp.2005.05.003",
+      "title": "Some probabilistic models of best, worst, and best–worst choices",
+      "authors": "Marley and Louviere",
+      "year": 2005,
+      "url": "https://www.sciencedirect.com/science/article/pii/S0022249605000441",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://www.sciencedirect.com/science/article/pii/S0022249605000441",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "jaeger-2008",
+      "publication_id": "doi:10.1016/j.foodqual.2008.03.002",
+      "title": "Best–worst scaling: An introduction and initial comparison with monadic rating for preference elicitation with food products",
+      "authors": "Jaeger et al.",
+      "year": 2008,
+      "url": "https://researchprofiles.ku.dk/en/publications/best-worst-scaling-an-introduction-and-initial-comparison-with-mo/",
+      "kind": "primary_experiment",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://researchprofiles.ku.dk/en/publications/best-worst-scaling-an-introduction-and-initial-comparison-with-mo/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "macrae-2018",
+      "publication_id": "doi:10.3389/fphys.2018.00029",
+      "title": "Skin Temperature Measurement Using Contact Thermometry: A Systematic Review of Setup Variables and Their Effects on Measured Values",
+      "authors": "Braid A. MacRae; Simon Annaheim; Christina M. Spengler; René M. Rossi",
+      "year": 2018,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29441024/",
+      "kind": "review",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2018.00029/full",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Indexed publisher sections. Direct publisher opens were intermittent errors; PMC browser check. No full-paper appraisal or new meta-analysis. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "vinkers-2013",
+      "publication_id": "doi:10.3109/10253890.2013.807243",
+      "title": "The effect of stress on core and peripheral body temperature in humans",
+      "authors": "Christiaan H. Vinkers; Renske Penning; Juliane Hellhammer; Joris C. Verster; John H. G. M. Klaessens; Berend Olivier; Cor J. Kalkman",
+      "year": 2013,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23790072/",
+      "kind": "primary_experiment",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/23790072/",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Official PubMed abstract. Full methods, sample sizes, sensor accuracy and protocol details not appraised. No exact-recipe scientific qualification is claimed."
+      }
+    },
+    {
+      "id": "charness-2012",
+      "publication_id": "doi:10.1016/j.jebo.2011.08.009",
+      "title": "Experimental methods: Between-subject and within-subject design",
+      "authors": "Gary Charness; Uri Gneezy; Michael A. Kuhn",
+      "year": 2012,
+      "url": "https://www.sciencedirect.com/science/article/pii/S0167268111002289",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://www.sciencedirect.com/science/article/pii/S0167268111002289",
+        "provenance": "consumer-methods-evidence-20260930/study-design/REGISTRY.json#S01",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "brooks-2012",
+      "publication_id": "doi:10.1037/a0029310",
+      "title": "Counterbalancing for serial order carryover effects in experimental condition orders",
+      "authors": "Joseph L. Brooks",
+      "year": 2012,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22799624/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/22799624/",
+        "provenance": "consumer-methods-evidence-20260930/study-design/REGISTRY.json#S03",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "gnb-2003",
+      "publication_id": "doi:10.1037/0022-3514.85.2.197",
+      "title": "Understanding and using the implicit association test: I. An improved scoring algorithm",
+      "authors": "Greenwald, Nosek and Banaji",
+      "year": 2003,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12916565/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/12916565/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "greenwald-2022",
+      "publication_id": "doi:10.3758/s13428-021-01624-3",
+      "title": "Best research practices for using the Implicit Association Test",
+      "authors": "Greenwald et al.",
+      "year": 2022,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34519017/",
+      "kind": "methods_guidance",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/34519017/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "nosek-2014",
+      "publication_id": "doi:10.1371/journal.pone.0110938",
+      "title": "Understanding and Using the Brief Implicit Association Test: Recommended Scoring Procedures",
+      "authors": "Nosek, Bar-Anan, Sriram, Axt and Greenwald",
+      "year": 2014,
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110938",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "baranan-2014",
+      "publication_id": "doi:10.3758/s13428-013-0410-6",
+      "title": "A comparative investigation of seven indirect attitude measures",
+      "authors": "Bar-Anan and Nosek",
+      "year": 2014,
+      "url": "https://link.springer.com/article/10.3758/s13428-013-0410-6",
+      "kind": "primary_experiment",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://link.springer.com/article/10.3758/s13428-013-0410-6",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "deary-2011",
+      "publication_id": "doi:10.3758/s13428-010-0024-1",
+      "title": "A free, easy-to-use, computer-based simple and four-choice reaction time programme: the Deary–Liewald reaction time task",
+      "authors": "Deary, Liewald and Nissan",
+      "year": 2011,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21287123/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/21287123/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "anwylirvine-2021",
+      "publication_id": "doi:10.3758/s13428-020-01501-5",
+      "title": "Realistic precision and accuracy of online experiment platforms, web browsers, and devices",
+      "authors": "Anwyl-Irvine et al.",
+      "year": 2021,
+      "url": "https://link.springer.com/article/10.3758/s13428-020-01501-5",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://link.springer.com/article/10.3758/s13428-020-01501-5",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "karpinski-2006",
+      "publication_id": "doi:10.1037/0022-3514.91.1.16",
+      "title": "The single category implicit association test as a measure of implicit social cognition",
+      "authors": "Karpinski and Steinman",
+      "year": 2006,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16834477/",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/16834477/",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "nosekbanaji-2001",
+      "publication_id": "doi:10.1521/soco.19.6.625.20886",
+      "title": "The Go/No-Go Association Task",
+      "authors": "Nosek and Banaji",
+      "year": 2001,
+      "url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf",
+      "kind": "primary_methods",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-09-30",
+        "record_url": "https://banaji.sites.fas.harvard.edu/research/publications/articles/2001_Nosek_SC.pdf",
+        "provenance": "consumer-methods-evidence-20260930/EVIDENCE-MATRIX.md",
+        "limits": "Metadata and the explicitly named support locator were screened; this does not claim full-paper or independent replication review."
+      }
+    },
+    {
+      "id": "carter-2026",
+      "publication_id": "doi:10.1152/ajpheart.00041.2026",
+      "title": "Guidelines for rigor and reproducibility of heart rate variability within human cardiovascular research",
+      "year": 2026,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42495990/",
+      "kind": "methods_guidance",
+      "authors": "Jason R. Carter; Nathaniel D. M. Jenkins; Jeremy A. Bigalke; Austin T. Robinson; Manda L. Keller-Ross; Jody L. Greaney; Ida T. Fonkoue; Paul J. Fadel; Vaughan G. Macefield; Nisha Charkoudian; Benjamin D. Levine; Michael J. Joyner",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/42495990/",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Abstract and metadata screened; no full methods or exact-recipe applicability qualification."
+      }
+    },
+    {
+      "id": "gil-2010",
+      "publication_id": "doi:10.1088/0967-3334/31/9/015",
+      "title": "Photoplethysmography pulse rate variability as a surrogate measurement of heart rate variability during non-stationary conditions",
+      "year": 2010,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20702919/",
+      "kind": "primary_experiment",
+      "authors": "E. Gil; M. Orini; R. Bailón; J. M. Vergara; L. Mainardi; P. Laguna",
+      "verification": {
+        "state": "bibliographic_verified",
+        "checked_on": "2026-10-01",
+        "record_url": "https://pubmed.ncbi.nlm.nih.gov/20702919/",
+        "provenance": "academic-physiology-appraisal-20261001/SOURCE-REVIEW.json",
+        "limits": "Abstract and metadata screened; no full methods or exact-recipe applicability qualification."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "eda-relative-prominence",
+      "method_refs": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.eda",
+        "option_path": "/amplitude_min_relative_prominence",
+        "current_value": 0.1,
+        "current_value_role": "computational_default",
+        "admission": "Allowed 0.001–1; dimensionless relative prominence, no absolute amplitude gate.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 100,
+          "symbol": "parameters.eda"
+        }
+      },
+      "claim": {
+        "title": "Relative EDA candidates",
+        "statement": "The relative candidate threshold must be distinguished from a minimum physical conductance response.",
+        "observed_quantity": "Conductance and retained algorithmic candidates",
+        "estimand": "Candidate count/rate and conditionally available amplitude",
+        "consumer_question": "How does recorded conductance vary across declared recording contexts?",
+        "nonclaims": [
+          "Candidate detection does not establish emotion, liking or a physiologically absent response."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Calibrated conductance units and acquisition/noise evidence",
+          "Declared retained segment and edge policy"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "boucsein-2012",
+          "role": "measurement_guidance",
+          "locator": "Sections 3.1–3.3; root independent supporting-text screen, 2026-09-30; see SUPPLEMENTAL-SOURCE-REVIEW.md",
+          "depth": "selected_sections_screened",
+          "contribution": "Requires a physical response-amplitude definition appropriate to equipment/task noise; separates response amplitude from magnitude and recovery definitions.",
+          "limits": "Does not validate this high-pass detector or its 0.1 default."
+        },
+        {
+          "source_id": "benedek-2010",
+          "role": "method_contrast",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Separates decomposition and phasic measurement choices.",
+          "limits": "A different method; its validation is not inherited by this detector."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "No independent detector/noise-floor agreement for this configuration",
+        "No reviewed absolute criterion for a future continuous response recipe"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Near-flat and scaled noise",
+          "Relative threshold boundaries and missing onsets",
+          "Historical output conservation"
+        ]
+      }
+    },
+    {
+      "id": "eda-decomposition-cutoff",
+      "method_refs": [
+        "eda-neurokit-highpass/1.0",
+        "eda-neurokit-highpass/1.1"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.eda",
+        "option_path": "/phasic_cutoff_hz",
+        "current_value": 0.05,
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Exactly 0.05 Hz; changing it is a different recipe.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 125,
+          "symbol": "parameters.eda"
+        }
+      },
+      "claim": {
+        "title": "EDA decomposition method",
+        "statement": "A named high-pass decomposition must remain distinguishable from deconvolution methods.",
+        "observed_quantity": "Conductance decomposed by the named implementation",
+        "estimand": "Tonic/phasic descriptors under a fixed method",
+        "consumer_question": "Which signal components are described by this saved recipe?",
+        "nonclaims": [
+          "Engine availability or a cvxEDA citation does not validate this high-pass cutoff."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Recorded acquisition filtering",
+          "Continuous retained support and edge rationale"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "benedek-2010",
+          "role": "method_contrast",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Provides a primary phasic decomposition method for comparison.",
+          "limits": "Does not endorse this high-pass cutoff."
+        },
+        {
+          "source_id": "greco-2016",
+          "role": "method_contrast",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Defines a different convex-optimization decomposition.",
+          "limits": "Does not endorse this high-pass cutoff or transfer its empirical performance."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "No exact cutoff/edge empirical applicability review"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Independent signal/filter expectations",
+          "Edge response and known component inputs"
+        ]
+      }
+    },
+    {
+      "id": "eda-event-minimum-amplitude",
+      "method_refs": [
+        "eda-event-highpass/1.0",
+        "eda-event-cvxeda-defaults/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.event_eda",
+        "option_path": "/minimum_scr_amplitude_us",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "Explicit positive µS value, admitted 0.000001–100; no universal scientific default.",
+        "implementation": {
+          "path": "R/platform-eda-events.R",
+          "sha256": "91fddb239c7c369bc83a0049867678c2850961723d5423837c5156e98c49cb41",
+          "line": 57,
+          "symbol": "parameters.event_eda"
+        }
+      },
+      "claim": {
+        "title": "Event response amplitude criterion",
+        "statement": "An event amplitude criterion requires physical units and a protocol-specific rationale separate from candidate prominence.",
+        "observed_quantity": "Conductance change with supported onset",
+        "estimand": "Selected qualifying event candidate amplitude and availability",
+        "consumer_question": "What conductance response is attributable under the declared event window?",
+        "nonclaims": [
+          "A parser-accepted amplitude does not prove artifact-free stimulus attribution."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Measured event timing",
+          "Acquisition noise/calibration and continuous context",
+          "Declared overlap and onset-latency policy"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "boucsein-2012",
+          "role": "measurement_guidance",
+          "locator": "Sections 3.1–3.3; root independent supporting-text screen, 2026-09-30; see SUPPLEMENTAL-SOURCE-REVIEW.md",
+          "depth": "selected_sections_screened",
+          "contribution": "Requires a physical response-amplitude definition appropriate to equipment/task noise; separates response amplitude from magnitude and recovery definitions.",
+          "limits": "Does not establish every admitted threshold/window."
+        },
+        {
+          "source_id": "greco-2016",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Supplies a primary model for the named cvxEDA branch.",
+          "limits": "Does not specify every Brohn event-selection rule or validate the high-pass branch."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Threshold, latency and overlap applicability are unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Below/at/above criterion",
+          "Unavailable onset, overlap and edges",
+          "Independent event annotations"
+        ]
+      }
+    },
+    {
+      "id": "cardiac-interval-qualification",
+      "method_refs": [
+        "ecg-neurokit-detected-rr/1.0",
+        "ppg-elgendi-detected-prv/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.cardiac",
+        "option_path": "/normal_to_normal_qualification",
+        "current_value": false,
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Always false; plausible detected RR or PRV only.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 148,
+          "symbol": "parameters.cardiac"
+        }
+      },
+      "claim": {
+        "title": "Detected intervals",
+        "statement": "Interval plausibility alone does not establish normal-to-normal ECG intervals.",
+        "observed_quantity": "Detected ECG or pulse peak intervals",
+        "estimand": "Descriptors of retained plausible intervals",
+        "consumer_question": "What do the detected intervals support before a separate physiological qualification?",
+        "nonclaims": [
+          "No confirmed NN-HRV, diagnosis or universal stress interpretation."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Modality-specific detector and sample clock",
+          "Artifact/ectopy and original adjacency records"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-10-01",
+        "reviewer": "Codex independent bounded selected-section and abstract screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "quigley-2024",
+          "role": "measurement_guidance",
+          "locator": "Section 3.2.2, detection errors and ectopic beats",
+          "depth": "selected_sections_screened",
+          "contribution": "Separates interval editing and beat origin.",
+          "limits": "Does not establish NN labels for this source."
+        },
+        {
+          "source_id": "laborde-2017",
+          "role": "measurement_guidance",
+          "locator": "Artifact Correction, printed pages 11–12",
+          "depth": "selected_sections_screened",
+          "contribution": "Supports ECG-based artifact assessment and explicit processing.",
+          "limits": "No exact-detector, device or consumer validation."
+        }
+      ],
+      "independence": {
+        "status": "independent_teams_screened",
+        "detail": "Listed author teams are distinct for the linked sources. Underlying study overlap has not been exhaustively assessed; guidance/reviews are not separate exact-recipe replications."
+      },
+      "gaps": [
+        "Independent beat labels and NN qualification are absent"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Invalid interval adjacency",
+          "No gap bridging",
+          "Unavailable feature and exact denominator cases"
+        ]
+      }
+    },
+    {
+      "id": "cardiac-pnn50-definition",
+      "method_refs": [
+        "ecg-neurokit-detected-rr/1.0",
+        "ppg-elgendi-detected-prv/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.cardiac",
+        "option_path": "/pnn50_denominator",
+        "current_value": "retained_intervals",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Candidate definition divides qualifying original adjacent differences by retained intervals.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 149,
+          "symbol": "parameters.cardiac"
+        }
+      },
+      "claim": {
+        "title": "pNN50 candidate denominator",
+        "statement": "Preserve the explicitly named candidate denominator and original adjacent-pair support; standard NN interpretation is unresolved.",
+        "observed_quantity": "Detected interval differences",
+        "estimand": "Candidate percentage with saved numerator and denominator",
+        "consumer_question": "How often do supported detected-interval differences exceed 50 ms under this exact recipe?",
+        "nonclaims": [
+          "Not a silent conversion to standard NN pNN50."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Original interval sequence",
+          "Both numerator and denominator retained"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-10-01",
+        "reviewer": "Codex independent bounded selected-section and abstract screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "quigley-2024",
+          "role": "method_specification",
+          "locator": "Table 1, NN50/pNN50 row; Section 3.2.2",
+          "depth": "selected_sections_screened",
+          "contribution": "Describes an interval-count denominator.",
+          "limits": "Does not qualify detected RR/PRV or this exclusion policy."
+        },
+        {
+          "source_id": "laborde-2017",
+          "role": "measurement_guidance",
+          "locator": "Artifact Correction and HRV Data Reporting, printed pages 11–13",
+          "depth": "selected_sections_screened",
+          "contribution": "Supports documented artifact and interval handling.",
+          "limits": "Not independent validation of the candidate denominator/adjacency implementation."
+        }
+      ],
+      "independence": {
+        "status": "independent_teams_screened",
+        "detail": "Listed author teams are distinct for the linked sources. Underlying study overlap has not been exhaustively assessed; guidance/reviews are not separate exact-recipe replications."
+      },
+      "gaps": [
+        "NN qualification and the applicability of retained-interval counting after exclusions remain unresolved; the interval-count denominator alone does not require a different estimator. Any changed calculation or beat-qualification procedure needs a separately named reviewed recipe."
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Threshold exactly 50 ms",
+          "Excluded middle interval",
+          "Numerator and denominator independently recomputed"
+        ]
+      }
+    },
+    {
+      "id": "cardiac-frequency-duration",
+      "method_refs": [
+        "ecg-neurokit-detected-rr/1.0",
+        "ppg-elgendi-detected-prv/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.cardiac",
+        "option_path": "/frequency_min_duration_s",
+        "current_value": 300,
+        "current_value_role": "computational_default",
+        "admission": "Allowed 300–3600 seconds; time-domain processing admission is a separate rule.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 147,
+          "symbol": "parameters.cardiac"
+        }
+      },
+      "claim": {
+        "title": "Cardiac spectral support",
+        "statement": "The spectral support setting and metric-specific physiological suitability are different questions.",
+        "observed_quantity": "Detected interval spectrum",
+        "estimand": "Welch band-power candidates under declared support",
+        "consumer_question": "What frequency content do the detected intervals support under the declared recording and processing context?",
+        "nonclaims": [
+          "Neither ten-second processing admission nor a 300-second setting automatically qualifies all HRV metrics.",
+          "LF power and LF/HF are not specific measures of sympathetic outflow or sympathovagal balance."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Stationarity/activity/respiration context",
+          "Complete plausible intervals",
+          "Interpolation and spectral window declared"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-10-01",
+        "reviewer": "Codex independent bounded selected-section and abstract screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "quigley-2024",
+          "role": "measurement_guidance",
+          "locator": "Sections 5.3.1–5.3.3; Table 1 LF/HF rows; footnote 3",
+          "depth": "selected_sections_screened",
+          "contribution": "Makes duration, band definition and context explicit.",
+          "limits": "Not blanket support for current spectral defaults."
+        },
+        {
+          "source_id": "laborde-2017",
+          "role": "measurement_guidance",
+          "locator": "Duration of Recording, printed page 8",
+          "depth": "selected_sections_screened",
+          "contribution": "Discusses comparability and metric-dependent short recordings.",
+          "limits": "Does not qualify all durations or metrics."
+        },
+        {
+          "source_id": "carter-2026",
+          "role": "measurement_limitations",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Identifies context and interpretation constraints.",
+          "limits": "Full supporting sections and exact implementation applicability remain unreviewed."
+        }
+      ],
+      "independence": {
+        "status": "independent_teams_screened",
+        "detail": "Listed author teams are distinct for the linked sources. Underlying study overlap has not been exhaustively assessed; guidance/reviews are not separate exact-recipe replications."
+      },
+      "gaps": [
+        "Exact duration and acquisition applicability unresolved",
+        "The saved band edges, interpolation and Welch settings need source-specific applicability review; duration guidance does not endorse every setting."
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Below/at minimum span",
+          "Interpolation endpoint and band-bin expectations"
+        ]
+      }
+    },
+    {
+      "id": "prv-not-hrv",
+      "method_refs": [
+        "ppg-elgendi-detected-prv/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.ppg",
+        "option_path": "/detector",
+        "current_value": "elgendi",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Pulse peaks; retained quantity is PRV.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 149,
+          "symbol": "parameters.ppg"
+        }
+      },
+      "claim": {
+        "title": "Pulse variability stays PRV",
+        "statement": "Pulse interval variability must not inherit ECG HRV validity without simultaneous-reference evidence.",
+        "observed_quantity": "Optically detected pulse intervals",
+        "estimand": "PRV under pulse detector and vascular/acquisition context",
+        "consumer_question": "How does pulse timing vary under this device and protocol?",
+        "nonclaims": [
+          "PRV is not automatically interchangeable with ECG HRV."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Sensor placement/motion/vascular conditions",
+          "Simultaneous ECG reference for any equivalence claim"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-10-01",
+        "reviewer": "Codex independent bounded selected-section and abstract screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "mejia-2020",
+          "role": "measurement_limitations",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Reviews conditions affecting PRV–HRV relationships.",
+          "limits": "Review context does not qualify this hardware or recipe."
+        },
+        {
+          "source_id": "yuda-2020",
+          "role": "measurement_limitations",
+          "locator": "Main text and Figure 1 caption",
+          "depth": "selected_sections_screened",
+          "contribution": "Distinguishes pulse and cardiac timing contributions.",
+          "limits": "Illustrative fixed-rate pacing observation is not broad device validation."
+        },
+        {
+          "source_id": "gil-2010",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Provides conditional paired ECG/PPG evidence during tilt testing.",
+          "limits": "Small specific cohort; abstract correlations are not general equivalence or Elgendi-recipe validation."
+        }
+      ],
+      "independence": {
+        "status": "independent_teams_screened",
+        "detail": "Listed author teams are distinct for the linked sources. Underlying study overlap has not been exhaustively assessed; guidance/reviews are not separate exact-recipe replications."
+      },
+      "gaps": [
+        "Exact device/context agreement unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Paired ECG/PPG timing reference",
+          "Motion and missing-pulse cases"
+        ]
+      }
+    },
+    {
+      "id": "neural-filter-edge",
+      "method_refs": [
+        "eeg-erp-epochs/1.0",
+        "eeg-morlet-epochs/1.1",
+        "eeg-frequency-tagging/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.neural",
+        "option_path": "/filter/edge_exclusion_s",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "For bandpass: at least 3/low_hz seconds per side, up to 600 seconds.",
+        "implementation": {
+          "path": "R/platform-neural.R",
+          "sha256": "05dacfa09c668098a3c0662efb9e88fc46dd9b9d10e28b91df9eb7315a5784a2",
+          "line": 66,
+          "symbol": "parameters.neural"
+        }
+      },
+      "claim": {
+        "title": "Filter edge support",
+        "statement": "A computational edge rule does not establish freedom from filter-related temporal contamination.",
+        "observed_quantity": "Filtered EEG voltage",
+        "estimand": "Epoch or spectral quantity under declared filtering",
+        "consumer_question": "Which temporal signal support is valid for the planned contrast?",
+        "nonclaims": [
+          "Three high-pass cycles is not a universal scientific endorsement."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Acquisition and selected reference",
+          "Exact cutoffs/order",
+          "Event timing and pre-event contamination evaluation"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "keil-2022",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Supports explicit spectral, temporal and baseline choices.",
+          "limits": "Does not endorse all admitted values."
+        },
+        {
+          "source_id": "widmann-2015",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Explains filter design and temporal behavior.",
+          "limits": "Does not prove a universal edge exclusion is adequate."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Filter/order/protocol applicability unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Impulse/step and zero-phase spreading",
+          "Independent filter reference and edge outcomes"
+        ]
+      }
+    },
+    {
+      "id": "morlet-baseline-cycles",
+      "method_refs": [
+        "eeg-morlet-epochs/1.1"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.neural",
+        "option_path": "/power_baseline/adequacy/minimum_cycles",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "Positive declared cycle floor, rationale and complete finite pre-event wavelet support.",
+        "implementation": {
+          "path": "R/platform-neural.R",
+          "sha256": "05dacfa09c668098a3c0662efb9e88fc46dd9b9d10e28b91df9eb7315a5784a2",
+          "line": 109,
+          "symbol": "parameters.neural"
+        }
+      },
+      "claim": {
+        "title": "Morlet baseline adequacy",
+        "statement": "Finite pre-event wavelet support and an entered cycle count do not by themselves approve baseline adequacy.",
+        "observed_quantity": "Time-frequency power",
+        "estimand": "Declared power baseline transform",
+        "consumer_question": "How does power change against this supported reference period?",
+        "nonclaims": [
+          "A positive parser value or rationale text is not expert approval."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Frequency-specific cycles",
+          "Pre-onset baseline and earlier filtering",
+          "Selected total/induced power and transform"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "keil-2022",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Supports explicit spectral, temporal and baseline choices.",
+          "limits": "Does not endorse all admitted values."
+        },
+        {
+          "source_id": "widmann-2015",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Explains filter design and temporal behavior.",
+          "limits": "Does not prove a universal edge exclusion is adequate."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Cycle floor, transform and context justification unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Wavelet support boundaries",
+          "Baseline denominator failures",
+          "Independent known-frequency response"
+        ]
+      }
+    },
+    {
+      "id": "eeg-relative-denominator",
+      "method_refs": [
+        "eeg-welch-channel/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.eeg",
+        "option_path": "/relative_denominator_hz",
+        "current_value": [
+          1,
+          45
+        ],
+        "current_value_role": "computational_default",
+        "admission": "Two increasing limits within Nyquist; default 1–45 Hz.",
+        "implementation": {
+          "path": "scripts/workers/physiology.py",
+          "sha256": "c19c35217b6c70bd3ae1979e6f2bbade13b67632dd597c6c0a074a7345a306e4",
+          "line": 102,
+          "symbol": "parameters.eeg"
+        }
+      },
+      "claim": {
+        "title": "Relative band-power reference",
+        "statement": "Relative band power depends on the declared denominator, preprocessing and reference.",
+        "observed_quantity": "EEG power spectral density",
+        "estimand": "Band power divided by the saved reference-band power",
+        "consumer_question": "What fraction of this specified spectrum lies in the chosen band?",
+        "nonclaims": [
+          "No universal engagement or emotion mapping from relative bands."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Acquisition reference and artifact quality",
+          "Welch resolution and band rationale"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "keil-2022",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Supports explicit spectral, temporal and baseline choices.",
+          "limits": "Does not endorse all admitted values."
+        },
+        {
+          "source_id": "widmann-2015",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Explains filter design and temporal behavior.",
+          "limits": "Does not prove a universal edge exclusion is adequate."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Consumer band/denominator applicability unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Known-tone and band-edge integration",
+          "Zero denominator and Nyquist constraints"
+        ]
+      }
+    },
+    {
+      "id": "pupil-minimum-coverage",
+      "method_refs": [
+        "brohn-adjacent-ray-ivt/0.1.0-draft"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "mapping.pupil_baseline",
+        "option_path": "/minimum_coverage",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "Coverage 0.01–1 and duration 1–600000 ms are parser bounds, not recommended minima.",
+        "implementation": {
+          "path": "R/platform-gaze.R",
+          "sha256": "0b1fc1ce5f2180143e6b7b2dbebb1c6694168b15f494f9e481b8ef4586fbe191",
+          "line": 62,
+          "symbol": "mapping.pupil_baseline"
+        }
+      },
+      "claim": {
+        "title": "Pupil baseline coverage",
+        "statement": "Subtractive pupil baselines require adequate observed support justified for the protocol.",
+        "observed_quantity": "Measured pupil size in declared units",
+        "estimand": "Time-weighted pupil change from a supported baseline",
+        "consumer_question": "How does pupil size differ from the declared pre-exposure reference?",
+        "nonclaims": [
+          "No general attention, emotion or luminance-free inference."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Pre-exposure baseline window",
+          "Luminance and gaze-angle control",
+          "Blink and valid-sample rules"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "mathot-2018",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Examines pupil preprocessing and baseline correction.",
+          "limits": "Does not approve a one-ms or one-percent baseline."
+        },
+        {
+          "source_id": "kret-2019",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Describes pupil quality, preprocessing and missing-data considerations.",
+          "limits": "Does not validate this exact device or every allowed support value."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Protocol-specific support and missingness justification unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Sparse baseline and gaps",
+          "Blink/invalid-value boundaries",
+          "Unavailable baseline propagation"
+        ]
+      }
+    },
+    {
+      "id": "pupil-minimum-duration-ms",
+      "method_refs": [
+        "brohn-adjacent-ray-ivt/0.1.0-draft"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "mapping.pupil_baseline",
+        "option_path": "/minimum_duration_ms",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "Coverage 0.01–1 and duration 1–600000 ms are parser bounds, not recommended minima.",
+        "implementation": {
+          "path": "R/platform-gaze.R",
+          "sha256": "0b1fc1ce5f2180143e6b7b2dbebb1c6694168b15f494f9e481b8ef4586fbe191",
+          "line": 62,
+          "symbol": "mapping.pupil_baseline"
+        }
+      },
+      "claim": {
+        "title": "Pupil baseline duration",
+        "statement": "Subtractive pupil baselines require adequate observed support justified for the protocol.",
+        "observed_quantity": "Measured pupil size in declared units",
+        "estimand": "Time-weighted pupil change from a supported baseline",
+        "consumer_question": "How does pupil size differ from the declared pre-exposure reference?",
+        "nonclaims": [
+          "No general attention, emotion or luminance-free inference."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Pre-exposure baseline window",
+          "Luminance and gaze-angle control",
+          "Blink and valid-sample rules"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "mathot-2018",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Examines pupil preprocessing and baseline correction.",
+          "limits": "Does not approve a one-ms or one-percent baseline."
+        },
+        {
+          "source_id": "kret-2019",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Describes pupil quality, preprocessing and missing-data considerations.",
+          "limits": "Does not validate this exact device or every allowed support value."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Protocol-specific support and missingness justification unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Sparse baseline and gaps",
+          "Blink/invalid-value boundaries",
+          "Unavailable baseline propagation"
+        ]
+      }
+    },
+    {
+      "id": "aat-rt-window",
+      "method_refs": [
+        "aat-keyboard-cue-balanced/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "compiled.scoring",
+        "option_path": "/rt_min_ms",
+        "current_value": 200,
+        "current_value_role": "fixed_recipe_value",
+        "admission": "rt_min_ms=200 and rt_max_ms=2000; correct first responses only.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 204,
+          "symbol": "compiled.scoring"
+        }
+      },
+      "claim": {
+        "title": "Keyboard response-time window",
+        "statement": "Outlier/error policies need direct justification for the exact cue and response procedure.",
+        "observed_quantity": "Browser-observed correct key-initiation latency",
+        "estimand": "Retained keyboard latency under the frozen window",
+        "consumer_question": "What keyboard approach/avoidance contrast is observed in this protocol?",
+        "nonclaims": [
+          "Not joystick movement or a universally validated hidden preference."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Frame cue and key mapping",
+          "Browser/device timing",
+          "Exact error and trial-support rules"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "kahveci-2024",
+          "role": "method_evaluation",
+          "locator": "Abstract; Introduction; Highlights",
+          "depth": "selected_sections_screened",
+          "contribution": "Evaluates error/outlier and difference-score choices with variant-dependent findings.",
+          "limits": "Does not validate this exact keyboard frame-cue procedure."
+        },
+        {
+          "source_id": "krieglmeyer-2010",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Compares response representations and associated measurement properties.",
+          "limits": "Tests different tasks; cannot be treated as exact keyboard equivalence."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Independent exact keyboard consumer validation unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "200/2000-ms boundaries",
+          "Errors and asymmetric four-cell exclusions"
+        ]
+      }
+    },
+    {
+      "id": "aat-double-difference",
+      "method_refs": [
+        "aat-keyboard-cue-balanced/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "score.algorithm",
+        "option_path": "/keyboard_aat_relative_approach_advantage",
+        "current_value": "double_mean_difference_ms",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "(avoid−approach) target A minus (avoid−approach) target B; at least four retained observations per cell.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 300,
+          "symbol": "score.algorithm"
+        }
+      },
+      "claim": {
+        "title": "Keyboard contrast definition",
+        "statement": "Preserve the double-difference estimand and review any alternative standardisation as a new procedure.",
+        "observed_quantity": "Four retained category/action latency cells",
+        "estimand": "Unstandardized double mean difference in milliseconds",
+        "consumer_question": "How does the relative keyboard latency contrast differ between the two categories?",
+        "nonclaims": [
+          "Not a D score or a validated individual trait by naming alone."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "All four original cells",
+          "Saved units/support and direction"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "kahveci-2024",
+          "role": "method_evaluation",
+          "locator": "Abstract; Introduction; Highlights",
+          "depth": "selected_sections_screened",
+          "contribution": "Evaluates error/outlier and difference-score choices with variant-dependent findings.",
+          "limits": "Does not validate this exact keyboard frame-cue procedure."
+        },
+        {
+          "source_id": "krieglmeyer-2010",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Compares response representations and associated measurement properties.",
+          "limits": "Tests different tasks; cannot be treated as exact keyboard equivalence."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Exact-procedure scoring reliability and criterion validity unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Independent four-cell reference arithmetic",
+          "Unequal cell counts and insufficient support"
+        ]
+      }
+    },
+    {
+      "id": "questionnaire-prorating",
+      "method_refs": [
+        "explicit-questionnaire-scale/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "scale.scoring",
+        "option_path": "/prorate",
+        "current_value": null,
+        "current_value_role": "researcher_required",
+        "admission": "Partial sums require explicit item-mean prorating with equal bounds; complete scores do not prorate.",
+        "implementation": {
+          "path": "R/platform-scales.R",
+          "sha256": "6f9a7393412b32a1073502dfd669440b412d71eea049426b62fe3f6f635707bb",
+          "line": 34,
+          "symbol": "scale.scoring"
+        }
+      },
+      "claim": {
+        "title": "Missing-item scoring",
+        "statement": "A computational prorating rule must be justified by the exact instrument, key and population.",
+        "observed_quantity": "Declared quantitative questionnaire items",
+        "estimand": "Saved sum or mean under an explicit missing-item rule",
+        "consumer_question": "What explicit response does the named scale support?",
+        "nonclaims": [
+          "Generic arithmetic does not validate item wording, construct, translation or missingness assumptions."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Exact instrument wording/key/version",
+          "Permitted missingness and minimum answered",
+          "Administration/language/population evidence"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "boateng-2018",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Describes scale development and validation decisions.",
+          "limits": "Does not supply an instrument-specific prorating rule."
+        },
+        {
+          "source_id": "flake-2020",
+          "role": "measurement_limitations",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Motivates transparent, justified measurement choices.",
+          "limits": "Does not validate an arbitrary scale or conversion."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Instrument-specific scoring and missingness sources required"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Reverse-key and equal-bound cases",
+          "Partial/complete support and unavailable outputs"
+        ]
+      }
+    },
+    {
+      "id": "maxdiff-aggregate-model",
+      "method_refs": [
+        "object-case-paired-maxdiff/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "design.settings.analysis",
+        "option_path": "/fit_aggregate",
+        "current_value": true,
+        "current_value_role": "starter_default",
+        "admission": "Optional aggregate paired best–worst model; current example starts enabled.",
+        "implementation": {
+          "path": "R/platform-maxdiff.R",
+          "sha256": "4eca7fec2c95aa3d24e78e4d2053a6fb19f93cbd9244fd62c7338632c274a3ea",
+          "line": 10,
+          "symbol": "design.settings.analysis"
+        }
+      },
+      "claim": {
+        "title": "Aggregate best–worst model",
+        "statement": "The likelihood, design and aggregation level must match the declared choice estimand.",
+        "observed_quantity": "Explicit best/worst choices",
+        "estimand": "Aggregate paired model with complete pairs",
+        "consumer_question": "Which explicitly chosen features have greater relative preference under this design?",
+        "nonclaims": [
+          "Not implicit cognition, individual HB utilities or generic market shares."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Connected choice design and item coverage",
+          "Exact paired likelihood",
+          "Participant/task burden and missing-pair policy"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "marley-2005",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Defines probabilistic best/worst and best–worst model alternatives.",
+          "limits": "Specific Brohn numerical conformance still requires reference tests."
+        },
+        {
+          "source_id": "jaeger-2008",
+          "role": "consumer_example",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Provides a food-preference comparison with monadic ratings.",
+          "limits": "Does not establish all populations/products or this exact implementation."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Exact likelihood/design applicability and participant-aware uncertainty review unresolved"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Known complete-pair likelihood",
+          "Disconnected designs and incomplete pairs"
+        ]
+      }
+    },
+    {
+      "id": "temperature-duration",
+      "method_refs": [
+        "temperature-calibrated-descriptive/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "parameters.temperature",
+        "option_path": "/minimum_duration_s",
+        "current_value": null,
+        "current_value_role": "computational_default",
+        "admission": "When omitted, default max(1 second, 1/sample_rate); computational support only. An explicitly supplied null is not an admitted duration.",
+        "implementation": {
+          "path": "scripts/workers/peripheral.py",
+          "sha256": "f5d40b84a056536c5da0093cbd37e9377a7b6a68e368f1528b09603b941e11b3",
+          "line": 100,
+          "symbol": "parameters.temperature"
+        }
+      },
+      "claim": {
+        "title": "Temperature duration and context",
+        "statement": "Descriptive support duration does not establish thermal settling or a meaningful physiological baseline.",
+        "observed_quantity": "Recorded temperature in declared calibrated units and sensor location",
+        "estimand": "Descriptive mean, change and slope over supported samples",
+        "consumer_question": "How does recorded temperature change at the declared site and under recorded conditions?",
+        "nonclaims": [
+          "Skin temperature is not ambient or core temperature; endpoint change is not a measured experimental baseline or universal stress signal."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Explicit skin/site identity; retain ambient/core signals as their own quantities",
+          "Sensor calibration/contact and acquisition filters",
+          "Environment and settling time; unknown remains explicit"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-10-01",
+        "reviewer": "Codex independent bounded selected-section and abstract screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "macrae-2018",
+          "role": "measurement_limitations",
+          "locator": "Discussion; Strengths and limitations; Conclusion",
+          "depth": "selected_sections_screened",
+          "contribution": "Connects contact setup and environment to measurement uncertainty.",
+          "limits": "No universal minimum duration or validation of this calibration/site."
+        },
+        {
+          "source_id": "vinkers-2013",
+          "role": "measurement_limitations",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Investigates site-specific core/peripheral responses under controlled stress.",
+          "limits": "Does not validate arbitrary consumer stimuli or a universal direction/threshold."
+        }
+      ],
+      "independence": {
+        "status": "independent_teams_screened",
+        "detail": "Listed author teams are distinct for the linked sources. Underlying study overlap has not been exhaustively assessed; guidance/reviews are not separate exact-recipe replications."
+      },
+      "gaps": [
+        "No device/site-specific calibration agreement or protocol-duration qualification"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Physical calibrated reference",
+          "Unit conversion and missing support",
+          "Known slopes and independent endpoint arithmetic"
+        ]
+      }
+    },
+    {
+      "id": "comparison-starter-order",
+      "method_refs": [
+        "brohn-design/1.0.0"
+      ],
+      "binding": {
+        "kind": "template_field",
+        "input_scope": "brohn_new_design(template=comparison)",
+        "option_path": "/order",
+        "current_value": "counterbalanced",
+        "current_value_role": "starter_default",
+        "admission": "Actual constructor/schema identity; comparison order compiles as cyclic rotation. Not a qualified template version.",
+        "implementation": {
+          "path": "R/platform-core.R",
+          "sha256": "405910d7b4bf58d5743e2779a526236e9aa8ab6453e570916b9a1f67d0aaa2aa",
+          "line": 58,
+          "symbol": "brohn_new_design(template=comparison)"
+        }
+      },
+      "claim": {
+        "title": "Comparison starter order",
+        "statement": "The comparison starter is an operational study structure; cyclic rotation needs review against intended carryover and comparison design.",
+        "observed_quantity": "Assigned and observed presentation order",
+        "estimand": "The prespecified within-person comparison under actual completion/support",
+        "consumer_question": "Does repeated exposure preserve the consumer question, or change it through order and carryover?",
+        "nonclaims": [
+          "Two-condition AB/BA or larger cyclic rotation is not a universal carryover-balanced, randomized-group or academically approved design."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Applies only to constructor argument template=comparison",
+          "Declared control, repeated exposure and carryover rationale",
+          "Observed completion and usable balance"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "charness-2012",
+          "role": "design_guidance",
+          "locator": "Abstract; introduction; overview; conclusion",
+          "depth": "selected_sections_screened",
+          "contribution": "Distinguishes within/between design consequences and repeated-exposure concerns.",
+          "limits": "Does not approve the Brohn starter or its timing."
+        },
+        {
+          "source_id": "brooks-2012",
+          "role": "design_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Distinguishes explicitly carryover-balanced construction from an arbitrary condition sequence.",
+          "limits": "Abstract only; no algorithm implementation approval."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Template evidence qualification unresolved",
+        "5000/500/0-ms values are not academic defaults"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Actual cyclic allocation and observed imbalance",
+          "Historical design/protocol conservation"
+        ]
+      }
+    },
+    {
+      "id": "iat-procedure",
+      "method_refs": [
+        "iat-gnb2003-d1/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "iat-gnb2003-d1/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Seven blocks; final-correct D1. Exact compiler, error and exclusion rules still need complete reconciliation.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 5,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "IAT procedure and scoring",
+        "statement": "Interpret an IAT contrast only with its exact procedure, scoring and support rules.",
+        "observed_quantity": "Recorded categorization latencies/errors",
+        "estimand": "Saved D1 contrast under the named profile",
+        "consumer_question": "What relative association contrast does this specified task support?",
+        "nonclaims": [
+          "Not a universal individual hidden preference or consumer purchase prediction."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Exact materials/category/key mapping",
+          "Practice, error and exclusion rules",
+          "Reliability and intended population/context"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "gnb-2003",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Defines and evaluates improved IAT scoring procedures.",
+          "limits": "Exact Brohn D1 conformance is not established by this citation."
+        },
+        {
+          "source_id": "greenwald-2022",
+          "role": "measurement_guidance",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Provides contemporary IAT research guidance.",
+          "limits": "Shares authors with the original; not independent validation of this consumer profile."
+        }
+      ],
+      "independence": {
+        "status": "overlap_identified",
+        "detail": "Shared authors across the two sources; do not count as independent empirical validation."
+      },
+      "gaps": [
+        "Full exact-procedure/scorer reconciliation",
+        "Independent consumer-profile validity"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Known D1 reference cases",
+          "Fast fraction, errors, omissions and trimming"
+        ]
+      }
+    },
+    {
+      "id": "biat-procedure",
+      "method_refs": [
+        "biat-nosek2014-goodfocal/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "biat-nosek2014-goodfocal/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Good-focal; 16 warm-up plus four 20-trial blocks. Variant-specific scoring remains explicit.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 7,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "BIAT procedure and scoring",
+        "statement": "A brief association contrast must preserve focal categories, trial exclusions and scoring identity.",
+        "observed_quantity": "Recorded good-focal categorization responses",
+        "estimand": "Saved paired BIAT D contrast",
+        "consumer_question": "What relative association does the named brief procedure support?",
+        "nonclaims": [
+          "Brief administration alone does not establish stable individual consumer preference."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Focal category familiarity and instructions",
+          "Exact warm-up/first-trial/exclusion rules",
+          "Population/material reliability"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "nosek-2014",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Studies BIAT data and scoring recommendations.",
+          "limits": "Does not establish all consumer materials or software execution."
+        },
+        {
+          "source_id": "baranan-2014",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Compares BIAT psychometrics with other tasks across tested attitude domains.",
+          "limits": "Shares an author and is not exact consumer-profile replication."
+        }
+      ],
+      "independence": {
+        "status": "overlap_identified",
+        "detail": "Authors overlap, and the BIAT article identifies its data as part of the larger seven-measure collection. These are not independent samples; exact consumer-profile applicability remains unresolved."
+      },
+      "gaps": [
+        "Exact Brohn score/sequence conformance and consumer applicability"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Original fast-fraction denominator",
+          "Warm-up/first-target exclusions and 400–2000-ms bounds"
+        ]
+      }
+    },
+    {
+      "id": "procedure-rt-deary-liewald-simple",
+      "method_refs": [
+        "rt-deary-liewald-simple/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "rt-deary-liewald-simple/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Simple: 8 practice/20 test; choice: 8 practice/40 test. Browser first-response timing is retained.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 11,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "Reaction-time procedure and timing",
+        "statement": "A browser implementation needs exact procedure and device-timing evidence beyond the original task study.",
+        "observed_quantity": "Browser-observed first-response latency and accuracy",
+        "estimand": "Retained correct test-response summaries with separate error/omission support",
+        "consumer_question": "How do response speed and accuracy differ in this specified consumer task context?",
+        "nonclaims": [
+          "No normative cognitive/attention classification or individual trait validity from running the task."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Practice, foreperiod, keys and accuracy rules",
+          "Actual browser/device timing",
+          "Separate speed, errors and omissions"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "deary-2011",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Describes the original simple/four-choice task.",
+          "limits": "The original native implementation does not validate this browser."
+        },
+        {
+          "source_id": "anwylirvine-2021",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Measures online platform/browser/device precision and accuracy.",
+          "limits": "Does not test Brohn or establish its exact hardware timing."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Brohn device-timing and exact-procedure validation",
+        "Intended context reliability"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Physical stimulus/input timing reference",
+          "Correct/error/timeout support and independent means"
+        ]
+      }
+    },
+    {
+      "id": "procedure-rt-deary-liewald-choice",
+      "method_refs": [
+        "rt-deary-liewald-choice/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "rt-deary-liewald-choice/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Simple: 8 practice/20 test; choice: 8 practice/40 test. Browser first-response timing is retained.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 13,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "Reaction-time procedure and timing",
+        "statement": "A browser implementation needs exact procedure and device-timing evidence beyond the original task study.",
+        "observed_quantity": "Browser-observed first-response latency and accuracy",
+        "estimand": "Retained correct test-response summaries with separate error/omission support",
+        "consumer_question": "How do response speed and accuracy differ in this specified consumer task context?",
+        "nonclaims": [
+          "No normative cognitive/attention classification or individual trait validity from running the task."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Practice, foreperiod, keys and accuracy rules",
+          "Actual browser/device timing",
+          "Separate speed, errors and omissions"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "deary-2011",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Describes the original simple/four-choice task.",
+          "limits": "The original native implementation does not validate this browser."
+        },
+        {
+          "source_id": "anwylirvine-2021",
+          "role": "method_evaluation",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Measures online platform/browser/device precision and accuracy.",
+          "limits": "Does not test Brohn or establish its exact hardware timing."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Brohn device-timing and exact-procedure validation",
+        "Intended context reliability"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Physical stimulus/input timing reference",
+          "Correct/error/timeout support and independent means"
+        ]
+      }
+    },
+    {
+      "id": "sciat-response-window",
+      "method_refs": [
+        "sciat-brohn-response-window-im100/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "sciat-brohn-response-window-im100/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Named Brohn response-window adaptation; 1.5-second first-response window and its own replacement/omission rules.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 15,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "Response-window SC-IAT adaptation",
+        "statement": "A response-window SC-IAT adaptation must expose its departures from the original single-category procedure.",
+        "observed_quantity": "First-response categorization records within the named procedure",
+        "estimand": "Saved test-only response-window contrast",
+        "consumer_question": "What single-category association contrast does this declared adaptation support?",
+        "nonclaims": [
+          "Neither original SC-IAT nor a different single-target IAT study validates this exact Brohn variant."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Original adaptation/source pointer retained",
+          "Explicit deadline/replacement/omission/scoring rules",
+          "Consumer materials and reliability"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "karpinski-2006",
+          "role": "method_contrast",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Defines the original SC-IAT and tests named domains.",
+          "limits": "Not validation of Brohn response-window rules."
+        },
+        {
+          "source_id": "baranan-2014",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Examines single-category measurement distinctions across indirect tasks.",
+          "limits": "Its Single-Target IAT is a different task; supporting text does not validate this SC-IAT variant."
+        }
+      ],
+      "independence": {
+        "status": "not_assessed",
+        "detail": "Distinct publications are identified; independence of teams, data and applicable empirical validation remains to be reviewed."
+      },
+      "gaps": [
+        "Full response-window source and procedure reconciliation",
+        "Independent exact-variant validation unavailable"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Deadline and replacement/omission references",
+          "No IAT trimming-rule inheritance"
+        ]
+      }
+    },
+    {
+      "id": "gnat-procedure",
+      "method_refs": [
+        "gnat-brohn-single-target/1.0"
+      ],
+      "binding": {
+        "kind": "option",
+        "input_scope": "task.profile",
+        "option_path": "/profile",
+        "current_value": "gnat-brohn-single-target/1.0",
+        "current_value_role": "fixed_recipe_value",
+        "admission": "Named single-target recipe; 750/600-ms rounds, explicit quotas and signal-detection outcomes.",
+        "implementation": {
+          "path": "R/platform-methods.R",
+          "sha256": "9fd0ec21fe79971c3bb45f2f8daaba74711f30d80610e88aee032cac71118047",
+          "line": 18,
+          "symbol": "task.profile"
+        }
+      },
+      "claim": {
+        "title": "Go/No-Go association procedure",
+        "statement": "Preserve deadline-specific signal-detection outcomes and distinguish withholding from missing responses.",
+        "observed_quantity": "Space responses and observed withholding",
+        "estimand": "Round/pairing d-prime and criterion under saved support",
+        "consumer_question": "What association discrimination does this exact single-target procedure support?",
+        "nonclaims": [
+          "Task accuracy is not general preference accuracy; withholding has no response time."
+        ]
+      },
+      "context": {
+        "population": "Not qualified for any particular population in this snapshot.",
+        "task": "The exact named procedure and study protocol need applicability review.",
+        "device": "No device-specific agreement is claimed.",
+        "setting": "No consumer field setting is qualified.",
+        "prerequisites": [
+          "Exact target/attribute mappings and quotas",
+          "Deadline and extreme-rate correction",
+          "Reliability and completed administration support"
+        ]
+      },
+      "review": {
+        "state": "screened",
+        "reviewed_on": "2026-09-30",
+        "reviewer": "Codex bounded code/literature screening",
+        "applicability": "unresolved",
+        "next_review_trigger": "Full supporting-text and exact-option applicability review, including independent validation and contrary evidence."
+      },
+      "evidence": [
+        {
+          "source_id": "nosekbanaji-2001",
+          "role": "method_specification",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Introduces the Go/No-Go association procedure.",
+          "limits": "Exact Brohn counts/deadlines/corrections need direct reconciliation."
+        },
+        {
+          "source_id": "baranan-2014",
+          "role": "method_comparison",
+          "locator": "Abstract",
+          "depth": "abstract_screened",
+          "contribution": "Includes Go–No-Go psychometric comparison in tested attitude domains.",
+          "limits": "Shares an author and does not validate this consumer implementation."
+        }
+      ],
+      "independence": {
+        "status": "overlap_identified",
+        "detail": "Nosek contributes to both sources; no independent exact-profile replication is claimed."
+      },
+      "gaps": [
+        "Full exact-procedure reference and independent consumer validation"
+      ],
+      "release_gate": {
+        "scientific_change_requires_new_recipe": true,
+        "reference_tests": [
+          "Hits/misses/false alarms/withholding",
+          "Extreme rates and deadline-specific support"
+        ]
+      }
+    }
+  ]
+}

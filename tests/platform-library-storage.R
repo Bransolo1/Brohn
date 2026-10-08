@@ -2,7 +2,7 @@ source("R/platform-participant-equipment.R") # Registered optional new-draft pol
 # Independent library durability and legacy migration failure-recovery checks.
 .libPaths(c(normalizePath("../../work/r-library-brohn", winslash = "/", mustWork = FALSE), .libPaths()))
 for (module in c("study", "comparison", "presentation", "records", "json", "storage", "assets", "aois", "drafts",
-                 "platform-core", "platform-store", "platform-delivery", "platform-catalog", "platform-library")) source(paste0("R/", module, ".R"))
+                 "platform-core", "platform-store", "platform-delivery", "platform-catalog", "platform-tabular-preview", "platform-library")) source(paste0("R/", module, ".R"))
 local({
   directory <- tempfile("brohn-library-storage-"); dir.create(directory)
   cleanup_root <- normalizePath(directory, winslash = "/")

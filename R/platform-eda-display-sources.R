@@ -137,7 +137,7 @@
 }
 
 .brohn_rpk_eda_requirements <- function(store,report_refs,source_admission) {
- brohn_require(.brohn_edd_is_admission(.brohn_rpk_admission(source_admission))&&brohn_array(report_refs)&&length(report_refs)>0L&&length(report_refs)<=8L,"Choose up to eight exact reports for the EDA package profile.")
+ brohn_require(.brohn_edd_is_admission(.brohn_rpk_algorithm_admission(.brohn_rpk_admission(source_admission)))&&brohn_array(report_refs)&&length(report_refs)>0L&&length(report_refs)<=8L,"Choose up to eight exact reports for the EDA package profile.")
  seen<-active<-root_seen<-character();nodes<-edges<-related<-required<-list();study<-NULL
  selected_keys<-vapply(report_refs,brohn_hash,character(1));brohn_require(!anyDuplicated(selected_keys),"Choose each exact report once.")
  parents<-function(m){out<-list();for(i in seq_along(m$sources)){s<-m$sources[[i]];if(identical(s$state,"selected"))out<-c(out,list(list(ref=list(kind="report",id=s$id,revision=s$revision,body_hash=s$hash,project_id=m$ref$project_id),slot="provenance.selection",index=i)))}

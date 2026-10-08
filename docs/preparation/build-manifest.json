@@ -4,26 +4,50 @@
   "product": "Brohn",
   "checkpoint": {
     "assigned_publishing_join": {
-      "status": "required_integration",
+      "status": "scoped_connected_source_checkpoint",
       "architecture": "docs/architecture/ASSIGNED-QUESTIONNAIRE-DELIVERY.md",
-      "current_gap": "Ordinary Publish study preserves the legacy runner. Assigned host acceptance uses fixture-created deployments and synthetic renderer registration; it does not qualify ordinary publication.",
-      "implementation_required": [
+      "current_gap": "Assigned local text/PNG/questionnaire authoring, release, participant, automatic/manual worker, report and export phases now pass within source-specific scopes. Broader survey/formats, assigned A/V, camera/equipment, responsiveness, scientific/device and hosted qualification remain open. All 17 package and 50 capability statuses are unchanged.",
+      "local_verified": {
+        "date": "2026-10-09",
+        "installation": "Final candidate03 runtime promoted after actual Git relocation and configured normal-launcher qualification",
+        "participant": "product05: actual original entry, conditional answers/edit/review, controls and assigned versions, named-profile Finish and exact same-Finish replay",
+        "worker": "worker02: 25 worker checks, four fresh-process checks and preserved historical 55-file report; actual Finish-created job succeeds once",
+        "researcher_report": "reportUI02: ten browser, five R and 17 independent checks, two Axe scans; full JSON/CSV, offline HTML and original saved rows/files retained",
+        "normal_browser": "Final relocated03: 11 browser, eight lifecycle, 38 full document guard and 24 independent saved-source checks; all owned processes/ports closed naturally",
+        "manual_analysis": "queue01 and worker01: real saved-run/release actions create or reuse two named jobs; normal workers preserve the earlier failed attempt and exact original sources. report02: fresh exact saved reports, six complete exports, four Axe scans and unchanged saved rows/files",
+        "failures_retained": "Missing assigned finalizer, diagnostic serialization, asynchronous report selectors, read-only corruption fixture and nonempty-WAL inspector refusal are preserved with distinct source and acceptance scopes",
+        "limits": "Scoped software acceptance on the exercised Windows installation and synthetic study design; not broad product/scientific/hardware/Qualtrics parity. All package statuses unchanged.",
+        "cards": "Final focused ui02: 19 browser,13 presenter,nine R,28 preservation checks;four clean Axe scans;desktop/phone review"
+      },
+      "historical_policy": "Preserve original legacy runtime bytes, manifests and readers; never relabel the legacy runner as the assigned profile.",
+      "work_packages": [
+        "BWP04",
+        "BWP05",
+        "BWP13",
+        "BWP17"
+      ],
+      "product_requirements": [
+        "EF02",
+        "EF03",
+        "QF01"
+      ],
+      "evidence": "docs/qa/SOURCE-EVIDENCE-MAP-20261009.md",
+      "source_receipt": "docs/qa/ASSIGNED-INTEGRATION-SOURCE.json",
+      "guide": "docs/operations/ASSIGNED-STUDY-WORKFLOW.md",
+      "implemented_connections": [
         "Explicit versioned assigned runtime manifest with complete module and stylesheet closure",
         "Actual entry bootstrap and server renderer registration",
         "Pinned runtime serving adapter and ordinary researcher publishing selection",
         "Actual published release through participants, finish-created ordinary worker job, saved report and cold reopening"
-      ],
-      "historical_policy": "Preserve original legacy runtime bytes, manifests and readers; never relabel the legacy runner as the assigned profile.",
-      "work_packages": ["BWP04", "BWP05", "BWP13", "BWP17"],
-      "product_requirements": ["EF02", "EF03", "QF01"]
+      ]
     },
     "status": "implementing",
-    "date": "2026-09-30",
+    "date": "2026-10-09",
     "publication_handoff": "docs/qa/PUBLICATION-SAVED-DOWNLOADS-20260927.md",
     "handoff": "docs/WORKSTREAM.md",
     "repository": "https://github.com/Bransolo1/Brohn",
     "license": "MIT",
-    "note": "The full 50-capability / 17-package build remains active and unfinished, with all individual statuses unchanged including BWP16 planned. Exact-constant EDA 1.1/report 0.2 has separate source/history, initial 30-check/six-scan researcher, ten cold checks and 13-check native signed-zero review evidence; no generic transport change. Initial six-source deadline failure and 324.02-second direct render diagnostic remain retained. Corrected same-source native publication passed 24 checks with ten new read-only jobs on attempt 1, normal 60-second leases and unchanged 300-second deadline (mixed 282.557 s, evidence-only 237.232 s). Independent oracles passed 171/131 checks over the same complete evidence; 49-member cross-variant conservation passed. Phone correction passed 36/9; targeted startup 27 and joined03 runtime 74/22 checks passed. Final joined03 saved-review/offline browser acceptance passed 31 initial and 11 cold checks with normal full startup, exact old/new downloads, unchanged jobs/objects/listed entities and all owned services closed. This complements earlier generation/edit/cancel evidence; it is not a whole-journey rerun. Next is saved ECG/PPG; near-flat/absolute response criteria, physical qualification, capacity, image context, raw bundles, workloads and restrictions remain open. Publication is not a pause.",
+    "note": "Connected assigned studies now pass the final relocated normal launcher/release/participant/worker/report test and separate authoring, manual analysis/export and final card UI phases. Preserve older failures and exact saved sources. Cardiac packaging and method guidance carry separate native/archive/screened evidence; cardiac browser/cold/performance and broader A/V/formats/scientific/device/hosting remain open. The 50-capability/17-package build remains unfinished with all individual statuses unchanged.",
     "accepted_source_handoff": "docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md",
     "accepted_source_receipt": "docs/qa/EDA-REPORT-PACKAGE-SOURCE.json",
     "choice_report_checkpoint": {
@@ -270,7 +294,8 @@
         "cold_checks": 107,
         "scope": "Actual R with synthetic media; zero HTTP/browser evidence. Connected host/HTTP/export qualification remains separate."
       }
-    }
+    },
+    "current_source_evidence": "docs/qa/SOURCE-EVIDENCE-MAP-20261009.md"
   },
   "authoritative_plan": "docs/MASTER-ARCHITECTURE.md",
   "capability_register": "docs/preparation/capability-register.json",

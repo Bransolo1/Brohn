@@ -44,6 +44,7 @@ brohn_job_input <- function(store, job) {
   if (identical(job$operation,"task_display")) return(brohn_task_display_input(store,job,FALSE))
   if (identical(job$operation,"choice_display")) return(brohn_choice_display_input(store,job,FALSE))
   if (identical(job$operation,"eda_display")) return(brohn_eda_display_input(store,job,FALSE))
+  if (identical(job$operation,"cardiac_display")) return(brohn_cardiac_display_input(store,job,FALSE))
   if (identical(job$operation,"explicit_distributions") && isTRUE(job$request$schema %in% c("brohn-report-package-distribution-job/0.1","brohn-report-package-distribution-job/0.2"))) return(brohn_report_distribution_input(store,job,FALSE))
   if (identical(job$operation, "explicit_distributions")) return(brohn_explicit_distribution_input(store, job))
   if (identical(job$operation, "save_clock_map")) return(brohn_clock_map_save_input(store, job))
@@ -246,6 +247,7 @@ brohn_analyse_input_unplanned <- function(input, scratch) {
   if (identical(input$operation,"task_display")) return(brohn_analyse_task_display(input,scratch))
   if (identical(input$operation,"choice_display")) return(brohn_analyse_choice_display(input,scratch))
   if (identical(input$operation,"eda_display")) return(brohn_analyse_eda_display(input,scratch))
+  if (identical(input$operation,"cardiac_display")) return(brohn_analyse_cardiac_display(input,scratch))
   if (identical(input$operation, "explicit_distributions")) return(brohn_analyse_explicit_distributions(input, scratch))
   if (identical(input$operation, "save_clock_map")) return(brohn_analyse_clock_map_save(input, scratch))
   if (identical(input$operation, "clock_plot")) return(brohn_analyse_clock_plot(input, scratch))
@@ -526,7 +528,13 @@ brohn_publish_entity_result <- function(store,job,input,output,kind,body,publica
 .brohn_questionnaire_worker_profile <- function() list(schema = "brohn-questionnaire-view-resources/1.0",
   max_rss_bytes = 1024^3, max_scratch_bytes = 1024^3, deadline_seconds = 300,
   monitoring = "polled resident memory; transient allocation spikes may precede termination")
-.brohn_questionnaire_worker_check <- function(profile, elapsed, rss, scratch_bytes) {
+.brohn_report_package_deadline_message <- function(seconds) paste0(
+  "Report assembly exceeded its ",format(seconds,trim=TRUE,scientific=FALSE),"-second time limit. ",
+  "No new report package was published. Your saved report choices, findings and earlier report packages remain available. ",
+  "Try preparing fewer saved sources.")
+.brohn_questionnaire_worker_check <- function(profile, elapsed, rss, scratch_bytes, operation=NULL) {
+  if(identical(operation,"report_package")&&is.finite(elapsed)&&is.finite(rss)&&is.finite(scratch_bytes))
+    brohn_require(elapsed<=profile$deadline_seconds,.brohn_report_package_deadline_message(profile$deadline_seconds))
   brohn_require(is.finite(elapsed) && is.finite(rss) && is.finite(scratch_bytes) &&
     elapsed <= profile$deadline_seconds && rss <= profile$max_rss_bytes && scratch_bytes <= profile$max_scratch_bytes,
     "This saved result exceeds this installation's interactive-view limit. Its original report and complete downloads remain available.")
@@ -547,7 +555,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
   }, add = TRUE)
   child <- NULL
   on.exit(if (!is.null(child) && child$is_alive()) child$kill_tree(), add = TRUE)
-  explorer <- job$operation %in% c("report_package", "task_display", "choice_display", "eda_display", "questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
+  explorer <- job$operation %in% c("report_package", "task_display", "choice_display", "eda_display", "cardiac_display", "questionnaire_index", "explicit_distributions", "preview_clock_alignment", "clock_window", "clock_plot", "clock_event_page", "save_clock_map", "linked_review", "analyse_resolved_run", "audio_review", "audio_tracks", "audio_extract", "media_tracks", "media_review", "facial_review", "facial_frame", "eda_review", "answer_session", "respiration_review", "emg_review", "eda_continuous_review")
   profile <- if (explorer) .brohn_questionnaire_worker_profile() else NULL
   peak_rss <- 0; peak_scratch <- 0; started <- as.numeric(Sys.time())
   if (explorer) on.exit(tryCatch(.brohn_store_audit(store, paste0(job$operation,".resources"), job$id,
@@ -559,13 +567,14 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     # Keep one renewal clock across parent preparation, the child and verified
     # publication. A short child must not reset time already spent preparing.
     pulse <- NULL
-    if (identical(job$operation,"eda_display") ||
+    if (job$operation %in% c("eda_display","cardiac_display") ||
         (identical(job$operation,"report_package") &&
-         identical(job$request$limits$profile,"controlled-task-choice-eda-report-package/0.1"))) {
+         job$request$limits$profile %in% c("controlled-task-choice-eda-report-package/0.1","controlled-task-choice-eda-cardiac-report-package/0.1"))) {
       lease_checkpoint <- .brohn_publication_checkpoint(store,job)
       pulse <- function() {
         brohn_require(as.numeric(Sys.time())-started <= min(timeout_seconds,profile$deadline_seconds),
-          "Report preparation exceeded its declared time limit. Original findings remain intact.")
+          if(identical(job$operation,"report_package")) .brohn_report_package_deadline_message(min(timeout_seconds,profile$deadline_seconds)) else
+            "Report preparation exceeded its declared time limit. Original findings remain intact.")
         lease_checkpoint(TRUE)
       }
       pulse()
@@ -585,6 +594,13 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
       on.exit({
         if (!is.null(child) && child$is_alive()) child$kill_tree()
         brohn_release_choice_display_sources(choice_display_execution$handle)
+      },add=TRUE,after=FALSE)
+    } else if (identical(job$operation,"cardiac_display")) {
+      cardiac_execution <- brohn_prepare_cardiac_display_execution(store,job,input,scratch,pulse=pulse)
+      input <- cardiac_execution$input
+      on.exit({
+        if (!is.null(child) && child$is_alive()) child$kill_tree()
+        brohn_release_cardiac_display_execution(cardiac_execution$handle)
       },add=TRUE,after=FALSE)
     } else if (identical(job$operation,"eda_display")) {
       eda_display_execution <- brohn_prepare_eda_display_execution(store,job,input,scratch,pulse=pulse)
@@ -677,9 +693,11 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
         files <- list.files(scratch, full.names = TRUE, recursive = TRUE, all.files = TRUE)
         disk <- sum(file.info(files)$size, na.rm = TRUE)
         peak_rss <- max(peak_rss, rss); peak_scratch <- max(peak_scratch, disk)
-        .brohn_questionnaire_worker_check(profile, now-started, rss, disk)
+        .brohn_questionnaire_worker_check(profile, now-started, rss, disk, operation=job$operation)
       }
-      brohn_require(now-started <= timeout_seconds, "Analysis exceeded its declared time limit. The source and earlier reports remain intact.")
+      brohn_require(now-started <= timeout_seconds,
+        if(identical(job$operation,"report_package")) .brohn_report_package_deadline_message(timeout_seconds) else
+          "Analysis exceeded its declared time limit. The source and earlier reports remain intact.")
       current <- brohn_get_job(store, job$id)
       brohn_require(current$status == "running" && identical(current$token, job$token) && identical(current$worker, job$worker), "This processing attempt was cancelled or replaced.")
       for (log in c("stdout.txt", "stderr.txt")) brohn_require(file.info(file.path(scratch, log))$size <= 4*1024^2, "Analysis exceeded its diagnostic output limit.")
@@ -691,7 +709,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (explorer) {
       files <- list.files(scratch, full.names = TRUE, recursive = TRUE, all.files = TRUE)
       peak_scratch <- max(peak_scratch, sum(file.info(files)$size, na.rm = TRUE))
-      .brohn_questionnaire_worker_check(profile, as.numeric(Sys.time())-started, peak_rss, peak_scratch)
+      .brohn_questionnaire_worker_check(profile, as.numeric(Sys.time())-started, peak_rss, peak_scratch, operation=job$operation)
     }
     result <- brohn_read_json_file(result_path)
     brohn_require(identical(result$schema, "brohn-analysis-output/1.0") && is.list(result$report), "Analysis returned an invalid result document.")
@@ -706,6 +724,7 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     if (identical(job$operation,"task_display")) return(brohn_publish_task_display(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"choice_display")) return(brohn_publish_choice_display(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"eda_display")) return(brohn_publish_eda_display(store,result,scratch,job,input,result_path,pulse=pulse))
+    if (identical(job$operation,"cardiac_display")) return(brohn_publish_cardiac_display(store,result,scratch,job,input,result_path,pulse=pulse))
     if (identical(job$operation,"explicit_distributions") && isTRUE(job$request$schema %in% c("brohn-report-package-distribution-job/0.1","brohn-report-package-distribution-job/0.2"))) return(brohn_publish_report_distribution(store,result,scratch,job,input,result_path))
     if (identical(job$operation,"explicit_distributions")) return(brohn_publish_explicit_distributions(store, result, scratch, job, input, result_path))
     if (identical(job$operation,"save_clock_map")) return(brohn_publish_clock_map_save(store, result, scratch, job, input, result_path))
@@ -759,9 +778,13 @@ brohn_process_job <- function(store, job, timeout_seconds = 1900) {
     failure<-list(message=substr(conditionMessage(e),1,4000),source_preserved=TRUE)
     if(inherits(e,"brohn_eda_refusal")&&
       (identical(job$operation,"eda_display")||
-       (identical(job$operation,"report_package")&&identical(job$request$limits$profile,"controlled-task-choice-eda-report-package/0.1")))){
+       (identical(job$operation,"report_package")&&job$request$limits$profile %in% c("controlled-task-choice-eda-report-package/0.1","controlled-task-choice-eda-cardiac-report-package/0.1")))){
       typed<-tryCatch({brohn_validate_eda_refusal(e$refusal);e$refusal},error=function(ignored)NULL)
       if(!is.null(typed))failure<-c(typed,list(source_preserved=TRUE))
+    }
+    if(inherits(e,"brohn_cardiac_refusal")&&identical(job$operation,"cardiac_display")){
+      typed <- tryCatch({brohn_validate_cardiac_refusal(e$refusal);e$refusal},error=function(ignored)NULL)
+      if(!is.null(typed))failure <- c(typed,list(source_preserved=TRUE))
     }
     tryCatch(brohn_fail_job(store, job$id, job$worker, job$token, failure), error = function(ignored) NULL)
     invisible(NULL)

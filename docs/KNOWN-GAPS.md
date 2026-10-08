@@ -1,5 +1,13 @@
 # Remaining work — Brohn
 
+Current 9 October continuation: the assigned text/PNG/questionnaire route now
+passes ordinary release-to-participant-to-report and manual analysis/recovery.
+Read the [current workstream](WORKSTREAM.md) and [source evidence map](qa/SOURCE-EVIDENCE-MAP-20261009.md).
+Assigned A/V, camera/equipment support, broader flow/formats, cardiac browser/cold
+and large-history latency, participant readiness, method qualification and hosted
+operations remain gaps. Historical activation gaps below are superseded only
+within that tested route.
+
 Updated **30 September 2026** for the ongoing end-to-end implementation.
 The owner resumed development after the published source checkpoint. The
 [workstream](WORKSTREAM.md) orders the active implementation;

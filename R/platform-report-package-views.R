@@ -1,3 +1,10 @@
+# Initial content is replaced by the existing Shiny HTML output binding.
+# It creates no polling, action, eligibility decision or scientific work.
+.brohn_rpk_pending_output <- function(id,label) {
+  htmltools::tagAppendChild(shiny::uiOutput(id),
+    shiny::tags$p(class="brohn-muted",role="status",label))
+}
+
 # Researcher UI only. These functions render bounded metadata supplied by the
 # package backend; they never open source objects or perform scientific work.
 .brohn_rpv_key <- function(x) substr(brohn_hash(x),1L,24L)
@@ -7,11 +14,11 @@
   `paired-findings`="Saved comparisons",`task-scores`="Task scores",
   `task-trials`="Task response patterns",`task-people`="Saved task results by person",
   `choice-counts`="Best-worst results",`choice-utilities`="Saved choice model",
-  `eda-events`="Event-related skin conductance",`eda-continuous`="Continuous skin conductance","Other findings")
+  `eda-events`="Event-related skin conductance",`eda-continuous`="Continuous skin conductance",cardiac="Cardiac findings","Other findings")
 .brohn_rpv_task_adapter <- function(adapter) adapter%in%c("task-scores","task-trials","task-people")
 .brohn_rpv_choice_adapter <- function(adapter) adapter%in%c("choice-counts","choice-utilities")
 .brohn_rpv_eda_adapter <- function(adapter) adapter%in%c("eda-events","eda-continuous")
-.brohn_rpv_eda_profile <- function(profile) isTRUE(profile %in% c("controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+.brohn_rpv_eda_profile <- function(profile) .brohn_rpk_eda_report_profile(profile)
 .brohn_rpv_component <- function(row,component) {
   if(!is.null(row$source_components))return(component%in%unlist(row$source_components,use.names=FALSE))
   # Older catalog fixtures/metadata predate independent components. Their task
@@ -21,15 +28,17 @@
 .brohn_rpv_has_component <- function(rows,component) any(vapply(rows,.brohn_rpv_component,logical(1),component=component))
 .brohn_rpv_has_eda <- function(rows) .brohn_rpv_has_component(rows,"eda")||any(vapply(rows,function(row)isTRUE(row$has_required_eda),logical(1)))
 .brohn_rpv_profiles <- function(rows) {
-  eda<-.brohn_rpv_has_eda(rows);choice<-.brohn_rpv_has_component(rows,"choice");task<-.brohn_rpv_has_component(rows,"task")
-  list(renderer_profile=if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.2"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1",
+  if(.brohn_rpcv_has(rows))return(list(renderer_profile=.brohn_rpcv_profile,limits_profile="controlled-task-choice-eda-cardiac-report-package/0.1"))
+  eda<-.brohn_rpv_has_eda(rows)||any(vapply(rows,function(row)identical(row$kind,"gaze"),logical(1)))
+  choice<-.brohn_rpv_has_component(rows,"choice");task<-.brohn_rpv_has_component(rows,"task")
+  list(renderer_profile=if(eda)"controlled-gaze-explicit-task-choice-eda-paired/0.3"else if(choice)"controlled-gaze-explicit-task-choice-paired/0.1"else if(task)"controlled-gaze-explicit-task-paired/0.1"else"controlled-gaze-explicit-paired/0.1",
     limits_profile=if(eda)"controlled-task-choice-eda-report-package/0.1"else if(choice)"controlled-task-choice-report-package/0.1"else if(task)"controlled-task-report-package/0.1"else"controlled-report-package/0.1")
 }
 .brohn_rpv_waiting <- function(dependencies) {
   if(!length(dependencies))return("Preparing saved views")
   kinds<-unique(vapply(dependencies,function(d)brohn_default(d$kind,"explicit_distributions"),character(1)))
   paste(vapply(kinds,function(kind){ds<-Filter(function(d)identical(brohn_default(d$kind,"explicit_distributions"),kind),dependencies)
-    label<-if(kind=="task_display")"Saved task views"else if(kind=="choice_display")"Saved best-worst views"else if(kind=="eda_display")"Saved skin-conductance views"else if(kind=="explicit_distributions")"Response distributions"else"Saved views"
+    label<-if(kind=="task_display")"Saved task views"else if(kind=="choice_display")"Saved best-worst views"else if(kind=="eda_display")"Saved skin-conductance views"else if(kind=="cardiac_display")"Saved cardiac views"else if(kind=="explicit_distributions")"Response distributions"else"Saved views"
     statuses<-vapply(ds,function(d)brohn_default(d$status,if(!is.null(d$result_ref))"succeeded"else"queued"),character(1))
     paste(label,if(all(statuses=="succeeded"))"ready"else if(any(statuses%in%c("failed","cancelled")))"need attention"else"preparing")
   },character(1)),collapse="; ")
@@ -57,7 +66,8 @@
     identical(preparation$recovery_scope,"none")&&brohn_number(preparation$maximum,500000,500000,TRUE)
 }
 .brohn_rpv_constant_coordinate_limit <- function(intent,rows) {
-  if(is.null(intent)||!identical(intent$request$renderer_profile,"controlled-gaze-explicit-task-choice-eda-paired/0.2")||
+  spec<-if(is.null(intent))NULL else .brohn_rpk_profile_spec(intent$request$renderer_profile,FALSE)
+  if(is.null(intent)||isTRUE(spec$cardiac)||!identical(spec$eda_version,"0.2")||
      !intent$status%in%c("failed","needs_attention","cancelled","superseded")||
      !.brohn_rpv_constant_coordinate_refusal(intent$preparation))return(FALSE)
   original<-intent$request$report_refs
@@ -96,8 +106,8 @@
   if(is.null(selector))selector<-list(scope=switch(adapter,`gaze-context`="all_exposures",
     `explicit-distribution`="all_groups",`paired-findings`="all_comparisons",
     `task-scores`="all_administrations",`task-trials`="all_administrations",`task-people`="all_metrics",
-    `choice-counts`="all_exercises",`choice-utilities`="all_exercises",`eda-events`="all_cells",`eda-continuous`="all_cells"))
-  display<-switch(adapter,`gaze-context`=list(candidate_limit=200L),
+    `choice-counts`="all_exercises",`choice-utilities`="all_exercises",`eda-events`="all_cells",`eda-continuous`="all_cells",cardiac="prepared_chapter"))
+  display<-switch(adapter,cardiac=list(components=list("raw","clean"),show_intervals=TRUE,show_spectrum=TRUE),`gaze-context`=list(candidate_limit=200L),
     `explicit-distribution`=list(pages="all"),
     `paired-findings`=list(charts=list("means","differences"),pages="all"),
     `task-scores`=list(pages="all"),
@@ -111,7 +121,7 @@
 }
 .brohn_rpv_default_sections <- function(rows) {
   result<-list()
-  for(adapter in c("gaze-context","task-scores","task-trials","task-people","choice-counts","choice-utilities","eda-events","eda-continuous","explicit-distribution","paired-findings"))for(row in rows)
+  for(adapter in c("gaze-context","task-scores","task-trials","task-people","choice-counts","choice-utilities","eda-events","eda-continuous","cardiac","explicit-distribution","paired-findings"))for(row in rows)
     if(adapter%in%unlist(row$adapters,use.names=FALSE))result[[length(result)+1L]]<-.brohn_rpv_section(row$ref,adapter)
   lapply(seq_along(result),function(i){s<-result[[i]];s$order<-as.integer(i);s})
 }
@@ -133,18 +143,19 @@ brohn_report_package_editor_ui <- function(draft) {
   shiny::tagList(shiny::div(hidden=NA,shiny::textInput("rpk_form_identity",NULL,draft$form_identity)),
     shiny::textInput("rpk_title","Report title",draft$title),
     shiny::uiOutput("rpk_contents"),
+    brohn_report_package_cardiac_draft_ui(draft),
     shiny::tags$details(shiny::tags$summary("Change contents"),
       shiny::h2("Saved findings"),shiny::p("Choose exact saved results. Different collections are kept separate."),
-      shiny::uiOutput("rpk_sources"),shiny::uiOutput("rpk_selected"),
+      .brohn_rpk_pending_output("rpk_sources","Loading saved findings..."),shiny::uiOutput("rpk_selected"),
       shiny::h2("Figures"),shiny::p("Figure choices change what is illustrated. Complete numerical collections remain included."),
-      shiny::uiOutput("rpk_figures"),shiny::uiOutput("rpk_selector"),shiny::uiOutput("rpk_eda_window"),shiny::uiOutput("rpk_eda_windows"),
+      .brohn_rpk_pending_output("rpk_figures","Loading figure choices..."),shiny::uiOutput("rpk_selector"),shiny::uiOutput("rpk_eda_window"),shiny::uiOutput("rpk_eda_windows"),
       shiny::h2("Labels and materials"),
-      shiny::checkboxInput("rpk_source_identifiers","Use original participant and session identifiers",identical(policy$identifier_mode,"source_identifiers")),
+      if(!isTRUE(draft$cardiac_active))shiny::checkboxInput("rpk_source_identifiers","Use original participant and session identifiers",identical(policy$identifier_mode,"source_identifiers")),
       shiny::checkboxInput("rpk_images","Include gaze stimulus images",identical(policy$stimulus_images,"included")),
       shiny::uiOutput("rpk_material_scope"),
-      shiny::p("Package-local labels are used by default. Free-text answers remain verbatim; this is not an anonymous report. Offline copies cannot be revoked."),
+      shiny::p(if(isTRUE(draft$cardiac_active))"Original identifiers require your choice above. Free-text answers remain verbatim; this is not an anonymous report."else"Package-local labels are used by default. Free-text answers remain verbatim; this is not an anonymous report. Offline copies cannot be revoked."),
       shiny::p("Complete original byte evidence and raw recordings are not included in this report profile. Original scientific exports remain available from their saved reports.")),
-    shiny::uiOutput("rpk_prepare_action"))
+    .brohn_rpk_pending_output("rpk_prepare_action","Checking report readiness..."))
 }
 brohn_report_package_sources_ui <- function(page,selected) shiny::tagList(
   lapply(page$reports,function(row){chosen<-any(vapply(selected,function(r).brohn_rpv_same(r$ref,row$ref),logical(1)))
@@ -196,7 +207,7 @@ brohn_report_package_figures_ui <- function(sections,labels=list(),task_options=
     source<-Filter(function(row).brohn_rpv_same(row$ref,s$source_report_ref),sources)
     if(is.null(label))label<-switch(s$selector$scope,all_exposures="All exposures",all_groups="All response groups",
       all_comparisons="All saved comparisons",all_administrations="All applicable saved task administrations",
-      all_metrics="All saved cohort metrics",all_exercises="All saved MaxDiff exercises",
+      all_metrics="All saved cohort metrics",all_exercises="All saved MaxDiff exercises",prepared_chapter="Recordings from the selected global chapters",
       all_cells=if(s$adapter=="eda-events")"All saved event cells, including unavailable responses"else"All saved segment cells, including unavailable signals","Selected saved view")
     shiny::div(class="brohn-card",shiny::h3(.brohn_rpv_adapter_label(s$adapter)),shiny::p(label),
       if(length(source)==1L)shiny::p(paste(source[[1]]$title,"| saved version",s$source_report_ref$revision)),
@@ -205,6 +216,7 @@ brohn_report_package_figures_ui <- function(sections,labels=list(),task_options=
         c("Condition means"="means","Person differences"="differences"),selected=unlist(s$display$charts)),
       .brohn_rpv_task_controls(s,task_options[[s$id]]),
       .brohn_rpv_eda_controls(s),
+      .brohn_rpcv_controls(s),
       if(.brohn_rpv_choice_adapter(s$adapter))shiny::p(if(s$adapter=="choice-counts")
         "Saved adjusted results show best minus worst choices divided by complete-pair exposures containing each item. This is not a raw count or a percentage."else
         "Saved aggregate relative utilities use the original model's relative logit units. Unrequested or unavailable models have an explanation instead of a fitted chart; preparing this report does not fit a model."),
@@ -215,7 +227,7 @@ brohn_report_package_figures_ui <- function(sections,labels=list(),task_options=
       if(.brohn_rpv_choice_adapter(s$adapter))shiny::p("Table pages change only the numerical alternative. Choice charts cover every saved item in the selected exercise; complete evidence remains included. An unavailable model has an explanation on page 1."),
       if(.brohn_rpv_eda_adapter(s$adapter))shiny::p("Numerical pages apply separately to representative figure points and saved candidates. Figure points are reduced for display; they are not the complete sample series. Small saved feature tables remain complete. These pages do not select markers or crop traces; complete processed rows remain in the evidence download."),
       shiny::div(class="brohn-toolbar",
-        brohn_command("Choose specific views","rpk_selector_open",list(ref=s$source_report_ref,adapter=s$adapter)),
+        if(identical(s$adapter,"cardiac"))brohn_command("Chapter and recording choices","rpk_cardiac_choices",list(ref=s$source_report_ref))else brohn_command("Choose specific views","rpk_selector_open",list(ref=s$source_report_ref,adapter=s$adapter)),
         if(i>1L)brohn_command("Move earlier","rpk_section_move",list(id=s$id,direction=-1L)),
         if(i<length(sections))brohn_command("Move later","rpk_section_move",list(id=s$id,direction=1L)),
         brohn_command("Remove figure section","rpk_section_remove",s$id)))}))

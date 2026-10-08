@@ -1,4 +1,30 @@
 # Pure typed projection and complete collection export. No store/source lookup.
+.brohn_rp_io_path <- function(path) {
+  # Physical I/O spelling only. Never put this value into a saved request/ref.
+  if(.Platform$OS.type!="windows"||!is.character(path)||length(path)!=1L||is.na(path)||Encoding(path)=="bytes")return(path)
+  value<-chartr("/","\\",enc2utf8(path))
+  if(startsWith(value,"\\\\?\\")||startsWith(value,"\\\\.\\"))return(path)
+  drive<-nchar(value,type="chars")>=3L&&grepl("^[A-Za-z]$",substr(value,1L,1L))&&substr(value,2L,3L)==":\\"
+  unc<-startsWith(value,"\\\\")
+  if(!drive&&!unc)return(path)
+  tail<-substring(value,if(drive)4L else 3L);parts<-strsplit(tail,"\\",fixed=TRUE)[[1L]]
+  devices<-c("con","prn","aux","nul","conin$","conout$",paste0(rep(c("com","lpt"),each=12L),rep(c(as.character(1:9),"\u00b9","\u00b2","\u00b3"),2L)))
+  if(!length(parts)||endsWith(tail,"\\")||any(!nzchar(parts))||(unc&&length(parts)<2L)||
+     any(parts %in% c(".",".."))||any(grepl("[. ]$",parts))||any(grepl(":",parts,fixed=TRUE))||any(grepl("[<>\"|?*]",parts))||
+     any(tolower(sub("\\..*$","",parts)) %in% devices))return(path)
+  paste0("\\\\?\\",if(unc)paste0("UNC\\",substring(value,3L))else value)
+}
+.brohn_rp_normalize_path <- function(path) {
+  physical<-.brohn_rp_io_path(path)
+  value<-normalizePath(physical,winslash="/",mustWork=TRUE)
+  # Keep the renderer's canonical logical root in ordinary spelling.
+  if(.Platform$OS.type=="windows"&&!identical(physical,path)){
+    if(startsWith(chartr("\\","/",value),"//?/"))value<-chartr("\\","/",value)
+    if(tolower(substr(value,1L,8L))=="//?/unc/")return(paste0("//",substring(value,9L)))
+    if(startsWith(value,"//?/"))return(substring(value,5L))
+  }
+  value
+}
 .brohn_rp_hash <- function(x) brohn_text(x,64)&&grepl("^[a-f0-9]{64}$",x)
 .brohn_rp_same <- function(a,b) {
   # Exact in-memory equality implies equal serialized bytes, but still validate
@@ -20,22 +46,23 @@ brohn_report_package_task_limits <- function() {
   value<-brohn_report_package_limits();value$profile<-"controlled-task-report-package/0.1";value
 }
 .brohn_rp_limits <- function(value) {
-  defaults<-if(identical(value$profile,"controlled-task-choice-eda-report-package/0.1"))brohn_report_package_eda_limits()else if(identical(value$profile,"controlled-task-choice-report-package/0.1"))brohn_report_package_choice_limits()else if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
+  defaults<-if(identical(value$profile,"controlled-task-choice-eda-cardiac-report-package/0.1"))brohn_report_package_cardiac_limits()else if(identical(value$profile,"controlled-task-choice-eda-report-package/0.1"))brohn_report_package_eda_limits()else if(identical(value$profile,"controlled-task-choice-report-package/0.1"))brohn_report_package_choice_limits()else if(identical(value$profile,"controlled-task-report-package/0.1"))brohn_report_package_task_limits()else brohn_report_package_limits()
   brohn_fields(value,names(defaults),label="Package limits")
   brohn_require(identical(value$profile,defaults$profile)&&all(vapply(setdiff(names(defaults),"profile"),function(k)
     brohn_number(value[[k]],1,defaults[[k]],TRUE),logical(1))),"Report limits exceed the supported profile.")
   value
 }
 .brohn_rp_write <- function(value,path,json=FALSE) {
-  brohn_require(!file.exists(path),"A report payload already exists.")
-  dir.create(dirname(path),recursive=TRUE,showWarnings=FALSE)
+  physical<-.brohn_rp_io_path(path)
+  brohn_require(!file.exists(physical),"A report payload already exists.")
+  dir.create(.brohn_rp_io_path(dirname(path)),recursive=TRUE,showWarnings=FALSE)
   bytes<-if(json)charToRaw(enc2utf8(paste0(brohn_json(value),"\n")))else if(is.raw(value))value else charToRaw(enc2utf8(value))
-  con<-file(path,"wb");on.exit(close(con),add=TRUE);writeBin(bytes,con);invisible(path)
+  con<-file(physical,"wb");on.exit(close(con),add=TRUE);writeBin(bytes,con);invisible(path)
 }
 .brohn_rp_file <- function(root,path,type,role) {
   brohn_require(brohn_text(path,180)&&grepl("^[a-z0-9][a-z0-9._/-]*$",path)&&
     !any(strsplit(path,"/",fixed=TRUE)[[1L]] %in% c("",".","..")),"Invalid generated payload name.")
-  file<-file.path(root,path);brohn_require(file.exists(file)&&!dir.exists(file),"A required report payload is missing.")
+  file<-.brohn_rp_io_path(file.path(root,path));brohn_require(file.exists(file)&&!dir.exists(file),"A required report payload is missing.")
   list(path=path,sha256=digest::digest(file=file,algo="sha256"),bytes=as.numeric(file.info(file)$size),media_type=type,role=role)
 }
 .brohn_rp_csv <- function(rows,path) {
@@ -43,8 +70,9 @@ brohn_report_package_task_limits <- function() {
   for(r in rows)brohn_require(is.list(r)&&!is.null(names(r))&&!anyDuplicated(names(r))&&
     !any(c("record_json","source_order") %in% names(r)),"CSV rows need original named fields without reserved projection columns.")
   columns<-unique(c("source_order",unlist(lapply(rows,names),use.names=FALSE),"record_json"))
-  dir.create(dirname(path),recursive=TRUE,showWarnings=FALSE);brohn_require(!file.exists(path),"A CSV payload already exists.")
-  con<-file(path,"wb");on.exit(close(con),add=TRUE)
+  physical<-.brohn_rp_io_path(path)
+  dir.create(.brohn_rp_io_path(dirname(path)),recursive=TRUE,showWarnings=FALSE);brohn_require(!file.exists(physical),"A CSV payload already exists.")
+  con<-file(physical,"wb");on.exit(close(con),add=TRUE)
   line<-function(cells)writeBin(charToRaw(enc2utf8(paste0(paste(paste0('"',gsub('"','""',enc2utf8(cells),fixed=TRUE),'"'),collapse=","),"\r\n"))),con)
   encode<-function(x)if(is.null(x))""else if(is.character(x)&&length(x)==1L){
     if(grepl("^[[:space:]]*[=+@-]",x))paste0("'",x)else x
@@ -235,6 +263,12 @@ brohn_report_package_task_limits <- function() {
 }
 .brohn_rp_projection <- function(item,aliases,namespace,task_evidence=NULL,choice_evidence=NULL,source_admission=NULL) {
   body<-item$saved_body;a<-item$complete_analysis
+  raw_profile<-.brohn_rpg_admission_profile(source_admission)
+  if(!is.null(raw_profile)&&identical(a$kind,"gaze")&&identical(a$parameters$input,"raw_gaze_samples")) {
+    brohn_require(is.null(task_evidence)&&is.null(choice_evidence),"A raw-gaze projection cannot replace task or choice evidence.")
+    return(brohn_report_package_raw_gaze_projection(item,aliases,namespace,raw_profile))
+  }
+  source_admission<-.brohn_rpk_algorithm_admission(source_admission)
   brohn_fields(body,c("id","title","origin","analysis","provenance"),c("schema_version","created_at","status","study_id","dataset_id","project_id","processing","result_object","session_quality"),"Saved report projection")
   if(!is.null(choice_evidence)){
     brohn_validate_complete_report_analysis(item,"task-choice-findings/0.1")

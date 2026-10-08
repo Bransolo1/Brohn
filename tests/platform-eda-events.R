@@ -130,7 +130,7 @@ local({
   bad_result$features[[target]]$missing_reason <- "ambiguous_overlapping_events"
   summary <- Filter(function(x) x$name == "scr_response_magnitude", brohn_eda_events_support(bad_result)$measures)[[1]]
   check("finite stale values cannot override unavailable eligibility", summary$eligible_event_channel_cells == 1 && summary$unavailable_event_channel_cells == 1)
-  for (module in c("platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-library", "platform-analysis", "platform-physiology-artifacts", "platform-vision", "platform-jobs")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
+  for (module in c("platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-tabular-preview", "platform-library", "platform-analysis", "platform-physiology-artifacts", "platform-vision", "platform-jobs")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
   for (module in c("questionnaire-artifacts", "questionnaire-artifact-storage")) source(paste0("R/platform-",module,".R"),encoding="UTF-8")
   store <- brohn_open_store(file.path(scratch, "workspace"))
   on.exit(brohn_close_store(store), add = TRUE, after = FALSE)

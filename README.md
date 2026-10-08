@@ -1,122 +1,45 @@
-# Brohn - Implicit Research Platform
+# Brohn — Implicit Research Platform
 
-Brohn is an open-source, R-first workspace for consumer and psychology research:
-design controlled studies, collect or import data, review traceable analyses,
-and reuse study designs. It aims to make these workflows approachable for
-undergraduate researchers and useful to commercial research teams.
+Brohn is an open-source, R-first workspace for consumer and psychology research: design controlled studies, collect or import data, review traceable analyses, and reuse study designs. It aims to make these workflows approachable for undergraduate researchers and useful to commercial research teams.
 
-**Working local application; active development.** The broader platform remains
-unfinished, with 50 registered capabilities across 17 work packages.
+**Working local application; active development.** The intended platform remains unfinished, with 50 registered capabilities across 17 work packages. Implemented software, an accepted research workflow and a scientifically qualified measurement are different milestones.
 
-- Install and run: [quick start below](#install-and-start) and [local installation guide](docs/operations/LOCAL-INSTALLATION.md).
-- Continue development: [current status](STATUS.md), [John's handoff](docs/HANDOFF-JOHN.md) and [ordered workstream](docs/WORKSTREAM.md).
-- Understand the full scope: [master architecture](docs/MASTER-ARCHITECTURE.md).
-- Create stimulus versions and controls: [researcher guide](docs/operations/STIMULUS-VERSIONS-AND-CONTROLS.md) and [eye-tracking flexibility roadmap](docs/research/EYE-TRACKING-FLEXIBILITY.md).
+- Get running: [installation below](#install-and-start) and [local installation guide](docs/operations/LOCAL-INSTALLATION.md).
+- See what passed: [source and workflow evidence map](docs/qa/SOURCE-EVIDENCE-MAP-20261009.md).
+- Continue development: [status](STATUS.md), [John's handoff](docs/HANDOFF-JOHN.md), [workstream](docs/WORKSTREAM.md) and [master architecture](docs/MASTER-ARCHITECTURE.md).
 
-**New authoring checkpoint, 1 October 2026:** Plan now offers **Add version**
-with separate control/test/neutral/other or existing conditions. Original assets
-and areas are preserved; edited copies can use new material. Desktop/phone,
-keyboard, save/reopen and focused domain checks passed. Every listed ordinary
-stimulus is still scheduled once per run; between-group variant assignment is
-planned. See the [scoped acceptance](docs/qa/STIMULUS-VERSIONS-ACCEPTANCE.md).
+## Current checkpoint
 
-**Accepted checkpoint, 30 September 2026:** exact-constant EDA can retain a saved
-raw mean, including zero, while processed response measures remain unavailable.
-Saved reports can include that descriptive evidence beside liking without
-repeating science. Historical outputs keep their saved identity. Scoped native, browser and
-cold-restart acceptance passed; see the [scoped acceptance record](docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md).
+**9 October 2026: assigned study delivery is connected in the normal application.** Design version groups and shared controls, release the study, collect supported participant responses, process the completed session automatically and review the saved report. The final relocated Git checkout passed the real launcher/Release-button/participant/worker/report journey, 38 document-access checks and independent complete-data inspection. Separate researcher checks cover reuse, manual analysis/recovery and desktop/phone report cards. See the [evidence map](docs/qa/SOURCE-EVIDENCE-MAP-20261009.md) for source-specific limits.
 
-The earlier [saved EDA checkpoint](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md)
-remains accepted within its recorded scope. The [EDA guide](docs/operations/SHARE-SAVED-EDA-FINDINGS.md)
-and [contract](docs/architecture/SAVED-EDA-REPORT-PACKAGES.md) distinguish complete
-included evidence from focused figures and raw inputs. A smaller display does
-not shrink complete evidence or guarantee package admission.
+The [assigned-study guide](docs/operations/ASSIGNED-STUDY-WORKFLOW.md) explains **Who sees each version?**, shared controls, participant setup, answer review, **Analyse saved run**, **Analyse release**, clone/templates and design exchange. This scoped route uses supported text/PNG stimuli and questionnaires. Assigned A/V delivery, camera/equipment collection and other study formats retain separate gates. The older ordinary authoring route schedules each listed stimulus; do not infer between-group assignment from a version label alone.
 
-The [workflow evidence ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) links the
-actual researcher journeys, method checks, exports and restart evidence for
-enabled features. Each acceptance record states its tested scope and remaining
-limits. For inspecting complete saved observations and original frames, use the
-[facial and video/audio review guide](docs/operations/REVIEW-SAVED-MEDIA.md).
-The [saved-results guide](docs/operations/REVIEW-SAVED-RESULTS.md) covers
-Results/Explore/Evidence, paged histories and reopening original views.
-The [aligned-recordings guide](docs/operations/REVIEW-ALIGNED-RECORDINGS.md) covers
-reviewed original-event matching, versioned maps, automatic complete-window
-charts and unchanged historical exports. Its
-[checkpoint evidence](docs/qa/PUBLICATION-REVIEWED-CLOCK-20260927.md) separates
-connected browser, reference and authority checks; it does not establish
-physical synchronization. This route uses the configured methods Python and
-qualified native resource protection; no additional model is required.
-The [responsiveness checkpoint](docs/qa/PUBLICATION-REVIEW-RESPONSIVENESS-20260925.md)
-records faster saved-source preparation, visible progress and scoped mobile
-keyboard checks. Complete source opening still takes several seconds; wider
-performance and the full platform remain unfinished.
+**Saved cardiac packaging is implemented with native qualification.** It assembles supported saved ECG detected-RR and PPG PRV findings, including required parent/exclusion evidence, without repeating scientific processing. Complete included analytical evidence is distinct from original raw recordings. The final cardiac researcher-browser/cold-reopen journey and performance remain open: a measured saved-history open took about 80 seconds. Read the [researcher guide](docs/operations/SHARE-SAVED-CARDIAC-FINDINGS.md), [contract](docs/architecture/SAVED-CARDIAC-REPORT-PACKAGES.md) and [scoped acceptance](docs/qa/CARDIAC-EVIDENCE-ACCEPTANCE.md).
 
-The [saved-findings handoff guide](docs/operations/SHARE-SAVED-FINDINGS.md)
-covers one preparation flow for supported saved gaze, explicit responses and
-paired findings. Standalone HTML contains selected figures and numerical
-alternatives; its evidence ZIP retains every row in the included numerical
-collections. Exact saved choices reopen from history without repeating science.
-Read the [scoped checkpoint](docs/qa/PUBLICATION-REPORT-HANDOFF-20260927.md)
-for tested boundaries. This profile uses the configured methods environment
-with **CPython 3.12.10 and Pillow 12.3.0**; see installation instructions.
+**Current method guidance is screened, not scientific approval.** The selected registry contains 24 bounded claims and 31 scholarly source records. Its Tasks/Data panels show assumptions and limits; they do not automatically freeze citations into every study or result. See [references inside Brohn](docs/research/METHOD-EVIDENCE-RUNTIME.md).
 
-The [task-report profile](docs/architecture/SAVED-TASK-REPORT-PACKAGES.md)
-adds complete saved findings for IAT, BIAT, AAT, simple and choice reaction time,
-Brohn response-window SC-IAT and Brohn single-target GNAT beside explicit liking
-and scales. Native, imported and saved-cohort evidence have separate source
-contracts. No new score or task–liking estimator is introduced.
-The final task-report source checkpoint passed the connected researcher workflow, mobile export review, exact download checks and cold restart. This is scoped acceptance, not completion of the platform.
-Read the [acceptance evidence](docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md) for limits.
+## Implemented workflows
 
-The [choice-report profile](docs/architecture/SAVED-CHOICE-REPORT-PACKAGES.md)
-adds saved MaxDiff counts and model results, including mixed task/liking sources
-and saved cohorts. Complete numerical evidence is preserved without refitting.
-Its [scoped acceptance](docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) separates
-component, worker, connected researcher, mobile export and cold-restart evidence.
-Exported task reports also gain plain labels/explanations across all seven
-profiles; canonical metric keys, values and support remain in the evidence.
+Support depends on the selected profile, inputs and prerequisites; the [documentation map](docs/README.md) links their contracts and evidence.
 
-The next report work is [saved ECG/PPG packages](docs/architecture/SAVED-CARDIAC-REPORT-NEXT.md).
-The [exact-constant method plan](docs/methods/EDA-CONSTANT-SIGNAL-NEXT.md)
-does not set an amplitude floor or qualify near-flat signals and physiological
-response criteria. Those questions remain open. Task/choice stimulus image
-context, raw input bundles, broader workloads and the wider platform also remain
-unfinished.
-
-## What is connected
-
-| Workflow | Current local application |
+| Area | Available implementation and guides |
 | --- | --- |
-| Design and reuse | Study/data/design libraries, control stimuli, AOIs, questionnaires with typed branching, participant-specific option assignment, sections, scales, MaxDiff, clone, templates and portable design ZIPs. |
-| Collect | A separate participant application serves frozen releases, consent, questionnaires and seven implicit/reaction-time profiles, including the named Brohn response-window SC-IAT and single-target GNAT. Opt-in questionnaire answer review supports Back/Edit within an untimed assessment, dependent-answer invalidation and a final review before continuing. |
-| Import and centralize | Reviewed background source import, native recording inspection, preserved multistream archives, reviewed channel preparation, and an explicit local LSL recording route. |
-| Analyse | Method-specific gaze, EEG, EDA, ECG/PPG, respiration, EMG, fNIRS, audio, calibrated temperature and movement workflows. Supported inputs and prerequisites differ by profile. |
-| Review and export | Pinned signal/gaze views, explicit/physiological comparisons, descriptive task cohorts with reviewed identity and repeat policies, complete artifacts, HTML/CSV/JSON exports, history and backup/restore. |
-| Camera and AOIs | Separate camera consent and retention, original recording downloads, optional local face/pose/hand geometry, source-bound facial AU/native-category analysis, and assisted AOI proposals that require researcher review. |
+| Design and reuse | Study/data/design libraries, control stimuli, AOIs, typed questionnaire branching, sections, scales, MaxDiff, clones, templates and portable design ZIPs. [Study lifecycle](docs/product/STUDY-LIFECYCLE.md). |
+| Collect | Separate participant application with frozen releases, consent, questionnaires and seven implicit/reaction-time profiles. Opt-in answer review supports Back/Edit within an untimed assessment. [Named Brohn GNAT guide](docs/operations/RUN-GNAT.md). |
+| Import and centralize | Reviewed background imports, preserved multistream archives, channel preparation and an explicit local LSL recording route. [Installation and optional profiles](docs/operations/LOCAL-INSTALLATION.md). |
+| Analyse | Method-specific gaze, EEG, EDA, ECG/PPG, respiration, EMG, fNIRS, audio, calibrated temperature and movement workflows. [Methods and limits](docs/methods/reuse/README.md). |
+| Review and share | Saved results/history, complete artifacts, HTML/CSV/JSON exports and supported saved-findings packages. [Review results](docs/operations/REVIEW-SAVED-RESULTS.md) and [share findings](docs/operations/SHARE-SAVED-FINDINGS.md). |
+| Camera and AOIs | Separate consent/retention, original recordings, optional local geometry, source-bound facial analysis and assisted AOI proposals requiring review. [Saved-media guide](docs/operations/REVIEW-SAVED-MEDIA.md). |
 
-R/Shiny provides the researcher interface. A separate browser application runs
-participant studies; SQLite and content-addressed files preserve revisions and
-original evidence. Supervised processes handle long-running analysis and local
-recording. Facial geometry is not presented as a validated emotion or attention
-score. Installed libraries do not establish compatibility with a physical device.
+R/Shiny provides the researcher interface. Browser studies, supervised analysis/recording processes, SQLite revisions and content-addressed files preserve original evidence. Facial geometry is not a validated emotion/attention score. Detected ECG RR is not confirmed NN-HRV, and PPG PRV is not interchangeable with HRV. Installed libraries do not establish physical-device compatibility or synchronization.
 
-For Go/No-Go study design, separate deadline results, genuine withholding and
-source-preserving imports, use the [GNAT guide](docs/operations/RUN-GNAT.md).
-The [GNAT checkpoint](docs/qa/PUBLICATION-GNAT-20260924.md) records this
-implementation's acceptance status and scientific limits.
+Earlier [EDA](docs/qa/EDA-REPORT-PACKAGE-ACCEPTANCE.md), [exact-constant EDA](docs/qa/EDA-CONSTANT-SIGNAL-ACCEPTANCE.md), [task](docs/qa/TASK-REPORT-PACKAGE-ACCEPTANCE.md) and [choice](docs/qa/CHOICE-REPORT-PACKAGE-ACCEPTANCE.md) package acceptances retain their own tested scope. Complete questionnaire exports preserve typed responses and history behind bounded previews; see [questionnaire export integrity](docs/qa/QUESTIONNAIRE-EXPORT-INTEGRITY.md).
 
 ## Install and start
 
-The exercised installation is **Windows AMD64 with R 4.6.1** and optional isolated
-Python 3.12.10 scientific environments. Follow the
-[local installation guide](docs/operations/LOCAL-INSTALLATION.md) from the
-repository root. A fresh clone does **not** include the development `../../work`
-directories, R libraries, Python environments, model weights or external raw
-test evidence.
+The exercised installation is **Windows AMD64 with R 4.6.1**, with optional isolated Python 3.12.10 scientific environments. Follow the [local installation guide](docs/operations/LOCAL-INSTALLATION.md) from the repository root. A clone excludes development workspaces, installed libraries, model weights and external raw test evidence.
 
-After installing R, 64-bit Python and the TinyCC toolchain described in the guide,
-one setup command restores the pinned packages, builds protected report storage
-and saves a checked configuration. Adapt these paths to your installation:
+After installing R, 64-bit Python and the documented TinyCC toolchain, adapt these paths:
 
 ```powershell
 ./scripts/setup-local.ps1 -InstallationRoot 'C:/Brohn/local' `
@@ -126,69 +49,14 @@ and saves a checked configuration. Adapt these paths to your installation:
 ./run-local.ps1 -ConfigurationPath 'C:/Brohn/local/local-installation.json'
 ```
 
-Open [Brohn locally](http://127.0.0.1:3838/). The launcher supervises collection
-and processing services; Ctrl+C stops its owned processes. Core study,
-questionnaire, task and supported R gaze workflows do not require scientific
-Python packages. The doctor can check optional profiles, models and codecs as
-described in the installation guide. The historical prototype is available only
-through the explicit `-Legacy` option.
+Open [Brohn locally](http://127.0.0.1:3838/). The launcher supervises collection and processing; Ctrl+C stops its owned services. Keep dependencies, caches and research workspaces outside the repository. Scientific Python profiles/models are separate optional installations; use the installation guide's doctor checks. The historical prototype requires the explicit `-Legacy` option.
 
-Keep dependencies, caches and research workspaces outside the repository.
-Scientific Python profiles and models remain separate optional installations.
-The [setup evidence](docs/qa/LOCAL-SETUP-ACCEPTANCE.md) covers a fresh separate
-library, failure/retry and service restart on the exercised Windows host.
+This profile binds to **loopback only**: its participant links cannot recruit people on other computers. The [protected hosted profile](docs/operations/HOSTED-PROFILE.md) has separate local access-control evidence; public recruitment still requires configured hosting, identity and operational checks.
 
-This profile binds to **loopback only**. Its participant links cannot recruit
-people on other computers. The separate [protected hosted profile](docs/operations/HOSTED-PROFILE.md)
-has local OIDC and access-control evidence for one trusted team. Public
-recruitment still needs a configured host, identity tenant and operational checks.
+## Develop and qualify
 
-## Evidence and current limits
+Use [John's handoff](docs/HANDOFF-JOHN.md) and the [ordered workstream](docs/WORKSTREAM.md). Start with [running checks](docs/qa/RUNNING-CHECKS.md), the [contributor guide](CONTRIBUTING.md) and the [evidence map](docs/qa/SOURCE-EVIDENCE-MAP-20261009.md). The qualified repository-owned connected test is documented in [tests/connected](tests/connected/README.md); run it with your own explicit installation paths and a fresh disposable workspace.
 
-The [researcher QA record](docs/qa/RESEARCHER-QA.md) separates executed journeys
-from planned capabilities. Recent completed work includes answer review through
-saved scale analysis, and descriptive task cohorts with explicit person/session
-linkage and repeat weighting.
+Full questionnaire parity, broader study formats, responsive large-data workflows, A/V integration, physical-device agreement, scientific appraisal and production hosting remain open. Automated accessibility scans and scoped original-data checks do not establish whole-platform readiness or usability for every researcher.
 
-The [current workflow ledger](docs/qa/INTEGRATED-WORKFLOWS-20260924.md) also covers
-collection history and recovery, complete response distributions, paired-person
-figures, linked signals/events, video-to-audio preparation, audio/EDA/respiration
-review and exact answer-to-session navigation. Derived results retain the
-original source's access rules. Each linked record states its tested scope;
-the broader platform remains in active development.
-
-Large questionnaire reports retain all final answers and edit history behind
-bounded previews. Their [native worker continuation](docs/qa/QUESTIONNAIRE-ARTIFACT-WORKER.md)
-passed **27 checks**, with **two successful publications** across the recorded
-executions. The later [researcher journey](docs/qa/QUESTIONNAIRE-ARTIFACT-RESEARCHER-JOURNEY.md)
-passed **10 browser assertions and seven accessibility scans**, including
-complete downloads, reopening and a real synthesis worker reading beyond the
-preview. Questionnaire CSV includes exact typed `response_record_json` alongside
-display cells; [UTF-8 export/import checks](docs/qa/QUESTIONNAIRE-EXPORT-INTEGRITY.md)
-cover Unicode, native false/zero/text/null and malformed-input refusal.
-
-The complete in-app questionnaire explorer connects **Explore all answers** to
-source-bound background preparation, paged Questions/Answers, complete values,
-distributions and retained edit history. Read [its acceptance record](docs/qa/QUESTIONNAIRE-EXPLORER-ACCEPTANCE.md)
-for the tested Windows profile, measurements and remaining boundaries. Full
-artifact downloads remain available even when interactive preparation fails.
-
-These are scoped software checks using original fixtures. They do not establish
-full-platform production readiness, human usability, physical sensor accuracy,
-unlimited dataset capacity or scientific qualification of every method.
-
-## Continue from here
-
-- [Complete documentation map](docs/README.md): product vision, architecture, UX, methods, roadmap and remaining work
-- [John's handoff](docs/HANDOFF-JOHN.md), [current status](STATUS.md) and [master architecture](docs/MASTER-ARCHITECTURE.md)
-- [Installation and readiness](docs/operations/LOCAL-INSTALLATION.md), [dependencies](DEPENDENCIES.md) and [backup/restore](docs/operations/BACKUP-AND-RESTORE.md)
-- [Researcher QA](docs/qa/RESEARCHER-QA.md) and [selected check runner](docs/qa/RUNNING-CHECKS.md)
-- [Portable connected smoke](docs/qa/CONNECTED-PORTABLE-SMOKE-ACCEPTANCE.md): study creation, participant completion, automatic reporting, exports and restart in an isolated QA workspace
-- [Configured core checks](docs/qa/PORTABLE-CATALOG-ACCEPTANCE.md): seven reviewed component checks using a saved installation configuration and separate evidence directory
-- [Study lifecycle](docs/product/STUDY-LIFECYCLE.md), [design portability](docs/product/DESIGN-PORTABILITY.md) and [method specifications](docs/methods/reuse/README.md)
-- [Contributor workflow](CONTRIBUTING.md), [known gaps](docs/KNOWN-GAPS.md) and [change history](CHANGELOG.md)
-
-Brohn source is provided under the [MIT license](LICENSE). Dependencies and
-separately obtained models retain their own licenses. Competitor screenshots,
-participant recordings, credentials and proprietary SDKs are not distributed
-with this repository.
+Source is provided under the [MIT license](LICENSE). Dependencies and separately obtained models retain their own licenses. Competitor screenshots, participant recordings, credentials and proprietary SDKs are not distributed with this repository.

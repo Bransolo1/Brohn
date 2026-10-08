@@ -30,14 +30,16 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     editor_tick=0L,form_identity=NULL,intent=NULL,history=NULL,selector=NULL,issue=NULL,
     generation=0L,pending=NULL,focus_token=NULL,phase="idle",automatic=FALSE,dirty=FALSE,
     opened=NULL,urls=list(),open_attempt_key=NULL,request_command=NULL,request_snapshot=NULL,recommendation_note=NULL,
-    task_options=list(),metadata_key=NULL,eda_display_requests=list(),window_editor=NULL)
+    task_options=list(),metadata_key=NULL,eda_display_requests=list(),window_editor=NULL,
+    cardiac_display_requests=list(),cardiac_figure_chapters=brohn_normalize_cardiac_figure_chapters(),
+    cardiac_summary=NULL,cardiac_issue=NULL,cardiac_editor=NULL)
   native<-new.env(parent=emptyenv());native$handle<-NULL
   cursors<-new.env(parent=emptyenv());cursors$sources<-list();cursors$history<-list();cursors$selector<-list()
   active<-function()identical(state$page,"report_package")&&!is.null(v$scope)
   require_active<-function(){brohn_require(active(),"Open this study's report preparation again.");brohn_hosted_require_session(store)}
   release<-function(){if(!is.null(native$handle))brohn_release_report_package_resources(native$handle)
     native$handle<-NULL;v$opened<-NULL;v$urls<-list()}
-  clear_view<-function(){v$generation<-v$generation+1L;v$pending<-NULL;v$automatic<-FALSE;v$window_editor<-NULL;release()}
+  clear_view<-function(){v$generation<-v$generation+1L;v$pending<-NULL;v$automatic<-FALSE;v$window_editor<-NULL;v$cardiac_editor<-NULL;release()}
   fail<-function(e){release();v$issue<-substr(conditionMessage(e),1L,1000L);v$phase<-"failed";v$pending<-NULL;v$automatic<-FALSE}
   safe<-function(fn)tryCatch({require_active();fn()},error=fail)
   session$onSessionEnded(function(){if(!is.null(native$handle))brohn_release_report_package_resources(native$handle);native$handle<-NULL})
@@ -47,7 +49,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   load_history<-function(cursor=NULL){v$history<-brohn_report_package_catalog(store,v$scope$study_id,v$scope$project_id,cursor=cursor)}
   load_choices<-function(cursor=NULL){v$choices<-brohn_report_package_choices(store,v$scope$study_id,v$scope$project_id,cursor=cursor)}
   normalize_sections<-function(sections)lapply(seq_along(sections),function(i){s<-sections[[i]];s$order<-as.integer(i);s})
-  make_draft<-function(title,policy=.brohn_rpv_policy())list(title=title,contents_policy=policy)
+  make_draft<-function(title,policy=.brohn_rpv_policy())list(title=title,contents_policy=policy,cardiac_identifier_confirmed=FALSE)
   editor<-function(){v$form_identity<-brohn_token();v$editor_tick<-v$editor_tick+1L}
   pages<-function(value){value<-trimws(brohn_default(value,""));if(!nzchar(value))return(NULL)
     brohn_require(nchar(value)<=512L&&grepl("^[0-9]+(\\s*,\\s*[0-9]+)*$",value),"Use page numbers separated by commas, or leave blank for all pages.")
@@ -55,15 +57,21 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     brohn_require(length(p)<=100L&&!anyDuplicated(p)&&all(is.finite(p)&p>=1&p<=100000&p==floor(p)),"Choose distinct positive figure pages.")
     as.list(as.integer(p))}
   capture<-function(commit=TRUE){require_form();d<-v$draft
-    if(commit)brohn_require(is.null(v$window_editor),"Apply or cancel the open display-window edit before changing or preparing this report.")
+    if(commit)brohn_require(is.null(v$window_editor)&&is.null(v$cardiac_editor),"Apply or cancel the open recording-view edit before changing or preparing this report.")
     title<-trimws(brohn_default(input$rpk_title,d$title));brohn_require(nzchar(title)&&nchar(title)<=200L,"Give this report a title of 1 to 200 characters.")
-    d$title<-title;d$contents_policy$identifier_mode<-if(isTRUE(input$rpk_source_identifiers))"source_identifiers"else"package_aliases"
+    d$title<-title
+    if(.brohn_rpcv_has(v$rows)){
+      d$cardiac_identifier_confirmed<-isTRUE(brohn_default(input$rpk_cardiac_source_identifiers,d$cardiac_identifier_confirmed))
+      d$contents_policy$identifier_mode<-if(d$cardiac_identifier_confirmed)"source_identifiers"else"package_aliases"
+    }else d$contents_policy$identifier_mode<-if(isTRUE(input$rpk_source_identifiers))"source_identifiers"else"package_aliases"
     d$contents_policy$stimulus_images<-if(isTRUE(input$rpk_images))"included"else"excluded_by_choice"
     sections<-lapply(v$sections,function(s){
       if(s$adapter=="gaze-context"){
         limit<-brohn_default(input[[paste0("rpk_limit_",s$id)]],s$display$candidate_limit)
         brohn_require(brohn_number(limit,1,1000,TRUE),"Choose between 1 and 1,000 illustrated gaze candidates per exposure.")
         s$display$candidate_limit<-as.integer(limit)
+      }else if(identical(s$adapter,"cardiac")){
+        s<-.brohn_rpcv_capture_section(s,input)
       }else{
         page_input<-input[[paste0("rpk_pages_",s$id)]]
         if(!is.null(page_input)){
@@ -118,11 +126,20 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     # Reads/history retain their original version. Only an explicit new intent
     # derives a profile from the independent components of its selected sources.
     profile<-if(!new_profile&&!is.null(v$intent))v$intent$request else .brohn_rpv_profiles(v$rows)
-    brohn_require(length(captured$sections)>0L||.brohn_rpv_eda_profile(profile$renderer_profile),"Choose at least one supported figure section.")
+    cardiac<-.brohn_rpcv_is_profile(profile$renderer_profile)
+    brohn_require(length(captured$sections)>0L||.brohn_rpv_eda_profile(profile$renderer_profile)||cardiac,"Choose at least one supported figure section.")
     result<-list(schema="brohn-report-package-intent-request/0.1",study_id=v$scope$study_id,project_id=v$scope$project_id,
       title=captured$draft$title,report_refs=unname(lapply(v$rows,`[[`,"ref")),requested_sections=unname(captured$sections),
       contents_policy=captured$draft$contents_policy,limits_profile=profile$limits_profile,renderer_profile=profile$renderer_profile)
-    if(.brohn_rpv_eda_profile(profile$renderer_profile))result$eda_display_requests<-.brohn_rpk_normalize_eda_requests(v$eda_display_requests,result$report_refs)
+    if(.brohn_rpv_eda_profile(profile$renderer_profile)||cardiac)result$eda_display_requests<-.brohn_rpk_normalize_eda_requests(v$eda_display_requests,result$report_refs)
+    if(cardiac){
+      brohn_require(isTRUE(captured$draft$cardiac_identifier_confirmed),"Choose whether to include original participant and session identifiers before preparing this cardiac report.")
+      result$schema<-"brohn-report-package-intent-request/0.2"
+      result$cardiac_display_requests<-.brohn_rpcc_normalize_requests(v$cardiac_display_requests,lapply(.brohn_rpcv_rows(v$rows),`[[`,"ref"))
+      result$cardiac_figure_chapters<-.brohn_rpcv_chapters(input$rpk_cardiac_chapter_mode,input$rpk_cardiac_chapter_numbers,v$cardiac_figure_chapters)
+      brohn_require(is.null(v$cardiac_issue),brohn_default(v$cardiac_issue,"Review the cardiac chapter choices."))
+      brohn_require(.brohn_rpv_same(result$cardiac_figure_chapters,v$cardiac_figure_chapters),"Wait for the chosen chapter membership to appear before preparing.")
+    }
     result}
   start<-function(action,payload=NULL,label,passive=FALSE){require_active();release();v$issue<-NULL
     if(!passive)v$focus_token<-brohn_token()
@@ -135,9 +152,20 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     refresh_prepared(view)
     invisible(view)}
   hydrate<-function(view){v$recommendation_note<-NULL;v$rows<-lapply(view$request$report_refs,function(ref)brohn_report_package_report_choice(store,ref))
-    v$eda_display_requests<-if(.brohn_rpv_eda_profile(view$request$renderer_profile)).brohn_rpk_normalize_eda_requests(view$request$eda_display_requests,view$request$report_refs)else list()
+    cardiac<-.brohn_rpcv_is_profile(view$request$renderer_profile)
+    v$eda_display_requests<-if(.brohn_rpv_eda_profile(view$request$renderer_profile)||cardiac).brohn_rpk_normalize_eda_requests(view$request$eda_display_requests,view$request$report_refs)else list()
+    v$cardiac_display_requests<-if(cardiac).brohn_rpcc_normalize_requests(view$request$cardiac_display_requests,lapply(.brohn_rpcv_rows(v$rows),`[[`,"ref"))else list()
+    v$cardiac_figure_chapters<-brohn_normalize_cardiac_figure_chapters(if(cardiac)view$request$cardiac_figure_chapters else NULL)
+    v$cardiac_editor<-NULL
     v$window_editor<-NULL
-    v$sections<-view$request$requested_sections;v$draft<-make_draft(view$request$title,view$request$contents_policy);v$labels<-list();v$task_options<-list();v$selector<-NULL;editor();refresh_prepared(view)}
+    v$sections<-view$request$requested_sections;v$draft<-make_draft(view$request$title,view$request$contents_policy)
+    v$draft$cardiac_identifier_confirmed<-cardiac&&identical(view$request$contents_policy$identifier_mode,"source_identifiers")
+    v$labels<-list();v$task_options<-list();v$selector<-NULL;refresh_cardiac();editor();refresh_prepared(view)}
+  refresh_cardiac<-function(){
+    v$cardiac_issue<-NULL
+    v$cardiac_summary<-tryCatch(brohn_report_package_cardiac_editor_summary(store,v$rows,v$cardiac_figure_chapters,v$cardiac_display_requests),
+      error=function(e){v$cardiac_issue<-substr(conditionMessage(e),1L,1000L);NULL})
+    invisible(NULL)}
   prepared_sources<-function(view){if(is.null(view))return(list())
     prepared<-view$preparation$prepared_sources
     if(!is.null(prepared))return(prepared)
@@ -210,13 +238,14 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     clear_view();v$scope<-list(study_id=command$study_id,project_id=command$project_id);state$page<-"report_package"
     v$intent<-NULL;v$rows<-list();v$sections<-list();v$labels<-list();v$selector<-NULL;v$dirty<-FALSE;v$issue<-NULL;v$open_attempt_key<-NULL
     v$task_options<-list();v$metadata_key<-NULL;v$eda_display_requests<-list();v$window_editor<-NULL
+    v$cardiac_display_requests<-list();v$cardiac_figure_chapters<-brohn_normalize_cardiac_figure_chapters();v$cardiac_editor<-NULL
     cursors$sources<-list();cursors$history<-list();load_choices();load_history()
     entry<-if(!is.null(command$report_ref))brohn_report_package_report_choice(store,command$report_ref)else NULL
     refs<-if(is.null(entry))v$choices$recommended_refs else if(is.null(entry$recommended_refs))list(command$report_ref)else entry$recommended_refs
     v$recommendation_note<-if(is.null(entry))NULL else entry$recommendation_reason
     v$rows<-lapply(refs,function(ref)if(!is.null(entry)&&.brohn_rpv_same(ref,entry$ref))entry else brohn_report_package_report_choice(store,ref))
     v$sections<-.brohn_rpv_default_sections(v$rows)
-    v$draft<-make_draft(paste(v$choices$study$title,"report"));editor();v$phase<-"idle"
+    v$draft<-make_draft(paste(v$choices$study$title,"report"));refresh_cardiac();editor();v$phase<-"idle"
     session$onFlushed(function()session$sendCustomMessage("brohn-focus","brohn-main"),once=TRUE)
   },error=fail))
   source_limit<-function(rows=v$rows).brohn_rpv_single_source_limit(v$intent,rows)||.brohn_rpv_constant_coordinate_limit(v$intent,rows)
@@ -270,15 +299,18 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     clear_view();adopt(brohn_cancel_report_package_intent(store,v$intent$intent_ref));load_history()}))
   shiny::observeEvent(input$rpk_back,safe(function(){id<-v$scope$study_id;study<-brohn_study(store,id);clear_view();current$study<-study;state$study_id<-id;state$page<-"study";state$stage<-"Results"
     if(is.function(refresh))refresh();session$sendCustomMessage("brohn-focus","brohn-main")}))
-  shiny::observeEvent(input$rpk_source_toggle,safe(function(){capture();ref<-input$rpk_source_toggle
+  shiny::observeEvent(input$rpk_source_toggle,safe(function(){capture();ref<-input$rpk_source_toggle;had_cardiac<-.brohn_rpcv_has(v$rows)
     found<-which(vapply(v$rows,function(r).brohn_rpv_same(r$ref,ref),logical(1)))
     row<-Filter(function(r).brohn_rpv_same(r$ref,ref),v$choices$reports)
     brohn_require(length(found)==1L||(length(row)==1L&&length(row[[1]]$adapters)>0L),"Choose selected findings or findings from the current catalog page.")
     dirty()
     if(length(found)){v$rows<-v$rows[-found];v$sections<-Filter(function(s)!.brohn_rpv_same(s$source_report_ref,ref),v$sections)
-      v$eda_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)}else{
+      v$eda_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$eda_display_requests)
+      v$cardiac_display_requests<-Filter(function(x)!.brohn_rpv_same(x$report_ref,ref),v$cardiac_display_requests)}else{
       brohn_require(length(v$rows)<8L,"This report supports up to eight saved sources.");v$rows<-c(v$rows,row);v$sections<-c(v$sections,.brohn_rpv_default_sections(row))}
     v$sections<-normalize_sections(v$sections);v$selector<-NULL
+    if(!had_cardiac&&.brohn_rpcv_has(v$rows))v$draft$cardiac_identifier_confirmed<-FALSE
+    refresh_cardiac();if(had_cardiac||.brohn_rpcv_has(v$rows))editor()
   }))
   shiny::observeEvent(input$rpk_section_remove,safe(function(){capture();brohn_require(input$rpk_section_remove%in%vapply(v$sections,`[[`,character(1),"id"),"Choose a current figure section.")
     dirty();v$sections<-normalize_sections(Filter(function(s)s$id!=input$rpk_section_remove,v$sections))}))
@@ -289,7 +321,8 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     preparation<-selector_preparation(ref,adapter)
     prepared<-Filter(function(p)identical(p$adapter,preparation)&&.brohn_rpv_same(p$source_report_ref,ref),prepared_sources(v$intent))
     saved_source<-!is.null(v$intent)&&any(vapply(v$intent$request$report_refs,function(r).brohn_rpv_same(r,ref),logical(1)))
-    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display","eda-display"))||(!is.null(preparation)&&!is.null(v$intent)&&v$intent$request$renderer_profile%in%c("controlled-gaze-explicit-task-paired/0.1","controlled-gaze-explicit-task-choice-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.1","controlled-gaze-explicit-task-choice-eda-paired/0.2"))
+    pinned_required<-isTRUE(preparation%in%c("task-display","choice-display","eda-display"))||(!is.null(preparation)&&!is.null(v$intent)&&
+      (.brohn_rpk_task_profile(v$intent$request)||.brohn_rpk_choice_profile(v$intent$request)))
     if(saved_source&&pinned_required&&!length(prepared)){
       v$selector<-list(report_ref=ref,adapter=adapter,items=list(),cursor=NULL,next_cursor=NULL,
         requires_display_preparation=TRUE,state="needs_preparation",prepared_ref=NULL,locked=TRUE,
@@ -390,6 +423,75 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     brohn_require(any(vapply(window_request(x$ref)$continuous_windows,function(w)identical(w$key,x$key),logical(1))),"Choose a current saved display override.")
     window_change(x$ref,x$key)
   }))
+  cardiac_focus<-function(target="rpk_cardiac_heading")session$onFlushed(function()session$sendCustomMessage("brohn-focus",target),once=TRUE)
+  cardiac_restore_chapters<-function(){
+    shiny::updateSelectInput(session,"rpk_cardiac_chapter_mode",selected=v$cardiac_figure_chapters$chapters$mode)
+    shiny::updateTextInput(session,"rpk_cardiac_chapter_numbers",value=paste(unlist(v$cardiac_figure_chapters$chapters$numbers),collapse=", "))
+  }
+  shiny::observeEvent(input$rpk_cardiac_choices,safe(function(){capture();cardiac_focus()}))
+  shiny::observeEvent(list(input$rpk_cardiac_chapter_mode,input$rpk_cardiac_chapter_numbers),{
+    if(!active()||!.brohn_rpcv_has(v$rows)||!identical(input$rpk_form_identity,v$form_identity))return()
+    tryCatch({require_active()
+      chapters<-.brohn_rpcv_chapters(input$rpk_cardiac_chapter_mode,input$rpk_cardiac_chapter_numbers,v$cardiac_figure_chapters)
+      if(.brohn_rpv_same(chapters,v$cardiac_figure_chapters)&&is.null(v$cardiac_issue))return()
+      brohn_require(is.null(v$cardiac_editor),"Save or cancel the recording-view edit before changing chapters.")
+      summary<-brohn_report_package_cardiac_editor_summary(store,v$rows,chapters,v$cardiac_display_requests)
+      capture();dirty();v$cardiac_figure_chapters<-chapters;v$cardiac_summary<-summary;v$cardiac_issue<-NULL
+    },error=function(e){v$cardiac_issue<-substr(conditionMessage(e),1L,1000L)})
+  },ignoreInit=TRUE)
+  shiny::observeEvent(input$rpk_cardiac_section_add,safe(function(){capture();ref<-input$rpk_cardiac_section_add
+    brohn_require(any(vapply(.brohn_rpcv_rows(v$rows),function(r).brohn_rpv_same(r$ref,ref),logical(1))),"Choose a selected cardiac report.")
+    if(!any(vapply(v$sections,function(s)identical(s$adapter,"cardiac")&&.brohn_rpv_same(s$source_report_ref,ref),logical(1)))){
+      dirty();v$sections<-normalize_sections(c(v$sections,list(.brohn_rpv_section(ref,"cardiac"))))}
+  }))
+  shiny::observeEvent(input$rpk_cardiac_view_open,safe(function(){capture();x<-input$rpk_cardiac_view_open
+    brohn_fields(x,c("ref","key"),label="Cardiac recording view")
+    refresh_cardiac();brohn_require(is.null(v$cardiac_issue),brohn_default(v$cardiac_issue,"Reopen this source."))
+    reports<-Filter(function(r).brohn_rpv_same(r$report_ref,x$ref),v$cardiac_summary$resolution$reports)
+    brohn_require(length(reports)==1L,"Choose a selected original cardiac report.")
+    cells<-Filter(function(cell)identical(cell$key,x$key),reports[[1L]]$selected_cells)
+    brohn_require(length(cells)==1L,"Choose an original recording in the current chapter.")
+    v$cardiac_editor<-list(token=brohn_token(),ref=x$ref,cell=cells[[1L]],closure_hash=reports[[1L]]$closure_hash,
+      choice=.brohn_rpcv_override(v$cardiac_display_requests,x$ref,x$key))
+    cardiac_focus("rpk_cardiac_view_heading")
+  }))
+  cardiac_editor_current<-function(){require_form();e<-v$cardiac_editor
+    brohn_require(!is.null(e)&&identical(input$rpk_cardiac_view_identity,e$token)&&
+      any(vapply(.brohn_rpcv_rows(v$rows),function(r).brohn_rpv_same(r$ref,e$ref),logical(1))),"Reopen the current recording-view edit.")
+    offset<-floor((e$cell$source_record_index-1)/100)*100
+    cursor<-if(!offset)NULL else list(scope=brohn_eda_value_hash(list(report_ref=e$ref,closure_hash=e$closure_hash)),offset=offset)
+    fresh<-brohn_cardiac_source_windows(store,e$ref,cursor,100L)
+    cells<-Filter(function(cell)identical(cell$key,e$cell$key),fresh$items)
+    brohn_require(.brohn_rpv_same(fresh$source_ref,e$ref)&&identical(fresh$closure_hash,e$closure_hash)&&length(cells)==1L&&
+      .brohn_rpv_same(cells[[1L]],e$cell),
+      "The original cardiac recording changed or is no longer accessible. Reopen the recording-view edit.")
+    e}
+  shiny::observeEvent(input$rpk_cardiac_view_apply,safe(function(){e<-cardiac_editor_current();captured<-capture(FALSE)
+    choice<-e$choice
+    choice["time_focus"]<-list(if(isTRUE(e$cell$focusable)&&isTRUE(input$rpk_cardiac_focus_enabled))list(start_s=input$rpk_cardiac_focus_start,end_s=input$rpk_cardiac_focus_end)else NULL)
+    for(field in c("waveform_windows","marker_pages","interval_pages","numerical_pages")){
+      mode<-brohn_default(input[[paste0("rpk_cardiac_view_",field)]],choice[[field]]$mode)
+      numbers<-if(identical(mode,"selected"))pages(input[[paste0("rpk_cardiac_view_",field,"_numbers")]])else list()
+      choice[[field]]<-list(mode=mode,numbers=brohn_default(numbers,list()))
+    }
+    entries<-.brohn_rpcv_set_override(v$cardiac_display_requests,e$ref,e$cell$key,choice)
+    normalized<-.brohn_rpcv_override(entries,e$ref,e$cell$key)
+    if(!is.null(normalized$time_focus))brohn_require(brohn_eda_decimal_compare(normalized$time_focus$start_s,e$cell$original_bounds$start_s)>=0L&&
+      brohn_eda_decimal_compare(normalized$time_focus$end_s,e$cell$original_bounds$end_s)<=0L,
+      "Choose a time focus within this original recording's exact bounds.")
+    # Saving an editor changes transient choices only. Preparation is explicit.
+    v$draft<-captured$draft;v$sections<-captured$sections
+    dirty();v$cardiac_display_requests<-entries;refresh_cardiac();cardiac_restore_chapters();cardiac_focus()
+  }))
+  shiny::observeEvent(input$rpk_cardiac_view_cancel,safe(function(){require_form();v$cardiac_editor<-NULL;v$cardiac_issue<-NULL;cardiac_restore_chapters();cardiac_focus()}))
+  shiny::observeEvent(input$rpk_cardiac_view_reset,safe(function(){capture();x<-input$rpk_cardiac_view_reset
+    brohn_fields(x,c("ref","key"),label="Cardiac view reset")
+    brohn_require(any(vapply(.brohn_rpcv_rows(v$rows),function(r).brohn_rpv_same(r$ref,x$ref),logical(1)))&&
+      any(vapply(.brohn_rpcv_request(v$cardiac_display_requests,x$ref)$cell_overrides,function(o)identical(o$cell_key,x$key),logical(1))),
+      "Choose a current saved recording override.")
+    entries<-.brohn_rpcv_set_override(v$cardiac_display_requests,x$ref,x$key)
+    dirty();v$cardiac_display_requests<-entries;refresh_cardiac();cardiac_focus()
+  }))
   page_next<-function(kind){capture_if<-kind!="history";if(capture_if)capture()
     p<-switch(kind,sources=v$choices,history=v$history,selector=v$selector);if(is.null(p)||is.null(p$next_cursor))return()
     cursors[[kind]]<-c(cursors[[kind]],list(p$cursor));switch(kind,sources=load_choices(p$next_cursor),history=load_history(p$next_cursor),selector=selector_load(p$report_ref,p$adapter,p$next_cursor))}
@@ -406,7 +508,7 @@ brohn_install_report_package_server <- function(input,output,session,store,state
     if(view$status=="succeeded")start("open",view,"Opening the exact saved report.")else{v$focus_token<-NULL;v$automatic<-FALSE}
   }))
   shiny::observe({
-    if(!active()||isTRUE(v$dirty)||!identical(input$rpk_form_identity,v$form_identity))return()
+    if(!active()||isTRUE(v$dirty)||!is.null(v$cardiac_editor)||!identical(input$rpk_form_identity,v$form_identity))return()
     expected<-if(!is.null(v$pending)&&v$pending$action=="save")v$pending$payload$request else if(!is.null(v$intent))v$intent$request else NULL
     if(is.null(expected))return()
     fresh<-tryCatch(request(FALSE,new_profile=!is.null(v$pending)&&v$pending$action=="save"),error=function(e)NULL)
@@ -415,7 +517,8 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   output$rpk_context<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL)
     shiny::p(paste("Study:",v$choices$study$title,". Saved report versions determine the design and findings in this package."))})
   output$rpk_editor<-shiny::renderUI({if(!active())return(NULL);v$editor_tick
-    shiny::isolate({if(is.null(v$draft))NULL else{d<-v$draft;d$form_identity<-v$form_identity;brohn_report_package_editor_ui(d)}})})
+    shiny::isolate({if(is.null(v$draft))NULL else{d<-v$draft;d$form_identity<-v$form_identity
+      d$cardiac_active<-.brohn_rpcv_has(v$rows);d$cardiac_figure_chapters<-v$cardiac_figure_chapters;brohn_report_package_editor_ui(d)}})})
   output$rpk_prepare_action<-shiny::renderUI({if(!active()||is.null(v$draft)||source_limit())return(NULL)
     shiny::actionButton("rpk_prepare","Prepare report",class="btn-primary")})
   output$rpk_contents<-shiny::renderUI({if(!active())return(NULL)
@@ -432,9 +535,10 @@ brohn_install_report_package_server <- function(input,output,session,store,state
   output$rpk_sources<-shiny::renderUI({if(!active()||is.null(v$choices))return(NULL);brohn_report_package_sources_ui(v$choices,v$rows)})
   output$rpk_selected<-shiny::renderUI({if(!active())return(NULL);shiny::tags$ul(lapply(v$rows,function(row)shiny::tags$li(row$title," | ",row$origin," | saved version ",row$ref$revision,
     brohn_command(paste("Remove",row$title),"rpk_source_toggle",row$ref),
-    if(.brohn_rpv_has_eda(v$rows))lapply(row$adapters,function(adapter)brohn_command(paste("Choose",.brohn_rpv_adapter_label(adapter)),"rpk_selector_open",list(ref=row$ref,adapter=adapter))))))})
+    if(.brohn_rpcv_row(row))brohn_command("Include cardiac figures","rpk_cardiac_section_add",row$ref),
+    if(.brohn_rpv_has_eda(v$rows))lapply(Filter(function(a)!identical(a,"cardiac"),row$adapters),function(adapter)brohn_command(paste("Choose",.brohn_rpv_adapter_label(adapter)),"rpk_selector_open",list(ref=row$ref,adapter=adapter))))))})
   output$rpk_figures<-shiny::renderUI({if(!active())return(NULL)
-    if(!length(v$sections)&&.brohn_rpv_has_eda(v$rows))return(shiny::p("No figures selected; complete numerical evidence is included. Choose saved views from a selected source to add figures again."))
+    if(!length(v$sections)&&(.brohn_rpv_has_eda(v$rows)||.brohn_rpcv_has(v$rows)))return(shiny::p("No figures selected; complete numerical evidence is included. Choose saved views from a selected source to add figures again."))
     brohn_report_package_figures_ui(v$sections,v$labels,v$task_options,v$rows)})
   output$rpk_material_scope<-shiny::renderUI({if(!active())return(NULL)
     gaze<-any(vapply(v$rows,function(row)"gaze-context"%in%unlist(row$adapters),logical(1)))
@@ -444,6 +548,9 @@ brohn_install_report_package_server <- function(input,output,session,store,state
       if(choice)shiny::p("Task and choice material definitions and hashes are included as saved references. Task and choice material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study.")else
       if(task)shiny::p("Task material definitions and hashes are included as saved references. Task material image bytes are not embedded in this report version. Original study design and asset exports remain available from the study."))})
   output$rpk_selector<-shiny::renderUI({if(!active()||is.null(v$selector))return(NULL);brohn_report_package_selector_ui(v$selector)})
+  output$rpk_cardiac_summary<-shiny::renderUI({if(!active()||!.brohn_rpcv_has(v$rows))return(NULL)
+    brohn_report_package_cardiac_summary_ui(v$cardiac_summary,v$sections,v$cardiac_display_requests,v$cardiac_issue)})
+  output$rpk_cardiac_view_editor<-shiny::renderUI({if(!active())return(NULL);brohn_report_package_cardiac_view_editor_ui(v$cardiac_editor)})
   output$rpk_eda_window<-shiny::renderUI({if(!active())return(NULL);brohn_report_package_eda_window_ui(v$window_editor)})
   output$rpk_eda_windows<-shiny::renderUI({if(!active()||!length(v$eda_display_requests))return(NULL)
     shiny::tags$section(`aria-labelledby`="rpk_eda_overrides_heading",shiny::h3("Saved display-window overrides",id="rpk_eda_overrides_heading"),

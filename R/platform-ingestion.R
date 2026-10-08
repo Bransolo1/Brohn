@@ -10,6 +10,7 @@ if(is.null(.brohn_ingestion_sources)) {
 stopifnot(is.environment(.brohn_ingestion_sources))
 .brohn_ingestion_key<-function(store,id)paste0(store$workspace_id,":",id)
 .brohn_ingestion_module_hash<-digest::digest(file="R/platform-ingestion.R",algo="sha256")
+.brohn_ingestion_preview_hash<-digest::digest(file="R/platform-tabular-preview.R",algo="sha256")
 .brohn_ingestion_snapshot_script<-normalizePath("scripts/workers/ingestion_snapshot.py",winslash="/",mustWork=TRUE)
 .brohn_ingestion_snapshot_hash<-digest::digest(file=.brohn_ingestion_snapshot_script,algo="sha256")
 
@@ -270,9 +271,7 @@ brohn_analyse_ingestion <- function(input,scratch) {
   milestone("preview",list(source_hash=hash))
   columns<-list();preview<-list()
   if(input$review$format%in%c("csv","tsv")) {
-    table<-utils::read.table(path,header=TRUE,sep=if(input$review$format=="csv")"," else "\t",nrows=20,
-      colClasses="character",check.names=FALSE,comment.char="",quote="\"",fileEncoding="UTF-8",na.strings=character(),blank.lines.skip=FALSE)
-    brohn_require(ncol(table)>0&&ncol(table)<=1024&&!anyDuplicated(names(table))&&all(nzchar(names(table))),"Data columns must have unique nonempty names.")
+    table<-brohn_tabular_preview(path,input$review$format,blank_lines_skip=FALSE)
     columns<-as.list(names(table));preview<-lapply(seq_len(nrow(table)),function(i)as.list(table[i,,drop=FALSE]))
   }
   .Call(native$check,pointer)
@@ -288,6 +287,7 @@ brohn_analyse_ingestion <- function(input,scratch) {
 brohn_publish_ingestion <- function(store,output,scratch,job,input,output_path) {
   brohn_require(!RSQLite::sqliteIsTransacting(store$con),"Prepare source intake publication outside a transaction.")
   .brohn_publication_output_identity(output,list("R/platform-ingestion.R"=.brohn_ingestion_module_hash,
+    "R/platform-tabular-preview.R"=.brohn_ingestion_preview_hash,
     "scripts/workers/ingestion_snapshot.py"=.brohn_ingestion_snapshot_hash))
   record<-.brohn_ingestion_pin(store,job);r<-output$report$ingestion;review<-record$body$review
   brohn_require(identical(input$ingestion_revision,record$revision)&&identical(brohn_hash(input$review),record$body$review_hash)&&

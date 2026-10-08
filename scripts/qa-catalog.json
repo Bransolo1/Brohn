@@ -12,6 +12,8 @@
     }
   },
   "tests": [
+    {"id":"assigned-design-lifecycle","suite":"interchange","path":"tests/assigned/design-lifecycle.R","timeout_s":240},
+    {"id":"qa-source-inventory","suite":"operations","path":"tests/platform-qa-source-inventory.R","timeout_s":60},
     {"id":"clock-python","suite":"interchange","path":"tests/platform-clock-python.R","timeout_s":2100},
     {"id":"gnat","suite":"domain","path":"tests/platform-gnat.R","timeout_s":300},
     {"id":"gnat-replay","suite":"domain","path":"tests/platform-gnat-replay.R","timeout_s":360},

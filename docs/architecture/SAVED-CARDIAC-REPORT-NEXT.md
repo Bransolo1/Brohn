@@ -1,5 +1,12 @@
 # Next saved ECG/PPG report package
 
+Current implementation pointer, 9 October: read the
+[source/workflow evidence map](../qa/SOURCE-EVIDENCE-MAP-20261009.md) and
+[current master architecture](../MASTER-ARCHITECTURE.md). The dated plan below
+preserves earlier implementation boundaries; its inactive/pending descriptions
+do not supersede the current normal assigned route or native cardiac package
+implementation. Broader formats and cardiac browser/cold/performance remain open.
+
 28 September 2026. **Read-only implementation proposal, not enabled admission or acceptance.** This refines the cardiac follow-on in [the physiological report plan](SAVED-PHYSIOLOGICAL-REPORT-NEXT.md). All 50 capabilities and 17 work packages remain in scope and retain their existing status. BWP09 owns method meaning; BWP04/BWP06/BWP13/BWP15/BWP17 own the corresponding source, lifecycle, presentation and QA work. No scientific processing, service or production code was changed for this review.
 
 ## Exact saved families to qualify

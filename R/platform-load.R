@@ -2,8 +2,9 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   # Legacy readers retain their original validators and identifiers.
   legacy <- c("study", "comparison", "presentation", "records", "json", "storage", "drafts", "assets", "aois",
     "analysis", "sample-analysis", "gaze-import", "import-report", "protocol", "protocol-storage")
-  platform <- c("core", "http-response", "question-materials", "welcome", "question-flow", "analysis-plan", "store", "publication", "methods", "library", "catalog", "delivery", "portability", "analysis", "gaze", "vision", "facial-expression", "neural", "eda-events", "headers", "physiology-artifacts", "signal", "multimodal", "jobs", "runtime")
+  platform <- c("core", "http-response", "question-materials", "welcome", "question-flow", "analysis-plan", "store", "publication", "methods", "tabular-preview", "library", "catalog", "delivery", "portability", "analysis", "gaze", "vision", "facial-expression", "neural", "eda-events", "headers", "physiology-artifacts", "signal", "multimodal", "jobs", "runtime")
   platform <- c(platform, "runner-assets")
+  platform <- c(platform, "method-evidence", "method-evidence-host")
   if (file.exists("R/platform-task-delivery.R")) platform <- c(platform, "task-delivery")
   platform <- c(platform, "sciat-window-candidate", "sciat-window", "sciat-window-delivery", "sciat-window-score")
   platform <- c(platform, "gnat", "gnat-authoring")
@@ -42,9 +43,21 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (file.exists("R/platform-maxdiff.R")) platform <- c(platform, "maxdiff", "maxdiff-platform", "maxdiff-import", "maxdiff-plots")
   # Static report primitives are pure definitions, shared by UI and workers.
   platform <- c(platform, "gaze-report-views", "explicit-distribution-views", "paired-plot-views",
-    "task-plot-views", "report-package-tables", "report-package-tasks", "report-package-choice", "report-package-eda-figures", "report-package-eda", "report-package-render", "report-package-authority",
-    "task-display-sources", "task-display", "choice-display-sources", "choice-display", "eda-display-sources", "eda-display", "report-package-sources", "report-package-distributions", "report-package", "report-package-preparation")
+    "task-plot-views", "report-package-profiles", "report-package-raw-gaze", "report-package-tables", "report-package-tasks", "report-package-choice", "report-package-eda-figures", "report-package-eda", "report-package-render", "report-package-authority",
+    "task-display-sources", "task-display", "choice-display-sources", "choice-display", "eda-display-sources", "eda-display", "report-package-sources", "report-package-distributions", "report-package", "report-package-preparation", "report-package-transactions")
+  platform <- c(platform, "cardiac-display-sources", "cardiac-display", "cardiac-display-validation",
+    "cardiac-display-jobs", "cardiac-display-chapters", "cardiac-display-identity",
+    "cardiac-display-history", "report-package-cardiac", "report-package-cardiac-preparation", "cardiac-source-reader", "report-package-cardiac-sources", "report-package-cardiac-figures", "report-package-cardiac-render", "report-package-cardiac-provenance", "report-package-cardiac-session")
+  # Explicit saved-variant worker dependencies; all source bytes are installed before claims.
+  platform <- c(platform, "method-evidence-binding", "method-evidence-ancestry", "method-evidence-identity", "method-evidence-domain", "variant-design", "task-protocol-history", "method-evidence-protocol-history", "variant-protocol-history", "evidence-run-source", "variant-run-source", "variant-analysis-index", "variant-run-reader", "variant-analysis-values", "variant-analysis", "variant-analysis-identity", "variant-run-transport", "variant-analysis-queue", "variant-analysis-claim", "variant-analysis-publication-schema", "variant-analysis-publication", "variant-analysis-process", "worker-dispatch", "processing-retry-dispatch")
+  platform <- c(platform, "assigned-runtime-registry", "assigned-runtime", "assigned-runtime-reader")
   for (file in c(paste0("R/", legacy, ".R"), paste0("R/platform-", platform, ".R"))) source(file, local = envir, encoding = "UTF-8")
+  get("brohn_install_assigned_runtime_reader", envir = envir)(envir)
+  if (ui) {
+    source("R/platform-method-evidence-views.R", local = envir, encoding = "UTF-8")
+    source("R/platform-method-evidence-config-views.R", local = envir, encoding = "UTF-8")
+    assign(".brohn_method_evidence_app", get("brohn_method_evidence_host_load", envir = envir)(getwd()), envir = envir)
+  }
   if (ui) source("R/platform-stimulus-version-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-signal-reuse-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-cardiac-review-views.R", local = envir, encoding = "UTF-8")
@@ -79,6 +92,7 @@ brohn_load <- function(envir = parent.frame(), ui = TRUE) {
   if (ui) source("R/platform-material-views.R", local = envir, encoding = "UTF-8")
   if (ui) source("R/platform-guidance-views.R", local = envir, encoding = "UTF-8")
   if (ui) for (name in c("shell", "aoi", "vision-views", "question-flow-views", "question-sections-views", "question-revision-views", "questionnaire-artifact-views", "questionnaire-explorer-views", "scale-views", "maxdiff-views", "maxdiff-import-views", "task-import-views", "task-cohort-views", "task-plot-views", "capture-views", "acquisition-views", "stream-curation-views", "collection-routes", "views", "task-views", "gaze-views", "neural-views", "neural-views-plots", "eda-events-views", "peripheral-views", "peripheral-report", "ingestion-views", "run-review-views", "data-views", "signal-views", "signal-annotations-views", "welcome-views", "headers-views", "analysis-plan-views", "multimodal-views", "interchange-views", "app")) source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
+  if (ui) source("R/platform-report-package-cardiac-views.R", local = envir, encoding = "UTF-8")
   if (ui) for (name in c("report-package-views", "report-package-server"))
     source(paste0("R/platform-", name, ".R"), local = envir, encoding = "UTF-8")
   invisible(TRUE)

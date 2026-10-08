@@ -1,0 +1,9 @@
+# UTF-8 preview checks
+
+Run only after the parent grants a CPU slot. Integrate the exact overlays into a new owned source copy first; do not modify or execute against a frozen original checkout. Use the normal qualified wrapper (`LC_ALL=C`, pinned R libraries), with `tests/tabular-preview.R` and two arguments: that candidate checkout and a fresh output directory.
+
+The test loads every module through the same explicit `.GlobalEnv`, creates only its fresh owned workspace, closes its store, and retains results/input files. It does not launch a worker, service or participant runtime. Baseline `fileEncoding` must demonstrably refuse or alter the Unicode fixture under C; the new decoder must preserve exact UTF-8 header/ID/value code points and literal character data.
+
+Coverage includes CSV/TSV and quoted/multiline values; BOM parsing without file mutation; header-only and valid missing final newline; NA-like literals/leading-zero/large IDs; each caller's blank/fill policy; strict malformed UTF-8/NUL/unterminated quote refusal; exact20-row boundary with malformed record21 remaining outside preview; actual registered-object/dataset/job rollback; actual whole-source byte preservation; and a deliberately changed upload path after capture proving preview authority stays with the immutable stored object. The unchanged scientific reader still rejects the malformed full-file tail. Foreign helper identity must fail the existing queued publication guard.
+
+Record stdout/stderr, exit code, `RESULTS.json`, source hashes and a closed-store receipt. A failed assertion stays evidence in that attempt; do not edit it to become acceptance. Run the existing library-storage test as the narrow compatibility check after this passes. Existing queued native ingestion regression and connected Data retry require separate scope/CPU coordination; these pure checks do not replace them.

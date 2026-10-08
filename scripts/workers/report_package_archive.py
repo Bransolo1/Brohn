@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import ntpath
 import os
 import platform
 from pathlib import Path
@@ -16,6 +17,25 @@ MAX_BYTES = 256 * 1024 * 1024
 MAX_FILES = 1024
 FIXED_TIME = (1980, 1, 1, 0, 0, 0)
 
+def _io_path(value):
+    """Filesystem spelling only; never replace a recorded request value."""
+    path = Path(value)
+    if os.name != "nt":
+        return path
+    raw = str(path)
+    if raw.startswith(("\\\\?\\", "\\\\.\\")):
+        return path
+    parts = path.parts[1:] if path.anchor else path.parts
+    devices = {"con", "prn", "aux", "nul", "conin$", "conout$",
+               *(f"{kind}{n}" for kind in ("com", "lpt") for n in "123456789\u00b9\u00b2\u00b3")}
+    # Extended syntax must not newly expose names normalized by ordinary Win32.
+    if any(p.endswith((".", " ")) or ":" in p or p.split(".")[0].casefold() in devices for p in parts):
+        return path
+    absolute = ntpath.abspath(raw)
+    if absolute.startswith("\\\\"):
+        return Path("\\\\?\\UNC\\" + absolute[2:])
+    return Path("\\\\?\\" + absolute)
+
 def fail(message):
     raise ValueError(message)
 
@@ -28,7 +48,7 @@ def unique_object(pairs):
     return value
 
 def strict_json(path, maximum=1024*1024):
-    raw = Path(path).read_bytes()
+    raw = _io_path(path).read_bytes()
     if not 0 < len(raw) <= maximum:
         fail('JSON request exceeds its bound')
     return json.loads(raw.decode('utf-8'), object_pairs_hook=unique_object,
@@ -51,6 +71,7 @@ def safe_name(value):
     return value
 
 def descriptor(root, item):
+    root = _io_path(root)
     fields(item, ['path','sha256','bytes','media_type','role'])
     safe_name(item['path'])
     if not isinstance(item['sha256'],str) or not re.fullmatch('[a-f0-9]{64}',item['sha256']) or not integer(item['bytes'],0,MAX_BYTES):
@@ -74,7 +95,7 @@ def descriptor(root, item):
     return path
 
 def verify_archive(path, entries):
-    with zipfile.ZipFile(path) as archive:
+    with zipfile.ZipFile(_io_path(path)) as archive:
         info=archive.infolist()
         if archive.comment or [x.filename for x in info] != [x['path'] for x in entries]:
             fail('Archive ordering or inventory changed')
@@ -101,7 +122,10 @@ def run(request):
     if not integer(limit['max_members'],1,MAX_FILES) or not integer(limit['max_payload_bytes'],1,MAX_BYTES):
         fail('Archive limits exceed the fixed maximum')
     root=Path(request['root'])
-    if not root.is_absolute() or not root.is_dir() or root.is_symlink() or getattr(root.lstat(),'st_file_attributes',0)&0x400:
+    if not root.is_absolute():
+        fail('Archive needs a real owned output directory')
+    root=_io_path(root)
+    if not root.is_dir() or root.is_symlink() or getattr(root.lstat(),'st_file_attributes',0)&0x400:
         fail('Archive needs a real owned output directory')
     if not isinstance(request['files'],list):
         fail('Payload inventory must be an array')
@@ -155,14 +179,14 @@ def run(request):
                         'media_type':'application/zip','role':'report_package'},
             'members':len(entries),'payload_bytes':sum(x['bytes'] for x in entries),
             'runtime':{'Python':{'implementation':platform.python_implementation(),'version':platform.python_version(),
-                                  'executable_sha256':hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest()}}}
+                                  'executable_sha256':hashlib.sha256(_io_path(sys.executable).read_bytes()).hexdigest()}}}
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--request',required=True)
     parser.add_argument('--output',required=True)
     args=parser.parse_args()
-    out=Path(args.output)
+    out=_io_path(args.output)
     if out.exists():
         fail('Archive receipt already exists')
     result=run(strict_json(args.request))

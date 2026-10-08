@@ -123,7 +123,7 @@ local({
   check("neural report keeps trial counts distinct from participant inference", identical(report$quality$participant_inference_performed, FALSE) && identical(report$series[[1]]$sem_scope, "within_recording_trials; not participant inference"))
   # Full durable application route: pinned source -> accepted mapping -> fenced
   # R supervisor -> neural child -> immutable report and receipt -> reopen.
-  for (module in c("platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-library", "platform-analysis", "platform-jobs")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
+  for (module in c("platform-store", "platform-publication", "platform-methods", "platform-delivery", "platform-tabular-preview", "platform-library", "platform-analysis", "platform-jobs")) source(paste0("R/", module, ".R"), encoding = "UTF-8")
   for (module in c("questionnaire-artifacts", "questionnaire-artifact-storage")) source(paste0("R/platform-",module,".R"),encoding="UTF-8")
   store <- brohn_open_store(file.path(scratch, "workspace"))
   on.exit(brohn_close_store(store), add = TRUE, after = FALSE)
